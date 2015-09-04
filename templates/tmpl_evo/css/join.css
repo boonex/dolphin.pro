@@ -1,0 +1,12 @@
+@import url(../../base/css/join.css);
+
+#join_form .input_wrapper_submit {
+	text-align: center;
+}
+#join_form .input_wrapper_submit .form_input_submit {
+	float: none;
+	display: inline-block;
+
+	width: 100%;
+	max-width: 500px;
+}

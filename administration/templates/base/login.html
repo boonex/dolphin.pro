@@ -1,0 +1,36 @@
+<div class="admin_login_page">
+	<div class="admin_login_wrapper bx-def-padding bx-def-round-corners">
+	    <div class="admin_login">
+	    	<div class="admin_login_icon">
+	    		<img class="admin_login_icon" src="<bx_image_url:dolphin.svg />" />
+	    	</div>
+	    	<div class="admin_login_form_wrapper">
+	        	<form class="admin_login_form" action="__action_url__" method="post" onsubmit="javascript: validateLoginForm(this); return false;">
+	        		<input type="hidden" name="relocate" value="__relocate_url__" />
+					<div>
+						<div class="input_wrapper input_wrapper_text clearfix">
+							<input type="text" name="ID" id="admin_username" class="form_input_text bx-def-font-inputs" placeholder="<bx_text_attribute:_adm_txt_login_username />" />
+						</div>
+					</div>
+					<div class="bx-def-margin-sec-top-auto">
+						<div class="input_wrapper input_wrapper_password clearfix">
+							<input type="password" name="Password" id="admin_password" class="form_input_password bx-def-font-inputs" placeholder="<bx_text_attribute:_adm_txt_login_password />" />
+						</div>
+					</div>
+					<div class="bx-def-margin-sec-top-auto">
+						<button class="bx-btn" type="submit" id="admin_login_form_submit">
+							<bx_text:_adm_btn_login_login />
+						</button>
+					</div>
+	            </form>
+	            <div class="clear_both"></div>
+	        </div>
+	    </div>
+
+	    <bx_if:show_unregistered>
+	        <div class="admin_license bx-def-margin-top">
+	            <div class="admin_license_cnt bx-def-padding-leftright"><bx_text:_adm_license_trial_copy_login_text /></div>
+	        </div>
+	    </bx_if:show_unregistered>
+	</div>
+</div>

@@ -1,0 +1,18 @@
+#bx_sites_admin_listing .block_cont {
+    padding:1px;
+}
+
+table.bx_sites_actions {
+    border-collapse:collapse;
+    margin:5px;
+    width:100%;
+}
+
+table.bx_sites_actions td {
+    width:33%;
+    text-align:center;
+}
+
+.bx_sites_manage_wrapper {
+    padding: 0 0 1px 0;
+}

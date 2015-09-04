@@ -1,0 +1,9 @@
+<div class="statusTab">
+    <div class="input_wrapper input_wrapper_text bx-def-round-corners-with-border" style="width:345px;">
+        <input id="UserStatusMessBut_nm" class="form_input_text bx-def-font" type="text" value="__status_message__" name="UserStatusMessage" onkeyup="if (typeof oBxUserStatus != undefined) oBxUserStatus.sendStatusMessage(event, this);return false;" />
+    </div>
+    <div class="input_wrapper input_wrapper_submit bx-def-margin-sec-left">
+        <input class="bx-btn bx-btn-small" type="button" value="<bx_text:_Submit />" name="UserStatusMessBut" onclick="if (typeof oBxUserStatus != undefined) oBxUserStatus.PerformSendingStatusMess(document.getElementById('UserStatusMessBut_nm'));return false;" />
+    </div>
+    <div class="clear_both"></div>
+</div>

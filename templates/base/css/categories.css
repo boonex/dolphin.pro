@@ -1,0 +1,76 @@
+
+.quick_links_elink {
+	background-color:#F2F2FF;
+	position:relative;/*keep*/
+	border: 1px solid #DADADA;
+}
+
+.quick_links_elink_pic {
+    position:absolute;
+	left:15px;	
+	top:15px;    
+	width:48px;
+	height:48px;
+    text-align:center;
+}
+
+.quick_links_elink_pic .sys-icon,
+.quick_links_elink_pic img {
+	position:absolute;
+    top:0;
+    left:0;
+    font-size:48px;
+}
+
+.quick_links_elink_lcont {
+	width:100%;
+	background-color:#F2F2FF;
+	border-top:1px solid #DADADA;
+}
+
+.lcont_top {
+	line-height:28px;
+	padding-left:78px;
+	background-color:#ECECEC;
+}
+
+.lcont_other {
+	padding-left:78px;
+	min-height:50px;
+	padding-top:8px;
+	padding-bottom:10px;
+}
+
+.lcont_other div {
+	margin:3px 0px;
+}
+
+.lcont_other .sub_other {
+	width:49%;float:left;margin-bottom:5px;color:#666;
+}
+
+.lcont_top  a.main_l,
+.lcont_top  a.main_l:link,
+.lcont_top  a.main_l:visited,
+.lcont_top  a.main_l:hover,
+.lcont_top  a.main_l:active {
+	color:#333;
+}
+
+.quick_links_elink_lcont td {
+	width:50%;
+}
+
+div.js_control_section {
+	width:16px;
+	height:16px;
+	float:right;
+	margin-right:5px;
+	background-image:url(../images/icons/toggle.png);
+	background-repeat:no-repeat;
+	cursor:pointer;
+	position:absolute;
+	top:5px;
+	right:0px;
+	line-height:16px;
+}

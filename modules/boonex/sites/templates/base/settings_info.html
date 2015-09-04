@@ -1,0 +1,79 @@
+<script type="text/javascript">
+function clearThumbCache(){
+    var jqxhr = $.post('__actual_url__', { clear_cache: "thumbs" })
+    .success(function() { alert('Site Thumbnail Cache successfully cleared'); })
+    .error(function() { alert('Could not clear the Site Thumbnail Cache successfully'); })
+}
+
+$(document).ready(function($) {
+  var invalidacc = '<p style="padding-top:3px;color:red;">Invalid account credentials detected</p>'
+  var upgrade = '<p style="padding-top:3px;"><a href="http://www.shrinktheweb.com/auth/order-page" target="_blank">Upgrade required to use this feature</a></p>';
+  
+  if (__response_status__ == 0) {
+    $("select[name='bx_sites_account_type'] option[value='Enabled']").attr('disabled',true);
+    $("input[name='bx_sites_key_id']").parent().append(invalidacc);
+    $("input[name='bx_sites_key_id']").parent().parent().attr('height','50px');
+    $("input[name='bx_sites_secret_key']").parent().append(invalidacc);
+    $("input[name='bx_sites_secret_key']").parent().parent().attr('height','50px');
+
+    $("input[name='bx_sites_inside_pages']").attr("checked", false);
+    $("input[name='bx_sites_inside_pages']").attr("disabled", true);
+    $("input[name='bx_sites_thumb_size_custom']").attr("disabled", true);
+    $("input[name='bx_sites_full_size']").attr("checked", false);
+    $("input[name='bx_sites_full_size']").attr("disabled", true);
+    $("input[name='bx_sites_max_height']").attr("disabled", true);
+    $("input[name='bx_sites_redo']").attr("checked", false);
+    $("input[name='bx_sites_redo']").attr("disabled", true);
+    $("input[name='bx_sites_delay']").attr("disabled", true);
+    $("input[name='bx_sites_quality']").attr("disabled", true);
+    $("input[name='bx_sites_native_res']").attr("disabled", true);
+    $("input[name='bx_sites_widescreen_y']").attr("disabled", true);
+    $("input[name='bx_sites_custom_msg_url']").attr("disabled", true);
+  } else {
+    if (__inside_pages__ == 0) {
+      $("input[name='bx_sites_inside_pages']").attr("checked", false);
+      $("input[name='bx_sites_inside_pages']").attr("disabled", true);
+      $("input[name='bx_sites_inside_pages']").parent().append(upgrade);
+    }
+    if (__custom_size__ == 0 && __full_length__ == 0) {
+      $("input[name='bx_sites_thumb_size_custom']").attr("disabled", true);
+      $("input[name='bx_sites_thumb_size_custom']").parent().append(upgrade);
+    } 
+    if (__full_length__ == 0) {
+      $("input[name='bx_sites_full_size']").attr("checked", false);
+      $("input[name='bx_sites_full_size']").attr("disabled", true);
+      $("input[name='bx_sites_max_height']").attr("disabled", true);
+      $("input[name='bx_sites_full_size']").parent().append(upgrade);
+      $("input[name='bx_sites_max_height']").parent().append(upgrade);
+    }
+    if (__refresh_ondemand__ == 0) {
+      $("input[name='bx_sites_redo']").attr("checked", false);
+      $("input[name='bx_sites_redo']").attr("disabled", true);
+      $("input[name='bx_sites_redo']").parent().append(upgrade);
+    }
+    if (__custom_delay__ == 0) {
+      $("input[name='bx_sites_delay']").attr("disabled", true);
+      $("input[name='bx_sites_delay']").parent().append(upgrade);
+    }
+    if (__custom_quality__ == 0) {
+      $("input[name='bx_sites_quality']").attr("disabled", true);
+      $("input[name='bx_sites_quality']").parent().append(upgrade);
+    }
+    if (__custom_resolution__ == 0) {
+      $("input[name='bx_sites_native_res']").attr("disabled", true);
+      $("input[name='bx_sites_widescreen_y']").attr("disabled", true);
+      $("input[name='bx_sites_native_res']").parent().append(upgrade);
+      $("input[name='bx_sites_widescreen_y']").parent().append(upgrade);
+    }
+    if (__custom_messages__ == 0) {
+      $("input[name='bx_sites_custom_msg_url']").attr("disabled", true);
+      $("input[name='bx_sites_custom_msg_url']").parent().append(upgrade);
+    }
+  }
+});
+</script>
+<div class="bx-def-margin-sec-bottom">
+    <p><bx_text:_bx_sites_admin_settings_info /></p>
+    <p class="bx-def-margin-sec-top"><bx_text:_bx_sites_admin_clear_cache /></p>
+    <p class="bx-def-margin-sec-top"><bx_text:_bx_sites_admin_stw_note /></p>
+</div>

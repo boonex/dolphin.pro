@@ -1,0 +1,33 @@
+<smileset>
+	<properties columns="9" cellWidth="20" cellHeight="20" previewNumber="10" />
+	<smiles>
+		<smile file="smile.png" code=":)" width="14" height="14" />
+		<smile file="D.png" code=":D" width="14" height="14" />
+		<smile file="D).png" code=":D)" width="14" height="14" />
+		<smile file="ID.png" code=":|D" width="14" height="14" />
+		<smile file=";D.png" code=";D" width="14" height="14" />
+		<smile file="(.png" code=":(" width="14" height="14" />
+		<smile file="O.png" code=":O)" width="14" height="14" />
+		<smile file="P.png" code=":P)" width="14" height="14" />
+		<smile file="3.png" code=":3)" width="14" height="14" />
+		<smile file="!.png" code=":!)" width="14" height="14" />
+		<smile file="flag.png" code=":flag:" width="15" height="15" />
+		<smile file="cake.png" code=":cake:" width="14" height="16" />
+		<smile file="car.png" code=":car:" width="16" height="10" />
+		<smile file="heart.png" code=":heart:" width="16" height="14" />
+		<smile file="question.png" code=":?)" width="14" height="14" />
+		<smile file="male.png" code=":male:" width="14" height="14" />
+		<smile file="female.png" code=":female:" width="10" height="16" />
+		<smile file="star.png" code=":star:" width="16" height="16" />
+		<smile file="coffee.png" code=":coffee:" width="16" height="13" />
+		<smile file="$.png" code=":$" width="16" height="16" />
+		<smile file="drink.png" code=":drink:" width="14" height="15" />
+		<smile file="ok.png" code=":ok:" width="16" height="13" />
+		<smile file="bowling.png" code=":bowling:" width="16" height="16" />
+		<smile file="thunder.png" code=":thunder:" width="15" height="15" />
+		<smile file="ball.png" code=":ball:" width="14" height="14" />
+		<smile file="thumbup.png" code=":thumbup:" width="14" height="16" />
+		<smile file="thumbdown.png" code=":thumbdown:" width="14" height="16" />
+	</smiles>
+	<item key="name"><![CDATA[Small Smiles]]></item>
+</smileset>

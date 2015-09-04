@@ -1,0 +1,113 @@
+.page_protect_table {
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+.page_protect_table td {
+	border-bottom: 1px solid #ccc;
+}
+.page_protect_table td .bx-btn {
+	float: none;
+	margin: 10px 0px 0px 0px;
+}
+.page_protect_table td .bx-btn:first-child {
+	margin-top: 0px;
+}
+.header_row {
+	background-color:#E5E5E5;
+	text-align: center;
+	font-weight: bold;
+	font-size: 10pt;
+}
+.pageac_menu_section {
+	border: 1px solid green;
+}
+.pageac_top_menu_item,
+.pageac_custom_menu_item,
+.pageac_system_menu_item {
+	position:relative;
+
+	width: 142px;
+	height: 28px;
+	margin: 0px auto 2px auto;
+	padding: 2px;
+	box-sizing: border-box;
+
+	border: 1px solid #cccccc;
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+
+	line-height: 22px;
+	text-align: center;
+	text-transform: capitalize;
+	font-size: 11px;
+
+	cursor: move;
+	overflow: hidden;
+}
+
+.pageac_system_menu_item {
+	background-color: rgba(255, 0, 0, 0.03);
+}
+.pageac_top_menu_item {
+	background-color: rgba(0, 0, 255, 0.03);
+}
+.pageac_custom_menu_item {
+	background-color: rgba(0, 255, 0, 0.03);
+}
+
+.pageac_top_menu_item a,
+.pageac_custom_menu_item a,
+.pageac_system_menu_item a{
+	color:#6666CC;
+	display:block;
+	overflow:hidden;
+	text-decoration:none;
+	font-size: 11px;
+}
+
+.pageac_column_cont {
+	border: 1px solid #ccc;
+	background-color: #fff;
+	padding: 3px;
+	margin: 5px;
+	text-align: center;
+	overflow: hidden;
+}
+.pageac_column_header {
+	background-color: #ccc;
+	padding: 3px;
+	font-size: 13px;
+	font-weight: bold;
+	margin-bottom: 5px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.pageac_column_block {
+	position: relative;
+
+	width: 142px;
+	height: 28px;
+	margin: 0px auto 2px auto;
+	padding: 2px;
+	box-sizing: border-box;
+
+	border: 1px solid #cccccc;
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+
+	background-color: rgba(0, 0, 0, 0.03);
+
+	line-height: 22px;
+	text-align: center;
+	text-transform: capitalize;
+	font-size: 11px;
+
+	overflow: hidden;
+}
+p.pageac_notes {
+	text-indent: 20px;
+	padding: 5px;
+}

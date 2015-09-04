@@ -1,0 +1,1 @@
+<items><item type="number" key="quality" default="75" range="25:100"><caption><![CDATA[Image quality]]></caption></item></items>

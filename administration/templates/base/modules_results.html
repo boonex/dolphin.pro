@@ -1,0 +1,18 @@
+<div class="modules-results">
+    <bx_repeat:planks>
+        <div class="modules-plank bx-def-round-corners">
+            <span class="modules-plank-title">__operation_title__</span>
+            <bx_if:operation_result_success>
+                <span class="modules-plank-success"><bx_text:_adm_txt_modules_process_success /></span>
+            </bx_if:operation_result_success>
+            <bx_if:operation_result_failed>
+                <span class="modules-plank-failed"><bx_text:_adm_txt_modules_process_failed /></span>
+            </bx_if:operation_result_failed>            
+            <div class="modules-plank-switch" onclick="$(this).toggleClass('modules-plank-switch-opened').next().toggle()">
+            	<i class="modules-ps-icon-opened sys-icon chevron-up"></i>
+            	<i class="modules-ps-icon-closed sys-icon chevron-down"></i>
+            </div>
+            <div class="modules-plank-content">__message__</div>
+        </div>
+    </bx_repeat:planks>
+</div>

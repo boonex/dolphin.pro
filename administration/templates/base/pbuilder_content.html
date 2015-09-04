@@ -1,0 +1,65 @@
+<div id="buildZoneWrapper">
+	<bx_include_auto:designbox_top_controls.html />
+	<bx_if:page>
+    	<div id="buildAreasWrapper" class="bx-def-bc-margin">
+    		<div id="pageControls" class="page_controls clearfix">
+    			<div class="page_controls_cnt clearfix">
+					<bx_if:delete_link>
+	                	<button class="bx-btn bx-btn-small" type="button" onclick="oPB.deleteCustomPage()"><bx_text:_Delete /></button>
+					</bx_if:delete_link>
+	                <bx_if:view_link>
+	                	<button class="bx-btn bx-btn-small" type="button" onclick="window.open('__site_url__page/__page_name__', '_blank');"><bx_text:_adm_txt_pb_view_page /></button>
+					</bx_if:view_link>
+				</div>
+   			</div>
+    		<div class="block_head"><bx_text:_adm_txt_pb_page_width /></div>
+    		<div class="block_cont_nd clearfix">
+    			<div id="pageWidthSlider"></div>
+    			<div id="pageWidthValue"></div>
+    		</div>
+    		<div class="block_head"><bx_text:_adm_txt_pb_active_blocks /></div>
+    		<div class="block_cont" id="activeAreaWrapper">
+    			<div id="activeBlocksArea" class="buildArea">
+    				<bx_text:_adm_txt_pb_loading />
+    			</div>
+    		</div>
+    		<div id="columnsSlider"></div>
+    		<div class="block_head"><bx_text:_adm_txt_pb_inactive_blocks /></div>
+    		<div class="block_cont">
+    			<div id="inactiveBlocksArea" class="buildArea">
+    				<bx_text:_adm_txt_pb_loading />
+    			</div>
+    		</div>
+    		<div class="block_head"><bx_text:_adm_txt_pb_samples /></div>
+    		<div class="block_cont">
+    			<div id="samplesBlocksArea" class="buildArea">
+    				<bx_text:_adm_txt_pb_loading />
+    			</div>
+    		</div>
+    		<div class="block_head"><bx_text:_adm_txt_pb_other_pages_width /></div>
+    		<div class="block_cont_nd clearfix">
+    			<div id="pageWidthSlider1"></div>
+    			<div id="pageWidthValue1"></div>
+    		</div>
+    	</div>
+    	<script language="javascript" type="text/javascript">
+    	<!--
+            $(document).ready(function(){
+                oPB = new BxDolPageBuilder({
+                    parser: '__parser_url__',
+                    page: '__page_name__',
+                    minCols: 1,
+                    maxCols: 5,
+                    pageWidthMin: __page_width_min__,
+                    pageWidthMax: __page_width_max__,
+                    pageWidth: '__page_width__',
+                    otherPagesWidth: '__main_width__'
+                });
+            });
+        -->
+    	</script>
+    </bx_if:page>
+    <bx_if:empty>
+        __content__
+    </bx_if:empty>
+</div>

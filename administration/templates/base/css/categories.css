@@ -1,0 +1,26 @@
+/*--- Installed/Not-Installed Modules, Available Updates styles ---*/
+div.catgs-items {}
+div.catgs-item {}
+div.catgs-item span.catgs-item-title {
+    font-weight: bold;
+}
+div.catgs-item input.form_input_checkbox {
+	margin-left: 0px;
+}
+
+/*--- Control Panel settings ---*/
+div.adm-cs-cp-item {
+    position: relative;
+    float: left;
+}
+
+.adm-cs-cp-item span,
+.adm-cs-cp-item .input_wrapper {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.adm-cs-cp-item span {
+	line-height: 38px;
+}

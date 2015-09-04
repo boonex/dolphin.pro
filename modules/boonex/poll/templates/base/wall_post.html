@@ -1,0 +1,39 @@
+<div id="wall-event-__post_id__" class="wall-event bx-poll-wall-event">
+    <a name="wall-poll-__post_id__"></a>
+    <div class="wall-event-owner">__post_owner_icon__</div>
+    <div class="wall-event-cnt">
+        <div class="wall-event-circle"><i class="sys-icon tasks"></i></div>
+        <div class="wall-caption bx-poll-wall-caption">
+            <span class="bx-poll-wall-caption-owner">__cpt_user_name__</span> __cpt_added_new__ <a class="bx-poll-wall-caption-link" href="__cpt_item_url__">__cpt_object__</a>.&nbsp;
+        </div>
+        <div class="wall-content bx-poll-wall-content">
+            <div class="bx-poll-wall-title bx-def-font-h2">
+                <a href="__cnt_item_page__">__cnt_item_title__</a>
+            </div>
+            <div class="bx-poll-wall-description">
+                <div id="wpol_question___cnt_item_id__" class="pollAnswerBlock bx-def-round-corners-with-border bx-def-margin-sec-top">
+                    <div id="wpol_question_text___cnt_item_id__" class="pollAnswerWrapper bx-def-padding-sec"></div>
+                </div>
+            </div>
+        </div>
+        <div class="wall-comments bx-poll-wall-comments" id="wall-comment-__post_id__">
+            __comments_content__
+            <div class="pollInfo">
+                <div id="wpol_result_block__cnt_item_id__" class="result">
+                    <a href="javascript:void(0);" onclick="PerformSubmit(__cnt_item_id__, -1, 'wpol')">
+                        <bx_text:_bx_poll_result />
+                    </a>
+                </div>
+                <div id="wpol_back_poll__cnt_item_id__" class="back">
+                    <a href="javascript:void(0);" onclick="getPoll(['wpol', 'wpol_question_text___cnt_item_id__'], 'get_questions', '', '__cnt_item_id__' )">
+                        <bx_text:_bx_poll />
+                    </a>
+                </div>
+            </div>
+            <div class="clear_both"></div>
+        </div>
+        <script type="text/javascript" language="javascript">
+            send_data(['wpol', 'wpol_question_text___cnt_item_id__'], 'get_questions', '', '__cnt_item_id__' );
+        </script>
+    </div>
+</div>

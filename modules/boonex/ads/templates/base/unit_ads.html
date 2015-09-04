@@ -1,0 +1,29 @@
+<div class="ads_Unit bx-twig-unit bx-def-margin-top-auto">
+
+    __admin_check__
+
+	<div class="ads_Pic bx-twig-unit-thumb-cont bx-def-margin-sec-right">
+        <a href="__ad_link__"><img class="bx-twig-unit-thumb bx-def-round-corners bx-def-shadow" src="__ad_cover_img__" /></a>
+    </div>
+
+    <div class="bx-twig-unit-info">
+
+        <div class="ads_Title bx-twig-unit-title bx-def-font-h2">
+		    <a href="__ad_link__" class="bottom_text">__ad_title__ <bx_if:expired>(<bx_text:_bx_ads_expired />)</bx_if:expired></a>
+        </div>
+
+		__ad_status__
+
+		<bx_if:using_c1><div class="ads_From bx-twig-unit-line" style="__cust_style1__">__custom_name1__: <span>__unit__</span>__custom1__ </div></bx_if:using_c1>
+        <bx_if:using_c2><div class="ads_From bx-twig-unit-line" style="__cust_style2__">__custom_name2__: <span>__unit2__</span>__custom2__</div></bx_if:using_c2>
+
+		<div class="ads_Categ bx-twig-unit-line">
+            <i class="sys-icon folder"></i> __cats__
+		</div>
+
+        <div class="bx-twig-unit-line bx-def-font-small bx-def-font-grayed">
+            __ad_date__ <span class="sys-bullet"></span> __from_label__ <a href="__ad_owner_link__">__ad_owner_name__</a>
+        </div>
+
+    </div>
+</div>

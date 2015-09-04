@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<items>
+	<item key="_name_"><![CDATA[English]]></item>
+	<item key="txtBackColor"><![CDATA[Back Color]]></item>
+	<item key="txtFontSize"><![CDATA[Font Size]]></item>
+	<item key="txtVertexNumber"><![CDATA[Vertex Number]]></item>
+	<item key="txtSize"><![CDATA[Size]]></item>
+	<item key="txtStroke"><![CDATA[Stroke]]></item>
+	<item key="txtFill"><![CDATA[Fill]]></item>
+	<item key="txtBack"><![CDATA[Backgrnd]]></item>
+	<item key="txtYes"><![CDATA[Yes]]></item>
+	<item key="txtNo"><![CDATA[No]]></item>
+	<item key="txtDefaultText"><![CDATA[some text]]></item>
+	<item key="txtDescription"><![CDATA[Description]]></item>
+	<item key="txtSexM"><![CDATA[M]]></item>
+	<item key="txtSexF"><![CDATA[F]]></item>
+	<item key="txtRoomCaption"><![CDATA[#title# (#M+F#)]]></item>
+	<item key="txtUserCaption"><![CDATA[#nick# #desc#.]]></item>
+
+	<item key="blockUsers"><![CDATA[Users in #room#]]></item>
+	<item key="blockUsersEmpty"><![CDATA[No Users]]></item>
+	<item key="blockRooms"><![CDATA[All boards (#new#)]]></item>
+
+	<item key="msgConnectionError"><![CDATA[CONNECTION ERROR]]></item>
+	<item key="msgConnecting"><![CDATA[CONNECTING]]></item>
+	<item key="msgLoading"><![CDATA[LOADING]]></item>
+	<item key="msgUserAuthenticationFailure"><![CDATA[user authentication failed]]></item>
+	<item key="msgClearBoard"><![CDATA[Are you sure you want to clear the board?]]></item>
+	<item key="msgErrorCreatingBoard"><![CDATA[Error creating board.]]></item>
+	<item key="msgErrorGD"><![CDATA[Error! GD Library is not installed.]]></item>
+	<item key="msgErrorFile"><![CDATA[Error creating file.]]></item>
+	<item key="msgErrorSave"><![CDATA[Error saving Board.]]></item>
+	<item key="msgErrorDB"><![CDATA[Database error.]]></item>
+	<item key="msgRoomRemoveConfirm"><![CDATA[Are you sure you want to remove this board?]]></item>
+	<item key="msgErrorCreatingRoom"><![CDATA[Error creating new board]]></item>
+	<item key="msgWrongRoomPassword"><![CDATA[Wrong password]]></item>	
+
+	<item key="btnNewroom"><![CDATA[new board]]></item>
+	<item key="btnApply"><![CDATA[Apply]]></item>
+	<item key="btnCreate"><![CDATA[Create]]></item>
+	<item key="btnSave"><![CDATA[Save]]></item>
+	<item key="btnDelete"><![CDATA[Delete]]></item>
+	<item key="btnEnter"><![CDATA[Enter]]></item>
+	<item key="btnOk"><![CDATA[OK]]></item>
+	<item key="btnCancel"><![CDATA[Cancel]]></item>
+	<item key="btnTest"><![CDATA[Test]]></item>
+
+	<item key="dlgConfirm"><![CDATA[Confirmation]]></item>
+	<item key="dlgAlert"><![CDATA[Alert]]></item>
+	<item key="dlgBoardNew"><![CDATA[New Board]]></item>
+	<item key="dlgBoardMode"><![CDATA[Mode:]]></item>
+	<item key="dlgBoardModeEdit"><![CDATA[Editable]]></item>
+	<item key="dlgBoardModeView"><![CDATA[Viewable]]></item>
+	<item key="dlgRoomEdit"><![CDATA[Edit Board]]></item>
+	<item key="dlgRoomPrivate"><![CDATA[Private Board]]></item>
+	<item key="dlgRoomPrivateTitle"><![CDATA[This board is password protected]]></item>
+	<item key="dlgRoomTitle"><![CDATA[Board name:]]></item>
+	<item key="dlgRoomType"><![CDATA[Board type:]]></item>
+	<item key="dlgRoomTypePublic"><![CDATA[public]]></item>
+	<item key="dlgRoomTypePass"><![CDATA[password protected]]></item>
+	<item key="dlgRoomPass"><![CDATA[Password:]]></item>
+	<item key="dlgRoomDesc"><![CDATA[Description:]]></item>
+	<item key="dlgSettings"><![CDATA[Settings]]></item>
+	<item key="dlgGeneral"><![CDATA[General]]></item>
+	<item key="dlgSound"><![CDATA[Sound]]></item>
+	<item key="dlgSkins"><![CDATA[Skins]]></item>
+	<item key="dlgLanguage"><![CDATA[Language:]]></item>
+	<item key="dlgEnable"><![CDATA[Enable]]></item>
+	<item key="dlgVolume"><![CDATA[Sound volume:]]></item>
+	<item key="dlgVolumeMute"><![CDATA[Mute sound:]]></item>
+
+	<item key="toolPencil"><![CDATA[Pencil]]></item>
+	<item key="toolRectangle"><![CDATA[Rectangle]]></item>
+	<item key="toolPolygon"><![CDATA[Polygon]]></item>
+	<item key="toolLine"><![CDATA[Line]]></item>
+	<item key="toolCircle"><![CDATA[Circle]]></item>
+	<item key="toolStar"><![CDATA[Star]]></item>
+	<item key="toolCurve"><![CDATA[Curve]]></item>
+	<item key="toolNGon"><![CDATA[Regular polygon]]></item>
+	<item key="toolText"><![CDATA[Text]]></item>
+
+	<item key="hintClose"><![CDATA[Close]]></item>
+	<item key="hintRoomEnter"><![CDATA[Enter the board]]></item>
+	<item key="hintRoomExit"><![CDATA[Exit the board]]></item>
+	<item key="hintRoomEdit"><![CDATA[Edit board]]></item>
+	<item key="hintUserSelect"><![CDATA[View #user#'s profile]]></item>
+	<item key="hintVolume"><![CDATA[Volume]]></item>
+	<item key="hintBlockMin"><![CDATA[Minimize this Block]]></item>
+	<item key="hintBlockMax"><![CDATA[Maximize this Block]]></item>
+	<item key="hintTabActivate"><![CDATA[Activate]]></item>
+	<item key="hintTabExtra"><![CDATA[View more Tabs]]></item>
+	<item key="hintPencil"><![CDATA[Pencil]]></item>
+	<item key="hintRectangle"><![CDATA[Rectangle]]></item>
+	<item key="hintPolygon"><![CDATA[Polygon]]></item>
+	<item key="hintLine"><![CDATA[Line]]></item>
+	<item key="hintCircle"><![CDATA[Circle]]></item>
+	<item key="hintStar"><![CDATA[Star]]></item>
+	<item key="hintCurve"><![CDATA[Curve]]></item>
+	<item key="hintNGon"><![CDATA[Regular polygon]]></item>
+	<item key="hintText"><![CDATA[Text]]></item>
+	<item key="hintTransmit"><![CDATA[Transfer changes]]></item>
+	<item key="hintSave"><![CDATA[Save]]></item>
+	<item key="hintUndo"><![CDATA[Undo]]></item>
+	<item key="hintRedo"><![CDATA[Redo]]></item>
+	<item key="hintClear"><![CDATA[Clear board]]></item>
+	<item key="hintSettings"><![CDATA[Settings]]></item>    
+</items>

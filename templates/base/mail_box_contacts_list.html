@@ -1,0 +1,19 @@
+<div class="contacts_container">
+	<bx_repeat:members>
+        <div class="sys-mailbox-contact bx-def-margin-sec-top">
+            <div class="sys-mbc-author">
+                __member_icon__
+            </div>
+            <div class="sys-mbc-info">
+                <div class="sys-mbc-author-info">
+                    <a href="__member_location__">__member_nick_name__</a> <br />
+                </div>
+                <div class="sys-mbc-actions">
+                    <button class="bx-btn bx-btn-small" onclick="window.open('<bx_url_root />__current_page__?mode=compose&recipient_id=__member_id__','_self');">
+                        <bx_text:_Compose />
+                    </button>
+                </div>
+            </div>
+        </div>
+	</bx_repeat:members>
+</div>

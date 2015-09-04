@@ -1,0 +1,307 @@
+@import url(../../base/css/general.css); 
+
+div.sys_root_bg {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+    width: 100vw;
+	height: 120%;
+	height: 120vh;
+
+	background-image: url(../images/sys-bg-main-2x.jpg);
+	background-repeat: no-repeat;
+	background-position: center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover !important;
+}
+
+div.sys_root {
+	overflow: hidden;
+}
+
+/*--- Logo Section ---*/
+div.sys_main_logo {
+	z-index: 1;
+
+	background-color: rgba(0, 0, 0, 0.5);
+	border-bottom: 0px;
+}
+div.sys_ml_wrapper {
+	text-align: left;
+}
+div.sys_main_logo .mainLogoText,
+div.sys_main_logo .mainLogoText:visited {
+	display: inline-block;
+	vertical-align: middle;
+
+	text-shadow: 0px 1px 3px rgb(0,0,0);
+	text-transform: uppercase;
+	letter-spacing: normal;
+
+	font-size: 32px;
+	font-weight: 900;
+	color: rgba(255, 255, 255, 0.9);
+}
+td.sys_logo_wrapper {
+	position: relative;
+
+	width: 100%;
+
+	text-align: center;
+}
+td.sys_logo_wrapper div.sys_logo_wrapper_cnt {
+	display: block;
+
+	top: 0px;
+	width: 100%;
+
+	box-sizing: border-box;
+}
+td.sys_logo_wrapper div.sys_logo_wrapper_cnt a.mainLogoText {
+	position: relative;
+	display: block;
+
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+} 
+td.sys_menu_wrapper div.sys-service-menu {
+	white-space: nowrap;
+}
+td.sys_menu_wrapper div.sys-service-menu-wrp,
+td.sys_search_wrapper div.sys-service-menu-wrp {
+	position: relative;
+	height: 40px;
+}
+td.sys_menu_wrapper div.sys-service-menu-wrp div.sys-service-menu,
+td.sys_search_wrapper div.sys-service-menu-wrp div.sys-service-menu {
+	line-height: 40px;
+}
+
+/*+++ System Search Section +++*/
+div#sys_search {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	margin-left: 10px;
+	background-color: transparent;
+}
+div#sys_search.bx-def-round-corners-with-border {
+	border: none;
+}
+div#sys_search input {
+	margin: 0px;
+	padding: 5px 10px 5px 10px;
+	box-sizing: border-box;
+
+	background-color: transparent;
+	color: #ffffff;
+}
+
+/*+++ System Service Menu Section +++*/
+div.sys-service-menu-wrp {
+	margin-right: 0px;
+	padding-right: 0px;
+
+	white-space: nowrap;
+}
+div.sys-service-menu div.sys-sm-item {
+	position: relative;
+	display: inline-block;
+
+	height: 32px;
+	vertical-align: middle;
+
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 20px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-color: rgba(255, 255, 255, 0.7);
+
+	line-height: 32px;
+	overflow: hidden;
+}
+div.sys-service-menu div.sys-sm-item.sys-smi-search-simple {
+	display: none;
+}
+div.sys-service-menu div.sys-sm-item.sys-smi-join,
+div.sys-service-menu div.sys-sm-item.sys-smi-profile {
+	color: rgba(255, 255, 255, 0.7);
+	cursor: pointer;
+}
+div.sys-service-menu div.sys-sm-item a.sys-sm-item,
+div.sys-service-menu div.sys-sm-item span.sys-sm-item {
+	font-size: 16px;
+}
+div.sys-sm-item-submenu {
+	position: absolute;
+	display: none;
+
+	font-size: 16px;
+}
+div.sys-sm-item-submenu-cnt {
+	padding-left: 20px;
+	padding-right: 40px;
+}
+div.sys-service-menu a.sys-sm-item,
+div.sys-service-menu span.sys-sm-item,
+div.sys-service-menu div.sys-sm-profile,
+div.sys-service-menu div.sys-search-wrapper {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+}
+div.sys-service-menu span.sys-sm-item,
+div.sys-service-menu a.sys-sm-item,
+div.sys-service-menu a.sys-sm-item:link,
+div.sys-service-menu a.sys-sm-item:visited {
+	width: 32px;
+
+	line-height: 30px;
+	text-align: center;
+	text-decoration: none;
+
+	color: rgba(255, 255, 255, 0.7);
+}
+div.sys-service-menu div.sys-sm-item.sys-smi-join a.sys-sm-item,
+div.sys-service-menu div.sys-sm-item.sys-smi-search a.sys-sm-item,
+div.sys-service-menu div.sys-sm-item.sys-smi-profile span.sys-sm-item {
+	width: 50px;
+}
+
+div.sys-service-menu a.sys-sm-item:hover,
+div.sys-service-menu div.sys-sm-item:hover,
+div.sys-service-menu div.sys-sm-item.sys-smi-profile:hover span.sys-sm-item,
+div.sys-service-menu div.sys-sm-item.sys-smi-profile:hover img.sys-smp-thumbnail {
+	border-color: rgba(255, 255, 255, 0.9);
+	color: rgba(255, 255, 255, 0.9);
+}
+div.sys-service-menu a.sys-sm-item:active,
+div.sys-service-menu div.sys-sm-item.sys-smi-profile:active,
+div.sys-service-menu div.sys-sm-item.sys-smi-profile:active span.sys-sm-item,
+div.sys-service-menu div.sys-sm-item.sys-smi-profile:hover img.sys-smp-thumbnail {
+	border-color: rgba(255, 255, 255, 1.0);
+	color: rgba(255, 255, 255, 1.0);
+}
+
+div.sys-service-menu div.sys-sm-profile {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	line-height: normal;
+}
+div.sys-service-menu div.sys-sm-profile span.sys-smp-thumbnail,
+div.sys-service-menu div.sys-sm-profile span.sys-smp-title {
+	position: relative;
+	display: inline-block;
+
+	vertical-align: middle;
+	line-height: normal;
+}
+div.sys-service-menu div.sys-sm-join span.sys-smp-thumbnail,
+div.sys-service-menu div.sys-sm-profile span.sys-smp-thumbnail {
+	width: 32px;
+	height: 32px;
+}
+div.sys-service-menu div.sys-sm-profile i.sys-icon,
+div.sys-service-menu div.sys-sm-profile img.sys-smp-thumbnail {
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	width: 32px;
+	height: 32px;
+
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 20px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-color: rgba(255, 255, 255, 0.7);
+}
+div.sys-service-menu div.sys-sm-profile i.sys-icon {
+	line-height: 32px;
+	text-align: center;
+}
+div.sys-service-menu div.sys-sm-profile span.sys-smp-title {
+	font-weight: bold;
+}
+
+div.sys-sm-item-submenu div.sys-service-menu-profile {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	line-height: normal;
+}
+div.sys-sm-item-submenu div.sys-service-menu-profile div.thumbnail_block {
+	float: none !important;
+}
+div.sys-sm-item-submenu div.sys-service-menu-profile div.thumbnail_block,
+div.sys-sm-item-submenu div.sys-service-menu-profile div.profile_block {
+	position: relative;
+	display: inline-block;
+
+	vertical-align: middle;
+	line-height: normal;
+}
+div.sys-sm-item-submenu div.sys-service-menu-profile div.thumbnail_block {
+	margin-top: 0px;
+	margin-right: 10px;
+	margin-bottom: 0px;
+}
+div.sys-sm-item-submenu div.sys-service-menu div.sys-service-menu,
+div.sys-sm-item-submenu div.sys-service-menu div.sys-sm-link {
+	position: relative;
+	float: none;
+
+	line-height: normal;
+}
+div.sys-sm-item-submenu div.sys-service-menu div.sys-sm-link {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+div.sys-sm-item-submenu div.sys-service-menu div.sys-sm-link i.sys-icon,
+div.sys-sm-item-submenu div.sys-service-menu div.sys-sm-link span {
+	display: inline-block;
+	vertical-align: middle;
+}
+div.sys-sm-item-submenu div.sys-service-menu div.sys-sm-link i.sys-icon {
+	width: 32px;
+	margin-right: 10px;
+
+	font-size: 32px;
+}
+
+/*--- Breadcrumb Section ---*/
+div.sys_bc_wrapper {
+	border-color: rgba(0, 0, 0, 0.6);
+}
+
+/*--- Login Join Form Section ---*/
+div.login_ajax_wrap div.sys-form-login-join,
+div.login_ajax_wrap div.sys-form-login-join input, 
+div.login_ajax_wrap div.sys-form-login-join select, 
+div.login_ajax_wrap div.sys-form-login-join textarea, 
+div.login_ajax_wrap div.sys-form-login-join button  {
+	font-family: Roboto, Noto, Open Sans, Helvetica Neue, Helvetica, sans-serif;
+}
+
+/*--- Bottom Menu Section ---*/
+div.sys_cr_wrapper {
+	border-color: rgba(0, 0, 0, 0.6);
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+div.sys_cr_wrapper div.sys_cr {
+	overflow-y: hidden;
+	overflow-x: auto;
+	white-space: nowrap;
+}
+div.sys_cr_wrapper div.sys_cr div.bottomLinks,
+div.sys_cr_wrapper div.sys_cr div.bottomCpr {
+	display: inline-block;
+	float: none;
+	vertical-align: middle;
+}

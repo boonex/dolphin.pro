@@ -1,0 +1,205 @@
+/*--- Cover ---*/
+div.sys-profile-cover {
+	position: relative;
+
+	width: 100%;
+	height: 310px;
+	padding: 50px 40px 0px 40px;
+
+	box-sizing: border-box;
+
+	overflow: hidden;
+}
+
+div.sys-profile-cover-bg-l1,
+div.sys-profile-cover-bg-l2 {
+	position: absolute;
+
+	left: 0px;
+	width: 100%;
+}
+
+div.sys-profile-cover-bg-l1 {
+	z-index: 1;
+
+	top: 0px;
+	height: 100%;
+
+	background-image: url('../images/bx_cover_image.jpg');
+	background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+div.sys-profile-cover-bg-l1.sys-pcb-cover {}
+div.sys-profile-cover-bg-l1.sys-pcb-thumbnail {
+	-webkit-filter: blur(3px);
+	-moz-filter: blur(3px);
+	-o-filter: blur(3px);
+	-ms-filter: blur(3px);
+	filter: blur(3px);
+}
+
+div.sys-profile-cover-bg-l2 {
+	z-index: 2;
+
+	bottom: 0px;
+	height: 100px;
+
+	background-image: -webkit-linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 1.0)); 
+    background-image: -moz-linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 1.0)); 
+    background-image: -ms-linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 1.0)); 
+    background-image: -o-linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 1.0)); 
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 1.0));
+}
+
+div.sys-profile-cover-cnt {
+	position: relative;
+	z-index: 3;
+}
+
+div.sys-profile-cover-actions {
+	position: absolute;
+	z-index: 4;
+
+	top: 0px;
+	right: 0px;
+}
+
+div.sys-profile-cover-actions .sys-pca-change-background .sys-icon {
+	display: none;
+}
+
+div.sys-profile-cover-actions .bx-btn { 
+	background-color: rgba(0, 0, 0, 0.2);
+	outline: none;
+}
+
+div.sys-profile-cover-actions .bx-btn:hover,
+div.sys-profile-cover-actions .bx-btn:active {
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+div.sys-profile-cover-thumbnail {
+	position: absolute;
+
+	top: 0px;
+	left: 0px;
+	width: 198px;
+	height: 198px;
+
+	border-width: 1px;
+	border-style: solid;
+	border-color: rgba(255, 255, 255, 0.7);
+	border-radius: 100px;
+	-moz-border-radius: 100px;
+	-webkit-border-radius: 100px;
+
+	background-color: #d8d8d8;
+
+	overflow: hidden;
+}
+div.sys-profile-cover-thumbnail .sys-pct-link {
+	text-decoration: none;
+}
+div.sys-profile-cover-thumbnail .sys-pct-image {
+	width: 198px;
+	height: 198px;
+}
+div.sys-profile-cover-thumbnail .sys-pct-letter {
+	margin: 0px;
+	padding: 0px;
+	
+	line-height: 198px;
+	text-align: center;
+	text-transform: capitalize;
+
+	font-size: 72px;
+	font-weight: 700;
+	color: #ffffff;
+}
+
+div.sys-profile-cover-text {
+	position: relative;
+	display: flex;
+	align-items: center;
+
+	height: 200px;
+	margin-left: 240px;
+
+	overflow: hidden;
+}
+
+div.sys-profile-cover-text-cnt {
+	position: relative;
+	width: 100%;
+}
+
+div.sys-profile-cover-text .sys-pct-nickname,
+div.sys-profile-cover-text .sys-pct-status {
+	margin: 0px;
+
+	text-shadow: 0 1px 3px rgb(0, 0, 0);
+	color: #ffffff;
+}
+
+div.sys-profile-cover-text .sys-pct-status {
+	font-size: 20px;
+	font-weight: 300;
+}
+
+div.sys-profile-cover-menu {
+	position: relative;
+	height: 60px;
+
+	text-align: center;
+	font-size: 20px;
+
+	-webkit-overflow-scrolling: touch;
+}
+
+div.sys-profile-cover-menu-cnt {
+	position: relative;
+
+	padding-top: 15px;
+
+	overflow-y: hidden;
+	overflow-x: auto;
+	white-space: nowrap;
+}
+
+div.sys-profile-cover-menu-cnt::-webkit-scrollbar {
+	width: 12px;
+}
+
+div.sys-profile-cover-menu-cnt::-webkit-scrollbar-track {
+	-webkit-border-radius: 3px;
+    border-radius: 3px;
+	
+	background-color: rgba(0, 0, 0, 0.4); 
+}
+
+div.sys-profile-cover-menu-cnt::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+
+    background: rgba(255, 255, 255, 0.9); 
+    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5); 
+}
+
+div.sys-profile-cover-menu-cnt::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255, 255, 255, 0.4); 
+}
+
+div.sys-profile-cover-menu .sys-pcm-item {
+	position: relative;
+	display: inline-block;
+
+	height: 25px;
+	padding-bottom: 5px;
+	box-sizing: border-box;
+
+	line-height: 20px;
+	text-decoration: none;
+	color: #ffffff;
+}

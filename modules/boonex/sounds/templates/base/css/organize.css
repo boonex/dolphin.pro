@@ -1,0 +1,7 @@
+.form_advanced_table td.colspan > div.input_wrapper {
+	width: 100%;
+}
+
+.form_advanced_table td.colspan {
+    text-align: center;
+}

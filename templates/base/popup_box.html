@@ -1,0 +1,28 @@
+<div id="__id__">
+    <div class="popup_form_wrapper disign_box">
+    	<div class="container bx-def-border bx-def-round-corners">
+   			<div class="disignBoxFirst">
+               	<div class="boxFirstHeader bx-def-bh-margin">
+                       <div class="dbTitle">__title__</div>
+                       <div class="dbTopMenu">
+                           <bx_repeat:actions>
+                               <div id="__id__-act" class="active" <bx_if:hide_active>style="display:none"</bx_if:hide_active>>
+                                   __icon__
+                                   <span __class__>__title__</span>
+                               </div>
+                               <div id="__id__-pas" class="notActive" <bx_if:hide_inactive>style="display:none"</bx_if:hide_inactive>>
+                                   __icon__
+                                   <a id="__id__" __class__ __href__ __target__ __on_click__>__title__</a>
+                               </div>
+   		                </bx_repeat:actions>  
+                           <div class="dbClose">
+                               <a href="javascript:void(0)" onclick="javascript:$('#__id__').dolPopupHide({});"><i class="sys-icon times"></i></a>
+                           </div>
+                       </div>
+                       <div class="clear_both"></div>
+               	</div>
+               	<div class="boxContent">__content__</div>                	
+			</div>
+        </div>
+    </div>
+</div>

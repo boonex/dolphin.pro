@@ -1,0 +1,35 @@
+<div id="admin_license_form_popup" class="admin_license_form_popup bx-def-font-grayed">
+    <div class="admin_license_form bx-def-padding bx-def-border">
+        <form method="post" action="<bx_url_admin />license.php">
+            <div class="admin_license_message bx-def-font-h2">
+                <bx_text:_adm_license_popup_note />
+            </div>
+            <div class="bx-def-margin-top">
+                <div class="admin_license_cell_cpt bx-def-margin-sec-right bx-def-font-large">
+                    <bx_text:_adm_license_popup_license />
+                </div>
+                <div class="admin_license_cell bx-def-margin-sec-right">
+                    <input type="text" name="license_code" id="admin_login_license" class="bx-def-round-corners-with-border bx-def-font-large">
+                </div>
+                <div class="admin_license_cell">
+                    <button class="bx-btn" type="submit" id="admin_login_form_submit">
+                        <bx_text:_adm_license_popup_register />
+                    </button>
+                </div>
+                <div class="clear_both"></div>
+            </div>
+        </form>
+    </div>
+    <div class="admin_license_continue bx-def-margin-sec-top"><bx_text:_adm_license_popup_or /> <a id="admin_license_form_popup_close" href="javascript:void(0)"><bx_text:_adm_license_popup_continue /></a></div>
+</div>
+<script type="text/javascript" language="javascript">
+$(document).ready(function() {
+	$('#admin_license_form_popup_close').bind('click', function() {
+		$('#admin_license_form_popup').dolPopupHide({});
+	});
+
+	$('#admin_license_form_popup').dolPopup({
+	    closeOnOuterClick: false
+	});
+});
+</script>

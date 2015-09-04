@@ -1,0 +1,6 @@
+@import url(../../base/css/default.css);
+
+.bx-def-border {
+    border: 1px solid rgb(152, 152, 152);
+    border: 1px solid rgba(64, 64, 64, 0.5);
+}

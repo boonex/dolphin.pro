@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<items>
+	<item key="_name_"><![CDATA[Русский]]></item>
+	<item key="txtBackColor"><![CDATA[Цвет фона]]></item>
+	<item key="txtFontSize"><![CDATA[Размер шрифта]]></item>
+	<item key="txtVertexNumber"><![CDATA[Номер вершины]]></item>
+	<item key="txtSize"><![CDATA[Размер]]></item>
+	<item key="txtStroke"><![CDATA[Основной]]></item>
+	<item key="txtFill"><![CDATA[Заливка]]></item>
+	<item key="txtBack"><![CDATA[Фон]]></item>
+	<item key="txtYes"><![CDATA[Да]]></item>
+	<item key="txtNo"><![CDATA[Нет]]></item>
+	<item key="txtDefaultText"><![CDATA[некий текст]]></item>
+	<item key="txtDescription"><![CDATA[Описание]]></item>
+	<item key="txtSexM"><![CDATA[М]]></item>
+	<item key="txtSexF"><![CDATA[Ж]]></item>
+	<item key="txtRoomCaption"><![CDATA[#title# (#M+F#)]]></item>
+	<item key="txtUserCaption"><![CDATA[#nick# #desc#.]]></item>
+
+	<item key="blockUsers"><![CDATA[Пользователи в #room#]]></item>
+	<item key="blockUsersEmpty"><![CDATA[Нет пользователей]]></item>
+	<item key="blockRooms"><![CDATA[Все доски (#new#)]]></item>
+
+	<item key="msgConnectionError"><![CDATA[ОШИБКА СВЯЗИ]]></item>
+	<item key="msgConnecting"><![CDATA[СВЯЗЬ]]></item>
+	<item key="msgLoading"><![CDATA[ЗАГРУЗКА]]></item>
+	<item key="msgUserAuthenticationFailure"><![CDATA[авторизация пользователя не удалась]]></item>
+	<item key="msgClearBoard"><![CDATA[Вы уверены, что хотите очистить доску?]]></item>
+	<item key="msgErrorCreatingBoard"><![CDATA[Ошибка создания доски.]]></item>
+	<item key="msgErrorGD"><![CDATA[Ошибка! Библиотека GD не установлена.]]></item>
+	<item key="msgErrorFile"><![CDATA[Ошибка создания файла.]]></item>
+	<item key="msgErrorSave"><![CDATA[Ошибка сохранения Доски.]]></item>
+	<item key="msgErrorDB"><![CDATA[Ошибка базы данных.]]></item>
+	<item key="msgRoomRemoveConfirm"><![CDATA[Вы уверены, что хотите удалить эту доску?]]></item>
+	<item key="msgErrorCreatingRoom"><![CDATA[Ошибка создания новой доски]]></item>
+	<item key="msgWrongRoomPassword"><![CDATA[Неправильный пароль]]></item>	
+
+	<item key="btnNewroom"><![CDATA[новая доска]]></item>
+	<item key="btnApply"><![CDATA[Применить]]></item>
+	<item key="btnCreate"><![CDATA[Создать]]></item>
+	<item key="btnSave"><![CDATA[Сохранить]]></item>
+	<item key="btnDelete"><![CDATA[Удалить]]></item>
+	<item key="btnEnter"><![CDATA[Ввести]]></item>
+	<item key="btnOk"><![CDATA[OK]]></item>
+	<item key="btnCancel"><![CDATA[Отменить]]></item>
+	<item key="btnTest"><![CDATA[Тест]]></item>
+
+	<item key="dlgConfirm"><![CDATA[Подтверждение]]></item>
+	<item key="dlgAlert"><![CDATA[Предупреждение]]></item>
+	<item key="dlgBoardNew"><![CDATA[Новая Доска]]></item>
+	<item key="dlgBoardMode"><![CDATA[Режим:]]></item>
+	<item key="dlgBoardModeEdit"><![CDATA[Редактируема]]></item>
+	<item key="dlgBoardModeView"><![CDATA[Просматриваема]]></item>
+	<item key="dlgRoomEdit"><![CDATA[Редактировать Доску]]></item>
+	<item key="dlgRoomPrivate"><![CDATA[Приватная Доска]]></item>
+	<item key="dlgRoomPrivateTitle"><![CDATA[Эта доска защищена паролем]]></item>
+	<item key="dlgRoomTitle"><![CDATA[Название Доски:]]></item>
+	<item key="dlgRoomType"><![CDATA[Тип Доски:]]></item>
+	<item key="dlgRoomTypePublic"><![CDATA[общедоступна]]></item>
+	<item key="dlgRoomTypePass"><![CDATA[защищена паролем]]></item>
+	<item key="dlgRoomPass"><![CDATA[Пароль:]]></item>
+	<item key="dlgRoomDesc"><![CDATA[Описание:]]></item>
+	<item key="dlgSettings"><![CDATA[Настройки]]></item>
+	<item key="dlgGeneral"><![CDATA[Общие]]></item>
+	<item key="dlgSound"><![CDATA[Аудио]]></item>
+	<item key="dlgSkins"><![CDATA[Шаблоны]]></item>
+	<item key="dlgLanguage"><![CDATA[Язык:]]></item>
+	<item key="dlgEnable"><![CDATA[Включить]]></item>
+	<item key="dlgVolume"><![CDATA[Уровень звука:]]></item>
+	<item key="dlgVolumeMute"><![CDATA[Отключить звук:]]></item>
+
+	<item key="toolPencil"><![CDATA[Карандаш]]></item>
+	<item key="toolRectangle"><![CDATA[Прямоугольник]]></item>
+	<item key="toolPolygon"><![CDATA[Многоугольник]]></item>
+	<item key="toolLine"><![CDATA[Линия]]></item>
+	<item key="toolCircle"><![CDATA[Окружность]]></item>
+	<item key="toolStar"><![CDATA[Звезда]]></item>
+	<item key="toolCurve"><![CDATA[Кривая]]></item>
+	<item key="toolNGon"><![CDATA[Правильный многоугольник]]></item>
+	<item key="toolText"><![CDATA[Текст]]></item>
+
+	<item key="hintClose"><![CDATA[Закрыть]]></item>
+	<item key="hintRoomEnter"><![CDATA[Войти в Доску]]></item>
+	<item key="hintRoomExit"><![CDATA[Выйти из Доски]]></item>
+	<item key="hintRoomEdit"><![CDATA[Редактировать доску]]></item>
+	<item key="hintUserSelect"><![CDATA[Просмотреть профиль #user#]]></item>
+	<item key="hintVolume"><![CDATA[Громкость]]></item>
+	<item key="hintBlockMin"><![CDATA[Свернуть этот Блок]]></item>
+	<item key="hintBlockMax"><![CDATA[Развернуть этот Блок]]></item>
+	<item key="hintTabActivate"><![CDATA[Активировать]]></item>
+	<item key="hintTabExtra"><![CDATA[Смотреть больше вкладок]]></item>
+	<item key="hintPencil"><![CDATA[Карандаш]]></item>
+	<item key="hintRectangle"><![CDATA[Прямоугольник]]></item>
+	<item key="hintPolygon"><![CDATA[Многоугольник]]></item>
+	<item key="hintLine"><![CDATA[Линия]]></item>
+	<item key="hintCircle"><![CDATA[Окружность]]></item>
+	<item key="hintStar"><![CDATA[Звезда]]></item>
+	<item key="hintCurve"><![CDATA[Кривая]]></item>
+	<item key="hintNGon"><![CDATA[Правильный многоугольник]]></item>
+	<item key="hintText"><![CDATA[Текст]]></item>
+	<item key="hintTransmit"><![CDATA[Перенести изменения]]></item>
+	<item key="hintSave"><![CDATA[Сохранить]]></item>
+	<item key="hintUndo"><![CDATA[Отменить]]></item>
+	<item key="hintRedo"><![CDATA[Вернуть]]></item>
+	<item key="hintClear"><![CDATA[Очистить доску]]></item>
+	<item key="hintSettings"><![CDATA[Настройки]]></item>
+</items>

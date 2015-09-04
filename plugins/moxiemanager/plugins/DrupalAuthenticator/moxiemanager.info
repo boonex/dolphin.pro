@@ -1,0 +1,6 @@
+name = MoxieManager
+description = Enables the Tinymce MoxieManager as an editor plugin.
+package = User interface
+core = 7.x
+version = "4.0"
+dependencies[] = wysiwyg

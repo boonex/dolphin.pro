@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>__page_header__</title>
+		<base href="<bx_url_root />" />
+		<meta http-equiv="Content-Type" content="text/html; charset=__page_charset__" />
+        <bx_include_css />
+        <bx_include_js />
+        __dol_images__
+        <bx_injection:injection_head />
+	</head>
+    <body <bx_injection:injection_body /> class="bx-def-font bx-def-padding-sec">
+        <bx_injection:mobile_injection_header />
+        <div id="FloatDesc" style="position:absolute;display:none;z-index:100;"></div>
+		<div class="disignBoxFirst bx-def-border">
+			<div class="boxFirstHeader bx-def-bh-margin">__page_header__</div>
+			<div class="boxContent">
+				<div class="clear_both"></div>
+					__page_code__
+				<div class="clear_both"></div>
+			</div>
+        </div>
+        <bx_injection:mobile_injection_footer />
+	</body>
+</html>

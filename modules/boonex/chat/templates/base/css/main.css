@@ -1,0 +1,22 @@
+div#content
+{
+	position:relative;
+	display:block;
+}
+
+div#ray_chat_content
+{
+	display: block;
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width:730px;
+	height:515px;
+}
+.mainWindow {
+	margin-left: auto;
+	margin-right: auto;
+	width: 755px;
+}

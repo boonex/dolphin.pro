@@ -1,0 +1,8 @@
+<page>
+		<caption>
+				<![CDATA[Attention]]>
+		</caption>
+		<text>
+				<![CDATA[<li>You need to finish the process of widget's integration in your community software. For this purpose you need to edit functions in the <b>modules/#widget#/inc/customFunctions.inc.php</b> file according to your database and script structures following comments in the file. NOTE. By default, this file has integration for Dolphin community software.<br><li>You need to create and include JavaScript in every page of your community software, which will update a list of currently online users for Ray Desktop. You can find an example of a such script, created for Dolphin community software, in <b>modules/#widget#/js/update.js</b> folder of the Ray package.<br><li>You will need this information during the installation process of Ray Desktop for Administrator.<br><li>You need to remove <b>modules/#widget#/install</b> folder from your host. It is not safe to leave it there.<br><li>Go to <FONT COLOR="#CC0000">Settings</FONT> of this widget to configure it's settings.]]>
+		</text>
+</page>

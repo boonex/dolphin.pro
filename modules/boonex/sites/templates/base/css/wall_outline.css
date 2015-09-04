@@ -1,0 +1,21 @@
+.bx_sites_unit_outline {
+    margin-left:auto;
+    margin-right:auto;
+    width:140px;
+    height:140px;    
+    line-height:140px;
+    text-align:center;
+}
+
+.bx_sites_unit_outline img {
+    max-height:140px;
+    max-width:140px;
+    vertical-align:middle;
+}
+
+.bx_sites_unit_outline span {
+    display:inline-block;
+    height:140px;
+    vertical-align:middle;
+}
+

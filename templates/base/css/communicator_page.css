@@ -1,0 +1,121 @@
+div.top_settings_block div.left_section {
+    color:#666666;
+    float:left;
+    font-size:11px;
+    padding-left:5px;
+    padding-top:9px;
+    /*position:relativ_e;*/
+}
+
+div.top_settings_block div.right_section 
+{
+    color:#666666;
+    float:right;
+    font-size:11px;
+    padding-right:5px;
+    padding-top:9px;
+    /*position:relativ_e;*/
+}
+
+div.communicator_container {}
+
+div.sys-connections-row {
+    position: relative;
+    height: 74px;
+    border-left: 1px solid #dcdcdc;
+    border-top: 1px solid #dcdcdc;
+    border-right: 1px solid #dcdcdc;
+}
+div.sys-cntsr-cnt {
+    position: relative;
+    margin: 5px 0px;
+}
+div.sys-cntsr-author-icon {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+div.sys-cntsr-checkbox {
+    position: relative;
+    float: left;
+    width: 40px;
+    text-align: center;
+}
+div.sys-cntsr-checkbox input {
+    margin: 25px 0px;
+} 
+div.sys-cntsr-message {
+    margin-left: 114px;
+    margin-right: 10px;
+    overflow: hidden;
+}
+div.sys-cntsr-author-info {
+    line-height: 23px;
+}
+div.sys-cntsr-author-info span.bullet,
+div.sys-mailbox-actions  span.bullet {
+    padding: 0px 3px;
+}
+a.sys-cntsr-subject {
+    font-size: 18px;
+    color: #dcdcdc;
+}
+a.sys-cntsr-subject-new {
+    font-weight: bold;
+    color: #3300cc;
+}
+div.sys-cntsr-actions {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 5px 10px;
+}
+
+div.sys-connections-actions {
+    border: 1px solid #dcdcdc;
+    background-color: #f5f7fA;
+}
+
+div.sys-connections-actions div.sys-cntsa-left {
+    position: relative;
+    float: left;
+}
+
+div.sys-connections-actions div.sys-cntsa-right {
+    position: relative;
+    float: right;
+}
+
+div.sys-connections-actions div.sys-cntsa-right .form_advanced_table {
+    border:none;
+}
+div.sys-connections-actions div.sys-cntsa-right .form_advanced_table td {
+    padding: 0px;
+    border:none;
+}
+
+/*-- Friend Requests block --*/
+div.communicator_fr_container {}
+
+div.sys-connections-fr {
+    position: relative;
+    height: 64px;
+}
+div.sys-connections-fr:first-child {
+    margin-top: 0px;
+}
+div.sys-cntsfr-checkbox input {
+    margin: 25px 0px;
+}
+div.sys-cntsfr-author {
+    position: relative;
+    top: 0px;
+    left: 0px;
+}
+div.sys-cntsfr-info {
+    margin-left: 74px;
+    overflow: hidden; 
+}
+div.sys-cntsfr-actions {
+	margin-top: 5px;
+}

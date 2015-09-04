@@ -1,0 +1,147 @@
+body {
+	width: 100%;
+	min-height: 100vh;
+}
+
+body,
+input {
+	margin: 0px;
+	padding: 0px;
+}
+
+a img {
+	border: none;
+}
+
+/*--- Login Form ---*/
+.admin_login_page {
+	position: relative;
+	display: -webkit-flex;
+	display: flex;
+
+    min-height: 100vh;
+
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+	justify-content: center;
+}
+
+.admin_login_wrapper {
+	position: relative;
+	display: inline-block;
+
+	background-color: #f5f8fc;
+}
+
+.admin_login {}
+
+.admin_login a,
+.admin_login a:link,
+.admin_login a:visited {
+	color: #3333cc;
+	text-decoration: none;
+}
+
+.admin_login a:hover,
+.admin_login a:active {
+	text-decoration: underline;
+}
+
+.admin_login_icon {
+	width: 300px;
+	height: 150px;
+}
+
+div.admin_login_icon {
+	position: absolute;
+}
+
+.admin_login_form_wrapper {
+	position: relative;
+	display: -webkit-flex;
+	display: flex;
+
+	min-height: 150px;
+	margin-left: 320px;
+
+	-webkit-align-items: center;
+	align-items: center;
+}
+
+.admin_login_form {
+	position: relative;
+}
+
+.admin_login_form .bx-btn {
+	width: 100%;
+} 
+
+/*--- License Note ---*/
+div.admin_license {
+	position: relative;
+
+	background-color: rgba(0, 0, 0, 0.2);
+}
+div.admin_license_cnt {
+	position: relative;
+
+	line-height: 50px;
+	text-align: center;
+}
+div.admin_license a {
+	font-weight: bold;
+}
+
+/*--- License Form ---*/
+div.admin_license_form_wrp,
+div.admin_license_form_popup {
+	position: absolute;
+	width: 620px;
+}
+div.admin_license_form_wrp {
+	left: 50%;
+    top: 50%;
+	margin-left: -265px;
+    margin-top: -74px;
+}
+div.admin_license_form_popup {
+	display: none;
+
+	color: #333333;
+}
+div.admin_license_form {
+	border-width: 0px;
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+
+	background-color: #f5f8fc;
+}
+div.admin_license_continue {
+	color: #ffffff;
+}
+div.admin_license_message {
+	font-weight: normal;
+}
+div.admin_license_cell,
+div.admin_license_cell_cpt {
+	position: relative;
+	float: left;
+}
+div.admin_license_cell_cpt {
+	line-height: 38px;
+}
+div.admin_license_cell .bx-btn {
+	width: 176px;
+	padding: 0px;
+	text-align: center;
+}
+#admin_login_license {
+	position: relative;
+    z-index: 3;
+    width: 300px;
+    height: 16px;
+    padding: 10px;
+    vertical-align: middle;
+}

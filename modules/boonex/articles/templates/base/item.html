@@ -1,0 +1,28 @@
+<div class="arl-entry-divider bx-def-hr bx-def-margin-sec-topbottom"></div>
+<div id="__id__" class="arl-entry">
+    <div class="arl-info">
+        <div class="arl-caption bx-def-font-h2">
+            <bx_if:checkbox>
+                <input type="checkbox" name="articles-ids[]" value="__id__" />
+            </bx_if:checkbox>
+            <a class="arl-caption bx-def-font-h2" href="__link__">__caption__</a>
+        </div>
+        <div class="arl-text__class__ bx-def-font-large bx-def-margin-sec-top">__content__</div>
+        <div class="arl-date bx-def-margin-sec-top">
+            <span class="bx-def-font-small bx-def-font-grayed">__date__</span>
+            <bx_if:status>
+                <span class="sys-bullet"></span>
+                <span class="arl-status bx-def-font-small bx-def-font-grayed">__status__</span>
+            </bx_if:status>
+            <bx_if:featured>
+                <span class="sys-bullet"></span>
+                <span class="arl-status bx-def-font-small bx-def-font-grayed"><bx_text:_articles_featured /></span>
+            </bx_if:featured>
+            <bx_if:edit_link>
+                <span class="sys-bullet"></span>
+                <a class="arl-action bx-def-font-small" href="__edit_link_url__">__edit_link_caption__</a>
+            </bx_if:edit_link>
+        </div>
+    </div>
+    <div class="arl-cb">&nbsp;</div>
+</div>

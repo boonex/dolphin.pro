@@ -1,0 +1,64 @@
+
+<bx_text:_bx_ava_crop_image_desc />
+
+<div style="position:relative;" class="bx-def-margin-sec-top bx-def-margin-sec-bottom">
+    <img id="bx_ava_crop_img" src="__url_img__" style="width:__img_width__px; height:__img_height__px;" />
+</div>
+
+<div id="bx_ava_crop_img_preview_cont" class="bx-def-margin-sec-right">
+    <div id="bx_ava_crop_img_preview" class="bx-def-shadow bx-def-round-corners">
+        <img src="__url_img__" />
+    </div>
+</div>
+
+<div class="bx_ava_block">
+    <b><bx_text:_bx_ava_crop_preview_title /></b>
+    <bx_text:_bx_ava_crop_preview_desc />
+    <form method="post" action="__action__">
+        <input class="form_input_submit bx-btn bx-btn-small" type="submit" value="<bx_text:_bx_ava_add_avatar />" name="set_avatar" />
+		<input class="form_input_submit bx-btn bx-btn-small" type="submit" value="<bx_text:_bx_ava_remove />" name="remove_avatar" />
+        <input type="hidden" name="x1" />
+        <input type="hidden" name="y1" />
+        <input type="hidden" name="x2" />
+        <input type="hidden" name="y2" />
+        <input type="hidden" name="w" />
+        <input type="hidden" name="h" />
+    </form>        
+</div>
+
+<div class="clear_both"></div>
+
+<script type="text/javascript">
+
+    function bx_ava_preview(img, sel) { 
+        $('form > input[name=x1]').val(sel.x1);
+        $('form > input[name=y1]').val(sel.y1);
+        $('form > input[name=x2]').val(sel.x2);
+        $('form > input[name=y2]').val(sel.y2);
+        $('form > input[name=w]').val(sel.width);
+        $('form > input[name=h]').val(sel.height);
+        var scaleX = 64 / (sel.width || 1); 
+        var scaleY = 64 / (sel.height || 1); 
+        $('#bx_ava_crop_img_preview > img').css({
+            width: Math.round(scaleX * __img_width__) + 'px',
+            height: Math.round(scaleY * __img_height__) + 'px',
+            marginLeft: '-' + Math.round(scaleX * sel.x1) + 'px',
+            marginTop: '-' + Math.round(scaleY * sel.y1) + 'px'
+        }); 
+    }
+
+    $(document).ready(function () { 
+        var z = (__img_width__ < __img_height__ ? __img_width__ : __img_height__);
+        var sel = {
+            x1: 0,
+            y1: 0,
+            x2: z, 
+            y2: z,
+            width: z,
+            height: z
+        }
+        $('#bx_ava_crop_img').imgAreaSelect({ aspectRatio: '1:1', onSelectChange: bx_ava_preview, x1: sel.x1, y1: sel.y1, x2: sel.x2, y2:sel.y2}); 
+        bx_ava_preview(null, sel);
+    });
+
+</script>

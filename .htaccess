@@ -1,0 +1,93 @@
+Options -MultiViews -Indexes
+
+<IfModule mod_php4.c> 
+    php_flag register_globals Off
+</IfModule>
+<IfModule mod_php5.c> 
+    php_flag allow_url_include Off
+    php_flag register_globals Off
+</IfModule>
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+RewriteRule ^blogs/{0,1}$   modules/boonex/blogs/blogs.php [QSA,L]
+RewriteRule ^blogs/all/{0,1}$  modules/boonex/blogs/blogs.php?action=all  [QSA,L]
+RewriteRule ^blogs/all/([0-9]+)/([0-9]+)/{0,1}$  modules/boonex/blogs/blogs.php?page=$2&per_page=$1  [QSA,L]
+RewriteRule ^blogs/top/{0,1}$   modules/boonex/blogs/blogs.php?action=top_blogs [QSA,L]
+RewriteRule ^blogs/top/([0-9]+)/([0-9]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=top_blogs&page=$2&per_page=$1 [QSA,L]
+RewriteRule ^blogs/top_posts/{0,1}$   modules/boonex/blogs/blogs.php?action=top_posts [QSA,L]
+RewriteRule ^blogs/top_posts/([0-9]+)/([0-9]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=top_posts&page=$2&per_page=$1 [QSA,L]
+RewriteRule ^blogs/tag/([^/.]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=search_by_tag&tagKey=$1 [QSA,L]
+RewriteRule ^blogs/tag/{0,1}$   modules/boonex/blogs/blogs.php?action=search_by_tag&tagKey= [QSA,L]
+RewriteRule ^blogs/posts/([^/.]+)/tag/([^/.]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=search_by_tag&tagKey=$2&ownerName=$1 [QSA,L]
+RewriteRule ^blogs/posts/([^/.]+)/category/([^/.]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=show_member_blog&ownerName=$1&categoryUri=$2 [QSA,L]
+RewriteRule ^blogs/entry/([^/.]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=show_member_post&postUri=$1 [QSA,L]
+RewriteRule ^blogs/entry/{0,1}$    modules/boonex/blogs/blogs.php?action=show_member_post&postUri= [QSA,L]
+RewriteRule ^blogs/posts/([^/.]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=show_member_blog&ownerName=$1 [QSA,L]
+RewriteRule ^blogs/posts/{0,1}$   modules/boonex/blogs/blogs.php?action=show_member_blog&ownerName= [QSA,L]
+RewriteRule ^blogs/posts/([^/.]+)/([0-9]+)/([0-9]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=show_member_blog&ownerName=$1&page=$3&per_page=$2 [QSA,L]
+RewriteRule ^blogs/posts/([^/.]+)/category/([^/.]+)/([0-9]+)/([0-9]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=show_member_blog&ownerName=$1&categoryUri=$2&page=$4&per_page=$3 [QSA,L]
+RewriteRule ^blogs/home/{0,1}$   modules/boonex/blogs/blogs.php?action=home [QSA,L]
+RewriteRule ^blogs/all_posts/{0,1}$   modules/boonex/blogs/blogs.php?action=all_posts [QSA,L]
+RewriteRule ^blogs/all_posts/([0-9]+)/([0-9]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=all_posts&page=$2&per_page=$1 [QSA,L]
+RewriteRule ^blogs/popular_posts/{0,1}$   modules/boonex/blogs/blogs.php?action=popular_posts [QSA,L]
+RewriteRule ^blogs/popular_posts/([0-9]+)/([0-9]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=popular_posts&page=$2&per_page=$1 [QSA,L]
+RewriteRule ^blogs/featured_posts/{0,1}$   modules/boonex/blogs/blogs.php?action=featured_posts [QSA,L]
+RewriteRule ^blogs/tags/{0,1}$   modules/boonex/blogs/blogs.php?action=tags [QSA,L]
+RewriteRule ^blogs/show_calendar/{0,1}$   modules/boonex/blogs/blogs.php?action=show_calendar [QSA,L]
+RewriteRule ^blogs/my_page/{0,1}$   modules/boonex/blogs/blogs.php?action=my_page&mode=main [QSA,L]
+RewriteRule ^blogs/my_page/add/{0,1}$   modules/boonex/blogs/blogs.php?action=my_page&mode=add [QSA,L]
+RewriteRule ^blogs/my_page/manage/{0,1}$   modules/boonex/blogs/blogs.php?action=my_page&mode=manage [QSA,L]
+RewriteRule ^blogs/my_page/pending/{0,1}$   modules/boonex/blogs/blogs.php?action=my_page&mode=pending [QSA,L]
+RewriteRule ^blogs/my_page/edit/([0-9]+)/{0,1}$  modules/boonex/blogs/blogs.php?action=edit_post&EditPostID=$1 [QSA,L]
+RewriteRule ^blogs/member_posts/([0-9]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=show_member_blog&ownerID=$1 [QSA,L]
+RewriteRule ^blogs/category/([^/.]+)/{0,1}$   modules/boonex/blogs/blogs.php?action=category&uri=$1 [QSA,L]
+
+RewriteRule ^ads/{0,1}$  modules/boonex/ads/classifieds.php?Browse=1 [QSA,L]
+RewriteRule ^ads/my_page/{0,1}$  modules/boonex/ads/classifieds.php?action=my_page [QSA,L]
+RewriteRule ^ads/my_page/add/{0,1}$  modules/boonex/ads/classifieds.php?action=my_page&mode=add [QSA,L]
+RewriteRule ^ads/my_page/edit/([0-9]+)/{0,1}$  modules/boonex/ads/classifieds.php?action=my_page&mode=add&EditPostID=$1 [QSA,L]
+RewriteRule ^ads/my_page/edit/([0-9]+)/dimg/([0-9]+)/{0,1}$  modules/boonex/ads/classifieds.php?action=my_page&mode=add&EditPostID=$1&dimg=$2 [QSA,L]
+RewriteRule ^ads/my_page/manage/{0,1}$  modules/boonex/ads/classifieds.php?action=my_page&mode=manage [QSA,L]
+RewriteRule ^ads/my_page/pending/{0,1}$  modules/boonex/ads/classifieds.php?action=my_page&mode=pending [QSA,L]
+RewriteRule ^ads/my_page/expired/{0,1}$  modules/boonex/ads/classifieds.php?action=my_page&mode=expired [QSA,L]
+RewriteRule ^ads/my_page/disapproved/{0,1}$  modules/boonex/ads/classifieds.php?action=my_page&mode=disapproved [QSA,L]
+RewriteRule ^ads/cat/([^/.]+)/{0,1}$  modules/boonex/ads/classifieds.php?catUri=$1 [QSA,L]
+RewriteRule ^ads/all/cat/([0-9]+)/([0-9]+)/([^/.]+)/{0,1}$  modules/boonex/ads/classifieds.php?catUri=$3&page=$2&per_page=$1 [QSA,L]
+RewriteRule ^ads/subcat/([^/.]+)/{0,1}$  modules/boonex/ads/classifieds.php?scatUri=$1 [QSA,L]
+RewriteRule ^ads/all/subcat/([0-9]+)/([0-9]+)/([^/.]+)/{0,1}$  modules/boonex/ads/classifieds.php?scatUri=$3&page=$2&per_page=$1 [QSA,L]
+RewriteRule ^ads/entry/([^/.]+)/{0,1}$  modules/boonex/ads/classifieds.php?entryUri=$1 [QSA,L]
+RewriteRule ^ads/tag/([^/.]+)/{0,1}$  modules/boonex/ads/classifieds_tags.php?tag=$1 [QSA,L]
+RewriteRule ^ads/calendar/{0,1}$  modules/boonex/ads/classifieds.php?action=show_calendar [QSA,L]
+RewriteRule ^ads/categories/{0,1}$  modules/boonex/ads/classifieds.php?action=show_categories [QSA,L]
+RewriteRule ^ads/tags/{0,1}$  modules/boonex/ads/classifieds.php?action=tags [QSA,L]
+RewriteRule ^ads/all_ads/{0,1}$  modules/boonex/ads/classifieds.php?action=show_all_ads [QSA,L]
+RewriteRule ^ads/top_ads/{0,1}$  modules/boonex/ads/classifieds.php?action=show_top_rated [QSA,L]
+RewriteRule ^ads/popular_ads/{0,1}$  modules/boonex/ads/classifieds.php?action=show_popular [QSA,L]
+RewriteRule ^ads/featured_ads/{0,1}$  modules/boonex/ads/classifieds.php?action=show_featured [QSA,L]
+RewriteRule ^ads/member_ads/([0-9]+)/{0,1}$  modules/boonex/ads/classifieds.php?UsersOtherListing=1&IDProfile=$1 [QSA,L]
+
+RewriteRule ^search/tag/([^/.]+)/{0,1}$  search.php?Tags=$1 [QSA,L]
+
+RewriteRule ^browse/([^/.]+)/([^/.]+)/([^/.]+)$ browse.php?sex=$1&age=$2&country=$3 [QSA,L]
+
+RewriteRule ^m/(.*)$  modules/index.php?r=$1 [QSA,L]
+
+RewriteRule ^forum/groups/(.*)$  modules/boonex/forum/$1?orca_integration=groups [QSA,L]
+RewriteRule ^forum/events/(.*)$  modules/boonex/forum/$1?orca_integration=events [QSA,L]
+RewriteRule ^forum/store/(.*)$  modules/boonex/forum/$1?orca_integration=store [QSA,L]
+RewriteRule ^forum/$  modules/boonex/forum/index.php [QSA,L]
+RewriteRule ^forum/(.*)$  modules/boonex/forum/$1 [QSA,L]
+
+RewriteRule ^page/(.*)$  viewPage.php?ID=$1 [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule .+ - [L]
+RewriteRule ^([^/]+)$ profile.php?ID=$1 [QSA,L]
+
+</IfModule>
+
+AddType application/vnd.adobe.air-application-installer-package+zip .air
+AddType application/x-shockwave-flash .swf

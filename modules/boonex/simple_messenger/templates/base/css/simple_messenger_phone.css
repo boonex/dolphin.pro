@@ -1,0 +1,19 @@
+@media (max-width:720px) {
+
+    div.simple_messenger_chat_block .thumbnail_block {
+        display:inline-block;
+    }    
+
+    div.simple_messenger_chat_block .sender_nick {
+        display:none;
+    }
+
+    div.simple_messenger_chat_block .sender_status {
+        display:none;
+    }
+
+    html div.simple_messenger_chat_block {
+        width:32px;
+        min-width:32px;
+    }
+}

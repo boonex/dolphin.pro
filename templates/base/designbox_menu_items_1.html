@@ -1,0 +1,18 @@
+<div class="dbTopMenuPopupCnt">
+	<bx_repeat:items>
+	    <bx_if:item_act>
+	        <div class="active bx-def-margin-sec-top-auto">
+	            <bx_if:icon_act><img class="__class__" src="__src__" /></bx_if:icon_act>
+	            <bx_if:texticon_act><i class="sys-icon __icon__"></i></bx_if:texticon_act>
+	            <span>__title__</span>
+	        </div>
+	    </bx_if:item_act>
+	    <bx_if:item_pas>
+	        <div class="notActive bx-def-margin-sec-top-auto">
+	            <bx_if:icon_pas><img class="__class__" src="__src__" /></bx_if:icon_pas>
+	            <bx_if:texticon_pas><i class="sys-icon __icon__"></i></bx_if:texticon_pas>
+	            <a __id__ href="__href__" class="__class__" __target__ __on_click__>__title__</a>
+	        </div>
+	    </bx_if:item_pas>
+	</bx_repeat:items>
+</div>

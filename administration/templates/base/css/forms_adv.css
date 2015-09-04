@@ -1,0 +1,59 @@
+@import url(../../../../templates/base/css/forms_adv.css);
+
+/*--- Header blocks ---*/
+.form_advanced_table .bx-form-block-header, 
+.form_advanced_table .bx-form-block-headers {
+	border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+
+	background-color: transparent;
+
+	text-align: center;
+}
+
+.form_advanced_table .bx-form-block-header .bx-form-caption {
+	width: 100%;
+	padding: 0px 0px 5px 0px;
+}
+
+.form_advanced_table .bx-form-block-header .bx-form-block-header-collapse {
+	padding: 0px 5px;
+}
+
+.form_advanced_table .bx-form-caption {
+	color: #333333;
+}
+
+/* * * * Inputs and Wrappers * * * */
+.form_input_text,
+.form_input_textarea,
+.form_input_email,
+.form_input_url,
+.form_input_date,
+.form_input_datetime,
+.form_input_password,
+.form_input_number,
+.form_input_slider,
+.form_input_range,
+.form_input_doublerange,
+.form_input_select,
+.form_input_select_multiple {
+ 	border-color: #143050;
+}
+
+.form_advanced_table .bx-form-combined .input_wrapper.input_wrapper_submit .bx-btn {
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* * * * Icon based buttons * * * */
+.form_advanced_table .bx-form-required {
+	padding-right: 5px;
+    color: #d00;
+}
+
+/* * * * Floating Info * * * */
+#float_info {
+	background-color: #ffffff;
+	color: #333333;
+}

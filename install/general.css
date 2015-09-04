@@ -1,0 +1,188 @@
+
+@import url(../templates/base/css/default.css);
+@import url(../templates/base/css/anchor.css);
+@import url(../templates/base/css/common.css);
+@import url(../administration/templates/base/css/general.css);
+	
+
+/*---------------------------*/
+
+body {
+    margin:0;
+    background-image:url(../templates/base/images/sys-bg-main.png);
+}
+
+.clearBoth {
+    clear:both;
+    height:1px;
+    margin:0px;
+    padding:0px;
+    font-size:1px;
+}
+
+div.bx-install-error {
+    border:1px solid #ef4f4f;
+    background-color:#f9adad;
+}	
+div.bx-install-error > div.bx-install-error {
+    padding:0;
+    margin:0;
+    background:none;
+    border:none;
+}
+
+div.bx-install-debug {
+    font-family:monospace;
+    background-color:#FFFFFF;
+    color:green;
+}
+
+input, select, textarea {
+    padding:2px;
+    background-color:#FFFFFF;
+}
+
+textarea.headerTextarea {
+    width:100%;
+    height:200px;
+}
+
+.adm-header-logo {
+    position:absolute;
+    top: 0px;
+    left: 0px;
+    width: 80px;
+    height: 50px;
+}
+.adm-header-logo img {
+    margin-top:5px;
+    width: 80px;
+    height: 40px;
+}
+
+.adm-header-title {
+    padding-left:90px;
+}
+
+/* --- common elements */
+
+#bx-install-main {
+    width:1140px;
+    margin-left:auto;
+    margin-right:auto;
+    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+#bx-install-content {
+    padding:80px;
+}
+
+#bx-install-top-menu > div {
+    float:left;
+    color:#ddd;
+    line-height:50px;
+    text-shadow: 0px 1px 1px #333;
+    font-weight:lighter;        
+    letter-spacing:0.5pt;
+}
+#bx-install-top-menu > div.bx-install-top-menu-active
+{
+    color:#fff;
+    font-weight:bold;
+}
+#bx-install-top-menu > div.bx-install-top-menu-div
+{
+    margin-left:8px;
+    margin-right:8px;
+}
+
+.bx-install-header-text,
+.bx-install-header-caption {
+    text-align:center;
+}
+
+.bx-install-buttons {
+    text-align: center;
+}
+
+.bx-install-buttons .bx-btn {
+    display:inline-block;
+    float:none;
+}
+
+/* --- step: startInstall */
+
+.bx-install-step-startInstall-dolphin-pic
+{
+    margin:auto;
+    margin-bottom:50px;
+    text-align:center;
+}
+.bx-install-step-startInstall-dolphin-pic img {
+    width:512px;
+    height:255px;
+}
+
+.bx-install-step-startInstall-text {
+    text-align: center;
+}
+
+	
+/* --- table */
+
+table.install_table {
+    border-collapse: collapse;
+}
+
+tr.cont td.span
+{
+    padding: 2px 0px;
+    text-align: center;
+}
+
+table tr.head td
+{
+    text-align:center;
+    font-weight:bold;
+    height:17px;
+    padding:5px;
+    background-color:#fff;
+    border:1px solid #ccc;
+}
+table tr.cont td
+{
+    height:15px;
+    padding:2px 5px;
+    background-color:#fff;
+    border:1px solid #ccc;
+}
+
+tr.cont td.span
+{
+    padding: 2px 0px;
+    text-align: center;
+}
+
+tr.cont td div
+{
+    border:0px solid red;
+    height:24px;
+    line-height:24px;
+    vertical-align:middle;
+}
+span.writable
+{
+    color:green;
+    margin-right:5px;
+}
+span.unwritable
+{
+    color:red;
+    margin-right:5px;
+}
+span.desired
+{
+    margin-right:5px;
+}
+

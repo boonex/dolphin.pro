@@ -1,0 +1,20 @@
+
+
+.custom_rss_lists_row {
+    margin-top:3px;
+}
+
+#custom_rss_lists_div .bx-def-hr:first-child {
+    display:none;
+}
+
+#crss_active {
+    text-transform:capitalize;
+	color:green;
+}
+
+#crss_passive {
+    text-transform:capitalize;
+	color:red;
+}
+

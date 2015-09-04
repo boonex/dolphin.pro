@@ -1,0 +1,30 @@
+<bx_if:rules_exist>
+	<table width="100%" cellspacing="0" cellpadding="2" class="page_protect_table" >
+		<tr class="header_row">
+			<td width="50%"><bx_text:_bx_pageac_url /></td>
+			<td  width="30%"><bx_text:_bx_pageac_forbidden_groups /></td>
+			<td  width="20%"><bx_text:_bx_pageac_action /></td>
+		</tr>
+		<bx_repeat:rules>
+		<tr>
+			<td>
+				<input type="text" name="rule[__rule_id__]" id="rule___rule_id__" value="__rule_text__" size="50" />
+			</td>
+			<td>
+				<bx_repeat:forbidden_groups>
+				<input type="checkbox" __checked__ name="memlevel[__rule_id__][]" value="__memlevel_id__" id="memlevel___rule_id____memlevel_id__"/>
+				<label for="memlevel___rule_id____memlevel_id__">__memlevel_name__</label>
+				<br />
+				</bx_repeat:forbidden_groups>
+			</td>
+			<td align="center">
+				<input type="button" name="save_rule" class="bx-btn bx-btn-small form_input_submit" value="<bx_text:_bx_pageac_update />" onclick="javascript:oBxPageACMain.saveRule(__rule_id__);" />
+				<input type="button" name="delete_rule" class="bx-btn bx-btn-small form_input_submit" value="<bx_text:_bx_pageac_delete />"  onclick="javascript:oBxPageACMain.deleteRule(__rule_id__);" />
+			</td>
+		</tr>
+		</bx_repeat:rules>
+	</table>
+</bx_if:rules_exist>
+<bx_if:rules_not_exist>
+	__no_rules__
+</bx_if:rules_not_exist>

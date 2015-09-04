@@ -1,0 +1,24 @@
+<div class="adm-pb-cp-item">
+    <form class="adm-pb-cp-selector" name="pageSelector" method="get" action="__url__">
+    	<span>
+    		<bx_text:_adm_txt_pb_page />
+        </span>
+        <div class="input_wrapper input_wrapper_select bx-def-margin-sec-leftright clearfix">
+	        <select class="form_input_select bx-def-font-inputs" name="Page" onchange="if (this.value && this.value != 'none') this.form.submit()">
+	            <bx_repeat:pages>
+	                <option value="__value__" __selected__>__title__</option>
+	            </bx_repeat:pages>
+	        </select>
+		</div>
+		<div class="input_wrapper input_wrapper_submit clearfix">
+        	<input class="form_input_submit bx-btn" type="submit" value="<bx_text:_adm_btn_Go />" />
+        </div>
+    </form>
+</div>
+<div class="adm-pb-cp-item-right">
+    <bx_if:show_add_column>
+        <button id="addColumnButton" class="bx-btn bx-btn-small" type="button" onclick="oPB.addColumn()"><bx_text:_adm_btn_add_column /></button>
+    </bx_if:show_add_column>
+    <button class="bx-btn bx-btn-small" type="button" onclick="showNewPageDialog('__url__')"><bx_text:_adm_btn_add_page /></button>
+</div>
+<div class="clear_both">&nbsp;</div>

@@ -1,0 +1,27 @@
+.fileBody {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ratePart {
+    width: 150px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sys_file_search_unit {
+    margin: 0px;
+}
+
+.sys_file_search_rate {
+    position: relative;
+    float: left;
+    width: 60px;
+}
+
+.sys_unit_for_rate {
+    width: 212px;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -1,0 +1,32 @@
+div.wall-oii-image-wrp.bx_files-wall-oii-image-wrp {
+	padding-top: 15px;
+	padding-bottom: 15px;
+
+	text-align: center;
+}
+
+div.wall-oii-image.bx_files-wall-oii-image,
+img.wall-oii-image.bx_files-wall-oii-image {
+	width: 68px;
+	height: 68px;	
+}
+
+div.wall-oii-image.bx_files-wall-oii-image {
+	display: inline-block;
+}
+
+div.wall-oi-item-grouped div.wall-oii-image.bx_files-wall-oii-image {
+	margin-left: 1px;
+}
+
+div.wall-oi-item-grouped div.wall-oii-image.bx_files-wall-oii-image:first-child {
+	margin-left: 0px;
+}
+
+img.wall-oii-image.bx_files-wall-oii-image {
+	position: relative;
+
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-color: rgba(0, 0, 0, 0.1);
+}

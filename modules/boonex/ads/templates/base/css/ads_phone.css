@@ -1,0 +1,7 @@
+@media (max-width:720px) {
+	/*--- Categories ---*/
+	.bx_ads_categories_cols .bx_ads_categories_col {
+		float: none;
+		width: 100% !important;
+	}
+}

@@ -1,0 +1,50 @@
+<script>
+        BxDolVoting.prototype.onvote = function (fRate, iCount) {
+            document.location = '__next_url__';
+        }
+        BxDolVoting.prototype.onvotefail = function () {
+            document.location = '__next_url__';
+        }
+        function bx_sites_scroll () {
+            var iTop = parseInt($(".bx_sites_block_percent").parents().filter('.boxContent').offset().top);
+            $($.browser.safari ? "body" : "html,body").scrollTop(iTop);
+        }
+        $(document).ready(function () {
+            bx_sites_scroll();
+        });
+</script>
+<div class="bx-twig-unit bx_sites_block_percent">
+
+    __rate__
+
+    <div class="image bx-def-margin-sec-top">
+        <bx_if:is_image>
+            <a href="__site_link__"><img class="bx-def-shadow bx-def-round-corners" src="__image__" onload="bx_sites_scroll()" /></a>
+        </bx_if:is_image>
+        <bx_if:is_thumbhtml>
+            <div class="bx_sites_img_big_generated bx-def-shadow bx-def-round-corners">
+                <a href="__site_link__">__thumbhtml__</a>
+            </div>
+        </bx_if:is_thumbhtml>
+    </div>
+
+    <div class="bx_sites_unit_content bx_sites_content bx-def-margin-sec-top">
+
+	    <div class="bx_sites_unit_row bx-twig-unit-title">
+	        <div class="bx_sites_unit_title bx-def-font-h2">
+	            <a class="bx_sites_unit_title_link" href="__site_url__">__title__</a>
+	        </div>
+            <div class="clear_both"></div>
+	    </div>
+
+	    <div class="bx-twig-unit-line bx-twig-unit-desc">
+	        <a href="__url__" class="bx-twig-unit-special" target="_blank">__url_title__</a>&nbsp;&mdash;&nbsp;__description__
+	    </div>
+
+        <div class="bx-twig-unit-line bx-def-font-small bx-def-font-grayed">
+            __date__ <span class="sys-bullet"></span> __comments__ <span class="sys-bullet"></span> __owner_str__ <a href="__owner_url__">__owner__</a>
+        </div>
+
+    </div>
+</div>
+

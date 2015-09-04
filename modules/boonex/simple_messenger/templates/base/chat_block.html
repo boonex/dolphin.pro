@@ -1,0 +1,81 @@
+<div class="simple_messenger_chat_block __chat_block_position__" onclick="if(typeof oSimpleMessenger != 'undefined'){oSimpleMessenger.showChatWindow('__history_window_id__', this)}">
+    <div class="__block_indent__">
+        <i class="sender_status sys-icon __member_status__"></i>
+        <span class="sender_nick">__sender_nick__</span>
+        __sender_icon__
+    </div>    
+    <div class="messages_history __history_block_position__ bx-def-border bx-def-round-corners" id="__history_window_id__" onclick="if(typeof oSimpleMessenger != 'undefined'){oSimpleMessenger.facePlate(event, this, oSimpleMessenger.placeTop)}">
+        <bx_if:menu_pos_top>
+            <div class="sender_info">
+				<div class="controls">
+					<a href="javasript:void(0)" onclick="if ( typeof oSimpleMessenger != 'undefined' ) {oSimpleMessenger.showChatWindow('__history_window_id__')}return false" title="__reduce_title__">
+						<i class="sys-icon minus-circle"></i>
+					</a>
+					<a href="javasript:void(0)" onclick="if ( typeof oSimpleMessenger != 'undefined' ) {oSimpleMessenger.closeChatWindow(__sender_id__)}return false" title="__close_title__">
+						<i class="sys-icon times"></i>
+					</a>
+				</div>
+	            <table cellpadding="0" cellspacing="0">
+	                <tbody>
+	                    <tr>
+	                        <td valign="top" class="sender_thumb">__sender_thumb__</td>
+	                        <td valign="top" class="sender_info">
+	                            <div class="sender_link"><a href="__sender_link__">__sender_nick__</a></div>
+	                            <div class="status_text bx-def-font-small bx-def-font-grayed">__status_text__</div>
+	                        </td>
+	                    </tr>
+	                </tbody>
+	            </table>
+	        </div>
+        <bx_if:video_messenger>
+        <div class="video_messenger">
+            <i class="sys-icon film"></i>
+            <a href="javascript:void(0)" onclick="openRayWidget('im', 'user', '__sender_id__', '__sender_passw__', '__recipient_id__');return false">__video_messenger__</a>
+        </div>
+        </bx_if:video_messenger>
+        </bx_if:menu_pos_top>
+        <div class="messages_section bx-def-border bx-def-round-corners">__messages__</div>
+        <div class="write_section">
+        	<div class="form_advanced_table">
+            <div class="input_wrapper input_wrapper_text bx-def-round-corners-with-border">
+                <div class="field_design"><i class="sys-icon comments-o"></i></div>
+                <input class="form_input_text bx-def-font-inputs" type="text" onkeypress="if(typeof oSimpleMessenger != 'undefined') return oSimpleMessenger.sendMessage(event, this, __recipient_id__);"/>
+            </div>
+            <div class="clear_both"></div>
+        </div>
+        </div>
+        <bx_if:menu_pos_bottom>
+        <bx_if:video_messenger>
+        <div class="video_messenger">
+            <i class="sys-icon film"></i>
+            <a href="javascript:void(0)" onclick="openRayWidget('im', 'user', '__sender_id__', '__sender_passw__', '__recipient_id__');return false">__video_messenger__</a>
+        </div>
+        </bx_if:video_messenger>
+        <div class="sender_info">
+            <table cellpadding="0" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td valign="top" class="sender_thumb">__sender_thumb__</td>
+                        <td valign="top" class="sender_info">
+                            <div class="sender_link"><a href="__sender_link__">__sender_nick__</a></div>
+                            <div class="status_text bx-def-font-small bx-def-font-grayed">__status_text__</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="controls">
+                                <a href="javasript:void(0)" onclick="if ( typeof oSimpleMessenger != 'undefined' ) {oSimpleMessenger.showChatWindow('__history_window_id__')}return false" title="__reduce_title__">
+                                    <i class="sys-icon minus-circle"></i>
+                                </a>
+                                <a href="javasript:void(0)" onclick="if ( typeof oSimpleMessenger != 'undefined' ) {oSimpleMessenger.closeChatWindow(__sender_id__)}return false" title="__close_title__">
+                                    <i class="sys-icon times"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </bx_if:menu_pos_bottom>
+    </div>
+</div>

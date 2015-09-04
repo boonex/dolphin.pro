@@ -1,0 +1,29 @@
+<div class="menu_builder bx-def-bc-margin">
+    __extra_js__
+    <div id="edit_form_cont"></div>	
+	<div class="items_wrapper" id="menu_app_wrapper"></div>
+    <div class="pseudo_wrapper">    
+		<div class="pseudo_head"><bx_text:_adm_mbuilder_active_items /></div>
+		<div id="pseudo1" class="pseudo_body pseudo_body_empty bx-def-border">
+			<div class="sys-loading"></div>
+		</div>
+		<div class="pseudo_head" style="margin-top:5px;"><bx_text:_adm_mbuilder_all_items /></div>
+		<div id="pseudo2" class="pseudo_body pseudo_body_empty bx-def-border">
+			<div class="sys-loading"></div>
+		</div>
+	</div>
+	<div class="pseudo_head bx-def-margin-sec-top"><bx_text:_adm_mbuilder_legend /></div>
+	<div class="pseudo_body pseudo_legend bx-def-padding-thd-topbottom bx-def-border">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr><td><div class="system_item"><i class="sys-icon arrows"></i></div></td><td><bx_text:_adm_mbuilder_legend_system /></td></tr>
+			<tr><td><div class="top_item"><i class="sys-icon arrows"></i></div></td><td><bx_text:_adm_mbuilder_legend_top /></td></tr>
+			<tr><td><div class="custom_item"><i class="sys-icon arrows"></i></div></td><td><bx_text:_adm_mbuilder_legend_custom /></td></tr>
+			<tr><td><div class="inactive_item"><i class="sys-icon arrows"></i></div></td><td><bx_text:_adm_mbuilder_legend_inact /></td></tr>
+		</table>
+	</div>
+	<script>
+		$(document).ready(function() {
+	    	$('.pseudo_body .sys-loading').bx_loading();
+	    })
+	</script>
+</div>

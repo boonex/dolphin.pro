@@ -1,0 +1,99 @@
+@import url(../../base/css/default.css);
+
+/* border for common layout elements likedesign boxes, pads, menu items, etc */
+.bx-def-border,
+.bx-def-border-top,
+.bx-def-border-top-auto,
+.bx-def-border-bottom,
+.bx-def-border-left,
+.bx-def-border-right {
+	border-width: 1px;
+    border-width: 1sp;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* shadow */
+.bx-def-shadow {
+	-webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 2sp 0 rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 2sp 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 2sp 0 rgba(0, 0, 0, 0.5);
+}
+
+/* round corders */
+.bx-def-round-corners {
+	border-radius:3px;
+	border-radius:3sp;
+	-moz-border-radius:3px;
+	-moz-border-radius:3sp;
+	-webkit-border-radius:3px;
+	-webkit-border-radius:3sp;
+}
+
+/* round corders with border to use in INPUT areas */
+.bx-def-round-corners-with-border {
+    border-width: 1px;
+    border-width: 1sp;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.1);
+
+	border-radius:3px;
+	border-radius:3sp;
+	-moz-border-radius:3px;
+	-moz-border-radius:3sp;
+	-webkit-border-radius:3px;
+	-webkit-border-radius:3sp;
+}
+
+/* fonts */
+.bx-def-font,
+.bx-def-font-inputs {
+    font-family: Roboto, Noto, Open Sans, Helvetica Neue, Helvetica, sans-serif;
+    color: rgba(0, 0, 0, 0.7);
+}
+.bx-def-font-inputs-captions {
+	color: rgba(0, 0, 0, 0.5);
+}
+.bx-def-font-thin {
+	font-weight: 100;
+}
+.bx-def-font-light {
+	font-weight: 300;
+}
+.bx-def-font-regular {
+	font-weight: 400;
+}
+.bx-def-font-medium {
+	font-weight: 500;
+}
+.bx-def-font-bold {
+	font-weight: 700;
+}
+.bx-def-font-extrabold {
+	font-weight: 900;
+}
+h1,
+.bx-def-font-h1 {
+    font-size: 34px;
+    font-size: 34sp;
+    line-height: 40px;
+    line-height: 40sp;
+    color: rgba(0, 0, 0, 0.9);
+}
+h2,
+.bx-def-font-h2 {
+    font-size: 24px;
+    font-size: 24sp;
+    line-height: 32px;
+    line-height: 32sp;
+    color: rgba(0, 0, 0, 0.9);
+}
+h3,
+.bx-def-font-h3 {
+    font-size: 16px;
+    font-size: 16sp;
+    line-height: 28px;
+    line-height: 28sp;
+}

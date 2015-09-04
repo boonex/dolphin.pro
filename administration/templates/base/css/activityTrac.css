@@ -1,0 +1,19 @@
+.alertUnit {
+	position: relative;
+	width: 600px;
+	margin: 5px 0px 5px 0px;
+}
+.alertUnit div {
+	text-align: center;
+	position: relative;
+	float: left;
+}
+.alertRcpt {
+	width: 60px;
+}
+.alertMessage {
+	width: 340px;
+}
+.alertDate {
+	width: 120px;
+}

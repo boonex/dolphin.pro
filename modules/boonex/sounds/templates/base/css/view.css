@@ -1,0 +1,140 @@
+div#actionList {
+    position: relative;
+}
+
+div#actionList div {
+    position: relative;
+    float: left;
+    width: 140px;
+    margin: 10px;
+    font-weight: bold;
+}
+
+div#actionList img {
+    margin: 0px 10px;
+}
+
+div#actionList a {
+    font-size: 16px;
+}
+
+/* file body begn */
+.fileUnit {}
+
+.fileUnitPic {
+    background: center no-repeat;
+    border: 1px solid #CCCCCC;
+    margin: 0px auto;
+    text-align: center;
+    padding: 2px;
+}
+
+.fileUnitSpacer {}
+
+.fileUnitRight {
+    position: relative;
+    float: left;
+}
+
+.fileTitle {}
+.fileDescription {}
+
+.fileSize {
+    position: relative;
+    margin-left: 10px;
+}
+
+.fileUnitInfoRate {
+    position: relative;
+    float: left;
+}
+
+.fileUnitInfoCounts {
+    position: relative;
+    float: right;
+    margin: 0px 5px;
+    height: 16px;
+    line-height: 16px;
+}
+
+.fileUnitInfoFav {
+    position: relative;
+    float: left;
+    margin: 0px 5px;
+    padding-left: 18px;
+}
+
+.fileUnitInfoFav img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.fileUnitInfoView {
+    position: relative;
+    float: left;
+    margin: 0px 5px;
+    padding-left: 18px;
+}
+
+.fileUnitInfoView img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.fileUnitInfo .votes_big {
+    margin: 0px;
+}
+
+/*  file body end  */
+
+.infoMain {}
+
+.bx_sounds_upload_form_wrapper .input_wrapper_value {
+    font-weight: normal;
+}
+
+/* redeclare form other files */
+
+div.result_block {
+	padding-top: 5px;
+}
+
+.boxContent .votes_small {
+    float: none;
+    position:relative;
+    width: auto;
+}
+
+.votes_small b {
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.memberPic {
+	margin-left: 5px;
+}
+
+.infoText {
+    margin: 5px;
+}
+
+.infoOwner {
+    font-weight: bold;
+}
+
+span.infoWhen {
+    font-size: 9px;
+	margin-left: 2px;
+	color: #888888;
+    text-transform: lowercase;
+}
+
+.bx_sounds_upload_form_wrapper div.input_wrapper_text {
+    width: 170px;
+}
+
+#submitAction div.input_wrapper_custom {
+    width: 100%;
+}

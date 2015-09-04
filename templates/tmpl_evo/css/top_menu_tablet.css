@@ -1,0 +1,16 @@
+@media (min-width:720px) and (max-width:1024px) {
+	div.sys_mm {
+		width: 100% !important;
+	}
+	div.sys_mm div.sys_mm_cnt {
+		padding-left: 0px !important;
+		padding-right: 0px !important; 
+	}
+	div.sys_mm div.sys_mm_scroll_outer,
+	div.sys_mm div.sys_mm_scroll_btn {
+		display: none;
+	}
+	div.sys_mm div.sys_mm_cnt .topMenu {
+		left: 0px !important;
+	}
+}

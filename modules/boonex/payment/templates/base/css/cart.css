@@ -1,0 +1,69 @@
+div.pmt-cb {
+    clear: both;
+	font-size: 0px;
+}
+
+/*--- Box Styles ---*/
+div.pmt-box-wrp {}
+div.pmt-box {
+    position:relative;
+    background-color: #f2f2ff;
+}
+div.pmt-box-cpt {
+    height: 28px;
+
+    background-color: #ececec;
+
+    text-indent: 10px;
+    line-height: 28px;
+    font-size: 12px;
+}
+div.pmt-box-collapse {
+    width: 16px;
+    height: 16px;
+    top: 5px;
+    right: 5px;
+    position: absolute;
+    
+    cursor: pointer;
+    
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+}
+div.pmt-box-collapse img {
+    width: 16px;
+    height: 16px;
+}
+div.pmt-box-cnt {
+    position: relative;
+    background-color: #f2f2ff;    
+}
+
+/*--- Cart Styles ---*/
+div.pmt-vendor-icon {
+    top: 10px;
+    left: 10px;
+    width: 32px;
+    height: 32px;
+
+    position: absolute;
+}
+div.pmt-providers {
+    margin: 10px 0 0 52px;
+    min-height: 32px;
+}
+div.pmt-provider {
+    padding: 2px 0px;
+}
+div.pmt-provider input {
+    margin: 0px;
+    padding: 0px;
+}
+
+div.pmt-item {
+    padding: 2px 0px;
+}
+div.pmt-item input {
+    margin: 0px;
+    padding: 0px;
+}

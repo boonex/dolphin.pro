@@ -1,0 +1,28 @@
+<div class="communicator_container bx-def-bc-margin">
+    <bx_repeat:rows>
+        <div class="sys-connections-row">
+            <div class="sys-cntsr-cnt">            
+                <div class="sys-cntsr-author-icon">
+                    <div class="sys-cntsr-checkbox">
+                        <input type="checkbox" name="rows[]" value="__row_value__" />
+                    </div>
+                    __member_icon__
+                    <div class="clear_both"></div>
+                </div>
+            </div>
+        </div>
+    </bx_repeat:rows>
+    <div class="sys-connections-actions bx-def-padding-sec">
+        <div class="sys-cntsa-left">
+            __select__: 
+            <a href="__current_page__" onclick="__js_object__.selectCheckBoxes(true, 'communicator_container');return false">__all_messages__</a> 
+            <span class="sys-bullet"></span> 
+            <a href="__current_page__" onclick="__js_object__.selectCheckBoxes(false, 'communicator_container');return false">__none_messages__</a>
+        </div>
+        <div class="sys-cntsa-right">
+            __actions_list__
+        </div>
+        <div class="clear_both"></div>
+    </div>
+</div>
+__page_pagination__

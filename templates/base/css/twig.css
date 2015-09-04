@@ -1,0 +1,45 @@
+
+.bx-twig-unit {
+    overflow:hidden;    
+}
+
+.bx-twig-unit-admin {
+    position:relative;
+}
+
+.bx-twig-unit-thumb-cont {
+    float:left;
+    display:table-cell;
+    top:0;
+    left:0;
+    width:240px;
+    text-align:center;
+    vertical-align:top;
+}
+
+.bx-twig-unit-thumb-cont img {
+    background-color:white;
+}
+
+.bx-twig-unit-info {
+    display:table-cell;    
+    vertical-align:top;     
+}
+
+.bx-twig-unit-line {
+    margin-top:3px;
+}
+
+.bx-twig-unit-desc {
+
+}
+
+.bx-twig-unit .bx-twig-unit-special {
+    font-weight:bold;
+    color:green; 
+}
+
+.bx-twig-unit-rate .votes_small {
+    float:none;
+}
+

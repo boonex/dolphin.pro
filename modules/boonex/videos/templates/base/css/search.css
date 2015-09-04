@@ -1,0 +1,102 @@
+/* main settings  */
+.sys_album_unit .bx_sys_unit_checkbox {
+   	top: 7px;
+   	left: 7px;
+}
+
+div.bx_videos_album_unit div.sys_album_item {
+    width: auto;
+}
+div.bx_videos_album_unit div.sys_album_item_empty {
+    width: 64px;
+}
+
+div.bx_videos_album_unit div.sys_album_item img {
+    width: auto;
+    height: 64px;
+}
+
+.sys_album_cover {
+    height: 140px;
+}
+
+.mainInfo {
+
+}
+
+.addInfo {
+    
+}
+
+.addInfoDate {
+    text-transform: lowercase;
+}
+
+.addInfoFrom {
+    
+}
+
+.latestFile {
+	
+}
+
+/* redeckaration  settings from another files*/
+.boxContent .votes_small {
+	float: none;
+	position:relative;
+	width: auto;
+}
+
+div.viewFile {
+    text-align: center;
+}
+
+div.fileInfo {
+
+}
+
+div.fileTitle {
+    
+}
+
+.fileWhen, .fileFrom {
+    float: left;
+    position: relative;
+}
+
+.fileWhen {
+    text-transform: lowercase;
+}
+
+.fileFrom {
+
+}
+
+.searchContentBlock {
+    margin: 5px auto;
+}
+
+#searchArea {
+    margin: 10px auto;
+}
+
+.picSwitcher .paginate {
+    margin-top: 10px;
+}
+
+.bx_videos_search_unit .sys_file_search_pic {
+	background-color: #000000;
+}
+
+.bx_videos_search_size {
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+	padding: 0px 3px;
+	background-color: #000000;
+	opacity: 0.6;
+	line-height: 14px;
+	font-weight: bold;
+	font-size: 11px;
+	color: #ffffff;
+}

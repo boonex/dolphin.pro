@@ -1,0 +1,34 @@
+<bx_if:show_unregistered>
+    <div class="adm-license-text bx-def-font-h1">
+        <bx_text:_adm_license_unregistered />
+    </div>
+    <div class="bx-def-margin-thd-top">
+        <bx_text:_adm_license_note_unregistered />
+    </div>
+</bx_if:show_unregistered>
+<bx_if:show_permanent>
+    <div class="adm-license-text bx-def-font-h1">__license__</div>
+    <div class="bx-def-margin-thd-top">
+        <bx_text:_adm_license_note_permanent />
+    </div>
+</bx_if:show_permanent>
+<div class="bx-def-hr bx-def-margin-top bx-def-margin-bottom"></div>
+<div>
+    <form method="post" action="<bx_url_admin />license.php" <bx_if:show_warning>onsubmit="return confirm('__warning__');"</bx_if:show_warning>>
+        <input type="hidden" name="relocate" value="<bx_url_admin />license.php" />
+        <div class="adm-license-row">
+            <bx_text:_adm_license_register_new />
+        </div>
+        <div class="adm-license-row bx-def-margin-thd-top">
+            <div class="adm-license-cell bx-def-margin-sec-right">
+                <input type="text" name="license_code" class="adm-license-input bx-def-round-corners-with-border bx-def-font-large">
+            </div>
+            <div class="admin_license_cell">
+                <button type="submit" name="register" class="adm-license-submit bx-btn">
+                    <bx_text:_adm_license_register />
+                </button>
+            </div>
+            <div class="clear_both"></div>
+        </div>
+    </form>
+</div>

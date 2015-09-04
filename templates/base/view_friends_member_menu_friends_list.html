@@ -1,0 +1,46 @@
+<bx_if:menu_position_bottom>
+    <div class="content extra_menu_subitem_container">
+        <i class="sys-icon user" title="__friends_request__"></i>
+        <a href="<bx_url_root />communicator.php?person_switcher=to&communicator_mode=friends_requests">__friends_request__</a> (__request_count__)
+    </div>
+    <div class="content extra_menu_subitem_container">
+        <i class="sys-icon circle sys-status-online" title="__online_friends__"></i>
+        <a href="<bx_url_root />viewFriends.php?&iUser=__ID__&online_only=on">__online_friends__</a> (__online_count__)
+    </div>
+</bx_if:menu_position_bottom>
+<bx_repeat:friend_list>
+	<div class="extra_menu_list">
+		<table style="border:0">
+	        <tbody>
+	            <tr>
+	                <td class="icon" valign="top">
+	                    __thumbnail__
+	                </td>
+	                <td valign="top">
+	                    <bx_if:video_messenger>
+				        <div style="float:left;padding-right:5px">
+				            <a title="__messenger_title__" href="javascript:void(0)" onclick="openRayWidget('im', 'user', '__sender_id__', '__sender_passw__', '__recipient_id__');return false">
+				            	<img src="__video_img_src__" width="16" height="16" />
+				            </a>
+				        </div>
+				        </bx_if:video_messenger>
+	                    <a href="<bx_url_root />__profile_nick__" class="message">__profile_nick__</a>
+	                    <div class="message_caption">
+	                        __head_line__
+	                    </div>
+	                </td>
+	            </tr>
+	        </tbody>
+	    </table>    
+	</div>
+</bx_repeat:friend_list>
+<bx_if:menu_position_top>
+    <div class="content extra_menu_subitem_container">
+        <i class="sys-icon user" title="__friends_request__"></i>
+        <a href="<bx_url_root />communicator.php?person_switcher=to&communicator_mode=friends_requests">__friends_request__</a> (__request_count__)
+    </div>
+    <div class="content extra_menu_subitem_container">
+        <i class="sys-icon circle sys-status-online" title="__online_friends__"></i>
+        <a href="<bx_url_root />viewFriends.php?&iUser=__ID__&online_only=on">__online_friends__</a> (__online_count__)
+    </div>
+</bx_if:menu_position_top>

@@ -1,0 +1,17 @@
+<script language="javascript" type="text/javascript">
+    $(document).ready(
+		function() {
+			var sId = "__unit_area_id__";
+			$('#' + sId).sortable({
+			  stop : function (sorted, ui) {
+			      var serial = $('#' + sId).sortable('serialize');
+			      $.ajax({
+			          url: "__url__album_organize/__album_name__/__add_params__",
+			          type: "POST",
+			          data: serial,
+			      });
+			  }
+			});
+		}
+    );
+</script>

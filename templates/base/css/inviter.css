@@ -1,0 +1,30 @@
+
+#sys_inviter_users {    
+    background-color:#FFF;
+    max-height:200px;
+    overflow-y:auto;
+    width:200px;
+	position:relative;
+}
+
+#sys_inviter_users>div {
+    padding:5px;
+    text-align:left;
+    line-height:16px;
+}
+
+#sys_inviter_users>div.sys_inviter_no_users {
+    padding:5px;
+}
+
+#sys_inviter_users>div>input {
+    display:block;
+    float:left;
+}
+
+#sys_inviter_users>div>a {
+    display:block;
+    float:left;
+    line-height:32px;
+    margin-left:5px;
+}

@@ -1,0 +1,102 @@
+<!-- Warning! Do not change id's of areas and do not decrease number of areas if not sure! -->
+
+<div id="edit_form_cont"></div>
+<div id="main_container">
+	<div id="tabs_container">
+		<div id="m1">
+			<div class="build_container bx-def-bc-margin"><bx_text:_adm_fields_loading /></div>
+		</div>
+		<div id="edit-tab" style="display:none">
+            <div class="top_settings_block">
+                <div class="tsb_cnt_out bx-def-btc-margin-out">
+                    <div class="tsb_cnt_in bx-def-btc-padding-in">
+                        <div class="adm-db-control-panel" id="mode_switcher_1">
+                			<ul>
+                				<li><a href="#m2"><i class="adm-db-cp-empty sys-icon square-o"></i><i class="adm-db-cp-checked sys-icon check-square-o"></i><bx_text:_adm_fields_owner /></a></li>
+                				<li><a href="#m3"><i class="adm-db-cp-empty sys-icon square-o"></i><i class="adm-db-cp-checked sys-icon check-square-o"></i><bx_text:_adm_fields_admin /></a></li>
+                			</ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div id="m2">
+				<div class="build_container bx-def-bc-margin"></div>
+			</div>
+			<div id="m3">
+				<div class="build_container bx-def-bc-margin"></div>
+			</div>
+		</div>
+		<div id="view-tab" style="display:none">
+            <div class="top_settings_block">
+                <div class="tsb_cnt_out bx-def-btc-margin-out">
+                    <div class="tsb_cnt_in bx-def-btc-padding-in">
+                        <div class="adm-db-control-panel" id="mode_switcher_2">
+                			<ul>
+                				<li><a href="#m5"><i class="adm-db-cp-empty sys-icon square-o"></i><i class="adm-db-cp-checked sys-icon check-square-o"></i><bx_text:_adm_fields_admin /></a></li>
+                				<li><a href="#m6"><i class="adm-db-cp-empty sys-icon square-o"></i><i class="adm-db-cp-checked sys-icon check-square-o"></i><bx_text:_adm_fields_member /></a></li>
+                				<li><a href="#m8"><i class="adm-db-cp-empty sys-icon square-o"></i><i class="adm-db-cp-checked sys-icon check-square-o"></i><bx_text:_adm_fields_visitor /></a></li>
+                			</ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div id="m5">
+				<div class="build_container bx-def-bc-margin"></div>
+			</div>
+			<div id="m6">
+				<div class="build_container bx-def-bc-margin"></div>
+			</div>			
+			<div id="m8">
+				<div class="build_container bx-def-bc-margin"></div>
+			</div>
+		</div>
+		<div id="search-tab" style="display:none">
+            <div class="top_settings_block">
+                <div class="tsb_cnt_out bx-def-btc-margin-out">
+                    <div class="tsb_cnt_in bx-def-btc-padding-in">
+                        <div class="adm-db-control-panel" id="mode_switcher_3">
+                			<ul>
+                				<li><a href="#m9"><i class="adm-db-cp-empty sys-icon square-o"></i><i class="adm-db-cp-checked sys-icon check-square-o"></i><bx_text:_adm_fields_simple_search /></a></li>
+                				<li><a href="#m10"><i class="adm-db-cp-empty sys-icon square-o"></i><i class="adm-db-cp-checked sys-icon check-square-o"></i><bx_text:_adm_fields_quick_search /></a></li>
+                				<li><a href="#m11"><i class="adm-db-cp-empty sys-icon square-o"></i><i class="adm-db-cp-checked sys-icon check-square-o"></i><bx_text:_adm_fields_advanced_search /></a></li>
+                			</ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div id="m9">
+				<div class="build_container bx-def-bc-margin"></div>
+			</div>
+			<div id="m10">
+				<div class="build_container bx-def-bc-margin"></div>
+			</div>
+			<div id="m11">
+				<div class="build_container bx-def-bc-margin"></div>
+			</div>
+		</div>		
+	</div>
+</div>
+<script language="javascript" type="text/javascript">
+<!--
+    oPFM = new BxDolPFM();	
+	oPFM.config.areas  = 11;
+	oPFM.config.parserUrl = 'fields.parse.php';
+
+	$(document).ready(function() {
+		$('#edit-tab').tabs();
+		$('#view-tab').tabs();
+		$('#search-tab').tabs();
+		oPFM.init();
+	});
+	
+	function changeType(oLink){
+	    var sType = oLink.id.replace('adm-fb-ctl-', '');
+
+	    $(oLink).parent('.notActive').hide().siblings('.notActive:hidden').show().siblings('.active').hide().siblings('#' + $(oLink).attr('id') + '-act').show();
+
+	    $('#tabs_container > :visible').bx_anim('hide', 'fade', 'slow', function() {
+            $('#tabs_container > #' + sType).show();
+	    }); 
+	}
+-->
+</script>

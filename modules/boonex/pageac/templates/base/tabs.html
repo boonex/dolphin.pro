@@ -1,0 +1,13 @@
+<div id="tabs_control">
+    <ul>
+    	<bx_repeat:page_tabs>
+        	<li><a href="__page_url__"><span>__page_name__</span></a></li>
+        </bx_repeat:page_tabs>
+    </ul>
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+    	$('#tabs_control').tabs({ cache: false, spinner: '<bx_text:_bx_pageac_loading />' });
+	});
+    var oBxPageACMain = new BxPageACMain({sBaseURL: '__base_url__'});
+</script>

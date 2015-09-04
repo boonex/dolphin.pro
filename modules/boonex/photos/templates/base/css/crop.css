@@ -1,0 +1,6 @@
+#bx_photos_crop_container {
+    margin:0 auto;
+    width: 480px;
+    height: 480px;
+    position:relative; /* or fixed or absolute */
+}

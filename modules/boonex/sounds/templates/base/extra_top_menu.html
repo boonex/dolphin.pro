@@ -1,0 +1,14 @@
+<div class="dbTopMenu">
+	<bx_repeat:menu>
+		<bx_if:active>
+			<div class="active">
+				<span>__title__</span>
+			</div>
+		</bx_if:active>
+		<bx_if:not_active>
+			<div class="notActive">
+				<a class="top_members_menu" href="__link__">__title__</a>
+			</div>
+		</bx_if:not_active>
+	</bx_repeat:menu>
+</div>

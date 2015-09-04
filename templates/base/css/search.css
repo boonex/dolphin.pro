@@ -1,0 +1,26 @@
+	.simple_search_form2_wrapper {
+		margin-top: 10px;
+	}
+
+	.form_advanced_table {
+		margin-top: 5px;
+	}
+
+	div.searchrow_block {
+		height: auto;
+		min-height: 64px;	
+	}
+
+	div.searchrow_block_simple {
+		padding: 0px;
+	}
+
+	.block_rel_100 .bx-def-hr:first-child{
+		display: none;
+	}
+	.block_rel_100 .searchrow_block .thumbnail_block {
+		margin:0px;
+	}
+	.block_rel_100 .centered_div {
+        margin: -5px;
+	}

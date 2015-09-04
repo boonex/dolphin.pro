@@ -1,0 +1,21 @@
+<b>IMPORTANT!!!</b><br />
+Automatic part of upgade is completed. Please do the following to complete upgrade process: <br />
+<ul>    
+    <li>    
+        Change the following lines in <b>inc/header.inc.php</b> file:
+        <pre style="border:1px solid #060; color:#060; overflow:scroll;">
+$site['ver']               = '7.1';
+$site['build']             = '3'; 
+        </pre>
+        to the following:
+        <pre style="border:1px solid #060; color:#060; overflow:scroll;">
+$site['ver']               = '7.1';
+$site['build']             = '4';
+        </pre>
+    </li>
+    <li>Remove <b>/upgrade/</b> directory</li>
+    <li>Clean <b>/cache/</b>, <b>/cache_public/</b> and <b>/tmp/</b> folders via FTP or SSH, leave only .htaccess file there if one exists</li>
+    <li>Recompile system language file from Admin Panel -&gt; Settings -&gt; Languages Settings -&gt; Languages</li>
+    <li>Clean <b>/cache/</b> folder again</li>
+	<li>Recompile Forum language file from Admin Panel -&gt; Modules -&gt; Forum -&gt; Manage Forum</li>
+</ul>

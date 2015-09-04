@@ -1,0 +1,14 @@
+<div class="bx-def-margin-thd-leftright">
+	<div class="bx-def-margin-thd-bottom">
+		<bx_text:_adm_txt_pb_page />
+	</div>
+	<div class="input_wrapper input_wrapper_select clearfix">
+		<select class="form_input_select" name="Page" onchange="if (this.value && this.value != 'none') oBxPageACMain.refreshPagesBuilder('__update_url__', this.value);">
+			<option value="none"><bx_text:_adm_txt_pb_select_page /></option>
+			<bx_repeat:pages>
+				<option value="__page_name__">__page_caption__</option>
+			</bx_repeat:pages>
+		</select>
+	</div>
+</div>
+<div id="page_builder_zone"></div>

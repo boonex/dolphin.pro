@@ -1,0 +1,15 @@
+<div id="bx-photos-cover" class="bx-photos-cover bx-photos-cover-size-2 bx-photos-cover-shadow bx-def-margin-top">
+	__loading__
+	<ul>
+		<bx_repeat:images>
+			<li><a href="__link__" title="__title__"><img src="__src__" alt="__title__"/></a></li>
+		</bx_repeat:images>
+	</ul>
+</div>
+<script language="javascript" type="text/javascript">
+	$( '#bx-photos-cover' ).gridrotator({
+		rows: __rows__,
+		columns: __columns__,
+		preventClick: false
+	});
+</script>

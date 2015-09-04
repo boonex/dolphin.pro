@@ -1,0 +1,3 @@
+<IfModule mod_security.c>
+SecFilterEngine off
+</IfModule>

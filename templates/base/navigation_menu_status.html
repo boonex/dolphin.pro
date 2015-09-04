@@ -1,0 +1,21 @@
+<bx_if:show_script>
+    <script language="JavaScript" type="text/javascript">
+        function InloadStatusMessageEl() {
+            $('#inloadedStatusMess').load("change_status.php?action=get_prof_status_mess");
+            $('#StatusMessage').hide();
+        }
+    </script>
+</bx_if:show_script>
+
+<div id="StatusMessage">
+    <span class="sys_sm_text">__message__</span>
+    <bx_if:show_when>
+        <span class="sys_sm_when bx-def-font-small bx-def-font-grayed">__when__</span>
+    </bx_if:show_when>
+    <bx_if:show_update>
+        <a class="sys_sm_update bx-def-font-small" href="javascript:void(0)" onclick="javascript: InloadStatusMessageEl(); return false;">
+            <bx_text:_sys_status_update />
+        </a>
+    </bx_if:show_update>
+</div>
+<div id="inloadedStatusMess"></div>

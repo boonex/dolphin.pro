@@ -1,0 +1,39 @@
+
+table.bx_store_fields {
+    border-collapse:collapse;
+    padding:0;
+}
+
+td.bx_store_field_name {
+    margin:0;
+    text-align:left;
+}
+
+td.bx_store_field_value {
+    margin:0;
+    text-align:left;
+}
+
+
+/* files block */ 
+
+.bx_sys_files_line .bx_store_files_info b {
+    position:absolute;
+    font-weight:normal;
+    top:5px;
+    right:5px;        
+}
+
+.bx_sys_files_line .bx_store_files_info i {
+    position:absolute;
+    top:20px;
+    right:5px;        
+    text-decoration:none;
+    font-style:normal;
+    text-transform:lowercase;    
+}
+
+.bx_sys_files_wrapper .bx_store_files_btns_container {
+    padding-left:0;
+    min-height:0;
+}

@@ -1,0 +1,37 @@
+<div>
+	<table class="adm-ipbl-filters bx-def-table" cellspacing="1" cellpadding="0">
+	    <tr>
+	        <th><bx_text:_From /></th>
+	        <th><bx_text:_To /></th>
+	        <th><bx_text:_adm_ipbl_IP_Role /></th>
+	        <th><bx_text:_adm_ipbl_Date_of_finish /></th>
+	        <th><bx_text:_Description /></th>
+	        <th><bx_text:_Action /></th>
+	    </tr>
+	    <bx_repeat:items>
+	    	<tr>
+				<td>__from__</td>
+				<td>__to__</td>
+				<td>__type__</td>
+				<td>__date_uf__</td>
+				<td>__description__</td>
+				<td>
+					<a href="javascript:void(0)" onclick="ip_accept_values_to_form('__id__', '__from__', '__to__', '__type__', '__date__', '__description_attr__'); return false;"><bx_text:_Edit /></a> |
+					<a href="__delete_action_url__"><bx_text:_Delete /></a>
+				</td>
+	    	</tr>
+	    </bx_repeat:items>
+	</table>
+
+	<script type="text/javascript">
+	    function ip_accept_values_to_form(id_val, from_val, to_val, type_val, lastdt_val, desc_val)
+	    {
+	        $('.form_input_hidden[name="id"]').val(id_val);
+	        $('.form_input_text[name="from"]').val(from_val);
+	        $('.form_input_text[name="to"]').val(to_val);
+	        $('.form_input_select[name="type"]').val(type_val);
+	        $('.form_input_datetime[name="LastDT"]').val(lastdt_val);
+	        $('.form_input_text[name="desc"]').val(desc_val);
+	    }
+	</script>
+</div>

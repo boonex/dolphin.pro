@@ -1,0 +1,169 @@
+<script type="text/javascript">
+	/**
+	 * @description : object constructor;
+	 */
+
+	function MailBoxViewMessage()
+	{
+		// call the parent constructor ;
+		this.constructor();
+
+		// define variables ;
+		this.sSurecaption	 = '__are_you_sure__';
+		this.sPageReceiver	 = '__current_page__?ajax_mode=true';
+		this.sCurrentPage	 = '__current_page__';
+		this.sPageMode		 = '__page_mode__';
+		this.iMessageId		 = '__message_id__';
+
+		// redefinition `deleteMessages` from the base function ;
+
+		/**
+		 * @description : function will move selected message into trash ;
+		 * @param		: iMessageID (integer) - message ID ;
+		 */
+
+		this.deleteMessages = function( iMessageID )
+		{
+			if ( iMessageID )
+			{
+				if ( confirm(this.sSurecaption) )
+				{
+					var _this = this;
+					var sPageUrl = this.sPageReceiver + '&messages=' + iMessageID;
+
+					$.post(sPageUrl, {'action' : 'delete'}, function(){
+							_this.relocateInbox();	
+					});
+				}
+			}
+		}
+
+		// redefinition `restoreMessages` from the base function ;
+
+		/**
+		 * @description : function will restore selected message from the trash ;
+		 * @param		: iMessageID (integer) - message ID ;
+		 */
+
+		this.restoreMessages = function( iMessageID )
+		{
+			if ( iMessageID )
+			{
+				var _this = this;
+				var sPageUrl = this.sPageReceiver + '&messages=' + iMessageID;
+
+				$.post(sPageUrl, { 'action' : 'restore'}, function(){
+					_this.relocatePage(_this.sCurrentPage + '?mode=' + _this.sPageMode);		
+				});
+			}
+		}
+	}
+
+	// inheritance ;
+	MailBoxViewMessage.prototype = MailBox.prototype;
+
+	// add some function to the object ;
+
+	/**
+	 * @description : function will relocate current page ;
+	 * @param		: sPageUrl (string) needed page URL (is the optional parameter);
+	 */
+
+	MailBoxViewMessage.prototype.relocatePage = function( sPageUrl )
+	{
+		if (typeof sPageUrl != 'undefined' )
+			window.location.href = sPageUrl;
+		else
+			window.location.href = this.sCurrentPage;
+	}
+
+	/**
+	 * @description : function will set status 'read' or 'unread' for selected message ;
+	 * @param		: sStatus (string) - status of messages ;	 
+	 * @param		: iMessageID (integer) - message ID ;
+	 */
+
+	MailBoxViewMessage.prototype.markMessages = function( sStatus, iMessageID )
+	{
+		var _this = this;
+		if ( sStatus && iMessageID )
+		{
+			var sPageUrl = this.sPageReceiver + '&messages=' + iMessageID + '&status=' + sStatus;
+			$.post(sPageUrl, { 'action' : 'mark' } , function(){
+				_this.relocatePage(_this.sCurrentPage);		
+			});
+		}
+	}
+
+	/**
+	 * @description : function will generate window with reply's forms;
+	 * @param		: iMessageID (integer) - message ID ;
+	 * @param		: iRecipientId (integer) - recipient's ID ;
+	 * @return		: Html presentation data;
+	 */
+
+	MailBoxViewMessage.prototype.replyMessage = function( iMessageID, iRecipientId )
+	{
+        var el = $('.' + htmlSelectors[5]);
+        if ( !el.text() ) {
+            // get remote data;
+            var sPageUrl = this.sPageReceiver + '&action=reply_message&messageID=' 
+										  + iMessageID + '&recipient_id=' + iRecipientId;
+
+            el.css({'display':'block', 'height':'250px'});
+
+            //bx_loading(htmlSelectors[5], true);
+
+    		getHtmlData(htmlSelectors[5], sPageUrl, function(){
+                el.css('height', 'auto');
+                tinyMCE.execCommand('mceAddEditor', false, htmlSelectors[0]);
+    		});
+        }
+        else {
+            el.css('display', 'block');
+        }
+
+		
+	}
+
+	// create the object;
+	var oMailBoxViewMessage = new MailBoxViewMessage();
+
+	// set active the reply button ;
+	$(document).ready(function () {
+		var el = $('#' + htmlSelectors[6]);
+		if (el.length)
+		{
+			el.attr('disabled', '');
+		}
+	});
+</script>
+<bx_include_auto:designbox_top_controls.html />
+<div class="bx-def-bc-padding">
+    <div class="view_message_container">
+    	<div class="owner_info_wrapper bx-def-padding-sec">
+	        <div class="owner_info clearfix">
+		        <div class="thumb_section">__member_thumbnail__</div>
+		        <div class="member_info">
+		            <div class="member_info_nickname bx-def-padding-thd-bottom">
+		            	<a href="__member_location__">__member_nick_name__</a>
+		            </div>
+		            <div class="bx-def-padding-thd-bottom">
+		                <i class="sys-icon clock-o"></i>
+		                __date_create__
+		            </div>
+		            <div class="subject bx-def-font-h2">__message_subject__</div>	
+		        </div>
+		        <div class="action_list bx-def-margin-sec-top">__member_actions_list__</div>
+	        </div>
+		</div>
+        <div class="message_container bx-def-font-large">
+            __message_text__
+            <div class="clear_both"></div>
+        </div>
+        <div class="message_actions">
+            __message_actions__
+        </div>
+        <div id="reply_window" class="reply_window bx-def-padding"></div>
+    </div>
+</div>

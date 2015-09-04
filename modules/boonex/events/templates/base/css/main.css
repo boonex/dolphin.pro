@@ -1,0 +1,37 @@
+
+.bx_events_main_photo {
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+}
+
+.bx_events_main_photo img {
+	width: 100%;
+    background-color:#fff;
+}
+
+.bx_events_main_info_text {
+    width:80%;
+    float:left;
+    text-align:left;
+}
+.bx_events_main_info_img {
+    width:20%;
+    float:left;
+    text-align:right;
+}
+
+.bx_events_main_info_img .votes_small {
+    width:auto;
+    float:right;
+}
+
+.bx_events_main_info_img .bx_events_unit_participants {
+    width:auto;
+    float:right;
+}
+
+#sys_manage_items_manage_fans_content {
+    max-height:280px;
+    overflow-y:auto;
+}

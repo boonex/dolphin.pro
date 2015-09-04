@@ -1,0 +1,12 @@
+@media (max-width:720px) {
+	div.wall-content div.bx_sounds-wall-shp-wrapper,
+	div.wall-content div.bx_sounds-wall-shp-wrapper img {
+		position: relative;
+		display: block;
+
+		width: 100%;
+		max-width: 240px;
+		height: auto;
+		max-height: 240px;	
+	}
+}

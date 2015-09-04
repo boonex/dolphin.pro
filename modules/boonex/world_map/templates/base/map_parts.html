@@ -1,0 +1,23 @@
+<div id="BxWmapParts__suffix__" class="bx_wmap_parts __subclass___parts bx-def-margin-sec-bottom">
+    <bx_repeat:parts>
+        <div class="bx_wmap_part"><a href="#" alt="__part__">__icon__</a><input type="checkbox" name="__part__" id="BxWmapPartsCheckId___part__" value="__part__" __checked__/><label for="BxWmapPartsCheckId___part__">__title__</label></div>
+    </bx_repeat:parts>
+    <div class="clear_both"></div>
+</div>
+<script type="text/javascript">
+    jQuery('#BxWmapParts__suffix__ > div > a').bind('click', function () {        
+        jQuery('#BxWmapParts__suffix__ > div > input:checked').removeAttr('checked');
+        jQuery('#BxWmapParts__suffix__ > div > input[name=' + $(this).attr('alt') + ']').attr('checked', 'checked');
+        glBxWmap__suffix__.setParts($(this).attr('alt'));
+        glBxWmap__suffix__.updateLocations();
+        return false;
+    });
+jQuery('#BxWmapParts__suffix__ > div > input').bind('change', function () {
+        var s = '';
+        jQuery('#BxWmapParts__suffix__ > div > input:checked').each (function () {
+            s += ',' + jQuery(this).attr('name');
+        });
+        glBxWmap__suffix__.setParts(s.substr(1));
+        glBxWmap__suffix__.updateLocations();
+    });
+</script>

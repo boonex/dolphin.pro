@@ -1,0 +1,104 @@
+div.mbp-cb {
+    clear: both;
+	font-size: 0px;
+}
+div.button_wrapper {
+    margin-right: 10px;
+    position: relative;
+    float: left;    
+}
+
+/*--- 'Current level' Styles ---*/
+div.status_box {
+    width: 450px;
+	margin: 10px auto 10px auto;	
+
+	text-align: center;
+}
+
+/*--- 'Available levels', 'Current Level' Styles ---*/
+div.mbp-current-levels,
+div.mbp-available-levels {}
+div.mbp-level {
+	position: relative;
+    margin: 10px 0px 0px 0px;
+}
+div.mbp-level:first-child {
+	margin-top: 0px;
+}
+div.mbp-level-icon {
+    width: 114px;
+    height: 114px;
+    
+    position: absolute;
+    
+    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    background-position: center;
+    background-repeat: no-repeat;   
+}
+div.mbp-level-icon img{
+    width: 114px;
+    height: 114px;
+}
+div.mbp-level-select {
+	top: 2px;
+	left: 2px;
+}
+div.mbp-level-content {
+    min-height: 116px; 
+    padding-left: 126px;
+}
+div.mbp-level-title {
+    font-weight: bold;
+    font-size: 12px;
+}
+div.mbp-level-info {}
+div.mbp-level-price {
+    font-weight: bold;
+	color: #008000;
+}
+div.mbp-level-control {}
+
+/*--- 'Available levels', 'Current Level' Styles ---*/
+div.mbp-current-level {
+    margin: 0px;
+}
+div.mbp-current-level div.mbp-level {
+	position: relative;
+    margin: 0px;
+    padding: 0px;
+}
+div.mbp-level-description {
+    min-height: 0px;
+    padding: 10px 0px 0px 0px;
+}
+
+/*--- Select Level ---*/
+div.mbp-available-levels-wrp {
+	overflow: hidden;
+}
+div.mbp-available-levels {
+	width: 200%;
+}
+div.mbp-al-col-left {
+	position: relative;
+	float: left;
+	width: 25%;
+}
+div.mbp-al-col-right {
+	position: relative;
+	float: right;
+	width: 50%;
+}
+div.mbp-al-col-right-cnt {
+    position: relative;
+    right: 50%;
+	width: 50%;
+}
+div.mbp-sp-caption {
+	text-transform: uppercase;
+}
+div.mbp-pay .bx-btn {
+	margin-left: 0px;
+}

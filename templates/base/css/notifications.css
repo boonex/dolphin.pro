@@ -1,0 +1,45 @@
+div.sys-notifications {
+    height: 87px;
+	top: 31px;
+    right: 0px;
+    position: absolute;	
+}
+div.sys-ntns {
+    width: 468px;
+    margin: 18px 10px 0px 0px;
+    position: relative; /*keep*/
+}
+div.sys-ntn {
+    width: 156px;
+    height: 52px;
+    /*position:relativ_e;*/
+    float: right;
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    font-size: 11px;
+    font-weight: normal;
+}
+div.sys-ntn-wrapper {
+    margin: 7px 7px 7px 49px;
+    position: relative;/*keep*/
+}
+div.sys-ntn-wrapper div.thumbnail_block {
+    top: 0px;
+    left: -42px;
+    position: absolute;
+}
+div.sys-ntn-username {
+    width: 100px;
+    height: 18px;
+    /*position:relativ_e;*/
+    overflow: hidden;    
+    line-height: 2.1em;
+}
+div.sys-ntn-content {
+    width: 100px;
+    height: 14px;
+    /*position:relativ_e;*/
+    line-height: 14px;
+    overflow: hidden;
+    color: #666666;
+}

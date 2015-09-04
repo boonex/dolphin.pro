@@ -1,0 +1,57 @@
+@import url("default.css");
+
+/* NOTE: copied from "fonts" section from default.css */
+
+body, td, pre {
+    font-family: Helvetica Neue, Helvetica, Arial, Verdana, sans-serif;
+    font-size:14px;
+    color:#333;
+}
+
+h1 {
+    font-size:24px;
+    font-weight:bold;
+}
+
+h2 {
+    font-size:18px;
+    font-weight:bold;
+}
+
+h3 {
+    font-size:16px;
+    font-weight:bold;
+}
+
+blockquote {
+    /* NOTE: copied from common.css */
+    border-left: 2px solid #ccc;
+    padding-left: 10px;
+}
+
+/* forum styles */
+
+.quote, .quote_post {
+	font-style:italic;
+	border-left:1px solid #666666;	
+	display:block;
+	padding:2px;
+	margin:0;
+	margin-left:20px;
+}
+
+.quote_post {
+	border:1px solid #666666;
+	margin-bottom:10px;
+}
+
+pre, .code {
+	margin:10px 10px 10px 0;
+	padding:5px;
+	border:1px solid green;
+	background-color:white;
+	color:#009900;
+	display:block;
+	margin:0;
+}
+

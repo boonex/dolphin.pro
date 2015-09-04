@@ -1,0 +1,23 @@
+<form action="__sCurrBrowsedFile__" method="get" name="filter_form" onsubmit="PerformCollectFilterCustomActions(); return true;">
+	<div class="ordered_block">
+		<bx_text:_Country />:
+		<select name="FilterCountry" id="FilterCountry" onchange="document.forms.filter_form.submit();">
+			<option value="-1"><bx_text:_Any /></option>
+			__sCountryOptions__
+		</select>
+
+		__sCateg__
+		__sSubCateg__
+
+		<span id="custom_values" style="display:none;"></span>
+	</div>
+	<div class="per_page_block">
+		<bx_text:_bx_ads_Keywords />: <input type="text" value="__sKeywordsStr__" id="FilterKeywords" name="FilterKeywords"/>
+
+		<input type="hidden" value="" id="CustomFieldCaption_1" name="CustomFieldCaption1" />
+		<input type="hidden" value="" id="CustomFieldCaption_2" name="CustomFieldCaption2" />
+		<input type="hidden" name="action" value="3" />
+		<input type="submit" class="cur_pnt" value="<bx_text:_bx_ads_Apply />" name="butAction" />
+	</div>
+    <div class="clear_both"></div>
+</form>

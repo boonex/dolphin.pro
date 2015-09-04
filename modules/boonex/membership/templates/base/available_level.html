@@ -1,0 +1,25 @@
+<div class="mbp-level">
+    <div class="mbp-level-icon" style="background-image:url(__icon__);">
+        <img src="<bx_image_url:spacer.gif />" />
+    </div>
+    <div class="mbp-level-content">
+        <div class="mbp-level-title">
+            <a href="javascript: void(0)" onclick="javascript: loadHtmlInPopup('explanation_popup', '__url_root__explanation.php?explain=membership&type=__id__');">__title__</a> (__days__)
+        </div>
+        <bx_if:show_description>
+        	<div class="mbp-level-info bx-def-padding-thd-top">__description__</div>
+        </bx_if:show_description>
+        <div class="mbp-level-price bx-def-padding-thd-top">__price__ <span class="mbp-level-curr-code">__currency_code__</span></div>
+        <div class="mbp-level-control bx-def-padding-thd-top">
+        	<button type="button" class="bx-btn bx-btn-img bx-btn-ifont" onclick="javascript: __add_to_cart_js__;">
+        		<i class="sys-icon shopping-cart"></i>
+                <bx_text:_membership_txt_add_to_cart />
+        	</button>
+            <button type="button" class="bx-btn bx-btn-img bx-btn-ifont" onclick="javascript: loadHtmlInPopup('explanation_popup', '__url_root__explanation.php?explain=membership&type=__id__');">
+                <i class="sys-icon info-circle"></i>
+                <bx_text:_membership_txt_explanation />
+            </button>
+            <div class="mbp-cb">&nbsp;</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="allowed_actions_wrapper bx-def-border">
+<table cellpadding="0" cellspacing="0" class="allowed_actions_table" width="100%">
+    <tr>
+        <td colspan="5" style="text-align: center;" class="bx-def-font-h2">
+            <bx_text:_Allowed actions />
+        </td>
+    </tr>
+    <tr style="font-weight:bold;">
+        <td style="text-align: left;"><bx_text:_Action /></td>
+        <td><bx_text:_Times allowed /></td>
+        <td><bx_text:_Period_hours /></td>
+        <td><bx_text:_Allowed Since /></td>
+        <td><bx_text:_Allowed Until /></td>
+    </tr>
+    <bx_repeat:actions>
+        <tr>
+            <td style="text-align: left;" class="bx-def-border-top">__Name__</td>
+            <td class="bx-def-border-top bx-def-border-left">__AllowedCount__</td>
+            <td class="bx-def-border-top ">__AllowedPeriodLen__</td>
+            <td class="bx-def-border-top bx-def-border-left">__AllowedPeriodStart__</td>
+            <td class="bx-def-border-top">__AllowedPeriodEnd__</td>
+        </tr>
+    </bx_repeat:actions>
+</table>
+</div>

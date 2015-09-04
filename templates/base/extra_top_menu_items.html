@@ -1,0 +1,56 @@
+<bx_repeat:items>
+	<li<bx_if:show_class> class="__class__"</bx_if:show_class>>
+		<div class="menu_item __indent__" onmouseover="membermenu.show_description('descr___menu_id__')" onmouseout="membermenu.hide_description('descr___menu_id__')">
+			__bubble_box__
+			<a href="__menu_link__" class="__item_link_indent__" __extended_action__ __target__>__menu_image____menu_caption__</a>
+			<bx_if:menu_desc>
+				<div class="description __desc_indent__" id="descr___menu_id__">__desc_window__</div>    
+			</bx_if:menu_desc>
+		</div>
+		<bx_if:sub_menu>
+			<ul id="extra_menu_popup___menu_id__" class="extra_menu_popup">
+				<li>
+					<table class="popup" cellpadding="0" cellspacing="0">
+						<tbody>
+							<tr>
+								<td class="html_data">
+									<div class="popup_content bx-def-border bx-def-round-corners">
+										<bx_if:reduce_element_top>
+											<div class="extra_data __cover__ bx-def-padding-sec-leftright bx-def-padding-thd-topbottom">
+												<bx_if:part_image>
+													<div class="part_img bx-def-padding-thd-right">__item_img__</div>
+												</bx_if:part_image>
+												<div class="part_name"><a href="__item_link__" __extended_action__ class="item_block">__item_name__</a></div>
+												<div class="part_reduce">
+													<div class="part_reduce_cnt">
+														<i class="sys-icon times" alt="<bx_text:_Close />"  title="<bx_text:_Close />" onclick="membermenu.close_popup('extra_menu_popup___menu_id__')"></i>
+													</div>
+													<div class="part_reduce_indent bx-def-padding-sec-right"></div>
+												</div>
+											</div>
+										</bx_if:reduce_element_top>
+										<div class="html_data bx-def-padding-leftright clearfix" id="menu_content___menu_id__"></div>
+										<bx_if:reduce_element_bottom>
+											<div class="extra_data __cover__ bx-def-padding-sec-leftright bx-def-padding-thd-topbottom">
+												<bx_if:part_image>
+													<div class="part_img bx-def-padding-thd-right">__item_img__</div>
+												</bx_if:part_image>
+												<div class="part_name"><a href="__item_link__" class="item_block">__item_name__</a></div>
+												<div class="part_reduce">
+													<div class="part_reduce_cnt">
+														<i class="sys-icon times" alt="<bx_text:_Close />"  title="<bx_text:_Close />" onclick="membermenu.close_popup('extra_menu_popup___menu_id__')"></i>
+													</div>
+													<div class="part_reduce_indent bx-def-padding-sec-right"></div>
+												</div>
+											</div>
+										</bx_if:reduce_element_bottom>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</li>
+			</ul>
+		</bx_if:sub_menu>
+	</li>
+</bx_repeat:items>

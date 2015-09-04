@@ -1,0 +1,27 @@
+<div class="sys_album_unit {type}_album_unit bx-def-margin-sec-top-auto">
+    <bx_if:editMode>
+        <div class="bx_sys_unit_checkbox">
+            <input type="checkbox" name="entry[]" value="{id}" {checked}/>
+        </div>
+	</bx_if:editMode>
+    <div class="sys_album" onclick="window.location = '{albumUrl}';">
+        <div class="sys_album_cnt">
+            <bx_repeat:units>
+                <bx_if:exist>
+                    <div class="sys_album_item">
+                        <img src="{unit}"/>
+                    </div>
+                </bx_if:exist>
+                <bx_if:not-exist>
+                    <div class="sys_album_item_empty">&nbsp;</div>
+                </bx_if:not-exist>
+            </bx_repeat:units>
+        </div>
+    </div>
+    <div class="sys_album_info bx-def-padding-sec">
+        <div class="sys_album_title">
+            <a href="{titleLink}" title="{title}">{title}</a>
+        </div>
+        <div class="sys_album_from bx-def-font-grayed">{view} <bx_text:_By /> <a href="{fromLink}">{from}</a></div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="bx_store_product_videos_wrapper">
+
+    <div id="bx_store_product_video_title_curr">
+        __title__
+    </div>
+
+    <div id="bx_store_product_video_curr">
+        <bx_repeat:videos>
+            <div id="bx_store_product_video_curr___id__" style="__style__">__video__</div>
+        </bx_repeat:videos>                
+    </div>
+
+    <div id="bx_store_product_videos_icons">
+        <bx_repeat:icons>
+            <div class="sys_icon"><img alt="__id__" title="__title__" src="__icon_url__" /></div>
+        </bx_repeat:icons>
+        <div class="clear_both"></div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+                bx_center_content ('#bx_store_product_videos_icons', '.sys_icon');
+                $('#bx_store_product_videos_icons .sys_icon img').bind('click', function () {
+                    var e = $(this);
+                    $('#bx_store_product_video_title_curr').html(e.attr('title'));
+                    $('#bx_store_product_video_curr > div:visible').fadeOut(1000);
+                    $('#bx_store_product_video_curr_'+e.attr('alt')).fadeIn(1000);
+                });
+        });
+    </script>
+
+</div>

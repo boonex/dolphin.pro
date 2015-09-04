@@ -1,0 +1,114 @@
+<script type="text/javascript">
+	/**
+	 * @description : constructor;
+	 */
+
+	function MailBoxArchive()
+	{
+		// call the parent constructor ;
+		this.constructor();
+		this.sErrorMessage	 = '__select_messages__';
+		this.sSurecaption	 = '__are_you_sure__';
+
+		this.sResponceBlock	 = 'mail_archives_box';
+		this.sPageParameters = '?ajax_mode=true&contacts_mode=' + sContacts_mode; 
+		this.sPageReceiver	 = '__current_page__' + this.sPageParameters ;
+
+		// redefinition `deleteMessages` from the base function; 
+
+		/**
+		 * @description : function will move all selected messages into trash ;
+		 * @param		: sContainer (string) - contain name of section where jquery will find it ;
+		 * @param		: sCallbackFunction (string) - callback function that will return answer from server side;
+		 * @return		: Html presentation data ;
+		 */
+
+		this.deleteMessages = function(sContainer, sCallbackFunction )
+		{
+			var sMessagesId = '';
+			var iValue		= '';
+			var _this = this;
+			var bRelocate = false;
+
+			var oCheckBoxes = $("." + sContainer + " input:checkbox:checked").each(function(){
+				iValue = $(this).attr('value').replace(/[a-z]{1,}/i, '');
+				if ( iValue ) 
+				{
+					sMessagesId += iValue + ',';
+					if (  iValue == iMessageId )
+						bRelocate = true;
+				}	
+			});
+
+			if ( sMessagesId )
+			{
+				if ( confirm(this.sSurecaption) )
+				{
+					var sPageUrl = this.sPageReceiver + '&messages=' + sMessagesId 
+													  + '&callback_function=' + sCallbackFunction
+													  + '&messageID=' + iMessageId;
+													  + this.ExtendedParameters;
+
+					$('#'+this.sResponceBlock).load(sPageUrl, {'action' : 'delete'}, function(){
+						if (bRelocate) {
+							_this.relocateInbox();	
+						}
+					});
+				}
+			}
+			else
+				alert(this.sErrorMessage);
+		}
+
+		/**
+		 * @description : function will get paginated page ;
+		 * @param		: iPage (integer) number of needed page ;
+		 * @return		: Html presentation data;
+		 */
+
+		this.getPaginatePage  = function(iPage)
+		{
+			var _this = this;
+			sPageUrl = '__current_page__?ajax_mode=true&action=archives_paginate&contacts_mode=' 
+								+ sContacts_mode + '&contacts_page=' + iPage + '&messageID=' + iMessageId;
+
+			getHtmlData( this.sResponceBlock, sPageUrl,  function(){
+			} );
+		}
+	}
+
+	// create the object;
+	MailBoxArchive.prototype = MailBox.prototype;
+
+	// add some function to the object ;
+
+	/**
+	 * @description : function will relocate current page ;
+	 */
+
+	MailBoxArchive.prototype.relocateInbox = function()
+	{
+		window.location.href = '__current_page__';
+	}
+
+	/**
+	 * @description : function will select function name form received data;
+	 */
+
+	MailBoxArchive.prototype.selectFunction = function( sValue )
+	{
+		switch(sValue)
+		{
+			case 'delete' :
+				this.deleteMessages('contacts_container', 'genArchiveMessages');
+			break;
+			case 'spam' :
+				this.spamMessages('contacts_container');
+			break;
+		}
+	}
+</script>
+<bx_include_auto:designbox_top_controls.html />
+<div id="mail_archives_box">
+	__messages_rows__
+</div>

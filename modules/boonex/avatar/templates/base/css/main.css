@@ -1,0 +1,76 @@
+
+.bx_ava_tar {
+    width:64px;
+    height:90px;
+    overflow:hidden;
+    float:left;
+}
+
+.bx_ava_tar .thumbnail_image {
+    float:none;
+}
+
+.bx_ava_actions {
+    text-align:center;
+    margin-top:4px;
+}
+
+.bx_ava_actions .sys-icon {
+    display:inline-block;
+    font-size:18px;
+    min-width:16px;
+    min-height:16px;
+}
+
+.bx_ava_actions a {
+    text-decoration:none;
+}
+
+#bx_ava_current {
+    float:left;
+    width:68px;
+    height:68px;
+    position:relative;
+}
+
+.bx_ava_block {
+    float:left;
+    max-width:500px;
+}
+.bx_ava_block > b {
+    margin:0 0 5px 0px;    
+    display:block;
+}
+
+.bx_ava_block > form {
+    margin:6px 0 0 0;
+}
+
+.bx_ava_block > input {
+    margin:7px 0 0 0;
+    display:block;
+}
+
+#bx_ava_crop_img {
+    display:block;
+}
+
+#bx_ava_crop_img_preview {
+    width:64px;
+    height:64px; 
+    overflow:hidden;
+    position:relative;
+}
+
+#bx_ava_crop_img_preview_cont {
+    float:left;
+}
+
+.bx_ava_err {
+    color:red;
+}
+
+#bx_ava_my_avatars .MsgBox td {
+    padding:0;
+    border:none;
+}

@@ -1,0 +1,64 @@
+<b>IMPORTANT!!!</b><br />
+Automatic part of upgade is completed. Please do the following to complete upgrade process: <br />
+<ul>    
+    <li>
+        Add the following lines to <b>inc/header.inc.php</b> file:
+        <pre style="border:1px solid #060; color:#060; overflow:scroll;">
+define('BX_DOL_SPLASH_VIS_DISABLE', 'disable');
+define('BX_DOL_SPLASH_VIS_INDEX', 'index');
+define('BX_DOL_SPLASH_VIS_ALL', 'all');
+        </pre>
+        after the following:
+        <pre style="border:1px solid #060; color:#060; overflow:scroll;">
+define('DATABASE_PASS', $db['passwd']);
+define('DATABASE_NAME', $db['db']);
+        </pre>
+    </li>    
+    <li>
+        Change the following line in <b>inc/header.inc.php</b> file:
+        <pre style="border:1px solid #060; color:#060; overflow:scroll;">
+error_reporting(E_ALL &amp; ~E_NOTICE &amp; ~E_DEPRECATED);
+        </pre>
+        to the following:
+        <pre style="border:1px solid #060; color:#060; overflow:scroll;">
+error_reporting(E_ALL &amp; ~E_NOTICE &amp; ~E_DEPRECATED &amp; ~E_STRICT);
+        </pre>
+    </li>
+    <li>    
+        Change the following lines in <b>inc/header.inc.php</b> file:
+        <pre style="border:1px solid #060; color:#060; overflow:scroll;">
+$site['ver']               = '7.0';
+$site['build']             = '9';
+        </pre>
+        to the following:
+        <pre style="border:1px solid #060; color:#060; overflow:scroll;">
+$site['ver']               = '7.1';
+$site['build']             = '0'; // B1
+        </pre>
+    </li>
+    <li>    
+        Delete unused files by executing the following command from SSH :
+        <pre style="border:1px solid #060; color:#060; overflow:scroll;">
+php ./upgrade/files/7.0.9-7.1.0.B1/delete_unused_files.php
+        </pre>
+    </li>
+    <li>Remove <b>/upgrade/</b> directory</li>
+    <li>Clean <b>/cache/</b>, <b>/cache_public/</b> and <b>/tmp/</b> folders via FTP or SSH, leave only .htaccess file there if one exists</li>
+    <li>Recompile system language file from Admin Panel -&gt; Settings -&gt; Languages Settings -&gt; Languages</li>
+    <li>Clean <b>/cache/</b> folder again</li>
+	<li>Recompile Forum language file from Admin Panel -&gt; Modules -&gt; Forum -&gt; Manage Forum</li>    
+    <li>
+        Now you can install back Spy and Timeline(former Wall) modules. Also you can install new World Map module as well. 
+        To do it - go to Admin Panel -&gt; Modules -&gt; Add &amp; Manage.
+    </li>
+    <li>
+        Captcha were replaced with reCaptcha, to use it you need special keys. 
+        Go to <a href="http://www.google.com/recaptcha" target="_blank">reCaptcha</a> website, generate your keys and enter them in 
+        Admin Panel -&gt; Settings -&gt; Advanced Settings -&gt; Security.
+    </li>
+    <li>    
+        Pages Width, Page Blocks positions and Page Columns were reset to default.
+        Many blocks (and all 3rd-party blocks) were deactivated(they are inactive now), you can activate them by dragging to the desired position in 
+        Admin Panel -&gt; Builders -&gt; Pages Builder.
+    </li>
+</ul>

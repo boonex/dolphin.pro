@@ -1,0 +1,27 @@
+<div class="sys_cal_wrapper">
+    <bx_include_auto:designbox_top_controls.html />
+    <div class="sys_cal_table_wrp bx-def-bc-margin-sec">
+        <table class="sys_cal_table">
+            <tr>
+                <bx_repeat:week_names>
+                    <th>__name__</th>
+                </bx_repeat:week_names>
+            </tr>
+            <bx_repeat:calendar_row>
+                <tr>
+                    <bx_repeat:cell>
+                        <td class="__class__" valign="top">
+                            <u class="bx-def-font-small">__day__</u>
+                            <bx_if:num>
+                                <a href="__href__"><b class="bx-def-font-h2">__num__</b> <span class="bx-phone-hide">__entries__</span></a>
+                            </bx_if:num>
+                        </td>
+                    </bx_repeat:cell>
+                </tr>
+            </bx_repeat:calendar_row>    
+        </table>
+    </div>
+    <div class="dbBottomMenu">
+        __bottom_controls__
+    </div>
+</div>

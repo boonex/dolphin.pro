@@ -1,0 +1,36 @@
+.rateObject {
+    
+}
+
+.ratePart {
+	
+}
+
+.fileBody {
+   
+}	
+
+.fileInfo {
+
+}
+
+.fileInfo div {
+    position: relative;
+}
+
+.fileTitle {
+
+}
+
+.fileWhen {
+	float: left;
+	color: #CCCCCC;
+}
+
+.fileFrom {
+	float: left;
+}	
+
+.fileTitle {
+    font-weight: bold;
+}

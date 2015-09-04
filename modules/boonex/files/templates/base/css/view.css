@@ -1,0 +1,149 @@
+div#actionList {
+    position: relative;
+}
+
+div#actionList div {
+    position: relative;
+    float: left;
+    width: 140px;
+    margin: 10px;
+    font-weight: bold;
+}
+
+div#actionList img {
+    margin: 0px 10px;
+}
+
+div#actionList a {
+    font-size: 16px;
+}
+
+/* file body begn */
+.fileUnit {
+    position: relative;
+}
+
+.fileUnitLeft {
+    position: absolute;
+    top: 0px;
+	left: 0px;
+}
+
+.fileUnitPic {
+    background: center no-repeat #EDEDED;
+    border: 1px solid #CCCCCC;
+    width: 68px;
+    height: 68px;
+}
+
+.fileUnitSpacer {
+    width: 64px;
+    height: 64px;
+}
+
+.fileUnitRight {
+    position: relative;
+    min-height: 70px; 
+    margin-left: 80px;
+}
+
+.fileTitle {
+    position: relative;
+}
+
+.fileSize {
+    position: relative;
+}
+
+.fileUnitInfo {
+    position: relative;
+    height: 20px;
+}
+
+.fileUnitInfoRate {
+    position: relative;
+    float: left;
+}
+
+.fileUnitInfoCounts {
+    position: relative;
+    float: right;
+    height: 16px;
+    line-height: 16px;
+}
+
+.fileUnitInfoFav {
+    position: relative;
+    float: left;
+    margin: 0px 5px;
+    padding-left: 18px;
+}
+
+.fileUnitInfoFav img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.fileUnitInfoView {
+    position: relative;
+    float: left;
+    margin: 0px 5px;
+    padding-left: 18px;
+}
+
+.fileUnitInfoView img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.fileUnitInfo .votes_big {
+    margin: 0px;
+}
+
+/*  file body end  */
+
+.infoMain {
+    
+}
+
+.bx_files_upload_form_wrapper .input_wrapper_value {
+    font-weight: normal;
+}
+
+/* redeclare form other files */
+
+.boxContent .votes_small {
+    float: none;
+    position:relative;
+    width: auto;
+}
+
+.votes_small b {
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.memberPic {
+	margin-left: 5px;
+}
+
+.infoText {
+    margin: 5px;
+}
+
+.infoOwner {
+    font-weight: bold;
+}
+
+span.infoWhen {
+    font-size: 9px;
+	margin-left: 2px;
+	color: #888888;
+    text-transform: lowercase;
+}
+
+#submitAction div.input_wrapper_custom {
+    width: 100%;
+}

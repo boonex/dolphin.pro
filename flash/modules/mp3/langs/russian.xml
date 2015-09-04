@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<items>
+    <item key="_name_"><![CDATA[Русский]]></item>
+    <item key="txtAuthor"><![CDATA[От #user#]]></item>
+    <item key="txtViews"><![CDATA[Просмотров: #views#]]></item>
+
+    <item key="msgConnectionError"><![CDATA[ОШИБКА СОЕДИНЕНИЯ]]></item>
+	<item key="msgLoading"><![CDATA[ЗАГРУЗКА]]></item>
+	<item key="msgProcessing"><![CDATA[ОБРАБОТКА]]></item>
+	<item key="msgReconnect"><![CDATA[Ошибка соединения. Нажмите OK, чтобы соединиться заново.]]></item>
+    <item key="msgAuthorizingUserError"><![CDATA[Неправильный логин или пароль]]></item>
+    <item key="msgFileNotFound"><![CDATA[Ошибка! Файл не найден.]]></item>
+    <item key="msgFileNotProcessed"><![CDATA[Ошибка! Файл не обработан.]]></item>
+    <item key="msgFileNotApproved"><![CDATA[Ошибка! Файл не одобрен.]]></item>
+
+    <item key="btnCancel"><![CDATA[Отменить]]></item>
+    <item key="btnOk"><![CDATA[OK]]></item>
+    <item key="btnSave"><![CDATA[СОХРАНИТЬ]]></item>
+    <item key="btnReplay"><![CDATA[ИГРАТЬ СНОВА]]></item>
+	<item key="btnPreview"><![CDATA[ПРЕДПРОСЛУШИВАНИЕ]]></item>
+	<item key="btnRecord"><![CDATA[ПЕРЕЗАПИСАТЬ]]></item>
+
+    <item key="dlgConfirm"><![CDATA[Подтверждение]]></item>
+    <item key="dlgAlert"><![CDATA[Предупреждение]]></item>
+    <item key="dlgDeleteFiles"><![CDATA[Вы уверены, что хотите удалить эти файлы?]]></item>
+
+	<item key="hintEdit"><![CDATA[Редактировать]]></item>
+    <item key="hintPlay"><![CDATA[Играть]]></item>
+    <item key="hintPause"><![CDATA[Пауза]]></item>
+	<item key="hintPrevious"><![CDATA[Предыдущий]]></item>
+    <item key="hintNext"><![CDATA[Следующий]]></item>
+    <item key="hintRemove"><![CDATA[Удалить]]></item>
+	<item key="hintSave"><![CDATA[Скачать]]></item>
+	<item key="hintReplay"><![CDATA[Перегрузить]]></item>
+	<item key="hintVolume"><![CDATA[Громкость]]></item>
+	<item key="hintRecord"><![CDATA[Запись]]></item>
+	<item key="hintStop"><![CDATA[Стоп]]></item>
+	<item key="hintMicrophone"><![CDATA[Микрофон]]></item>
+</items>

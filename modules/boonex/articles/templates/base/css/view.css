@@ -1,0 +1,73 @@
+div.arl-cb {
+	clear: both;
+	font-size: 0px;
+}
+div.arl-view,
+div.arl-content {    
+    width: 100%;
+    position: relative;
+}
+div.arl-entries {
+    position: relative;
+}
+div.arl-entry-divider:first-child {
+	display: none;
+}
+div.arl-entry {
+    position: relative;
+}
+div.arl-info {
+    min-height: 38px;    
+    position: relative;
+}
+div.arl-caption,
+div.arl-date,
+div.arl-text {
+    position: relative;
+}
+div.arl-text img {
+    max-width: 100%;
+    height: auto;
+}
+div.arl-date {
+    text-transform: lowercase;
+}
+div.arl-caption {}
+span.arl-status {}
+a.arl-action {
+    text-transform: lowercase;
+}
+
+div.arl-text-snippet {
+	/*
+    TEXT-OVERFLOW: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap; 
+    overflow: hidden;
+	*/
+}
+div.arl-comments {
+    position: relative;
+    clear: both;
+}
+div.arl-comments div.cmt-reply {
+    padding: 0px;
+}
+div.arl-comments div.cmts {
+    padding: 0px;
+}
+div.arl-entry div.votes_small {
+    top: 10px;
+    right: 10px;
+    width: auto;
+    position: absolute;
+}
+
+div.arl-calendar-unit {
+    position: relative;
+}
+
+/*--- Admin panel ---*/
+div.block_cont {
+    padding: 0px;
+}

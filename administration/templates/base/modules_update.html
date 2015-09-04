@@ -1,0 +1,18 @@
+<bx_if:show_available>
+	<span class="mi-update mi-update-available">
+		<span class="mi-update-text">__text__</span>
+		<bx_if:show_update_view>
+			<a class="bx-btn bx-btn-small mi-update-link" href="__link__" target="_blank"><bx_text:_View /></a>
+		</bx_if:show_update_view>
+	    <bx_if:show_update_download>
+			<a class="bx-btn bx-btn-small mi-update-link" href="javascript:void(0)" onclick="javascript:__js_object__.downloadUpdate('__link__');"><bx_text:_download /></a>
+		</bx_if:show_update_download>
+	</span>
+</bx_if:show_available>
+<bx_if:show_latest>
+	<span class="mi-update mi-update-notavailable">
+		<span class="mi-update-text">
+        	<bx_text:_adm_txt_modules_update_latest />
+        </span>
+    </span>
+</bx_if:show_latest>

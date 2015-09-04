@@ -1,0 +1,42 @@
+
+<div class="bx_sys_file_upload_wrapper">
+
+    <div class="bx_sys_file_upload_line">
+
+        <div class="input_wrapper input_wrapper_file">
+            <input class="form_input_file bx-def-font" type="file" name="__file__[]" size="12" />
+        </div>
+        <i title="Add" alt="Add" class="multiply_add_button sys-icon plus-circle" onclick="$(this).parent().parent().append($(this).parent().clone().find('.multiply_add_button').remove().end().find('.multiply_remove_button').show().end().hide()).find('.bx_sys_file_upload_line').slideDown();"></i>
+        <i title="Remove" alt="Remove" class="multiply_remove_button sys-icon minus-circle" onclick="var $this = this; $(this).parent().slideUp(function () { $($this).parent().remove(); });" style="display:none;"></i>
+        <div class="clear_both"></div>
+        <div class="bx_sys_file_upload_title">        
+            __file_upload_title__
+        </div>
+        <div class="input_wrapper input_wrapper_text bx-def-round-corners-with-border">
+            <input class="form_input_text bx-def-font" type="text" name="__title__[]"/>
+        </div>
+        <div class="clear_both"></div>
+
+        <bx_if:price>
+            <div class="bx_sys_file_upload_title">
+                __file_price_title__
+            </div>    
+            <div class="input_wrapper input_wrapper_text bx-def-round-corners-with-border">
+                <input class="form_input_text bx-def-font" type="text" name="__price__[]"/>
+            </div>
+            <div class="clear_both"></div>
+        </bx_if:price>
+
+        <bx_if:privacy>
+            <div class="bx_sys_file_upload_title">
+                __file_permission_title__
+            </div>    
+            __select__
+            <div class="clear_both"></div>
+        </bx_if:privacy>
+
+        <div class="clear_both"></div>
+
+    </div>
+
+</div>

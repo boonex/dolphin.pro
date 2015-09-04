@@ -1,0 +1,96 @@
+
+/* info block */ 
+
+.bx_sys_block_info {}
+
+.bx_sys_block_info .memberPic {
+    width:70px;
+    overflow:hidden;
+}
+
+.bx_sys_block_info .infoUnit {
+    overflow:hidden;
+}
+
+
+/* videos/sounds blocks */ 
+
+.bx_sys_block_videos_title_curr,
+.bx_sys_block_sounds_title_curr {
+    text-align:center;
+}
+
+.bx_sys_block_videos_curr,
+.bx_sys_block_sounds_curr {
+    position:relative;
+}
+
+.bx_sys_block_videos_curr > div,
+.bx_sys_block_sounds_curr > div {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+}
+
+.bx_sys_block_videos_curr div.viewFile {
+	margin: 0px auto;
+	padding: 0px;
+	border: 0px;
+}
+
+.bx_sys_block_videos_icons > .sys_icon,
+.bx_sys_block_sounds_icons > .sys_icon {
+    float:left;
+    width:auto;
+}
+
+.bx_sys_block_videos_icons > .sys_icon > img,
+.bx_sys_block_sounds_icons > .sys_icon > img {
+    cursor:hand;
+    cursor:pointer;
+    width:64px;
+}
+
+/* files block */ 
+
+.bx_sys_files_wrapper .bx-def-hr:first-child {
+    display:none;
+}
+
+.bx_sys_files_line {
+    position:relative;
+    padding:0 0 0 48px;
+    min-height:48px;
+}
+
+.bx_sys_files_line .sys_icon {
+    position:absolute;
+    top:0px;
+    left:0px;    
+}
+
+.bx_sys_files_line p {
+    display:block;
+    font-weight:bold;
+    padding-bottom:5px;
+    margin:0px;
+}
+
+.bx_sys_files_line u {
+    text-decoration:none;
+    font-style:normal;
+    text-transform:lowercase;
+}
+
+.bx_sys_files_line .bx-btn,
+.bx_sys_files_line .button_wrapper {    
+    float:right;
+    margin-left:10px;
+}
+
+.bx_sys_files_line .bx-btn:last-child,
+.bx_sys_files_line .button_wrapper:last-child {
+    margin-left:0px;
+}
+

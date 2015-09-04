@@ -1,0 +1,38 @@
+<div class="bx-twig-unit bx-twig-unit-admin bx_events_unit bx-def-margin-top-auto">
+
+    <div class="bx_sys_unit_checkbox bx-def-round-corners">
+        <input type="checkbox" name="entry[]" value="__id__" />
+    </div>
+
+    <div class="bx-twig-unit-thumb-cont bx-def-margin-sec-right">
+        <a href="__event_url__"><img class="bx-twig-unit-thumb bx-def-round-corners bx-def-shadow" src="__thumb_url__"></a>
+    </div>
+
+    <div class="bx-twig-unit-info">
+
+        <div class="bx-twig-unit-title bx-def-font-h2">
+            <a href="__event_url__">__event_title__</a>
+        </div>
+
+        <div class="bx-twig-unit-line bx-twig-unit-desc">__snippet_text__</div>
+
+        <div class="bx-twig-unit-line bx-twig-unit-special">__event_start__</div>
+
+        <div class="bx-twig-unit-line">__country_city__</div>
+
+        <div class="bx-twig-unit-line bx_events_unit_participants"><i class="sys-icon user bx-def-font-grayed"></i><b>__participants__</b></div>
+
+        <bx_if:full>
+
+            <div class="bx-twig-unit-line bx-twig-unit-rate">__rate__</div>
+        
+            <div class="bx-twig-unit-line bx-def-font-small bx-def-font-grayed">
+                <bx_text:_From /> <a href="__author_url__">__author__</a>
+            </div>                    
+
+        </bx_if:full>
+
+    </div>    
+
+</div>
+

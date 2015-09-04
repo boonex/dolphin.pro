@@ -1,0 +1,29 @@
+<bx_repeat:orders>
+    <div class="pmt-orders-item">
+        <div class="pmt-orders-chb">
+            <input type="checkbox" name="orders[]" value="__id__" />
+        </div>
+        <div class="pmt-orders-date">__date_uf__</div>
+        <div class="pmt-orders-client">
+        	<bx_if:show_link>
+            	<a href="__user_url__" target="_blank">__user_name__</a>
+            </bx_if:show_link>
+            <bx_if:show_text>__user_name__</bx_if:show_text>
+        </div>
+        <div class="pmt-orders-order">
+            <bx_if:pending>
+                <div class="input_wrapper input_wrapper_text bx-def-round-corners-with-border">
+                    <input type="text" name="order-data-__id__" class="form_input_text bx-def-font" value="__order__" />
+                </div>
+            </bx_if:pending>
+            <bx_if:processed>__order__</bx_if:processed>
+        </div>
+        <div class="pmt-orders-amount">__amount__</div>
+        <div class="pmt-orders-license">__license__</div>        
+        <div class="pmt-orders-action">
+            __products__ __txt_more_products__ __items__ __txt_more_items__ <a href="javascript:void(0)" onclick="javascript:__js_object__.more('__type__', __id__)">__txt_action_more__</a>
+        </div>
+        <div class="pmt-cb">&nbsp;</div>
+    </div>
+</bx_repeat:orders>
+__paginate_panel__

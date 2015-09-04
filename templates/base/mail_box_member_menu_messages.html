@@ -1,0 +1,47 @@
+<bx_if:menu_position_bottom>
+    <div class="content extra_menu_subitem_container">        
+        <a href="<bx_url_root />mail.php?mode=inbox">__go_inbox__</a> (__inbox_count__)
+    </div>
+    <div class="content extra_menu_subitem_container">        
+        <a href="<bx_url_root />mail.php?mode=outbox">__go_outbox__</a> (__outbox_count__)
+    </div>
+    <div class="content extra_menu_subitem_container">
+        <a href="<bx_url_root />mail.php?mode=trash">__go_trash__</a> (__trash_count__)
+    </div>
+    <div class="content extra_menu_subitem_container">
+        <a href="<bx_url_root />mail.php?mode=compose">__go_compose__</a> 
+    </div>
+</bx_if:menu_position_bottom>
+<bx_repeat:new_message>
+	<div class="extra_menu_list">
+	    <table>
+	        <tbody>
+	            <tr>
+	                <td class="icon">
+	                    __thumbnail__
+	                </td>
+	                <td valign="top">
+	                    <a href="__sender_link__" class="message">__sender_nick__</a>
+	                    <div class="message_caption">
+	                        <a href="<bx_url_root />mail.php?mode=view_message&messageID=__message_id__" class="msg_link">__msg_caption__</a>
+	                    </div>
+	                </td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
+</bx_repeat:new_message>
+<bx_if:menu_position_top>
+    <div class="content extra_menu_subitem_container">
+        <a href="<bx_url_root />mail.php?mode=inbox">__go_inbox__</a> (__inbox_count__)
+    </div>
+    <div class="content extra_menu_subitem_container">
+        <a href="<bx_url_root />mail.php?mode=outbox">__go_outbox__</a> (__outbox_count__)
+    </div>
+    <div class="content extra_menu_subitem_container">
+        <a href="<bx_url_root />mail.php?mode=trash">__go_trash__</a> (__trash_count__)
+    </div>
+    <div class="content extra_menu_subitem_container">
+        <a href="<bx_url_root />mail.php?mode=compose">__go_compose__</a> 
+    </div>
+</bx_if:menu_position_top>

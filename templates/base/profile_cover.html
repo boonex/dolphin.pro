@@ -1,0 +1,37 @@
+<div class="sys-profile-cover bx-def-margin-top bx-def-border bx-def-round-corners">
+	<div class="sys-profile-cover-bg-l1__background_class__"<bx_if:show_background> style="background-image: url(__background__)"</bx_if:show_background>></div>
+	<div class="sys-profile-cover-bg-l2"></div>
+	<bx_if:show_actions>
+		<div class="sys-profile-cover-actions bx-def-padding">
+			<a class="bx-btn bx-btn-small sys-pca-change-background" href="__href_upload__" title="<bx_text_attribute:_sys_btn_cover_change />"><i class="sys-icon picture-o sys-pca-icon"></i><span class="sys-pca-text"><bx_text:_sys_btn_cover_change /></span></a>
+		</div>
+	</bx_if:show_actions>
+	<div class="sys-profile-cover-cnt">
+		<div class="sys-profile-cover-thumbnail">
+			<bx_if:show_thumbnail_image>
+				<a class="sys-pct-link" href="__thumbnail_href__">
+					<img class="sys-pct-image" src="__thumbnail__" />
+				</a>
+			</bx_if:show_thumbnail_image>
+			<bx_if:show_thumbnail_letter_text><p class="sys-pct-letter">__letter__</p></bx_if:show_thumbnail_letter_text>
+			<bx_if:show_thumbnail_letter_link>
+				<a class="sys-pct-link" href="__thumbnail_href__">
+					<p class="sys-pct-letter">__letter__</p>
+				</a>
+			</bx_if:show_thumbnail_letter_link>
+		</div>
+		<div class="sys-profile-cover-text">
+			<div class="sys-profile-cover-text-cnt">
+				<h1 class="sys-pct-nickname bx-def-font-h1">__nickname__</h1>
+				<p class="sys-pct-status bx-def-padding-sec-top">__status__</p>
+			</div>
+		</div>
+		<div class="sys-profile-cover-menu">
+			<div class="sys-profile-cover-menu-cnt">
+				<bx_repeat:menu_items>
+					<a class="sys-pcm-item bx-def-margin-left-auto" href="__href__"<bx_if:show_onclick> onclick="__onclick__"</bx_if:show_onclick><bx_if:show_target> target="__target__"</bx_if:show_target>>__caption__</a>
+				</bx_repeat:menu_items>
+			</div>
+		</div>
+	</div>
+</div>

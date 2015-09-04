@@ -1,0 +1,321 @@
+@import url(../../base/css/top_menu.css);
+
+/*--- Main Menu Section ---*/
+div.sys_main_menu {
+	position: relative;
+	z-index: 2;
+
+	border-top: 0px;
+	border-bottom: 0px;
+	box-shadow: none;
+	background-color: rgba(0, 0, 0, 0.5);
+	
+	overflow: hidden;
+}
+div.sys_mm {
+	position: relative;
+
+	-webkit-overflow-scrolling: touch;
+}
+div.sys_mm_cnt {
+	position: relative;
+
+	padding-top: 5px;
+	padding-bottom: 5px;
+
+	overflow-y: hidden;
+	overflow-x: auto;
+	white-space: nowrap;
+}
+div.sys_mm_cnt::-webkit-scrollbar {
+	width: 12px;
+}
+div.sys_mm_cnt::-webkit-scrollbar-track {
+	-webkit-border-radius: 3px;
+    border-radius: 3px;
+	
+	background-color: rgba(0, 0, 0, 0.4); 
+}
+div.sys_mm_cnt::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+
+    background: rgba(255, 255, 255, 0.9); 
+    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5); 
+}
+div.sys_mm_cnt::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255, 255, 255, 0.4); 
+}
+	
+	
+table.topMenu td {
+	height: 28px;
+}
+table.topMenu a, 
+table.topMenu a:link, 
+table.topMenu a:visited, 
+table.topMenu b {
+	height: 28px;
+	line-height: 28px; 
+	text-transform: uppercase;
+	text-shadow: none;
+	text-decoration: none;
+	font-weight: normal;
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.7);
+}
+table.topMenu a span.down, 
+table.topMenu b span.down {
+	height: 28px;
+}
+table.topMenu td.top:hover a span.down, 
+table.topMenu td.top:hover b span.down,
+table.topMenu td.top a:hover a span.down, 
+table.topMenu td.top a:hover b span.down {
+	background-color: transparent;
+}
+table.topMenu td#tm_active a.top_link, 
+table.topMenu td#tm_active a.top_link:link, 
+table.topMenu td#tm_active a.top_link:visited, 
+table.topMenu td#tm_active a.top_link:active {	
+	font-weight: bold;
+	color: rgba(255, 255, 255, 1.0);
+}
+table.topMenu td.top:hover a.top_link, 
+table.topMenu td.top:hover a.top_link:link, 
+table.topMenu td.top:hover a.top_link:visited, 
+table.topMenu td.top:hover a.top_link:active {
+	color: rgba(255, 255, 255, 0.9);
+}
+
+/*--- Subitems Popup ---*/
+table.topMenu td.top ul.sub {
+	z-index: -1;
+	top: 0px;
+
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-top-left-radius: 0px;
+
+	background-color: rgba(0, 0, 0, 0.7);
+
+	visibility: visible;
+}
+table.topMenu td.top:hover ul.sub {
+    visibility: visible;
+    display: none; 
+}
+table.topMenu ul.sub li a.more_ntop_element {
+    color: rgba(255, 255, 255, 0.9);
+}
+table.topMenu ul.sub li:hover a.button {
+	background-color: rgba(255, 255, 255, 0.1);
+
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+/*--- Subitems Popup Level 2 ---*/
+table.topMenu ul.more_sub { 
+	background-color: #5d8097;
+}
+table.topMenu ul.sub ul.more_sub a.button {
+	background-color: transparent;
+}
+table.topMenu ul.sub ul.more_sub li:hover a.button {
+    background-color: rgba(255, 255, 255, 0.1);
+
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+table.topMenu ul.sub a.more_top_element:hover,
+table.topMenu ul.sub a.more_ntop_element:hover,
+table.topMenu ul.sub a.more_top_element.active,
+table.topMenu ul.sub a.more_ntop_element.active { 
+	color: rgba(255, 255, 255, 0.7);
+}
+
+/*--- Submenu Section ---*/
+div.sys_sub_menu_holder {
+	position: relative;
+	display: none;
+	height: 44px;
+}
+div.sys_smh_hidden {
+	display: none;
+}
+div.sys_smh_visible {
+	display: block;
+}
+div.sys_sub_menu {
+    z-index: 4;
+
+	margin: 0px;
+
+	background-color: rgba(255, 255, 255, 0.9);
+}
+div.sys_sm_relative {
+	position: relative;
+}
+div.sys_sm_fixed {
+	position: fixed;
+	width: 100%;
+	top: 0px;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+}	
+div.sys_sm {
+    margin: 0px auto;
+}
+div.subMenu {
+	min-height: 0px;
+
+	background-color: transparent; 
+	border: none;
+}
+div.subMenuCnt {
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+div.sys_page_icon,
+div.sys_page_header,
+div.sys_page_header_divider,
+div.sys_page_submenu,
+div.sys_page_actions {
+	height: 32px;
+	line-height: 32px;
+}
+
+div.sys_page_icon {
+	width: 32px;
+
+	text-align: center;
+}
+div.sys_page_icon .img_submenu.sys-icon {
+    font-size: 24px;
+}
+div.sys_page_icon div.thumbnail_image a {
+	line-height: normal;
+}
+div.sys_page_header {
+	z-index: 4;	
+	font-size: 16px;
+}
+div.sys_page_submenu {
+	z-index: 4;
+	overflow: visible;
+}
+div.sys_ph_submenu_submenu {
+	line-height: 22px;
+}
+div.sys_ph_submenu_submenu div.act,
+div.sys_ph_submenu_submenu div.pas {
+	padding: 5px 10px 5px 10px;
+
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+
+	text-transform: none;
+	font-size: 16px;
+}
+div.sys_ph_submenu_submenu div.act {
+	background-color: #cfe0ec;
+	color: rgba(0, 0, 0, 0.7);
+}
+div.sys_ph_submenu_submenu div.sys-bullet {
+	display: none;
+}
+div.sys_ph_submenu_submenu a.sublinks,
+div.sys_ph_submenu_submenu a.sublinks:link,
+div.sys_ph_submenu_submenu a.sublinks:visited {
+	color: rgba(2, 136, 209, 1);
+}
+div.sys_ph_submenu_submenu a.sublinks:hover, 
+div.sys_ph_submenu_submenu a.sublinks:active {
+	text-decoration: underline;
+}
+
+/*--- Header Divider ---*/
+div.sys_page_header_divider {
+	position: relative;
+	float: left;
+
+	font-size: 20px;
+
+	color: rgba(0, 0, 0, 0.2);
+}
+
+/*--- Header Submenu Submenu ---*/
+div.sys_ph_submenu_submenu {
+	position: absolute;
+	display: none;
+
+	background-color: #ffffff;
+}
+div.subMenu div.sys_ph_submenu_submenu div.act,
+div.subMenu div.sys_ph_submenu_submenu div.pas,
+div.subMenu div.sys_ph_submenu_submenu div.bullet {
+	float: none;
+
+	white-space: nowrap;
+}
+
+/*--- Header Actions ---*/
+div.sys_page_actions a.menuLink {
+	display: inline-block;
+
+	width: 32px;
+	margin-left: 10px;
+
+	text-decoration: none;
+	text-align: center;
+	font-size: 24px;
+}
+
+/*+++ Header Actions: Share +++*/
+div.sys-share-popup {
+	width: 150px;
+}
+div.sys-share-popup .rrssb-buttons {
+	height: auto;
+}
+div.sys-share-popup .rrssb-buttons li {
+	float: none;
+
+	margin: 10px; 
+}
+
+/*--- Header Bottom Submenu ---*/
+div.sys_page_submenu_bottom {
+	position: relative;
+	float: left;
+	z-index: 2;
+
+	line-height: 32px;
+	font-size: 16px;
+}
+div.sys_page_submenu_bottom div.sys_ph_submenu_submenu div.bullet {
+	display: none;
+}
+div.sys_page_submenu_bottom a.sys_page_header_submenu,
+div.sys_page_submenu_bottom .sys-icon,
+div.sys_page_submenu a.sys_page_header_submenu,
+div.sys_page_submenu .sys-icon {
+    text-decoration: none;
+
+	line-height: 24px;
+	font-size: 16px;
+	color: #666666;
+}
+
+div.sys_page_status {
+	z-index: 1;
+}
+
+/*--- Login/Join ---*/
+div.sys_page_actions div.sys_tm_login_join {
+    height: 32px;
+}

@@ -1,0 +1,43 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<items>
+	<item key="_name_"><![CDATA[Русский]]></item>
+    <item key="txtAuthor"><![CDATA[От #user#]]></item>
+    <item key="txtViews"><![CDATA[Просмотров: #views#]]></item>
+	
+    <item key="msgConnectionError"><![CDATA[ОШИБКА СОЕДИНЕНИЯ]]></item>
+	<item key="msgLoading"><![CDATA[ЗАГРУЗКА]]></item>
+	<item key="msgProcessing"><![CDATA[ОБРАБОТКА]]></item>
+	<item key="msgReconnect"><![CDATA[Ошибка соединения. Нажмите OK, чтобы соединиться заново.]]></item>
+    <item key="msgAuthorizingUserError"><![CDATA[Неправильный логин или пароль]]></item>
+    <item key="msgErrorScreenshot"><![CDATA[Ошибка при создании нового скриншота]]></item>
+    <item key="msgFileNotFound"><![CDATA[Ошибка! Файл не найден.]]></item>
+    <item key="msgFileNotProcessed"><![CDATA[Видео в обработке.]]></item>
+    <item key="msgFileNotApproved"><![CDATA[Видео на модерации.]]></item>
+    <item key="msgRemoveFiles"><![CDATA[Вы уверены, что хотите удалить эти файлы?]]></item>
+
+    <item key="btnCancel"><![CDATA[Отменить]]></item>
+    <item key="btnOk"><![CDATA[OK]]></item>
+    <item key="btnBrowse"><![CDATA[Обзор]]></item>
+    <item key="btnSave"><![CDATA[Сохранить]]></item>
+	<item key="btnReplay"><![CDATA[ИГРАТЬ СНОВА]]></item>
+	<item key="btnPreview"><![CDATA[ПРЕДПРОСМОТР]]></item>
+	<item key="btnRecord"><![CDATA[ПЕРЕЗАПИСАТЬ]]></item>
+
+    <item key="dlgConfirm"><![CDATA[Подтверждение]]></item>
+    <item key="dlgAlert"><![CDATA[Предупреждение]]></item>
+	
+    <item key="hintPlay"><![CDATA[Играть]]></item>
+    <item key="hintPause"><![CDATA[Пауза]]></item>
+	<item key="hintPrevious"><![CDATA[Предыдущий]]></item>
+    <item key="hintNext"><![CDATA[Следующий]]></item>
+    <item key="hintRemove"><![CDATA[Удалить]]></item>
+	<item key="hintFullScreen"><![CDATA[На весь экран]]></item>
+	<item key="hintFullScreenExit"><![CDATA[В окне]]></item>
+	<item key="hintScreen"><![CDATA[Установить скриншотом]]></item>
+	<item key="hintVolume"><![CDATA[Громкость]]></item>
+	<item key="hintSave"><![CDATA[Скачать]]></item>
+	<item key="hintReplay"><![CDATA[Перегрузить]]></item>
+	<item key="hintRecord"><![CDATA[Запись]]></item>
+	<item key="hintStop"><![CDATA[Стоп]]></item>
+	<item key="hintMicrophone"><![CDATA[Микрофон]]></item>
+</items>

@@ -1,0 +1,19 @@
+<div id="adm-langs-cnt-keys" style="display:__display__;">
+    <form id="adm-keys-form" enctype="multipart/form-data" method="post" action="" class="form_advanced">
+        __filter_panel__
+        <div class="adm-lk-keys bx-def-bc-margin">
+            <bx_repeat:items>
+                <div class="adm-lk-key bx-def-margin-thd-top-auto">
+                    <input type="checkbox" class="form_input_checkbox" id="adm-lk-__id__" name="keys[]" value="__id__" />
+                    __key__ (__category__) <a href="javascript:void(0)" onclick="javascript:onEditKey(__id__)"><bx_text:_adm_txt_langs_edit /></a>
+                </div>
+            </bx_repeat:items>
+        </div>
+        __control__
+    </form>
+    <script type="text/javascript" language="javascript">
+    <!--
+        var sAdminUrl = '__url_admin__';
+    -->
+    </script>
+</div>

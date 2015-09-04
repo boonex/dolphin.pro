@@ -1,0 +1,75 @@
+	/* universal links */
+	a, 
+	a:link,
+	a:hover, 
+	a:active  {
+		color:#006699;
+	}
+	a:visited {
+		color:#003366;
+	}
+	a, 
+	a:link, 
+	a:visited, 
+	a:active {
+		text-decoration:none;
+	}
+	a:hover {
+		text-decoration:underline;
+	}
+	/***************/
+
+	.actionsBlock a,
+	.actionsBlock a:link,
+	.actionsBlock a:visited,
+	.actionsBlock a:hover,
+	.actionsBlock a:active {
+		font-weight:bold;
+	}
+
+    .paginate a,
+	.paginate a:link,
+	.paginate a:visited {
+        text-decoration:none;
+        font-weight:bold;
+    }
+
+    /*Top level menu link items style*/
+    div.extra_top_menu table.fixed_menu div.popup_html a,
+    div.extra_top_menu table.fixed_menu div.popup_html a:link, 
+    div.extra_top_menu table.fixed_menu div.popup_html a:visited {
+        text-decoration: none;
+    }
+
+    div.extra_top_menu table.fixed_menu div.popup_html a:focus {
+     outline: 0;
+    }
+
+    /* Sub level menu links style */
+    div.extra_top_menu table.fixed_menu  div.html_data a,
+	div.extra_top_menu table.fixed_menu  div.html_data a:link,
+	div.extra_top_menu table.fixed_menu  div.html_data a:visited,
+	div.extra_top_menu table.fixed_menu  div.html_data a:hover  {
+        white-space: nowrap;
+        text-transform: none;
+		font-size: 16px;
+	}
+
+    div.extra_top_menu table.fixed_menu  div.html_data a.message,
+	div.extra_top_menu table.fixed_menu  div.html_data a.message:link,
+	div.extra_top_menu table.fixed_menu  div.html_data a.message:visited,
+	div.extra_top_menu table.fixed_menu  div.html_data a.message:hover {
+        font-weight:bold;
+        color:#3333CC;
+	}
+
+    div.notifi_window a,
+	div.notifi_window a:link,
+	div.notifi_window a:visited {
+        color:#FFF;
+        text-decoration:underline;
+	}
+
+    div.notifi_window a:hover {
+        text-decoration:none;
+    }

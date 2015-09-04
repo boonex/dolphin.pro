@@ -1,0 +1,42 @@
+.fileStatUnit {
+    text-align: center;
+}
+
+.fileStatCount {
+
+}
+
+.fileStatAdd {
+
+}
+
+.unit_checkbox {
+    position: absolute;
+    top: 1px;
+    width: 20px;
+}
+
+.album_cont {
+    float: left;
+}
+
+.album_column {
+    padding: 5px;
+}
+
+.sys_file_search_unit_short {
+	margin: 5px;
+}
+
+#sound_upload_form  .form_advanced_table .colspan .input_wrapper_custom { /*  overriding current 'auto' value with 100%  */
+	width:100%;
+}
+
+#btnCancel {
+    float:none;
+    display:inline-block;
+}
+
+.sys_warning_text {
+    color: #FF0000;
+}

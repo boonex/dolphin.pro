@@ -1,0 +1,34 @@
+<div class="paginate__class__ bx-def-padding-right bx-def-padding-left clearfix">
+	<div class="info_section">
+	    <bx_if:info>
+			<div class="info bx-def-margin-left-auto">
+				__from__-__to__ <span>__of__</span> __total__
+			</div>
+		</bx_if:info>
+	    <bx_if:per_page>
+	    	<div class="per_page bx-def-margin-left-auto">
+	            __per_page_caption__&nbsp;
+	            <select name="per_page" onchange="__per_page_on_change__">
+	                <bx_repeat:options>
+	                    <option value="__opt_value__" __opt_selected__>__opt_caption__</option>
+	                </bx_repeat:options>
+	            </select>
+	    	</div>
+	    </bx_if:per_page>
+		<bx_if:reloader>
+	        <div class="reloader bx-def-margin-left-auto">
+	            <div class="paginate_btn bx-def-border bx-def-round-corners">
+	                <a href="__lnk_url__" title="__lnk_title__" __lnk_on_click__>
+	                    <i class="sys-icon refresh"></i>
+	                </a>
+	            </div>
+	        </div>
+	    </bx_if:reloader>
+		<bx_if:view_all>
+	        <div class="view_all bx-def-margin-left-auto">
+	            <a href="__lnk_url__" title="__lnk_title__">__lnk_content__</a>
+	        </div>
+		</bx_if:view_all>
+	</div>
+	<div class="pages_section">__content__</div>
+</div>

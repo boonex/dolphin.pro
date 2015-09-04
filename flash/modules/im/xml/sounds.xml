@@ -1,0 +1,7 @@
+<items>
+    <item key="test" value="Blow.mp3" />
+    <item key="activeMessage" value="Hero.mp3" />
+    <item key="passiveMessage" value="Bottle.mp3" />
+    <item key="userMessage" value="Basso.mp3" />
+    <item key="userVideo" value="Purr.mp3" />
+</items>

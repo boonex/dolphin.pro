@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title>__page_header__</title>
+    	<meta http-equiv="Content-Type" content="text/html; charset=__page_charset__" />
+    	<meta http-equiv="Content-Style-Type" content="text/css" />
+    	<bx_include_css />
+    	<script src="inc/js/functions.js" type="text/javascript" language="javascript"></script>
+        <script src="plugins/jquery/jquery.js" type="text/javascript" language="javascript"></script>
+        <script defer type="text/javascript">
+    		var site_url = '<bx_url_root />';
+            setTimeout(function () {
+                document.location = '__url_relocate__';
+            }, 1000);
+    	</script>
+        <bx_injection:injection_head />
+    </head>
+    <body <bx_injection:injection_body /> class="bx-def-font">
+    	<bx_injection:injection_header />
+    	__page_main_code__
+    	<bx_injection:injection_footer />
+    </body>
+</html>

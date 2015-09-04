@@ -1,0 +1,27 @@
+
+.bx_store_main_photo {
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+}
+
+.bx_store_main_photo img {
+    background-color:#fff;
+}
+
+.bx_store_main_info_text {
+    width:70%;
+    float:left;
+    text-align:left;
+}
+.bx_store_main_info_img {
+    width:30%;
+    float:left;
+    text-align:right;
+}
+
+.bx_store_main_info_img .votes_small {
+    width:auto;
+    float:right;
+}
+

@@ -1,0 +1,368 @@
+/* margins */
+.bx-def-margin {
+    margin:20px;
+}
+.bx-def-margin-rightbottomleft {
+    margin-right:20px;
+    margin-bottom:20px;
+    margin-left:20px;
+}
+.bx-def-margin-leftright {
+    margin: 0px 20px;
+}
+.bx-def-margin-topbottom {
+    margin-top:20px;
+    margin-bottom:20px;
+}
+.bx-def-margin-top {
+    margin-top:20px;
+}
+.bx-def-margin-top-auto {
+    margin-top:20px;
+}
+.bx-def-margin-top-auto:first-child {
+    margin-top:0px;
+}
+.bx-def-margin-right {
+    margin-right:20px;
+}
+.bx-def-margin-bottom {
+    margin-bottom:20px;
+}
+.bx-def-margin-left {
+    margin-left:20px;
+}
+.bx-def-margin-left-auto {
+    margin-left:20px;
+}
+.bx-def-margin-left-auto:first-child {
+    margin-left:0px;
+}
+
+.bx-def-margin-sec {
+    margin:10px;
+}
+.bx-def-margin-sec-rightbottomleft {
+    margin-right:10px;
+    margin-bottom:10px;
+    margin-left:10px;
+}
+.bx-def-margin-sec-leftright {
+    margin-left:10px;
+    margin-right:10px;
+}
+.bx-def-margin-sec-topbottom {
+    margin-top:10px;
+    margin-bottom:10px;
+}
+.bx-def-margin-sec-top {
+    margin-top:10px;
+}
+.bx-def-margin-sec-top-auto {
+    margin-top:10px;
+}
+.bx-def-margin-sec-top-auto:first-child {
+    margin-top:0px;
+}
+.bx-def-margin-sec-right {
+    margin-right:10px;
+}
+.bx-def-margin-sec-bottom {
+    margin-bottom:10px;
+}
+.bx-def-margin-sec-left {
+    margin-left:10px;
+}
+.bx-def-margin-sec-left-auto {
+    margin-left:10px;
+}
+.bx-def-margin-sec-left-auto:first-child {
+    margin-left:0px;
+}
+
+.bx-def-margin-thd {
+    margin:5px;
+}
+.bx-def-margin-thd-rightbottomleft {
+    margin-right:5px;
+    margin-bottom:5px;
+    margin-left:5px;
+}
+.bx-def-margin-thd-leftright {
+    margin-left:5px;
+    margin-right:5px;
+}
+.bx-def-margin-thd-topbottom {
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.bx-def-margin-thd-top {
+    margin-top:5px;
+}
+.bx-def-margin-thd-top-auto {
+    margin-top:5px;
+}
+.bx-def-margin-thd-top-auto:first-child {
+    margin-top:0px;
+}
+.bx-def-margin-thd-right {
+    margin-right:5px;
+}
+.bx-def-margin-thd-bottom {
+    margin-bottom:5px;
+}
+.bx-def-margin-thd-left {
+    margin-left:5px;
+}
+.bx-def-margin-thd-left-auto {
+    margin-left:5px;
+}
+.bx-def-margin-thd-left-auto:first-child {
+    margin-left:0px;
+}
+
+/* paddings */
+.bx-def-padding {
+    padding:20px;
+}
+.bx-def-padding-rightbottomleft {
+    padding-right:20px;
+    padding-bottom:20px;
+    padding-left:20px;
+}
+.bx-def-padding-topbottom {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.bx-def-padding-leftright {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.bx-def-padding-top {
+    padding-top:20px;
+}
+.bx-def-padding-right {
+    padding-right:20px;
+}
+.bx-def-padding-bottom {
+    padding-bottom:20px;
+}
+.bx-def-padding-left {
+    padding-left:20px;
+}
+
+.bx-def-padding-sec {
+    padding:10px;
+}
+.bx-def-padding-sec-rightbottomleft {
+    padding-right:10px;
+    padding-bottom:10px;
+    padding-left:10px;
+}
+.bx-def-padding-sec-topbottom {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.bx-def-padding-sec-leftright {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.bx-def-padding-sec-top {
+    padding-top:10px;
+}
+.bx-def-padding-sec-right {
+    padding-right:10px;
+}
+.bx-def-padding-sec-bottom {
+    padding-bottom:10px;
+}
+.bx-def-padding-sec-left {
+    padding-left:10px;
+}
+
+.bx-def-padding-thd {
+    padding:5px;
+}
+.bx-def-padding-thd-rightbottomleft {
+	padding-right:5px;
+	padding-bottom:5px;
+    padding-left:5px;
+}
+.bx-def-padding-thd-topbottom {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.bx-def-padding-thd-leftright {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.bx-def-padding-thd-top {
+    padding-top:5px;
+}
+.bx-def-padding-thd-right {
+    padding-right:5px;
+}
+.bx-def-padding-thd-bottom {
+    padding-bottom:5px;
+}
+.bx-def-padding-thd-left {
+    padding-left:5px;
+}
+
+/* block header margins/paddings */
+.bx-def-bh-margin {
+	margin: 20px 20px 0px 20px;
+}
+
+.bx-def-bh-padding {
+    padding: 20px 20px 0px 20px;
+}
+
+/* block top controls margins/paddings */
+.bx-def-btc-margin-out {
+	margin: 10px 20px 0px 20px;
+}
+.bx-def-btc-padding-in {
+	padding: 10px 0px 0px 0px;
+}
+
+
+/* block content margins/paddings */
+.bx-def-bc-margin {
+    margin: 20px 20px 20px 20px;
+}
+.bx-def-bc-padding {
+    padding: 20px 20px 20px 20px;
+}
+.bx-def-bc-margin-sec {
+    margin: 10px 10px 10px 10px;
+}
+.bx-def-bc-padding-sec {
+    padding: 10px 10px 10px 10px;
+}
+.bx-def-bc-margin-thd {
+    margin: 15px 15px 15px 15px;
+}
+.bx-def-bc-padding-thd {
+    padding: 15px 15px 15px 15px;
+}
+
+/* border for common layout elements likedesign boxes, pads, menu items, etc */
+.bx-def-border {
+    border: 1px solid #cccccc;
+}
+.bx-def-border-top {
+    border-top: 1px solid #cccccc;
+}
+.bx-def-border-top-auto {
+    border-top: 1px solid #cccccc;
+}
+.bx-def-border-top-auto:first-child {
+    border-top:none;
+}
+.bx-def-border-bottom {
+    border-bottom: 1px solid #cccccc;
+}
+.bx-def-border-left {
+    border-left: 1px solid #cccccc;
+}
+.bx-def-border-right {
+    border-right: 1px solid #cccccc;
+}
+
+/* shadow */
+.bx-def-shadow {
+    -webkit-box-shadow: 0 1px 3px rgba(51, 51, 51, 0.3);
+    -moz-box-shadow: 0 1px 3px rgba(51, 51, 51, 0.3);
+    box-shadow: 0 1px 3px rgba(51, 51, 51, 0.3);
+}
+
+/* round corders */
+.bx-def-round-corners {
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+}
+
+/* round corders with border to use in INPUT areas */
+.bx-def-round-corners-with-border {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #B2B2B2 #D9D9D9 #D9D9D9 #B2B2B2;
+
+	border-radius:3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;	
+}
+
+/* hr */
+.bx-def-hr {
+    margin-left:0;
+    margin-right:0;
+    padding:0;
+    border:none;
+    border-top:1px solid #dddddd;
+    border-bottom:1px solid #ffffff;
+    border-top:1px solid rgba(200, 200, 200, 0.5);
+    border-bottom:1px solid rgba(255, 255, 255, 0.8);
+}
+
+/* fonts */
+.bx-def-font {
+    font-family: Helvetica Neue, Helvetica, Arial, Verdana, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+.bx-def-font-inputs {
+    font-family: Helvetica Neue, Helvetica, Arial, Verdana, sans-serif;
+    font-size: 20px;
+    color: #333;
+}
+.bx-def-font-inputs-captions {
+	font-size: 16px;
+}
+.bx-def-font-grayed {
+    color: #666666;
+}
+.bx-def-font-small {
+    font-size: 12px;
+}
+.bx-def-font-large {
+    font-size: 16px;
+}
+h1,
+.bx-def-font-h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+h2,
+.bx-def-font-h2 {
+    font-size: 18px;
+    font-weight: bold;
+}
+h3,
+.bx-def-font-h3 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* fonts */
+.bx-def-thumbnail {
+	border-radius: 64px;
+	-moz-border-radius: 64px;
+	-webkit-border-radius: 64px;	
+}
+
+/* z-index */
+.bx-def-z-index-front {
+    z-index:100;
+}
+.bx-def-z-index-nav {
+    z-index:400;
+}
+.bx-def-z-index-overlay {
+    z-index:700;
+}
+.bx-def-z-index-modal {
+    z-index:1000;
+}

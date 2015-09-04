@@ -1,0 +1,58 @@
+div.bx_files_album_unit .sys_album_item,
+div.bx_files_album_unit .sys_album_item_empty {
+    width: 34px;
+}
+
+/**** Unit Styles ****/
+.bx_files_unit,
+div.bx_files_unit_short {
+    position: relative;
+}
+div.bx_files_title {
+    position: relative;
+    font-weight: bold;
+    overflow: hidden;
+	white-space: nowrap;
+}
+div.bx_files_info {
+	position: relative;
+}
+
+/**** Short Unit Styles ****/
+div.bx_files_unit_short_box {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    font-size:24px;
+    text-align:center;
+}
+img.bx_files_unit_short_pic {
+    width: 32px;
+    height: 32px;
+}
+div.bx_files_unit_short_text {
+    position: relative;
+    margin-left: 42px;
+	overflow: hidden;
+}
+span.bx_files_when {
+	text-transform: lowercase;
+}
+div.bx_files_unit .bullet,
+div.bx_files_unit_short .bullet {
+    padding: 0px 3px;
+}
+
+
+/**** Album Cover Styles ****/
+.sys_album_cover {
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 140px;
+    height: 140px;
+}
+
+.sys_album_unit .bx_sys_unit_checkbox {
+	left: 7px;
+	top: 7px;
+}

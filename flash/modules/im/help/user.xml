@@ -1,0 +1,26 @@
+<topics>
+	<topic id="overview">
+		<title><![CDATA[Overview]]></title>
+		<contents><![CDATA[You are using a Private Chat with audio/video conferencing support. Here you can exchange text messages; broadcast your video; watch video streams of a member you are chatting with.]]></contents>
+	</topic>
+	<topic id="privateChat">
+		<title><![CDATA[Instant Messenger]]></title>
+		<contents><![CDATA[Instant Messenger allows you to chat with any of the online site members tete-a-tete with Audio and Video streaming.<BR><BR>You are able to send any file (Pics, Audio or Video) to the person with whom you're chatting, view the member's profile, listen to their music and watch their video files.<BR><BR>Next to your chosen member's avatar you can see - <FONT COLOR="#333399"><B>"Profile"</B></FONT> link (view members profile), <FONT COLOR="#333399"><B>"Send File"</B></FONT> (click on this link then click on browse and choose the file you want to send, then click on send), <FONT COLOR="#333399"><B>"Music"</B></FONT> link (a pop-up window with the member's music files will be loaded so you are able to listen to their music), <FONT COLOR="#333399"><B>"Video"</B></FONT> link (will load a popup window with member's video files).<BR><BR>As soon as the member enables his web camera you can view them by clicking on <FONT COLOR="#333399"><B>"Play Video"</B></FONT> at the left of the member's avatar. There are Pause, Stop and Play Audio buttons which will help you to control Video streaming.<BR><BR>Above the <FONT COLOR="#333399"><B>"Send"</B></FONT> button, you can change your chat status to "Away", "Busy", "Online" and you can also see the status of the member you are chatting with at the top, above the member's avatar.]]></contents>
+	</topic>
+	<topic id="audioVideo">
+		<title><![CDATA[Voice and video]]></title>
+		<contents><![CDATA[This is the one of the coolest features that the modern Internet provides you with. Video streaming allows you to chat and talk using a web camera. It's wonderful to view the face of the people you talk with!<BR><BR>If you have a web camera ready to be used, go ahead! Click the Cast Video button next to your avatar in the "My Video" box and allow your camera to work. There are pause and stop video streaming buttons which will help you to control your video casting.<BR><BR>Clicking on the "Camera Settings" button  allows you to make all the necessary settings for camera and microphone.]]></contents>
+	</topic>
+	<topic id="settings">
+		<title><![CDATA[Instant Messenger Setiings (IM)]]></title>
+		<contents><![CDATA[The "IM Settings" button is situated at the right top corner. Click on it and set up your special settings for the chat. You are allowed to make the following settings: General, Sound, Fonts, Skins, Smilesets and Advanced.<BR><BR>In General settings you can:<BR><BR>Choose your native language for the chat if the site has it installed. Choose to show Time and Date, Message icons (somebody joined/left the room, sent message icon)<BR><BR><FONT COLOR="#333399"><B>Sound</B></FONT><BR><BR>Control chat sounds here or switch them off entirely by activating a "Mute" radio button.<BR><BR><FONT COLOR="#333399"><B>Fonts</B></FONT><BR><BR>Choose fonts and font sizes for your text messages.<BR><BR><FONT COLOR="#333399"><B>Skins</B></FONT><BR><BR>Choose the skin you like for the Chat if they are installed on this site.<BR><BR><FONT COLOR="#333399"><B>Smilesets</B></FONT><BR><BR>Choose the smilesets to express your emotions while having fun conversations.<BR><BR><FONT COLOR="#333399"><B>Advanced</B></FONT><BR><BR>Make all the necessary settings for your web camera to be able to use it on this website chat.<BR><BR>Don't forget to click on "Apply" and save your settings.]]></contents>
+	</topic>
+	<topic id="privacy">
+		<title><![CDATA[Your privacy]]></title>
+		<contents><![CDATA[We respect your desire to keep some dialogues/conversations secret. Thus, all messages sent by users of Instant Messenger are available only to the user whom you have invited to an IM session. To all other site users, these dialogues are not visible.]]></contents>
+	</topic>
+	<topic id="troubles">
+		<title><![CDATA[Troubleshooting]]></title>
+		<contents><![CDATA[<FONT COLOR="#333399"><B>1 Which additional plugins should you have to be able to use the chat?</B></FONT><BR>The most important plugin is a <a href="http://www.macromedia.com/go/getflashplayer" target="_blank"><FONT COLOR="#333399"><B><U>Flash Player</U></B></FONT></a>  version 9.0 or higher.]]></contents>
+	</topic>
+</topics>

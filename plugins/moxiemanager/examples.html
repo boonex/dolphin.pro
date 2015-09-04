@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>moxman Example</title>
+<style>
+body, input { font-family: Arial, Verdana; font-size: 11px; }
+h3 { font-size: 14px; }
+p { margin: 0; padding: 0; margin-bottom: 3px; }
+</style>
+<script src="//tinymce.cachefly.net/4/tinymce.min.js"></script>
+</head>
+<body>
+
+<form method="post" action="dump.php">
+	<h4>Absolute URL</h4>
+	<p>
+		<input id="url_abs" style="width:400px" />
+		<a href="javascript:;" onclick="moxman.browse({fields : 'url_abs'});">[Pick file]</a>
+	</p>
+
+	<h4>Relative URL</h4>
+	<p>
+		<input id="url_rel" style="width:400px" />
+		<a href="javascript:;" onclick="moxman.browse({fields : 'url_rel', relative_urls : true});">[Pick file]</a>
+	</p>
+
+	<h4>Relative URL from a specific location</h4>
+	<p>
+		<input id="url_rel_loc" style="width:400px" />
+		<a href="javascript:;" onclick="moxman.browse({fields : 'url_rel_loc', relative_urls : true, document_base_url : '/'});">[Pick file]</a>
+	</p>
+
+	<h4>Absolute URL without host</h4>
+	<p>
+		<input id="url_abs_nohost" style="width:400px" />
+		<a href="javascript:;" onclick="moxman.browse({fields : 'url_abs_nohost', no_host : true});">[Pick file]</a>
+	</p>
+
+	<h4>Specify default path</h4>
+	<p>
+		<input id="url_path" style="width:400px" />
+		<a href="javascript:;" onclick="moxman.browse({fields : 'url_path', path : '/files/a'});">[Pick file]</a>
+	</p>
+
+	<h4>Specify rootpath</h4>
+	<p>
+		<input id="url_root" style="width:400px" />
+		<a href="javascript:;" onclick="moxman.browse({fields : 'url_root', rootpath : '/files/a'});">[Pick file]</a>
+	</p>
+
+	<h4>Filtered file selection</h4>
+	<p>
+		<input id="url_filtered" style="width:400px" />
+		<a href="javascript:;" onclick="moxman.browse({fields : 'url_filtered', extensions:'jpg', exclude_file_pattern:'/^dog/'});">[Pick file]</a>
+	</p>
+
+	<h4>Custom insert function</h4>
+	<p>
+		<script type="text/javascript">
+			function customInsert(data) {
+				alert('Focused file: ' + data.files[0].url + ", Size: " + data.files[0].size);
+			}
+		</script>
+
+		<a href="javascript:;" onclick="moxman.browse({oninsert : customInsert});">[Pick file]</a>
+	</p>
+
+	<h4>Edit image</h4>
+	<p>
+		<a href="javascript:;" onclick="moxman.edit({path: '/files/teddybear.jpg', onsave: function(result) {alert(result.file.url);}});">[Edit image]</a>
+	</p>
+
+	<h4>Edit text</h4>
+	<p>
+		<a href="javascript:;" onclick="moxman.edit({path: '/files/readme.txt', onsave: function(result) {alert(result.file.url);}});">[Edit text]</a>
+	</p>
+
+	<h4>Upload</h4>
+	<p>
+		<a href="javascript:;" onclick="moxman.upload({path: '/files', onupload: function(result) {console.log(result);}});">[Upload]</a>
+	</p>
+
+	<h4>TinyMCE</h4>
+	<script>
+	tinymce.init({
+		selector:'textarea',
+		plugins: 'link image media preview code',
+		toolbar: 'link image media insertfile',
+		external_plugins: {
+			'moxiemanager': tinymce.documentBaseURL + 'plugin.js'
+		}
+	});
+	</script>
+	<p>
+	<textarea></textarea>
+	</p>
+</form>
+
+<script type="text/javascript" src="js/moxman.loader.min.js"></script>
+</body>
+</html>

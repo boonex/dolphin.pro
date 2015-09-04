@@ -1,0 +1,71 @@
+.bx_sys_forms_extra_default_padding {
+    padding: 10px;
+}
+
+.bx_sys_file_upload_title {
+    padding-top:3px;
+}
+
+.bx_sys_file_upload_wrapper {
+    border: 4px solid #e5e5e5;
+    background-color: #fff;
+}
+
+.bx_sys_file_upload_wrapper > .bx_sys_file_upload_line {
+    border-top:1px solid #e5e5e5;
+    padding:5px;
+}
+
+.bx_sys_file_upload_wrapper > .bx_sys_file_upload_line:first-child {
+    border-top:none;
+}
+
+.bx_sys_file_upload_wrapper .input_wrapper_file {
+    display:inline-block;
+}
+.bx_sys_file_upload_wrapper .form_input_file {
+    position: static;
+    overflow:hidden;
+}
+
+.bx_sys_file_choice_wrapper {
+    width:240px; 
+    height:150px;
+    border:4px solid #e5e5e5; 
+    overflow:auto;
+    overflow-X:hidden;
+    background-color:#fff;
+}
+
+.bx_sys_file_choice_wrapper > div {
+    border-top:1px solid #e5e5e5;
+}
+
+.bx_sys_file_choice_wrapper > div:first-child {
+    border-top:none;
+}
+
+.bx_sys_file_choice_wrapper > div > input {
+    float:left;
+    margin:16px 0 0 5px;
+    display:block;
+}
+
+
+.bx_sys_file_choice_wrapper > div > .sys_icon {
+    float:left;
+    margin:5px;
+    width:auto;
+}
+
+.bx_sys_file_choice_wrapper > div > .sys_icon img {
+    height:32px;
+}
+
+.bx_sys_file_choice_wrapper > div > p {    
+    float:left;
+    line-height:38px;
+    width:110px;
+    margin:5px 0px;
+}
+

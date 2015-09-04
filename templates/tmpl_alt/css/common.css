@@ -1,0 +1,7 @@
+@import url(../../base/css/common.css);
+
+body {
+    background-image:url(../images/clouds.png);
+    background-repeat:repeat;
+}
+

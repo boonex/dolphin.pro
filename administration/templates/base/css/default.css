@@ -1,0 +1,34 @@
+@import url(../../../../templates/base/css/default.css);
+
+/* block top controls margins/paddings */
+.bx-def-btc-margin-out {
+	margin: 0px 20px 0px 20px;
+}
+
+/* tables */
+.bx-def-table {
+	width: 100%;
+	border-width: 0px;
+}
+.bx-def-table th {
+	text-align: center;
+	font-weight: bold;
+}
+
+.bx-def-table th,
+.bx-def-table td {
+	padding: 5px;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* fonts */
+.bx-def-font,
+.bx-def-font-inputs {
+    font-family: Roboto, Noto, Open Sans, Helvetica Neue, Helvetica, sans-serif;
+    font-weight: 400;
+    
+}
+
+.bx-def-font {
+	color: #333333;
+}

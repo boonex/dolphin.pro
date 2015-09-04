@@ -1,0 +1,60 @@
+/*--- Control Panel settings ---*/
+div.adm-pv-cp-item {
+    position: relative;
+    float: left;
+}
+.adm-pv-cp-selector span,
+.adm-pv-cp-selector .input_wrapper {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.adm-pv-cp-selector span {
+	line-height: 38px;
+}
+.adm-pv-cp-selector .input_wrapper_select {
+	width: 200px;
+}
+
+/*--- List settings ---*/
+#listEdit tr {
+	margin: 0px;
+	padding: 0px;
+}
+#listEdit tr.even {}
+#listEdit tr.odd {}
+
+#listEdit td,
+#listEdit th {
+	vertical-align: middle;
+}
+
+#listEdit .row_controls {
+	white-space: nowrap;
+	font-size: 18px;
+}
+
+#listEdit .row_controls .row_control {
+	display: inline-block;
+
+	text-decoration: none;
+
+	outline: none;
+}
+
+#listEdit td .value_input {
+	width:100%;
+	box-sizing: border-box;
+}
+
+.tableLabel {
+	cursor:help;
+}
+
+img.row_control {
+	width:16px;
+	height:16px;
+	cursor:pointer;
+	margin-right: 3px;
+}

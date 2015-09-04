@@ -1,0 +1,29 @@
+<div class="bx-def-bc-padding">
+
+    <div id="__prefix__-gallery" class="bx-gallery">
+
+        <div class="bx-gallery-icons bx-def-margin-sec-bottom">            
+            <div class="bx-gallery-icons-rails">
+                <bx_repeat:icons><img class="bx-gallery-icon" title="__title__" alt="___title__" src="__icon_url__" id="bx-gallery-icon-__id__" /></bx_repeat:icons>
+            </div>
+            <div class="bx-gallery-icon-selector"></div>
+        </div>
+
+        <div id="__prefix__-gallery-imgs" class="bx-gallery-imgs">
+            <bx_repeat:images>
+                <div class="bx-gallery-img-cont" data-img="__image_url__" data-icon="__icon_url__" id="bx-gallery-img-cont-__id__">
+                    <div class="bx-gallery-img-title bx-def-font-large bx-def-round-corners">__title__</div>
+                    <img class="bx-gallery-img bx-def-shadow bx-def-round-corners" title="__title__" alt="__title__" src="__image_url__" id="bx-gallery-img-__id__" />
+                </div>
+            </bx_repeat:images>
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#__prefix__-gallery').dolGalleryImages();
+        });
+    </script>
+
+</div>

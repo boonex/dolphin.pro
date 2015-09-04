@@ -1,0 +1,147 @@
+<script type="text/javascript">
+	/**
+	 * @description : constructor;
+	 */
+
+	function MailBoxMessages()
+	{
+		// call the parent constructor ;
+		this.constructor();
+		this.sResponceBlock  = 'mail_box';
+		this.sPageParameters =  '?ajax_mode=true&per_page=' + iPerPage + '&mode=' + sMode + '&messages_types=' + sMessagesTypes + '&sorting=' + sMessagesSort; 
+		this.sPageReceiver	 = '__current_page__' + this.sPageParameters ;
+		this.sErrorMessage	 = '__select_messages__';
+		this.sSurecaption	 = '__are_you_sure__';
+	}
+
+	MailBoxMessages.prototype = MailBox.prototype;
+
+	/**
+	 * @description : function will select all read messages ;
+	 */
+
+	MailBoxMessages.prototype.selectReadMessage = function()
+	{
+		var oCheckBoxes = $(".messages_container input:checkbox:enabled").each(function(){
+			if ( $(this).attr('name') ) {
+                if (($(this).attr('_status') == 'unread' || !$(this).attr('_status')) && $(this).is(':checked') )
+    				$(this).removeAttr('checked');
+    			else
+    			{
+    				if (!$(this).is(':checked') && $(this).attr('_status') == 'read')
+    					$(this).attr('checked', 'checked');
+    			}
+            }    
+		});
+	}
+
+	/**
+	 * @description : function will select all unread messages ;
+	 */
+
+	MailBoxMessages.prototype.selectUnReadMessage = function()
+	{
+		var oCheckBoxes = $(".messages_container input:checkbox:enabled").each(function(){
+            if ( $(this).attr('name') ) {
+    			if ( ($(this).attr('_status') == 'read' || !$(this).attr('_status')) && $(this).is(':checked') )
+    				$(this).removeAttr('checked');
+    			else
+    			{
+    				if (!$(this).is(':checked') && $(this).attr('_status') == 'unread')
+    					$(this).attr('checked', 'checked');
+    			}
+            }
+		});
+	}
+
+	/**
+	 * @description : function will set status 'read' or 'unread' for all selected messages ;
+	 * @param		: sStatus (string) - status of messages ;	 
+	 * @param		: sCallbackFunction (string) - callback function that will return answer from server side;
+	 * @return		: Html presentation data ;
+	 */
+
+	MailBoxMessages.prototype.markMessages = function( sStatus, sCallbackFunction )
+	{
+		var _this = this;
+	
+		if ( sStatus )
+		{
+			var sMessagesId = '';
+			var iValue		= '';
+
+			var oCheckBoxes = $(".messages_container input:checkbox:checked").each(function(){
+				iValue = $(this).attr('value').replace(/[a-z]{1,}/i, '');
+				if ( iValue )
+					sMessagesId += iValue + ',';
+			});
+
+			if ( sMessagesId )
+			{
+				var sPageUrl = this.sPageReceiver + '&messages=' + sMessagesId 
+								+ '&status=' + sStatus + '&page=' + iPageNumber 
+								+ '&callback_function=' + sCallbackFunction;
+
+				$('#'+this.sResponceBlock).load(sPageUrl, {'action' : 'mark'});
+			}
+			else
+				alert(this.sErrorMessage);
+		}
+	}
+
+	/**
+	 * @description : function will get sorted data ;
+	 * @param		: sSorting (string) ;
+	 * @return		: Html presentation data ;
+	 */
+
+	MailBoxMessages.prototype.getSortedPage = function( sSorting )
+	{
+		var _this = this;
+		var sPageUrl = this.sPageReceiver + '&action=sort&sorting=' + sSorting + '&page=' + iPageNumber;
+		getHtmlData(this.sResponceBlock, sPageUrl, function(){
+		} );
+	}
+
+	/**
+	 * @description : function will get page use received message's type ;
+	 * @return		: Html presentation data;
+	 */
+
+	MailBoxMessages.prototype.getTypifiedPage = function()
+	{
+		var sMessagesTypes = '';
+		var _this = this;
+
+		var oCheckBoxes = $(".top_settings_block .left_section input:checkbox:checked").each(function()
+		{
+			if ($(this).is(':checked'))
+			{
+				sMessagesTypes = sMessagesTypes + $(this).attr('name') + ',';
+			}	
+		});
+
+		var sPageUrl = this.sPageReceiver + '&action=get_page&messages_types=' + sMessagesTypes;
+		getHtmlData( this.sResponceBlock, sPageUrl, function(){
+		} );
+	}
+
+	/**
+	 * @description : function will get page ;
+	 * @param		: sPageUrl (string) Page's URL ;
+	 * @return		: Html presentation data;
+	 */
+
+	MailBoxMessages.prototype.getPage = function( iPerPageValue, sPageUrl )
+	{
+		var _this = this;
+		
+		sPageUrl = sPageUrl + '&ajax_mode=true&action=get_page&per_page=' + iPerPageValue;
+		getHtmlData( this.sResponceBlock, sPageUrl, function(){
+		} );
+	}
+
+</script>
+<div id="mail_box">
+	__mail_rows__
+</div>

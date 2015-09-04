@@ -1,0 +1,67 @@
+.bx-sys-mobile-page {
+	border: 1px solid #cccccc;
+
+	background-image: none;
+	background-color: #ffffff;
+}
+
+.bx-sys-mobile-builder-item {
+	position: relative;
+
+	height: 28px;
+	margin: 0px auto 2px auto;
+	padding: 2px 2px 2px 22px;
+	box-sizing: border-box;
+
+	border: 1px solid #cccccc;
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+
+	background-color: rgba(0, 0, 0, 0.1);
+
+	line-height: 22px;
+	text-align: left;
+	text-transform: capitalize;
+	font-size: 11px;
+
+	cursor: move;
+	overflow: hidden;
+}
+
+.bx-sys-mobile-builder-item i.sys-icon {
+	position: absolute;
+	display: block;
+
+	top: 0px;
+	left: 4px;
+	width: 14px;
+	height: 26px;
+
+	line-height: 26px;
+	font-size: 14px;
+	color: rgba(0, 0, 0, 0.4);
+}
+
+.bx-sortable-item {    
+    cursor:pointer;
+    height:30px;
+    margin-bottom:5px;
+}
+
+.bx-sortable-placeholder {
+    cursor:pointer;
+    height:30px;
+    margin-bottom:5px;
+    background-image:url(../images/ph_bg.gif);
+}
+
+.bx-sortable-container-wrapper {
+	position: relative;
+	float: left;
+    width: 311px;
+    margin-left: 10px;
+}
+.bx-sortable-container-wrapper:first-child {
+	margin-left: 0px;
+}

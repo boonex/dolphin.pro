@@ -1,0 +1,7 @@
+DirectoryIndex ../../../file_error.html
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteRule ^([0-9]+).(flv|mpg|mp4|m4v)$ ../../../file_error.html
+</IfModule>

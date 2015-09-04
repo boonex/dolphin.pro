@@ -1,0 +1,18 @@
+
+.cls_res_info_nowidth {
+    margin-left:80px;
+}
+
+div.marg_both_left img {
+    margin-top:1px;
+    margin-right:2px;
+    float:right;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+#CreateBlogPostForm .input_wrapper_textarea .form_input_textarea {
+    height:400px;
+}
+
+

@@ -1,0 +1,9 @@
+<div class="ordered_block">
+    <bx_text:_tags_caption_module />
+    <select onchange="loadDynamicBlock(__block_id__, this.value)">
+        <bx_repeat:options>
+            <option value="__key__" ' . <bx_if:show_selected>selected="selected"</bx_if:show_selected>>__value__</option>
+        </bx_repeat:options>
+    </select>
+</div>
+<div class="clear_both"></div>

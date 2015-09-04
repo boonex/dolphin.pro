@@ -1,0 +1,43 @@
+#spy_events {
+    position:relative;
+}
+
+table.fixed_menu table.popup div.spy_events_wrapper {
+    overflow: hidden;
+    width: 210px;
+}
+
+div.spy_events_wrapper {
+    position:relative;
+	white-space:normal;
+}
+
+div.spy_events_wrapper:first-child {
+	margin-top: 0px;
+}
+div.spy_events_wrapper:last-child {
+    margin-bottom: 10px;
+}
+div.spy_events_wrapper_not_member {
+    height:auto;
+	padding-bottom:2px;
+	padding-top:2px;
+}
+
+div.spy_events_wrapper_member_menu_action {
+	text-align: center;
+	font-weight: bold;
+}
+
+div.spy_events_wrapper div.thumb_wrapper{
+    position:absolute;
+    left:0;
+    top:0;
+}
+
+div.spy_events_wrapper div.event_info{
+	min-height: 32px;
+    padding-left: 50px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}

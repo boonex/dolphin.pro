@@ -1,0 +1,26 @@
+@media (max-width:720px) {
+    .sys_cal_wrapper .viewAllMembers {
+        white-space: nowrap;
+        display: block;
+        padding-top: 25px;
+    }
+
+    .sys_cal_wrapper .dbBottomMenu .viewAllMembers {
+        display: none;
+    }
+
+    .sys_cal_wrapper .moreMembers,
+    .sys_cal_wrapper .backMembers {
+        width:40%;
+    }
+
+    table.sys_cal_table {
+        max-width:100%;
+        table-layout:fixed;
+    }
+
+    table.sys_cal_table th {
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+}

@@ -1,0 +1,14 @@
+<form id="adm-mlevels-prices-form" enctype="multipart/form-data" method="post" action="" class="form_advanced">
+    <bx_include_auto:designbox_top_controls.html />
+    <a id="prices__id__"></a>
+    <input type="hidden" name="level" value="__id__" />
+    <div class="adm-mlevels-items bx-def-bc-margin">
+        <bx_repeat:items>
+            <div class="adm-mlevels-item bx-def-margin-thd-top-auto">
+                <input type="checkbox" class="form_input_checkbox" id="adm-mlevels-__id__" name="prices[]" value="__id__" />
+                <label for="adm-mlevels-__id__">__title__</label>
+            </div>
+        </bx_repeat:items>
+    </div>
+    __controls__
+</form>

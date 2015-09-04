@@ -1,0 +1,96 @@
+div.admin_poll_block {
+	position: relative;
+}
+div.admin_poll_block:first-child {
+    margin-top: 0px;
+}
+
+div.input_wrapper{
+    margin-bottom:5px;
+}
+
+/*--- Poll Snippet Styles ---*/
+div.poll_block,
+div.poll_block_view {
+	position: relative;
+}
+
+div.poll_block div.pollBlock {
+    position:relative;
+}
+
+div.poll_block div.pollCaption {
+    position:relative;
+}
+
+div.poll_block div.pollAnswerBlock,
+div.poll_block div.pollAnswerBlockView {
+	background-color: #ffffff;
+}
+div.pollAnswerWrapperPrivate .sys-icon {
+    font-size:32px;    
+}
+div.pollAnswerRow {
+	position: relative;
+}
+div.pollAnswerRow input {
+	position: absolute;
+	top: 0px;
+    left: 0px;
+}
+div.pollAnswerContent {
+	margin-left: 25px; 
+	position: relative;
+	line-height: 20px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+div.pollResultAnswerRow {
+	margin-top: 10px;
+}
+div.pollResultAnswerRow:first-child {
+	margin-top: 0px;
+}
+div.pollResultStatsRow {
+    background-color: #a1a1f6;
+	text-indent: 5px;
+    font-weight: bold;
+    color: #ffffff;
+}
+div.pollInfo span.date_add,
+div.pollInfo span.status,
+div.pollInfo a.action {
+    text-transform: lowercase;
+}
+div.pollInfo div.result,
+div.pollInfo div.back {
+	position: relative;
+	float: right;
+}
+div.pollInfo div.back {
+    display:none;
+}
+
+
+
+
+
+div.poll_owner_block{
+    margin:10px;
+}
+
+div.poll_owner_block div.info{
+    float:left;
+    position:relative;
+    margin-left:10px;
+    text-align:left;
+}
+
+div.poll_owner_block div.info div{
+    margin-bottom:5px;
+}
+
+div.poll_owner_block div.info img{
+    vertical-align:middle;
+}

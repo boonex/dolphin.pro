@@ -1,0 +1,32 @@
+div.fileBody {
+	border: 1px solid #CCCCCC;
+	margin: 10px auto;
+	text-align: center;
+}
+
+div.rateObject {
+    positon: relative;
+}
+div.ratePartCnt {
+	position: relative;
+	float: right;
+	width: 50%;
+}
+div.ratePartCnt .votes_big {
+	position: relative;
+	left: -25%;
+}
+
+div.sys_file_search_unit {
+    margin: 0px;
+}
+div.sys_file_search_rate {
+    position: relative;
+    float: left;
+    width: 60px;
+}
+div.sys_unit_for_rate {
+    width: 212px;
+    margin-left: auto;
+    margin-right: auto;
+}

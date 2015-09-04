@@ -1,0 +1,78 @@
+/*--- Results styles ---*/
+div.modules-results {}
+
+/*--- Uploader styles ---*/
+div.modules-uploader {}
+
+/*--- Installed/Not-Installed Modules, Available Updates styles ---*/
+div.modules-items {}
+div.modules-item {
+    padding: 2px 0px;
+}
+div.modules-item span.modules-item-title {
+    font-weight: bold;
+}
+div.modules-item input.form_input_checkbox {
+	margin-left: 0px;
+}
+div.modules-item span.mi-update {
+	padding-left: 10px;
+}
+div.modules-item span.mi-update span.mi-update-text {
+	color: green;
+}
+div.modules-item span.mi-update-available span.mi-update-text {
+	font-weight: bold;
+}
+div.modules-item span.mi-update .bx-btn {
+	float: none;
+	display: inline;
+	text-transform: capitalize;
+}
+
+/*--- Plank styles ---*/
+div.modules-plank {
+    margin: 5px  0px;
+	padding: 5px;
+
+	position: relative;
+
+	background-color: rgba(0, 0, 0, 0.1);	
+}
+span.modules-plank-title {}
+div.modules-plank-switch {
+	position: absolute;
+
+	top: 5px;
+	right: 5px;
+	width: 16px;
+	height: 16px;
+
+	line-height: 16px;
+	font-size: 16px;
+	font-weight: bold;
+
+	cursor: pointer;
+}
+div.modules-plank-switch .modules-ps-icon-opened {
+	display: none;
+}
+div.modules-plank-switch.modules-plank-switch-opened .modules-ps-icon-opened {
+	display: inline;
+}
+div.modules-plank-switch.modules-plank-switch-opened .modules-ps-icon-closed {
+    display: none;
+}
+div.modules-plank-content {
+	display: none;
+}
+span.modules-plank-success,
+span.modules-action-success {
+    font-weight: bold;
+    color: #0b0;
+}
+span.modules-plank-failed,
+span.modules-action-failed {
+    font-weight: bold;
+    color: #d00;
+}

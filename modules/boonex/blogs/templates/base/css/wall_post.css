@@ -1,0 +1,45 @@
+div.bx-blog-wall-main {    
+    position: relative;    
+}
+
+div.bx-blog-wall-caption {
+    padding-left: 20px;
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: 0px center;
+    line-height: 30px; 
+}
+
+span.bx-blog-wall-caption-owner {
+    font-weight: bold;
+}
+
+a.bx-blog-wall-caption-link,
+a.bx-blog-wall-caption-link:link {
+    text-decoration: none;
+}
+a.bx-blog-wall-caption-link:hover,
+a.bx-blog-wall-caption-link:active {
+    text-decoration: underline;
+}
+div.bx-blog-wall-content {
+    position: relative;
+}
+
+div.bx-blog-wall-comments {
+    padding-left: 0px;
+}
+
+/*--- Overwrite default Comment styles ---*/
+div.bx-blog-wall-comments div.cmts {
+    padding: 0px;
+    /*display: none;*/
+}
+div.bx-blog-wall-comments div.cmt-reply {
+    padding: 0px;
+    /*display: none;*/
+}
+div.bx-blog-wall-comments div.thumbnail_block {
+    left: -38px;
+    top: 1px;
+}

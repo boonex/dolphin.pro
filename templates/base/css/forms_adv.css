@@ -1,0 +1,449 @@
+/* * * * Table * * * */
+
+.form_advanced_wrapper {
+	overflow: hidden;
+}
+
+.form_advanced_table {
+    position: relative;
+    width: 100%;
+}
+
+.form_advanced_table .bx-form-fields-wrapper {
+	margin: 0px;
+	padding: 0px;
+    border: none;
+}
+
+.form_advanced_table .bx-form-fields-wrapper:first-child .bx-form-element:first-child {
+    margin-top:0;
+}
+
+.form_advanced_table .bx-form-element {
+	position: relative;
+}
+
+.form_advanced_table .bx-form-block-header,
+.form_advanced_table .bx-form-block-headers {
+	position: relative;
+
+	background-color: rgba(0, 0, 0, 0.1);
+
+    text-align: left;
+    font-weight: normal;    
+}
+
+.form_advanced_table .bx-form-block-header .bx-form-block-header-collapse {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 10px 5px;
+}
+
+.form_advanced_table .bx-form-block-header .bx-form-block-header-collapse i {
+    min-width:16px;
+    min-height:16px;
+    margin-top:3px;
+
+    text-align:center;
+    font-size:16px;
+    color:#999;
+    cursor: pointer;
+}
+
+.form_advanced_table .bx-form-block-headers .header {
+	position: relative;
+	float: left;
+	width: 50%;
+}
+
+.form_advanced_table .bx-form-caption,
+.form_advanced_table .bx-form-value {
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.form_advanced_table .bx-form-combined b {
+	text-transform: capitalize;
+}
+
+.form_advanced_table .bx-form-caption {
+	margin-bottom: 5px;
+
+    text-align: left;
+    text-transform: capitalize;
+}
+
+.form_advanced_table .bx-form-block-header .bx-form-caption {
+	margin: 0px;
+	padding: 10px 5px;
+	text-align: center;
+}
+/* * * * [end] Table * * * */
+
+
+/* * * * Inputs and Wrappers * * * */
+.input_wrapper {
+    position: relative;
+	float: none;
+}
+
+.bx-form-element-multiplyable .input_wrapper {
+	margin-top: 20px;
+}
+
+.bx-form-element-multiplyable .input_wrapper:first-child {
+	margin-top: 0px;
+}
+
+.input_wrapper_input_set {
+    float: none;
+    padding: 5px;
+}
+
+.input_wrapper_input_set .bx-btn {
+	margin: 5px;
+}
+
+.input_wrapper_text,
+.input_wrapper_select,
+.input_wrapper_select_box, 
+.input_wrapper_select_multiple,
+.input_wrapper_email,
+.input_wrapper_url,
+.input_wrapper_date,
+.input_wrapper_datetime,
+.input_wrapper_password,
+.input_wrapper_number
+{
+    height: 38px;
+	padding: 0px;
+	border: none;
+	background-color: transparent;
+}
+
+.input_wrapper_slider,
+.input_wrapper_range,
+.input_wrapper_doublerange {
+    height: auto;
+    padding: 4px;
+    background-color: #fff;
+}
+
+.input_wrapper_select_multiple {
+    height: 160px;
+}
+
+.form_input_text,
+.form_input_textarea,
+.form_input_email,
+.form_input_url,
+.form_input_date,
+.form_input_datetime,
+.form_input_password,
+.form_input_number,
+.form_input_slider,
+.form_input_range,
+.form_input_doublerange,
+.form_input_select,
+.form_input_select_multiple {
+    width: 100%;
+    height: 100%;
+	padding: 0px 10px;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+
+	border-color: #999;
+	border-width: 1px;
+	border-style: solid;
+	border-radius:3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;	
+
+	background-color: #ffffff;
+
+    outline: none;
+}
+
+.form_input_textarea {
+    margin: 0px;
+    padding: 5px;
+}
+
+.form_input_textarea {
+    width: 100%;
+    height: 157px;
+    resize: none;
+
+    background-color: #ffffff;
+}
+
+.form_input_file {
+	position: fixed;
+	top: -1000px;
+
+    border: none;
+    background-color: transparent;
+}
+
+.form_input_radio,
+.form_input_checkbox {
+    vertical-align:middle;
+}
+
+.form_input_radio {
+    margin-top:0;
+    margin-bottom:0;
+}
+
+.input_wrapper label
+{
+    vertical-align: middle;
+}
+
+.form_advanced_table .bx-form-combined .input_wrapper {
+    /*width: 100%;*/
+    width: auto;
+}
+/* * * * [end] Inputs and Wrappers * * * */
+
+
+/* * * * Icon based buttons * * * */
+.form_advanced_table .bx-form-required {
+	padding-right: 5px;
+    color: red;
+}
+
+.form_advanced_table .bx-form-info,
+.form_advanced_table .bx-form-error {
+	padding-left: 5px;
+}
+
+.form_advanced_table .bx-btn.form_input_multiply_add,
+.form_advanced_table .bx-btn.form_input_multiply_other,
+.form_advanced_table .bx-btn.form_input_multiply_remove,
+.form_advanced_table .bx-btn.form_input_multiply_select {
+	margin: 10px 10px 0px 0px;
+    padding: 0px 20px;
+}
+
+.form_advanced_table .sys-icon.multiply_add_button,
+.form_advanced_table .sys-icon.multiply_remove_button,
+.form_advanced_table .sys-icon.multiply_other_button,
+.form_advanced_table .sys-icon.reload_button,
+.form_advanced_table .bx-form-info .sys-icon,
+.form_advanced_table .bx-form-error .sys-icon {
+    cursor: pointer;
+}
+.form_advanced_table .bx-form-info .sys-icon {
+    color: rgba(0, 0, 0, 0.5);
+    cursor: help;
+}
+.form_advanced_table .bx-form-error {
+	display: none;
+}
+.form_advanced_table .bx-form-error .sys-icon {
+    color: #c00;
+    cursor: help;
+}
+.form_advanced_table .bx-form-element-error .bx-form-error {
+    display: inline;
+}
+/* * * * [end] Icon based buttons * * * */
+
+
+.form_advanced .ui-slider,
+.input_wrapper_doublerange .ui-slider {
+    width:auto;
+    margin-top:2px;
+    margin-left:4px;
+    margin-right:9px;
+}
+
+.input_wrapper .ui-slider .ui-slider-handle {
+    margin-top:-1px;
+    padding-left:1px;
+    padding-right:2px;
+    height:16px;
+    line-height:16px;
+    text-decoration:none;
+    cursor:pointer;
+    font-size:12px;
+    text-align:center;
+}
+
+/* * * * * */
+
+#float_info {
+	max-width: 300px;
+	padding: 5px;
+
+    background-color: #FFFFD7;
+
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+
+    -webkit-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+    -moz-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+
+    box-sizing: border-box;
+}
+
+.form_input_toggle_html {
+    margin-top:5px;
+}
+
+/* * * * * Select File Box field * * * * */
+.bx-form-element-file .input_wrapper.input_wrapper_file {
+	margin-top: -10px;
+}
+
+/* * * * * Multiply Select Box field * * * * */
+.bx-form-element-select_box .bx-btn {
+	margin: 10px 10px 0px 0px;
+	padding: 0px 20px;
+}
+.input_wrapper_select_box {
+	margin-top: 20px;
+}
+.input_wrapper_select_box:first-child {
+	margin-top: 0px;
+}
+
+/* * * * * location field * * * * */
+.location_wrapper > div:first-child {
+    margin-bottom:5px;
+}
+
+.location_wrapper .form_input_metric {
+    width:auto;
+}
+
+.location_wrapper .form_input_distance,
+.location_wrapper .form_input_zip {
+    padding:1px;
+    width:50px;
+}
+
+::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.input_wrapper_textarea .mce-tinymce {
+    box-sizing: border-box;
+}
+
+/****************************************
+*		Custom reCaptcha Theme
+****************************************/
+.form_input_captcha {
+	background-color: #b71800;
+	padding: 0.5em;
+	border-radius: 1em;
+	position: relative;
+	overflow: auto;
+	max-width: 480px;
+	font: 0.75em/1em "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: #ffffff;
+}
+.form_input_captcha a {
+	color: #ffffff;
+	text-decoration: none;
+}
+.form_input_captcha img,
+.form_input_captcha #recaptcha_image {
+	width: 100% !important;
+	height: auto !important;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	border-radius: 0.5em;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+}
+.form_input_captcha .solution {
+	position: relative;
+	float: left;
+	width: 75%;
+}
+.form_input_captcha .solution-cnt {
+	margin-top: 0.5em;
+	padding: 1.2em 1em;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	border-radius: 0.5em;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	background-color: #fbe098;
+	color: #000000;
+	display: block;
+}
+.form_input_captcha .solution-cnt input {
+	display: block;
+	width: calc(90% - 2px);
+	margin: 0.35em auto;
+	-webkit-appereance: none;
+	border: 1px solid #f7c236;
+	font: inherit;
+	font-size: 150%;
+	outline: none;
+}
+.form_input_captcha .solution-cnt input:focus {
+	border-color: #b71800;
+}
+.form_input_captcha .options {
+	position: relative;
+	float: right;
+	width: 25%;
+	
+}
+.form_input_captcha .options-cnt {
+	margin-top: 0.5em;
+	padding-left: 0.5em;
+	-webkit-border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	border-radius: 0.5em;
+	-moz-background-clip: padding;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+}
+.form_input_captcha .options-cnt a {
+	background-color: #c5523d;
+	display: block;
+	padding: 0.5em 1.0em;
+	border-top: 1px solid #000000;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+}
+.form_input_captcha .options-cnt a:first-child {
+	border-radius: 0.5em 0.5em 0 0;
+}
+.form_input_captcha .options-cnt a:last-child {
+	border-radius: 0 0 0.5em 0.5em;
+	border-bottom: 1px solid #000000;
+}
+
+/* emoji picker */
+
+.bx-form-input-emoji {
+    position:absolute;
+    top:0px;
+    right:5px;
+    height:38px;
+    line-height:38px;
+    font-size:28px;
+    color:rgba(2, 136, 209, 1.0);
+}
+
+.emojiPickerIconWrap {
+    height:100%;
+}
+
+.emojiPickerIconWrap input {
+    padding-right:30px;
+}

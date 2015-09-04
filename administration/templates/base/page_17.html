@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>__page_header__</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=__page_charset__" />
+		<bx_include_css />
+		<bx_include_js />
+
+		__dol_images__
+        __dol_lang__
+        __dol_options__
+
+		<script defer type="text/javascript">
+			var site_url = '<bx_url_root />';
+			var aUserInfoTimers = new Array();
+		</script>
+		
+        __extra_js__
+
+	   <bx_injection:injection_head />
+    </head>
+    <body <bx_injection:injection_body /> >
+        <bx_injection:injection_header />
+        <div id="FloatDesc"></div>
+        __page_main_code__
+	   <bx_injection:injection_footer />
+    </body>
+</html>

@@ -1,0 +1,10 @@
+<div class="left_section">
+	__select_all__ : <input type="checkbox" onclick="javascript: if ( typeof oMailBoxArchive != 'undefined' ) { (this.checked) ? oMailBoxArchive.selectCheckBoxes(true, 'contacts_container') : oMailBoxArchive.selectCheckBoxes(false, 'contacts_container') }"/>
+	&nbsp;
+	<select onchange="javascript: if ( typeof oMailBoxArchive != 'undefined' ) { oMailBoxArchive.selectFunction(this.value); } ">
+		<option></option>
+		<option value="delete">__delete_messages__</option>
+		<option value="spam">__spam_messages__</option>
+	</select>
+</div>
+<div class="clear_both"></div>

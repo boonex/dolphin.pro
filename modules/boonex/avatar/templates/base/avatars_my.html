@@ -1,0 +1,18 @@
+
+<bx_repeat:avatars>
+    <div class="bx_ava_tar bx-def-margin-thd">
+        <div class="thumbnail_image">
+            <img class="bx-def-shadow bx-def-round-corners" style="background-image: url(__url__); width: 64px; height: 64px;" src="<bx_image_url:spacer.gif />" />
+        </div>
+        <div class="bx_ava_actions">
+            <bx_if:is_not_main>
+                <a class="bx_ava_set" href="javascript:void(0);" title="<bx_text:_bx_ava_set_as_my_avatar />" alt="__name__"><i class="sys-icon check-circle-o col-green3"></i></a>
+            </bx_if:is_not_main>
+            <bx_if:is_not_main_couple>
+                <a class="bx_ava_set_couple bx-def-font-small" href="javascript:void(0);" title="<bx_text:_bx_ava_set_as_couple_avatar />" alt="__name__"><i class="sys-icon check-circle-o col-green3"></i>2</a>
+            </bx_if:is_not_main_couple>                            
+            <a class="bx_ava_del" href="javascript:void(0);" title="<bx_text:_bx_ava_remove />" alt="__name__"><i class="sys-icon times-circle-o col-red2-dark"></i></a>
+        </div>
+    </div>
+</bx_repeat:avatars>
+                            

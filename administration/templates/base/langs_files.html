@@ -1,0 +1,18 @@
+<div id="adm-langs-cnt-langs" style="display:__display__;">
+    <form id="adm-langs-form" enctype="multipart/form-data" method="post" action="" class="form_advanced">
+        <div class="adm-lang-items bx-def-bc-margin">
+            __results__
+            <bx_repeat:items>
+                <div class="adm-lang-item bx-def-margin-thd-top-auto">
+                    <input type="checkbox" class="form_input_checkbox" id="adm-lang-__name__" name="langs[]" value="__value__" />
+                    <img src="__icon__" />
+                    <label for="adm-lang-__name__">__title__</label>
+                    __default__
+                    <a href="javascript:void(0)" onclick="javascript:onEditLanguage(__value__);"><bx_text:_adm_txt_langs_edit /></a>&nbsp;
+                    <a href="__export_link__" target="_blank"><bx_text:_adm_txt_langs_export /></a>
+                </div>
+            </bx_repeat:items>
+        </div>
+        __controls__
+    </form>
+</div>

@@ -1,0 +1,11 @@
+div.bx_videos-wall-oii-duration {
+	position: absolute;
+	
+	bottom: 5px;
+	right: 5px;
+
+	padding: 3px;
+
+	background-color: rgba(0, 0, 0, 0.2);
+	color: #ffffff;
+}

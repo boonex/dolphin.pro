@@ -1,0 +1,25 @@
+@import url("../../base/css/main.css");
+
+* {
+    -webkit-text-size-adjust: 100%
+}
+
+#orca_main {
+    width:100%;
+}
+
+#bx_forum_search_input {
+    padding:0; 
+    width:100%; 
+    border:none; 
+    outline:none; 
+    background-color:transparent;
+}
+
+.forum_reply_button {
+    text-align:center;
+}
+.forum_reply_button .bx-btn {
+    float:none;
+    display:inline-block;
+}

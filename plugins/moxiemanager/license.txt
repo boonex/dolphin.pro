@@ -1,0 +1,109 @@
+	MOXIEMANAGER COMMERCIAL LICENSE (Enterprise)
+		V2, June 2015
+
+ Copyright (C) 2015 Ephox Corporation, this agreement may be
+ copied and distributed only with a commercial copy of 
+ MoxieManager, changes in this document is not permitted.
+
+ This license agreement is a legal agreement between you 
+ ("Licensee") (either an individual or a single entity) and 
+ Ephox Corporation ("Ephox") for the software product 
+ MoxieManager which includes computer software and electronic 
+ documentation (collectively the "Software").
+ 
+ This license is valid only if Licensee has completed payment,
+ if not, all copies of the software must be destroyed and all 
+ of its component parts.
+ 
+ By installing, copying or otherwise using the Software, you
+ agree and to be bound by the terms of this License agreement.
+ 
+ 1. Using the Software
+ If Licensee has purchased a license for the Software, subject
+ to the terms and conditions of this Agreement, Ephox grants 
+ Licensee, a limited, non-exclusive, non-transferable, 
+ non-sublicense license to install or include the Software in 
+ your own software and use that copy of the Software only in 
+ accordance with this agreement.
+ 
+ a) Licensee may use the Software to operate in conjunction with 
+    other commercial software.
+  
+ b) Licensee is allowed to remove any Ephox copyright notices,
+    logos or brand related texts.
+ 	
+ c) Licensee is allowed to modify the Software without notifying
+    Ephox.
+
+ d) Licensee are granted these rights for an unlimited amount of
+    website domains as long as the domain is owned, operated
+    supported by or otherwise has a commercial client relation to 
+    Licensee software and company.
+  	
+ 2. Restrictions
+ 
+ Licensee may not:
+ 
+ a) Sell or distribute the Software completely standalone, it may
+    only be distributed or sold together with Licensee commercial
+    software or commercial services.
+
+ b) Market the Software separately from Licensee owned products or 
+    services as their own creation.
+ 
+ 3. Termination
+ This License Agreement is effective until terminated. Ephox 
+ may terminate this License Agreement if Licensee fails to comply 
+ with the terms and conditions. In such event, Licensee must 
+ destroy all copies of the Software and all of its component 
+ parts. 
+ 
+ 4. Ownership
+ The Software is licensed, not sold. The License agreement gives 
+ Licensee limited rights to use the Software. All rights, title 
+ and interest, including all copyrights, in and to the Software 
+ and any copies Licensee is permitted to make herin are exclusively 
+ owned by Ephox and are protected by copyright, trademark and 
+ trade secret law and international treaties. Ephox retains 
+ all rights not expressly granted to Licensee in this License 
+ agreement.
+
+ 5. Limited Warranty
+ Software is provided "AS IS". You exclusive remedy and Ephox's
+ entire liability under this limited warranty will be a Ephox's
+ option to replace Software or refund the fee paid for the
+ Software.
+
+ 6. DISCLAIMER OF WARRANTY
+ UNLESS SPECIFIED IN THIS AGREEMENT, ALL EXPRESS OR IMPLIED 
+ CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY IMPLIED 
+ WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, 
+ OR NON INFRINGEMENT, ARE DISCLAIMED, EXCEPT TO THE EXTENT THAT 
+ THESE DISCLAIMERS ARE HELD TO BE LEGALLY INVALID.
+
+ 7. LIMITATION OF LIABILITY
+ TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL EPHOX 
+ BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR SPECIAL,
+ INDIRECT, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
+ CAUSED REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF OR
+ RELATED TO THE USE OF OR INABILITY TO USE SOFTWARE, EVEN IF 
+ EPHOX HAS ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. 
+ 
+ In no event will Ephox's liability to you, whether in 
+ contract, tort (including negligence), or otherwise, exceed 
+ the amount paid by you for Software under this Agreement. The 
+ foregoing limitations will apply even if the above stated 
+ warranty fails of its essential purpose.
+ 
+ 8. Governing Law
+ Any actions related to this agreement will be governed by
+ Swedish law, no choice of law rules of any jurisdiction will
+ apply.
+ 
+ 9. Entire Agreement
+ This License agreement constitutes the entire agreement between
+ Licensee and Ephox and supersedes any other prior agreement
+ or understandings, whether oral or written, regarding the 
+ Software. If a provision of this agreement is deemed null and 
+ void, invalid or without effect, the remainder of the 
+ agreement shall remain in effect.

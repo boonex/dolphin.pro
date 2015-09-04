@@ -1,0 +1,65 @@
+.msg_ajax {
+	position: absolute;
+	display: block;
+	z-index: 1000;
+
+	left: 25px;
+	max-width: 450px;
+}
+
+.msg_left_side {	
+	position: relative;
+	float: left;
+}
+
+.msg_right_side {
+	position: relative;
+	float: left;
+}
+
+.msg_right_side .msg_sender {
+	width: 100%;
+	height: auto;
+
+	overflow: hidden;
+}
+
+.msg_right_side .msg_sender a {
+	font-weight: bold;
+}
+
+.msg_window {
+	position: relative;
+	width: 100%;
+	background-color: #fff;
+	overflow: hidden;
+}
+
+.msg_window_close {
+	position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    text-align: center;
+}
+.msg_window_close a {
+	text-decoration: none;
+}
+.msg_window_close .sys-icon {
+	display: block;
+	z-index: 150;
+
+	min-width: 16px;
+    min-height: 16px;
+
+    font-size: 16px;
+}
+
+.msg_window_content {}
+
+.msg-post-body {
+    margin-top:5px;
+
+    background-color: #e9ecff;
+}

@@ -1,0 +1,88 @@
+div.feedback-cb {
+	clear: both;
+	font-size: 0px;
+}
+div.feedback-view,
+div.feedback-content {
+    width: 100%;
+    position: relative;
+}
+div.feedback-entries {
+    position: relative;
+}
+div.feedback-entry-divider:first-child {
+    display: none;
+}
+div.feedback-entry {
+    width: 100%;
+    position: relative;
+}
+div.feedback-info {
+    min-height: 32px;
+    margin-left: 42px;
+    position: relative;
+}
+div.feedback-checkbox {
+	position: absolute;
+	z-index: 2;
+    top: 0px;
+    left: 0px;
+    width: 20px;
+    height: 38px;
+    text-align: left;
+}
+div.feedback-checkbox  input {
+	margin: 1px;
+}
+div.feedback-caption,
+div.feedback-date,
+div.feedback-text {
+    position: relative;
+}
+div.feedback-text img {
+    max-width: 100%;
+    height: auto;
+}
+span.feedback-date {
+    text-transform: lowercase;
+}
+div.feedback-caption {
+    line-height: 30px;
+}
+a.feedback-action {
+    text-transform: lowercase;
+}
+div.feedback-text-snippet {
+	/*
+    TEXT-OVERFLOW: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap; 
+    overflow: hidden;
+    */
+}
+div.feedback-comments {    
+    position: relative;
+    clear: both;
+}
+div.feedback-comments div.cmt-reply {
+    padding: 0px;
+}
+div.feedback-comments div.cmts {
+    padding: 0px;
+}
+div.feedback-entry div.thumbnail_block {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+}
+div.feedback-entry div.votes_small {
+    top: 0px;
+    right: 0px;
+    width: auto;
+    position: absolute;
+}
+
+/*--- Admin panel ---*/
+div.block_cont {
+    padding: 0px;
+}

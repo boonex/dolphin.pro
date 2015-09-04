@@ -1,0 +1,69 @@
+#profile_customize .popup_form_wrapper .container {
+	background-color: rgba(255, 255, 255, 0.9);
+}
+#profile_customize .buttons_bar {
+	display: block;
+}
+
+form#custom_themes_form .themes {
+	margin: -5px;
+
+	overflow: hidden;
+}
+
+form#custom_themes_form .thumb {
+	position: relative;
+    float: left;
+
+	width: 66px;
+	height: 86px;
+
+    cursor: pointer;
+    overflow: hidden;
+}
+
+form#custom_themes_form .thumb64 {
+    width: 64px;
+    height: 64px;
+
+	overflow: hidden;
+}
+
+form#custom_themes_form .thumb64 img {
+    width: 64px;
+    height: 64px;
+}
+
+form#custom_themes_form .radiobox {
+    top: 3px;
+    left: 3px;
+
+    position: absolute;
+    z-index: 2;
+
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+
+	-webkit-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+    -moz-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+
+    background-color: #ffffff;
+}
+
+form#custom_themes_form .radiobox input {
+	position: relative;
+	display: block;
+
+    margin: 3px;
+    padding: 0px;
+}
+
+form#custom_themes_form .caption {
+	text-align: center;
+}
+
+#profile_customize .input_wrapper_text {
+    margin-right: 3px;
+}

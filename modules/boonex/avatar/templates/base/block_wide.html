@@ -1,0 +1,61 @@
+<div class="form_advanced_wrapper edit_form_wrapper">
+    <table id="edit_form_table" class="form_advanced_table" cellspacing="0" cellpadding="0">
+        <thead>
+            <tr class="headers">
+                <th class="block_header"><bx_text:_bx_ava_current_avatar /></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="white-space:normal; padding:0;"> 
+                    <div class="bx-def-padding-sec">
+                        <div id="bx_ava_current">
+                            __avatar__
+                        </div>
+    
+                        <bx_if:allow_upload>
+                            <div class="bx_ava_block bx-def-margin-sec-left">
+                                <b><bx_text:_bx_ava_upload_title /></b>
+                                <bx_text:_bx_ava_upload_info />
+                                <form id="bx_ava_form" method="post" enctype="multipart/form-data" action="__action__">
+                                    <input type="file" name="image" onchange="$('#bx_ava_form').submit()" /> 
+                                    <span><input type="checkbox" name="copy_to_profile_photos" id="copy_to_profile_photos" checked="checked" /><label for="copy_to_profile_photos"><bx_text:_bx_ava_copy_to_profile_photos /></label></span>
+                                    <br />
+                                    <span class="bx_ava_err">__upload_error__</span>
+                                </form>
+                                <bx_if:display_premoderation_notice>
+                                <div style="margin-top:5px;"><bx_text:_bx_ava_premoderation_note /></div>
+                                </bx_if:display_premoderation_notice>
+                            </div>
+                        </bx_if:allow_upload>
+
+                        <div class="clear_both"></div>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>        
+    </table>
+</div>
+
+<bx_if:allow_crop>
+    <div class="form_advanced_wrapper edit_form_wrapper bx-def-margin-top">
+        <table id="edit_form_table" class="form_advanced_table" cellspacing="0" cellpadding="0">
+            <thead>
+                <tr class="headers">
+                    <th class="block_header"><bx_text:_bx_ava_cropping_tool /></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="white-space:normal; padding:0;"> 
+                        <div class="bx-def-padding-sec">
+                            __crop_tool__
+                        </div>
+                    </td>
+                </tr>
+            </tbody>        
+        </table>
+    </div>
+</bx_if:allow_crop>
+

@@ -1,0 +1,17 @@
+div.adm-license-text {
+	text-transform: uppercase;
+	font-weight: normal;
+	color: #333333;
+}
+div.adm-license-cell {
+	position: relative;
+	float: left;
+}
+
+input.adm-license-input {
+	position: relative;
+    width: 400px;
+    height: 16px;
+    padding: 10px;
+    vertical-align: middle;
+}

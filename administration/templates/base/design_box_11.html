@@ -1,0 +1,28 @@
+<!-- Design Box [ Start ] here  -->
+<div class="disignBoxFirst bx-def-border bx-def-round-corners">
+    <div class="boxFirstHeader bx-def-bh-margin clearfix">
+        <div class="dbTitle">__title__</div>
+        <div class="dbTopMenu">
+        	<table class="dbTmCntLine">
+        		<tr>
+		            <bx_repeat:actions>
+		                <bx_if:show_bullet>
+		                    <td class="sys-bullet"></td>
+		                </bx_if:show_bullet>
+		                <td id="__id__-act" class="active" <bx_if:hide_active>style="display:none"</bx_if:hide_active>>
+		                    __icon__
+		                    <span __class__>__title__</span>
+		                </td>
+		                <td id="__id__-pas" class="notActive" <bx_if:hide_inactive>style="display:none"</bx_if:hide_inactive>>
+		                    __icon__
+		                    <a id="__id__" __class__ __href__ __target__ __on_click__>__title__</a>
+		                </td>
+		            </bx_repeat:actions>
+				</tr>
+			</table>
+        </div>
+    </div>
+    <div class="boxContent bx-def-bc-margin">__content__</div>
+    __bottom_items__
+</div>
+<!-- Design Box [ End ] here  -->

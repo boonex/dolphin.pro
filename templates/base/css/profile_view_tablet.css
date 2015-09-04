@@ -1,0 +1,22 @@
+@media (min-width:720px) and (max-width:1024px) {
+	div.sys-profile-cover {
+		height: 250px;
+	}
+
+	div.sys-profile-cover div.sys-profile-cover-thumbnail,
+	div.sys-profile-cover div.sys-profile-cover-thumbnail .sys-pct-image {
+		width: 138px;
+		height: 138px;
+	}
+
+	div.sys-profile-cover div.sys-profile-cover-thumbnail .sys-pct-letter {
+		line-height: 138px;
+
+		font-size: 54px;
+	}
+
+	div.sys-profile-cover div.sys-profile-cover-text {
+		height: 140px;
+		margin-left: 180px;
+	}
+}

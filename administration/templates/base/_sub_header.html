@@ -1,0 +1,57 @@
+<bx_include_auto:_header.html />
+        <div class="adm-header">
+        	<div class="adm-header-content">
+            	<div class="adm-header-title bx-def-margin-sec-left">
+            		<bx_injection:injection_logo_before />
+            		<div class="adm-header-text bx-def-font-h1">Dolphin <span>__current_version__</span></div>
+            		<bx_injection:injection_logo_after />
+                    <div class="adm-header-update bx-def-margin-sec-left" id="adm-header-update"></div>
+                    <div class="clear_both">&nbsp;</div>
+                    <script language="javascript" type="text/javascript">
+                    <!--
+                        $(document).ready(function() {
+                            $.get(
+                                '<bx_url_root />get_rss_feed.php?ID=boonex_version&member=0', 
+                                {},
+                                function(sData) {
+                                	if(!sData)
+                                	    return;
+
+                                    var sVerCur = '__current_version__';
+                                    var sVerNew = $(sData).find('dolphin').html(); 
+                                    if(sVerNew != undefined && sVerNew != null && sVerNew != '' && sVerNew != sVerCur)
+                                        $('#adm-header-update').html('<a href="http://www.boonex.com/dolphin/download/"><bx_text:_adm_txt_dashboard_update_to /> ' + sVerNew + ' <bx_text:_adm_txt_dashboard_update_now /></a>');
+                                },
+                                'text'
+                            );
+                        });
+                    -->
+                    </script>
+            	</div>
+            	<bx_injection:injection_top_menu_before />
+            	__top_menu__
+            	<bx_injection:injection_top_menu_after />
+            	<div class="clear_both">&nbsp;</div>
+            </div>
+        </div>
+        <div class="adm-middle">
+            <div class="adm-middle-center">
+                <div class="adm-middle-cnt bx-def-margin-sec-leftright">
+            		<table class="adm-middle" cellpadding="0" cellspacing="0">
+            			<tr>
+            				<td class="adm-middle-menu">
+            					<bx_injection:injection_main_menu_before />
+                                __main_menu__
+                                <bx_injection:injection_main_menu_after />
+                                <div class="adm-copyright bx-def-margin-sec-top">&copy; <a href="http://www.boonex.com/">BoonEx</a></div>
+                                <bx_injection:injection_copyright_after />
+            				</td>
+    
+            				<td class="adm-middle-main" id="main_cont">
+            					<div class="adm-page-header">
+            						<div class="disignBoxFirst bx-def-border bx-def-round-corners">
+            							<div class="boxContent bx-def-bc-padding">__page_header__</div>
+            						</div>
+            					</div>
+            					<div class="adm-page-content">
+            						<bx_injection:injection_content_before />

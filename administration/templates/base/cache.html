@@ -1,0 +1,48 @@
+<div class="adm-cache clearfix">
+	<canvas id="adm-cache-chart"></canvas>
+	<div id="adm-cache-clear" class="bx-def-font-large bx-def-margin-left">
+	    <b><bx_text:_adm_txt_dashboard_cache /></b><br />
+	    <ul>
+	    <bx_repeat:clear_action>
+	        <li><a href="javascript:void(0)" onclick="javascript:bx_cache_clear('__action__');">__title__</a></li>
+	    </bx_repeat:clear_action>
+	    </ul>
+	</div>
+
+	<script type="text/javascript">
+		function bx_cache_show_chart(oData) {
+			var oHolder = $("#adm-cache-chart").get(0).getContext("2d");
+			return new Chart(oHolder).PolarArea(oData, {
+				scaleBackdropColor: "transparent",
+				segmentStrokeColor: "transparent",
+				segmentStrokeWidth: 0,
+				tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>" + _t('_sys_kilobyte')
+			});
+		}
+
+    	function bx_cache_clear(sType) {
+	        bx_loading('adm-cache-clear', true);
+
+	        $.post(
+	            '<bx_url_admin />cache.php', 
+	            {
+	                clear_cache: sType
+	            }, 
+	            function(oData) {
+	                bx_loading('adm-cache-clear', false);
+
+	                if(oData.chart_data != undefined) {
+	                	oCacheChart.destroy();
+	                	oCacheChart = bx_cache_show_chart(oData.chart_data);
+	                }
+
+	                if(oData.message != undefined)
+	                	alert(oData.message);
+	            },
+	            'json'
+	        );
+	    }
+
+    	var oCacheChart = bx_cache_show_chart(__chart_data__);
+    </script>
+</div>

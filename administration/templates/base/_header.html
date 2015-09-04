@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=__page_charset__" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+		<title>__page_header__</title>
+
+		<bx_include_css />
+		<link href='http://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900' rel='stylesheet' type='text/css' />
+
+		<bx_include_js />
+
+		__dol_images__
+        __dol_lang__
+        __dol_options__
+
+		<script defer type="text/javascript">
+			var site_url = '<bx_url_root />';
+			var aUserInfoTimers = new Array();
+			var glUserInfoDisabled = 'yes';
+    		$(document).ready( function() {
+    			/*--- Init RSS Feed Support ---*/
+			    $( 'div.RSSAggrCont' ).dolRSSFeed();
+
+			    /*--- Init Retina Support ---*/
+				$('img.bx-img-retina').dolRetina();
+		    } );
+        </script>
+
+        __extra_js__
+
+	   <bx_injection:injection_head />
+    </head>
+    <body <bx_injection:injection_body /> class="bx-def-font">
+        <bx_injection:injection_header />
+        <div id="FloatDesc"></div>

@@ -1,0 +1,18 @@
+<div class="admin_actions_panel bx-def-padding-thd-topbottom clearfix">
+    <bx_if:selectAll>
+        <div class="admin-actions-select bx-def-padding-left">
+            <input id="admin-actions-select-all-{wrapperId}" class="admin-actions-select-all" type="checkbox" onclick="$('#{wrapperId} input[name=\'{checkboxName}[]\']:enabled').attr('checked', this.checked)"  {checked} />
+            <label for="admin-actions-select-all-{wrapperId}"><bx_text:_Select_all /></label>
+        </div>
+    </bx_if:selectAll>
+    <bx_if:actionButtons>
+        <div class="admin-actions-buttons bx-def-padding-left">
+            <bx_repeat:buttons>
+                <button class="bx-btn bx-btn-small" type="{type}" name="{name}" value="{value}" {onclick} >{value}</button>
+            </bx_repeat:buttons>
+        </div>
+    </bx_if:actionButtons>
+    <bx_if:customHTML>
+        <div class="admin-actions-custom bx-def-padding-left">{custom_HTML}</div>
+    </bx_if:customHTML>
+</div>

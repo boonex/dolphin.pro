@@ -1,0 +1,61 @@
+div.ps-groups,
+div.ps-create-group,
+div.ps-default-group,
+div.ps-default-values {
+    position: relative;
+}
+
+/*--- My Groups page ---*/
+div.ps-cell-chb,
+div.ps-cell-title,
+div.ps-cell-action {
+    height: 19px;
+    position: relative;
+    float: left;
+}
+div.ps-cell-chb {
+    clear: both;
+}
+div.ps-cell-chb input {
+	margin-left: 0px;
+}
+div.ps-cell-title {
+    padding: 0px 5px;
+    line-height: 19px;
+}
+div.ps-cell-action img {
+    margin-top: 2px;
+}
+
+
+/*--- Add/Delete Members dialog ---*/ 
+div#ps-add-members,
+div#ps-del-members {
+    position: absolute;
+    z-index: 77;
+    display: none;
+}
+div.ps-members-content {
+    position: relative;
+}
+div.ps-search-form {}
+div.ps-search-results {
+    height: 172px;
+    overflow: auto;
+}
+div.ps-search-unit {
+    margin: 2px;
+    position: relative;
+    float: left;    
+}
+div.ps-search-unit-chk {
+    top: 1px;
+    left: 1px;
+    position: absolute;
+    z-index: 2;
+    background-color: #ffcccc;
+}
+div.ps-search-unit-chk input {
+    margin: 3px;
+    padding: 0px;    
+}

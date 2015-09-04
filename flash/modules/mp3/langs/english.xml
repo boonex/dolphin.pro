@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<items>
+    <item key="_name_"><![CDATA[English]]></item>
+    <item key="txtAuthor"><![CDATA[From #user#]]></item>
+    <item key="txtViews"><![CDATA[Views: #views#]]></item>
+
+    <item key="msgConnectionError"><![CDATA[CONNECTION ERROR]]></item>
+	<item key="msgLoading"><![CDATA[LOADING]]></item>
+	<item key="msgProcessing"><![CDATA[PROCESSING]]></item>
+	<item key="msgReconnect"><![CDATA[Connection Error. Click OK to reconnect.]]></item>
+    <item key="msgAuthorizingUserError"><![CDATA[Wrong Login or Password]]></item>
+    <item key="msgFileNotFound"><![CDATA[Error! File not found.]]></item>
+    <item key="msgFileNotProcessed"><![CDATA[Error! File not processed.]]></item>
+    <item key="msgFileNotApproved"><![CDATA[Error! File not approved.]]></item>
+
+    <item key="btnCancel"><![CDATA[Cancel]]></item>
+    <item key="btnOk"><![CDATA[OK]]></item>
+    <item key="btnSave"><![CDATA[SAVE]]></item>
+    <item key="btnReplay"><![CDATA[REPLAY]]></item>
+	<item key="btnPreview"><![CDATA[PRELISTEN]]></item>
+	<item key="btnRecord"><![CDATA[RE-RECORD]]></item>
+
+    <item key="dlgConfirm"><![CDATA[Confirmation]]></item>
+    <item key="dlgAlert"><![CDATA[Alert]]></item>
+    <item key="dlgDeleteFiles"><![CDATA[Are you sure you want to delete these files?]]></item>
+
+	<item key="hintEdit"><![CDATA[Edit]]></item>
+    <item key="hintPlay"><![CDATA[Play]]></item>
+    <item key="hintPause"><![CDATA[Pause]]></item>
+	<item key="hintPrevious"><![CDATA[Previous]]></item>
+    <item key="hintNext"><![CDATA[Next]]></item>
+    <item key="hintRemove"><![CDATA[Remove]]></item>
+	<item key="hintSave"><![CDATA[Download]]></item>
+	<item key="hintReplay"><![CDATA[Reload]]></item>
+	<item key="hintVolume"><![CDATA[Volume]]></item>
+	<item key="hintRecord"><![CDATA[Record]]></item>
+	<item key="hintStop"><![CDATA[Stop]]></item>
+	<item key="hintMicrophone"><![CDATA[Microphone]]></item>
+</items>

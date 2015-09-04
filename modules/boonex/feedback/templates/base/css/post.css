@@ -1,0 +1,8 @@
+div.feedback-post {
+    position: relative;
+}
+iframe.feedback-hidden {
+    width: 1px;
+    height: 1px;
+    display: none;
+}

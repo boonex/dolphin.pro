@@ -1,0 +1,17 @@
+div.adm-ms-items {}
+div.adm-ms-item {}
+
+div.adm-ms-check,
+div.adm-ms-name,
+div.adm-ms-email {
+    padding: 0px 5px;
+    position: relative;
+    float: left;
+}
+div.adm-ms-check {
+    padding: 0px 5px 0px 0px;
+}
+div.adm-ms-check input {
+    margin: 0px;
+    padding: 0px;
+}

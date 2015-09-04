@@ -1,0 +1,38 @@
+@media (max-width:720px) {
+	
+	div.wall-divider::before, 
+	div.wall-divider-today::before, 
+	div.wall-event::before, 
+	div.wall-view div.wall-load-more::before {
+		left: 20px;
+	}
+		
+	div.wall-event div.wall-event-owner div.thumbnail_block,
+	div.wall-event div.wall-event-owner div.thumbnail_block div.thumbnail_image,
+	div.wall-event div.wall-event-owner div.thumbnail_block div.thumbnail_image img.thumbnail_image_file, 
+	div.wall-event div.wall-event-owner div.thumbnail_block div.thumbnail_image img.thumbnail_image_file2,
+	div.wall-event div.wall-event-owner div.thumbnail_block div.thumbnail_image p.thumbnail_image_letter,
+	div.wall-event div.wall-event-owner div.thumbnail_block div.thumbnail_image p.thumbnail_image_letter2 {
+		width: 32px;
+		height: 32px;
+	}
+	
+	div.wall-event div.wall-event-owner div.thumbnail_block div.thumbnail_image p.thumbnail_image_letter,
+	div.wall-event div.wall-event-owner div.thumbnail_block div.thumbnail_image p.thumbnail_image_letter2 {
+		line-height: 32px;
+		font-size: 22px;
+	}
+	
+	div.wall-event div.wall-event-owner div.thumbnail_block div.thumbnail_image .sys-online-offline, 
+	div.wall-event div.wall-event-owner div.thumbnail_block div.thumbnail_image .sys-online-offline-changer {
+		bottom: -3px !important;
+	}
+	
+	div.wall-event-cnt {
+		margin-left: 50px;
+	}
+	
+	div.wall-event-cnt div.wall-event-circle .sys-icon {
+		font-size: 22px;
+	}
+}

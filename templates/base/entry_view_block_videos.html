@@ -1,0 +1,39 @@
+<div class="bx-def-bc-margin">
+    <div id="__prefix__videos_title_curr" class="bx_sys_block_videos_title_curr bx-def-font-h3 bx-def-margin-sec-bottom">
+        __title__
+    </div>
+
+    <div id="__prefix__videos_curr" class="bx_sys_block_videos_curr">
+        <bx_repeat:videos>
+            <div class="bx_sys_videos_curr__id__" style="__style__">__video__</div>
+        </bx_repeat:videos>                
+    </div>
+
+    <div id="__prefix__videos_icons" class="bx_sys_block_videos_icons">
+        <bx_repeat:icons>
+            <div class="sys_icon bx-def-margin-sec-right bx-def-margin-sec-top"><img class="bx-def-shadow bx-def-round-corners" alt="__id__" title="__title__" src="__icon_url__" /></div>
+        </bx_repeat:icons>
+        <div class="clear_both"></div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {                
+                var iHeight = 0;
+                $('#__prefix__videos_curr > div').each(function () {
+                    if ($(this).height() > iHeight)
+                        iHeight = $(this).height();
+                });
+                if (!iHeight)
+                    iHeight = parseInt('__default_height__');
+                if (iHeight)
+                    $('#__prefix__videos_curr').height(iHeight);
+                bx_center_content ('#__prefix__videos_icons', '.sys_icon');
+                $('#__prefix__videos_icons .sys_icon img').bind('click', function () {
+                    var e = $(this);
+                    $('#__prefix__videos_title_curr').html(e.attr('title'));
+                    $('#__prefix__videos_curr > div:visible').fadeOut(1000);
+                    $('#__prefix__videos_curr > .bx_sys_videos_curr' + e.attr('alt')).fadeIn(1000);
+                });
+        });
+    </script>
+</div>

@@ -1,0 +1,52 @@
+
+<form id="adm-set-def-template-form" method="post">
+    <input type="hidden" id="adm-set-def-template-val" name="set_default" />
+</form>
+<form id="adm-del-template-form" method="post">
+    <input type="hidden" id="adm-del-template-val" name="del_template" />
+</form>
+
+<div class="adm-templates">
+    <bx_repeat:templates>
+        <div class="bx-def-hr bx-def-margin-top bx-def-margin-bottom"></div>
+        <div class="adm-template-unit">
+            <div class="adm-template-unit-preview bx-def-border bx-def-shadow bx-def-font-grayed bx-def-font-h1 bx-def-margin-right">
+                <bx_if:preview>
+                    <img class="bx-img-retina" src="__img__" />
+                </bx_if:preview>
+                <bx_if:no_preview>
+                    <div><bx_text:_adm_txt_template_preview_na /></div> &nbsp;
+                </bx_if:no_preview>
+            </div>
+            <div class="adm-template-unit-info">
+                <div class="adm-template-unit-title bx-def-font-h1">
+                    __name__
+                </div>
+                <div class="adm-template-unit-subinfo bx-def-margin-sec-top">
+                    __ver__
+                    <span class="sys-bullet"></span>
+                    __vendor__
+                </div>
+                <div class="adm-template-unit-links bx-def-font-large bx-def-margin-sec-top">
+                    <bx_if:default>
+                        <b><bx_text:_adm_txt_default /></b>
+                    </bx_if:default>
+                    <bx_if:make_default>
+                        <a href="javascript:void(0);" onclick="$('#adm-set-def-template-val').val('__key__'); $('#adm-set-def-template-form').submit()"><bx_text:_adm_txt_make_default /></a>
+                    </bx_if:make_default>
+                    <span class="sys-bullet"></span>
+                    <a href="<bx_url_root />?preview=1&skin=__key__" target="_blank"><bx_text:_Preview /></a>
+                    <bx_if:delete>
+                        <span class="sys-bullet"></span>
+                        <a href="javascript:void(0);" onclick="if (confirm(_t('_Are_you_sure'))) { $('#adm-del-template-val').val('__key__'); $('#adm-del-template-form').submit() }"><bx_text:_Delete /></a>
+                    </bx_if:delete>
+                </div>
+                <div class="adm-template-unit-desc bx-def-margin-sec-top">
+                    __desc__
+                </div>
+            </div>
+            <div class="clear_both"></div>
+        </div>
+    </bx_repeat:templates>
+</div>
+

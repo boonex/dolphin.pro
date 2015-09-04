@@ -1,0 +1,110 @@
+	div.search_container {}
+	div.search_container_cnt {}
+
+    div.search_container div.bx-def-hr:first-child { 
+    	display: none;
+    }
+	
+	div.hidden_block {
+		display: none;
+	}
+
+	div.closed_toggle_block{
+		background-position: 0pt -17px;
+	}
+
+	div.main_settings {}
+
+	div.sub_design_box_head {
+		border-left:1px solid #DFDFDF;
+		border-right:1px solid #DFDFDF;
+		border-bottom:1px solid #DFDFDF;
+		background-color:#F5F7FA;
+		height:29px;
+		line-height: 29px;
+		padding:0 0 0 9px;
+	}
+
+	div.sub_design_box_body {
+		border-left:1px solid #DFDFDF;
+		border-right:1px solid #DFDFDF;
+		border-bottom:1px solid #DFDFDF;
+		position:static;
+		text-align:center;
+	}
+
+    div.sub_design_box_body div.MsgBox {
+        padding:1px;
+    }
+
+    table.browse_section {
+        width:100%;    
+    }
+
+    table.browse_section  .browse_settings {
+       width:270px;
+	   padding-left:10px;
+    }
+
+	div.linkSection
+	{
+		float:left;
+		width:45%;
+		text-transform:capitalize;
+		color:#666666;
+		padding-left:5px;
+		padding-top:5px;
+		padding-bottom:5px;
+		font-size:11px;
+		text-align:left;
+	}
+
+	div.linkSection a:link, 
+	div.linkSection a:active ,
+	div.linkSection a:visited
+	{
+		font-weight:bold;
+	}
+
+	div.linkSection a:hover
+	{
+		text-decoration:underline;
+	}
+
+	div.linkSection span 
+	{
+		font-weight:bold;
+	}
+
+	div.devider
+	{
+		font-size:1px;
+		border-top:1px solid #DFDFDF;
+	}
+
+	div.caption_section
+	{
+		float:left;
+		color:#000;
+		font-weight:bold;
+		font-size:12px;
+	}
+
+	div.js_control_section
+	{
+		width:16px;
+		height:16px;
+		float:right;
+		position:relative;/*keep*/
+		margin-right:5px;
+		background-image:url(../images/icons/toggle.png);
+		background-repeat:no-repeat;
+		cursor:pointer;
+		top:5px;
+		line-height:16px;
+	}
+
+	span.order_section {
+		font-weight:normal;
+		font-size:11px;
+	}

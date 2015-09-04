@@ -1,0 +1,1 @@
+<items><item type="number" key="user_height" default="600" range="500:700"><caption><![CDATA[Chat Height (px)]]></caption></item><item type="select" key="updateInterval" default="5" range="3:7 1"><caption><![CDATA[Update interval(sec)]]></caption><comment><![CDATA[Chat update interval (Lite version only).]]></comment></item></items>

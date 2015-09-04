@@ -1,0 +1,25 @@
+<div class="bx_sys_files_wrapper bx-def-bc-padding">
+    <bx_repeat:files>
+        <div class="bx-def-hr bx-def-margin-sec-top bx-def-margin-sec-bottom"></div>
+        <div class="bx_sys_files_line">
+            <div class="sys_icon bx-def-round-corners"><img alt="__title__" title="__title__" src="__icon__" /></div>
+            <div class="bx_store_files_info">
+                <p>__title__</p>
+                <i class="bx-def-font-small bx-def-font-grayed">__for_group__</i>
+                <b>__price__</b>
+                <u class="bx-def-font-small bx-def-font-grayed">__date__</u>            
+            </div>
+        </div>
+        <div class="bx_store_files_btns_container bx_sys_files_line">
+            <div class="bx_sys_files_btns">                
+                <bx_if:purchase>
+                    __btn_purchase__
+                </bx_if:purchase>                
+                <bx_if:download>
+                    __btn_download__
+                </bx_if:download>                
+            </div>            
+            <div class="clear_both"></div>
+        </div>            
+    </bx_repeat:files>    
+</div>

@@ -1,0 +1,13 @@
+<script type="text/javascript" src="{site_plugins}jquery/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="{site_plugins}jquery/jquery.form.min.js"></script>
+<script language="javascript">
+    $(document).ready( function() {
+         $('#searchForm').ajaxForm({
+            success: function(data) {
+                $('#page_block_1').html(data);
+            }
+        });
+      $("#ownerName").autocomplete("{users_processing}", {extraParams: {action: "findMembers", type: "ajax"}, autoFill:true});
+      }
+    );
+</script>

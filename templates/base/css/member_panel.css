@@ -1,0 +1,96 @@
+/*--- Account Control Block ---*/
+div.sys-account-control {}
+
+div.sys-account-control .bullet {
+	padding: 0px 3px;
+}
+
+/*--- Friends Block ---*/
+div.sys-account-friends {}
+div.sys-account-friend {
+	position: relative;
+}
+div.sys-account-friend:first-child {
+	margin-top: 0px;
+}
+
+/*--- Quick Links Block ---*/
+.quickLinksBlock {
+    padding: 0px;
+}
+
+.quickLinksBlock .actionsBlock .bx-btn {
+   width: 142px; 
+   margin: 5px;
+}
+    
+/* ---- */
+
+div.header
+{
+    margin:2px 2px 5px 2px;
+    padding:0px 0px 0px 7px;
+    background-repeat:repeat-x;
+    background-color:#E4E4E4;
+    height:25px;
+    line-height:25px;
+    vertical-align:middle;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+div.keeper
+{
+    padding:5px;
+}
+
+/* * * * Friend list * * * */
+
+.friends_thumb_1
+{
+    float:left;
+    margin: 0px 7px 7px 0px;	
+}
+
+.friends_thumb_2
+{
+    float:left;
+    margin: 0px 0px 7px;
+}
+
+.browse_nick
+{
+    text-align:center;
+}
+
+.rate_scale
+{
+    border:1px solid #939BB0;
+}
+
+.control_panel_table
+{
+    padding-left:12px;
+}
+
+.siteStatUnit
+{
+    float: left;
+    width: 33%;
+}
+
+.siteStatUnit img
+{
+    width: 16px;
+    height: 16px;
+}
+
+.siteStatUnit .sys-icon 
+{
+    display:inline-block;
+    min-width:16px;
+    margin-right:5px;
+    font-size:16px;
+    vertical-align:middle;
+    text-align:center;
+}
+

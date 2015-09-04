@@ -1,0 +1,25 @@
+@media (max-width:720px) {
+
+	div.bx-blog-wall-snippet .unit_info,
+	div.bx-blog-wall-content .unit_info {
+		min-height: auto !important;
+		padding-right: 0px !important;
+	}
+
+	div.bx-blog-wall-snippet .unit_info .unit_title, 
+	div.bx-blog-wall-content .unit_info .unit_title,
+	div.bx-blog-wall-snippet .unit_info .blog_text, 
+	div.bx-blog-wall-content .unit_info .blog_text {
+		text-align: center;
+	}
+
+	div.bx-blog-wall-snippet .unit_info .unit_img, 
+	div.bx-blog-wall-content .unit_info .unit_img {
+		position: relative;
+
+		width: 100%;
+		margin-top: 10px;
+
+		text-align: center;
+	}
+}

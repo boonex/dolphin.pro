@@ -1,0 +1,100 @@
+div.upload-post {    
+    position: relative;
+}
+iframe.upload_hidden {
+    width: 1px;
+    height: 1px;
+    display: none;
+}
+
+/*--- Post Type GENERAL Styles ---*/
+a.upload-ptype-ctl {
+    padding-left: 20px;
+}
+span.upload-ptype-ctl {
+    text-indent: 20px;
+}
+img.upload-ptype-ctl {    
+    left: 5px;
+    top: 6px;
+    position: absolute;
+}
+
+div.upload-ptype-cnt {
+    position: relative;
+    display: block;
+}
+
+/*--- Post Type TEXT Styles ---*/
+
+div.upload_text textarea {    
+    width: 100%;
+    height: 50px;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+}
+/*--- Post Type VIDEO Styles ---*/
+
+
+
+
+
+/*--- Post Form Styles ---*/
+form.upload-post-event {
+    position: relative;
+}
+div.upload-ctype-ctl {
+    height: 30px;
+    
+    position: relative;
+    display: block;
+    
+    background-color: #ededed;
+    
+    line-height: 30px;
+    text-align: center;
+    font-size: 11px;        
+}
+div.upload-ctype-ctl input {
+    top: -2px;
+    margin: 0px 2px 0px 0px;
+    padding: 0px;
+
+    position: relative;
+}
+div.upload-ctype-cnt {
+    position: relative;
+    margin: 10px 10px 0px 10px;
+    padding: 0px;
+    display: none;
+}
+div.upload_upload {
+    display: block;
+}
+
+
+
+
+/*--- Submit Styles ---*/
+div.upload-post-submit {
+    margin: 10px;
+}
+
+div.upload-post-submit2 {
+    margin: 10px 0px;
+}
+
+.uploading-state .file-details .file-name {
+	float:left;
+}
+
+.uploading-state .file-details img {
+	float:right;
+	margin-top:-20px;
+}
+
+.form_advanced_table .form_input_file {
+    width:200px;
+}
+

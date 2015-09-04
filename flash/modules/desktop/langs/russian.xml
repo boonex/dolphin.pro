@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<items>
+	<item key="_name_"><![CDATA[Русский]]></item>
+	<item key="txtStatus"><![CDATA[Статус: #status#]]></item>
+	<item key="txtDetails"><![CDATA[#desc#]]></item>
+	<item key="txtOnline"><![CDATA[В сети]]></item>
+	<item key="txtOffline"><![CDATA[Не в сети]]></item>
+	<item key="txtFilter"><![CDATA[Фильтр]]></item>
+	<item key="txtFilterSex"><![CDATA[Фильтр по полу]]></item>
+	<item key="txtAgeFrom"><![CDATA[Возраст от:]]></item>
+	<item key="txtAgeTo"><![CDATA[до:]]></item>
+	<item key="txtOnlineOnly"><![CDATA[Только в сети]]></item>
+
+	<item key="txtLogin"><![CDATA[Логин:]]></item>
+	<item key="txtPassword"><![CDATA[Пароль:]]></item>
+	<item key="txtRemember"><![CDATA[Запомнить меня]]></item>
+	<item key="txtAutoLogin"><![CDATA[Автологин]]></item>
+	<item key="txtAutoLogging"><![CDATA[Автологин]]></item>
+
+	<item key="tabOnline"><![CDATA[В сети]]></item>
+	<item key="tabFriends"><![CDATA[Друзья]]></item>
+
+	<item key="msgLoading"><![CDATA[ЗАГРУЗКА]]></item>
+	<item key="msgConnecting"><![CDATA[Соединение]]></item>
+	<item key="msgConnectionError"><![CDATA[Ошибка соединения]]></item>
+	<item key="msgAuthorizing"><![CDATA[Авторизация ...]]></item>
+	<item key="msgUserAuthenticationFailure"><![CDATA[Авторизация не удалась]]></item>
+	
+	<item key="dlgConfirm"><![CDATA[Подтверждение]]></item>
+	<item key="dlgAlert"><![CDATA[Предупреждение]]></item>
+	<item key="dlgSettings"><![CDATA[Настройки]]></item>	
+	<item key="dlgLanguage"><![CDATA[Язык: ]]></item>	
+	<item key="dlgSkin"><![CDATA[Шаблон: ]]></item>
+
+	<item key="dlgConfirm"><![CDATA[Подтверждение]]></item>
+	<item key="dlgAlert"><![CDATA[Предупреждение]]></item>
+
+	<item key="btnOk"><![CDATA[OK]]></item>
+	<item key="btnCancel"><![CDATA[Отменить]]></item>
+	<item key="btnRead"><![CDATA[Читать]]></item>
+	<item key="btnAccept"><![CDATA[Принять]]></item>
+	<item key="btnDecline"><![CDATA[Отклонить]]></item>
+	<item key="btnLogin"><![CDATA[Логин]]></item> 
+
+	<item key="hintOnlineStatus"><![CDATA[Статус в сети]]></item>
+	<item key="hintUserMusic"><![CDATA[Слушать музыку от #user#]]></item>
+	<item key="hintUserVideo"><![CDATA[Смотреть видео от #user#]]></item>
+	<item key="hintUserIM"><![CDATA[Чатиться с #user#]]></item>
+	<item key="hintUserMail"><![CDATA[Написать сообщение для #user#]]></item>
+	<item key="hintSettings"><![CDATA[Настройки]]></item>
+
+	<item key="male"><![CDATA[Мужчина]]></item>
+	<item key="female"><![CDATA[Женщина]]></item>
+
+	<item key="menuUsers"><![CDATA[Список пользователей]]></item>
+	<item key="menuChat"><![CDATA[Чат]]></item>
+	<item key="menuMail"><![CDATA[Почтовый ящик]]></item>
+	<item key="menuLogin"><![CDATA[Войти]]></item>
+	<item key="menuLogout"><![CDATA[Выйти]]></item>
+	<item key="menuExit"><![CDATA[Выход]]></item>
+	<item key="menuOnline"><![CDATA[В сети]]></item>
+	<item key="menuOffline"><![CDATA[Не в сети]]></item>
+	<item key="windowChat"><![CDATA[Чат]]></item>
+	<item key="windowUsers"><![CDATA[Пользователи]]></item>
+	<item key="windowNotification"><![CDATA[Уведомление]]></item>
+	<item key="friendMessage"><![CDATA[Ваш друг зашёл в сеть.]]></item>
+	<item key="mailMessage"><![CDATA[У Вас новая почта от:]]></item>
+	<item key="imMessage"><![CDATA[Вас пригласили на чат с:]]></item>
+	<item key="mp3"><![CDATA[#user# Музыка]]></item>
+	<item key="video"><![CDATA[#user# Видео]]></item>
+	<item key="im"><![CDATA[Чат с #user#]]></item>
+	<item key="About"><![CDATA[О нас]]></item>
+	<item key="Search"><![CDATA[Поиск]]></item>
+</items>

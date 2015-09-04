@@ -1,0 +1,59 @@
+@media (max-width:720px) {
+	div.sys-profile-cover {
+		height: 300px;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+
+	div.sys-profile-cover div.sys-profile-cover-actions .sys-pca-change-background .sys-pca-icon {
+		display: inline;
+		margin-right: 0px;
+	}
+
+	div.sys-profile-cover div.sys-profile-cover-actions .sys-pca-change-background .sys-pca-text {
+		display: none;
+	}
+
+	div.sys-profile-cover div.sys-profile-cover-thumbnail,
+	div.sys-profile-cover div.sys-profile-cover-thumbnail .sys-pct-image {
+		position: relative;
+
+		width: 98px;
+		height: 98px;
+		margin-left: auto; 
+		margin-right: auto;
+	}
+
+	div.sys-profile-cover div.sys-profile-cover-thumbnail .sys-pct-letter {
+		line-height: 98px;
+
+		font-size: 36px;
+	}
+
+	div.sys-profile-cover div.sys-profile-cover-text {
+		height: 100px;
+		margin-left: 0px;
+
+		text-align: center;
+	}
+	
+	div.sys-profile-cover div.sys-profile-cover-text .sys-pct-status {
+		max-height: 50px;
+	}
+
+	div.sys-profile-cover div.sys-profile-cover-menu {
+		height: 50px;
+
+		font-size: 16px;
+	}
+
+	div.sys-profile-cover div.sys-profile-cover-menu-cnt {
+		padding-top: 10px;
+	}
+
+	div.sys-profile-cover div.sys-profile-cover-menu .sys-pcm-item {
+		height: 21px;
+
+		line-height: 16px;
+	}		
+}

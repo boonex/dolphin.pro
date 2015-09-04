@@ -1,0 +1,5 @@
+@media (max-width:720px) {
+	ul.cmts-margin {
+		margin-left: -28px;
+	}
+}

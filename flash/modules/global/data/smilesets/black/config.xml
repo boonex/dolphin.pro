@@ -1,0 +1,30 @@
+<smileset>
+	<properties columns="6" cellWidth="36" cellHeight="32" previewNumber="6" />
+	<smiles>
+		<smile file="smile01.swf" code=":yell:" width="27" height="27" />
+		<smile file="smile02.swf" code=":|" width="24" height="27" />
+		<smile file="smile03.swf" code=":)" width="24" height="27" />
+		<smile file="smile04.swf" code=":(" width="24" height="27" />
+		<smile file="smile05.swf" code=":angel:" width="41" height="27" />
+		<smile file="smile06.swf" code=":-D" width="24" height="24" />
+		<smile file="smile07.swf" code=":devil:" width="31" height="27" />
+		<smile file="smile08.swf" code=":p" width="24" height="24" />
+		<smile file="smile09.swf" code=":?" width="25" height="24" />
+		<smile file="smile10.swf" code=":glad:" width="29" height="24" />
+		<smile file="smile11.swf" code=":toothy:" width="24" height="27" />
+		<smile file="smile12.swf" code=":D" width="24" height="26" />
+		<smile file="smile13.swf" code=":flower:" width="35" height="27" />
+		<smile file="smile14.swf" code=":-)" width="24" height="24" />
+		<smile file="smile15.swf" code=":music:" width="34" height="28" />
+		<smile file="smile16.swf" code=":X" width="24" height="27" />
+		<smile file="smile17.swf" code=":mouth:" width="24" height="27" />
+		<smile file="smile18.swf" code=":cry:" width="24" height="27" />
+		<smile file="smile19.swf" code=":heart:" width="28" height="22" />
+		<smile file="smile20.swf" code=":Z" width="30" height="30" />
+		<smile file="smile21.swf" code=":P" width="24" height="27" />
+		<smile file="smile22.swf" code=":0" width="24" height="27" />
+		<smile file="smile23.swf" code=":happy:" width="43" height="27" />		
+		<smile file="smile24.swf" code=":wonder:" width="24" height="27" />
+	</smiles>
+	<item key="name"><![CDATA[Black Smiles]]></item>
+</smileset>

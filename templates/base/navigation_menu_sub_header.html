@@ -1,0 +1,34 @@
+<div class="subMenu bx-def-border" id="subMenu___submenu_id__" style="display:__display_value__;">
+	<div class="subMenuCnt bx-def-padding-leftright bx-def-padding-sec-topbottom">
+		<div class="sys_page_icon">
+			__picture__
+		</div>
+		<bx_if:show_caption>
+			<div class="sys_page_header bx-def-padding-sec-left">
+				__caption__
+	            <bx_injection:injection_title_zone />
+			</div>
+		</bx_if:show_caption>
+        <bx_if:show_status>
+            <div class="sys_page_status bx-def-padding-sec-left">
+                __status__
+            </div>
+        </bx_if:show_status>
+        <bx_if:show_submenu>
+            <div class="sys_page_submenu bx-def-padding-left clearfix">
+                __submenu__
+            </div>
+        </bx_if:show_submenu>
+        <bx_if:show_empty>
+            <div class="sys_page_empty"></div>
+        </bx_if:show_empty>
+        <div class="sys_page_actions">
+            __profile_actions__
+            __login_section__
+        </div>
+		<div class="clear_both"></div>
+        <bx_if:show_submenu_bottom>
+            <div class="sys_page_submenu_bottom bx-def-padding-sec-top clearfix">__submenu__</div>
+        </bx_if:show_submenu_bottom>
+	</div>
+</div>

@@ -1,0 +1,114 @@
+
+.bx_wmap_extra_wrtapper {
+    padding-top:10px;
+}
+
+.bx_wmap {
+    width:auto;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.bx_wmap_info {
+    width:auto;
+}
+
+.bx_wmap_tip {
+    width:auto;
+    margin-top:5px;
+    font-style:italic;
+}
+
+.bx_wmap_parts {
+    width:auto;    
+}
+
+.bx_wmap_part {
+    width:200px;
+    float:left;
+}
+
+.bx_wmap_part > img {
+    vertical-align:bottom;
+}
+.bx_wmap_part a > img {
+    vertical-align:top;
+}
+.bx_wmap_part .sys-icon {
+    display:inline-block;
+    min-width:16px;
+    min-height:16px;
+    font-size:16px; 
+    vertical-align:middle;
+}
+
+.bx_wmap_form_map {
+    width:500px;
+}
+
+.bx_wmap_form_map>.bx_map {
+    margin:0;
+}
+
+.bx_wmap_search_form {
+
+}
+
+.bx_wmap_location_box {
+    height:250px;
+}
+.bx_wmap_location_box .bx_wmap_loading {
+    line-height:250px;
+}
+
+.bx_wmap_homepage_part {
+    height:350px;
+}
+
+.bx_wmap_homepage {
+    height:250px;
+}
+.bx_wmap_homepage .bx_wmap_loading {
+    line-height:250px;
+}
+
+.bx_wmap_edit {
+    height:500px;
+}
+.bx_wmap_separate {
+    height:500px;
+}
+.bx_wmap_form_map .bx_wmap_separate {
+    height:280px;
+}
+.bx_wmap_separate .bx_wmap_loading {
+    line-height:500px;
+}
+.bx_wmap_form_map .bx_wmap_separate .bx_wmap_loading {
+    line-height:280px;
+}
+
+.bx_wmap_location {
+    margin:5px;
+    text-align:left;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
+}
+.bx_wmap_location > .sys-icon {
+    font-size:16px;
+    vertical-align:middle;
+}
+.bx_wmap_location > img {
+    position:relative;
+    top:3px;
+}
+
+.bx_wmap_locations {
+    max-height:180px;
+    max-width:261px;
+    overflow-y:auto;
+    margin-right:15px;
+}
+

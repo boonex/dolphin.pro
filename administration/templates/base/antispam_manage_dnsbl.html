@@ -1,0 +1,18 @@
+<bx_include_auto:designbox_top_controls.html />
+<div style="text-align:center;">
+__global_message__
+</div>
+<form id="adm-dnsbl-form" name="adm-dnsbl-form" action="__admin_url__antispam.php?mode=__mode__" method="post">
+    <table class="bx-def-bc-margin-thd" width="100%" cellpadding="5" cellspacing="0">
+        <bx_repeat:items>
+            <tr class="sys-adm-active-__active__">
+                <td><input type="checkbox" class="form_input_checkbox" id="adm-dnsbl-__id__" name="rules[]" value="__id__" /></td>
+                <td>__chain__</td>
+                <td><a target="_blank" href="__url__">__zonedomain__</a></td>
+                <td>__postvresp__</td>
+                <td><i class="sys-icon info-circle" float_info="__comment__"></i></td>
+            </tr>
+        </bx_repeat:items>
+    </table>
+    __controls__
+</form>

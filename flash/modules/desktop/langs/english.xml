@@ -1,0 +1,74 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<items>
+	<item key="_name_"><![CDATA[English]]></item>
+	<item key="txtStatus"><![CDATA[Status: #status#]]></item>
+	<item key="txtDetails"><![CDATA[#desc#]]></item>
+	<item key="txtOnline"><![CDATA[Online]]></item>
+	<item key="txtOffline"><![CDATA[Offline]]></item>
+	<item key="txtFilter"><![CDATA[Filter]]></item>
+	<item key="txtFilterSex"><![CDATA[Filter by sex]]></item>
+	<item key="txtAgeFrom"><![CDATA[Age from:]]></item>
+	<item key="txtAgeTo"><![CDATA[to:]]></item>
+	<item key="txtOnlineOnly"><![CDATA[Online only]]></item>
+
+	<item key="txtLogin"><![CDATA[Login:]]></item>
+	<item key="txtPassword"><![CDATA[Password:]]></item>
+	<item key="txtRemember"><![CDATA[Remember Me]]></item>
+	<item key="txtAutoLogin"><![CDATA[Auto Login]]></item>
+	<item key="txtAutoLogging"><![CDATA[Auto Logging]]></item>
+
+	<item key="tabOnline"><![CDATA[Online]]></item>
+	<item key="tabFriends"><![CDATA[Friends]]></item>
+
+	<item key="msgLoading"><![CDATA[LOADING]]></item>
+	<item key="msgConnecting"><![CDATA[Connecting]]></item>
+	<item key="msgConnectionError"><![CDATA[Connection Error]]></item>
+	<item key="msgAuthorizing"><![CDATA[Authorization ...]]></item>
+	<item key="msgUserAuthenticationFailure"><![CDATA[User Authentication Failed]]></item>
+	
+	<item key="dlgConfirm"><![CDATA[Confirmation]]></item>
+	<item key="dlgAlert"><![CDATA[Alert]]></item>
+	<item key="dlgSettings"><![CDATA[Settings]]></item>	
+	<item key="dlgLanguage"><![CDATA[Language: ]]></item>	
+	<item key="dlgSkin"><![CDATA[Template: ]]></item>
+
+	<item key="dlgConfirm"><![CDATA[Confirmation]]></item>
+	<item key="dlgAlert"><![CDATA[Alert]]></item>
+
+	<item key="btnOk"><![CDATA[OK]]></item>
+	<item key="btnCancel"><![CDATA[Cancel]]></item>
+	<item key="btnRead"><![CDATA[Read]]></item>
+	<item key="btnAccept"><![CDATA[Accept]]></item>
+	<item key="btnDecline"><![CDATA[Decline]]></item>
+	<item key="btnLogin"><![CDATA[Login]]></item> 
+
+	<item key="hintOnlineStatus"><![CDATA[Online Status]]></item>
+	<item key="hintUserMusic"><![CDATA[Listen to #user#'s Music]]></item>
+	<item key="hintUserVideo"><![CDATA[Watch #user#'s Video]]></item>
+	<item key="hintUserIM"><![CDATA[Chat with #user#]]></item>
+	<item key="hintUserMail"><![CDATA[Write a message to #user#]]></item>
+	<item key="hintSettings"><![CDATA[Settings]]></item>
+
+	<item key="male"><![CDATA[Male]]></item>
+	<item key="female"><![CDATA[Female]]></item>
+
+	<item key="menuUsers"><![CDATA[Users List]]></item>
+	<item key="menuChat"><![CDATA[Chat]]></item>
+	<item key="menuMail"><![CDATA[MailBox]]></item>
+	<item key="menuLogin"><![CDATA[Login]]></item>
+	<item key="menuLogout"><![CDATA[Log Out]]></item>
+	<item key="menuExit"><![CDATA[Exit]]></item>
+	<item key="menuOnline"><![CDATA[Online]]></item>
+	<item key="menuOffline"><![CDATA[Offline]]></item>
+	<item key="windowChat"><![CDATA[Chat]]></item>
+	<item key="windowUsers"><![CDATA[Users]]></item>
+	<item key="windowNotification"><![CDATA[Notification]]></item>
+	<item key="friendMessage"><![CDATA[Your friend has logged in.]]></item>
+	<item key="mailMessage"><![CDATA[Your have new mail from:]]></item>
+	<item key="imMessage"><![CDATA[Your have been invited to Chat by:]]></item>
+	<item key="mp3"><![CDATA[#user#'s Music]]></item>
+	<item key="video"><![CDATA[#user#'s Video]]></item>
+	<item key="im"><![CDATA[Chat with #user#]]></item>
+	<item key="About"><![CDATA[About]]></item>
+	<item key="Search"><![CDATA[Search]]></item>
+</items>

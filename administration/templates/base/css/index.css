@@ -1,0 +1,139 @@
+/*--- Items in Category ---*/
+div.adm-category-items {}
+div.adm-category-item {
+	position: relative;
+}
+div.adm-category-item .sys-icon,
+div.adm-category-item img {
+    top: 3px;
+	left: 7px;
+	position: absolute;	
+}
+div.adm-category-item .sys-icon {
+    font-size:20px;
+	color: #ffffff;
+}
+div.adm-ci-link {
+	margin-left: 35px;
+	
+	line-height: 20px;
+	font-size: 18px;
+	font-weight: bold;	
+}
+div.adm-ci-description {
+	margin-left: 35px;
+
+	font-size: 13px;
+}
+
+/*--- Boonex News ---*/
+div.adm-news {
+    margin: 0px 2px;
+    width: 210px;
+}
+div.adm-news-header,
+div.adm-news-footer {}
+
+div.adm-news-items,
+div.adm-news-more {
+    padding: 15px 15px 0px 15px;
+    background-color: #ececec;
+}
+div.adm-news-item {
+	padding-bottom: 8px;
+}
+
+div.adm-ni-title a,
+div.adm-ni-title a:link,
+div.adm-ni-title a:visited,
+div.adm-ni-title a:hover,
+div.adm-ni-title a:active
+{
+    font-size:12px;
+    font-weight:bold;
+    color:#33c;
+}
+
+div.adm-ni-content{
+    font-size: 11px;
+    color: #333333;
+    text-align:justify;
+}
+span.adm-ni-date {
+	color: #999999;
+    display:block;
+    font-size:9px;
+}
+
+/*--- Dashboard Links ---*/
+div.adm-dashboard-links .adm-dl-item {
+	position: relative;
+	float: left;
+	
+	width: 25%;
+}
+
+
+/*--- Dashboard Growth Stats ---*/
+div.adm-dashboard-growth {}
+div.adm-dg-controls {
+	white-space: nowrap;
+}
+div.adm-dg-control {
+	display: inline-block;
+	vertical-align: top;
+
+	width: 33%;
+	box-sizing: border-box;
+}
+div.adm-dg-control .input_wrapper {
+	width: 100%;
+}
+
+/*--- Dashboard Stats ---*/
+div.adm-dashboard-stats {}
+div.adm-ds-common { 
+    width:421px;
+    float:left;
+}
+#adm-ds-common-chart { 
+    float:right;
+
+    height:350px; 
+    width:350px;  
+}
+div.adm-ds-important {}
+div.adm-ds-item {
+	position:relative; 
+	float:left; 
+	width:50%;
+	height: 40px;
+	overflow: hidden;
+	text-transform: lowercase;
+}
+div.adm-ds-important div.adm-ds-item,
+div.adm-ds-important div.adm-ds-item a {
+	color: red;
+}
+
+/*--- Dashboard Help ---*/
+.adm-ds-help {
+    margin:0;
+}
+.adm-ds-help li {
+    line-height:150%;
+    margin:0;
+}
+.adm-ds-help .sys-icon {
+    display: inline-block;
+    min-width:16px;
+    min-height:16px;
+    font-size:16px;
+}
+.adm-ds-help-btn {
+    text-align:center;
+}
+.adm-ds-help-btn .bx-btn {
+    display:inline-block;
+    float:none;     
+}

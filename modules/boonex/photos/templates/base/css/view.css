@@ -1,0 +1,171 @@
+div#actionList {
+    position: relative;
+}
+
+div#actionList div {
+    position: relative;
+    float: left;
+    width: 140px;
+    margin: 10px;
+    font-weight: bold;
+}
+
+div#actionList img {
+    margin: 0px 10px;
+}
+
+div#actionList a {
+    font-size: 16px;
+}
+
+
+
+.fileUnit {
+    position: relative;
+}
+
+.fileUnitPic {
+    margin: 0px auto;
+    background: center no-repeat;
+    text-align: center;
+    cursor: pointer;
+}
+
+.fileUnitPic > img {
+    max-width:100%;
+}
+
+.fileUnitSpacer {}
+
+.fileUnitRight {
+    position: relative;
+    float: left;
+}
+
+.fileTitle {
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.fileDescription {} 
+
+.fileSize {
+    position: relative;
+    margin-left: 10px;
+}
+
+.fileUnitInfoRate {
+    position: relative;
+    float: left;
+}
+
+.fileUnitInfoCounts {
+    position: relative;
+    float: right;
+}
+
+.fileUnitInfoFav {
+    position: relative;
+    float: left;
+    margin: 0px 5px;
+    padding-left: 18px;
+}
+
+.fileUnitInfoFav img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.fileUnitInfoView {
+    position: relative;
+    float: left;
+    margin: 0px 5px;
+    padding-left: 18px;
+}
+
+.fileUnitInfoView img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.fileUnitInfo .votes_big {
+    margin: 0px;
+}
+
+/*  file body end  */
+
+.infoMain {}
+.infoMain .infoUnit {
+	width: 130px;
+}
+.infoMain .memberPic {
+	margin: 0px 5px 0px 0px;
+}
+.bx_photos_upload_form_wrapper .input_wrapper_value {
+    font-weight: normal;
+}
+
+/* redeclare form other files */
+
+div.result_block {
+	padding-top: 5px;
+}
+
+.boxContent .votes_small {
+    float: none;
+    position:relative;
+    width: auto;
+}
+
+.votes_small b {
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.memberPic {
+	margin-left: 5px;
+}
+
+.infoText {
+    margin: 5px;
+}
+
+.infoOwner {
+    font-weight: bold;
+}
+
+span.infoWhen {
+    font-size: 9px;
+	margin-left: 2px;
+	color: #888888;
+    text-transform: lowercase;
+}
+
+.lightroom-item {
+    position:relative;
+    z-index:1000002;
+    -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+#lightroom {
+    background: #000;
+    background: rgba(0, 0, 0, 0.9);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: fixed;
+    z-index: 1000001;
+    overflow-x: auto;
+    overflow-y: scroll;
+}
+
+#submitAction div.input_wrapper_custom {
+    width: 100%;
+}

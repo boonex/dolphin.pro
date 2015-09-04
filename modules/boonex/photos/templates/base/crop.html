@@ -1,0 +1,32 @@
+<div id="bx_photos_crop_container" class="bx-def-border">
+</div>
+<script>
+
+    var cropperHeader = new Croppic('bx_photos_crop_container', {
+	    cropUrl: '__crop_url__',
+        loadPicture: '__preload_image__',
+        loaderHtml: '<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> ',
+        onError: function(errormessage) {
+            alert(errormessage);
+        },
+        onAfterImgCrop: function(a) {
+            if (this.sRedirectUrl)
+                window.location.href = this.sRedirectUrl;
+        }
+	});
+
+    cropperHeader.afterCrop = function (data) {
+
+        try {
+            response = jQuery.parseJSON(data);
+        }
+        catch(err) {
+            response = typeof data =='object' ? data : jQuery.parseJSON(data);
+        }
+        
+        if (response.status == 'success' && response.redirect_url)
+            this.sRedirectUrl = response.redirect_url;
+
+        Croppic.prototype.afterCrop.call(this, data);
+    }
+</script>

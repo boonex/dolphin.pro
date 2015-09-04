@@ -1,0 +1,6 @@
+<?php
+
+$aLangContent = array(
+
+);
+

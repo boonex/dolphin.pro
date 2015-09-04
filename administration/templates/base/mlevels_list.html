@@ -1,0 +1,39 @@
+<div id="adm-mlevels-cnt-levels" style="display:__display__;">
+    <form id="adm-mlevels-list-form" enctype="multipart/form-data" method="post" action="__action__" class="form_advanced">
+        <div class="adm-mlevels-items bx-def-bc-margin">
+            __results__
+            <div class="adm-mlevels-item">
+                <b>
+                    <bx_text:_adm_txt_mlevels_system />
+                </b>
+            </div>
+            <bx_repeat:items_system>
+                <div class="adm-mlevels-item adm-mlevels-enabled bx-def-margin-thd-top-auto">                
+                    <input type="checkbox" class="form_input_checkbox" id="adm-mlevels-__id__" name="levels[]" value="__id__" disabled="disabled" />
+                    <label for="adm-mlevels-__id__">__title__</label>
+                    <a href="__actions_link__"><bx_text:_adm_txt_mlevels_actions /></a>
+                </div>
+            </bx_repeat:items_system>
+    
+            <div class="adm-mlevels-item bx-def-margin-sec-top">
+                <b>
+                    <bx_text:_adm_txt_mlevels_custom />
+                </b>
+            </div>
+            <bx_repeat:items_custom>
+                <div class="adm-mlevels-item bx-def-margin-thd-top-auto __class__">                
+                    <input type="checkbox" class="form_input_checkbox" id="adm-mlevels-__id__" name="levels[]" value="__id__" />
+                    <label for="adm-mlevels-__id__">__title__</label>
+                    <a href="__actions_link__"><bx_text:_adm_txt_mlevels_actions /></a>
+                    <bx_if:purchasable>
+                        <a href="__price_link__"><bx_text:_adm_txt_mlevels_price /></a>
+                    </bx_if:purchasable>
+                    <bx_if:editable>
+                        <a href="__edit_link__"><bx_text:_adm_txt_mlevels_edit /></a>
+                    </bx_if:editable>
+                </div>
+            </bx_repeat:items_custom>
+        </div>
+        __controls__
+    </form>
+</div>

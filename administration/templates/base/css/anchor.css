@@ -1,0 +1,23 @@
+a, 
+a:link,
+a:visited,
+a:active {
+	text-decoration: none;
+	color: #7b68fe;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/*--- Links with white background ---*/
+.top_item a,
+.custom_item a,
+.system_item a,
+.inactive_item a,
+.buildBlock a,
+.build_item_active a, 
+.build_block_header a,
+ul#form_tabs_switcher a {
+	color: #9473ff;
+}

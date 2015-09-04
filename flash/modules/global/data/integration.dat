@@ -1,0 +1,31 @@
+//global begin
+aRayApps["global"] = new Array();
+aRayApps["global"]["admin"] = {"params": new Array('nick', 'password'), "top": 0, "left": 0, "width": 800, "height": 600, "resizable": 0};
+//global end
+//im begin
+aRayApps["im"] = new Array();
+aRayApps["im"]["user"] = {"params": new Array('sender', 'password', 'recipient'), "top": 0, "left": 0, "width": 550, "height": 500, "resizable": 1};
+//im end
+//mp3 begin
+aRayApps["mp3"] = new Array();
+aRayApps["mp3"]["player"] = {"params": new Array('id', 'user', 'password'), "top": 0, "left": 0, "width": 340, "height": 350, "resizable": 0};
+aRayApps["mp3"]["recorder"] = {"params": new Array('user', 'password', 'extra'), "top": 0, "left": 0, "width": 340, "height": 300, "resizable": 0};
+//mp3 end
+//photo begin
+aRayApps["photo"] = new Array();
+aRayApps["photo"]["shooter"] = {"params": new Array('id', 'extra'), "top": 0, "left": 0, "width": 400, "height": 300, "resizable": 0};
+//photo end
+//presence begin
+aRayApps["presence"] = new Array();
+aRayApps["presence"]["user"] = {"params": new Array('id', 'password'), "top": 0, "left": 0, "width": 250, "height": 605, "resizable": 1};
+//presence end
+//video begin
+aRayApps["video"] = new Array();
+aRayApps["video"]["player"] = {"params": new Array('id', 'user', 'password'), "top": 0, "left": 0, "width": 350, "height": 400, "resizable": 0};
+aRayApps["video"]["recorder"] = {"params": new Array('user', 'password', 'extra'), "top": 0, "left": 0, "width": 350, "height": 400, "resizable": 0};
+//video end
+//video_comments begin
+aRayApps["video_comments"] = new Array();
+aRayApps["video_comments"]["player"] = {"params": new Array('id', 'user', 'password'), "top": 0, "left": 0, "width": 350, "height": 400, "resizable": 0};
+aRayApps["video_comments"]["recorder"] = {"params": new Array('user', 'password', 'extra'), "top": 0, "left": 0, "width": 350, "height": 400, "resizable": 0};
+//video_comments end

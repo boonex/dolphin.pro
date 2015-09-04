@@ -1,0 +1,13 @@
+<div class="themes">
+	<bx_repeat:items>
+		<div class="thumb bx-def-margin-thd" onclick="oBxSctrMain.selectTheme(this, '__id__');">
+			<div class="thumb64 bx-def-border bx-def-round-corners">
+				<div class="radiobox"><input type="radio" name="theme" value="__id__" /></div>
+				<img src="__thumbnail__"/>
+			</div>
+			<div class="caption">__name__</div>
+		</div>
+	</bx_repeat:items>
+</div>
+<input type="hidden" name="action" value="theme" />
+<input type="hidden" name="save_url" id="save_url" value="__save_url__" />

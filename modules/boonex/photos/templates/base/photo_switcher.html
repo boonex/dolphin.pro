@@ -1,0 +1,49 @@
+<script language="javascript">
+function getCurrentImage (iPicId) {
+    var aPicLink = new Array();
+    __picLinkElements__
+    var sCode = $.getJSON('__moduleUrl__getCurrentImage/' + aPicLink[iPicId] + '&page=' + iPicId + '&total=' + __count__, function(json){ 
+        $("#mainPic").attr({ src: json.file, alt: json.title });
+        $(".picTitle > a").attr({href:json.url});
+        $(".picTitle > a").html(json.title);
+        $(".addInfoFrom > a").attr({href:json.ownerLink});
+        $(".addInfoFrom > a").html(json.ownerName);
+        $(".addInfoDate").html(json.date);
+        $(".picRate").html(json.rate);
+        $(".picSwitcher > .paginate").replaceWith(json.paginate);
+      } 
+    );
+}
+</script>
+<div class="picSwitcher">
+    <div class="picSwitcherCnt">
+        <bx_if:show_scroller>
+    	    <div class="switchUnitRow suScroller bx-def-margin-top" style="width:__switchWidthOut__px;">
+    	        <bx_if:scrollerBack>
+    	            <div class="scrollLeft" onmouseout="moveScrollLeftAuto('scrollContainer', 0);" onmouseover="moveScrollLeftAuto('scrollContainer', 1);">
+                        <i class="sys-icon arrow-circle-left"></i>
+    	            </div>
+    	        </bx_if:scrollerBack>
+    	        <div class="scrollContainerArea" style="width:__containerWidth__px;">
+    	            <div class="scrollContainer" id="scrollContainer" style="width:__contWidth__px;">
+    	                <bx_repeat:iconBlock>
+    	                    <div class="scrollUnit" id="pic__imageId__" style="background-image:url(__picUrl__);" >
+    	                        <a href="javascript:void(0);" onClick="javascript: getCurrentImage(__imageId__); return false;">
+    	                            <img src="<bx_image_url:spacer.gif />" class="scrollUnitPic"/>
+    	                        </a>    
+    	                    </div>
+    	                </bx_repeat:iconBlock>
+    	            </div>
+    	        </div>    
+    	        <bx_if:scrollerNext>
+    	            <div class="scrollRight" onmouseout="moveScrollRightAuto('scrollContainer', 0);" onmouseover="moveScrollRightAuto('scrollContainer', 1);">
+    	                <i class="sys-icon arrow-circle-right"></i>
+    	            </div>
+    	        </bx_if:scrollerNext>
+    	        <div class="clear_both"></div>
+    	    </div>
+        </bx_if:show_scroller>
+        __switcherUnit__
+    </div>
+    __paginate__
+</div>    

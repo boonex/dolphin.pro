@@ -1,0 +1,14 @@
+AddType application/xml .xsl
+
+RewriteEngine On
+
+RewriteRule ^group/(.+)\.htm$   index.php?action=goto&cat_id=$1   [QSA,L]
+RewriteRule ^forum/(.+)-([0-9]+)\.htm$   index.php?action=goto&forum_id=$1&start=$2    [QSA,L]
+RewriteRule ^forum/(.+)\.htm$   index.php?action=goto&forum_id=$1&start=0    [QSA,L]
+RewriteRule ^topic/(.+)\.htm$   index.php?action=goto&topic_id=$1    [QSA,L]
+RewriteRule ^user/(.+)\.htm$   index.php?action=goto&user=$1         [QSA,L]
+
+RewriteRule ^rss/forum/(.+)\.htm$    index.php?action=rss_forum&forum=$1 [QSA,L]
+RewriteRule ^rss/topic/(.+)\.htm$    index.php?action=rss_topic&topic=$1 [QSA,L]
+RewriteRule ^rss/user/(.+)\.htm$     index.php?action=rss_user&user=$1  [QSA,L]
+RewriteRule ^rss/all\.htm$           index.php?action=rss_all&sort=      [QSA,L]

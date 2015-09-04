@@ -1,0 +1,44 @@
+@import url(../../base/css/forms_adv.css);
+
+.form_advanced_table {
+	border: none;
+}
+
+.form_advanced_table .bx-form-block-header,
+.form_advanced_table .bx-form-block-headers {
+	background-color: rgba(0, 0, 0, 0.0);
+}
+
+/* * * * Inputs and Wrappers * * * */
+.form_input_text,
+.form_input_textarea,
+.form_input_email,
+.form_input_url,
+.form_input_date,
+.form_input_datetime,
+.form_input_password,
+.form_input_number,
+.form_input_slider,
+.form_input_range,
+.form_input_doublerange,
+.form_input_select {
+	border-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.form_input_text:focus,
+.form_input_textarea:focus,
+.form_input_email:focus,
+.form_input_url:focus,
+.form_input_date:focus,
+.form_input_datetime:focus,
+.form_input_password:focus,
+.form_input_number:focus,
+.form_input_slider:focus,
+.form_input_range:focus,
+.form_input_doublerange:focus,
+.form_input_select:focus {
+	border-color: #33c0f8; 
+	background-color: #ffffff;
+}
+/* * * * [end] Inputs and Wrappers * * * */

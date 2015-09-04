@@ -1,0 +1,70 @@
+<script type="text/javascript">
+	function MailBoxReplayMessage()
+	{
+		// call the parent constructor ;
+		this.constructor();
+
+		this.sPageReceiver 			= '__current_page__?ajax_mode=true'; 
+		this.sErrorMessage 			= '__error_message__';
+	}
+
+	// inheritance ;
+	MailBoxReplayMessage.prototype = MailBox.prototype;
+
+	// add some function to the object ;
+
+	/**
+	 * @description : function will close the reply window ;
+	 */
+
+	MailBoxReplayMessage.prototype.cancelReplay = function()
+	{
+        var el = $('.' + htmlSelectors[5]);
+        el.css('display', 'none');
+	}
+
+	// create the object;
+	var oMailBoxReplayMessage = new MailBoxReplayMessage();
+</script>
+<div class="replay_info bx-def-font-h2">
+	__information__:
+</div>
+<div id="compose_message_block">
+    <div class="view_message_container">
+        <div class="owner_info_wrapper bx-def-padding-sec">
+            <div class="owner_info">
+            	<div class="thumb_section">__member_thumbnail__</div>
+                <div class="member_info">
+                    <div class="member_info_nickname bx-def-padding-thd-bottom">
+                        <a href="__member_location__">__member_nick_name__</a>
+                    </div>
+                    <div class="bx-def-padding-thd-bottom">
+                        <i class="sys-icon clock-o"></i>
+                        __date_create__
+                    </div>
+                    <div class="subject">
+	                    <div class="input_wrapper input_wrapper_text clearfix">
+	                    	<input type="text" value="__message_subject__" id="compose_subject" class="form_input_text bx-def-font-inputs" />
+	                    </div>
+                    </div>
+                </div>    
+            </div>
+            <div class="clear_both"></div>
+        </div>
+    	<div class="message_container">
+    		<textarea id="compose_message"></textarea>
+    	</div>
+    	<div class="message_actions message_actions_compose">
+            <div class="message_actions_cnt bx-def-padding-sec">
+        		<div class="messages_options">
+        			<label><input type="checkbox" id="to_mail"/>__send_copy_to__</label>
+        			<br />
+        			<label><input type="checkbox" id="to_my_mail"/>__send_copy_my__</label>
+        			<br />
+        			<label><input type="checkbox" id="notify_mail"/>__notify__</label>
+        		</div>
+                __action_buttons__
+            </div>
+    	</div>
+    </div>
+</div>

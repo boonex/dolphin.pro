@@ -1,0 +1,19 @@
+/*--- My Subscriptions page ---*/
+form#sbs-subscriptions-form div.input_wrapper_custom  {
+	float: none;
+}
+div.sys-sbs-row {}
+div.sys-sbs-object {
+	position: relative;
+	float: left;
+	line-height: 22px;
+	font-weight: bold;
+}
+div.sys-sbs-row button.bx-btn {
+	float: right;
+}
+
+div#sbs_visitor_popup {
+	width: 490px;
+    display: none;
+}

@@ -1,0 +1,92 @@
+
+	/*------------------*/
+	div.logged_section_block
+	{
+		height:35px;
+		border:0px solid red;
+		padding-top:0px;
+		padding-left:3px;
+		font-size:13px;
+		font-weight:bold;
+		text-align:center;
+	}
+	div.logged_section_block div
+	{
+		float:left;
+		height:20px;
+		line-height:20px;
+		vertical-align:middle;
+		border:0px solid red;
+		margin-top:9px;
+		margin-right:5px;
+	}
+
+	/*##############################################################*/
+	div.featured_blocks {
+		padding-top: 10px;
+	}
+	div.featured_block_1 {
+		float: left;
+	}
+
+	/*##############################################################*/
+
+	.sys_download_unit {
+		background-position:0 0; 
+		background-repeat:no-repeat; 
+		min-height:56px; 
+		padding-left:63px;   
+	}
+
+	.boxContent>.sys_download_unit:first-child {
+		margin-top: 0px;
+	}
+
+	.sys_download_unit>div>a {
+		font-size:12px;
+		font-weight:bold;
+	}
+
+	/*##############################################################*/
+
+	.siteStatMain {
+		margin-left:5px;
+		margin-right:5px;
+		margin-top:10px;
+		margin-bottom:10px;
+	}
+
+	.siteStatUnit
+	{
+		float: left;
+		width: 50%;
+		text-transform:lowercase;
+        height: 25px;
+        line-height: 25px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+	}
+
+	.siteStatUnit img
+	{
+		width: 16px;
+		height: 16px;
+		vertical-align:middle;
+		padding-right:5px;
+	}
+
+    .siteStatUnit .sys-icon 
+    {   
+        display:inline-block;
+        min-width:16px;
+        margin-right:5px;
+        font-size:16px;
+        vertical-align:middle;
+        text-align:center;
+        color:#666666;
+    }
+
+	a.vacant {
+		color:#999;
+	}

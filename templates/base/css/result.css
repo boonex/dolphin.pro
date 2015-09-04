@@ -1,0 +1,18 @@
+	div.result_text
+	{
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:4px;
+		margin-bottom:10px;
+		width:100%;
+		text-align:center;
+		font-weight:bold;
+	}
+	
+	div.result_desc
+	{
+		margin-left:auto;
+		margin-right:auto;
+		width:100%;
+		text-align:center;
+	}

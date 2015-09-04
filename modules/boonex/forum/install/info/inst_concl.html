@@ -1,0 +1,28 @@
+Installation has been completed!
+New forum blocks are available for adding on home, profile and member's account pages.
+
+<br />
+Language compilation result: <span id="bx_forum_lang_res">in progress...</span>
+
+<script type="text/javascript">    
+
+    var h = function (s) {        
+        if (s && s.length) {
+            var r = new RegExp ('<ret>(.*)<\/ret>');
+            var m = s.match(r);
+            if (null != m && m.length > 1 && 1 == m[1]) {
+                jQuery('#bx_forum_lang_res').html('<b>success</b>');
+                return;
+            }
+        }
+        jQuery('#bx_forum_lang_res').html('<b>FAIL</b>');
+    };
+
+	jQuery.ajax ({
+		url: site_url + 'forum/?action=compile_langs&lang=en&ts=' + (new Date()),
+    	dataType: 'text',
+	    type: 'POST',
+		success: h
+    });
+
+</script>

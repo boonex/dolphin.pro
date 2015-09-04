@@ -1,0 +1,4 @@
+Options -Indexes
+<FilesMatch "^.*\.php|.*\.html|.*\.pl$">
+ForceType application/x-httpd-php-source
+</FilesMatch>

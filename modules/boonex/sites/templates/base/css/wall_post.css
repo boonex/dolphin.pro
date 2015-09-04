@@ -1,0 +1,44 @@
+div.bx-sites-wall-event {
+    position: relative;    
+}
+
+div.bx-sites-wall-caption {
+    padding-left: 20px;
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: 0px center;
+    line-height: 30px; 
+}
+
+span.bx-sites-wall-caption-owner {
+    font-weight: bold;
+}
+
+a.bx-sites-wall-caption-link,
+a.bx-sites-wall-caption-link:link {
+    text-decoration: none;
+}
+a.bx-sites-wall-caption-link:hover,
+a.bx-sites-wall-caption-link:active {
+    text-decoration: underline;
+}
+div.bx-sites-wall-content {
+    position: relative;
+}
+div.bx-sites-wall-comments {
+    padding-left: 0px;
+}
+
+/*--- Overwrite default Comment styles ---*/
+div.bx-sites-wall-comments div.cmts {
+    padding: 0px;
+    /*display: none;*/
+}
+div.bx-sites-wall-comments div.cmt-reply {
+    padding: 0px;
+    /*display: none;*/
+}
+div.bx-sites-wall-event div.bx-sites-wall-comments div.thumbnail_block {
+    left: -38px;
+    top: 1px;
+}

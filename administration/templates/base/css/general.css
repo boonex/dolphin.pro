@@ -1,0 +1,408 @@
+@import url(../../../../templates/base/css/general.css);
+
+/*--- Body ---*/
+div#FloatDesc {
+	position: absolute;
+	display: none;
+	z-index: 10000;
+	box-sizing: border-box;
+
+	width: 180px;
+	padding: 5px;
+
+	background-color: #ffffff;
+
+	border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+
+	-webkit-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+    -moz-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+
+	color: #333333;
+}
+
+form, p {
+	margin:0px;
+	padding:0px;
+}
+
+a img {
+	border:none;
+}
+
+.err {
+	color: #FF0000;
+}
+
+/*--- Top Header ---*/
+div.adm-header {
+	position: relative;
+    height: 50px;
+    overflow: hidden;
+
+    border-top: 1px solid rgba(255,255,255, 0.2);
+    border-bottom: 1px solid rgb(92,92,92);
+    border-bottom: 1px solid rgba(0,0,0, 0.3); 
+	background-color: rgb(128, 128, 128);
+	background-color: rgba(0, 0, 0, 0.5); 
+	background-repeat: repeat-x;	
+
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+div.adm-header-content {
+    width: 1140px;
+    margin: 0px auto;
+}
+div.adm-header-title {
+	position: relative;
+    float: left;   
+    line-height: 50px;
+}
+img.adm-header-logo {   
+    top: 0px;
+    left: 0px;
+    width: 90px;
+    height: 90px;
+
+    position:absolute;
+}
+div.adm-header-text {
+	position: relative;
+    float: left;
+	text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0px 1px 1px #333;
+}
+div.adm-header-text > span {
+    font-weight:normal;
+}
+div.adm-header-update {
+	position: relative;
+    float: left;
+}
+div.adm-header-update a {
+	color: #f7944a;
+}
+
+/*--- Top Menu ---*/
+div.adm-top-menu {
+    position: relative;
+    float: right;
+}
+div.adm-tm-item {
+	position: relative;
+    float: left;
+    width: 50px;
+    height: 50px;
+
+    background-color:transparent;
+
+   -webkit-transition: background-color 0.2s linear;
+   -moz-transition: background-color 0.2s linear;
+   -o-transition: background-color 0.2s linear;
+   transition: background-color 0.2s linear;
+}
+div.adm-tm-item-active {
+    background-color:rgb(192, 192, 192);
+    background-color:rgba(192, 192, 192, 0.3);
+    background-position: 0px 0px;
+    background-repeat: repeat-x;
+}
+div.adm-tm-item a {
+    width: 50px;
+    height: 50px;
+    margin: 0px;
+    padding: 0px;
+    
+    display: block;
+
+    text-decoration: none;
+    color: #333333;
+}
+
+div.adm-tm-item-icon {
+    width: 32px;
+    height: 32px;
+    padding: 9px;
+
+	line-height: 32px;
+    text-align:center;
+}
+div.adm-tm-item-icon img {
+    width: 32px;
+    height: 32px;
+}
+div.adm-tm-item-icon .sys-icon {
+    display: block;
+
+    font-size: 24px;
+    color: #eee;
+    text-shadow: 0px 1px 1px #000;
+
+   -webkit-transition: color 0.2s linear;
+   -moz-transition: color 0.2s linear;
+   -o-transition: color 0.2s linear;
+   transition: color 0.2s linear;
+}
+div.adm-tm-item-active .sys-icon {
+    color: #fff;
+}
+
+/*--- Middle Part ---*/
+div.adm-middle {
+    padding: 30px 0px;
+}
+div.adm-middle-center {
+	width: 1140px;
+	margin: 0px auto;
+}
+div.adm-middle-cnt {}
+table.adm-middle {
+	width: 100%;
+	border: 0px;
+}
+td.adm-middle-menu {
+	width: 200px;
+	padding: 0px;
+	margin: 0px;
+
+	border: 0px;
+
+	vertical-align: top;
+}
+td.adm-middle-main {
+    padding: 0px;
+	margin: 0px;
+
+	background-repeat: no-repeat;
+	background-position: 470px 0px;
+	vertical-align: top;
+}
+
+div.adm-page-header {
+    margin: 0px 0px 0px 34px;
+
+	text-align: center;
+	font-weight: bold;
+	font-size: 30px;
+}
+div.adm-page-content {
+	margin: 0px 0px 0px 34px;
+}
+
+/*--- Main Menu ---*/
+div.adm-main-menu {
+	width: 200px;
+}
+
+div.adm-menu-wrapper {
+    position: relative;
+	
+    width: 200px;
+	margin-top: 1px;
+
+	overflow: hidden;
+}
+
+.adm-menu-wrapper div.adm-mm-license {
+	height: auto;
+}
+.adm-menu-wrapper div.adm-mm-license .adm-menu-image {
+	position: relative; 
+	display: block;
+
+	width: 200px;
+	height: 100px;
+	padding: 10px 20px;
+
+	box-sizing: border-box;
+} 
+
+div.adm-menu-header,
+div.adm-menu-header-active,
+div.menu_categ_hover_header {
+	position: relative;
+    z-index: 5;
+
+    height: 50px;
+	line-height: 50px;
+    cursor: pointer;
+
+    background-color: rgba(245, 248, 252, 1.0);
+
+	-webkit-transition: background-color 0.1s linear;
+	-moz-transition: background-color 0.1s linear;
+	-o-transition: background-color 0.1s linear;
+	transition: background-color 0.1s linear;
+
+	font-size: 16px;
+}
+div.adm-mmh-hover {
+    background-color: rgba(245, 248, 252, 0.7);
+}
+div.adm-mmh-active {}
+div.adm-mmh-opened {}
+
+div.adm-menu-header .adm-menu-title {
+	display: inline-block;
+	vertical-align: top;
+
+	padding-left: 10px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+	overflow: hidden;
+}
+	
+div.adm-menu-header a,
+div.adm-menu-header a:link,
+div.adm-menu-header a:hover,
+div.adm-menu-header a:active,
+div.adm-menu-header a:visited {
+	text-decoration: none;
+	color: #333333;
+}
+	
+div.adm-menu-header .adm-menu-icon {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+
+	width: 24px;
+	height: 24px;
+
+	color: #333333;	                
+}
+
+div.adm-menu-header .adm-menu-icon.sys-icon {
+	height: 28px;
+
+	line-height: normal;
+    font-size: 24px;
+}
+
+div.adm-menu-header .adm-menu-arrow.sys-icon {
+    position: absolute;
+    z-index: 5;
+	
+    top: 17px;
+    right: 11px;
+    width: 17px;
+    height: 17px;
+
+	line-height: normal;
+	color: #333333;
+
+    cursor: pointer;
+}
+
+div.adm-menu-items-wrapper {
+    position: relative;
+    display: none;
+
+    background-color: #f5f8fc;
+}
+div.adm-mmi-opened {
+    display: block;
+}
+
+div.adm-menu-item-wrapper {
+    height: 26px;
+    overflow: hidden;
+
+    line-height: 26px;
+	font-size: 13px;
+    text-overflow: ellipsis;    
+    white-space: nowrap;
+}
+
+div.adm-menu-item-wrapper .adm-menu-item-title {
+	vertical-align: middle;
+
+	padding-left: 5px;
+
+	color: #333333;
+}
+
+div.adm-menu-item-wrapper a,
+div.adm-menu-item-wrapper a:link,
+div.adm-menu-item-wrapper a:hover,
+div.adm-menu-item-wrapper a:active,
+div.adm-menu-item-wrapper a:visited {
+	text-decoration: none;
+	color: #333333;
+}
+div.adm-menu-item-wrapper a:hover,
+div.adm-menu-item-wrapper a:active {
+	text-decoration: underline;
+}
+
+div.adm-menu-item-wrapper .sys-icon,
+img.adm-menu-item-icon {
+	position: relative;	
+	display: inline-block;
+	vertical-align: middle;
+
+	width: 20px;
+	height: 20px;	
+
+    text-align: left;
+}
+
+div.adm-menu-item-wrapper .sys-icon {
+	line-height: normal;
+    font-size: 18px;
+	color: #333333;
+}
+div.adm-menu-item-wrapper.adm-mmi-active .sys-icon {
+	color: #333333;
+}
+
+/*--- Copyright ---*/
+div.adm-copyright,
+div.adm-copyright a {
+	color: #ffffff;
+}
+
+/*--- BoonEx Promo block ---*/
+.adm-boonex-promo {
+	width: 250px;
+}
+.adm-boonex-promo-cont {
+	background-image:url(../images/adm_bg_yellow.png);
+}
+
+.adm-boonex-promo-cont a {
+	display:block;
+	font-weight:bold;
+}
+
+.sys-adm-active-0 {
+    color: #333;
+}
+
+.sys-adm-ok, 
+.sys-adm-enabled {    
+    color: #0b0;
+}
+
+.sys-adm-failed,
+.sys-adm-disabled {    
+    color: #d00;
+}
+
+.code {
+	width: 550px;
+    margin: 10px;
+    padding: 10px;
+
+    border: 1px solid #0b0;
+
+    color: #0b0;
+    overflow:scroll;
+}

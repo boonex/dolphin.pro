@@ -1,0 +1,23 @@
+<div class="communicator_fr_container bx-def-bc-margin">
+    <bx_repeat:rows>
+        <div class="sys-connections-fr bx-def-margin-sec-top">
+            <div class="sys-cntsfr-author-icon">
+                __member_icon__
+            </div>
+            <div class="sys-cntsfr-info">
+                <div class="sys-cntsfr-author-info">__member_location__</div>
+                <div class="bx-def-font-small bx-def-font-grayed">__member_mutual_friends__</div>
+                <div class="sys-cntsfr-actions">
+                    <button class="bx-btn bx-btn-small" onclick="javascript: if(typeof __js_object__ != 'undefined') __js_object__.sendAction(this, 'communicator_fr_container', 'accept_friends_request', 'getProcessingRows', __row_value__, false)">
+                        <bx_text:_sys_cnts_btn_fr_accept />
+                    </button>
+                    <button class="bx-btn bx-btn-small" onclick="javascript: if(typeof __js_object__ != 'undefined') __js_object__.sendAction(this, 'communicator_fr_container', 'reject_friends_request', 'getProcessingRows', __row_value__)">
+                        <bx_text:_sys_cnts_btn_fr_reject />
+                    </button>
+                    <div class="clear_both"></div>
+                </div>
+            </div>
+        </div>
+    </bx_repeat:rows>
+</div>
+__page_pagination__

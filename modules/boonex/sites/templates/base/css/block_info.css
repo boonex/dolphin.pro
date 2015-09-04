@@ -1,0 +1,28 @@
+
+.bx_sites_block_view .show_image {
+    text-align:center;
+}
+
+.bx_sites_block_rate {
+   overflow: hidden;
+}
+
+.bx_sites_vote {
+   float: left;
+}
+
+.bx_sites_count {
+   float: right;
+}
+
+.bx_sites_val {
+	float: left;
+	height: 16px;
+	line-height: 16px;
+	width: auto;
+}
+
+.bx_sites_block_view .title {
+	color: green;
+}
+

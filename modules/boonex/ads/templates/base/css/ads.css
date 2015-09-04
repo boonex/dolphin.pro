@@ -1,0 +1,282 @@
+
+.cls_result_row
+{
+	position:relative;
+}
+
+
+.cls_res_info
+{
+	position:relative;
+	
+	width:330px;
+	font-size:13px;
+	color:#666666;
+}
+
+.clr3
+{
+	font-weight:normal;
+	color:#333333;
+	display:inline;
+}
+
+.cls_info
+{
+	position:relative;
+	float:right;
+	width:69%;
+	overflow:hidden;
+}
+
+.cls_info_left
+{
+	position:relative;
+	float:left;
+	width:30%;
+	overflow:hidden;
+}
+
+.cls_edit_imgs_cont {
+    width:100%;
+}
+
+div.fl
+{
+	float:left;
+}
+
+input.cur_pnt
+{
+	cursor: pointer;
+}
+
+.browseCheckbox
+{
+	background-color:#FFCCCC;
+	height:20px;
+	left:1px;
+	position:absolute;
+	top:1px;
+	width:20px;
+}
+
+/* Latest featured AD */
+
+.bx_ads_main_photo {
+	text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bx_ads_main_info {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bx_ads_main_info_text {
+	float:left;
+	text-align:left;
+	width:50%;
+}
+
+.ads_info_line {
+    margin-top:3px;
+}
+
+.bx_ads_main_info_img {
+	float:left;
+	text-align:right;
+	width:50%;
+}
+
+.bx_ads_main_info .votes_small {
+	width:auto;
+	margin:0px;
+}
+.bx_ads_main_info .votes_small div {
+	margin:0px;
+}
+
+
+
+/* AD unit */
+
+.ads_Unit {
+	position:relative;
+}
+
+.ads_Unit .votes_small {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: auto;
+    margin-top: 5px;
+}
+
+#CustomFieldCaption1, #CustomFieldCaption2 {
+	margin-right:5px;
+}
+
+#custom_values input {
+	margin-right:5px;
+}
+
+
+
+select#FilterCountry, input#FilterKeywords {
+	width:150px;
+}
+
+div.hidden {
+	display:none;
+}
+
+
+
+/* Tree view */
+
+div#ads_manage_div {
+	width: 372px;
+	height: 402px;
+
+	overflow: auto;
+}
+div#ads_manage_div div.form_advanced_wrapper {
+	position: relative;
+}
+ul.simpleTree {
+	width: auto;
+	height: 400px;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	overflow: auto;
+}
+.simpleTree li
+{
+	list-style: none;
+	margin:0;
+	padding:0 0 0 34px;
+	line-height: 18px;
+}
+.simpleTree li span
+{
+	display:inline;
+	clear: left;
+	white-space: nowrap;
+}
+.simpleTree ul
+{
+	margin:0; 
+	padding:0;
+}
+.simpleTree .root
+{
+	margin-left:-16px;
+	background: url(../images/simple_tree/root.gif) no-repeat 16px 0;
+}
+.simpleTree .line
+{
+	margin:0 0 0 -16px;
+	padding:0;
+	line-height: 3px;
+	height:3px;
+	font-size:3px;
+	background: url(../images/simple_tree/line_bg.gif) 0 0 no-repeat transparent;
+}
+.simpleTree .line-last
+{
+	margin:0 0 0 -16px;
+	padding:0;
+	line-height: 3px;
+	height:3px;
+	font-size:3px;
+	background: url(../images/simple_tree/spacer.gif) 0 0 no-repeat transparent;
+}
+.simpleTree .line-over
+{
+	margin:0 0 0 -16px;
+	padding:0;
+	line-height: 3px;
+	height:3px;
+	font-size:3px;
+	background: url(../images/simple_tree/line_bg_over.gif) 0 0 no-repeat transparent;
+}
+.simpleTree .line-over-last
+{
+	margin:0 0 0 -16px;
+	padding:0;
+	line-height: 3px;
+	height:3px;
+	font-size:3px;
+	background: url(../images/simple_tree/line_bg_over_last.gif) 0 0 no-repeat transparent;
+}
+.simpleTree .folder-open
+{
+	margin-left:-16px;
+	background: url(../images/simple_tree/collapsable.gif) 0 -2px no-repeat;
+}
+.simpleTree .folder-open-last
+{
+	margin-left:-16px;
+	background: url(../images/simple_tree/collapsable-last.gif) 0 -2px no-repeat;
+}
+.simpleTree .folder-close
+{
+	margin-left:-16px;
+	background: url(../images/simple_tree/expandable.gif) 0 -2px no-repeat;
+}
+.simpleTree .folder-close-last
+{
+	margin-left:-16px;
+	background: url(../images/simple_tree/expandable-last.gif) 0 -2px no-repeat;
+}
+.simpleTree .doc
+{
+	margin-left:-16px;
+	background: url(../images/simple_tree/leaf.gif) 0 -1px no-repeat;
+}
+.simpleTree .doc-last
+{
+	margin-left:-16px;
+	background: url(../images/simple_tree/leaf-last.gif) 0 -1px no-repeat;
+}
+.simpleTree .ajax
+{
+	background: url(../images/simple_tree/spinner.gif) no-repeat 0 0;
+	height: 16px;
+	display:none;
+}
+.simpleTree .ajax li
+{
+	display:none;
+	margin:0; 
+	padding:0;
+}
+.simpleTree .trigger
+{
+	display:inline;
+	margin-left:-32px;
+	width: 28px;
+	height: 11px;
+	cursor:pointer;
+}
+.simpleTree .text
+{
+	cursor: default;
+}
+.simpleTree .active
+{
+	cursor: default;
+	background-color:#F7BE77;
+	padding:0px 2px;
+	border: 1px dashed #444;
+}
+
+
+/*--- Categories ---*/
+.bx_ads_categories_col {
+	position: relative;
+	float: left;
+}

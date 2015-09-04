@@ -1,0 +1,28 @@
+
+.adm-templates .bx-def-hr:first-child {
+    display:none;
+}
+
+.adm-template-unit-preview {
+    float:left;
+    width:200px;
+    height:200px;
+    
+    line-height:200px;
+    background-color:#e0dfe0;
+}
+
+.adm-template-unit-preview img {
+    width:200px;
+    height:200px;
+}
+
+.adm-template-unit-preview div {        
+    display:inline-block;
+    width:160px;
+    margin-left:20px;
+    vertical-align:middle;
+    text-align:center;
+    line-height:normal;
+}
+

@@ -1,0 +1,16 @@
+div.adm-cache {}
+
+#adm-cache-chart {
+	position: relative;
+    float: left;
+
+    height: 300px; 
+    width: 500px;
+}
+
+#adm-cache-clear {
+    position: relative;
+    float: left;
+
+    width: 270px; 
+}

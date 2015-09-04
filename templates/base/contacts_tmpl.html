@@ -1,0 +1,28 @@
+<div class="disignBoxFirst">
+	<div class="boxFirstHeader bx-def-bh-margin">{TableCaption}</div>
+	<div class="boxContent">
+		<form action="{Self}" name="{FormName}" method="post">
+			<table class="results_table">
+			{InsertRows}
+				<tr class="result_row_{tr_class}">
+					<td class="res_checkbox">
+						<input type="checkbox" onclick="setCheckbox('{FormName}');" name="{CheckBoxName}" value="on" />
+					</td>
+					<td class="res_thumb">{Thumbnail}</td>
+					<td class="res_nick">{NickName}</td>
+					<td class="res_times">{Times}</td>
+					<td class="res_date">{Date}{PicNew}</td>
+					<td class="res_kiss">{SendGreet} &nbsp; {SendMsg}</td>
+				</tr>
+			{/InsertRows}
+				<tr>
+					<td colspan="6" class="row_actions">
+						<a href="javascript:void(0);" onclick="setCheckboxes( '{FormName}', true ); return false;">{CheckAll}</a> /
+						<a href="javascript:void(0);" onclick="setCheckboxes( '{FormName}', false ); return false;">{UncheckAll}</a>
+						{Actions}
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>

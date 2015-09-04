@@ -1,0 +1,16 @@
+
+
+table.bx_store_actions {
+    border-collapse:collapse;
+    width:100%;
+}
+
+table.bx_store_actions td {
+    width:33%;
+    text-align:center;
+}
+
+.bx_store_manage_wrapper {
+    padding: 0;
+}
+

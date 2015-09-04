@@ -1,0 +1,9 @@
+@import url(../../base/css/cmts.css);
+
+div.cmt-post-reply table.cmt-balloon {
+	background-color: #ffffff;
+}
+
+div.cmt-buttons {
+	padding: 2px 0;
+}

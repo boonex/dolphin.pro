@@ -1,0 +1,63 @@
+div.wall-post {
+    position: relative;
+}
+iframe.wall_hidden {
+    width: 1px;
+    height: 1px;
+    display: none;
+}
+
+/*--- Post Type GENERAL Styles ---*/
+a.wall-ptype-ctl {}
+span.wall-ptype-ctl {}
+img.wall-ptype-ctl {}
+
+div.wall-ptype-cnt {
+    position: relative;
+    display: block;
+}
+div.wall_text,
+div.wall_link,
+div.wall_photo,
+div.wall_video,
+div.wall_music {
+    padding: 0px;
+    display: none;
+    border: 0px;
+}
+
+/*--- Post Type TEXT Styles ---*/
+div.wall_text {
+    display: block;    
+}
+div.wall_text div.input_wrapper_textarea {
+    width: auto;
+    float: none;
+}
+
+/*--- Post Form Styles ---*/
+form.wall-post-event {
+    position: relative;
+}
+div.wall-ctype-ctl {
+    height: 30px;
+    
+    position: relative;
+    display: block;
+    
+    background-color: #ededed;
+    
+    line-height: 30px;
+    text-align: center;
+    font-size: 11px;        
+}
+div.wall-ctype-ctl input {
+    top: -2px;
+    margin: 0px 2px 0px 0px;
+    padding: 0px;
+
+    position: relative;
+}
+div.wall-ptype-cnt div.WallPostText_wrapper textarea.form_input_textarea {
+    height: 80px;
+}

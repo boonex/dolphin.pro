@@ -1,0 +1,33 @@
+
+<div class="bx-twig-unit bx_sites_unit bx-def-margin-top-auto">
+
+    <div class="bx-twig-unit-thumb-cont bx-def-margin-sec-right">
+        <bx_if:is_image>
+            <div class="bx_sites_unit_thumb110 bx-def-shadow bx-def-round-corners" style="background-image: url(__image__);">
+                <a href="__site_link__"><img src="<bx_icon_url:spacer.gif />" /></a>
+            </div>
+        </bx_if:is_image>
+        <bx_if:is_thumbhtml>
+            <div class="bx_sites_unit_thumb110 bx-def-shadow bx-def-round-corners">
+                <a href="__site_link__">__thumbhtml__</a>
+            </div>
+        </bx_if:is_thumbhtml>
+    </div>
+
+    <div class="bx_sites_unit_content bx-twig-unit-info">
+
+	    <div class="bx_sites_unit_row bx-twig-unit-title">
+	        <div class="bx_sites_unit_title bx-def-font-h2">
+	            <a class="bx_sites_unit_title_link" href="__site_url__">__title__</a>
+	        </div>
+            <div class="clear_both"></div>
+	    </div>	    
+
+	    <div class="bx-twig-unit-line bx-twig-unit-desc">
+	        <a href="__url__" class="bx-twig-unit-special" target="_blank">__url_title__</a>&nbsp;&mdash;&nbsp;__description__
+	    </div>
+
+    </div>
+
+</div>
+

@@ -1,0 +1,78 @@
+<div id="BxWmap__suffix__" class="bx_wmap __subclass__ bx-def-border">
+    
+</div>
+<script type="text/javascript">
+
+    bx_map_loading ('BxWmap__suffix__', 1);
+
+    BxWmapInitCallback__suffix__ = function ()	{
+
+        if ('undefined' != typeof(glBxWmap__suffix__))
+            return;
+
+        glBxWmap__suffix__ = new BxWmap (glMap__suffix__, '__data_url__', 'glBxWmap__suffix__', 'BxWmap__suffix__');
+
+        glBxWmap__suffix__.setParts('__parts__');
+
+        glBxWmap__suffix__.setCustom('__custom__');
+
+        glBxWmap__suffix__.setShadowUrl('__shadow_url__');
+
+        glBxWmap__suffix__.setSaveDataUrl('__save_data_url__');
+
+		google.maps.event.addListener(glMap__suffix__, "dragend", function() { 
+			glBxWmap__suffix__.updateLocations();
+		});
+
+		google.maps.event.addListener(glMap__suffix__, "zoomend", function(oldLevel,  newLevel) { 
+            glBxWmap__suffix__.updateLocations();
+        });        
+        
+        glBxWmap__suffix__.setSaveLocationUrl('__save_location_url__');
+
+        glBxWmap__suffix__.updateLocations();        
+
+        bx_map_loading ('BxWmap__suffix__', 0);
+    }    
+
+    BxWmapOnloadCallback__suffix__ = function ()	{
+
+        var mapOptions = {
+            scrollwheel: false,
+            draggable: (1 == __map_is_dragable__) ? true : false,
+            zoom: __map_zoom__,
+            center: new google.maps.LatLng(__map_lat__, __map_lng__),
+            panControl: false,
+            overviewMapControl: (1 == __map_is_overview_control__ ? true : false),
+            overviewMapControlOptions: { opened: false },
+            disableDoubleClickZoom: false,
+            zoomControl: true,
+            zoomControlOptions: { style: google.maps.ZoomControlStyle.DEFAULT },
+            mapTypeControl: (1 == __map_is_type_control__ ? true : false),
+            mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DEFAULT },
+            scaleControl: (1 == __map_is_scale_control__ ? true : false),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+
+		switch ('__map_control__') {
+			case 'large': mapOptions.zoomControlOptions.style = google.maps.ZoomControlStyle.LARGE; break;
+            case 'small': mapOptions.zoomControlOptions.style = google.maps.ZoomControlStyle.SMALL; break;
+            case 'none': mapOptions.zoomControl = false; break;
+		}
+
+        switch ('__map_type__') {
+            case 'satellite': mapOptions.mapTypeId = google.maps.MapTypeId.SATELLITE; break;
+            case 'hybrid': mapOptions.mapTypeId = google.maps.MapTypeId.HYBRID; break;
+            case 'terrain': mapOptions.mapTypeId = google.maps.MapTypeId.TERRAIN; break;
+        }
+
+        glMap__suffix__ = new google.maps.Map(document.getElementById('BxWmap__suffix__'), mapOptions);
+
+        google.maps.event.addListener(glMap__suffix__, "tilesloaded", BxWmapInitCallback__suffix__);
+    }
+
+
+    google.load("maps", "3", {other_params: "sensor=false&language=__lang__"});
+    google.setOnLoadCallback(BxWmapOnloadCallback__suffix__);
+
+</script>

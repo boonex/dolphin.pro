@@ -1,0 +1,39 @@
+<bx_if:start_tag>
+    <div id="dpol_poll_block__uid__" class="poll_block poll_block_view">
+</bx_if:start_tag>
+    <div id="dpol__uid__"  class="pollBlock" >
+        <div id="dpol_caption___uid__" class="pollCaption bx-def-font-h2">
+            <bx_if:manage_page>
+                <input type="checkbox" value="__uid__" name="poll_id[]"/>
+            </bx_if:manage_page>
+            <a href="__poll_url__"></a>
+        </div>
+        <div id="dpol_question___uid__" class="pollAnswerBlock pollAnswerBlockView bx-def-round-corners-with-border bx-def-margin-sec-top">
+            <div id="dpol_question_text___uid__" class="pollAnswerWrapper bx-def-padding-sec"></div>
+        </div>
+    </div>
+    <div class="pollInfo bx-def-margin-sec-top bx-def-font-small">
+        <span class="owner_info">__by__ 
+            <bx_if:show_link>
+                <a href="__link__">__content__</a>
+            </bx_if:show_link>
+            <bx_if:show_text>__content__</bx_if:show_text>
+        </span>
+        <span class="sys-bullet"></span>
+        <span class="date_add">__date_add__</span>
+
+        <div id="dpol_result_block__uid__" class="result">
+            <a href="javascript:void(0);" onclick="PerformSubmit(__uid__, -1, 'dpol')">__result__</a>
+        </div>
+         <div id="dpol_back_poll__uid__" class="back">
+            <a href="javascript:void(0);" onclick="getPollBlock('dpol_poll_block__uid__', '__uid__', true)">__back__</a>
+        </div>
+        <div class="clear_both"></div>
+        __actions__
+    </div>
+    <script type="text/javascript" language="javascript">
+        send_data( 'dpol_question_text___uid__', 'get_questions', '', '__uid__' );
+    </script>
+<bx_if:end_tag>    
+    </div>
+</bx_if:end_tag>

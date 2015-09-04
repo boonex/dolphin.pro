@@ -1,0 +1,29 @@
+<div class="feedback-entry-divider bx-def-hr bx-def-margin-sec-topbottom"></div>
+<div id="__id__" class="feedback-entry">
+    <bx_if:checkbox>
+        <div class="feedback-checkbox">
+            <input type="checkbox" name="feedback-ids[]" value="__id__" />
+        </div>
+    </bx_if:checkbox>
+    __author_icon__
+    <div class="feedback-info">
+        <div class="feedback-caption bx-def-font-h2">
+            <a class="feedback-caption bx-def-font-h2" href="__link__">__caption__</a>
+        </div>
+        <div class="feedback-text__class__ bx-def-font-large bx-def-margin-sec-top">__content__</div>
+        <div class="feedback-date bx-def-margin-sec-top">
+            <a class="feedback-author" href="__author_url__">__author_username__</a>
+            <span class="sys-bullet"></span>
+            <span class="feedback-date bx-def-font-small bx-def-font-grayed">__date__</span>
+            <bx_if:status>
+                <span class="sys-bullet"></span>
+                <span class="feedback-status bx-def-font-small bx-def-font-grayed">__status__</span>
+            </bx_if:status>
+            <bx_if:edit_link>
+                <span class="sys-bullet"></span>
+                <a class="feedback-action bx-def-font-small" href="__edit_link_url__">__edit_link_caption__</a>
+            </bx_if:edit_link>
+        </div>
+    </div>
+    <div class="feedback-cb">&nbsp;</div>
+</div>

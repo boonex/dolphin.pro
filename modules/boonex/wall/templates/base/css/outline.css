@@ -1,0 +1,120 @@
+div.wall-clear {
+    clear:both;
+    font-size:0px;
+}
+div.wall-outline,
+div.wall-outline-items {
+    position: relative;
+}
+div.wall-outline {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+div.wall-outline div.wall-load-more .bx-btn {
+    float: none;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/*--- Item main layout ---*/
+div.wall-oi-item {
+	position: relative;
+}
+div.wall-oi-sizer {
+	width: 33.3%;
+}
+div.wall-oi-item-grouped {}
+div.wall-oi-item-cnt {
+	position: relative;
+	background-color: #ffffff;
+	overflow: hidden;
+}
+div.wall-oi-item-circle {
+	position: absolute;
+	display: none;
+
+    top: 20px;
+    left: -2px;
+    width: 32px;
+    height: 32px;
+
+    border-radius: 16px;
+    -moz-border-radius: 16px;
+    -webkit-border-radius: 16px;
+	
+    background-color: rgba(255, 255, 255, 0.9);
+        
+    text-align: center;
+    line-height: 32px;
+    color: #999999;
+}
+div.wall-oi-item-circle i.sys-icon {
+	vertical-align: middle;
+	font-size: 16px;
+} 
+
+/*--- Content section ---*/
+div.wall-oii-description {
+	margin-top: 5px;
+
+	color: #999999;
+} 
+
+div.wall-oii-description-extra-special,
+div.wall-oii-description-extra {
+    margin-top: 5px;
+}
+div.wall-oii-description-extra-special {
+    font-weight:bold;
+}
+
+/*--- Image base content ---*/
+div.wall-oii-image-wrp {
+	border: 1px  solid #ffffff;
+}
+div.wall-oii-image {
+	position: relative;
+	width: 100%;
+	text-align: center;
+}
+div.wall-oi-item-grouped div.wall-oii-image {
+	margin-top: 1px;
+}
+div.wall-oi-item-grouped div.wall-oii-image:first-child {
+	margin-top: 0px;
+}
+img.wall-oii-image {
+	position: relative;
+	display: block;
+
+	width: 100%;
+}
+
+/*--- Author section ---*/
+div.wall-oii-author {
+	position: relative;
+}
+div.wall-oii-author div.thumbnail_block {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+div.wall-oii-author-cnt {
+	min-height: 32px;
+	margin-left: 42px;
+}
+div.wall-oii-author-name {
+	font-weight: bold;
+}
+div.wall-oii-posted {}
+
+/*--- Comments section ---*/
+div.wall-oii-comments {
+	position: relative;
+	line-height: 27px;
+	text-align: center;
+}
+div.wall-oii-comments,
+div.wall-oii-comments a {
+	color: #666666;
+}

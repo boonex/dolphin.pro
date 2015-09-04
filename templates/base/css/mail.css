@@ -1,0 +1,322 @@
+div.sys-mailbox-actions .form_advanced_table,
+div.sys-mailbox-actions .form_advanced_table tr,
+div.sys-mailbox-actions .form_advanced_table td,
+div.message_actions .form_advanced_table,
+div.message_actions .form_advanced_table tr,
+div.message_actions .form_advanced_table td {
+    border: none;
+}
+
+div.input_select_wrapper {
+	position: relative;
+    float: right;
+
+    margin-left: 5px;
+    padding-top: 5px;    
+}
+div.dbBottomMenu {
+    margin:0px;
+}
+
+/*--- Compose Message ---*/
+#compose_message_block div.input_wrapper_input_set {
+	position: relative;
+    float: right;
+
+    padding: 0px;
+}
+
+/*--- View Message(s) ---*/
+div.view_message_container {
+	border: 1px solid #dcdcdc;
+}
+
+div.view_message_container .owner_info_wrapper {
+	position: relative;
+
+    background-color: #f5f7fa;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+div.view_message_container .owner_info {
+	position: relative;
+}
+
+div.view_message_container .owner_info .thumb_section {
+	position: absolute;
+
+	top: 0px;
+	left: 0px;
+}
+div.view_message_container .owner_info .member_info {
+	position: relative;
+
+	min-height: 64px;
+	margin-left: 84px;
+}
+div.view_message_container .owner_info  .member_info img,
+div.view_message_container div.member_info img {
+	vertical-align: text-bottom;
+}
+
+div.view_message_container div.member_info_nickname a:link,
+div.view_message_container div.member_info_nickname a:visited,
+div.view_message_container div.member_info_nickname a:hover,
+div.view_message_container div.member_info_nickname a:active {
+	font-weight: bold;
+}
+
+div.view_message_container .owner_info .action_list .actionsContainer {
+	padding: 0px;
+}
+
+div.view_message_container .owner_info .action_list .actionsContainer .actionItem {
+	width: auto;
+}
+
+div.view_message_container .owner_info .action_list .actionsContainer .actionItem:last-child {
+	padding-right: 0px;
+}
+
+div.view_message_container .owner_info .action_list .actionsContainer .actionItemEven,
+div.view_message_container .owner_info .action_list .actionsContainer .actionItemOdd {
+	padding-left: 0px;
+	padding-right: 10px;	
+}
+
+div.view_message_container .owner_info .action_list .actionsContainer .actionItemEven {
+	clear: none;
+}
+
+div.view_message_container .owner_info .action_list .actionsContainer .actionItem .bx-btn i {
+	margin-right: 0px;
+}
+
+div.view_message_container .owner_info .action_list .actionsContainer .actionItem .bx-btn b {
+	display: none;
+}
+
+div.view_message_container div.message_container {
+	position:relative;
+	padding:10px;
+}
+
+div.view_message_container div.message_container textarea {
+	width:100%;
+	height:300px;
+	margin: 0px;
+    padding: 0px;
+    border: 0px;
+}
+
+*div.view_message_container div.message_container textarea
+{
+    width:99%;
+}
+
+div.view_message_container div.message_actions {
+    position: relative;
+	background-color:#f5f7fA;
+    border-top:1px solid #dbdbdb;
+}
+
+div.view_message_container div.message_actions_cnt {
+	position: relative;
+	height: 59px;
+}
+
+.message_actions_wrapper {
+    float:right;
+    position:relative;
+}
+.message_actions_wrapper .input_wrapper {
+    float: left;
+}
+div.view_message_container div.message_actions .form_advanced_table td {
+	padding: 10px;
+}
+div.view_message_container div.message_actions_compose div.messages_options {
+	position: absolute;
+	z-index: 1;
+	text-align: left;
+}
+div.view_message_container div.message_actions_compose .form_advanced_table td {
+	padding: 10px 0px;
+}
+
+*div.button_wrapper {
+    margin-right:4px;
+}
+
+div.view_message_container div.reply_window {
+	position: relative;
+	display: none;
+	border-top: 1px solid #dbdbdb;
+}
+div.reply_window div.view_message_container  {
+	margin: 0px;
+}
+div.reply_window div.replay_info {
+	
+}
+
+/*-- Contacts block --*/
+div.contacts_container {}
+div.sys-mailbox-contact {
+	position: relative;
+	height: 64px;
+}
+div.sys-mailbox-contact:first-child {
+	margin-top: 0px;
+}
+div.sys-mbc-checkbox {
+	position: relative;
+	float: left;
+	width: 40px;
+	text-align: center;
+}
+div.sys-mbc-checkbox input {
+	margin: 25px 0px;
+}
+div.sys-mbc-author {
+	position: relative;
+	top: 0px;
+	left: 0px;
+}
+div.sys-mbc-info {
+	margin-left: 74px;
+	margin-right: 10px;
+	overflow: hidden; 
+}
+div.sys-mbc-author-info {
+	line-height: 25px;
+}
+div.sys-mbc-actions .bx-btn {
+	margin-left: 0px;
+}
+div.contacts_container_archive div.sys-mbc-info {
+	margin-left: 114px;
+} 
+
+/*-- Message List block --*/
+div.messages_container {}
+
+div.messages_container .input_wrapper_input_set {
+	padding: 0px;
+}
+
+div.top_settings_block div.left_section {
+	float:left;
+	color:#666666;
+}
+div.top_settings_block div.left_section img {
+	vertical-align:text-top;
+}
+div.top_settings_block div.right_section {
+	float: right;
+	color: #666666;
+}
+
+div.sys-mailbox-row {
+	position: relative;
+	height: 74px;
+	border-left: 1px solid #dcdcdc;
+	border-top: 1px solid #dcdcdc;
+	border-right: 1px solid #dcdcdc;
+}
+div.sys-mbr-short {
+	height: 32px;
+	border: 0px;
+}
+
+div.sys-mbr-short div.sys-mbr-link {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+div.sys-mbr-short a.sys-mbr-link {
+	position: relative;
+	display: block;
+	width: 100%;
+    height: 100%;
+}
+div.sys-mbr-cnt {
+	position: relative;
+	margin: 5px 0px;
+}
+div.sys-mbr-short div.sys-mbr-cnt {
+	margin: 0px;
+}
+div.sys-mbr-short .sys-mbr-subject {
+    font-weight:bold;
+}
+div.sys-mbr-author-icon {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+div.sys-mbr-checkbox {
+	position: relative;
+	float: left;
+	width: 40px;
+	text-align: center;
+}
+div.sys-mbr-checkbox input {
+	margin: 25px 0px;
+} 
+div.sys-mbr-message {
+	margin-left: 114px;
+	margin-right: 10px;
+	overflow: hidden;
+}
+div.sys-mbr-short div.sys-mbr-message {
+	margin-left: 42px;
+}
+div.sys-mbr-author-info {
+	line-height: 23px;
+}
+div.sys-mbr-short div.sys-mbr-author-info {
+    line-height: 14px;
+}
+div.sys-mbr-author-info span.bullet,
+div.sys-mailbox-actions  span.bullet {
+	padding: 0px 3px;
+}
+a.sys-mbr-subject {
+	font-size: 18px;
+
+}
+a.sys-mbr-subject-new {
+	font-weight: bold;
+}
+div.sys-mbr-actions {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 5px 10px;
+}
+
+div.sys-mailbox-actions {
+	border: 1px solid #dcdcdc;
+	background-color: #f5f7fA;
+}
+
+div.sys-mailbox-actions div.sys-mba-left {
+	position: relative;
+	float: left;
+}
+
+div.messages_container div.sys-mailbox-actions div.sys-mba-left {
+	line-height: 48px;
+}
+
+div.sys-mailbox-actions div.sys-mba-right {
+	position: relative;
+	float: right;
+}
+
+div.sys-mailbox-actions div.sys-mba-right .form_advanced_table td {
+	padding: 0px;
+}

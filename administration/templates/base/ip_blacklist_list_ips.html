@@ -1,0 +1,21 @@
+<div class="bx-def-padding-bottom">
+	<table class="adm-ipbl-ips bx-def-table" cellspacing="1" cellpadding="0">
+	    <tr>
+	        <th><bx_text:_From /></th>
+	        <th><bx_text:_Member /></th>
+	        <th><bx_text:_Date /></th>
+	    </tr>
+	    <bx_repeat:items>
+	    	<tr>
+	    		<td>__from__</td>
+	    		<td>
+	    			<bx_if:show_profile_link>
+	    				<a href="__href__">__caption__</a>
+	    			</bx_if:show_profile_link>
+	    		</td>
+	    		<td>__date__</td>
+	    	</tr>
+	    </bx_repeat:items>
+	</table>
+</div>
+__paginate__

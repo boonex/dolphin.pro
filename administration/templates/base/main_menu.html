@@ -1,0 +1,60 @@
+<div class="adm-main-menu">
+    <bx_repeat:items>
+        <div class="adm-menu-wrapper bx-def-round-corners" __click__>
+            <div class="adm-menu-header __class__ bx-def-padding-left">
+                <bx_if:icon>
+                    <img class="adm-menu-icon" src="__icon__" />
+                </bx_if:icon>
+                <bx_if:texticon>
+                    <i class="adm-menu-icon sys-icon __icon__"></i>
+                </bx_if:texticon>
+                <bx_if:collapsible>
+                	<i class="adm-menu-arrow sys-icon __class__"></i>
+                </bx_if:collapsible>
+                <bx_if:item-text>
+                    <span class="adm-menu-title">__title__</span>
+                </bx_if:item-text>
+                <bx_if:item-link>
+                    <a class="adm-menu-title" href="__link__">__title__</a>
+                </bx_if:item-link>
+            </div>
+            <bx_if:submenu>
+                <div id="adm-mmi-__id__" class="adm-menu-items-wrapper bx-def-padding-left bx-def-padding-sec-topbottom __class__">
+                    <bx_repeat:subitems>
+                        <div class="adm-menu-item-wrapper bx-def-padding-thd-left __class__">
+                            <bx_if:subicon>
+                                <img class="adm-menu-item-icon" src="__icon__" />
+                            </bx_if:subicon>
+                            <bx_if:textsubicon>
+                                <i class="adm-menu-item-icon sys-icon __icon__"></i>
+                            </bx_if:textsubicon>
+                            <bx_if:subitem-text>
+                                <span class="adm-menu-item-title">__title__</span>
+                            </bx_if:subitem-text>
+                            <bx_if:subitem-link>
+                                <a class="adm-menu-item-title" href="__link__" __onclick__>__title__</a>
+                            </bx_if:subitem-link>
+                        </div>
+                    </bx_repeat:subitems>
+                </div>
+            </bx_if:submenu>
+        </div>
+    </bx_repeat:items>
+    <div class="adm-menu-wrapper bx-def-round-corners" onclick="javascript:window.open('<bx_url_admin />license.php', '_self')">
+		<div class="adm-menu-header adm-mm-license">
+			<i class="sys-icon key col-red3 adm-menu-icon bx-def-margin-left"></i>
+			<a class="adm-menu-title" href="<bx_url_admin />license.php"><bx_text:_adm_mmi_license /></a>
+			<img class="adm-menu-image" src="<bx_image_url:dolphin.svg />" /></div>
+	</div>
+    <script type="text/javascript" language="JavaScript">
+    <!--
+        $('.adm-main-menu .adm-menu-header').bind('click', function() {
+        	adminMenuCollapse(this);
+        }).bind('mouseover', function() {
+        	$(this).addClass('adm-mmh-hover');
+        }).bind('mouseout', function() {
+        	$(this).removeClass('adm-mmh-hover');
+        });
+    -->
+    </script>
+</div>

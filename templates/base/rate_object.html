@@ -1,0 +1,22 @@
+<script type="text/javascript">
+	BxDolVoting.prototype.onvote = function (fRate, iCount) {
+		document.location = '__url__';
+	}
+	BxDolVoting.prototype.onvotefail = function () {
+		document.location = '__url__';
+	}
+</script>
+<div class="rateObject">
+	<div class="ratePart bx-def-margin-bottom">
+		<div class="ratePartCnt">__ratePart__</div>
+		<div class="clear_both"></div>
+	</div>
+	<div class="rateFile">__fileBody__</div>
+	<div class="rateInfoMain bx-def-margin-sec-top bx-def-font-h1">
+		<a href="__fileUri__">__fileTitle__</a>
+	</div>
+	<div class="rateInfoAux bx-def-margin-sec-topbottom bx-def-font-large">
+		<span class="addInfoDate">__fileWhen__</span>
+   		<span class="addInfoFrom"><bx_text:_from /> <a href="__fileFromLink__">__fileFrom__</a></span>
+   	</div>
+</div>

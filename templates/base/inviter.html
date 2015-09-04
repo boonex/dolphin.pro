@@ -1,0 +1,17 @@
+<div id="sys_inviter_users" class="bx-def-round-corners-with-border">
+    <div>
+        <input type="checkbox" onclick="$('#sys_inviter_users input[name=\'inviter_users[]\']').attr('checked', this.checked ? 'checked' : '')" />                        
+        <span><bx_text:_Select_all /></span>
+    </div>
+    <bx_repeat:rows>
+        <div class="bx-def-border-top-auto">
+            <input type="checkbox" name="inviter_users[]" value="__ID__" />
+            __Icon__
+            <a href="__Link__">__NickName__</a>
+            <div class="clear_both"></div>
+        </div>
+    </bx_repeat:rows>
+    <div class="sys_inviter_no_users bx-def-border-top-auto">
+        __msg_no_users__
+    </div>
+</div>

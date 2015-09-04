@@ -1,0 +1,23 @@
+<form id="adm-mlevels-actions-form" enctype="multipart/form-data" method="post" action="" class="form_advanced">
+    <a id="actions__id__"></a>
+    <input type="hidden" name="level" value="__id__" />
+    <div class="adm-mlevels-items bx-def-bc-margin">
+        <bx_repeat:items>
+            <div class="adm-mlevels-item bx-def-margin-thd-top-auto __class__">
+                <input type="checkbox" class="form_input_checkbox" id="adm-mlevels-__action_id__" name="actions[]" value="__action_id__" />                
+                <bx_if:enabled>
+                    <a href="javascript:void(0)" onclick="javascript:onEditAction(__level_id__, __action_id__)">__title__</a>
+                </bx_if:enabled>
+                <bx_if:disabled>
+                    <label for="adm-mlevels-__action_id__">__title__</label>
+                </bx_if:disabled>
+            </div>
+        </bx_repeat:items>
+    </div>
+    __controls__
+</form>
+<script type="text/javascript" language="javascript">
+<!--
+    var sAdminUrl = '__url_admin__';
+-->
+</script>

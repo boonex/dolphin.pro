@@ -1,0 +1,11 @@
+<div class="bx_sys_file_choice_wrapper">
+    <bx_if:empty><div class="bx_sys_forms_extra_default_padding" style="white-space:normal;"><bx_text:_Empty /></div></bx_if:empty>
+    <bx_repeat:files>
+        <div>
+            <input type="checkbox" name="__name__[]" value="__id__" id="__name____id__" __checked__ />
+            <div class="sys_icon"><label for="__name____id__"><img alt="__title__" title="__title__" src="__icon__" /></label></div>
+            <p>__title__</p>
+            <div class="clear_both"></div>
+        </div>
+    </bx_repeat:files>    
+</div>

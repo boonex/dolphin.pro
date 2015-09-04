@@ -1,0 +1,387 @@
+div.sys_main_menu {
+    min-height: 38px;
+
+	position: relative;
+	z-index: 100;
+
+	background-color: rgb(240,240,240);
+	background-color: rgba(255,255,255, 0.6); 
+
+	border-top: 1px solid rgb(255,255,255);
+    border-top: 1px solid rgba(255,255,255, 0.9);
+    border-bottom: 1px solid rgb(160,160,160);
+    border-bottom: 1px solid rgba(64,64,64, 0.4);
+
+	-webkit-box-shadow: 0 1px 1px rgba(51,51,51, 0.15);
+	-moz-box-shadow: 0 1px 1px rgba(51,51,51, 0.15);
+	box-shadow: 0 1px 1px rgba(51,51,51, 0.15);
+}
+div.sys_mm {
+	margin: 0px auto;
+}
+table.topMenu {
+    position:relative;
+    z-index:1;
+	margin: 0px auto;
+	background-image:none;
+}
+table.topMenu td {
+	position: relative;
+    height: 38px;
+    background-color:transparent;
+    vertical-align: middle;
+}
+#mmm {
+	position:absolute;
+	top:0px;
+	right:0px; 
+	width:0px; 
+	height:0px; 
+    border-collapse:collapse;
+}
+table.topMenu a, 
+table.topMenu a:link, 
+table.topMenu a:visited, 
+table.topMenu b {
+	position: relative;
+	display: block;
+	z-index: 20;
+    height: 38px;
+	border-width: 0px;
+	line-height:38px; 
+	text-transform: capitalize;
+	text-decoration: none;
+	text-shadow: 0 1px 0 #FFFFFF;
+	font-weight: bold;
+	color:#006699;
+}
+table.topMenu a:focus {
+    outline: 0;
+}
+table.topMenu td#tm_active a.top_link, 
+table.topMenu td#tm_active a.top_link:link, 
+table.topMenu td#tm_active a.top_link:visited, 
+table.topMenu td#tm_active a.top_link:active {
+	color: #666666;
+}
+table.topMenu td.top:hover a.top_link, 
+table.topMenu td.top:hover a.top_link:link, 
+table.topMenu td.top:hover a.top_link:visited, 
+table.topMenu td.top:hover a.top_link:active {
+	z-index: 21;
+	color: #114477;
+}
+table.topMenu td.top:hover a.top_link:before,
+table.topMenu td.top:hover a.top_link:after {
+    content: "\0020";
+    display: block;
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    width: 1px;
+    height: 100%;
+    -webkit-box-shadow: 0 0 3px rgba(51, 51, 51, 0.3);
+    -moz-box-shadow: 0 0 3px rgba(51, 51, 51, 0.3);
+    box-shadow: 0 0 3px rgba(51, 51, 51, 0.3);
+}
+table.topMenu td.top:hover a.top_link:before {
+    left: 0px;
+}
+table.topMenu td.top:hover a.top_link:after {
+    right: 0px;
+}
+
+table.topMenu a span.down, 
+table.topMenu b span.down {
+	position: relative;
+    display: block;
+    height: 38px;
+	text-align: center;
+	cursor: pointer;
+}
+table.topMenu a span.down img, 
+table.topMenu b span.down img {
+	width: 16px;
+	height: 16px;
+    margin: 8px auto 7px auto;
+    vertical-align:middle;
+}
+table.topMenu td.top:hover a span.down, 
+table.topMenu td.top:hover b span.down,
+table.topMenu td.top a:hover a span.down, 
+table.topMenu td.top a:hover b span.down {
+	background-color: #ffffff;
+}
+
+/*--- Subitems Popup ---*/
+table.topMenu td.top div.sub {
+    position:relative;
+    display:block;
+}
+table.topMenu td.top ul.sub {
+    position:absolute;
+    display:none;
+    visibility:hidden;
+    z-index:20;
+
+    width: 190px; 
+    height: auto;
+    right: 0px;
+    margin: 0px;
+    padding: 10px;
+
+    background-color: #ffffff;  
+    -webkit-box-shadow: 0 1px 3px rgba(51, 51, 51, 0.3);
+    -moz-box-shadow: 0 1px 3px rgba(51, 51, 51, 0.3);
+    box-shadow: 0 1px 3px rgba(51, 51, 51, 0.3);
+	
+    list-style:none;    
+    white-space:nowrap; 
+    text-align:left;
+}
+table.topMenu td.top:hover ul.sub {
+    visibility: visible;
+    display: block;
+    right: 0px; 
+}
+table.topMenu td.top ul.main_elements {
+    left:0px;
+}
+table.topMenu td.top ul.sub li {
+    margin: 0px;
+}
+table.topMenu ul.sub li a.button {
+	height: 33px;
+	padding: 0px 10px;
+
+	line-height: 33px;
+	text-align: left;
+	font-size: 12px;
+	
+	cursor: pointer;
+	overflow: hidden;
+}
+table.topMenu ul.sub li:hover a.button {
+    background-color: #eeeeee;
+}
+
+
+/*--- Subitems Popup Level 2 ---*/
+table.topMenu div.more_sub {
+    position: relative;
+    display: block;
+}
+table.topMenu ul.more_sub { 
+	position:absolute;
+	display: none;
+    z-index:25;
+
+	width: 190px; 
+    height: auto;
+	top: 0px;
+    left: 100%;
+    margin: 0px;
+    padding: 10px;
+
+	background-color: #ffffff;  
+    -webkit-box-shadow: 0 1px 3px rgba(51, 51, 51, 0.3);
+    -moz-box-shadow: 0 1px 3px rgba(51, 51, 51, 0.3);
+    box-shadow: 0 1px 3px rgba(51, 51, 51, 0.3);
+
+    list-style: none;
+}
+table.topMenu ul.sub li:hover ul.more_sub {
+    display: block; 
+}
+table.topMenu ul.more_sub li {
+    background-image: none;
+    overflow: hidden;
+}
+table.topMenu ul.sub ul.more_sub a.button {
+	background-color: transparent;
+}
+table.topMenu ul.sub ul.more_sub li:hover a.button {
+    background-color: #eeeeee;
+}
+table.topMenu ul.sub a.more_ntop_element:hover { 
+	color:#333;
+}
+table.topMenu ul.sub a.more_top_element.active,
+table.topMenu ul.sub a.more_ntop_element.active {
+    color: #333;
+    font-weight: bold;
+}
+
+
+/*--- Submenu Section ---*/
+div.sys_sub_menu {
+	margin: 0px auto;
+}
+div.subMenu {
+	position: relative;
+    min-height: 54px;
+    background-color: rgb(250, 250, 250);
+    background-color: rgba(255,255,255, 0.8);
+	border-top: 0px;
+	font-weight: bold;
+}
+div.sys_page_icon,
+div.sys_page_header,
+div.sys_page_status,
+div.sys_page_submenu,
+div.sys_page_actions {
+	position: relative;
+	float: left;
+}
+
+
+div.sys_page_icon { 
+    min-width: 32px;
+	height: 32px;
+	overflow: hidden;
+}
+div.sys_page_icon .img_submenu {
+    margin: 0px; 
+    vertical-align: middle; 
+}
+
+div.sys_page_icon .img_submenu.sys-icon {
+    display:inline-block;
+    min-width:32px;
+    font-size:32px; 
+    text-align:center;   
+    color:#666666;
+}
+
+div.sys_page_header {
+    max-width: 680px;
+    white-space: nowrap;
+	line-height: 32px;
+	text-transform: capitalize;
+    font-size: 16px;
+	color: #666666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+div.sys_page_header a.sys_page_header_caption {
+	text-decoration: none;
+	color: #666666;
+}
+div.sys_page_submenu {
+	line-height: 32px;
+	overflow: hidden;
+}
+div.sys_page_actions {
+	float: right;
+}
+div.sys_page_actions div.actionsContainer {
+    margin: 0px;
+    padding: 0px;
+}
+div.sys_page_submenu_bottom div.sys_page_submenu {
+	float: none;
+	line-height: 15px;
+}
+
+/*--- Status ---*/
+div#StatusMessage {
+    padding-top: 9px;
+}
+div#StatusMessage span.sys_sm_text {
+    font-style: italic;
+}
+div#StatusMessage a.sys_sm_update {
+    font-weight: normal;
+}
+div#StatusMessage span.sys_sm_when {
+    margin-left: 5px
+}
+div#inloadedStatusMess {
+    padding-top: 6px;
+}
+div#inloadedStatusMess div.input_wrapper {
+	margin-bottom: 0px;
+}
+
+/*--- Submenu ---*/
+div.subMenu div.act,
+div.subMenu div.pas,
+div.subMenu div.sys-bullet {
+	display: block;
+	float: left;
+}
+div.subMenu div.act {
+	font-weight: normal;
+	color: #666666;
+}
+div.subMenu div.bullet {
+    padding: 0px 3px;
+
+    font-weight: normal;
+    color: #999999;
+}
+div.subMenu a.sublinks,
+div.subMenu a.sublinks:link,
+div.subMenu a.sublinks:visited {
+	text-decoration: none;
+	font-weight: normal;
+	color: #006699;
+}
+div.subMenu a.sublinks:hover, 
+div.subMenu a.sublinks:active {}
+
+
+/*--- Login/Join ---*/
+div.sys_page_actions div.sys_tm_login_join {
+    height: 39px;
+	margin: 0px;
+    padding: 0px;
+}
+div.sys_tm_login_join .bx-btn {
+	margin-left: 10px;
+}
+div.sys_tm_login_join .bx-btn:first-child {
+    margin-left: 0px;
+}
+div.sys_tm_login_join .bx-btn .sys-icon {
+	margin-right: 0px;
+}
+
+/*--- Breadcrumbs ---*/
+div.sys_bc {
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    text-transform: capitalize;
+    white-space: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+div.sys_bc div.bc_unit {
+    display: inline-block;
+	position: relative; 
+}
+div.sys_bc div.bc_unit:first-child {
+	margin-left: 0px;
+}
+div.sys_bc div.bc_divider {
+    display: inline-block;
+	position: relative;
+    width: 7px;
+    height: 50px;
+    line-height: 50px;
+	font-size: 15px;
+}
+div.sys_bc div.bc_addons {
+    position: relative;
+    float: right;
+}
+
+div.sys_bc a,
+div.sys_bc a:link,
+div.sys_bc a:visited,
+div.sys_bc a:hover,
+div.sys_bc a:active {
+    text-transform:capitalize;
+}
+

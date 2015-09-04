@@ -1,0 +1,40 @@
+<div class="sys_album_unit_wrp {type}_album_unit_wrp">
+	<div class="sys_album_unit {type}_album_unit">
+	    <bx_if:editMode>
+	       <div class="bx_sys_unit_checkbox">
+	           <input type="checkbox" name="entry[]" value="{id}" {checked}/>
+	       </div>
+	    </bx_if:editMode>
+	    <div class="sys_album" onclick="window.location = '{albumUrl}';">
+	        <div class="sys_album_cnt">
+	            <bx_repeat:units>
+	                <bx_if:exist>
+	                    <div class="sys_album_item{class}" style="background-image: url('{unit}');">
+	                        <img src="<bx_image_url:spacer.gif />"/> 
+	                    </div>
+	                </bx_if:exist>
+	                <bx_if:not-exist>
+	                	<div class="sys_album_item{class}">
+	                        <img src="<bx_image_url:spacer.gif />"/> 
+	                    </div>
+	                </bx_if:not-exist>
+	            </bx_repeat:units>
+	        </div>
+	    </div>
+	    <div class="sys_album_info bx-def-padding-sec">
+	        <div class="sys_album_title">
+	            <a href="{titleLink}" title="{title}">{title}</a>
+	        </div>
+	        <div class="sys_album_from bx-def-font-grayed">{view} <bx_text:_By /> <a href="{fromLink}">{from}</a></div>
+	    </div>
+	    <div class="sys_album_navigation">
+			<a class="sys_an_prev bx-def-round-corners" href="javascript:void(0)" title="<bx_text_attribute:_Previous_item />"><i class="sys-icon chevron-left"></i></a>
+			<a class="sys_an_next bx-def-round-corners" href="javascript:void(0)" title="<bx_text_attribute:_Next_item />"><i class="sys-icon chevron-right"></i></a>
+	    </div>
+	    <bx_if:show_activation>
+		    <div class="sys_album_activation">
+		    	<a class="sys_aa_open bx-def-round-corners" href="javascript:void(0)" title="<bx_text_attribute:_Open />"><i class="sys-icon sign-in"></i></a>
+		    </div>
+	    </bx_if:show_activation>
+	</div>
+</div>

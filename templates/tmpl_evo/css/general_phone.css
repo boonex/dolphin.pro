@@ -1,0 +1,38 @@
+@import url(../../base/css/general_phone.css);
+
+@media (max-width:720px) {
+	html {
+		font-size: 85%;
+	}
+
+    div.sys_root_bg {
+	    background-image: url(../images/sys-bg-main.jpg);
+    }
+
+	.sys_main_page_width {
+		width: 100%;
+	}
+
+	/*--- Main Page Layout ---*/
+	.sys_mc .page_column {
+		float: none;
+		width: 100%;
+	}
+	.sys_mc .page_column .page_block_container {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+
+	/*+++ System Service Menu Section +++*/
+	div.sys-service-menu div.sys-sm-item.sys-smi-search {
+		display: none;
+	}
+	div.sys-service-menu div.sys-sm-item.sys-smi-search-simple {
+		display: inline-block;
+	}
+	div.sys-service-menu div.sys-sm-item.sys-smi-join span.sys-smp-title,
+	div.sys-service-menu div.sys-sm-item.sys-smi-profile span.sys-smp-title,
+	div.sys-service-menu div.sys-sm-item.sys-smi-profile span.sys-sm-item {
+		display: none;
+	}
+}

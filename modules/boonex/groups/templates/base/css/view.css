@@ -1,0 +1,21 @@
+
+table.bx_groups_fields {
+    border-collapse:collapse;
+    border-spacing:0px;
+}
+
+td.bx_groups_field_name {
+    margin:0;
+    text-align:left;
+}
+
+td.bx_groups_field_value {
+    margin:0;
+    text-align:left;
+}
+
+.bx_groups_profile_unit {
+    overflow:hidden;
+    float:left;
+}
+

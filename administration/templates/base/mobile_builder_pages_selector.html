@@ -1,0 +1,18 @@
+<div class="adm-pb-cp-item">
+    <form class="adm-pb-cp-selector" name="pageSelector" method="get" action="__url__">
+    	<span>
+        	<bx_text:_adm_txt_pb_page />
+        </span>
+        <div class="input_wrapper input_wrapper_select bx-def-margin-sec-leftright clearfix">
+	        <select class="form_input_select bx-def-font-inputs" name="page" onchange="if (this.value && this.value != 'none') this.form.submit()">
+	            <bx_repeat:pages>
+	                <option value="__value__" __selected__>__title__</option>
+	            </bx_repeat:pages>
+	        </select>
+		</div>
+		<div class="input_wrapper input_wrapper_submit clearfix">
+        	<input class="form_input_submit bx-btn" type="submit" value="<bx_text:_adm_btn_Go />" />
+        </div>
+    </form>
+</div>
+<div class="clear_both">&nbsp;</div>

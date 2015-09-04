@@ -1,0 +1,128 @@
+@import url(../../../../templates/base/css/common.css);
+
+body {
+	background-color: #276cbc;
+	background-image: none;    
+}
+
+.bx_sys_unit_checkbox {
+    top: 3px;
+    left: 3px;
+    width: auto;
+    height: auto;
+
+    position: absolute;
+    z-index: 2;
+
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+
+	-webkit-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+    -moz-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+
+    background-color: #ffffff;
+}
+.bx_sys_unit_checkbox input[type="checkbox"],
+.bx_sys_unit_checkbox input[type="radio"] {
+	position: relative;
+	display: block;
+
+    margin: 3px;
+    padding: 0px;
+}
+
+/* * * * DesignBox * * * */
+.disignBoxFirst {
+	margin-top: 1px;
+
+	border: 1px solid transparent;
+
+	background-color: #f5f8fc;
+}
+
+.boxFirstHeader {
+	font-size: 18px;
+	color: #333333;
+}
+
+.disignBoxFirst .boxFirstHeader .dbTitle {
+	float: none;
+}
+
+.disignBoxFirst .boxFirstHeader .dbTopMenu {
+	position: absolute;
+
+	top: 0px;
+	right: 0px;
+
+	line-height: 22px;
+}
+.dbTopMenu .active span {
+	color: #333333;
+}
+
+div.top_settings_block {
+	color: #333333;
+}
+
+div.top_settings_block div.tsb_cnt_out {
+    border-top-width: 0px;
+}
+
+div.top_settings_block div.tsb_cnt_in {
+    border-top-width: 0px;
+}
+
+/* * * * Pagination * * * */
+div.paginate {
+	background-color: transparent;
+}
+
+/* * * * Button * * * */
+.bx-btn {
+	position: relative;
+
+	height: 40px;
+	padding: 0px 50px;
+
+	border-width: 0px;
+	background-color: #2e70b9;
+	background-image: none;
+	filter: none;
+
+	line-height: 38px;
+	text-transform: uppercase;
+	text-shadow: none;
+	font-weight: 700;
+	font-size: 16px;
+	color: #ffffff;
+}
+.bx-btn,
+.bx-btn:hover {
+	box-shadow: none;
+	color: #ffffff;
+}
+.bx-btn:hover,
+.bx-btn:active { 
+	background-color: #1a3d66;
+}
+.bx-btn:active {
+	top: 1px;
+
+	background-image: none;
+	box-shadow: none;
+
+	filter: none;
+}
+
+/* * * * Admin Actions panel * * * */
+.admin_actions_panel {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* * * * RSS Feed * * * */
+.rss_read_more {
+    background-color: rgba(0, 0, 0, 0.1);
+}

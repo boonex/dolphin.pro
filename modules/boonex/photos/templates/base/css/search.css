@@ -1,0 +1,166 @@
+/* main settings  */
+.sys_album_unit .bx_sys_unit_checkbox {
+    top: 7px;
+    left: 7px;
+}
+
+.sys_album_cover {
+    height: 140px;
+}
+
+.sharedPhotos_View {
+    margin: 0px 0px 2px 2px;
+    font-size: 11px;
+}
+
+/* scroll picture page */
+.picSwitcher {}
+
+.switchUnitRow {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.suScroller {
+    position: relative;
+}
+
+.suScroller div {
+    position: relative;
+}
+
+.scrollContainer {
+    height: 40px;
+    overflow: hidden;
+    position: static;
+    float: left;
+}
+
+.scrollContainerArea {
+    overflow: hidden;
+    float: left;
+    margin: 0px;
+}
+
+.scrollUnit {
+    width: 36px;
+    height: 36px;
+    float: left;
+    position: relative;
+    margin: 2px 1px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid #CCCCCC;
+}
+
+.scrollUnitPic {
+    width: 36px;
+    height: 36px;
+    float: left;
+    position: relative;
+}
+
+.scrollLeft {
+    margin-right: 21px;
+    width: 16px;
+    height: 36px;
+    float: left;
+}
+
+.scrollRight,
+.scrollLeft {
+    text-align:center;
+    padding-top:14px;
+}
+
+.scrollRight .sys-icon,
+.scrollLeft .sys-icon {
+    display: inline-block;
+    min-width: 16px;
+    min-height: 16px;
+    font-size: 18px;
+}
+
+.scrollRight {
+    margin-left: 21px;
+    width: 16px;
+    height: 36px;
+    float: left;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.scrollRight img {
+    width: 16px;
+    height: 36px;
+}
+
+.suViewFile {
+	width: auto !important;
+    margin-left: auto;
+    margin-right: auto;
+
+    text-align: center;
+}
+
+.suViewFile img {
+	max-width: 100%;
+}
+.suMainInfo,
+.suAddInfo {}
+
+.picTitle {
+	float: left;
+}
+
+.picRate {
+	float: right;
+}
+
+.addInfoDate {
+    text-transform: lowercase;
+}
+
+.addInfoFrom {
+    margin-left: 5px;
+}
+
+.latestFile {
+	margin: 10px auto;
+}
+
+/* redeckaration  settings from another files*/
+.boxContent .votes_small {
+	float: none;
+	position:relative;
+	width: auto;
+}
+
+div.viewFile {
+	margin: 10px auto;
+	padding: 2px;
+    text-align: center;
+    border: 1px solid #CCCCCC;
+}
+
+.searchContentBlock {
+    margin: 5px auto;
+}
+
+#searchArea {
+    margin: 10px auto;
+}
+
+.sys_file_search_unit.bx_photos_search_unit {
+	width: auto;
+	max-width: 240px;
+	height: auto;
+}
+.sys_file_search_pic.bx_photos_file_search_pic {
+	width: 100%;
+	max-width: 240px;
+	height: auto;
+}
+.sys_file_search_pic.bx_photos_file_search_pic img {
+	width: 100%;
+}

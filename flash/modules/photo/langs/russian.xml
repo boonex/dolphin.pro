@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<items>
+	<item key="_name_"><![CDATA[Русский]]></item>
+	<item key="txtNoCamera"><![CDATA[КАМЕРА ОТСУТСТВУЕТ]]></item>
+
+    <item key="msgConnectionError"><![CDATA[ОШИБКА СВЯЗИ]]></item>
+	<item key="msgLoading"><![CDATA[ЗАГРУЗКА]]></item>
+    <item key="msgAuthorizingUserError"><![CDATA[Неправильный логин иили пароль]]></item>
+
+    <item key="btnOk"><![CDATA[OK]]></item>
+    <item key="btnRemove"><![CDATA[УДАЛИТЬ]]></item>
+    <item key="btnScreenshot"><![CDATA[СКРИНШОТ]]></item>
+
+    <item key="dlgAlert"><![CDATA[Предупреждение]]></item>
+	
+    <item key="hintRemove"><![CDATA[Удалить]]></item>
+	<item key="hintScreen"><![CDATA[Сделать скриншот]]></item>
+</items>

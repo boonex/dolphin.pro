@@ -1,0 +1,22 @@
+
+.bx_sites_block_percent {
+    overflow: hidden;
+}
+
+.bx_sites_block_percent .image {
+	text-align: center;
+}
+
+.bx_sites_block_percent .votes_big,
+.image img {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.bx_sites_block_percent .votes_big {
+    width: 150px;
+}
+
+.bx_sites_block_percent .bx_sites_unit_content {
+    position:relative;
+}

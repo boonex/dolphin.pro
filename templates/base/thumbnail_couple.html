@@ -1,0 +1,28 @@
+<div class="thumbnail_block __classes_add__" style="float:__sys_thb_float__;">
+    <div class="thumbnail_image thumbnail_image_couple" onmouseover="javascript:startUserInfoTimer(__iProfId__, this)" onmouseout="javascript:stopUserInfoTimer(__iProfId__)">
+	    <a href="__usr_profile_url__">
+	    	<bx_if:show_thumbnail_image1>
+		    	<img src="__usr_thumb_url0__" src-2x="__usr_thumb_url0_2x__" class="thumbnail_image_file bx-def-thumbnail bx-def-shadow bx-img-retina" />
+		    </bx_if:show_thumbnail_image1>
+		    <bx_if:show_thumbnail_image2>
+		    	<img src="__usr_thumb_url1__" src-2x="__usr_thumb_url1_2x__" class="thumbnail_image_file2 bx-def-thumbnail bx-def-shadow bx-img-retina" />
+		    </bx_if:show_thumbnail_image2>
+		    <bx_if:show_thumbnail_letter1>
+				<p class="thumbnail_image_letter bx-def-border bx-def-thumbnail bx-def-shadow">__letter__</p>
+            </bx_if:show_thumbnail_letter1>
+            <bx_if:show_thumbnail_letter2>
+				<p class="thumbnail_image_letter2 bx-def-border bx-def-thumbnail bx-def-shadow">__letter__</p>
+            </bx_if:show_thumbnail_letter2>
+	    	<i class="sys-online-offline sys-icon __sys_status_icon__" title="__sys_status_title__"></i>
+	    	<div class="clear_both"></div>
+	    </a>
+    </div>
+	<bx_if:profileLink>
+	    <div class="thumb_username">
+	        <a class="bx-def-font-large" href="__usr_profile_url__">__user_title__</a>
+	        <br />
+	        <i class="bx-def-font-small bx-def-font-grayed">__user_info__</i>
+	    </div>
+	</bx_if:profileLink>
+    <div class="clear_both"></div>
+</div>

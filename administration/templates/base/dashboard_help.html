@@ -1,0 +1,15 @@
+<div class="adm-dashboard-help">
+	__content__
+	<div class="adm-ds-help-btn bx-def-margin-sec-top">
+		<script>
+			function bx_adm_hide_help() {
+			    $.post('<bx_url_admin />', {hide_admin_help:1}, function(data) {
+			        $(".adm-ds-help").parents().filter(".disignBoxFirst:first").slideUp(function () {
+			            $(this).remove();
+			        });
+			    });
+			}
+		</script>
+		<button class="bx-btn bx-btn-small" onclick="bx_adm_hide_help()"><bx_text:_adm_txt_dashboard_help_dont_show /></button>
+	</div>
+</div>

@@ -1,0 +1,29 @@
+
+.bx_events_block_info {
+}
+
+
+.bx_events_block_info .infoUnit {
+    overflow:hidden;
+}
+
+.bx_events_country_city img {
+    top:2px;
+    width:16px;    
+}
+
+table.bx_events_fields {
+    border-collapse:collapse;
+    padding:0;
+}
+
+td.bx_events_field_name {
+    margin:0;
+    text-align:left;
+}
+
+td.bx_events_field_value {
+    margin:0;
+    text-align:left;
+}
+

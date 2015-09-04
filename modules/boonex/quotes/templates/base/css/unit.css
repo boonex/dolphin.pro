@@ -1,0 +1,20 @@
+.daily_quotes {
+	text-align:right;
+}
+.quote_div .author {
+    margin-top:5px;
+}
+.adm_quote {
+    padding: 5px 0px;
+}
+.adm_quote .adm_check {
+    float: left;
+    margin-left:5px;
+}
+.adm_quote .text {
+    margin-left:25px;
+}
+.adm_quote .auth {
+    margin-left:25px;
+    margin-bottom:3px;
+}

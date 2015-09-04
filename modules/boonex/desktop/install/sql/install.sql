@@ -1,0 +1,2 @@
+INSERT INTO `sys_box_download` (`title`, `url`, `onclick`, `desc`, `icon`, `order`, `disabled`) VALUES
+('_bx_desktop_title', "php:return BxDolService::call('desktop', 'get_file_url');", '', '_bx_desktop_desc', 'modules/boonex/desktop/|desktop.png', 1, 0);

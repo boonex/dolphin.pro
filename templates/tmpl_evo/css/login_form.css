@@ -1,0 +1,13 @@
+@import url(../../base/css/login_form.css);
+
+#login_box_form .input_wrapper_submit,
+#login_box_form .bx-form-element-forgot  {
+	text-align: center;
+}
+#login_box_form .input_wrapper_submit .form_input_submit {
+	float: none;
+	display: inline-block;
+
+	width: 100%;
+	max-width: 500px;
+}

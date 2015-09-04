@@ -1,0 +1,28 @@
+<div class="news-entry-divider bx-def-hr bx-def-margin-sec-topbottom"></div>
+<div id="__id__" class="news-entry">
+    <div class="news-info">
+        <div class="news-caption bx-def-font-h2">
+            <bx_if:checkbox>
+                <input type="checkbox" name="news-ids[]" value="__id__" />
+            </bx_if:checkbox>
+            <a class="news-caption bx-def-font-h2" href="__link__">__caption__</a>
+        </div>
+        <div class="news-text__class__ bx-def-font-large bx-def-margin-sec-top">__content__</div>
+        <div class="news-date bx-def-margin-sec-top">
+            <span class="bx-def-font-small bx-def-font-grayed">__date__</span>
+            <bx_if:status>
+                <span class="sys-bullet"></span>
+                <span class="news-status bx-def-font-small bx-def-font-grayed">__status__</span>
+            </bx_if:status>
+            <bx_if:featured>
+                <span class="sys-bullet"></span>
+                <span class="news-status bx-def-font-small bx-def-font-grayed"><bx_text:_news_featured /></span>
+            </bx_if:featured>
+            <bx_if:edit_link>
+                <span class="sys-bullet"></span>
+                <a class="news-action bx-def-font-small" href="__edit_link_url__">__edit_link_caption__</a>
+            </bx_if:edit_link>
+        </div>
+    </div>
+    <div class="news-cb">&nbsp;</div>
+</div>

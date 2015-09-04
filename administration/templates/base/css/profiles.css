@@ -1,0 +1,162 @@
+iframe#adm-mp-members-iframe {
+	display: block;
+
+	width: 0px;
+	height: 0px;
+	margin: 0px;
+	padding: 0px;
+
+	border: 0px;
+}
+form#adm-mp-members-form {
+    position: relative;
+}
+
+/*--- Tags Styles ---*/
+div.tags_wrapper {
+	text-align: center;	
+}
+span.one_tag{
+    padding: 0px 4px;
+	line-height: 30px;
+}
+
+/*--- Member Controls Styles ---*/
+div.adm-mp-qlinks-item {
+	position: relative;
+    float: left;
+    width: 210px;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+}
+
+/*--- Members view controls Styles ---*/
+div.adm-mp-order-item {
+    position: relative;
+    float: left;
+}
+div.adm-mp-order-item-right {
+    position: relative;
+    float: right;
+}
+.adm-mp-order-item span,
+.adm-mp-order-item .input_wrapper {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+}
+.adm-mp-order-item span {
+	line-height: 38px;
+}
+.adm-mp-order-item .input_wrapper_select {
+	width: auto;
+}
+.adm-mp-order-item-right .input_wrapper_select {
+	margin-right: 0px;
+}
+
+/*--- GEEKY Members list Styles ---*/
+div.adm-mp-members-geeky {}
+table.adm-mp-members-geeky td {
+    padding: 2px 0px;
+}
+table.adm-mp-members-geeky th {
+    text-align: left;
+}
+a.adm-mp-active {}
+a.adm-mp-inactive {
+    color: #999999;
+}
+a.adm-mp-banned {
+    color: #d00;
+}
+
+/*--- SIMPLE Members list Styles ---*/
+div.adm-mp-members-simple {}
+div.adm-mp-member-simple {
+    position: relative;
+    float: left;
+	width: 240px;
+    margin: 5px;
+}
+div.adm-mp-ms-check, 
+div.adm-mp-me-check {
+    top: 1px;
+    left: 1px;
+
+    position: absolute;
+    z-index: 2;
+
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+
+	-webkit-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+    -moz-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.9);
+
+    background-color: #ffffff;
+}
+div.adm-mp-ms-check input.form_input_checkbox,
+div.adm-mp-me-check input.form_input_checkbox {
+	position: relative;
+	display: block;
+
+    margin: 3px;
+    padding: 0px;
+}
+*+html div.adm-mp-ms-check input.form_input_checkbox,
+*+html div.adm-mp-me-check input.form_input_checkbox {
+    margin: 0px;  
+}
+div.adm-mp-ms-thumbnail {
+	position: absolute;
+    z-index: 1;
+    top: 0px;
+    left: 0px;
+}
+div.adm-mp-ms-info {
+    min-height: 64px;
+    padding-left: 74px;
+}
+div.adm-mp-msi-username {
+	text-overflow: ellipsis;
+    overflow: hidden;
+}
+div.adm-mp-msi-username a,
+div.adm-mp-msi-info {
+    white-space: nowrap;
+}
+
+/*--- EXTENDED Members list Styles ---*/
+div.adm-mp-members-extended {}
+div.adm-mp-members-extended div.bx-def-hr:first-child {
+	display: none;
+}
+div.adm-mp-member-extended {
+    position: relative;    
+}
+div.adm-mp-me-thumbnail {
+	position: absolute;
+    z-index: 1;
+    top: 0px;
+    left: 0px;
+}
+div.adm-mp-me-info {
+    min-height: 64px;
+    padding-left: 74px;
+}
+div.adm-mp-me-nick {
+    font-weight: bold;
+}
+div.adm-mp-me-age {
+    padding-top: 3px;
+
+    color: #333333;
+}
+div.adm-mp-me-desc {
+    padding-top: 3px;
+
+    overflow: hidden;
+}

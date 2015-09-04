@@ -1,0 +1,15 @@
+<div class="ordered_block">
+	__sort_block__
+	<bx_if:show_with_photos>
+		&nbsp;
+		<input type="checkbox" __photo_checked__ name="photos_only" value="on" onclick="oBrowsePage.LocationChange(this, '__photo_location__')" />
+		__photo_caption__
+	</bx_if:show_with_photos>
+	&nbsp;
+	<input type="checkbox" __online_checked__ name="online_only" value="on" onclick="oBrowsePage.LocationChange(this, '__online_location__')"/>
+	__online_caption__
+</div>
+<div class="per_page_block">
+	__per_page_block__
+</div>
+<div class="clear_both"></div>
