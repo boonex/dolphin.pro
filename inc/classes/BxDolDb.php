@@ -8,7 +8,7 @@
 define('BX_DOL_TABLE_PROFILES', '`Profiles`');
 
 define( 'DB_FULL_VISUAL_PROCESSING', true );
-define( 'DB_FULL_DEBUG_MODE', true );
+define( 'DB_FULL_DEBUG_MODE', false );
 define( 'DB_DO_EMAIL_ERROR_REPORT', true );
 
 require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolMistake.php');
