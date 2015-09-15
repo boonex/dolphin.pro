@@ -16,6 +16,8 @@ ALTER TABLE  `Profiles` DROP INDEX  `NickName_2`, ADD FULLTEXT  `NickName_2` (`N
 
 ALTER TABLE `RayChatMessages` ADD `SndRcp` varchar(40) NOT NULL default '' AFTER `Room`;
 
+-- ================ can be safely applied multiple times ================ 
+
 CREATE TABLE IF NOT EXISTS `RayChatHistory` (
   `ID` int(11) NOT NULL auto_increment,
   `Room` int(11) NOT NULL default 0, 
@@ -26,9 +28,6 @@ CREATE TABLE IF NOT EXISTS `RayChatHistory` (
   `When` int(11) NOT NULL default '0',
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
--- ================ can be safely applied multiple times ================ 
 
 -- admin main menu
 
@@ -190,7 +189,7 @@ INSERT INTO `sys_pre_values` VALUES('Sex', 'intersex', 3, '_Intersex', '_LookinI
 
 SET @iMaxJoinPage = (SELECT MAX(`JoinPage`) FROM `sys_profile_fields` WHERE `Type` = 'block' AND `JoinOrder` IS NOT NULL);
 
-SET @iGeneralBlockId = (SELECT COUNT(*) FROM `sys_profile_fields` WHERE `Name` = 'General Info' AND `Type` = 'block');
+SET @iGeneralBlockId = (SELECT `ID` FROM `sys_profile_fields` WHERE `Name` = 'General Info' AND `Type` = 'block');
 
 SET @iMiscBlockId = (SELECT `ID` FROM `sys_profile_fields` WHERE `Name` = 'Misc Info' AND `Type` = 'block');
 SET @iMiscBlockMaxJoinOrder = (SELECT MAX(`JoinOrder`) FROM `sys_profile_fields` WHERE `JoinBlock` = @iMiscBlockId AND @iMiscBlockId);
