@@ -1,4 +1,5 @@
 
+UPDATE `sys_objects_actions` SET `Icon` = 'paperclip' WHERE `Icon` = 'paper-clip' AND `Type` = 'bx_feedback';
 
 -- update module version
 
