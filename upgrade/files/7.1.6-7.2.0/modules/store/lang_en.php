@@ -4,6 +4,6 @@ $aLangContent = array(
 
   // ================ ADDED KEYS ==================
 
-  '_bx_ads_DeActivate' => 'Деактивировать',
-  
+  '_bx_store_privacy_view_forum_product' => 'View Forum',
+
 );

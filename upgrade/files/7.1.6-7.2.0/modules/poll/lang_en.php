@@ -4,6 +4,6 @@ $aLangContent = array(
 
   // ================ ADDED KEYS ==================
 
-  '_bx_ads_DeActivate' => 'Деактивировать',
-  
+  '_bx_poll_item_not_found' => 'Poll not found',
+
 );

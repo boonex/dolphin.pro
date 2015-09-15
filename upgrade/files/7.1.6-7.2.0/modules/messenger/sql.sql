@@ -1,4 +1,5 @@
 
+UPDATE `sys_objects_actions` SET `Icon` = 'comments-o' WHERE `Icon` = 'comments-alt' AND `Type` = 'Profile';
 
 -- update module version
 

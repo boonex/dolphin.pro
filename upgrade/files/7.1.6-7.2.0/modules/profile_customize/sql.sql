@@ -1,4 +1,5 @@
 
+UPDATE `sys_objects_actions` SET `Script` = '$(''#profile_customize_page'').fadeIn(''slow'');' WHERE `Type` = 'Profile' AND `Eval` LIKE '%bx_profile_customize_enable%';
 
 -- update module version
 

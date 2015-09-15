@@ -1,4 +1,7 @@
 
+UPDATE `sys_menu_top` SET `Picture` = 'square-o' WHERE `Picture` = 'check-empty' AND `Name` = 'Board';
+
+UPDATE `sys_objects_actions` SET `Icon` = 'square-o' WHERE `Icon` = 'check-empty' AND `Type` = 'bx_photos';
 
 -- update module version
 

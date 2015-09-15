@@ -4,6 +4,6 @@ $aLangContent = array(
 
   // ================ ADDED KEYS ==================
 
-  '_bx_ads_DeActivate' => 'Деактивировать',
+  '_simple_messenger_me' => 'Я',
   
 );
