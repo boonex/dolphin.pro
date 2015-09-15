@@ -24,7 +24,7 @@ function PageCompPageMainCode()
         $s = 'Wall handlers are already updated. <hr />';
     }
     
-    if (!$GLOBALS['MySQL']->getOne("SELECT COUNT(*) FROM `bx_shoutbox_objects`")) {
+    if ($GLOBALS['MySQL']->getOne("SELECT COUNT(*) FROM `bx_shoutbox_objects`") <= 1) {
         BxDolService::call('shoutbox', 'update_objects');
         $s .= 'Shoutbox objects were updated.';
     } 
