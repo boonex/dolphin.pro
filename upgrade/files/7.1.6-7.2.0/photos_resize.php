@@ -17,7 +17,7 @@ PageCode();
 
 function PageCompPageMainCode()
 {   
-    $iLimit = 2;
+    $iLimit = 30;
     $aNewSizes = array(
         '_t.jpg' => array('w' => 240, 'h' => 240, 'square' => true),
         '_t_2x.jpg' => array('w' => 480, 'h' => 480, 'square' => true, 'new_file' => true),
