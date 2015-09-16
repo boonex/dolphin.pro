@@ -1,11 +1,9 @@
 <?php
 
 $aLangContent = array(
-
-    // ================ ADDED KEYS ==================
-
-
-    // ================ CHANGED KEYS ==================
-
-
+    
+  // ================ ADDED KEYS ==================
+  
+  '_bx_ads_DeActivate' => 'Deactivate',
+  
 );

@@ -1,4 +1,7 @@
 
+UPDATE `sys_menu_member` SET `Icon` = 'bell', `Order` = 3 WHERE `Name` = 'Spy';
+
+UPDATE `sys_menu_admin` SET `icon` = 'crosshairs' WHERE `name` = 'Spy';
 
 -- update module version
 

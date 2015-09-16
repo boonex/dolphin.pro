@@ -1,4 +1,5 @@
 
+UPDATE `sys_menu_member` SET `Position` = 'top_extra' WHERE `Name` = 'bx_forum';
 
 -- update module version
 
