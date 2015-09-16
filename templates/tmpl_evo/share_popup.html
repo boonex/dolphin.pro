@@ -65,6 +65,6 @@
 <!-- Buttons end here -->
 <script type="text/javascript">
 	jQuery('.sys-share-popup-link.sys-spl-need-url').each(function() {
-		jQuery(this).attr('href', jQuery(this).attr('href') + location.href).removeClass('sys-spl-need-url');
+		jQuery(this).attr('href', jQuery(this).attr('href') + encodeURIComponent(location.href)).removeClass('sys-spl-need-url');
 	});
 </script>
