@@ -97,7 +97,7 @@ SET @iKatID = LAST_INSERT_ID();
 INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `err_text`, `order_in_kateg`, `AvailableValues`)  VALUES
 ('[db_prefix]_activation', 'on', @iKatID, 'Enable auto-activation for files', 'checkbox', '', '', 1, ''),
 ('category_auto_app_[db_prefix]', 'on', @iKatID, 'Autoapprove categories of files', 'checkbox', '', '', 2, ''),
-('[db_prefix]_allowed_exts', 'jpg png gif', @iKatID, 'Allowed extensions', 'digit', '', '', 3, ''),
+('[db_prefix]_allowed_exts', 'jpg jpeg png gif', @iKatID, 'Allowed extensions', 'digit', '', '', 3, ''),
 ('[db_prefix]_profile_album_name', '{nickname}''s photos', @iKatID, 'Default profile album name', 'digit', '', '', 4, ''),
 ('[db_prefix]_profile_cover_album_name', '{nickname}''s cover photos', @iKatID, 'Default profile cover album name', 'digit', '', '', 5, ''),
 ('[db_prefix]_mode_index', 'last', @iKatID, 'Show files on index page<br /> (if enabled in the template)', 'select', '', '', 10, 'last,top'),
