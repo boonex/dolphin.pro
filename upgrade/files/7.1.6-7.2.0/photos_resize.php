@@ -33,37 +33,44 @@ function PageCompPageMainCode()
 
     $sPathPhotos = BX_DIRECTORY_PATH_MODULES . 'boonex/photos/data/files/';
 
-    $aRow = $GLOBALS['MySQL']->getFirstRow("SELECT `ID`, `Ext` FROM `bx_photos_main` ORDER BY `ID` ASC");
-    $iCounter = 0;
-    while (!empty($aRow)) {
-        $sFileOrig = $sPathPhotos . $aRow['ID'] . '.' . $aRow['Ext'];
-        $sFileNew = $sNewFile ? $sPathPhotos . $aRow['ID'] . $sNewFile : false;
-        
-        if ((!$sFileNew || !file_exists($sFileNew)) && file_exists($sFileOrig)) { // file isn't already processed and original exists
-            // resize
-            foreach ($aNewSizes as $sKey => $r) {
-                $sFileDest = $sPathPhotos . $aRow['ID'] . $sKey;
-                imageResize($sFileOrig, $sFileDest, $r['w'], $r['h'], true, $r['square']);
+    if ($GLOBALS['MySQL']->getOne("SELECT COUNT(*) FROM `sys_modules` WHERE `uri` IN('photos')")) {
+
+        $aRow = $GLOBALS['MySQL']->getFirstRow("SELECT `ID`, `Ext` FROM `bx_photos_main` ORDER BY `ID` ASC");
+        $iCounter = 0;
+        while (!empty($aRow)) {
+            $sFileOrig = $sPathPhotos . $aRow['ID'] . '.' . $aRow['Ext'];
+            $sFileNew = $sNewFile ? $sPathPhotos . $aRow['ID'] . $sNewFile : false;
+            
+            if ((!$sFileNew || !file_exists($sFileNew)) && file_exists($sFileOrig)) { // file isn't already processed and original exists
+                // resize
+                foreach ($aNewSizes as $sKey => $r) {
+                    $sFileDest = $sPathPhotos . $aRow['ID'] . $sKey;
+                    imageResize($sFileOrig, $sFileDest, $r['w'], $r['h'], true, $r['square']);
+                }
+                ++$iCounter;
             }
-            ++$iCounter;
+
+            if ($iCounter >= $iLimit)
+                break;
+
+            $aRow = $GLOBALS['MySQL']->getNextRow();
         }
 
-        if ($iCounter >= $iLimit)
-            break;
+        if (empty($aRow)) {
+            $s = "All photos has been resized to the new dimentions.";
+        }
+        else {
+            $s = "Page is reloading to resize next bunch of images...
+            <script>
+                setTimeout(function () {
+                    document.location = '" . BX_DOL_URL_ROOT . "upgrade/files/7.1.6-7.2.0/photos_resize.php?_t=" . time() . "';
+                }, 1000);
+            </script>";
+        }
 
-        $aRow = $GLOBALS['MySQL']->getNextRow();
-    }
-
-    if (empty($aRow)) {
-        $s = "All photos has been resized to the new dimentions.";
     }
     else {
-        $s = "Page is reloading to resize next bunch of images...
-        <script>
-            setTimeout(function () {
-                document.location = '" . BX_DOL_URL_ROOT . "upgrade/files/7.1.6-7.2.0/photos_resize.php?_t=" . time() . "';
-            }, 1000);
-        </script>";
+        $s = "Module 'Photos' isn't installed";
     }
 
     return DesignBoxContent($GLOBALS['_page']['header'], $s, $GLOBALS['oTemplConfig'] -> PageCompThird_db_num);
