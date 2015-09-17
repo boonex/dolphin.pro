@@ -5,8 +5,12 @@ div.adm-settings-wrapper {
     white-space: normal;
 }
 
-/*--- Baseic Settings ---*/
+/*--- Basic Settings ---*/
 tr#adm-bs-splash-editor-wrp div.input_wrapper_textarea {
     width: 100%;
 	padding: 0px;
+}
+
+.mainLogo {
+    max-width: 100%;
 }
