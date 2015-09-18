@@ -15,9 +15,10 @@ class HTMLPurifier_Filter_YoutubeIframe extends HTMLPurifier_Filter
                     preg_match('/height="([0-9]+)"/', $item, $height);
                     $height = $height[1];
                     preg_match('/((https?:\/\/www\.youtube\.com\/embed\/)|(https?:\/\/www\.youtube-nocookie\.com\/embed\/)|(https?:\/\/www.youtube.com\/v\/))([a-zA-Z0-9_-]+)/', $item, $id);
-                    $id = $id[5];
+                    $id = $id[5];        
                     $sProto = 0 == strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https' : 'http';
-                    $html = str_replace($result[0][$key], '<img class="YouTubeIframe" width="' . $width . '" height="' . $height . '" src="' . $sProto . '://www.youtube-nocookie.com/embed/' . $id . '?rel=0">', $html);
+                    if ($id)
+                        $html = str_replace($result[0][$key], '<img class="YouTubeIframe" width="' . $width . '" height="' . $height . '" src="' . $sProto . '://www.youtube-nocookie.com/embed/' . $id . '?rel=0">', $html);
                 }
             }
         }
@@ -36,4 +37,3 @@ class HTMLPurifier_Filter_YoutubeIframe extends HTMLPurifier_Filter
         return '<iframe frameborder="0" allowfullscreen ' . $matches[1] . '></iframe>';
     }
 }
-
