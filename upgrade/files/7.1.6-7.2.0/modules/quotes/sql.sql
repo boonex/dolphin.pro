@@ -1,4 +1,5 @@
 
+ALTER TABLE `bx_quotes_units` CHANGE `ID`  `ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 -- update module version
 

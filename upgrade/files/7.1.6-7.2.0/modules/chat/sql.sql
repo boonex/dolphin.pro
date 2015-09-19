@@ -1,4 +1,5 @@
 
+UPDATE `sys_menu_top` SET `Picture` = 'comments-o' WHERE `Picture` = 'comments-alt' AND `Name` = 'Chat';
 
 -- update module version
 

@@ -32,13 +32,13 @@ function Forum (base, min_points) {
  */
 Forum.prototype.editPost = function (id) {
 
-	var node = $('#'+id+'>.forum_post_text');
+	var node = $('#post_row_'+id+' > td > .forum_post_text');
 	if (!node.size()) {
 		this.showHiddenPost(id, '$this.editPost (id);');
 		return;
 	}
 
-    if ($('#'+id+'>.forum_post_text:hidden').size() && $('#'+id+'>form[name=edit_post_'+id+']').size())
+    if ($('#post_row_'+id+' > td > .forum_post_text:hidden').size() && $('#post_row_'+id+' > td > form[name=edit_post_'+id+']').size())
         return;
 
 	var $this = this;
@@ -1053,13 +1053,13 @@ Forum.prototype.getPostText = function (post_id, selected) {
     if ('undefined' != typeof(selected) && selected) {
         var sSelected = this.getSelectedText();
         if (sSelected.length) {
-            var sPostText = $('#'+post_id+'>.forum_post_text').text();
+            var sPostText = $('#post_row_'+post_id+' > td > .forum_post_text').text();
             aSelected = sSelected.split("\n");
             if (-1 != sPostText.indexOf(aSelected[0]))
                 return aSelected.join('<br />');
         }
     }
-    return $('#'+post_id+'>.forum_post_text').html();
+    return $('#post_row_'+post_id+' > td > .forum_post_text').html();
 }
 
 function getScroll() {
@@ -1158,7 +1158,9 @@ Forum.prototype._replacePage = function (sLoading, sTitle, sUrlData, sXslFile, s
             $this.setWindowTitle(sTitle);
 
             var iTop = parseInt($("#orca_main").offset().top);
-            $($.browser.safari ? "body" : "html,body").scrollTop(iTop);            
+            $($.browser.safari ? "body" : "html,body").scrollTop(iTop);
+
+            $(this).find('a.bx-link').dolEmbedly();
         })
 
 		$this.stopLoading ();        

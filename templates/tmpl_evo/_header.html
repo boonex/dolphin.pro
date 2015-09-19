@@ -27,7 +27,7 @@
         // make logo text to not overflow
         var fResizeCallback = function () {
             var iSize = $('.sys_ml_wrapper').innerWidth() - $('.sys_search_wrapper').outerWidth() - $('.sys_menu_wrapper').outerWidth() - 20;
-            $('.mainLogoText').css('max-width', iSize + 'px');
+            $('.mainLogoText, .mainLogo').css('max-width', iSize + 'px');
         };
         $(window).resize(fResizeCallback);
 

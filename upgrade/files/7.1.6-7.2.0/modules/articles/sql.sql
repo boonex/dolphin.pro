@@ -1,4 +1,5 @@
 
+UPDATE `sys_objects_actions` SET `Icon` = 'share-square-o' WHERE `Type` = 'bx_articles' AND `Icon` = 'share';
 
 -- update module version
 

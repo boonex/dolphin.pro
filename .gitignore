@@ -1,0 +1,34 @@
+# Exclude system cache folders
+packages/*
+cache/*
+cache_public/*
+tmp/*
+logs/*
+langs/*
+
+# Exclude main config file
+inc/header*
+  
+# Exclude OS folder attributes
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+.*.swp
+
+
+# Excludes from modules
+modules/boonex/forum/classes/en/*
+modules/boonex/forum/classes/ru/*
+modules/boonex/forum/js/en/*
+modules/boonex/forum/js/ru/*
+modules/boonex/forum/layout/base_en/*
+modules/boonex/forum/layout/base_ru/*
+modules/boonex/forum/layout/uni_en/*
+modules/boonex/forum/layout/uni_ru/*
+modules/boonex/forum/layout/alt_en/*
+modules/boonex/forum/layout/alt_ru/*
+modules/boonex/forum/layout/evo_en/*
+modules/boonex/forum/layout/evo_ru/*

@@ -1,4 +1,7 @@
 
+UPDATE `sys_menu_admin` SET `icon` = 'envelope-o' WHERE `name` = 'bx_smtp';
+
+UPDATE `sys_options` SET `AvailableValues` = 'Not Secure,SSL,TLS' WHERE `Name` = 'bx_smtp_secure';
 
 -- update module version
 

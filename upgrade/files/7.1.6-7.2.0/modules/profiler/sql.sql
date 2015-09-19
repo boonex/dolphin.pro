@@ -1,4 +1,5 @@
 
+UPDATE `sys_menu_admin` SET `icon` = 'flask' WHERE `name` = 'bx_profiler';
 
 -- update module version
 

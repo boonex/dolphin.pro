@@ -437,7 +437,7 @@ class BxProfileCustomizeModule extends BxDolModule
 
                 $sMethod = '_compile' . ucfirst($sKey);
                 $s = method_exists($this, $sMethod) ? call_user_func_array(array($this, $sMethod), array($aParam)) : '';
-                if ('bgbody' == $sValKey && 'background' == $sKey && '' != $s && 'background-image: none;' != $s)
+                if ('body' == $sValKey && 'background' == $sKey && '' != $s && 'background-image: none;' != $s)
                     $bPageBackgroundChanged = true;
                 $sPartCss .= $s;
 
