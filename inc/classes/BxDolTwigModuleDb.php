@@ -210,10 +210,14 @@ class BxDolTwigModuleDb extends BxDolModuleDb
         $gConf['db']['prefix'] = $this->_sPrefix;
 
         require_once (BX_DIRECTORY_PATH_CLASSES . 'Thing.php');
-        require_once (BX_DIRECTORY_PATH_MODULES . 'boonex/forum/classes/ThingPage.php');
-        require_once (BX_DIRECTORY_PATH_MODULES . 'boonex/forum/classes/Mistake.php');
-        require_once (BX_DIRECTORY_PATH_MODULES . 'boonex/forum/classes/BxDb.php');
-        require_once (BX_DIRECTORY_PATH_MODULES . 'boonex/forum/classes/DbAdmin.php');
+        if (!class_exists('ThingPage'))
+            require_once (BX_DIRECTORY_PATH_MODULES . 'boonex/forum/classes/ThingPage.php');
+        if (!class_exists('Mistake'))
+            require_once (BX_DIRECTORY_PATH_MODULES . 'boonex/forum/classes/Mistake.php');
+        if (!class_exists('BxDb'))
+            require_once (BX_DIRECTORY_PATH_MODULES . 'boonex/forum/classes/BxDb.php');
+        if (!class_exists('DbAdmin'))
+            require_once (BX_DIRECTORY_PATH_MODULES . 'boonex/forum/classes/DbAdmin.php');
 
         $db = new DbAdmin ();
         $iForumId = $this->getOne ("SELECT `forum_id` FROM `" . $this->_sPrefix . "forum` WHERE `entry_id` = '{$iEntryId}'");
