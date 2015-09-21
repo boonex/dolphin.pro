@@ -78,6 +78,8 @@ INSERT INTO `sys_objects_actions` (`Type`, `Caption`, `Icon`, `Url`, `Script`, `
 
 UPDATE `sys_objects_actions` SET `Icon` = 'paperclip' WHERE `Icon` = 'paper-clip' AND `Caption` = '{sbs_bx_photos_title}' AND `Type` = 'bx_photos';
 
+UPDATE `sys_objects_actions` SET `Icon` = 'picture-o' WHERE `Icon` = 'picture' AND `Type` = 'bx_photos_title';
+
 
 UPDATE `sys_stat_site` SET `IconName` = 'picture-o' WHERE `IconName` = 'picture' AND `Name` = 'phs';
 
