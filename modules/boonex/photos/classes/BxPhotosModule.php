@@ -280,4 +280,15 @@ class BxPhotosModule extends BxDolFilesModule
 
 		return BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'albums/my/add_objects/' . $sSelectedAlbum . '/owner/' . getUsername($iProfileId);
     }
+
+    function serviceGetManageProfilePhotoUrl($iProfileId, $sSelectedAlbum = '')
+    {
+    	bx_import('BxDolAlbums');
+
+    	$aDefaultAlbums = $this->_oConfig->getDefaultAlbums();
+		if(!empty($sSelectedAlbum) && in_array($sSelectedAlbum, $aDefaultAlbums))
+			$sSelectedAlbum = BxDolAlbums::getAbumUri($this->_oConfig->getGlParam($sSelectedAlbum), $iProfileId);
+
+		return BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'albums/my/manage_profile_photos/' . $sSelectedAlbum . '/owner/' . getUsername($iProfileId);
+    }
 }
