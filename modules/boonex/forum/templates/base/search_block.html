@@ -2,7 +2,7 @@
 <script>
     function bx_forum_search () {
         var sVal = $('#bx_forum_search_input').val();
-        document.location = "__base_url_forum__?action=goto&search=1#action=goto&search_result=1&" + encodeURIComponent(sVal) + "&msgs&0&&posts&0";
+        document.location = "__base_url_forum__?action=goto&search=1#action=goto&search_result=1&text=" + encodeURIComponent(sVal) + "&type=msgs&forum=0&u=&disp=posts&start=0";
         return false;
     }
 </script>
