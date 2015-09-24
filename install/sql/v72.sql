@@ -1175,7 +1175,8 @@ INSERT INTO `sys_options` VALUES
 ('sys_security_form_token_enable', 'on', @iCatSecurity, 'Enable CSRF token in forms', 'checkbox', '', '', 30, ''),
 ('sys_security_form_token_lifetime', '86400', @iCatSecurity, 'CSRF token lifetime (seconds, 0 - no tracking)', 'digit', '', '', 40, ''),
 ('sys_recaptcha_key_public', '', @iCatSecurity, 'reCAPTCHA public key', 'digit', '', '', 50, ''),
-('sys_recaptcha_key_private', '', @iCatSecurity, 'reCAPTCHA private key', 'digit', '', '', 60, '');
+('sys_recaptcha_key_private', '', @iCatSecurity, 'reCAPTCHA private key', 'digit', '', '', 60, ''),
+('sys_safe_iframe_regexp', '%^(https?:)?//(www\.youtube(?:-nocookie)?\.com/embed/|player\.vimeo\.com/video/)%', @iCatSecurity, 'Safe iframe URI regular expression (don''t edit if unsure)', 'text', '', '', 100, '');
 
 -- CAT: Watermark
 SET @iCatWatermark = 16;
