@@ -635,10 +635,16 @@ function clear_xss($val)
         $oConfig->set('HTML.SafeObject', 'true');
         $oConfig->set('Output.FlashCompat', 'true');
         $oConfig->set('HTML.FlashAllowFullScreen', 'true');
+
         if (getParam('sys_antispam_add_nofollow')) {
             $sHost = parse_url(BX_DOL_URL_ROOT, PHP_URL_HOST);
             $oConfig->set('URI.Host', $sHost);
             $oConfig->set('HTML.Nofollow', 'true');
+        }
+        
+        if ($sSafeIframeRegexp = getParam('sys_safe_iframe_regexp')) {
+            $oConfig->set('HTML.SafeIframe', 'true');
+            $oConfig->set('URI.SafeIframeRegexp', $sSafeIframeRegexp);
         }
 
         $oConfig->set('Filter.Custom', array (new HTMLPurifier_Filter_LocalMovie(), new HTMLPurifier_Filter_YouTube(), new HTMLPurifier_Filter_YoutubeIframe(), new HTMLPurifier_Filter_AddBxLinksClass()));
