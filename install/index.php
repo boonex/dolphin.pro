@@ -4,14 +4,33 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
+$aPhpExtensions = array('curl', 'gd', 'mbstring', 'xsl', 'json', 'fileinfo', 'openssl', 'zip', 'ftp', 'calendar', 'exif');
+
+$iMemoryLimitBytes = ini_get('memory_limit');
+$last = strtolower($iMemoryLimitBytes{strlen($iMemoryLimitBytes)-1});
+$iMemoryLimitBytes = (int)$iMemoryLimitBytes;
+switch($last) {
+    case 'k':
+        $iMemoryLimitBytes *= 1024;
+        break;
+    case 'm':
+        $iMemoryLimitBytes *= 1024 * 1024;
+        break;
+    case 'g':
+        $iMemoryLimitBytes *= 1024 * 1024 * 1024;
+        break;
+}
 
 $aErrors = array();
 $aErrors[] = (ini_get('register_globals') == 0) ? '' : '<font color="red">register_globals is On (warning, you should have this param in the Off state, or your site will be unsafe)</font>';
 $aErrors[] = (ini_get('safe_mode') == 0) ? '' : '<font color="red">safe_mode is On, disable it</font>';
 $aErrors[] = (version_compare(PHP_VERSION, '5.3.0', '<')) ? '<font color="red">PHP version too old, please update to PHP 5.3.0 at least</font>' : '';
-$aErrors[] = (!extension_loaded( 'mbstring')) ? '<font color="red">mbstring extension not installed. <b>Warning!</b> Dolphin cannot work without <b>mbstring</b> extension.</font>' : '';
 $aErrors[] = (ini_get('short_open_tag') == 0 && version_compare(phpversion(), "5.4", "<") == 1) ? '<font color="red">short_open_tag is Off (must be On!)<b>Warning!</b> Dolphin cannot work without <b>short_open_tag</b>.</font>' : '';
 $aErrors[] = (ini_get('allow_url_include') == 0) ? '' : '<font color="red">allow_url_include is On (warning, you should have this param in the Off state, or your site will be unsafe)</font>';
+$aErrors[] = ($iMemoryLimitBytes == -1 || $iMemoryLimitBytes >= 128*1024*1024) ? '' : '<font color="red"><b>memory_limit</b> must be at least 128M</font>';
+
+foreach ($aPhpExtensions as $sExtension)
+    $aErrors[] = !extension_loaded($sExtension) ? '<font color="red"><b>' . $sExtension . '</b> extension isn\'t installed. <b>Warning!</b> Dolphin can\'t work properly without it.</font>' : '';
 
 $aErrors = array_diff($aErrors, array('')); //delete empty
 if (count($aErrors)) {
