@@ -150,6 +150,10 @@ div.simple_messenger_chat_block  div.messages_history div.messages_section div.m
     color:#777777;
 }
 
+div.simple_messenger_chat_block  div.messages_history div.messages_section div.message_wrapper .date{
+    color:#aaa;
+}
+
 div.simple_messenger_chat_block  div.messages_history div.write_section {
     border:0;
     margin-left:10px;
