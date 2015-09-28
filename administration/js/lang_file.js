@@ -41,12 +41,14 @@ function onResult(sType, oResult) {
     }
 }
 function onEditKey(iId) {
+    if ($('#adm-langs-edit-key').size())
+        $('#adm-langs-edit-key').remove();
     $.post(
         sAdminUrl + 'lang_file.php',
         {action: 'get_edit_form_key', id: iId},
         function(oResult) {
             $('#adm-langs-holder').html(oResult.code).show();
-            $('#adm-langs-holder > #adm-langs-edit-key').dolPopup();
+            $('#adm-langs-edit-key').dolPopup();
         },
         'json'
     );
@@ -62,12 +64,16 @@ function onChangeType(oLink) {
     });
 }
 function onEditLanguage(iId) {
+    if ($('#adm-langs-wnd-edit').size()) {
+        $('#adm-langs-wnd-edit').dolPopup();
+        return;
+    } 
     $.post(
         sAdminUrl + 'lang_file.php',
         {action: 'get_edit_form_language', id: iId},
         function(oResult) {
-            $('#adm-langs-holder').html(oResult.code).show();
-            $('#adm-langs-holder > #adm-langs-wnd-edit').dolPopup();
+            $('#adm-langs-holder').html(oResult.code);
+            $('#adm-langs-wnd-edit').dolPopup();
         },
         'json'
     );
