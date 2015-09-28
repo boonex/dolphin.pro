@@ -41,12 +41,14 @@ function onResult(sType, oResult) {
     }
 }
 function onEditKey(iId) {
+    if ($('#adm-langs-edit-key').size())
+        $('#adm-langs-edit-key').remove();
     $.post(
         sAdminUrl + 'lang_file.php',
         {action: 'get_edit_form_key', id: iId},
         function(oResult) {
             $('#adm-langs-holder').html(oResult.code).show();
-            $('#adm-langs-holder > #adm-langs-edit-key').dolPopup();
+            $('#adm-langs-edit-key').dolPopup();
         },
         'json'
     );
