@@ -20,12 +20,14 @@
  ***************************************************************************/
 
 function onEditAction(iLevelId, iActionId) {
+    if ($('#adm-mlevels-action').size())
+        $('#adm-mlevels-action').remove();
     $.post(
         sAdminUrl + 'memb_levels.php',
         {action: 'get_edit_form_action', level_id: iLevelId, action_id: iActionId},
         function(oResult) {
-            $('#adm-mlevels-holder').html(oResult.code).show();
-            $('#adm-mlevels-holder > #adm-mlevels-action').dolPopup({
+            $('#adm-mlevels-holder').html(oResult.code);
+            $('#adm-mlevels-action').dolPopup({
                 closeOnOuterClick: false
             });
 
