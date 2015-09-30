@@ -41,7 +41,7 @@
         {
             parent::BxDolModule($aModule);
 
-            require_once(BX_DIRECTORY_PATH_MODULES . $aModule['path'] . '/inc/facebook.php');
+            require_once(BX_DIRECTORY_PATH_PLUGINS . 'facebook-php-sdk/src/Facebook/autoload.php');
 
             // prepare the location link ;
             $this -> sPathToModule  = BX_DOL_URL_ROOT . $this -> _oConfig -> getBaseUri();
@@ -50,11 +50,16 @@
             $this -> sHomeUrl       = $this ->_oConfig -> _sHomeUrl;
 
             // Create our Application instance.
-            $this -> oFacebook  = new Facebook(array(
-                  'appId'  => $this -> _oConfig -> mApiID,
-                  'secret' => $this -> _oConfig -> mApiSecret,
-                  'cookie' => true,
-            ));
+            $this -> oFacebook = null;
+
+            if ($this -> _oConfig -> mApiID) {
+                session_start();
+                $this -> oFacebook = new Facebook\Facebook(array(
+                    'app_id'  => $this -> _oConfig -> mApiID,
+                    'app_secret' => $this -> _oConfig -> mApiSecret,
+                    'default_graph_version' => 'v2.4',  
+                ));
+            }
         }
 
         /**
@@ -104,6 +109,90 @@
         }
 
         /**
+         * Facebook login callback url;
+         *
+         * @return (text) - html presentation data;
+         */
+        function actionLoginCallback()
+        {
+            if (isLogged()) {
+                header ('Location:' . $this -> _oConfig -> sDefaultRedirectUrl);
+                exit;
+            }
+
+            if (!$this -> _oConfig -> mApiID || !$this -> _oConfig -> mApiSecret)
+                $sCode =  MsgBox( _t('_bx_facebook_profile_error_api_keys') );
+
+            if ($sError = $this->_setAccessToken())
+                $sCode = MsgBox($sError);
+
+            if (!$sCode) {
+
+                //we already logged in facebook
+                try {
+                    $oResponse = $this -> oFacebook -> get('/me?fields=' . $this -> _oConfig -> sFaceBookFields);
+                    $aFacebookProfileInfo = $oResponse -> getDecodedBody();
+                    $aFacebookProfileInfo['nick_name'] = $aFacebookProfileInfo['name'];
+
+                } catch (Facebook\Exceptions\FacebookResponseException $e) {
+                    $sCode =  MsgBox($e->getMessage());
+                } catch (Facebook\Exceptions\FacebookSDKException $e) {
+                    $sCode =  MsgBox($e->getMessage());
+                }
+
+                //process profile info
+                if($aFacebookProfileInfo) {
+
+                    // try define user id
+                    $iProfileId = $this -> _oDb
+                        -> getProfileId($aFacebookProfileInfo['id']);
+
+                    if($iProfileId) {
+                           // get profile info
+                           $aDolphinProfileInfo = getProfileInfo($iProfileId);
+                           $this -> setLogged($iProfileId, $aDolphinProfileInfo['Password']);
+                    } else {
+                        $sAlternativeNickName = '';
+
+                        //process profile's nickname
+                        $aFacebookProfileInfo['nick_name'] = $this
+                            -> _proccesNickName($aFacebookProfileInfo['first_name']);
+
+                        //-- profile nickname already used by other person --//
+                        if( getID($aFacebookProfileInfo['nick_name']) ) {
+                               $sAlternativeNickName = $this
+                                -> getAlternativeName($aFacebookProfileInfo['nick_name']);
+                        }
+                        //--
+
+                        //try to get profile's image
+                        if ($oFacebookProfileImageResponse = $this -> oFacebook -> get('/me/picture?type=large&redirect=false')) {
+
+                            $aFacebookProfileImage = $oFacebookProfileImageResponse -> getDecodedBody();
+                            $aFacebookProfileInfo['picture'] = isset($aFacebookProfileImage['data']['url']) && !$aFacebookProfileImage['data']['is_silhouette']
+                                ? $aFacebookProfileImage['data']['url']
+                                : '';
+                        }
+
+                        if(getParam('disable_join_form') == 'on') {
+                            $this->getJoinAfterPaymentPage($aFacebookProfileInfo);
+                            exit;
+                        }
+
+                        //create new profile
+                        $this -> _createProfile($aFacebookProfileInfo, $sAlternativeNickName);
+                    }
+                } else {
+                    // FB profile info is not defined;
+                    $sCode = MsgBox( _t('_bx_facebook_profile_error_info') );
+                }
+            }
+
+
+            $this -> _oTemplate -> getPage( _t('_bx_facebook'), $sCode );
+        }
+
+        /**
          * Generare facebook login form;
          *
          * @return (text) - html presentation data;
@@ -112,85 +201,26 @@
         {
             $sCode = '';
 
-            if( isLogged() ) {
+            if (isLogged()) {
                 header ('Location:' . $this -> _oConfig -> sDefaultRedirectUrl);
                 exit;
             }
 
-            if(!$this -> _oConfig -> mApiID || !$this -> _oConfig -> mApiSecret) {
+            if (!$this -> _oConfig -> mApiID || !$this -> _oConfig -> mApiSecret) {
                 $sCode =  MsgBox( _t('_bx_facebook_profile_error_api_keys') );
-            } else {
+            } 
+            else {
 
-                $uid = $this -> oFacebook -> getUser();
+                $oFacebookRedirectLoginHelper = $this -> oFacebook -> getRedirectLoginHelper();
 
                 //redirect to facebook login form
-                if(!$uid) {
-                    //step one
-                    header('location: ' . $this -> oFacebook -> getLoginUrl($this
-                        -> _oConfig -> aFaceBookReqParams));
-                    exit;
-                } else {
-                    //we already logged in facebook
-                    try {
-                        $aFacebookProfileInfo = $this -> oFacebook -> api('/me');
-                    } catch (FacebookApiException $e) {
-                        $sCode =  MsgBox($e);
-                    }
+                $sLoginUrl = $oFacebookRedirectLoginHelper->getLoginUrl(
+                    $this -> _oConfig -> aFaceBookReqParams['redirect_uri'],
+                    explode(',', $this -> _oConfig -> aFaceBookReqParams['scope'])
+                );
 
-                    //process profile info
-                    if($aFacebookProfileInfo) {
-                        //-- nedded for old auth method (will need remove it in a feature version) --//
-                        $sOldFacebookUid = md5($aFacebookProfileInfo['proxied_email']
-                            . $aFacebookProfileInfo['first_name']);
-                        //--
-
-                        // try define user id
-                        $iProfileId = $this -> _oDb
-                            -> getProfileId($aFacebookProfileInfo['id'], $sOldFacebookUid);
-
-                        if($iProfileId) {
-                               // get profile info
-                               $aDolphinProfileInfo = getProfileInfo($iProfileId);
-                               $this -> setLogged($iProfileId, $aDolphinProfileInfo['Password']);
-                        } else {
-                            $sAlternativeNickName = '';
-
-                            //process profile's nickname
-                            $aFacebookProfileInfo['nick_name'] = $this
-                                -> _proccesNickName($aFacebookProfileInfo['first_name']);
-
-                            //-- profile nickname already used by other person --//
-                            if( getID($aFacebookProfileInfo['nick_name']) ) {
-                                   $sAlternativeNickName = $this
-                                    -> getAlternativeName($aFacebookProfileInfo['nick_name']);
-                            }
-                            //--
-
-                            //try to get profile's image
-                            if( NULL != ($aFacebookProfileImage = $this
-                                    -> oFacebook -> api('/me?fields=picture&type=large')) ) {
-
-                                $aFacebookProfileInfo['picture'] = isset($aFacebookProfileImage['picture'])
-                                    ? $aFacebookProfileImage['picture']
-                                    : '';
-
-                                if( is_array($aFacebookProfileInfo['picture']) )
-                                    $aFacebookProfileInfo['picture'] = isset($aFacebookProfileInfo['picture']['data']['url']) ? 'https://graph.facebook.com/' . $this -> oFacebook -> getUser() . '/picture?type=large' : '';
-                            }
-
-							if(getParam('disable_join_form') == 'on') {
-				                $this->getJoinAfterPaymentPage($aFacebookProfileInfo);
-				                exit;
-				            }
-
-                            //create new profile
-                            $this -> _createProfile($aFacebookProfileInfo, $sAlternativeNickName);
-                        }
-                    } else {
-                        // FB profile info is not defined;
-                        $sCode = MsgBox( _t('_bx_facebook_profile_error_info') );
-                    }
-                }
+                header('location: ' . $sLoginUrl);
+                exit;
             }
 
             $this -> _oTemplate -> getPage( _t('_bx_facebook'), $sCode );
@@ -203,6 +233,8 @@
 
         function serviceLogin ($aFacebookProfileInfo)
         {
+            if ($sError = $this->_setAccessToken())
+                return array ('error' => $sError);
 
             // try define user id
             $iProfileId = $this -> _oDb
@@ -211,8 +243,12 @@
             $aTmp['profile_id'] = $iProfileId;
             $aFacebookProfileInfoCheck = false;
             try {
-                $aFacebookProfileInfoCheck = $this -> oFacebook -> api('/' . $aFacebookProfileInfo['id']);
-            } catch (FacebookApiException $e) {
+                $oResponse = $this -> oFacebook -> get('/' . $aFacebookProfileInfo['id'] .'?fields=' . $this -> _oConfig -> sFaceBookFields);
+                $aFacebookProfileInfoCheck = $oResponse -> getDecodedBody();
+                $aFacebookProfileInfoCheck['nick_name'] = $aFacebookProfileInfoCheck['name'];
+            } catch (Facebook\Exceptions\FacebookResponseException $e) {
+                return array ('error' => $e->getMessage());
+            } catch (Facebook\Exceptions\FacebookSDKException $e) {
                 return array ('error' => $e->getMessage());
             }
 
@@ -251,15 +287,12 @@
                 //--
 
                 //try to get profile's image
-                if( NULL != ($aFacebookProfileImage = $this
-                        -> oFacebook -> api('/' . $aFacebookProfileInfo['id'] . '?fields=picture&type=large')) ) {
+                if ($oFacebookProfileImageResponse = $this -> oFacebook -> get('/' . $aFacebookProfileInfo['id'] . '?fields=picture&type=large')) {
 
-                    $aFacebookProfileInfo['picture'] = isset($aFacebookProfileImage['picture'])
-                        ? $aFacebookProfileImage['picture']
-                        : '';
-
-                    if( is_array($aFacebookProfileInfo['picture']) )
-                        $aFacebookProfileInfo['picture'] = isset($aFacebookProfileInfo['picture']['data']['url']) ? 'https://graph.facebook.com/' . $aFacebookProfileInfo['id'] . '/picture?type=large' : '';
+                    $aFacebookProfileImage = $oFacebookProfileImageResponse -> getDecodedBody();
+                    $aFacebookProfileInfo['picture'] = isset($aFacebookProfileImage['data']['url']) && $aFacebookProfileImage['data']['is_silhouette'] 
+                        ? $aFacebookProfileImage['data']['url'] // 'https://graph.facebook.com/' . $aFacebookProfileInfo['id'] . '/picture?type=large&redirect=false'
+                        : ''; 
                 }
 
                 // mobile app doesn't support redirect to join form (or any other redirects)
@@ -449,16 +482,19 @@
 
             try {
                 //get friends from facebook
-                $aFacebookFriends = $this -> oFacebook -> api('/me/friends/');
-            } catch (FacebookApiException $e) {
+                $oFriendsResponse = $this -> oFacebook -> get('/me/friends?limit=50');
+            } catch(Facebook\Exceptions\FacebookResponseException $e) {
+                return;
+            } catch(Facebook\Exceptions\FacebookSDKException $e) {
                 return;
             }
 
-            //process friends
-            if( !empty($aFacebookFriends) && is_array($aFacebookFriends) ) {
-                $aFacebookFriends = array_shift($aFacebookFriends);
+            // paginate through the result
+            $oPagesEdge = $oFriendsResponse->getGraphEdge();
+            do {
+                foreach ($oPagesEdge as $oPage) {
+                    $aFriend = $oPage->asArray();
 
-                foreach($aFacebookFriends as $iKey => $aFriend) {
                     $iFriendId = $this -> _oDb -> getProfileId($aFriend['id']);
                     if($iFriendId && !is_friends($iProfileId, $iFriendId) ) {
                         //add to friends list
@@ -469,7 +505,8 @@
                         $oZ -> alert();
                     }
                 }
-            }
+            } while ($oPagesEdge = $this -> oFacebook -> next($oPagesEdge));
+
         }
 
         /**
@@ -502,12 +539,7 @@
                 $sMemberAvatar = !empty($mixed['profile_info_fb']['picture']) ? $mixed['profile_info_fb']['picture'] : '';
 
                 //redirect to avatar page
-                if($this->_oConfig->sRedirectPage == 'avatar' && !$mixed['existing_profile']) {
-                	if(!BxDolInstallerUtils::isModuleInstalled('avatar')) {
-                		header('location:' . $this->_oConfig->sDefaultRedirectUrl);
-                        exit;
-                	}
-
+                if ($this->_oConfig->sRedirectPage == 'avatar' && !$mixed['existing_profile'] && BxDolInstallerUtils::isModuleInstalled('avatar')) {
                     // check profile's logo;
 					if($sMemberAvatar)
                     	BxDolService::call('avatar', 'set_image_for_cropping', array($iProfileId, $sMemberAvatar));
@@ -598,8 +630,7 @@
 
                 'Password'      		=> $aProfileInfo['password'],
 
-                'FirstName'				=> isset($aProfileInfo['first_name']) ? $aProfileInfo['first_name'] : '',
-                'LastName'				=> isset($aProfileInfo['last_name']) ? $aProfileInfo['last_name'] : '',
+                'FullName'				=> (isset($aProfileInfo['first_name']) ? $aProfileInfo['first_name'] : '') . (isset($aProfileInfo['last_name']) ? ' ' . $aProfileInfo['last_name'] : ''),
 
                 'DescriptionMe' 		=> clear_xss(isset($aProfileInfo['bio']) ? $aProfileInfo['bio'] : ''),
                 'Interests'     		=> isset($aProfileInfo['interests']) ? $aProfileInfo['interests'] : '',
@@ -801,4 +832,27 @@
 
             return $sProfileName;
         }
+
+        function _setAccessToken()
+        {
+            $oFacebookRedirectLoginHelper = $this -> oFacebook -> getRedirectLoginHelper();
+
+            try {
+                $sAccessToken = $oFacebookRedirectLoginHelper->getAccessToken();
+            } catch(Facebook\Exceptions\FacebookResponseException $e) {
+                // When Graph returns an error
+                return $e->getMessage();
+            } catch(Facebook\Exceptions\FacebookSDKException $e) {
+                // When validation fails or other local issues
+                return $e->getMessage();
+            }
+
+            if (!isset($sAccessToken))
+                return $oFacebookRedirectLoginHelper->getError() ? $oFacebookRedirectLoginHelper->getErrorDescription() : _t('_Error occured');
+
+            $this -> oFacebook -> setDefaultAccessToken($sAccessToken);
+
+            return '';
+        }
+
     }

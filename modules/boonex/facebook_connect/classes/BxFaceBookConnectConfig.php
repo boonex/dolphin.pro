@@ -27,6 +27,7 @@
 
         var $bAutoFriends;
         var $aFaceBookReqParams;
+        var $sFaceBookFields;
 
         var $sDefaultCountryCode = 'US';
 
@@ -39,7 +40,7 @@
 
             $this -> mApiID		  = getParam('bx_facebook_connect_api_key');
             $this -> mApiSecret   = getParam('bx_facebook_connect_secret');
-            $this -> sPageReciver = BX_DOL_URL_ROOT . $this -> getBaseUri() . 'login_form';
+            $this -> sPageReciver = BX_DOL_URL_ROOT . $this -> getBaseUri() . 'login_callback';
 
             $this -> sDefaultRedirectUrl = BX_DOL_URL_ROOT . 'member.php';
             $this -> sFaceBookAlternativePostfix = '_fb';
@@ -50,8 +51,14 @@
                 : false;
 
             $this -> aFaceBookReqParams = array(
-                'scope' => 'email,user_hometown,user_birthday,user_likes,user_location',
+                'scope' => getParam('bx_facebook_connect_extended_info') 
+                    ? 'email,public_profile,user_friends,user_birthday,user_about_me,user_hometown,user_location'
+                    : 'email,public_profile,user_friends',
                 'redirect_uri' => $this -> sPageReciver,
             );
+
+            $this -> sFaceBookFields = getParam('bx_facebook_connect_extended_info') 
+                ? 'name,email,first_name,last_name,gender,birthday,bio,hometown,location'
+                : 'name,email,first_name,last_name,gender';
         }
     }

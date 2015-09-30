@@ -38,17 +38,13 @@
          * Check fb profile id
          *
          * @param $iFbUid integer
-         * @param $sOldFbUid string
          * @return integer
          */
-        function getProfileId($iFbUid, $sOldFbUid = '')
+        function getProfileId($iFbUid)
         {
             $iFbUidCopy = (int) $iFbUid;
             $iFbUid = $this -> _processBigNumber($iFbUid);
 
-            $sOldFbUid = $sOldFbUid
-                ? process_db_input($sOldFbUid, BX_TAGS_STRIP, BX_SLASHES_AUTO)
-                : '';
 
             //-- handle 64 bit number on 32bit system ( will need remove it in a feature version)--//
             if($iFbUidCopy != $iFbUid) {
@@ -65,19 +61,6 @@
                 `fb_profile` = '{$iFbUid}' LIMIT 1";
 
             $iProfileId = $this -> getOne($sQuery);
-            //--
-
-            //-- old auth method (will need remove it in a feature version) --//
-            //try get profile's id used the old auth method :(
-            if(!$iProfileId && $sOldFbUid) {
-                $sQuery = "SELECT `ID` FROM `Profiles` WHERE `FacebookProfile` = '{$sOldFbUid}' LIMIT 1";
-                $iProfileId =  $this -> getOne($sQuery);
-
-                //update Fb uid
-                if($iProfileId) {
-                    $this -> saveFbUid($iProfileId, $iFbUid);
-                }
-            }
             //--
 
             return $iProfileId;

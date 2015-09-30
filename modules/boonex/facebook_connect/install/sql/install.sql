@@ -129,6 +129,16 @@
         `VALUE` = 'on',
         `order_in_kateg` = 4;
 
+    INSERT INTO 
+        `sys_options` 
+    SET
+        `Name` = 'bx_facebook_connect_extended_info',
+        `kateg` = @iKategId,
+        `desc`  = 'Fetch extended profile info (facebook app review is required)',
+        `Type`  = 'checkbox',
+        `VALUE` = '',
+        `order_in_kateg` = 5;
+
     -- 
     -- `sys_menu_admin`;
     --

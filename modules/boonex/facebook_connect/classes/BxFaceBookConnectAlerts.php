@@ -29,8 +29,6 @@
             if ( $o -> sUnit == 'profile' ) {
                 switch ( $o -> sAction ) {
                     case 'logout' :
-                        //delete facebook's session cookie
-                        $this -> oModule -> oFacebook -> destroySession();
                         break;
 
                     case 'join' :

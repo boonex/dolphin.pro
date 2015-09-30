@@ -553,6 +553,19 @@ function bx_logout($bNotify = true)
 
     unset($_COOKIE['memberID']);
     unset($_COOKIE['memberPassword']);
+
+    bx_import('BxDolSession');
+    BxDolSession::getInstance()->destroy();
+
+    if (ini_get('session.use_cookies')) {
+        $aParams = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 96 * 3600,
+            $aParams['path'], $aParams['domain'],
+            $aParams['secure'], $aParams['httponly']
+        );
+    }
+
+    session_destroy();
 }
 
 function setSearchStartAge($iMin)
