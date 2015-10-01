@@ -1,6 +1,6 @@
 <?php
 
-    /**
+/**
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
@@ -16,7 +16,7 @@
 
         function actionCheckRequirements()
         {
-            $bError = (int) phpversion() >= 5
+            $bError = version_compare(PHP_VERSION, '5.4.0') >= 0
                 ? BX_DOL_INSTALLER_SUCCESS
                 : BX_DOL_INSTALLER_FAILED;
 
@@ -27,7 +27,7 @@
         {
             return '
             <div style="border:1px solid red; padding:10px;">
-                You need <u>PHP 5</u> or higher!
+                <u>PHP 5.4</u> or higher is required!
             </div>';
         }
     }

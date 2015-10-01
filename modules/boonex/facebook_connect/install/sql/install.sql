@@ -93,7 +93,7 @@
     SET
         `Name` = 'bx_facebook_connect_api_key',
         `kateg` = @iKategId,
-        `desc`  = 'Facebook API Key',
+        `desc`  = 'Facebook App ID',
         `Type`  = 'digit',
         `VALUE` = '',
         `order_in_kateg` = 1;
