@@ -1121,7 +1121,8 @@ SET @iCatSite = 7;
 INSERT INTO `sys_options` VALUES
 ('site_email', 'captain@example.com', @iCatSite, 'Site Email', 'digit', '', '', 10, ''),
 ('site_title', 'Community', @iCatSite, 'Site Title', 'digit', '', '', 20, ''),
-('site_email_notify', 'no-reply@example.com', @iCatSite, 'Email to send site''s mail from', 'digit', '', '', 30, '');
+('site_email_notify', 'no-reply@example.com', @iCatSite, 'Email to send site''s mail from', 'digit', '', '', 30, ''),
+('site_timezone', 'UTC', @iCatSite, 'Site Timezone', 'select', '', '', 40, 'PHP:return array_combine(timezone_identifiers_list(), timezone_identifiers_list());');
 
 
 -- CAT: Privacy

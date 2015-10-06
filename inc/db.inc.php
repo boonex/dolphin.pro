@@ -15,6 +15,9 @@ $site['title'] = getParam('site_title');
 $site['email'] = getParam('site_email');
 $site['email_notify'] = getParam('site_email_notify');
 
+date_default_timezone_set(getParam('site_timezone'));
+$GLOBALS['MySQL']->setTimezone(getParam('site_timezone'));
+
 function db_list_tables( $error_checking = true )
 {
     $GLOBALS['MySQL']->setErrorChecking ($error_checking);
