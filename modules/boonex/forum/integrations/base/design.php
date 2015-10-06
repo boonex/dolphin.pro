@@ -116,7 +116,7 @@ $GLOBALS['oSysTemplate']->addJs (array(
     "{$sJsPathDir}|{$sJsPathUrl}|BxAdmin.js",
 ));
 
-$GLOBALS['BxDolTemplateInjections']['page_'.$_ni]['injection_body'][] = array('type' => 'text', 'data' => 'id="body" onload="if(!document.body) { document.body = document.getElementById(\'body\'); }; h = new BxHistory(); document.h = h; return h.init(\'h\'); "');
+$GLOBALS['BxDolTemplateInjections']['page_'.$_ni]['injection_body'][] = array('type' => 'text', 'data' => 'id="body" onload="if(!document.body) { document.body = document.getElementById(\'body\'); }; h = new BxHistory(\'' . $gConf['url']['base'] .  '\'); document.h = h; return h.init(\'h\'); "');
 
 if (BX_ORCA_INTEGRATION == 'dolphin') {
     $aVars = array ('ForumBaseUrl' => $gConf['url']['base']);

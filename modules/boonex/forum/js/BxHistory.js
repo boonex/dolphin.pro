@@ -12,9 +12,9 @@
 /**
  * Enable back browser button for ajax
  */
-function BxHistory ()	
+function BxHistory (sBaseUrl)	
 {
-    this._base_url = site_url + 'forum/';
+    this._base_url =  'undefined' == typeof(sBaseUrl) ? site_url + 'forum/' : sBaseUrl;
 	this._hash = ""; // current hash (after #)
 	this._en = '';
 
