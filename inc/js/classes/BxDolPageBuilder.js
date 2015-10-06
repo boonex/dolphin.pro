@@ -75,10 +75,10 @@ BxDolPageBuilder.prototype.loadJSON = function( oJSON ) {
 	//inactive blocks
 	for( var iBlockID in oJSON.inactive ) {
 		var sBlockCaption = oJSON.inactive[iBlockID];
-		this.drawBlock( iBlockID, sBlockCaption, this.inactiveArea );
+		this.drawBlock( parseInt(iBlockID), sBlockCaption, this.inactiveArea );
 	}
 
-	//inactive blocks
+	//sample blocks
 	for( var iBlockID in oJSON.samples ) {
 		var sBlockCaption = oJSON.samples[iBlockID];
 		this.drawBlock( iBlockID, sBlockCaption, this.samplesArea );
