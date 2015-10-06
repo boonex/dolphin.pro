@@ -775,10 +775,12 @@ class BxDolPVAPage
         $rSamples  = db_res( $sQuerySamples );
 
         while( $aBlock = mysql_fetch_assoc( $rInactive ) )
-            $this -> aBlocksInactive[ (int)$aBlock['ID'] ] = _t( $aBlock['Caption'] );
+            $this -> aBlocksInactive[ (string)$aBlock['ID'] . ' '] = _t( $aBlock['Caption'] );
 
         while( $aBlock = mysql_fetch_assoc( $rSamples ) )
             $this -> aBlocksSamples[ (int)$aBlock['ID'] ] = _t( $aBlock['Caption'] );
+
+        asort($this -> aBlocksInactive, SORT_STRING | SORT_FLAG_CASE);
     }
 
     function getJSON()
