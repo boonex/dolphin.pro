@@ -30,7 +30,6 @@
             </div>
 
         </xsl:with-param>
-        <xsl:with-param name="menu" select="exsl:node-set($menu_links)/*" />
     </xsl:call-template>
 
     <!-- <xsl:apply-templates select="live_tracker" /> -->
