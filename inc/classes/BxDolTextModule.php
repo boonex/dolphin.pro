@@ -49,6 +49,7 @@ class BxDolTextModule extends BxDolModule
 
         $this->_oTemplate->setPageTitle($aEntry['caption']);
         $GLOBALS['oTopMenu']->setCustomSubHeader($aEntry['caption']);
+        $GLOBALS['oTopMenu']->setCustomSubHeaderUrl(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/' . $aEntry['uri']);
         $GLOBALS['oTopMenu']->setCustomBreadcrumbs(array(
             _t('_' . $sModuleUri . '_top_menu_item') => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'index/',
             $aEntry['caption'] => '')
