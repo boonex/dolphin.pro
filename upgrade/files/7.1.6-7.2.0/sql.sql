@@ -10,7 +10,7 @@ ALTER TABLE `sys_acl_levels_members` ADD `Expiring` tinyint(4) unsigned NOT NULL
 
 ALTER TABLE `Profiles` ADD `FullName` varchar(255) NOT NULL AFTER `FavoriteBooks`;
 UPDATE `Profiles` SET `FullName` = CONCAT(`FirstName`, ' ', `LastName`);
-ALTER TABLE `Profiles` DROP `FirstName`, DROP `LastName`;
+-- ALTER TABLE `Profiles` DROP `FirstName`, DROP `LastName`;
 -- ALTER TABLE `Profiles` DROP `Headline`;
 ALTER TABLE  `Profiles` DROP INDEX  `NickName_2`, ADD FULLTEXT  `NickName_2` (`NickName`, `City`, `DescriptionMe`, `Tags`);
 
