@@ -34,8 +34,10 @@ class BxFilesPageAlbumView extends BxDolPageView
 
         $this->sBrowseCode = $sBrowseCode;
 
-        if(!empty($aInfo['Caption']))
+        if(!empty($aInfo['Caption'])) {
         	$GLOBALS['oTopMenu']->setCustomSubHeader(_t('_sys_album_x', $aInfo['Caption']));
+            $GLOBALS['oTopMenu']->setCustomSubHeaderUrl(BX_DOL_URL_ROOT . $this->oConfig->getBaseUri() . 'browse/album/' . $aInfo['Uri'] . '/owner/' . getUsername($aInfo['Owner']));
+        }
     }
 
     function getBlockCode_Objects($iBlockId)
