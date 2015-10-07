@@ -18,6 +18,7 @@ class BxBaseMenu extends BxDolMenu
 
     var $sCustomSubIconUrl;
     var $sCustomSubHeader;
+    var $sCustomSubHeaderUrl;
     var $sCustomActions;
 
     var $sBreadCrumb;
@@ -36,6 +37,7 @@ class BxBaseMenu extends BxDolMenu
         $this->iJumpedMenuID = 0;
         $this->sCustomSubIconUrl = '';
         $this->sCustomSubHeader = '';
+        $this->sCustomSubHeaderUrl = '';
         $this->sCustomActions = '';
 
         $this->sBreadCrumb = '';
@@ -53,6 +55,11 @@ class BxBaseMenu extends BxDolMenu
     function setCustomSubHeader($sCustomSubHeader)
     {
         $this->sCustomSubHeader = $sCustomSubHeader;
+    }
+
+    function setCustomSubHeaderUrl($sCustomSubHeaderUrl)
+    {
+        $this->sCustomSubHeaderUrl = $sCustomSubHeaderUrl;
     }
 
     /*
@@ -460,10 +467,8 @@ EOF;
         elseif ($this->sCustomSubIconUrl)
             $sPictureEl = '<img class="img_submenu" src="' . $this->sCustomSubIconUrl. ' " alt="" />';
         /////Picture end////////
-
-        $sCaptionWL = $this->genSubHeaderCaption($this->aTopMenu[$iFirstID], $sCaption);
-        if ($this->sCustomSubHeader != '')
-            $sCaptionWL = $this->sCustomSubHeader;
+        
+        $sCaptionWL = $this->sCustomSubHeader != '' ? $this->sCustomSubHeader : $this->genSubHeaderCaption($this->aTopMenu[$iFirstID], $sCaption);
 
         if ($this->sCustomActions != '')
             $sProfileActions = $this->sCustomActions;
@@ -545,8 +550,8 @@ EOF;
 
     function _genSubHeaderCaption($aItem, $sCaption, $sTemplateFile)
     {
-    	$sSubMainLink = '';
-		if (!empty($aItem['Link'])) {
+    	$sSubMainLink = $this->sCustomSubHeaderUrl;
+		if (!$sSubMainLink && !empty($aItem['Link'])) {
 			list($sSubMainLinkFirst) = explode('|', $aItem['Link']);
 			$sSubMainLink = $this->replaceMetas($sSubMainLinkFirst);
 

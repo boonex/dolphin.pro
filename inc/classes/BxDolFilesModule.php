@@ -266,6 +266,7 @@ class BxDolFilesModule extends BxDolModule
             $this->_oTemplate->displayPageNotFound();
         }
         $GLOBALS['oTopMenu']->setCustomSubHeader(_t('_sys_album_x_photo_x', $aInfo['albumCaption'], $sKey));
+        $GLOBALS['oTopMenu']->setCustomSubHeaderUrl(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'browse/album/' . $aInfo['albumUri'] . '/owner/' . $aInfo['NickName']);
         $GLOBALS['oTopMenu']->setCustomBreadcrumbs(array(
             _t('_' . $this->_oConfig->getMainPrefix()) => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'home/',
             $aInfo['albumCaption'] => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'browse/album/' . $aInfo['albumUri'] . '/owner/' . $aInfo['NickName'],
@@ -294,6 +295,7 @@ class BxDolFilesModule extends BxDolModule
                     }
 
                     $GLOBALS['oTopMenu']->setCustomSubHeader(_t('_sys_album_x', $aAlbumInfo['Caption']));
+                    $GLOBALS['oTopMenu']->setCustomSubHeaderUrl(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'browse/album/' . $aAlbumInfo['Uri'] . '/owner/' . $sParamValue2);
 					$GLOBALS['oTopMenu']->setCustomBreadcrumbs(array(
 						_t('_' . $this->_oConfig->getMainPrefix()) => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'home/',
 						$aAlbumInfo['Caption'] => '',

@@ -251,6 +251,7 @@ class BxSitesModule extends BxDolTwigModule
         $this->_oTemplate->pageStart();
         echo $oPage->getCode();
         $GLOBALS['oTopMenu']->setCustomSubHeader($aSite['title']);
+        $GLOBALS['oTopMenu']->setCustomSubHeaderUrl(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/' . $aSite['entryUri']);
         $GLOBALS['oTopMenu']->setCustomBreadcrumbs(array(
             _t('_bx_sites') => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'home/',
             $aSite['title'] => '',

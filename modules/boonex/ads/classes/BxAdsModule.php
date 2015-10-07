@@ -1833,6 +1833,7 @@ EOF;
                 $GLOBALS['oTopMenu']->setCustomSubIconUrl($sAdCover);
 
             $GLOBALS['oTopMenu']->setCustomSubHeader(htmlspecialchars($aSqlResStr['Subject']));
+            $GLOBALS['oTopMenu']->setCustomSubHeaderUrl($sEntryUrl);
 
             $GLOBALS['oTopMenu']->setCustomBreadcrumbs(array(
                 _t('_bx_ads_Ads') => $sHomeLink,
