@@ -23,7 +23,8 @@ class BxPfwPayPal extends BxPfwProvider
 			'TENDER' => '',
 			'TRXTYPE' => 'S',
 			'ACTION' => '',
-			'VERBOSITY' => 'HIGH'
+			'VERBOSITY' => 'HIGH',
+			'BUTTONSOURCE' => 'Boonex_SP',
 		);
 
 		$this->_aCallCredentials = array(
