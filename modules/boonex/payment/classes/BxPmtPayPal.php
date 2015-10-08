@@ -52,6 +52,7 @@ class BxPmtPayPal extends BxPmtProvider
 
         $aFormData = array_merge($aFormData, array(
             'business' => $iMode == PP_MODE_LIVE ? $this->getOption('business') : $this->getOption('sandbox'),
+            'bn' => 'Boonex_SP',
             'item_name' => _t('_payment_txt_payment_to', $aCartInfo['vendor_username']),
             'item_number' => $iPendingId,
             'currency_code' => $aCartInfo['vendor_currency_code'],
