@@ -27,7 +27,7 @@ class BxVideosTemplate extends BxDolFilesTemplate
         else {
             $sPlayer = str_replace("#video#", $aExtra['ext'], YOUTUBE_VIDEO_PLAYER);
             $sPlayer = str_replace("#wmode#", getWMode(), $sPlayer);
-            $sPlayer = str_replace("#autoplay#", (getSettingValue("video", "autoPlay") == TRUE_VAL ? "&autoplay=1" : ""), $sPlayer);
+            $sPlayer = str_replace("#autoplay#", (getSettingValue("video", "autoPlay") == TRUE_VAL && class_exists('BxVideosPageView') ? "&autoplay=1" : ""), $sPlayer);
         }
         return '<div class="viewFile" style="width:100%;">' . $sPlayer . '</div>';
     }
