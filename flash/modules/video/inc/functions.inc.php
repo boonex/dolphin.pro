@@ -321,6 +321,9 @@ function grabImages($sInputFile, $sOutputFile, $iSecond = 0, $bForse = false, $a
         elseif (isset($a['w']) && isset($a['h']) && $a['w'] && $a['h'])
             $sResize = "-s {$a['w']}x{$a['h']}";
 
+        if ($sInputFile != $sOutputFile . $a['postfix'])
+            @unlink($sOutputFile . $a['postfix']);
+
         if (!grabImage($sInputFile, $sOutputFile . $a['postfix'], $sResize, $iSecond, $bForse))
             return false;
     }
