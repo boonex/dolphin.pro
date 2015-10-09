@@ -2347,6 +2347,10 @@ INSERT INTO `sys_profile_fields` VALUES(64, 'FavoriteBooks', 'area', NULL, '', N
 INSERT INTO `sys_profile_fields` VALUES(66, 'FullName', 'text', NULL, '', 2, 200, '', 'LKey', '', 0, '', 1, 1, 0, 20, 1, 17, 2, 17, 2, 0, NULL, 17, 2, 17, 5, 0, NULL, 17, 2, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(67, 'allow_view_to', 'system', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 0, 0, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(68, 'Agree', 'system', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 0, 0, 20, 7, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
+INSERT INTO `sys_profile_fields` VALUES(NULL, 'FirstName', 'text', NULL, '', 2, 200, '', 'LKey', '', 0, '', 1, 0, 0, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
+INSERT INTO `sys_profile_fields` VALUES(NULL, 'LastName',  'text', NULL, '', 2, 200, '', 'LKey', '', 0, '', 1, 0, 0, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
+
+
 -- --------------------------------------------------------
 
 --
@@ -2425,6 +2429,8 @@ CREATE TABLE `Profiles` (
   `FavoriteFilms` text NOT NULL,
   `FavoriteBooks` text NOT NULL,
   `FullName` varchar(255) NOT NULL,
+  `FirstName` varchar(255) NOT NULL,
+  `LastName` varchar(255) NOT NULL,
   PRIMARY KEY  (`ID`),
   UNIQUE KEY `NickName` (`NickName`),
   KEY `Country` (`Country`),
