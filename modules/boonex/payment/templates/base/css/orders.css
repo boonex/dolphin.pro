@@ -54,31 +54,33 @@ div.pmt-mo-items {
 	overflow: auto;
 }
 div.pmt-mo-items-cnt {
-	padding: 8px;
+	padding: 8px 0px;
 }
 div.pmt-mo-item {
+	margin: 5px 0px 0px 0px;
     padding: 0px;
-    margin: 0px;
+}
+div.pmt-mo-item:first-child {
+	margin-top: 0px;
 }
 div.pmt-mo-item-chb,
 div.pmt-mo-item-title,
 div.pmt-mo-item-quantity {
-    height: 28px;
+    height: 38px;
     
     position: relative;
     float: left;
 }
 div.pmt-mo-item-chb {
-    width: 20px;
+    width: 16px;
 }
 div.pmt-mo-item-chb input {
-    margin: 8px 0px 0px 5px;
+    margin: 12px 0px 13px 0px;
     padding: 0px;
 }
 div.pmt-mo-item-title {
-    width: 195px;
-
-    line-height: 28px;
+    width: 220px;
+    line-height: 38px;
 }
 div.pmt-mo-item-title-cnt {
 	TEXT-OVERFLOW: ellipsis;
@@ -87,11 +89,7 @@ div.pmt-mo-item-title-cnt {
 	overflow: hidden;
 }
 div.pmt-mo-item-quantity {
-    width: 44px;
-}
-div.pmt-mo-item-quantity div.input_wrapper_text {
     width: 40px;
-    margin-top: 2px;
 }
 
 
