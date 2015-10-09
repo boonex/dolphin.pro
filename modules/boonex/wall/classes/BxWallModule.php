@@ -695,6 +695,9 @@ class BxWallModule extends BxDolModule
         $aEvent = $this->_oDb->getEvents(array('type' => 'id', 'object_id' => $iObjectId));
         $aEvent = array_shift($aEvent);
 
+        if($aEvent['owner_id'] == $iSenderId)
+        	return array();
+
         $sLangKey = '';
         switch ($sAction) {
             case 'post':
