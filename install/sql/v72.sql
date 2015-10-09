@@ -387,6 +387,7 @@ CREATE TABLE `sys_objects_auths` (
   `Title` varchar(128) NOT NULL,
   `Link` varchar(255) NOT NULL,
   `Icon` varchar(64) NOT NULL,
+  `OnClick` varchar(255) NOT NULL,
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
