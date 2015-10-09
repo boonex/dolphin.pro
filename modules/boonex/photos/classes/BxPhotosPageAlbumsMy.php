@@ -63,6 +63,10 @@ class BxPhotosPageAlbumsMy extends BxDolPageView
             'blocks' => array('manageObjectsPending', 'albumObjects'),
             'level' => 1
         ),
+        'manage_profile_photos' => array(
+            'blocks' => array('organize', 'addObjects'),
+            'level' => 0
+        ),
     );
 
     function BxPhotosPageAlbumsMy (&$oShared, $iOwnerId, $aParams = array())
