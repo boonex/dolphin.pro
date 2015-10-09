@@ -455,7 +455,7 @@ class BxBaseProfileGenerator extends BxDolProfile
     	}
 
     	if($bProfileOwner) {
-    		$sProfileThumbnailHref = BxDolService::call('photos', 'get_manage_profile_photo_url', array($p_arr['ID'], 'profile_album_name'));
+    		$sProfileThumbnailHref = BxDolService::call('photos', 'get_album_uploader_url', array($p_arr['ID'], 'profile_album_name'));
 
     		$bProfileThumbnailHref = true;
     	}

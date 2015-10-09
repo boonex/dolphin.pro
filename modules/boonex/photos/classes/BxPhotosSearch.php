@@ -20,8 +20,7 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
             'browseAllTop' => 'browse/top',
             'tag' => 'browse/tag/{uri}',
             'album' => 'browse/album/{uri}',
-            'add' => 'browse/my/add',
-            'manageProfilePhoto' => 'albums/my/manage_profile_photos/{uri}',
+            'add' => 'browse/my/add'
         );
         $aMain = array(
             'name' => 'bx_photos',
@@ -357,7 +356,7 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
 
         $sOwner = getUsername($aParams['PID']);
         $sCaption = str_replace('{nickname}', $sOwner, $this->oModule->_oConfig->getGlParam('profile_album_name'));
-        $sLink = $this->getCurrentUrl('manageProfilePhoto', 0, uriFilter($sCaption)) . '/owner/' . $sOwner;
+        $sLink = $this->getCurrentUrl('album', 0, uriFilter($sCaption)) . '/owner/' . $sOwner;
 
         $aParams['LinkUnitTo'] = $sLink;
         $aParams['DisplayRate'] = 0;
