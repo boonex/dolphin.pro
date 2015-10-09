@@ -178,7 +178,6 @@ class BxVideosUploader extends BxDolFilesUploader
             if($sEmbedThumbUrl) {
                 $this->oModule->isAllowedAdd(true);
                 $aDefault = array('video' => $sVideoId, 'title' => $sTitle, 'description' => $sDesc, 'tags' => $sTags, 'duration' => $iDuration, 'image' => $sEmbedThumbUrl, 'type' => "embed");
-                $this->sWorkingFile = ''; // it's needed for youtube embed
                 return $this->GenSendFileInfoForm(1, $aDefault);
             } else
                 return $this->getFileAddError();
