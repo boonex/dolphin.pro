@@ -72,6 +72,15 @@ class BxDolMemberInfo extends BxDolMistake
 	        case 'sys_full_name':
 	            return htmlspecialchars_adv($aData['FullName'] ? $aData['FullName'] : $aData['NickName']);
 
+            case 'sys_first_name':
+                return $aData['FirstName'] ? $aData['FirstName'] : $aData['NickName'];
+
+            case 'sys_first_name_last_name':
+                return $aData['FirstName'] || $aData['LastName'] ? $aData['FirstName'] . ' ' . $aData['LastName'] : $aData['NickName'];
+
+            case 'sys_last_name_firs_name':
+                return $aData['FirstName'] || $aData['LastName'] ? $aData['LastName'] . ' ' . $aData['FirstName'] : $aData['NickName'];
+
 	        case 'sys_status_message':
 	            return $aData['UserStatusMessage'];
 
