@@ -40,8 +40,6 @@ class BxMbpTemplate extends BxDolModuleTemplate
 
     function displayAvailableLevels($aValues)
     {
-    	$iValuesHalf = (int)ceil(count($aValues) / 2);
-
         $sCurrencyCode = strtoupper($this->_oConfig->getCurrencyCode());
         $sCurrencySign = $this->_oConfig->getCurrencySign();
 
@@ -52,29 +50,30 @@ class BxMbpTemplate extends BxDolModuleTemplate
         foreach($aValues as $aValue) {
         	list($sJsCode, $sJsMethod) = $oPayment->getAddToCartJs(0, $this->_oConfig->getId(), $aValue['price_id'], 1, true);
 
-        	$aMemberships[] =  array(
-                'url_root' => BX_DOL_URL_ROOT,
-                'id' => $aValue['mem_id'],
-                'title' => $aValue['mem_name'],
-                'icon' =>  $this->_oConfig->getIconsUrl() . $aValue['mem_icon'],
-        		'bx_if:show_description' => array(
-        			'condition' => strlen($aValue['mem_description']) > 0,
-        			'content' => array(
-        				'description' => str_replace("\$", "&#36;", $aValue['mem_description']),
-        			)
-        		),
-                'days' => $aValue['price_days'] > 0 ?  $aValue['price_days'] . ' ' . _t('_membership_txt_days') : _t('_membership_txt_expires_never') ,
-                'price' => $aValue['price_amount'],
-                'currency_code' => $sCurrencyCode,
-        		'add_to_cart_js' => $sJsMethod
-            );
+        	$aMemberships[] = array(
+        		'level' => $this->parseHtmlByName('available_level.html', array(
+	                'url_root' => BX_DOL_URL_ROOT,
+	                'id' => $aValue['mem_id'],
+	                'title' => $aValue['mem_name'],
+	                'icon' =>  $this->_oConfig->getIconsUrl() . $aValue['mem_icon'],
+	        		'bx_if:show_description' => array(
+	        			'condition' => strlen($aValue['mem_description']) > 0,
+	        			'content' => array(
+	        				'description' => str_replace("\$", "&#36;", $aValue['mem_description']),
+	        			)
+	        		),
+	                'days' => $aValue['price_days'] > 0 ?  $aValue['price_days'] . ' ' . _t('_membership_txt_days') : _t('_membership_txt_expires_never') ,
+	                'price' => $aValue['price_amount'],
+	                'currency_code' => $sCurrencyCode,
+	        		'add_to_cart_js' => $sJsMethod
+	            ))
+        	);
         }
 
-        $this->addCss('levels.css');
+        $this->addCss(array('levels.css', 'levels_tablet.css', 'levels_phone.css'));
         $sContent = $this->parseHtmlByName('available_levels.html', array(
         	'js_code' => $oPayment->getCartJs(),
-        	'bx_repeat:levels_left' => array_slice($aMemberships, 0, $iValuesHalf),
-        	'bx_repeat:levels_right' => array_slice($aMemberships, $iValuesHalf),
+        	'bx_repeat:levels' => $aMemberships
         ));
 
         return array($sContent, array(), array(), false);
