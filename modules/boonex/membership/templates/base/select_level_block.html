@@ -2,21 +2,7 @@
 	<form id="mbp-select-level" method="post" action="__submit_url__" onsubmit="javascript:return __js_object__.onSubmit(this)">
 		<div class="mbp-available-levels-wrp">
 			<div class="mbp-available-levels">
-				<div class="mbp-al-col-left">
-					<bx_repeat:levels_left>
-						<bx_include_auto:select_level.html />
-					</bx_repeat:levels_left>
-					<div class="mbp-cb">&nbsp;</div>
-				</div>
-				<div class="mbp-al-col-right">
-					<div class="mbp-al-col-right-cnt">
-						<bx_repeat:levels_right>
-					    	<bx_include_auto:select_level.html />
-					    </bx_repeat:levels_right>
-					    <div class="mbp-cb">&nbsp;</div>
-					</div>
-				</div>
-				<div class="mbp-cb">&nbsp;</div>
+				<bx_repeat:levels>__level__</bx_repeat:levels>
 			</div>
 		</div>
 		<bx_if:show_providers_selector>
