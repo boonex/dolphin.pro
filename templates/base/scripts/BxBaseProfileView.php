@@ -440,22 +440,27 @@ class BxBaseProfileGenerator extends BxDolProfile
     	$sProfileNickname = getNickName($p_arr['ID']);
 
     	$sProfileThumbnail = '';
+        $sProfileThumbnail2x = '';
         $sProfileThumbnailHref = '';
 
     	$bProfileThumbnail = false;
     	$bProfileThumbnailHref = false;
 
-	    $aProfileThumbnail = BxDolService::call('photos', 'profile_photo', array($p_arr['ID'], 'file', 'full'), 'Search');
+	    $aProfileThumbnail = BxDolService::call('photos', 'profile_photo', array($p_arr['ID'], 'browse', 'full'), 'Search');
     	if(!empty($aProfileThumbnail) && is_array($aProfileThumbnail)) {
     		$sProfileThumbnail = $aProfileThumbnail['file_url'];
     		$sProfileThumbnailHref = $aProfileThumbnail['view_url'];
 
     		$bProfileThumbnail = true;
     		$bProfileThumbnailHref = true;
+
+    	    $aProfileThumbnail2x = BxDolService::call('photos', 'profile_photo', array($p_arr['ID'], 'browse2x', 'full'), 'Search');
+        	if(!empty($aProfileThumbnail2x) && is_array($aProfileThumbnail2x))
+                $sProfileThumbnail2x = $aProfileThumbnail['file_url'];
     	}
 
     	if($bProfileOwner) {
-    		$sProfileThumbnailHref = BxDolService::call('photos', 'get_manage_profile_photo_url', array($p_arr['ID'], 'profile_album_name'));
+    		$sProfileThumbnailHref = BxDolService::call('photos', 'get_album_uploader_url', array($p_arr['ID'], 'profile_album_name'));
 
     		$bProfileThumbnailHref = true;
     	}
@@ -516,7 +521,8 @@ class BxBaseProfileGenerator extends BxDolProfile
 				'condition' => $bProfileThumbnail,
 				'content' => array(
 					'thumbnail_href' => $sProfileThumbnailHref,
-					'thumbnail' => $sProfileThumbnail
+					'thumbnail' => $sProfileThumbnail,
+					'thumbnail2x' => $sProfileThumbnail2x,
 				)
 			),
 			'bx_if:show_thumbnail_letter_text' => array(
