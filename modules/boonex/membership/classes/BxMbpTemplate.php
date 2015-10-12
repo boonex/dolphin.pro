@@ -82,7 +82,6 @@ class BxMbpTemplate extends BxDolModuleTemplate
     function displaySelectLevelBlock($aLevels)
     {
     	$iModuleId = $this->_oConfig->getId();
-    	$iLevelsHalf = (int)ceil(count($aLevels) / 2);
 
         $sCurrencyCode = strtoupper($this->_oConfig->getCurrencyCode());
         $sCurrencySign = $this->_oConfig->getCurrencySign();
@@ -97,21 +96,23 @@ class BxMbpTemplate extends BxDolModuleTemplate
         $aTmplVarsLevels = array();
         foreach($aLevels as $aLevel) {
         	$aTmplVarsLevels[] = array(
-                'id' => $aLevel['mem_id'],
-        		'descriptor' => $oPayment->getCartItemDescriptor(0, $iModuleId, $aLevel['price_id'], 1),
-        		'checked' => empty($aTmplVarsLevels) ? 'checked="checked"' : '',
-                'title' => $aLevel['mem_name'],
-                'icon' =>  $this->_oConfig->getIconsUrl() . $aLevel['mem_icon'],
-        		'bx_if:show_description' => array(
-        			'condition' => strlen($aLevel['mem_description']) > 0,
-        			'content' => array(
-        				'description' => str_replace("\$", "&#36;", $aLevel['mem_description']),
-        			)
-        		),
-                'days' => $aLevel['price_days'] > 0 ?  $aLevel['price_days'] . ' ' . _t('_membership_txt_days') : _t('_membership_txt_expires_never') ,
-                'price' => $aLevel['price_amount'],
-                'currency_code' => $sCurrencyCode,
-            );
+        		'level' => $this->parseHtmlByName('select_level.html', array(
+	                'id' => $aLevel['mem_id'],
+	        		'descriptor' => $oPayment->getCartItemDescriptor(0, $iModuleId, $aLevel['price_id'], 1),
+	        		'checked' => empty($aTmplVarsLevels) ? 'checked="checked"' : '',
+	                'title' => $aLevel['mem_name'],
+	                'icon' =>  $this->_oConfig->getIconsUrl() . $aLevel['mem_icon'],
+	        		'bx_if:show_description' => array(
+	        			'condition' => strlen($aLevel['mem_description']) > 0,
+	        			'content' => array(
+	        				'description' => str_replace("\$", "&#36;", $aLevel['mem_description']),
+	        			)
+	        		),
+	                'days' => $aLevel['price_days'] > 0 ?  $aLevel['price_days'] . ' ' . _t('_membership_txt_days') : _t('_membership_txt_expires_never') ,
+	                'price' => $aLevel['price_amount'],
+	                'currency_code' => $sCurrencyCode,
+	            ))
+        	);
         }
 
 		$aTmplVarsProviders = array();
@@ -134,8 +135,7 @@ class BxMbpTemplate extends BxDolModuleTemplate
 			'js_object' => $this->_oConfig->getJsObject('join'),
 			'js_code' => $this->getJsCode('join', true),
 			'submit_url' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'join_submit',
-			'bx_repeat:levels_left' => array_slice($aTmplVarsLevels, 0, $iLevelsHalf),
-			'bx_repeat:levels_right' => array_slice($aTmplVarsLevels, $iLevelsHalf),
+			'bx_repeat:levels' => $aTmplVarsLevels,
 			'bx_if:show_providers_selector' => array(
 				'condition' => !$bSelectedProvider,
 				'content' => array(
@@ -150,7 +150,7 @@ class BxMbpTemplate extends BxDolModuleTemplate
 			)
 		);
 
-        $this->addCss('levels.css');
+        $this->addCss(array('levels.css', 'levels_tablet.css', 'levels_phone.css'));
         $this->addJs('join.js');
         $this->addJsTranslation(array('_membership_err_need_select_level', '_membership_err_need_select_provider'));
         return array($this->parseHtmlByName('select_level_block.html', $aTmplParams), array(), array(), false);
