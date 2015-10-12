@@ -1021,7 +1021,9 @@ input.bx-btn {
 	margin: 5px 10px 5px 0px;
 	padding: 0px 30px;
 }
-
+.admin_actions_panel div.admin-actions-buttons-with-custom-html {
+    width: auto;
+}
 
 /* admin filter panel */
 
