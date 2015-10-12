@@ -122,7 +122,7 @@ class BxBaseFunctions
         $aMain['sbs_profile_script'] = $aButton['script'];
         //--- Subscription integration ---//
         
-        $aCheckGreet = checkAction($iMemberID, ACTION_ID_SEND_VKISS);
+        $aCheckGreet = checkAction(getLoggedId(), ACTION_ID_SEND_VKISS);
         $aMain['cpt_greet'] = $aCheckGreet[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED ? _t('_Greet') : '';
         
         $aMain = array_merge($aProfileInfo, $aConfig, $aMain);
