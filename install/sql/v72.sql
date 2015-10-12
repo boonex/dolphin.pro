@@ -1050,7 +1050,6 @@ INSERT INTO `sys_options` VALUES
 ('zodiac', '', @iCatProfiles, 'Enable zodiac signs', 'checkbox', '', '', 30, ''),
 ('anon_mode', '', @iCatProfiles, 'Enable anonymous mode', 'checkbox', '', '', 40, ''),
 ('reg_by_inv_only', '', @iCatProfiles, 'Enable registration by invitation only', 'checkbox', '', '', 50, ''),
-('disable_join_form', '', @iCatProfiles, 'Disable free join', 'checkbox', '', '', 55, ''),
 ('enable_cmts_profile_delete', '', @iCatProfiles, 'Allow profile comments deletion by profile owner', 'checkbox', '', '', 60, ''),
 ('member_online_time', '1', @iCatProfiles, 'Online status timeframe (minutes)', 'digit', 'return (int)$arg0 > 0;', 'Must be > 0', 70, ''),
 ('search_start_age', '18', @iCatProfiles, 'Lowest age possible for site members', 'digit', 'return setSearchStartAge((int)$arg0);', '', 80, ''),

@@ -27,6 +27,8 @@ div.mbp-level:first-child {
 	margin-top: 0px;
 }
 div.mbp-level-icon {
+	top: 0px;
+	left: 0px;
     width: 114px;
     height: 114px;
     
@@ -91,6 +93,9 @@ div.mbp-available-levels div.mbp-level {
 	position: relative;
 	display: inline-block;
 	width: 50%;
+}
+div.join-box-form div.mbp-available-levels div.mbp-level {
+	width: 100%;
 }
 div.mbp-sp-caption {
 	text-transform: uppercase;

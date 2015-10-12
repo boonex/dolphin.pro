@@ -174,10 +174,7 @@
                                 : '';
                         }
 
-                        if(getParam('disable_join_form') == 'on') {
-                            $this->getJoinAfterPaymentPage($aFacebookProfileInfo);
-                            exit;
-                        }
+						$this->getJoinAfterPaymentPage($aFacebookProfileInfo);
 
                         //create new profile
                         $this -> _createProfile($aFacebookProfileInfo, $sAlternativeNickName);
@@ -399,20 +396,17 @@
          * @return void
          */
         function getJoinAfterPaymentPage($aProfileInfo)
-        {
-        	bx_import('BxDolSession');
-            $oSession = BxDolSession::getInstance();
-            $oSession -> setValue($this->_oConfig->sFacebookSessionProfile, $aProfileInfo);
+		{
+			if(!BxDolService::call('membership', 'is_disable_free_join')) 
+				return;
 
-            if(!BxDolRequest::serviceExists('membership', 'select_level_block')) {
-				$this -> _oTemplate -> getPage( _t('_bx_facebook'), MsgBox(_t('_bx_facebook_error_join_unavailable')));
-				exit;
-            }
+			bx_import('BxDolSession');
+			$oSession = BxDolSession::getInstance();
+			$oSession->setValue($this->_oConfig->sFacebookSessionProfile, $aProfileInfo);
 
-            $aBlock = BxDolService::call('membership', 'select_level_block');
-            $this -> _oTemplate -> getPage( _t( '_JOIN_H' ), $aBlock[0]);
-            exit;
-        }
+			header('Location: ' . BX_DOL_URL_ROOT . 'join.php');
+			exit;
+		}
 
         function processJoinAfterPayment(&$oAlert)
         {

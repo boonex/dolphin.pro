@@ -275,19 +275,18 @@ function getBlockWidth ($iAllWidth, $iUnitWidth, $iNumElements)
 
 function getMemberJoinFormCode($sParams = '')
 {
-	if(getParam('disable_join_form') == 'on')
-		return '';
-
 	if(getParam('reg_by_inv_only') == 'on' && getID($_COOKIE['idFriend']) == 0)
 		return MsgBox(_t('_registration by invitation only'));
 
+	$sCodeBefore = '';
+    $sCodeAfter = '';
+
 	bx_import("BxDolJoinProcessor");
     $oJoin = new BxDolJoinProcessor();
+    $sCode = $oJoin->process();
 
     bx_import('BxDolAlerts');
-    $sCustomHtmlBefore = '';
-    $sCustomHtmlAfter = '';
-    $oAlert = new BxDolAlerts('profile', 'show_join_form', 0, 0, array('oJoin' => $oJoin, 'sParams' => &$sParams, 'sCustomHtmlBefore' => &$sCustomHtmlBefore, 'sCustomHtmlAfter' => &$sCustomHtmlAfter));
+    $oAlert = new BxDolAlerts('profile', 'show_join_form', 0, 0, array('oJoin' => $oJoin, 'sParams' => &$sParams, 'sCustomHtmlBefore' => &$sCodeBefore, 'sCustomHtmlAfter' => &$sCodeAfter, 'sCode' => &$sCode));
     $oAlert->alert();
 
     $sAuthCode = getMemberAuthCode('_sys_auth_join_with');
@@ -301,9 +300,9 @@ function getMemberJoinFormCode($sParams = '')
     			'auth' => $sAuthCode
     		)
     	),
-    	'custom_code_before' => $sCustomHtmlBefore,
-    	'form' => $oJoin->process(),
-    	'custom_code_after' => $sCustomHtmlAfter,
+    	'custom_code_before' => $sCodeBefore,
+    	'form' => $sCode,
+    	'custom_code_after' => $sCodeAfter,
     	'bx_if:show_text' => array(
     		'condition' => false,
     		'content' => array(

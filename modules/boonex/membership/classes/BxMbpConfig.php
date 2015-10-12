@@ -9,6 +9,7 @@ bx_import('BxDolConfig');
 class BxMbpConfig extends BxDolConfig
 {
     var $_oDb;
+    var $_bDisableFreeJoin;
     var $_sCurrencySign;
     var $_sCurrencyCode;
     var $_sIconsFolder;
@@ -42,10 +43,19 @@ class BxMbpConfig extends BxDolConfig
     {
         $this->_oDb = &$oDb;
 
-        $this->_sCurrencySign = $this->_oDb->getParam('pmt_default_currency_sign');
-        $this->_sCurrencyCode = $this->_oDb->getParam('pmt_default_currency_code');
+        $this->_bDisableFreeJoin = $this->_oDb->getParam('mbp_disable_free_join') == 'on';
+
+        bx_import('BxDolPayments');
+		$oPayment = BxDolPayments::getInstance();
+
+        $this->_sCurrencySign = $oPayment->getOption('default_currency_sign');
+        $this->_sCurrencyCode = $oPayment->getOption('default_currency_code');
     }
 
+    function isDisableFreeJoin()
+    {
+    	return $this->_bDisableFreeJoin;
+    }
     function getCurrencySign()
     {
         return $this->_sCurrencySign;

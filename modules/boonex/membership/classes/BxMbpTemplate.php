@@ -79,7 +79,7 @@ class BxMbpTemplate extends BxDolModuleTemplate
         return array($sContent, array(), array(), false);
     }
 
-    function displaySelectLevelBlock($aLevels)
+    function displaySelectLevelBlock($aLevels, $bDynamic = false)
     {
     	$iModuleId = $this->_oConfig->getId();
 
@@ -150,10 +150,30 @@ class BxMbpTemplate extends BxDolModuleTemplate
 			)
 		);
 
-        $this->addCss(array('levels.css', 'levels_tablet.css', 'levels_phone.css'));
-        $this->addJs('join.js');
+		$sCssJs = '';
+        $sCssJs .= $this->addCss(array('levels.css', 'levels_tablet.css', 'levels_phone.css'), $bDynamic);
+        $sCssJs .= $this->addJs('join.js', $bDynamic);
+
         $this->addJsTranslation(array('_membership_err_need_select_level', '_membership_err_need_select_provider'));
-        return array($this->parseHtmlByName('select_level_block.html', $aTmplParams), array(), array(), false);
+        return array(($bDynamic ? $sCssJs : '') . $this->parseHtmlByName('select_level_block.html', $aTmplParams), array(), array(), false);
+    }
+
+	function getPageCodeAdmin(&$aParams)
+    {
+        global $_page;
+        global $_page_cont;
+
+        $iIndex = isset($aParams['index']) ? (int)$aParams['index'] : 9;
+        $_page['name_index'] = $iIndex;
+        $_page['js_name'] = isset($aParams['js']) ? $aParams['js'] : '';
+        $_page['css_name'] = isset($aParams['css']) ? $aParams['css'] : '';
+        $_page['header'] = isset($aParams['title']['page']) ? $aParams['title']['page'] : '';
+
+        if(isset($aParams['content']))
+            foreach($aParams['content'] as $sKey => $sValue)
+                $_page_cont[$iIndex][$sKey] = $sValue;
+
+        PageCodeAdmin();
     }
 
     function getPageCode(&$aParams)
@@ -207,7 +227,9 @@ class BxMbpTemplate extends BxDolModuleTemplate
         	'sActionUrl' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri(),
         	'sObjName' => $sJsObject,
         	'sAnimationEffect' => $this->_oConfig->getAnimationEffect(),
-        	'iAnimationSpeed' => $this->_oConfig->getAnimationSpeed()
+        	'iAnimationSpeed' => $this->_oConfig->getAnimationSpeed(),
+        	'sErrSelectLevel' => bx_js_string(_t('_membership_err_need_select_level')),
+        	'sErrSelectProvider' => bx_js_string(_t('_membership_err_need_select_provider'))
         );
 
         $sContent .= 'var ' . $sJsObject . ' = new ' . $sJsClass . '(' . json_encode($aOptions) . ');';

@@ -6,8 +6,11 @@
 
 $aLangContent = array(
     '_sys_module_membership' => 'Membership',
+	'_membership_pcaption_admin' => 'Membership',
     '_membership_pcaption_membership' => 'Membership',
+	'_membership_pcaption_join' => 'Join',
 	'_membership_pcaption_error' => 'Error',
+	'_membership_bcaption_settings' => 'Settings',
     '_membership_bcaption_my_status' => 'My Status',
     '_membership_bcaption_levels' => 'Available Membership Types',
 	'_membership_bcaption_select_level' => 'Select Level',
@@ -26,6 +29,7 @@ $aLangContent = array(
     '_membership_txt_on_N_days' => 'for {0} days',
     '_membership_txt_expires_in' => 'Expires in {0} days',
     '_membership_txt_expires_never' => 'Never expires',
+	'_membership_admin_menu_sitem' => 'Membership',
     '_membership_tmenu_item_my_membership' => 'My Membership',
     '_membership_mmenu_item_membership' => 'Membership',
 	'_membership_smenu_item_join' => 'Join',

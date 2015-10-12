@@ -84,6 +84,14 @@ class BxDolPayments extends BxDolMistake
         return BxDolService::call($this->_sActiveUri, 'get_providers', $aSrvParams);
     }
 
+	public function getOption($sOption)
+    {
+    	if(!BxDolRequest::serviceExists($this->_sActiveUri, 'get_option'))
+    		return '';
+
+    	return BxDolService::call($this->_sActiveUri, 'get_option', array($sOption));
+    }
+
     public function getOrdersUrl()
     {
     	if(!BxDolRequest::serviceExists($this->_sActiveUri, 'get_orders_url'))
