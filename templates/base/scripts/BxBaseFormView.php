@@ -338,6 +338,7 @@ class BxBaseFormView extends BxDolForm
     {
         return $GLOBALS['oSysTemplate']->parseHtmlByName('form_input_wrapper.html', array(
         	'type' => $aInput['type'],
+            'class' => isset($aInput['wrap_text']) && $aInput['wrap_text'] ? 'input_wrapper_wraptext' : '',
         	'attrs' => isset($aInput['attrs_wrapper']) && is_array($aInput['attrs_wrapper']) ? $this->convertArray2Attrs($aInput['attrs_wrapper']) : '',
         	'content' => $sContent,
         	'content_add' => ''
