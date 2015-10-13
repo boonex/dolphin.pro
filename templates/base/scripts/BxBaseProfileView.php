@@ -326,6 +326,7 @@ class BxBaseProfileGenerator extends BxDolProfile
                         'name'    => $aItem['Name'],
                         'caption' => _t($aItem['Caption']),
                         'value'   => $this->oPF->getViewableValue($aItem, $sValue1),
+                        'wrap_text' => $aItem['Type'] == 'area',
                     );
                 }
 
