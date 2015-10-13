@@ -67,7 +67,7 @@ div.view_message_container div.member_info_nickname a:active {
 }
 
 div.view_message_container .owner_info .action_list .actionsContainer {
-	padding: 0px;
+	padding: 0px 0px 5px 0px;
 }
 
 div.view_message_container .owner_info .action_list .actionsContainer .actionItem {
@@ -95,6 +95,9 @@ div.view_message_container .owner_info .action_list .actionsContainer .actionIte
 div.view_message_container .owner_info .action_list .actionsContainer .actionItem .bx-btn b {
 	display: none;
 }
+div.view_message_container .owner_info .action_list .simple_messenger_chat_wrapper {
+	margin: 0px;
+}
 
 div.view_message_container div.message_container {
 	position:relative;
@@ -119,31 +122,23 @@ div.view_message_container div.message_actions {
 	background-color:#f5f7fA;
     border-top:1px solid #dbdbdb;
 }
-
 div.view_message_container div.message_actions_cnt {
 	position: relative;
-	height: 59px;
 }
+div.view_message_container div.message_actions_compose div.messages_options,
+div.view_message_container div.message_actions_compose div.messages_buttons {
+	position: relative;
+	float: left;
+	display: block;
 
-.message_actions_wrapper {
-    float:right;
-    position:relative;
-}
-.message_actions_wrapper .input_wrapper {
-    float: left;
-}
-div.view_message_container div.message_actions .form_advanced_table td {
-	padding: 10px;
+	vertical-align: top;
 }
 div.view_message_container div.message_actions_compose div.messages_options {
-	position: absolute;
-	z-index: 1;
 	text-align: left;
 }
-div.view_message_container div.message_actions_compose .form_advanced_table td {
-	padding: 10px 0px;
+div.view_message_container div.message_actions_compose div.messages_buttons {
+	float: right;
 }
-
 *div.button_wrapper {
     margin-right:4px;
 }
