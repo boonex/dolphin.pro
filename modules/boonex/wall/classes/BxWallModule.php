@@ -387,8 +387,8 @@ class BxWallModule extends BxDolModule
         //--- Parse template ---//
         $aVariables = array (
             'post_js_content' => $this->_oTemplate->getJsCode('post', $this->_iOwnerId),
-            'post_wall_text' => $this->_getWriteForm(),
-            'post_wall_link' => $this->_getShareLinkForm(),
+            'post_wall_text' => $this->_getWriteForm('_getWriteFormIndex'),
+            'post_wall_link' => $this->_getShareLinkForm('_getShareLinkFormIndex'),
             'post_wall_photo' => '',
             'post_wall_video' => '',
             'post_wall_music' => '',
@@ -923,7 +923,16 @@ class BxWallModule extends BxDolModule
         $sPaginate = $this->_getLoadMoreOutline($iStart, $iPerPage, $bNext, $iEvents > 0);
         return array($sContent, $sPaginate);
     }
-    function _getWriteForm()
+    function _getWriteForm($sGetFormArrayMethod = '_getWriteFormCommon')
+    {
+    	if(!method_exists($this, $sGetFormArrayMethod))
+    		return '';
+
+    	$aForm = $this->$sGetFormArrayMethod();
+        $oForm = new BxTemplFormView($aForm);
+        return $oForm->getCode();
+    }
+	function _getWriteFormCommon()
     {
     	$sJsObject = $this->_oConfig->getJsObject('post');
 
@@ -953,10 +962,25 @@ class BxWallModule extends BxDolModule
         );
         $aForm['inputs'] = array_merge($aForm['inputs'], $this->_addHidden('text'));
 
+        return $aForm;
+    }
+	function _getWriteFormIndex()
+    {
+        $aForm = $this->_getWriteFormCommon();
+        $aForm['inputs']['WallOwnerId']['value'] = 0;
+
+        return $aForm;
+    }
+    function _getShareLinkForm($sGetFormArrayMethod = '_getShareLinkFormCommon')
+    {
+    	if(!method_exists($this, $sGetFormArrayMethod))
+    		return '';
+
+    	$aForm = $this->$sGetFormArrayMethod();
         $oForm = new BxTemplFormView($aForm);
         return $oForm->getCode();
     }
-    function _getShareLinkForm()
+    function _getShareLinkFormCommon()
     {
     	$sJsObject = $this->_oConfig->getJsObject('post');
 
@@ -985,15 +1009,19 @@ class BxWallModule extends BxDolModule
         );
         $aForm['inputs'] = array_merge($aForm['inputs'], $this->_addHidden('link'));
 
-        $oForm = new BxTemplFormView($aForm);
-        return $oForm->getCode();
+        return $aForm;
     }
+    function _getShareLinkFormIndex()
+    {
+    	$aForm = $this->_getShareLinkFormCommon();
+        $aForm['inputs']['WallOwnerId']['value'] = 0;
 
+        return $aForm;
+    }
     function _getObjectPrivacy()
     {
     	return new BxWallPrivacy($this);
     }
-
     function _addHidden($sPostType = "photos", $sContentType = "upload", $sAction = "post")
     {
         return array(

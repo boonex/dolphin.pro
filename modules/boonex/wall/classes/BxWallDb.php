@@ -172,11 +172,16 @@ class BxWallDb extends BxDolModuleDb
 				}
 
                 if(!empty($aParams['owner_id'])) {
-                    if(!is_array($aParams['owner_id']))
-                        $sWhereClause .= "AND `te`.`owner_id`='" . $aParams['owner_id'] . "' ";
+                    if(is_array($aParams['owner_id'])) {
+                    	$sIds = implode("','", $aParams['owner_id']);
+
+                        $sWhereClause .= "AND (`te`.`owner_id` IN ('" . $sIds . "') OR (`te`.`owner_id`='0' AND `te`.`object_id` IN ('" . $sIds . "'))) ";
+                    }
                     else
-                        $sWhereClause .= "AND `te`.`owner_id` IN ('" . implode("','", $aParams['owner_id']) . "') ";
+                    	$sWhereClause .= "AND (`te`.`owner_id`='" . $aParams['owner_id'] . "' OR (`te`.`owner_id`='0' AND `te`.`object_id`='" . $aParams['owner_id'] . "')) ";
                 }
+                else 
+                	$sWhereClause .= "AND NOT(`te`.`owner_id`<>'0' AND `te`.`type` LIKE '" . $this->_oConfig->getCommonPostPrefix() . "%' AND `te`.`action`='') ";
 
                 $sWhereClause .= isset($aParams['filter']) ? $this->_getFilterAddon($aParams['owner_id'], $aParams['filter']) : '';
                 $sWhereClause .= $sWhereModuleFilter;
@@ -191,11 +196,16 @@ class BxWallDb extends BxDolModuleDb
 				}
 
                 if(!empty($aParams['owner_id'])) {
-                    if(!is_array($aParams['owner_id']))
-                        $sWhereClause .= "AND `te`.`owner_id`='" . $aParams['owner_id'] . "' ";
+                    if(is_array($aParams['owner_id'])) {
+                    	$sIds = implode("','", $aParams['owner_id']);
+
+                        $sWhereClause .= "AND (`te`.`owner_id` IN ('" . $sIds . "') OR (`te`.`owner_id`='0' AND `te`.`object_id` IN ('" . $sIds . "'))) ";
+                    }
                     else
-                        $sWhereClause .= "AND `te`.`owner_id` IN ('" . implode("','", $aParams['owner_id']) . "') ";
+                    	$sWhereClause .= "AND (`te`.`owner_id`='" . $aParams['owner_id'] . "' OR (`te`.`owner_id`='0' AND `te`.`object_id`='" . $aParams['owner_id'] . "')) ";
                 }
+                else 
+                	$sWhereClause .= "AND NOT(`te`.`owner_id`<>'0' AND `te`.`type` LIKE '" . $this->_oConfig->getCommonPostPrefix() . "%' AND `te`.`action`='') ";
 
                 $sWhereClause .= isset($aParams['filter']) ? $this->_getFilterAddon($aParams['owner_id'], $aParams['filter']) : '';
                 $sWhereClause .= $sWhereModuleFilter;
