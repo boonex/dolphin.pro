@@ -1573,13 +1573,25 @@ class BxDolFilesModule extends BxDolModule
         $sItemThumbnailType = isset($aParams['thumbnail_type']) ? $aParams['thumbnail_type'] : 'browse';
 
         $iDeleted = 0;
-        $aItems = array();
+        $aItems = $aTmplItems = array();
         foreach($aObjectIds as $iId) {
             $aItem = $oSearch->serviceGetItemArray($iId, $sItemThumbnailType);
             if(empty($aItem))
                 $iDeleted++;
             else if($aItem['status'] == 'approved' && $this->oAlbumPrivacy->check('album_view', $aItem['album_id'], $this->oModule->_iProfileId))
                 $aItems[] = $aItem;
+
+			$aItem2x = $oSearch->serviceGetItemArray($iId, $sItemThumbnailType . '2x');
+
+			$aTmplItems[] = array_merge($aItem, array(
+				'mod_prefix' => $sPrefix,
+				'cnt_item_width' => $aItem['dims']['w'],
+				'cnt_item_height' => $aItem['dims']['h'],
+				'cnt_item_icon' => $aItem['file'],
+				'cnt_item_icon_2x' => !empty($aItem2x['file']) ? $aItem2x['file'] : $aItem['file'],
+				'cnt_item_page' => $aItem['url'],
+				'cnt_item_title' => $aItem['title'],
+			));
         }
 
         if($iDeleted == count($aObjectIds))
@@ -1600,19 +1612,10 @@ class BxDolFilesModule extends BxDolModule
 
         //--- Grouped events
         if($iItems > 1) {
-            if($iItems > 4)
+            if($iItems > 4) {
                 $aItems = array_slice($aItems, 0, 4);
-
-            $aTmplItems = array();
-            foreach($aItems as $aItem)
-                $aTmplItems[] = array(
-                    'mod_prefix' => $sPrefix,
-                    'cnt_item_width' => $aItem['width'],
-                    'cnt_item_height' => $aItem['height'],
-                    'cnt_item_page' => $aItem['url'],
-                    'cnt_item_icon' => $aItem['file'],
-                    'cnt_item_title' => $aItem['title'],
-                );
+                $aTmplItems = array_slice($aTmplItems, 0, 4);
+            }
 
             $aExtra = unserialize($aEvent['content']);
             $sAlbumUri = $aExtra['album'];
@@ -1643,6 +1646,7 @@ class BxDolFilesModule extends BxDolModule
         }
 
         $aItem = $aItems[0];
+        $aTmplItem = $aTmplItems[0];
         $sAddedNewTxt = _t('_' . $sPrefix . '_wall_added_new');
 
         //--- Single public event
@@ -1652,20 +1656,15 @@ class BxDolFilesModule extends BxDolModule
             'title' => $sOwner . ' ' . $sAddedNewTxt . ' ' . $sItemTxt,
             'description' => $aItem['description'],
             'grouped' => false,
-            'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTemplateName, array(
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTemplateName, array_merge($aTmplItem, array(
                 'mod_prefix' => $sPrefix,
                 'mod_icon' => $sIcon,
                 'cpt_user_name' => $sOwner,
                 'cpt_added_new' => $sAddedNewTxt,
                 'cpt_item_url' => $aItem['url'],
                 'cpt_item' => $sItemTxt,
-                'cnt_item_width' => $aItem['width'],
-                'cnt_item_height' => $aItem['height'],
-                'cnt_item_page' => $aItem['url'],
-                'cnt_item_icon' => $aItem['file'],
-                'cnt_item_title' => $aItem['title'],
                 'post_id' => $aEvent['id']
-            ))
+            )))
         );
     }
 

@@ -75,6 +75,16 @@ class BxVideosModule extends BxDolFilesModule
         return parent::serviceGetMemberMenuItemAddContent ('film');
     }
 
+    function getWallPost($aEvent, $sIcon, $aParams = array())
+    {
+    	return parent::getWallPost($aEvent, $sIcon, array(
+    		'templates' => array(
+    			'single' => 'timeline_post.html',
+    			'grouped' => 'timeline_post_grouped.html'
+    		)
+    	));
+    }
+
     function getWallPostOutline($aEvent, $sIcon, $aParams = array())
     {
     	return parent::getWallPostOutline($aEvent, $sIcon, array(
