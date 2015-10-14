@@ -461,7 +461,7 @@ class BxBaseProfileGenerator extends BxDolProfile
     	}
 
     	if($bProfileOwner) {
-    		$sProfileThumbnailHref = BxDolService::call('photos', 'get_album_uploader_url', array($p_arr['ID'], 'profile_album_name'));
+    		$sProfileThumbnailHref = BxDolService::call('photos', 'get_manage_profile_photo_url', array($p_arr['ID'], 'profile_album_name'));
 
     		$bProfileThumbnailHref = true;
     	}
@@ -523,7 +523,7 @@ class BxBaseProfileGenerator extends BxDolProfile
 				'content' => array(
 					'thumbnail_href' => $sProfileThumbnailHref,
 					'thumbnail' => $sProfileThumbnail,
-					'thumbnail2x' => $sProfileThumbnail2x,
+                    'thumbnail2x' => $sProfileThumbnail2x,
 				)
 			),
 			'bx_if:show_thumbnail_letter_text' => array(
