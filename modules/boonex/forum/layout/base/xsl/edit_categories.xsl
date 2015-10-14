@@ -55,17 +55,17 @@
                 <a class="forum_cat_title bx-def-font-h2 bx-def-margin-sec-left" href="javascript:void(0);" onclick="return orca_admin.selectCat('{@uri}', 'cat{@id}');"><xsl:value-of select="title" disable-output-escaping="yes" /></a>
 
                 <span class="forum_stat bx-def-font-grayed"> 
-                    <span class="bullet"> &#183; </span>
+                    <span class="forum_bullet"></span>
                     <xsl:call-template name="replace_hash">
                         <xsl:with-param name="s" select="string('[L[# forums]]')"/>
                         <xsl:with-param name="r" select="@count_forums"/>
                     </xsl:call-template>
-                    <span class="bullet"> &#183; </span>
+                    <span class="forum_bullet"></span>
                     <xsl:call-template name="replace_hash">
                         <xsl:with-param name="s" select="string('[L[# topics]]')"/>
                         <xsl:with-param name="r" select="@count_topics"/>
                     </xsl:call-template>
-                    <span class="bullet"> &#183; </span>
+                    <span class="forum_bullet"></span>
                     <xsl:call-template name="replace_hash">
                         <xsl:with-param name="s" select="string('[L[# posts]]')"/>
                         <xsl:with-param name="r" select="@count_posts"/>
