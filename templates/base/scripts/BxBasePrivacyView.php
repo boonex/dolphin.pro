@@ -223,11 +223,6 @@ class BxBasePrivacyView extends BxDolPrivacyView
     }
     function getBlockCode_MyGroups()
     {
-        $sAddImgTxt = _t("_ps_lcpt_add");
-        $sAddImgUrl = $this->getIconUrl('ps_add_members.png');
-        $sDeleteImgTxt = _t("_ps_lcpt_delete");
-        $sDeleteImgUrl = $this->getIconUrl('ps_delete_members.png');
-
         $sExtendedTxt = _t("_ps_cpt_extended");
 
         //--- Get Content ---//

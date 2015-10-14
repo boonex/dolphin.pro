@@ -1,16 +1,15 @@
 <form id="ps-my-groups-form" name="ps-my-groups-form" action="member_privacy.php" method="post" enctype="multipart/form-data">
-    <div class="ps-groups bx-def-bc-margin">
+    <div class="ps-groups bx-def-bc-margin clearfix">
         <bx_repeat:groups>            
             <div class="ps-cell-chb">
                 <input type="checkbox" name="ps-my-groups-ids[]" value="__group_id__" />
             </div>
-            <div class="ps-cell-title">__group_title__(__group_members__)<bx_if:extended>__group_extended__</bx_if:extended></div>
+            <div class="ps-cell-title bx-def-padding-sec-leftright">__group_title__(__group_members__)<bx_if:extended>__group_extended__</bx_if:extended></div>
             <div class="ps-cell-action">
-                <a href="javascript:void(0)" onclick="javascript:ps_showDialog('add', __group_id__, this)"><img src="__add_img_url__" alt="__add_img_title__" title="__add_img_title__" /></a>&nbsp;
-                <a href="javascript:void(0)" onclick="javascript:ps_showDialog('del', __group_id__, this)"><img src="__delete_img_url__" alt="__delete_img_title__" title="__delete_img_title__" /></a>
+                <a class="bx-def-margin-sec-right" href="javascript:void(0)" onclick="javascript:ps_showDialog('add', __group_id__, this)" title="<bx_text_attribute:_ps_lcpt_add />"><i class="sys-icon plus"></i></a>
+                <a href="javascript:void(0)" onclick="javascript:ps_showDialog('del', __group_id__, this)" title="<bx_text_attribute:_ps_lcpt_delete />"><i class="sys-icon minus"></i></a>
             </div>
         </bx_repeat:groups>
-        <div class="clear_both">&nbsp;</div>
     </div>
     __control__
 </form>
