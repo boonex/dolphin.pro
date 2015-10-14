@@ -27,18 +27,18 @@
                         <span>
                             <xsl:value-of select="desc" disable-output-escaping="yes" />
                             <span class="forum_stat bx-def-font-grayed">
-                                <span class="bullet"> &#183; </span>
+                                <span class="forum_bullet"></span>
                                 <xsl:call-template name="replace_hash">
                                     <xsl:with-param name="s" select="string('[L[# topics]]')"/>
                                     <xsl:with-param name="r" select="topics"/>
                                 </xsl:call-template>
-                                <span class="bullet"> &#183; </span>
+                                <span class="forum_bullet"></span>
                                 <xsl:call-template name="replace_hash">
                                     <xsl:with-param name="s" select="string('[L[# posts]]')"/>
                                     <xsl:with-param name="r" select="posts"/>
                                 </xsl:call-template>
                                 <xsl:if test="last != ''">
-                                    <span class="bullet"> &#183; </span>
+                                    <span class="forum_bullet"></span>
                                     <xsl:call-template name="replace_hash">
                                         <xsl:with-param name="s" select="string('[L[last update: #]]')"/>
                                         <xsl:with-param name="r" select="last"/>

@@ -22,7 +22,7 @@
 <!--
                         <span class="forum_stat bx-def-font-grayed">
                             <xsl:if test="last != ''">
-                                <span class="bullet"> &#183; </span>
+                                <span class="forum_bullet"></span>
                                 <xsl:call-template name="replace_hash">
                                     <xsl:with-param name="s" select="string('[L[last update: #]]')" />
                                     <xsl:with-param name="r" select="last" />

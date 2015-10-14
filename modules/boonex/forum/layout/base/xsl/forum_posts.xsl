@@ -100,7 +100,7 @@
                                     </xsl:choose>
                                 </span>
                                 <xsl:if test="position()!=last()">
-                                    <span class="bullet">&#183;</span>
+                                    <span class="forum_bullet"></span>
                                 </xsl:if>
                             </xsl:for-each>
                         </div>
@@ -205,11 +205,11 @@
 
                     <span class="forum_stat bx-def-font-grayed">
 
-                        <span class="bullet"> &#183; </span>
+                        <span class="forum_bullet"></span>
 
                         <xsl:value-of select="user/role" />
 
-                        <span class="bullet"> &#183; </span>
+                        <span class="forum_bullet"></span>
 
                         <xsl:call-template name="replace_hash">
                             <xsl:with-param name="s" select="string('[L[# posts]]')"/>
@@ -263,9 +263,9 @@
                                     <xsl:value-of select="." disable-output-escaping="yes" />
                                 </a> 
                                 <span class="forum_stat">
-                                    <span class="bullet"> &#183; </span>
+                                    <span class="forum_bullet"></span>
                                     <xsl:value-of select="@size" disable-output-escaping="yes" /> 
-                                    <span class="bullet"> &#183; </span>
+                                    <span class="forum_bullet"></span>
                                     <xsl:if test="0 = @image">
                                         <xsl:call-template name="replace_hash">
                                             <xsl:with-param name="s" select="string('[L[# downloads]]')"/>
@@ -306,44 +306,44 @@
  
             <xsl:if test="1 = allow_clear_report">
                 <a href="javascript:void(0);" onclick="orca_admin.clearReport({@id})">[L[Clear report]]</a>
-                <span class="bullet"> &#183; </span>
+                <span class="forum_bullet"></span>
             </xsl:if>
 
             <xsl:if test="1 = allow_hide_posts and 0 = hidden">
                 <a href="javascript:void(0);" onclick="f.hidePost(true, {@id}, {../forum/id}, {../topic/id})">[L[Hide]]</a>
-               <span class="bullet"> &#183; </span> 
+               <span class="forum_bullet"></span> 
             </xsl:if>
 
             <xsl:if test="1 = allow_unhide_posts and 1 = hidden">
                 <a href="javascript:void(0);" onclick="f.hidePost(false, {@id}, {../forum/id}, {../topic/id})">[L[Unhide]]</a>
-                <span class="bullet"> &#183; </span>
+                <span class="forum_bullet"></span>
             </xsl:if>
 
             <xsl:if test="allow_del = 1">
                 <a href="javascript:void(0);" onclick="f.deletePost({@id}, {../forum/id}, {../topic/id}, true)">[L[Delete]]</a>
-                <span class="bullet"> &#183; </span>
+                <span class="forum_bullet"></span>
             </xsl:if>
 
             <xsl:if test="allow_edit = 1">
                 <a onclick="f.editPost({@id});" href="javascript:void(0);">[L[Edit]]</a>
-                <span class="bullet"> &#183; </span>
+                <span class="forum_bullet"></span>
             </xsl:if>
 
             <xsl:if test="(not((points &lt; min_point) or (vote_user_point = -1) or (1 = hidden))) and 0 = ../topic/locked">
                 <a href="javascript:void(0);" onclick="return f.postReplyWithQuote({../forum/id}, {../topic/id}, {@id});" onmousedown="f.processSelectedText()">[L[Quote]]</a>
-                <span class="bullet"> &#183; </span>
+                <span class="forum_bullet"></span>
             </xsl:if>
 
             <span id="report_{@id}" class="forum_post_actions_report_button">
                 <xsl:if test="'' = vote_user_point and user/@name != /root/logininfo/username">
                     <a title="[L[report this post]]" href="javascript:void(0);" onclick="if (f.report({@id}, true)) return f.voteBad({@id});">[L[Report]]</a>
-                    <span class="bullet"> &#183; </span>
+                    <span class="forum_bullet"></span>
                 </xsl:if>
             </span>
 
             <xsl:if test="'' = vote_user_point and user/@name != /root/logininfo/username">
                 <a href="javascript:void(0);" onclick="return f.voteBad({@id}, true);">[L[Bury]]</a>
-                <span class="bullet"> &#183; </span>
+                <span class="forum_bullet"></span>
             </xsl:if>
 
             <span class="forum_post_actions_when">
@@ -354,7 +354,7 @@
                 <span class="forum_post_actions_rate_text">
 
                     <xsl:if test="(points &lt; min_point) or (-1 = vote_user_point) or (1 = hidden)">	
-                        <span class="bullet"> &#183; </span>
+                        <span class="forum_bullet"></span>
                         [L[post is hidden]] (
                             <xsl:choose>
                                 <xsl:when test="1 = @force_show">
@@ -367,7 +367,7 @@
                             )
                     </xsl:if>
 
-                    <span class="bullet"> &#183; </span>
+                    <span class="forum_bullet"></span>
 
                     <span id="points_{@id}">
                         <xsl:call-template name="replace_hash">
@@ -376,7 +376,7 @@
                         </xsl:call-template>
                     </span>
 
-                    <span class="bullet"> &#183; </span>
+                    <span class="forum_bullet"></span>
 
                 </span>
 

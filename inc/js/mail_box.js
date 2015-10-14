@@ -11,6 +11,7 @@
 	htmlSelectors[7] = 'compose_message_block';
 	htmlSelectors[8] = 'message_recipient';
 	htmlSelectors[9] = 'thumbnail_area';
+	htmlSelectors[10] = 'message_recipient_id';
 
 	/**
 	 * @description : constructor ;
@@ -244,9 +245,9 @@
 			// if vRecipientId 'undefined' than will try to find his nickname ;
 			if (typeof vRecipientId == 'undefined' )
 			{
-				var oNickName = $('#' + htmlSelectors[8]);
-				if (oNickName.length)
-					vRecipientId = $.trim( oNickName.attr('value') );
+				var oId = $('#' + htmlSelectors[10]);
+				if (oId.length)
+					vRecipientId = $.trim( oId.attr('value') );
 			}
 
             if(!vRecipientId) {

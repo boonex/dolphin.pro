@@ -9,7 +9,7 @@
                 <xsl:for-each select="$files/file">
                     <br /><input type="checkbox" name="existing_file[]" value="{@hash}" id="{@hash}" checked="checked" onchange="if (!this.checked) f.removeImageFromPost('tinyEditor_{../../post_id}', '{@hash}')" /><label for="{@hash}"><xsl:value-of select="." /></label>
                     <xsl:if test="1 = @image">
-                        <span class="bullet"> &#183; </span><a href="javascript:void(0);" onclick="f.insertImageToPost('tinyEditor_{../../post_id}', '{@hash}')">[L[insert to post]]</a>
+                        <span class="forum_bullet"></span><a href="javascript:void(0);" onclick="f.insertImageToPost('tinyEditor_{../../post_id}', '{@hash}')">[L[insert to post]]</a>
                     </xsl:if>
                 </xsl:for-each>
             </xsl:if>

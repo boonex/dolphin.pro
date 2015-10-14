@@ -48,7 +48,7 @@
                             <xsl:with-param name="hash" select="first_u/profile_title"/>
                             <xsl:with-param name="percent" select="first_d"/>
                         </xsl:call-template>
-                        &#183;
+                        <span class="forum_bullet"></span>
                         <xsl:call-template name="replace_hash_percent">
                             <xsl:with-param name="s" select="string('[L[last reply by # %]]')"/>
                             <xsl:with-param name="hash" select="last_u/profile_title"/>

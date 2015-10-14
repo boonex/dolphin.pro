@@ -122,4 +122,23 @@ class BxDolMemberInfo extends BxDolMistake
     {
         return false;
     }
+
+    public function getMemberNameFields ()
+    {
+        switch ($this->_sObject) {
+            default:
+	        case 'sys_username':
+	            return array('NickName');
+
+	        case 'sys_full_name':
+	            return array('FullName', 'NickName');
+
+            case 'sys_first_name':
+                return array('FirstName', 'NickName');
+
+            case 'sys_last_name_firs_name':
+            case 'sys_first_name_last_name':
+                return array('FirstName', 'LastName', 'NickName');                
+        }
+    }
 }
