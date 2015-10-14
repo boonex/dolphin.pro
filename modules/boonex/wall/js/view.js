@@ -47,41 +47,43 @@ BxWallView.prototype.showEvents = function(oEvents, fOffset) {
 };
 
 BxWallView.prototype.deletePost = function(iId) {
-	if(!confirm(_t('_Are_you_sure')))
-		return;
-
-    var $this = this;
+	var $this = this;
     var oData = this._getDefaultData();
     var oLoading = $('#bx-wall-view-loading');
 
     oData['WallEventId'] = iId;
 
-    if(oLoading)
-    	oLoading.bx_loading();
+	$(document).dolPopupConfirm({
+		message: _t('_Are_you_sure'), 
+		onClickYes: function() {
+		    if(oLoading)
+		    	oLoading.bx_loading();
 
-    $.post(
-        this._sActionsUrl + 'delete/',
-        oData,
-        function(oData) {
-        	if(oLoading)
-        		oLoading.bx_loading();
+		    $.post(
+		        $this._sActionsUrl + 'delete/',
+		        oData,
+		        function(oData) {
+		        	if(oLoading)
+		        		oLoading.bx_loading();
 
-            if(oData.code == 0)
-                $('#wall-event-' + oData.id + ', #wall-event-' + oData.id + ' + .wall-divider-nerrow').bxwallanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
-                    $(this).remove();
-                    
-                    if($('#bxwall .wall-view :last').is('.wall-divider-nerrow'))
-                    	$('#bxwall .wall-view :last').remove();
+		            if(oData.code == 0)
+		                $('#wall-event-' + oData.id + ', #wall-event-' + oData.id + ' + .wall-divider-nerrow').bxwallanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+		                    $(this).remove();
+		                    
+		                    if($('#bxwall .wall-view :last').is('.wall-divider-nerrow'))
+		                    	$('#bxwall .wall-view :last').remove();
 
-                    if($('#bxwall .wall-view .wall-events .wall-event').length == 0) {
-                    	$('.wall-view .wall-events div.wall-divider-today').hide();
-                    	$('.wall-view .wall-events div.wall-load-more').hide();
-                    	$('.wall-view .wall-events div.wall-empty').show();
-                    }
-                });                        
-        },
-        'json'
-    );
+		                    if($('#bxwall .wall-view .wall-events .wall-event').length == 0) {
+		                    	$('.wall-view .wall-events div.wall-divider-today').hide();
+		                    	$('.wall-view .wall-events div.wall-load-more').hide();
+		                    	$('.wall-view .wall-events div.wall-empty').show();
+		                    }
+		                });                        
+		        },
+		        'json'
+		    );
+		}
+	});
 };
 
 BxWallView.prototype.changeFilter = function(oLink) {
