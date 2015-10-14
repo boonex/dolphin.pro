@@ -112,7 +112,7 @@ class BxDolSocialSharing extends BxDolMistake
             foreach ($xmlLocates->locale as $xmlLocale) {
                 $sLocale = (string)($xmlLocale->codes->code->standard->representation);
                 list ($sLang,) = explode('_', $sLocale);
-                if (!isset($aData[$sLang]))
+                if (!isset($aData[$sLang]) || $sLocale == $sLang . '_' . strtoupper($sLang))
                     $aData[$sLang] = $sLocale;
             }
             $oCache->setData ($sCacheKey, $aData);
