@@ -47,6 +47,9 @@ BxWallView.prototype.showEvents = function(oEvents, fOffset) {
 };
 
 BxWallView.prototype.deletePost = function(iId) {
+	if(!confirm(_t('_Are_you_sure')))
+		return;
+
     var $this = this;
     var oData = this._getDefaultData();
     var oLoading = $('#bx-wall-view-loading');
