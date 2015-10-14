@@ -13,6 +13,7 @@
 	}
 
 	/*--- Login Join Form Section ---*/
+    div#bx_tellfriend div.login_ajax_wrap,
 	div#login_div div.login_ajax_wrap {
 	    width: 300px;
 	}
