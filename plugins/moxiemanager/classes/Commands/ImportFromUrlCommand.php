@@ -19,8 +19,8 @@ class MOXMAN_Commands_ImportFromUrlCommand extends MOXMAN_Commands_BaseCommand {
 	 */
 	public function execute($params) {
 		$file = MOXMAN::getFile($params->path);
-		$url = parse_url($params->url);
 		$config = $file->getConfig();
+		$resolution = $params->resolution;
 
 		if ($config->get('general.demo')) {
 			throw new MOXMAN_Exception(
@@ -29,12 +29,11 @@ class MOXMAN_Commands_ImportFromUrlCommand extends MOXMAN_Commands_BaseCommand {
 			);
 		}
 
-		if ($file->exists()) {
-			throw new MOXMAN_Exception(
-				"To file already exist: " . $file->getPublicPath(),
-				MOXMAN_Exception::FILE_EXISTS
-			);
-		}
+		$content = $this->getUrlContent($params->url, $config);
+
+		// Fire before file action add event
+		$args = $this->fireBeforeFileAction("add", $file, strlen($content));
+		$file = $args->getFile();
 
 		if (!$file->canWrite()) {
 			throw new MOXMAN_Exception(
@@ -51,6 +50,30 @@ class MOXMAN_Commands_ImportFromUrlCommand extends MOXMAN_Commands_BaseCommand {
 			);
 		}
 
+		if ($resolution == "rename") {
+			$file = MOXMAN_Util_FileUtils::uniqueFile($file);
+		} else if ($resolution == "overwrite") {
+			MOXMAN::getPluginManager()->get("core")->deleteFile($file);
+		} else {
+			throw new MOXMAN_Exception(
+				"To file already exist: " . $file->getPublicPath(),
+				MOXMAN_Exception::FILE_EXISTS
+			);
+		}
+
+		$stream = $file->open(MOXMAN_Vfs_IFileStream::WRITE);
+		$stream->write($content);
+		$stream->close();
+
+		$args = new MOXMAN_Vfs_FileActionEventArgs("add", $file);
+		MOXMAN::getPluginManager()->get("core")->fire("FileAction", $args);
+
+		return parent::fileToJson($file, true);
+	}
+
+	private function getUrlContent($url, $config) {
+		$url = parse_url($url);
+
 		$port = "";
 		if (isset($url["port"])) {
 			$port = ":". $url["port"];
@@ -65,6 +88,7 @@ class MOXMAN_Commands_ImportFromUrlCommand extends MOXMAN_Commands_BaseCommand {
 		$host = $url["scheme"] . "://" . $url["host"] . $port;
 
 		$httpClient = new MOXMAN_Http_HttpClient($host);
+		$httpClient->setProxy($config->get("general.http_proxy"));
 		$request = $httpClient->createRequest($path);
 		$response = $request->send();
 
@@ -87,18 +111,7 @@ class MOXMAN_Commands_ImportFromUrlCommand extends MOXMAN_Commands_BaseCommand {
 
 		$httpClient->close();
 
-		// Fire before file action add event
-		$args = $this->fireBeforeFileAction("add", $file, strlen($content));
-		$file = $args->getFile();
-
-		$stream = $file->open(MOXMAN_Vfs_IFileStream::WRITE);
-		$stream->write($content);
-		$stream->close();
-
-		$args = new MOXMAN_Vfs_FileActionEventArgs("add", $file);
-		MOXMAN::getPluginManager()->get("core")->fire("FileAction", $args);
-
-		return parent::fileToJson($file, true);
+		return $content;
 	}
 }
 

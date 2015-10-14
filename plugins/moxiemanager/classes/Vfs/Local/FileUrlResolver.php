@@ -43,7 +43,7 @@ class MOXMAN_Vfs_Local_FileUrlResolver implements MOXMAN_Vfs_IFileUrlResolver {
 					$rootPath = $rootPath["wwwroot"];
 				}
 
-				$file = $this->getFileFromUrl($url, $rootPath, isset($rootConfig["prefix"]) ? $rootConfig["prefix"] : $prefix);
+				$file = $this->getFileFromUrl($url, $rootPath, isset($rootConfig["urlprefix"]) ? $rootConfig["urlprefix"] : $prefix);
 
 				if ($file) {
 					return $file;

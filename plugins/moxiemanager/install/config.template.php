@@ -20,6 +20,7 @@
 	$moxieManagerConfig['filesystem.extensions'] = 'jpg,jpeg,png,gif,html,htm,txt,docx,doc,zip,pdf';
 	$moxieManagerConfig['filesystem.readable'] = true;
 	$moxieManagerConfig['filesystem.writable'] = true;
+	$moxieManagerConfig['filesystem.overwrite_action'] = "";
 	$moxieManagerConfig['filesystem.directories'] = array(
 		/*
 		"images" => array(

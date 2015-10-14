@@ -25,6 +25,7 @@ class MOXMAN_Http_HttpClientCurlRequest extends MOXMAN_Http_HttpClientRequest {
 		$this->stream = fopen('php://temp', "w+");
 		$this->responseStream = fopen('php://temp', "w+");
 
+		$url = $this->url;
 		$scheme = isset($url["scheme"]) ? strtolower($url["scheme"]) : "http";
 
 		if ($scheme == "tls") {
@@ -32,7 +33,6 @@ class MOXMAN_Http_HttpClientCurlRequest extends MOXMAN_Http_HttpClientRequest {
 			curl_setopt($this->curlHandle, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv2);
 		}
 
-		$url = $this->url;
 		$url = $scheme . '://' . $url["host"] . $url["path"] . (isset($url["query"]) && $url["query"] ? '?' . $url["query"] : '');
 
 		$this->curlHandle = curl_init();

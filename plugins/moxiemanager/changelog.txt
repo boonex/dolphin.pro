@@ -1,3 +1,19 @@
+Version 2.0.8 (2015-09-06)
+	Added new file info dialog that displays the path and url for the selected file.
+	Fixed bug where certain CKEditor plugins stopped working when moxiemanager was added.
+	Fixed bug where copyTo command wasn't working properly on Azure.
+	Fixed bug insert/close user settings would properly disable the insert button and block close actions.
+	Fixed bug where the cache layer wouldn't properly update read/write state attributes.
+Version 2.0.7 (2015-09-28)
+	Added new filesystem.overwrite_action that enables setting a default action to take when a file exists.
+	Fixed bug where url prefixes with custom domains for Azure wasn't working correctly.
+	Fixed bug where http was preffered over https when sending requests to dropbox/googledrive.
+	Fixed bug where the external authenticator didn't handle the default https port number correctly.
+	Fixed bug where the Azure file system plugin didn't work for the new type of Azure containers.
+	Fixed so imports is checked for existance before importing from Dropbox/Google drive.
+	Improved the error message for internal server errors caused by external code.
+Version 2.0.6 (2015-08-13)
+	Fixed bug where the path setting wouldn't work properly when integrating with tinymce.
 Version 2.0.5 (2015-06-30)
 	Re-added onclose callback handler this will now fire for all api methods that open windows.
 	Fixed so remember_last_path setting works as it used to pre 2.0.

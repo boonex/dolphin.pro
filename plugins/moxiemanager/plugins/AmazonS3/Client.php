@@ -516,7 +516,7 @@ class MOXMAN_AmazonS3_Client {
 	}
 
 	public function getCurrentUtcDate() {
-		return new DateTime("UTC");
+		return new DateTime("now", new DateTimeZone("UTC"));
 	}
 
 	public function sendRawRequest(MOXMAN_Http_HttpClientRequest $request, $payloadHash = "") {

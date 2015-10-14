@@ -25,12 +25,23 @@ class MOXMAN_Vfs_Local_FileSystem extends MOXMAN_Vfs_FileSystem {
 		$this->rootPath = MOXMAN_Util_PathUtils::toAbsolute(MOXMAN_ROOT, $this->rootPath);
 
 		// Get wwwroot from config or resolve it, remove trailing slash.
-		$wwwroot = preg_replace('/\\/$/', '', $config->get("filesystem.local.wwwroot"));
+		$wwwroot = $config->get("filesystem.local.wwwroot");
+		if (is_array($wwwroot)) {
+			$wwwval = null;
+			foreach($wwwroot as $www => $wwwval) {
+				if (MOXMAN_Util_PathUtils::isChildOf($this->rootPath, $www)) {
+					$wwwroot = $www;
+					break;
+				}
+			}
+		}
 
-		if (!$wwwroot) {
+		if (!$wwwroot || is_array($wwwroot)) {
 			$sitePaths = MOXMAN_Util_PathUtils::getSitePaths();
 			$wwwroot = $sitePaths["wwwroot"];
 		}
+
+		$wwwroot = preg_replace('/\\/$/', '', $wwwroot);
 
 		// If rootpath isn't within the resolved wwwroot then resolve the rootpath
 		if (!MOXMAN_Util_PathUtils::isChildOf($this->rootPath, $wwwroot)) {
