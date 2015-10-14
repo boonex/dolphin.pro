@@ -486,7 +486,7 @@
 				_upload: function (file){
 					if( file ){
 						file.xhr = FileAPI.upload({
-							url: '/d71/plugins/file-api/server/ctrl.php',
+							url: '/upload',
 							files: { file: file },
 							upload: function (){
 								FU._getEl(file).addClass('b-file_upload');
@@ -519,7 +519,7 @@
 				var $Queue = $('<div/>').prependTo('#preview');
 
 				FileAPI.each(files, function (file){
-					if( file.size >= 2500*FileAPI.MB ){
+					if( file.size >= 25*FileAPI.MB ){
 						alert('Sorrow.\nMax size 25MB')
 					}
 					else if( file.size === void 0 ){
