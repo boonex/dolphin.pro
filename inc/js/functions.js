@@ -924,8 +924,8 @@ function showPopupAnyHtml(sUrl, oCustomOptions) {
     if(typeof oCustomOptions == 'object')
     	oPopupOptions = $.extend({}, oPopupOptions, oCustomOptions);
 
-    $('#login_div').remove();
-	$('<div id="login_div" style="display: none;"></div>').prependTo('body').load(
+    $('#sys_popup_ajax').remove();
+	$('<div id="sys_popup_ajax" style="display: none;"></div>').prependTo('body').load(
 		sUrl.match('^http[s]{0,1}:\/\/') ? sUrl : site_url + sUrl,
 		function() {
 			$(this).dolPopup(oPopupOptions);
