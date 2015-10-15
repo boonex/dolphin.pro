@@ -1,5 +1,5 @@
 --
--- Database: v 7.2.0
+-- Database: v 7.2.1.B1
 --
 
 -- --------------------------------------------------------
@@ -1274,7 +1274,7 @@ INSERT INTO `sys_options` VALUES
 SET @iCatHidden = 0;
 INSERT INTO `sys_options` VALUES
 
-('sys_tmp_version', '7.2.0', @iCatHidden, 'Dolphin version ', 'digit', '', '', 10, ''),
+('sys_tmp_version', '7.2.1.B1', @iCatHidden, 'Dolphin version ', 'digit', '', '', 10, ''),
 ('license_code', '', @iCatHidden, 'Dolphin License Code', 'digit', '', '', 11, ''),
 ('license_expiration', '', @iCatHidden, 'Dolphin License Expiration', 'digit', '', '', 12, ''),
 ('license_checksum', '', @iCatHidden, 'Dolphin License Checksum', 'digit', '', '', 13, ''),
