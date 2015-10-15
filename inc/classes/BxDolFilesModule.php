@@ -798,7 +798,7 @@ class BxDolFilesModule extends BxDolModule
 
         $sClassName = $this->_oConfig->getClassPrefix() . 'Search';
         bx_import('Search', $this->_aModule);
-        $oSearch = new $sClassName('album', $sAlbumUri, 'owner', getNickName($this->_iProfileId));
+        $oSearch = new $sClassName('album', $sAlbumUri, 'owner', getUsername($this->_iProfileId));
         $oSearch->bAdminMode = false;
         $oSearch->aCurrent['view'] = 'short';
         $oSearch->aCurrent['restriction']['album']['value'] = $sAlbumUri;
