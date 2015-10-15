@@ -20,6 +20,8 @@ Thumbs.db
 
 
 # Excludes from modules
+media/images/membership/1*.png
+
 modules/boonex/forum/classes/en/*
 modules/boonex/forum/classes/ru/*
 modules/boonex/forum/js/en/*
@@ -32,3 +34,12 @@ modules/boonex/forum/layout/alt_en/*
 modules/boonex/forum/layout/alt_ru/*
 modules/boonex/forum/layout/evo_en/*
 modules/boonex/forum/layout/evo_ru/*
+
+flash/modules/mp3/files/*.jpg
+flash/modules/mp3/files/*.mp3
+flash/modules/mp3/files/*.ogg
+flash/modules/video/files/*.jpg
+flash/modules/video/files/*.m4v
+flash/modules/video/files/*.flv
+flash/modules/video/files/*.webm
+
