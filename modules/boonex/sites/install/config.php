@@ -10,11 +10,11 @@ $aConfig = array(
      */
     'vendor' => 'Boonex',
     'title' => 'Sites',
-    'version' => '1.2.0',
+    'version' => '1.2.1',
     'update_url' => '',
 
     'compatible_with' => array(
-        '7.2.0'
+        '7.2.1'
     ),
 
     /**

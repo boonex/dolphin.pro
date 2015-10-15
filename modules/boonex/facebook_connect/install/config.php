@@ -10,12 +10,12 @@
          * Main Section.
          */
         'title' => 'Facebook connect',
-        'version' => '1.2.0',
+        'version' => '1.2.1',
         'vendor' => 'Boonex',
         'update_url' => '',
 
         'compatible_with' => array(
-            '7.2.0'
+            '7.2.1'
         ),
 
         /**
