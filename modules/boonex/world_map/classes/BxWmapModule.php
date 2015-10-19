@@ -736,6 +736,8 @@ class BxWmapModule extends BxDolModule
             'join_field_state' => '',
             'join_field_zip' => '',
             'join_field_address' => '',
+            'join_field_latitude' => '',
+            'join_field_longitude' => '',
             'join_field_title' => '',
             'join_field_uri' => '',
             'join_field_author' => '',
@@ -793,7 +795,7 @@ class BxWmapModule extends BxDolModule
 
     // ================================== other
 
-    function _geocode ($sAddress, $sCountryCode = '')
+    function _geocode($sAddress, $sCountryCode = '')
     {
         $sStatus = false;
 
@@ -814,7 +816,6 @@ class BxWmapModule extends BxDolModule
             return false;
 
         foreach ($oData->results as $oResult) {
-
             $sShortNameCountry = '';
             foreach ($oResult->address_components as $oAddressComponent)
                 if (in_array('country', $oAddressComponent->types))
@@ -836,23 +837,32 @@ class BxWmapModule extends BxDolModule
         $iId = (int)$r['id'];
         $a = false;
 
-        $sState = '';
-        if (isset($r['state']) && trim($r['state']))
-            $sState = ' ' . $r['state'];
+        if (isset($r['latitude']) && isset($r['longitude'])) {
+            $r['latitude'] = floatval($r['latitude']);
+            $r['longitude'] = floatval($r['longitude']);
+            if (is_float($r['latitude']) && is_float($r['longitude'])) {
+                if ($iDelay) sleep ($iDelay);
+                $a = $this->_geocode($r['latitude'] . ', ' . $r['longitude']);
+            }
+        } else {
+            $sState = '';
+            if (isset($r['state']) && trim($r['state']))
+                $sState = ' ' . $r['state'];
 
-        if (isset($r['address']) && trim($r['address'])) {
-            if ($iDelay) sleep ($iDelay);
-            $a = $this->_geocode ($r['address'] . ' ' . $r['city'] . ' ' . $r['state'] . $r['country'], $r['country']);
-        }
+            if (isset($r['address']) && trim($r['address'])) {
+                if ($iDelay) sleep ($iDelay);
+                $a = $this->_geocode($r['address'] . ' ' . $r['city'] . ' ' . $r['state'] . $r['country'], $r['country']);
+            }
 
-        if (!$a && isset($r['zip']) && trim($r['zip'])) {
-            if ($iDelay) sleep ($iDelay);
-            $a = $this->_geocode ($r['zip'] . ' ' . $r['country'], $r['country']);
-        }
+            if (!$a && isset($r['zip']) && trim($r['zip'])) {
+                if ($iDelay) sleep ($iDelay);
+                $a = $this->_geocode($r['zip'] . ' ' . $r['country'], $r['country']);
+            }
 
-        if (!$a) {
-            if ($iDelay) sleep ($iDelay);
-            $a = $this->_geocode ($r['city'] . ' ' . $r['state'] . $r['country'], $r['country']);
+            if (!$a) {
+                if ($iDelay) sleep ($iDelay);
+                $a = $this->_geocode($r['city'] . ' ' . $r['state'] . $r['country'], $r['country']);
+            }
         }
 
         $sTitle = process_db_input($r['title'], BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION);
