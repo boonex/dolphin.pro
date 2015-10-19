@@ -91,6 +91,8 @@ class BxDolDb extends BxDolMistake
 
     function setTimezone($sTimezone)
     {
+        if (!$sTimezone)
+            return;
         $oTimeZone = new DateTimeZone($sTimezone);
         $oDate = new DateTime('now', $oTimeZone);
         mysql_query('SET time_zone = "' . $oDate->format('P') . '"', $this->link);
