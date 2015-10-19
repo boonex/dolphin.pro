@@ -215,8 +215,8 @@ UPDATE `sys_profile_fields` SET `JoinBlock` = 0, `JoinOrder` = NULL WHERE `ID` =
 -- profile fields: remove first and last name fields; add fullname field at the beginning of Misc block; add agree field at the end of misc block
 DELETE FROM `sys_profile_fields` WHERE `Name` IN('FirstName', 'LastName', 'FullName','Agree');
 UPDATE `sys_profile_fields` SET `JoinOrder` = `JoinOrder` + 1 WHERE `JoinBlock` = @iMiscBlockId AND `JoinOrder` > 0;
-INSERT INTO `sys_profile_fields` VALUES(NULL, 'FullName', 'text', NULL, '', 2, 200, '', 'LKey', '', 0, '', 1, 1, 0, @iMiscBlockId, 1, 17, 2, 17, 2, 0, NULL, 17, 2, 17, 5, 0, NULL, 17, 2, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
-INSERT INTO `sys_profile_fields` VALUES(NULL, 'Agree', 'system', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 0, 0, @iMiscBlockId, @iMiscBlockMaxJoinOrder + 2, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
+INSERT INTO `sys_profile_fields` VALUES(NULL, 'FullName', 'text', NULL, '', 2, 200, '', 'LKey', '', 0, '', 1, 1, 0, IFNULL(@iMiscBlockId, 0), IF(ISNULL(@iMiscBlockId), NULL, 1), 17, 2, 17, 2, 0, NULL, 17, 2, 17, 5, 0, NULL, 17, 2, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
+INSERT INTO `sys_profile_fields` VALUES(NULL, 'Agree', 'system', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 0, 0, IFNULL(@iMiscBlockId, 0), IF(ISNULL(@iMiscBlockId), NULL, @iMiscBlockMaxJoinOrder + 2), 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
 
 -- profile fields: make sex field selectbox; disable lookign for field on join form
 UPDATE `sys_profile_fields` SET `Control` = 'select', `Default` = '' WHERE `Name` = 'Sex';
