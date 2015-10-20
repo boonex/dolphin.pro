@@ -21,6 +21,7 @@ class BxBaseEditorTinyMCE extends BxDolEditor
                         {bx_var_custom_conf}
                         document_base_url: '{bx_url_root}',
                         skin_url: '{bx_url_tinymce}skins/{bx_var_skin}/',
+                        language: '{bx_var_lang}',
                         language_url: '{bx_url_tinymce}langs/{bx_var_lang}.js',
                         content_css: '{bx_var_css_path}',
                         entity_encoding: 'raw',
