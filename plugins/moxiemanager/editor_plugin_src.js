@@ -1,4 +1,4 @@
-// 2.0.5 (2015-06-30)
+// 2.0.8 (2015-09-06)
 
 /**
  * Compiled inline version. (Library mode)
@@ -65,10 +65,12 @@
 	}
 
 	function expose(ids) {
-		for (var i = 0; i < ids.length; i++) {
-			var target = exports;
-			var id = ids[i];
-			var fragments = id.split(/[.\/]/);
+		var i, target, id, fragments, privateModules;
+
+		for (i = 0; i < ids.length; i++) {
+			target = exports;
+			id = ids[i];
+			fragments = id.split(/[.\/]/);
 
 			for (var fi = 0; fi < fragments.length - 1; ++fi) {
 				if (target[fragments[fi]] === undefined) {
@@ -79,6 +81,21 @@
 			}
 
 			target[fragments[fragments.length - 1]] = modules[id];
+		}
+		
+		// Expose private modules for unit tests
+		if (exports.AMDLC_TESTS) {
+			privateModules = exports.privateModules || {};
+
+			for (id in modules) {
+				privateModules[id] = modules[id];
+			}
+
+			for (i = 0; i < ids.length; i++) {
+				delete privateModules[ids[i]];
+			}
+
+			exports.privateModules = privateModules;
 		}
 	}
 
@@ -253,10 +270,10 @@ define("moxman/util/Loader", [], function() {
 					waitForGeckoLinkLoaded();
 					appendToHead(style);
 					return;
-				} else {
-					// Use the id owner on older webkits
-					waitForWebKitLinkLoaded();
 				}
+
+				// Use the id owner on older webkits
+				waitForWebKitLinkLoaded();
 			}
 
 			appendToHead(link);
@@ -726,16 +743,21 @@ define("moxman/interop/TinyMcePlugin", [
 		}
 
 		editorSettings.file_browser_callback = function(id, value, type, win) {
-			var zIndex = editor.windowManager.zIndex; // TinyMCE 3
+			var zIndex = editor.windowManager.zIndex, url; // TinyMCE 3
 
 			// TinyMCE 4
 			if (tinymce.ui.FloatPanel) {
 				zIndex = tinymce.ui.FloatPanel.currentZIndex;
 			}
 
+			// Empty value becomes documentBaseUri by default
+			if (tinymce.trim(value).length > 0) {
+				url = editor.documentBaseURI.toAbsolute(value);
+			}
+
 			Loader.browse(tinymce.extend({
 				zIndex: zIndex,
-				url: editor.documentBaseURI.toAbsolute(value),
+				url: url,
 				document_base_url: editorSettings.document_base_url,
 				view: type == "image" || type == "media" ? "thumbs" : "files",
 				multiple: false,
@@ -993,6 +1015,10 @@ define("moxman/interop/CkEditorPlugin", [
 
 				for (var i = 0; i < contents.length; i++) {
 					var element = contents[i];
+
+					if (!element) {
+						return;
+					}
 
 					attachMoxieManager(element.children || element.elements);
 

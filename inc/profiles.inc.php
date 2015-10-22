@@ -565,7 +565,8 @@ function bx_logout($bNotify = true)
         );
     }
 
-    session_destroy();
+    if (version_compare(PHP_VERSION, '5.4.0') >= 0 && PHP_SESSION_ACTIVE == session_status())
+        session_destroy();
 }
 
 function setSearchStartAge($iMin)

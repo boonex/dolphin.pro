@@ -217,6 +217,9 @@
 
                                 for (MessageEl in oResponse[Element].messages)
                                 {
+                                	if( typeof oResponse[Element].messages[MessageEl].message == 'undefined')
+                                		continue;
+
                                     // add messages into container;
                                     sNotifications = '<div class="notifi">' + oResponse[Element].messages[MessageEl].message + '<\/div>';
                                     $(sNotifications).prependTo('#' + self.sNotifyWindow).mouseover(function(){$(this).addClass('active')}).mouseout(function(){$(this).removeClass('active')});

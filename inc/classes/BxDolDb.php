@@ -68,7 +68,7 @@ class BxDolDb extends BxDolMistake
             $this->error('Database connect failed', true);
 
         if (!$this->select_db())
-            $this->error('Database select failed', true);
+            $this->error('Database select failed', true);        
 
         mysql_query("SET NAMES 'utf8'", $this->link);
         mysql_query("SET sql_mode = ''", $this->link);
@@ -87,6 +87,15 @@ class BxDolDb extends BxDolMistake
     function close()
     {
         mysql_close($this->link);
+    }
+
+    function setTimezone($sTimezone)
+    {
+        if (!$sTimezone)
+            return;
+        $oTimeZone = new DateTimeZone($sTimezone);
+        $oDate = new DateTime('now', $oTimeZone);
+        mysql_query('SET time_zone = "' . $oDate->format('P') . '"', $this->link);
     }
 
     /**

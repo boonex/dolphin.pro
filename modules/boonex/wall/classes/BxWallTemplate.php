@@ -124,7 +124,7 @@ class BxWallTemplate extends BxDolModuleTemplate
             'author_url' => getProfileLink($aAuthor['id']),
             'author_username' => getNickName($aAuthor['id']),
         	'bx_if:show_wall_owner' => array(
-        		'condition' => (int)$aEvent['owner_id'] != (int)$aEvent['object_id'],
+        		'condition' => (int)$aEvent['owner_id'] != 0 && (int)$aEvent['owner_id'] != (int)$aEvent['object_id'],
         		'content' => array(
         			'owner_url' => getProfileLink($aEvent['owner_id']),
         			'owner_username' => getNickName($aEvent['owner_id']),

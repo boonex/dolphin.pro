@@ -105,11 +105,12 @@ class BxBaseSearchResult extends BxDolSearchResult
             'bx_if:actionButtons' => array(
                 'condition' => !empty($aBtns),
                 'content' => array(
+                    'class' => $sCustomHtml ? 'admin-actions-buttons-with-custom-html' : '',
                     'bx_repeat:buttons' => $aBtns,
                 )
             ),
             'bx_if:customHTML' => array(
-                'condition' => strlen($sCustomHtml) > 0,
+                'condition' => $sCustomHtml,
                 'content' => array(
                     'custom_HTML' => $sCustomHtml,
                 )

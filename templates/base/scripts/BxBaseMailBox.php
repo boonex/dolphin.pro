@@ -83,8 +83,11 @@
         {
             global $oSysTemplate, $site, $oTemplConfig, $_page;
 
-            $_page['js_name']  = array('mail_box.js'
-                    , BX_DOL_URL_PLUGINS . 'jquery/jquery.autocomplete.js');
+            $_page['js_name']  = array(
+                'mail_box.js', 
+                'plugins/jquery/|jquery.ui.autocomplete.min.js',
+                'plugins/jquery/|jquery.ui.menu.min.js',
+            );
 
             // init some needed variables ;
             $sOutputHtml = null;
@@ -117,7 +120,7 @@
             // ** generate recipient's information ;
 
             $sMemberIcon         = get_member_thumbnail($this -> aMailBoxSettings['recipient_id'], 'none');
-            $sRecipientName      = ( !empty($aMemberInfo) ) ? $aMemberInfo['NickName'] : null;
+            $sRecipientName      = ( !empty($aMemberInfo) ) ? getNickName($aMemberInfo['ID']) : null;
             $sMemberLocation     = ( !empty($aMemberInfo) ) ? getProfileLink($aMemberInfo['ID']) : null;
 
             $aForm = array (
@@ -1602,20 +1605,28 @@
 
         function getAutoCompleteList($sQuery, $iLimit = 10 )
         {
+            $aFields = array ('NickName');
+            bx_import('BxDolMemberInfo');
+            $o = BxDolMemberInfo::getObjectInstance(getParam('sys_member_info_name'));
+            if ($o)
+                $aFields = $o->getMemberNameFields();
+
             // init some needed variables ;
             $iLimit = (int) $iLimit;
             $sQuery = process_db_input($sQuery, BX_TAGS_STRIP);
 
-            $sOutputHtml = null;
+            $sWhere = '';
+            foreach ($aFields as $sField)
+                $sWhere .= "`{$sField}` LIKE '%{$sQuery}%' OR ";
+            $sWhere .= '0';
 
-            $sQuery  = "SELECT `NickName` FROM `Profiles` WHERE `NickName` LIKE '%{$sQuery}%' LIMIT {$iLimit}";
+            $sQuery  = "SELECT `ID`, `NickName` FROM `Profiles` WHERE $sWhere LIMIT {$iLimit}";
             $rResult = db_res($sQuery);
+            $aOutput = array();
+            while( true == ($aRow = mysql_fetch_assoc($rResult)) )
+                $aOutput[] = array('id' => $aRow['ID'], 'value' => getNickName($aRow['ID']));
 
-            while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
-                $sOutputHtml .= "{$aRow['NickName']} \n";
-            }
-
-            return $sOutputHtml;
+            return json_encode($aOutput);
         }
 
         /**

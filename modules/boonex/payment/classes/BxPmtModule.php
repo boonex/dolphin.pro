@@ -678,6 +678,12 @@ class BxPmtModule extends BxDolModule
         return $this->_oDb->getProcessed(array('type' => 'mixed', 'conditions' => $aConditions));
     }
 
+	function serviceGetOption($sOption)
+    {
+		$sOptionPrefix = $this->_oConfig->getOptionsPrefix();
+    	return $this->_oDb->getParam($sOptionPrefix . $sOption);
+    }
+
     function serviceResponse($oAlert)
     {
     	if($oAlert->sUnit != 'profile' || !in_array($oAlert->sAction, array('join', 'delete')))

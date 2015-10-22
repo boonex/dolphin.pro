@@ -63,6 +63,11 @@ class BxPhotosPageAlbumsMy extends BxDolPageView
             'blocks' => array('manageObjectsPending', 'albumObjects'),
             'level' => 1
         ),
+        'manage_profile_photos' => array(
+            'blocks' => array('organize', 'addObjects'),
+            'level' => -1,
+            'nomenu' => 1
+        ),
     );
 
     function BxPhotosPageAlbumsMy (&$oShared, $iOwnerId, $aParams = array())
@@ -425,6 +430,10 @@ class BxPhotosPageAlbumsMy extends BxDolPageView
     function getTopMenu ($sMode = 'main')
     {
         $aTopMenu = array();
+        // do not display a menu add all
+        if (!is_null($this->aCurrentBlocks['nomenu']))
+            return $aTopMenu;
+
         if (strlen($this->aAddParams[1]) > 0) {
             $iCheck = 1;
             $sName = $this->aAddParams[1] . '/' . strip_tags($this->aAddParams[2]) . '/' . strip_tags($this->aAddParams[3]) . '/';

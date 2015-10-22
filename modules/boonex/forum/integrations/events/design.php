@@ -32,12 +32,14 @@ if (isset($_GET['action']) && 'goto' == $_GET['action'] && $_GET['forum_id']) {
 
 if ((isset($_GET['action']) && 'goto' == $_GET['action'] && $_GET['forum_id']) || (isset($_GET['action']) && 'goto' == $_GET['action'] && $_GET['topic_id'])) {
     $oModuleMain = BxDolModule::getInstance('BxEventsModule');
-    if ($oModuleMain && $aForum)
+    if ($oModuleMain && $aForum) {
+        $GLOBALS['oTopMenu']->setCustomSubHeaderUrl(BX_DOL_URL_ROOT . $oModuleMain->_oConfig->getBaseUri() . 'view/' . $aForum['forum_uri']);
         $GLOBALS['oTopMenu']->setCustomBreadcrumbs(array(
             _t('_bx_events') => BX_DOL_URL_ROOT . $oModuleMain->_oConfig->getBaseUri() . 'home/',
             $aForum['forum_title'] => BX_DOL_URL_ROOT . $oModuleMain->_oConfig->getBaseUri() . 'view/' . $aForum['forum_uri'],
             _t('_bx_events_menu_view_forum') => '',
         ));
+    }
 }
 
 // use default dolphin design

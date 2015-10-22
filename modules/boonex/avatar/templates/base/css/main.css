@@ -62,6 +62,10 @@
     position:relative;
 }
 
+#bx_ava_crop_img_preview img {
+    max-width: none;
+}
+
 #bx_ava_crop_img_preview_cont {
     float:left;
 }

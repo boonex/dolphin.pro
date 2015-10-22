@@ -1,5 +1,5 @@
 --
--- Database: v 7.2.0
+-- Database: v 7.2.1
 --
 
 -- --------------------------------------------------------
@@ -386,6 +386,7 @@ CREATE TABLE `sys_objects_auths` (
   `Name` varchar(64) NOT NULL,
   `Title` varchar(128) NOT NULL,
   `Link` varchar(255) NOT NULL,
+  `OnClick` varchar(255) NOT NULL,
   `Icon` varchar(64) NOT NULL,
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
@@ -1049,7 +1050,6 @@ INSERT INTO `sys_options` VALUES
 ('zodiac', '', @iCatProfiles, 'Enable zodiac signs', 'checkbox', '', '', 30, ''),
 ('anon_mode', '', @iCatProfiles, 'Enable anonymous mode', 'checkbox', '', '', 40, ''),
 ('reg_by_inv_only', '', @iCatProfiles, 'Enable registration by invitation only', 'checkbox', '', '', 50, ''),
-('disable_join_form', '', @iCatProfiles, 'Disable free join', 'checkbox', '', '', 55, ''),
 ('enable_cmts_profile_delete', '', @iCatProfiles, 'Allow profile comments deletion by profile owner', 'checkbox', '', '', 60, ''),
 ('member_online_time', '1', @iCatProfiles, 'Online status timeframe (minutes)', 'digit', 'return (int)$arg0 > 0;', 'Must be > 0', 70, ''),
 ('search_start_age', '18', @iCatProfiles, 'Lowest age possible for site members', 'digit', 'return setSearchStartAge((int)$arg0);', '', 80, ''),
@@ -1121,7 +1121,8 @@ SET @iCatSite = 7;
 INSERT INTO `sys_options` VALUES
 ('site_email', 'captain@example.com', @iCatSite, 'Site Email', 'digit', '', '', 10, ''),
 ('site_title', 'Community', @iCatSite, 'Site Title', 'digit', '', '', 20, ''),
-('site_email_notify', 'no-reply@example.com', @iCatSite, 'Email to send site''s mail from', 'digit', '', '', 30, '');
+('site_email_notify', 'no-reply@example.com', @iCatSite, 'Email to send site''s mail from', 'digit', '', '', 30, ''),
+('site_timezone', 'UTC', @iCatSite, 'Site Timezone', 'select', '', '', 40, 'PHP:return array_combine(timezone_identifiers_list(), timezone_identifiers_list());');
 
 
 -- CAT: Privacy
@@ -1273,7 +1274,7 @@ INSERT INTO `sys_options` VALUES
 SET @iCatHidden = 0;
 INSERT INTO `sys_options` VALUES
 
-('sys_tmp_version', '7.2.0', @iCatHidden, 'Dolphin version ', 'digit', '', '', 10, ''),
+('sys_tmp_version', '7.2.1', @iCatHidden, 'Dolphin version ', 'digit', '', '', 10, ''),
 ('license_code', '', @iCatHidden, 'Dolphin License Code', 'digit', '', '', 11, ''),
 ('license_expiration', '', @iCatHidden, 'Dolphin License Expiration', 'digit', '', '', 12, ''),
 ('license_checksum', '', @iCatHidden, 'Dolphin License Checksum', 'digit', '', '', 13, ''),
@@ -2346,6 +2347,10 @@ INSERT INTO `sys_profile_fields` VALUES(64, 'FavoriteBooks', 'area', NULL, '', N
 INSERT INTO `sys_profile_fields` VALUES(66, 'FullName', 'text', NULL, '', 2, 200, '', 'LKey', '', 0, '', 1, 1, 0, 20, 1, 17, 2, 17, 2, 0, NULL, 17, 2, 17, 5, 0, NULL, 17, 2, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(67, 'allow_view_to', 'system', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 0, 0, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(68, 'Agree', 'system', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 0, 0, 20, 7, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
+INSERT INTO `sys_profile_fields` VALUES(NULL, 'FirstName', 'text', NULL, '', 2, 200, '', 'LKey', '', 0, '', 1, 0, 0, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
+INSERT INTO `sys_profile_fields` VALUES(NULL, 'LastName',  'text', NULL, '', 2, 200, '', 'LKey', '', 0, '', 1, 0, 0, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
+
+
 -- --------------------------------------------------------
 
 --
@@ -2424,6 +2429,8 @@ CREATE TABLE `Profiles` (
   `FavoriteFilms` text NOT NULL,
   `FavoriteBooks` text NOT NULL,
   `FullName` varchar(255) NOT NULL,
+  `FirstName` varchar(255) NOT NULL,
+  `LastName` varchar(255) NOT NULL,
   PRIMARY KEY  (`ID`),
   UNIQUE KEY `NickName` (`NickName`),
   KEY `Country` (`Country`),

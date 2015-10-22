@@ -51,7 +51,6 @@
             </xsl:choose>
 
         </xsl:with-param>
-        <xsl:with-param name="menu" select="exsl:node-set($menu_links)/*" />
     </xsl:call-template>
 
     <xsl:value-of select="/root/index_end" disable-output-escaping="yes" />

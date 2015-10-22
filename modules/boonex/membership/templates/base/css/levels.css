@@ -21,12 +21,14 @@ div.mbp-current-levels,
 div.mbp-available-levels {}
 div.mbp-level {
 	position: relative;
-    margin: 10px 0px 0px 0px;
+    margin: 20px 0px 0px 0px;
 }
 div.mbp-level:first-child {
 	margin-top: 0px;
 }
 div.mbp-level-icon {
+	top: 0px;
+	left: 0px;
     width: 114px;
     height: 114px;
     
@@ -59,6 +61,12 @@ div.mbp-level-price {
 	color: #008000;
 }
 div.mbp-level-control {}
+div.mbp-level-control .bx-btn {
+	margin: 5px 10px 5px 0px;
+}
+div.mbp-level-control .bx-btn i {
+	margin-right: 0px;
+}
 
 /*--- 'Available levels', 'Current Level' Styles ---*/
 div.mbp-current-level {
@@ -79,22 +87,15 @@ div.mbp-available-levels-wrp {
 	overflow: hidden;
 }
 div.mbp-available-levels {
-	width: 200%;
-}
-div.mbp-al-col-left {
 	position: relative;
-	float: left;
-	width: 25%;
 }
-div.mbp-al-col-right {
+div.mbp-available-levels div.mbp-level {
 	position: relative;
-	float: right;
+	display: inline-block;
 	width: 50%;
 }
-div.mbp-al-col-right-cnt {
-    position: relative;
-    right: 50%;
-	width: 50%;
+div.join-box-form div.mbp-available-levels div.mbp-level {
+	width: 100%;
 }
 div.mbp-sp-caption {
 	text-transform: uppercase;

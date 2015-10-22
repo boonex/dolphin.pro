@@ -602,7 +602,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
 
         $aUnit['bx_repeat:units'] = array();
         for($i = 0; $i < $iPics; $i++)
-            $aUnit['bx_repeat:units'][] = $this->_getAlbumUnitItem($i, array_shift($aPics));
+            $aUnit['bx_repeat:units'][] = $this->_getAlbumUnitItem($i, array_shift($aPics), array('album_url' => $sLink));
 
 		$sResult = $this->oTemplate->parseHtmlByName('album_unit.html', $aUnit, array('{','}'));
 		if(!empty($aData['show_as_list'])) {
@@ -616,7 +616,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         return $sResult;
     }
 
-    function _getAlbumUnitItem($iIndex, $aPicture)
+    function _getAlbumUnitItem($iIndex, $aPicture, $aParams = array())
     {
     	$sClass = '';
 

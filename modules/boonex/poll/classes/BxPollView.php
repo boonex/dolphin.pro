@@ -71,8 +71,10 @@ class BxPollView extends BxDolPageView
 
         $this -> aModule = $aModule;
 
+        $GLOBALS['oTopMenu']->setCustomSubHeaderUrl(BX_DOL_URL_ROOT . $this -> oModule -> _oConfig -> getBaseUri() . '&action=show_poll_info&id=' . $this -> iPollId);
+
         $GLOBALS['oTopMenu']->setCustomBreadcrumbs(array(
-            _t('_bx_poll') => BX_DOL_URL_ROOT . $this-> oModule -> _oConfig -> getBaseUri() . '&action=poll_home',
+            _t('_bx_poll') => BX_DOL_URL_ROOT . $this -> oModule -> _oConfig -> getBaseUri() . '&action=poll_home',
             $this -> aPollInfo['poll_question'] => '',
         ));
     }

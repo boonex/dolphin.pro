@@ -109,12 +109,9 @@ class MOXMAN_Azure_File extends MOXMAN_Vfs_BaseFile {
 		}
 
 		if ($dest instanceof MOXMAN_Azure_File) {
-			$containerUrl = MOXMAN_Util_PathUtils::combine(
-				$this->fileSystem->getContainerOption("account"),
-				$this->fileSystem->getContainerOption("name")
-			);
-
-			$fromUrl = "/" . MOXMAN_Util_PathUtils::combine($containerUrl, $this->getInternalPath());
+			$fromUrl = $this->fileSystem->getContainerOption("url");
+			$fromUrl = MOXMAN_Util_PathUtils::combine($fromUrl, $this->fileSystem->getContainerOption("name"));
+			$fromUrl = MOXMAN_Util_PathUtils::combine($fromUrl, $this->getInternalPath());
 
 			$request = $this->getFileSystem()->createRequest(array(
 				"method" => "PUT",
@@ -250,8 +247,9 @@ class MOXMAN_Azure_File extends MOXMAN_Vfs_BaseFile {
 	public function getUrl() {
 		$fileSystem = $this->getFileSystem();
 		$prefix = $fileSystem->getContainerOption("urlprefix");
+		$url = $prefix ? MOXMAN_Util_PathUtils::combine($prefix, $this->getInternalPath()) : "";
 
-		return $prefix ? MOXMAN_Util_PathUtils::combine($prefix, $fileSystem->getContainerOption("name") . $this->getInternalPath()) : "";
+		return $url;
 	}
 
 	/**

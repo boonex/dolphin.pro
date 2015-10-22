@@ -44,6 +44,17 @@ div.bx_videos-wall-shp-wrapper {
 
 	overflow: hidden;
 }
+div.bx_videos-wall-shp-duration {
+	position: absolute;
+	
+	bottom: 5px;
+	right: 5px;
+
+	padding: 3px;
+
+	background-color: rgba(0, 0, 0, 0.2);
+	color: #ffffff;
+}
 div.bx_videos-wall-comments {
     padding-left: 0px;
 }

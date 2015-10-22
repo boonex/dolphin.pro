@@ -51,8 +51,8 @@
         : '';
 
     // contain query from js for autocomplete;
-    $sAutoCompleteQ = ( isset($_GET['q']) )
-        ? $_GET['q']
+    $sAutoCompleteQ = ( isset($_GET['term']) )
+        ? $_GET['term']
         : '';
 
     // try to segregate received messages list;

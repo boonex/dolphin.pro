@@ -50,14 +50,16 @@ class MOXMAN_ExternalAuthenticator_Plugin implements MOXMAN_Auth_IAuthenticator 
 		// Build url
 		if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") {
 			$url = "https://";
+			$defaultPort = 443;
 		} else {
 			$url = "http://";
+			$defaultPort = 80;
 		}
 
 		$url .= $_SERVER['HTTP_HOST'];
 
-		if ($_SERVER['SERVER_PORT'] != 80) {
-			$url .= ':' . $_SERVER['SERVER_PORT'];
+		if ($_SERVER['SERVER_PORT'] != $defaultPort) {
+			$url .= ':' . $defaultPort;
 		}
 
 		$httpClient = new MOXMAN_Http_HttpClient($url);

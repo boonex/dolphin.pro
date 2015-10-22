@@ -17,7 +17,7 @@ class MOXMAN_Azure_FileSystem extends MOXMAN_Vfs_FileSystem {
 	 * @param String $scheme File system protocol scheme.
 	 * @param MOXMAN_Util_Config $config Config instance for file system.
 	 * @param String $root Root path for file system.
-	 */	
+	 */
 	public function __construct($scheme, $config, $root) {
 		parent::__construct($scheme, $config, $root);
 
@@ -46,7 +46,21 @@ class MOXMAN_Azure_FileSystem extends MOXMAN_Vfs_FileSystem {
 
 		if (!$this->getContainerOption("url")) {
 			$this->setContainerOption("url", "http://" . $account . ".blob.core.windows.net");
-			$this->setContainerOption("urlprefix", "http://" . $account . ".blob.core.windows.net/");
+			$urlprefix = $this->getContainerOption("urlprefix");
+
+			if (!$urlprefix) {
+				$this->setContainerOption("urlprefix", "http://" . $account . ".blob.core.windows.net/" . $containerName);
+			} else {
+				// Normalize urlprefix and add container
+				$url = parse_url($urlprefix);
+				if (!isset($url["path"]) || $url["path"] == "/") {
+					$url["path"] = "/" . $this->getContainerOption("name");
+				}
+
+				$urlprefix = MOXMAN_Util_Url::buildUrl($url);
+				$this->setContainerOption("urlprefix", $urlprefix);
+			}
+
 			$this->setContainerOption("path", "/" . $containerName);
 		} else {
 			$this->setContainerOption("path", "/" .  $account . "/" . $containerName);
@@ -86,7 +100,7 @@ class MOXMAN_Azure_FileSystem extends MOXMAN_Vfs_FileSystem {
 
 	/**
 	 * Closes the file system. This will release any resources used by the file system.
-	 */	
+	 */
 	public function close() {
 		if ($this->httpClient) {
 			$this->httpClient->close();
@@ -149,14 +163,54 @@ class MOXMAN_Azure_FileSystem extends MOXMAN_Vfs_FileSystem {
 		return $this->config->get($this->containerConfigPrefix . $name, $default);
 	}
 
-	/**
-	 * signRequest
-	 *
-	 * @param MOXMAN_Http_HttpClientRequest $request Request from HttpClient to sign.
-	 * @return MOXMAN_Http_HttpClientRequest HttpClient Request returned with right headers signed.
-	 */
-	private function signRequest(MOXMAN_Http_HttpClientRequest $request) {
-		$signData = array(
+	private function getCanonicalizedResource(MOXMAN_Http_HttpClientRequest $request) {
+		$query = array();
+		$url = $request->getUrl();
+
+		if (isset($url["query"])) {
+			parse_str($url["query"], $query);
+		}
+
+		$query = array_change_key_case($query);
+		$canonicalizedResource = '/' . $this->getContainerOption("account");
+		$canonicalizedResource .= $url["path"];
+		if (count($query) > 0) {
+			ksort($query);
+		}
+
+		foreach ($query as $key => $value) {
+			$values = explode(',', $value);
+			sort($values);
+			$separated = implode(',', $values);
+			$canonicalizedResource .= "\n" . $key . ':' . $separated;
+		}
+
+		return $canonicalizedResource;
+	}
+
+	private function getCanonicalizedHeaders(MOXMAN_Http_HttpClientRequest $request) {
+		$headers = $request->getHeaders();
+		$canonicalizedHeaders = array();
+		$normalizedHeaders = array();
+
+		foreach ($headers as $header => $value) {
+			$header = strtolower($header);
+			if (strpos($header, "x-ms-") === 0) {
+				$value = str_replace("\r\n", ' ', $value);
+				$normalizedHeaders[rtrim($header)] = ltrim($value);
+			}
+		}
+
+		ksort($normalizedHeaders);
+		foreach ($normalizedHeaders as $key => $value) {
+			$canonicalizedHeaders[] = $key . ':' . $value;
+		}
+
+		return $canonicalizedHeaders;
+	}
+
+	private function getStringToString(MOXMAN_Http_HttpClientRequest $request) {
+		$headers = array(
 			"Content-Encoding",
 			"Content-Language",
 			"Content-Length",
@@ -170,38 +224,44 @@ class MOXMAN_Azure_FileSystem extends MOXMAN_Vfs_FileSystem {
 			"Range"
 		);
 
-		$signed = strtoupper($request->getMethod()) . "\n";
-		foreach ($signData as $name) {
-			$signed .= $request->getHeader($name) . "\n";
+		$canonicalizedHeaders = $this->getCanonicalizedHeaders($request);
+		$canonicalizedResource = $this->getCanonicalizedResource($request);
+
+		$stringToSign = array();
+		$stringToSign[] = strtoupper($request->getMethod());
+
+		foreach ($headers as $header) {
+			$value = $request->getHeader($header);
+
+			if ($header == "Content-Length" && $value == 0) {
+				$value = "";
+			}
+
+			$stringToSign[] = $value;
 		}
 
+		if (count($canonicalizedHeaders) > 0) {
+			$stringToSign[] = implode("\n", $canonicalizedHeaders);
+		}
+
+		$stringToSign[] = $canonicalizedResource;
+		$stringToSign = implode("\n", $stringToSign);
+
+		return $stringToSign;
+	}
+
+	/**
+	 * signRequest
+	 *
+	 * @param MOXMAN_Http_HttpClientRequest $request Request from HttpClient to sign.
+	 * @return MOXMAN_Http_HttpClientRequest HttpClient Request returned with right headers signed.
+	 */
+	private function signRequest(MOXMAN_Http_HttpClientRequest $request) {
 		$request->setHeader("x-ms-date", gmdate('D, d M Y H:i:s T', time()));
-		$request->setHeader("x-ms-version", "2009-09-19");
-
-		foreach ($request->getHeaders() as $name => $val) {
-			if (strpos($name, "x-ms-") === 0) {
-				$signed .= $name . ":" . $val . "\n";
-			}
-		}
-
-		$url = $request->getUrl();
-
-		$signed .= "/" . $this->getContainerOption("account") . $url["path"];
-
-		if (isset($url["query"])) {
-			$queryParts = array();
-			parse_str($url["query"], $queryParts);
-			$keys = array_keys($queryParts);
-			sort($keys);
-			foreach ($keys as $key) {
-				$signed .= "\n" . $key . ":" . $queryParts[$key];
-			}
-		}
-
-	 	$hash = hash_hmac("sha256", $signed, base64_decode($this->getContainerOption("sharedkey")), true);
-		$signature = base64_encode($hash);
-
-		$request->setHeader("Authorization", "SharedKey " . $this->getContainerOption("account") . ":" . $signature);
+		$request->setHeader("x-ms-version", "2015-02-21");
+		$stringToSign = $this->getStringToString($request);
+	 	$hash = hash_hmac("sha256", $stringToSign, base64_decode($this->getContainerOption("sharedkey")), true);
+		$request->setHeader("Authorization", "SharedKey " . $this->getContainerOption("account") . ":" . base64_encode($hash));
 
 		return $request;
 	}

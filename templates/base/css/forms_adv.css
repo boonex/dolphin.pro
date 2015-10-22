@@ -63,6 +63,11 @@
     white-space: nowrap;
 }
 
+.form_advanced_table .input_wrapper_wraptext,
+.form_advanced_table .bx-form-value label {
+    white-space: normal;
+}
+
 .form_advanced_table .bx-form-combined b {
 	text-transform: capitalize;
 }

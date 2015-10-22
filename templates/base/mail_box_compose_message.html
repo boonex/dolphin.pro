@@ -27,15 +27,15 @@
 	{
 		var sPageUrl = this.sPageReceiver ;
 
-		// get nicknames list ;
-		$("#" + htmlSelectors[8]).autocomplete(sPageUrl + '&action=auto_complete', {
-			width: 260,
-			selectFirst: false
-		});	
-
-		// get member thumbnail ;
-        $("#" + htmlSelectors[8]).result(function(event, data, formatted) {
-			getHtmlData(htmlSelectors[9],  sPageUrl + '&action=get_thumbnail&recipient_id=' + encodeURIComponent(data));
+		$("#" + htmlSelectors[8]).autocomplete({
+            source: sPageUrl + '&action=auto_complete',
+            minLength: 1,
+            select: function(event, data) {
+                if (data.item) {
+                    $('#' + htmlSelectors[10]).val(data.item.id);
+    			    getHtmlData(htmlSelectors[9],  sPageUrl + '&action=get_thumbnail&recipient_id=' + encodeURIComponent(data.item.id));
+                }
+		    }
 		});
 	}
 
@@ -58,6 +58,7 @@
 	 					<div>__message_to__</div>
 	 					<div class="input_wrapper input_wrapper_text clearfix">
 	                    	<input type="text" value="__recipient_name__" id="message_recipient" class="form_input_text bx-def-font-inputs ac_input" />
+                            <input type="hidden" value="__recipient_id__" id="message_recipient_id" />
 	                    </div>
 	 					<div class="bx-def-padding-thd-top">__subject__ :</div>
 	  					<div class="input_wrapper input_wrapper_text clearfix">
@@ -71,15 +72,15 @@
     		<textarea id="compose_message" class="story_edit_area"></textarea>
     	</div>
     	<div class="message_actions message_actions_compose">
-            <div class="message_actions_cnt bx-def-padding-sec">
+            <div class="message_actions_cnt bx-def-padding-sec clearfix">
         		<div class="messages_options">
-        			<label><input type="checkbox" id="to_mail"/>__send_copy_to__</label>
-        			<br />
-        			<label><input type="checkbox" id="to_my_mail"/>__send_copy_my__</label>
-        			<br />
+        			<label><input type="checkbox" id="to_mail"/>__send_copy_to__</label><br />
+        			<label><input type="checkbox" id="to_my_mail"/>__send_copy_my__</label><br />
         			<label><input type="checkbox" id="notify_mail"/>__notify__</label>
         		</div>
-                __compose_actions_buttons__
+        		<div class="messages_buttons">
+                	__compose_actions_buttons__
+                </div>
             </div>
         </div>
     </div>

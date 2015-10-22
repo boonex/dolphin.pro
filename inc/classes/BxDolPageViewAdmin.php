@@ -264,7 +264,7 @@ class BxDolPageViewAdmin
             return;
 
         $sCaption = process_db_input($aData['Caption'], BX_TAGS_STRIP);
-        $iDesignBox = (int)$aData['DesignBox'] > 0 ? (int)$aData['DesignBox'] : 1;
+        $iDesignBox = isset($aData['DesignBox']) > 0 ? (int)$aData['DesignBox'] : 1;
         $sVisible = is_array( $aData['Visible'] ) ? implode( ',', $aData['Visible'] ) : '';
         $iCache = (int)$aData['Cache'] > 0 ? (int)$aData['Cache'] : 0;
 
@@ -775,10 +775,12 @@ class BxDolPVAPage
         $rSamples  = db_res( $sQuerySamples );
 
         while( $aBlock = mysql_fetch_assoc( $rInactive ) )
-            $this -> aBlocksInactive[ (int)$aBlock['ID'] ] = _t( $aBlock['Caption'] );
+            $this -> aBlocksInactive[ (string)$aBlock['ID'] . ' '] = _t( $aBlock['Caption'] );
 
         while( $aBlock = mysql_fetch_assoc( $rSamples ) )
             $this -> aBlocksSamples[ (int)$aBlock['ID'] ] = _t( $aBlock['Caption'] );
+
+        asort($this -> aBlocksInactive, SORT_STRING | SORT_FLAG_CASE);
     }
 
     function getJSON()

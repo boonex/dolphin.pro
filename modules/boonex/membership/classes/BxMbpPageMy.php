@@ -4,9 +4,9 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolTextPageView');
+bx_import('BxDolPageView');
 
-class BxMbpPageMy extends BxDolTextPageView
+class BxMbpPageMy extends BxDolPageView
 {
 	var $_oObject;
 

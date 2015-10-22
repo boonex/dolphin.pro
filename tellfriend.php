@@ -67,7 +67,7 @@ $aForm = array(
             'type' => 'text',
             'name' => 'name',
             'caption' => _t("_Your name"),
-            'value' => $aSenderInfo['NickName'],
+            'value' => getNickName($aSenderInfo['ID']),
         ),
         'email' => array(
             'type' => 'text',

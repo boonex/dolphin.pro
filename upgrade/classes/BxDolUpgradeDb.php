@@ -296,6 +296,21 @@ class BxDolUpgradeDb
         //return mysql_list_tables($GLOBALS['db']['db'], $this->link) or $this->error('Database get encoding error');
     }
 
+    function getFields($sTable)
+    {
+        $rFields = mysql_list_fields($this->dbname, $sTable, $this->link);
+        $iFields = mysql_num_fields($rFields);
+
+        $aResult = array('original' => array(), 'uppercase' => array());
+        for($i = 0; $i < $iFields; $i++) {
+            $sName = mysql_field_name($rFields, $i);
+            $aResult['original'][] = $sName;
+            $aResult['uppercase'][] = strtoupper($sName);
+        }
+
+        return $aResult;
+    }
+
     function getEncoding()
     {
         return  mysql_client_encoding($this->link) or $this->error('Database get encoding error');

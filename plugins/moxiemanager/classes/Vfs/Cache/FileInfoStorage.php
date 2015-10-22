@@ -105,6 +105,8 @@ class MOXMAN_Vfs_Cache_FileInfoStorage {
 					"size" => $size,
 					"lastModified" => $lmod
 				);
+			} else {
+				$excludedNames[$name] = $file;
 			}
 		}
 
@@ -120,25 +122,27 @@ class MOXMAN_Vfs_Cache_FileInfoStorage {
 		$stmt->bindParam(':mc_last_modified', $lastModified);
 		$stmt->bindParam(':mc_cached_time', $cachedTime);
 
-		foreach ($excludedNames as $name) {
-			$name = $file->getName();
-			$attrs = $file->isDirectory() ? "d" : "-";
-			$attrs .= $file->canRead() ? "r" : "-";
-			$attrs .= $file->canWrite() ? "w" : "-";
-			$attrs .= "-";
-			$size = $file->isFile() ? $file->getSize() : null;
-			$lmod = $file->getLastModified();
-			$lastModified = date('Y-m-d H:i:s', $lmod);
-			$stmt->execute();
+		foreach ($excludedNames as $name => $file) {
+			if ($file instanceof MOXMAN_Vfs_IFile) {
+				$name = $file->getName();
+				$attrs = $file->isDirectory() ? "d" : "-";
+				$attrs .= $file->canRead() ? "r" : "-";
+				$attrs .= $file->canWrite() ? "w" : "-";
+				$attrs .= "-";
+				$size = $file->isFile() ? $file->getSize() : null;
+				$lmod = $file->getLastModified();
+				$lastModified = date('Y-m-d H:i:s', $lmod);
+				$stmt->execute();
 
-			$items[] = array(
-				"name" => $name,
-				"isDirectory" => $attrs[0] == 'd',
-				"canRead" => $attrs[1] == 'r',
-				"canWrite" => $attrs[2] == 'w',
-				"size" => $size,
-				"lastModified" => $lmod
-			);
+				$items[] = array(
+					"name" => $name,
+					"isDirectory" => $attrs[0] == 'd',
+					"canRead" => $attrs[1] == 'r',
+					"canWrite" => $attrs[2] == 'w',
+					"size" => $size,
+					"lastModified" => $lmod
+				);
+			}
 		}
 
 		$pdo->commit();

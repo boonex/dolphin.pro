@@ -5,11 +5,11 @@
 	           <input type="checkbox" name="entry[]" value="{id}" {checked}/>
 	       </div>
 	    </bx_if:editMode>
-	    <div class="sys_album" onclick="window.location = '{albumUrl}';">
+	    <div class="sys_album">
 	        <div class="sys_album_cnt">
 	            <bx_repeat:units>
 	                <bx_if:exist>
-	                    <div class="sys_album_item{class}" style="background-image: url('{unit}');">
+	                    <div class="sys_album_item{class}" style="background-image: url('{unit}');" onclick="window.location = '{url}';">
 	                        <img src="<bx_image_url:spacer.gif />"/> 
 	                    </div>
 	                </bx_if:exist>

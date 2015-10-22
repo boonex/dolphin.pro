@@ -266,6 +266,7 @@ class BxDolFilesModule extends BxDolModule
             $this->_oTemplate->displayPageNotFound();
         }
         $GLOBALS['oTopMenu']->setCustomSubHeader(_t('_sys_album_x_photo_x', $aInfo['albumCaption'], $sKey));
+        $GLOBALS['oTopMenu']->setCustomSubHeaderUrl(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'browse/album/' . $aInfo['albumUri'] . '/owner/' . $aInfo['NickName']);
         $GLOBALS['oTopMenu']->setCustomBreadcrumbs(array(
             _t('_' . $this->_oConfig->getMainPrefix()) => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'home/',
             $aInfo['albumCaption'] => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'browse/album/' . $aInfo['albumUri'] . '/owner/' . $aInfo['NickName'],
@@ -294,6 +295,7 @@ class BxDolFilesModule extends BxDolModule
                     }
 
                     $GLOBALS['oTopMenu']->setCustomSubHeader(_t('_sys_album_x', $aAlbumInfo['Caption']));
+                    $GLOBALS['oTopMenu']->setCustomSubHeaderUrl(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'browse/album/' . $aAlbumInfo['Uri'] . '/owner/' . $sParamValue2);
 					$GLOBALS['oTopMenu']->setCustomBreadcrumbs(array(
 						_t('_' . $this->_oConfig->getMainPrefix()) => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'home/',
 						$aAlbumInfo['Caption'] => '',
@@ -796,7 +798,7 @@ class BxDolFilesModule extends BxDolModule
 
         $sClassName = $this->_oConfig->getClassPrefix() . 'Search';
         bx_import('Search', $this->_aModule);
-        $oSearch = new $sClassName('album', $sAlbumUri, 'owner', getNickName($this->_iProfileId));
+        $oSearch = new $sClassName('album', $sAlbumUri, 'owner', getUsername($this->_iProfileId));
         $oSearch->bAdminMode = false;
         $oSearch->aCurrent['view'] = 'short';
         $oSearch->aCurrent['restriction']['album']['value'] = $sAlbumUri;
@@ -1571,13 +1573,25 @@ class BxDolFilesModule extends BxDolModule
         $sItemThumbnailType = isset($aParams['thumbnail_type']) ? $aParams['thumbnail_type'] : 'browse';
 
         $iDeleted = 0;
-        $aItems = array();
+        $aItems = $aTmplItems = array();
         foreach($aObjectIds as $iId) {
             $aItem = $oSearch->serviceGetItemArray($iId, $sItemThumbnailType);
             if(empty($aItem))
                 $iDeleted++;
             else if($aItem['status'] == 'approved' && $this->oAlbumPrivacy->check('album_view', $aItem['album_id'], $this->oModule->_iProfileId))
                 $aItems[] = $aItem;
+
+			$aItem2x = $oSearch->serviceGetItemArray($iId, $sItemThumbnailType . '2x');
+
+			$aTmplItems[] = array_merge($aItem, array(
+				'mod_prefix' => $sPrefix,
+				'cnt_item_width' => $aItem['dims']['w'],
+				'cnt_item_height' => $aItem['dims']['h'],
+				'cnt_item_icon' => $aItem['file'],
+				'cnt_item_icon_2x' => !empty($aItem2x['file']) ? $aItem2x['file'] : $aItem['file'],
+				'cnt_item_page' => $aItem['url'],
+				'cnt_item_title' => $aItem['title'],
+			));
         }
 
         if($iDeleted == count($aObjectIds))
@@ -1598,19 +1612,10 @@ class BxDolFilesModule extends BxDolModule
 
         //--- Grouped events
         if($iItems > 1) {
-            if($iItems > 4)
+            if($iItems > 4) {
                 $aItems = array_slice($aItems, 0, 4);
-
-            $aTmplItems = array();
-            foreach($aItems as $aItem)
-                $aTmplItems[] = array(
-                    'mod_prefix' => $sPrefix,
-                    'cnt_item_width' => $aItem['width'],
-                    'cnt_item_height' => $aItem['height'],
-                    'cnt_item_page' => $aItem['url'],
-                    'cnt_item_icon' => $aItem['file'],
-                    'cnt_item_title' => $aItem['title'],
-                );
+                $aTmplItems = array_slice($aTmplItems, 0, 4);
+            }
 
             $aExtra = unserialize($aEvent['content']);
             $sAlbumUri = $aExtra['album'];
@@ -1641,6 +1646,7 @@ class BxDolFilesModule extends BxDolModule
         }
 
         $aItem = $aItems[0];
+        $aTmplItem = $aTmplItems[0];
         $sAddedNewTxt = _t('_' . $sPrefix . '_wall_added_new');
 
         //--- Single public event
@@ -1650,20 +1656,15 @@ class BxDolFilesModule extends BxDolModule
             'title' => $sOwner . ' ' . $sAddedNewTxt . ' ' . $sItemTxt,
             'description' => $aItem['description'],
             'grouped' => false,
-            'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTemplateName, array(
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTemplateName, array_merge($aTmplItem, array(
                 'mod_prefix' => $sPrefix,
                 'mod_icon' => $sIcon,
                 'cpt_user_name' => $sOwner,
                 'cpt_added_new' => $sAddedNewTxt,
                 'cpt_item_url' => $aItem['url'],
                 'cpt_item' => $sItemTxt,
-                'cnt_item_width' => $aItem['width'],
-                'cnt_item_height' => $aItem['height'],
-                'cnt_item_page' => $aItem['url'],
-                'cnt_item_icon' => $aItem['file'],
-                'cnt_item_title' => $aItem['title'],
                 'post_id' => $aEvent['id']
-            ))
+            )))
         );
     }
 

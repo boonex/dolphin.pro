@@ -248,13 +248,27 @@ class MOXMAN_Http_HttpClientSocketRequest extends MOXMAN_Http_HttpClientRequest 
 				$ip = self::$hostCache[$host];
 			}
 
+			$contextOptions = array(
+				'ssl' => array(
+					'verify_peer' => false,
+					'verify_host' => false
+				),
+
+				'tls' => array(
+					'verify_peer' => false,
+					'verify_host' => false
+				)
+			);
+
+			$sslContext = stream_context_create($contextOptions);
+
 			if ($scheme == "https") {
-				$this->socket = stream_socket_client("ssl://" . $host . ":" . $port, $errno, $errstr, 5, STREAM_CLIENT_CONNECT);
-			} if ($scheme == "tls") {
+				$this->socket = stream_socket_client("ssl://" . $host . ":" . $port, $errno, $errstr, 5, STREAM_CLIENT_CONNECT, $sslContext);
+			} else if ($scheme == "tls") {
 				$port = 443;
-				$this->socket = stream_socket_client("tls://" . $host . ":" . $port, $errno, $errstr, 5, STREAM_CLIENT_CONNECT);
+				$this->socket = stream_socket_client("tls://" . $host . ":" . $port, $errno, $errstr, 5, STREAM_CLIENT_CONNECT, $sslContext);
 			} else {
-				$this->socket = stream_socket_client("tcp://" . $ip . ":" . $port, $errno, $errstr, 5, STREAM_CLIENT_CONNECT);
+				$this->socket = stream_socket_client("tcp://" . $ip . ":" . $port, $errno, $errstr, 5, STREAM_CLIENT_CONNECT, $sslContext);
 			}
 
 			// Socket connection failed

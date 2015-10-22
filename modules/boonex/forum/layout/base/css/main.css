@@ -561,7 +561,6 @@ div.pages
 
 .forum_default_padding {
     padding:10px;
-
 }
 
 .forum_default_margin_top {
@@ -578,6 +577,13 @@ div.pages
 
 .forum_default_margin_left {
     margin-left:10px;
+}
+
+.forum_bullet:before {
+    content:"\B7";
+    display:inline-block;
+    width:10px;
+    text-align:center;
 }
 
 /******** post reply ********/

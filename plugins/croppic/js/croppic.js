@@ -1,5 +1,5 @@
 /*
- * CROP
+ * CROPPIC
  * dependancy: jQuery
  * author: Ognjen "Zmaj Džedaj" Božičković and Mat Steinlin
  */
@@ -139,7 +139,7 @@
 			var that = this;
 			
 			// CREATE UPLOAD IMG FORM
-            var formHtml = '<form class="' + that.id + '_imgUploadForm" style="display: none; visibility: hidden;">  <input type="file" name="img" id="' + that.id + '_imgUploadField">  </form>';
+            var formHtml = '<form class="' + that.id + '_imgUploadForm" style="visibility: hidden;">  <input type="file" name="img" id="' + that.id + '_imgUploadField">  </form>';
 			that.outputDiv.append(formHtml);
 			that.form = that.outputDiv.find('.'+that.id+'_imgUploadForm');
 			
@@ -165,6 +165,7 @@
 					}
 					
 					that.croppedImg.remove();
+					that.croppedImg = {};
 					$(this).hide();
 					
 					if (typeof (that.options.onAfterRemoveCroppedImg) === typeof(Function)) {
@@ -189,35 +190,47 @@
 				that.imgUploadControl.hide();
 				
 				if(that.options.processInline){			
-				
-					var reader = new FileReader();
-					reader.onload = function (e) {
-						var image = new Image();
-						image.src = e.target.result;
-						image.onload = function(){
-							that.imgInitW = that.imgW = image.width;
-							that.imgInitH = that.imgH = image.height;
+					// Checking Browser Support for FileReader API
+				    if (typeof FileReader == "undefined"){
+						if (that.options.onError) that.options.onError.call(that,"processInline is not supported by your Browser");
+						that.reset();
+					}else{					
+						var reader = new FileReader();					
+						reader.onload = function (e) {
+							var image = new Image();
+							image.src = e.target.result;
+							image.onload = function(){
+								that.imgInitW = that.imgW = image.width;
+								that.imgInitH = that.imgH = image.height;
 
-							if(that.options.modal){	that.createModal(); }
-							if( !$.isEmptyObject(that.croppedImg)){ that.croppedImg.remove(); }
-							
-							that.imgUrl=image.src;
-							
-							that.obj.append('<img src="'+image.src+'">');
-							
-							that.initCropper();
-							that.hideLoader();
-							
-							if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
-																				
-						}
-					};
-					reader.readAsDataURL(that.form.find('input[type="file"]')[0].files[0]);
-
+								if(that.options.modal){	that.createModal(); }
+								if( !$.isEmptyObject(that.croppedImg)){ that.croppedImg.remove(); }
+								
+								that.imgUrl=image.src;
+								
+								that.obj.append('<img src="'+image.src+'">');
+								
+								that.initCropper();
+								that.hideLoader();
+								
+								if (that.options.onAfterImgUpload) that.options.onAfterImgUpload.call(that);
+																					
+							}
+						};
+						reader.readAsDataURL(that.form.find('input[type="file"]')[0].files[0]);
+					}
 				} else {		
 									    					
-					formData = new FormData(that.form[0]);
-				
+					try {
+						// other modern browsers
+						formData = new FormData(that.form[0]);
+					} catch(e) {
+						// IE10 MUST have all form items appended as individual form key / value pairs
+						formData = new FormData();
+						formData.append('img', that.form.find("input[type=file]")[0].files[0]);
+										
+					}
+					
 					for (var key in that.options.uploadData) {
 						if( that.options.uploadData.hasOwnProperty(key) ) {
 							formData.append( key , that.options.uploadData[key] );	
@@ -307,6 +320,7 @@
             }
 
             if (response.status == 'error') {
+			    alert(response.message);
                 if (that.options.onError) that.options.onError.call(that,response.message);
 				that.hideLoader();
 				setTimeout( function(){ that.reset(); },2000)	
@@ -444,7 +458,7 @@
 				var pageX;
                 var pageY;
                 var userAgent = window.navigator.userAgent;
-                if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i)) {
+                if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i) || (e.pageY && e.pageX) == undefined) {
                     pageX = e.originalEvent.touches[0].pageX;
                     pageY = e.originalEvent.touches[0].pageY;
                 } else {
@@ -463,7 +477,7 @@
 					var imgTop;
 					var imgLeft;
 					
-					if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i)) {
+					if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/android/i) || (e.pageY && e.pageX) == undefined) {
                         imgTop = e.originalEvent.touches[0].pageY + pos_y - drg_h;
                         imgLeft = e.originalEvent.touches[0].pageX + pos_x - drg_w;
                     } else {
@@ -703,7 +717,7 @@
 				setTimeout( function(){ that.reset(); },2000)	
             }
 
-            if (that.options.onAfterImgCrop) that.options.onAfterImgCrop.call(that);
+            if (that.options.onAfterImgCrop) that.options.onAfterImgCrop.call(that, response);
         },
 		showLoader:function(){
 			var that = this;

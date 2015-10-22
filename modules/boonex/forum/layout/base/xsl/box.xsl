@@ -34,7 +34,7 @@
                                                 </xsl:choose>
                                             </td>
                                             <xsl:if test="position()!=last()">
-                                                <td class="bullet"><span>&#183;</span></td>
+                                                <td><span class="forum_bullet"></span></td>
                                             </xsl:if>
                                         </xsl:for-each>
 

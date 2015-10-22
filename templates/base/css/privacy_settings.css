@@ -20,11 +20,10 @@ div.ps-cell-chb input {
 	margin-left: 0px;
 }
 div.ps-cell-title {
-    padding: 0px 5px;
     line-height: 19px;
 }
-div.ps-cell-action img {
-    margin-top: 2px;
+div.ps-cell-action a {
+    vertical-align: middle;
 }
 
 
@@ -32,8 +31,9 @@ div.ps-cell-action img {
 div#ps-add-members,
 div#ps-del-members {
     position: absolute;
-    z-index: 77;
     display: none;
+
+	width: 400px;
 }
 div.ps-members-content {
     position: relative;

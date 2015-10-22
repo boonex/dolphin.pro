@@ -1,0 +1,7 @@
+@media (max-width:720px) {
+
+	/*--- Select Level ---*/
+	div.mbp-available-levels div.mbp-level {
+		width: 100%;
+	}
+}

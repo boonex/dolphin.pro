@@ -70,6 +70,41 @@ class BxMbpModule extends BxDolModule
 
         $this->_oConfig->init($this->_oDb);
     }
+
+	/**
+     * Admin Settings Methods
+     */
+    function getSettingsForm($mixedResult)
+    {
+        $sUri = $this->_oConfig->getUri();
+
+        $iId = (int)$this->_oDb->getOne("SELECT `ID` FROM `sys_options_cats` WHERE `name`='Membership'");
+        if(empty($iId))
+            return MsgBox('_membership_txt_empty');
+
+        $oSettings = new BxDolAdminSettings($iId, BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'admin');
+        $sResult = $oSettings->getForm();
+
+        if($mixedResult !== true && !empty($mixedResult))
+            $sResult = $mixedResult . $sResult;
+
+        return $sResult;
+    }
+    function setSettings($aData)
+    {
+        $sUri = $this->_oConfig->getUri();
+
+        $iId = (int)$this->_oDb->getOne("SELECT `ID` FROM `sys_options_cats` WHERE `name`='Membership'");
+        if(empty($iId))
+           return MsgBox(_t('_membership_txt_empty'));
+
+        $oSettings = new BxDolAdminSettings($iId);
+        return $oSettings->saveChanges($_POST);
+    }
+
+    /**
+     * Page blocks' methods
+     */
     function getCurrentLevelBlock()
     {
         $aUserLevel = getMemberMembershipInfo($this->getUserId());
@@ -89,16 +124,16 @@ class BxMbpModule extends BxDolModule
 
         return $this->_oTemplate->displayAvailableLevels($aMembership);
     }
-	function getSelectLevelBlock()
+	function getSelectLevelBlock($bDynamic = false)
     {
-    	if(getParam('disable_join_form') != 'on')
+    	if(!$this->_oConfig->isDisableFreeJoin())
 			return '';
 
         $aMembership = $this->_oDb->getMembershipsBy(array('type' => 'price_all'));
         if(empty($aMembership))
             return array(MsgBox(_t('_membership_err_no_payment_options')));
 
-        return $this->_oTemplate->displaySelectLevelBlock($aMembership);
+        return $this->_oTemplate->displaySelectLevelBlock($aMembership, $bDynamic);
     }
 
     /**
@@ -151,9 +186,65 @@ class BxMbpModule extends BxDolModule
         $this->_oTemplate->getPageCode($aParams);
     }
 
+	function actionJoin()
+    {
+    	bx_import('PageJoin', $this->_aModule);
+    	$oPage = new BxMbpPageJoin($this);
+
+    	$aParams = array(
+    		'index' => 1,
+    		'css' => array('explanation.css'),
+            'title' => array(
+                'page' => _t('_membership_pcaption_join')
+            ),
+            'content' => array(
+                'page_main_code' => $oPage->getCode()
+            )
+        );
+        $this->_oTemplate->getPageCode($aParams);
+    }
+
+	function actionAdmin()
+    {
+        $GLOBALS['iAdminPage'] = 1;
+        require_once(BX_DIRECTORY_PATH_INC . 'admin_design.inc.php');
+
+        $sUri = $this->_oConfig->getUri();
+
+        check_logged();
+        if(!@isAdmin()) {
+            send_headers_page_changed();
+            login_form("", 1);
+            exit;
+        }
+
+        //--- Process actions ---//
+        $mixedResultSettings = '';
+        if(isset($_POST['save']) && isset($_POST['cat'])) {
+            $mixedResultSettings = $this->setSettings($_POST);
+        }
+        //--- Process actions ---//
+
+        $sContent = DesignBoxAdmin(_t('_' . $sUri . '_bcaption_settings'), $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html', array('content' => $this->getSettingsForm($mixedResultSettings))));
+
+        $aParams = array(
+            'title' => array(
+                'page' => _t('_membership_pcaption_admin')
+            ),
+            'content' => array(
+                'page_main_code' => $sContent
+            )
+        );
+        $this->_oTemplate->getPageCodeAdmin($aParams);
+    }
+
 	/**
      * System Methods
      */
+    function serviceIsDisableFreeJoin()
+    {
+    	return $this->_oConfig->isDisableFreeJoin();
+    }
     function serviceGetUpgradeUrl()
     {
         return BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'index/';

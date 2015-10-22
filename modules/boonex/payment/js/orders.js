@@ -49,10 +49,10 @@ BxPmtOrders.prototype.selectModule = function(oSelect) {
     var sLoadingId = '#pmt-order-manual-loading';
     var sParentId = 'pmt-mo-items';    
 
-    if(!$(oSelect).parents('tr:first').next('tr').find(' > td:first > div').is('#' + sParentId))
-        $(oSelect).parents('tr:first').after('<tr><td class="' + sParentId + '" colspan="2"><div id="' + sParentId + '" class="' + sParentId + '"></div></td></tr>');
+    if(!$(oSelect).parents('.bx-form-element:first').next('.bx-form-element').find(' > .bx-form-value > div').is('#' + sParentId))
+        $(oSelect).parents('.bx-form-element:first').after('<div class="bx-form-element bx-def-margin-top clearfix"><div class="bx-form-value clearfix"><div id="' + sParentId + '" class="' + sParentId + '"></div></div></div>');
     else
-        $(oSelect).parents('tr:first').next('tr').show();
+        $(oSelect).parents('.bx-form-element:first').next('.bx-form-element').show();
 
     $(sLoadingId).bx_loading();
 
@@ -67,16 +67,11 @@ BxPmtOrders.prototype.selectModule = function(oSelect) {
             $('#' + sParentId).html('');
 
             if(parseInt(oData.code) != 0) {
-                $this.showResultInline(
-                    {
-                        code:oData.code, 
-                        message:oData.message, 
-                        parent_id: sParentId
-                    }, 
-                    function() {
-                        $('#' + sParentId).parents('tr:first').hide();
-                    }
-                );
+                $this.showResultInline({
+                    code:oData.code, 
+                    message:oData.message, 
+                    parent_id: sParentId
+                });
                 return;
             }
 

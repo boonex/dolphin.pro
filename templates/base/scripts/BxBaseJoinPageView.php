@@ -17,9 +17,6 @@ class BxBaseJoinPageView extends BxDolPageView
 
     function getBlockCode_JoinForm()
     {
-    	if(getParam('disable_join_form') == 'on')
-    		return '';
-
         $oJoinProc = new BxDolJoinProcessor();
         return array($oJoinProc->process(), array(), array(), false);
     }

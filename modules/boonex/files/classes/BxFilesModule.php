@@ -196,7 +196,6 @@ class BxFilesModule extends BxDolFilesModule
                     $this->_oTemplate->pageCode($this->aPageTmpl, array('page_main_code' => $sCode));
                     return;
                 } else {
-                    $GLOBALS['oTopMenu']->setCustomSubHeader($sParamValue);
                     $GLOBALS['oTopMenu']->setCustomSubHeader($aAlbumInfo['Caption']);
                 }
             }
