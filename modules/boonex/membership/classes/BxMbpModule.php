@@ -5,6 +5,7 @@
  */
 
 bx_import('BxDolModule');
+bx_import('BxDolAdminSettings');
 
 /**
  * Membership module by BoonEx
