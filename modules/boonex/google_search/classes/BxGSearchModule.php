@@ -71,7 +71,7 @@ class BxGSearchModule extends BxDolModule
         $oPage = new BxGSearchPageMain ($this);
         $this->_oTemplate->pageStart();
         echo $oPage->getCode();
-        $this->_oTemplate->addJs ('http://www.google.com/jsapi');
+        $this->_oTemplate->addJs ('https://www.google.com/jsapi');
         $this->_oTemplate->addCss ('main.css');
         $this->_oTemplate->pageCode(_t('_bx_gsearch'), false, false);
     }
@@ -121,7 +121,7 @@ class BxGSearchModule extends BxDolModule
     function serviceGetSearchControl ()
     {
         $this->_oTemplate->addCss ('main.css');
-        $this->_oTemplate->addJs ('http://www.google.com/jsapi');
+        $this->_oTemplate->addJs ('https://www.google.com/jsapi');
         $a = parse_url ($GLOBALS['site']['url']);
         $aVars = array (
             'is_image_search' => 'on' == getParam('bx_gsearch_block_images') ? 1 : 0,
