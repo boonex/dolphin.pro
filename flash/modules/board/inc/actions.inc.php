@@ -86,7 +86,7 @@ switch ($sAction) {
             $iCurrentTime = time();
             $aUser = getUserInfo($sId);
             $aUser['sex'] = $aUser['sex'] == 'female' ? "F" : "M";
-            getResult("REPLACE `" . MODULE_DB_PREFIX . "CurrentUsers` SET `ID`='" . $sId . "', `Nick`='" . $aUser['nick'] . "', `Sex`='" . $aUser['sex'] . "', `Age`='" . $aUser['age'] . "', `Photo`='" . $aUser['photo'] . "', `Profile`='" . $aUser['profile'] . "', `Desc`='" . $aUser['desc'] . "', `When`='" . $iCurrentTime . "', `Status`='" . USER_STATUS_NEW . "'");
+            getResult("REPLACE `" . MODULE_DB_PREFIX . "CurrentUsers` SET `ID`='" . $sId . "', `Nick`='" . process_db_input($aUser['nick']) . "', `Sex`='" . $aUser['sex'] . "', `Age`='" . $aUser['age'] . "', `Photo`='" . process_db_input($aUser['photo']) . "', `Profile`='" . process_db_input($aUser['profile']) . "', `Desc`='" . process_db_input($aUser['desc']) . "', `When`='" . $iCurrentTime . "', `Status`='" . USER_STATUS_NEW . "'");
             getResult("DELETE FROM `" . MODULE_DB_PREFIX . "Users` WHERE `User`='" . $sId . "'");
 
             $rFiles = getResult("SELECT `ID` FROM `" . MODULE_DB_PREFIX . "Boards` WHERE `OwnerID`='" . $sId . "'");

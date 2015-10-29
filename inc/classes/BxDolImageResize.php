@@ -189,7 +189,7 @@ class BxDolImageResize
         $mixedRet = false;
 
         if ($bCreateLocalFileIfUrl && preg_match('/^https?:\/\//', $sSrcImage)) {
-            $sTmpFileName = tempnam(BX_DIRECTORY_PATH_TMP, '');
+            $sTmpFileName = tempnam(BX_DIRECTORY_PATH_ROOT . 'tmp', '');
             file_put_contents($sTmpFileName, file_get_contents($sSrcImage));
         }
 

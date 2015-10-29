@@ -94,7 +94,7 @@
             if( $this -> _checkObjectAndHandler($sObject, $iHandler) && $this -> isShoutBoxAllowed($sObject, $iHandler, $this -> iMemberId, true) ) {
 
                 $sMessage = isset($_POST['message'])
-                    ? htmlentities($_POST['message'], ENT_COMPAT | (version_compare(PHP_VERSION, '5.4.0', '>=') ? ENT_SUBSTITUTE | ENT_HTML5 : ENT_HTML401), 'UTF-8', false)
+                    ? htmlentities($_POST['message'], ENT_COMPAT, 'UTF-8', false)
                     : '';
 
                 if($sMessage) {

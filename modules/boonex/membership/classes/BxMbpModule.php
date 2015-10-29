@@ -99,6 +99,7 @@ class BxMbpModule extends BxDolModule
         if(empty($iId))
            return MsgBox(_t('_membership_txt_empty'));
 
+        bx_import('BxDolAdminSettings');
         $oSettings = new BxDolAdminSettings($iId);
         return $oSettings->saveChanges($_POST);
     }
