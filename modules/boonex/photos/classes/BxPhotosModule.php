@@ -102,7 +102,7 @@ class BxPhotosModule extends BxDolFilesModule
 
         $o = BxDolImageResize::instance();
         $sSrcFileName = $this->_oConfig->getFilesPath() . $aInfo['medID'] . str_replace('{ext}', $aInfo['medExt'], $this->_oConfig->aFilesConfig['original']['postfix']);
-        $sTmpFileName = tempnam(BX_DIRECTORY_PATH_TMP, $this->_oConfig->getMainPrefix());
+        $sTmpFileName = BX_DIRECTORY_PATH_ROOT . 'tmp/' . $this->_oConfig->getMainPrefix() . mt_rand() . '.' . $aInfo['medExt'];
         $bCropResult = $o->crop(
                 (float)$_POST['imgW'], (float)$_POST['imgH'], 
                 (float)$_POST['imgX1'], (float)$_POST['imgY1'], 

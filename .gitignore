@@ -21,6 +21,7 @@ Thumbs.db
 
 # Excludes from modules
 media/images/membership/1*.png
+media/images/blog/*.jpg
 
 modules/boonex/forum/classes/en/*
 modules/boonex/forum/classes/ru/*
