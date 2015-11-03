@@ -29,7 +29,7 @@ class BxGSearchPageMain extends BxDolPageView
 
     function getBlockCode_SearchResults()
     {
-        $this->_oTemplate->addJs ('http://www.google.com/jsapi');
+        $this->_oTemplate->addJs ('https://www.google.com/jsapi');
         $a = parse_url ($GLOBALS['site']['url']);
         $aVars = array (
             'is_image_search' => 'on' == getParam('bx_gsearch_separate_images') ? 1 : 0,
