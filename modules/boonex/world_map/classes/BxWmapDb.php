@@ -145,7 +145,7 @@ class BxWmapDb extends BxDolModuleDb
 
         $sWhere .= $this->_getPrivacyCondition($mixedPrivacyIds, 'm');
 
-        return $this->getAll("SELECT `m`.`id`, `m`.`part`, `m`.`title`, `m`.`uri`, `m`.`lat`, `m`.`lng` FROM `" . $this->_sPrefix . "locations` AS `m` WHERE `m`.`failed` = 0 $sWhere LIMIT 100");
+        return $this->getAll("SELECT `m`.`id`, `m`.`part`, `m`.`title`, `m`.`uri`, `m`.`lat`, `m`.`lng` FROM `" . $this->_sPrefix . "locations` AS `m` WHERE `m`.`failed` = 0 $sWhere ORDER BY `m`.`id` DESC LIMIT 100");
     }
 
     function _getLatLngWhere ($fLatMin, $fLatMax, $fLngMin, $fLngMax)
