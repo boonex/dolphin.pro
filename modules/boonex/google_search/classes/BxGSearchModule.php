@@ -56,6 +56,7 @@ bx_import('BxDolAlerts');
 class BxGSearchModule extends BxDolModule
 {
     var $_iProfileId;
+    var $_sProto = 'http';
 
     function BxGSearchModule(&$aModule)
     {
@@ -63,6 +64,8 @@ class BxGSearchModule extends BxDolModule
         $GLOBALS['aModule'] = $aModule;
         $this->_iProfileId = getLoggedId();
         $GLOBALS['oBxGSearchModule'] = &$this;
+        if (0 == strncmp('https', BX_DOL_URL_ROOT, 5))
+            $this->_sProto = 'https';
     }
 
     function actionHome ()
@@ -71,7 +74,7 @@ class BxGSearchModule extends BxDolModule
         $oPage = new BxGSearchPageMain ($this);
         $this->_oTemplate->pageStart();
         echo $oPage->getCode();
-        $this->_oTemplate->addJs ('http://www.google.com/jsapi');
+        $this->_oTemplate->addJs ($this->_sProto . '://www.google.com/jsapi');
         $this->_oTemplate->addCss ('main.css');
         $this->_oTemplate->pageCode(_t('_bx_gsearch'), false, false);
     }
@@ -121,7 +124,7 @@ class BxGSearchModule extends BxDolModule
     function serviceGetSearchControl ()
     {
         $this->_oTemplate->addCss ('main.css');
-        $this->_oTemplate->addJs ('http://www.google.com/jsapi');
+        $this->_oTemplate->addJs ($this->_sProto . '://www.google.com/jsapi');
         $a = parse_url ($GLOBALS['site']['url']);
         $aVars = array (
             'is_image_search' => 'on' == getParam('bx_gsearch_block_images') ? 1 : 0,

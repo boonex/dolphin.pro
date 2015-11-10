@@ -82,6 +82,7 @@ class BxMbpModule extends BxDolModule
         if(empty($iId))
             return MsgBox('_membership_txt_empty');
 
+        bx_import('BxDolAdminSettings');
         $oSettings = new BxDolAdminSettings($iId, BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'admin');
         $sResult = $oSettings->getForm();
 
