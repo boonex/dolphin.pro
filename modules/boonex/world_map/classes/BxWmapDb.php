@@ -60,17 +60,26 @@ class BxWmapDb extends BxDolModuleDb
     {
         $aRet = array ();
         foreach ($this->_aParts as $sPart => $aPart) {
+            if ($sPart != 'caches') continue;
             $sFields = '';
+            if ($aPart['join_field_country'])
+                $sFields .= ", `p`.`{$aPart['join_field_country']}` AS `country` ";
+            if ($aPart['join_field_city'])
+                $sFields .= ", `p`.`{$aPart['join_field_city']}` AS `city` ";
+            if ($aPart['join_field_state'])
+                $sFields .= ", `p`.`{$aPart['join_field_state']}` AS `state` ";
             if ($aPart['join_field_zip'])
                 $sFields .= ", `p`.`{$aPart['join_field_zip']}` AS `zip` ";
             if ($aPart['join_field_address'])
                 $sFields .= ", `p`.`{$aPart['join_field_address']}` AS `address` ";
-            if ($aPart['join_field_state'])
-                $sFields .= ", `p`.`{$aPart['join_field_state']}` AS `state` ";
+            if ($aPart['join_field_latitude'])
+                $sFields .= ", `p`.`{$aPart['join_field_latitude']}` AS `latitude` ";
+            if ($aPart['join_field_longitude'])
+                $sFields .= ", `p`.`{$aPart['join_field_longitude']}` AS `longitude` ";
             if ($aPart['join_field_privacy'])
                 $sFields .= ", `p`.`{$aPart['join_field_privacy']}` AS `privacy` ";
 
-            $sSql = "SELECT '$sPart' AS `part`, `p`.`{$aPart['join_field_id']}` AS `id`, `p`.`{$aPart['join_field_country']}` AS `country`, `p`.`{$aPart['join_field_city']}` AS `city`, `p`.`{$aPart['join_field_title']}` AS `title`, `p`.`{$aPart['join_field_uri']}` AS `uri` $sFields FROM `{$aPart['join_table']}` AS `p` LEFT JOIN `" . $this->_sPrefix . "locations` AS `m` ON (`m`.`id` = `p`.`{$aPart['join_field_id']}` AND `m`.`part` = '$sPart') WHERE ISNULL(`m`.`id`) {$aPart['join_where']} LIMIT $iLimit";
+            $sSql = "SELECT '$sPart' AS `part`, `p`.`{$aPart['join_field_id']}` AS `id`, `p`.`{$aPart['join_field_title']}` AS `title`, `p`.`{$aPart['join_field_uri']}` AS `uri` $sFields FROM `{$aPart['join_table']}` AS `p` LEFT JOIN `" . $this->_sPrefix . "locations` AS `m` ON (`m`.`id` = `p`.`{$aPart['join_field_id']}` AND `m`.`part` = '$sPart') WHERE ISNULL(`m`.`id`) {$aPart['join_where']} LIMIT $iLimit";
             $a = $this->getAll ($sSql);
             $aRet = array_merge ($aRet, $a);
         }
@@ -82,16 +91,24 @@ class BxWmapDb extends BxDolModuleDb
         $sPart = $aPart['part'];
 
         $sFields = '';
+        if ($aPart['join_field_country'])
+            $sFields .= ", `p`.`{$aPart['join_field_country']}` AS `country` ";
+        if ($aPart['join_field_city'])
+            $sFields .= ", `p`.`{$aPart['join_field_city']}` AS `city` ";
+        if ($aPart['join_field_state'])
+            $sFields .= ", `p`.`{$aPart['join_field_state']}` AS `state` ";
         if ($aPart['join_field_zip'])
             $sFields .= ", `p`.`{$aPart['join_field_zip']}` AS `zip` ";
         if ($aPart['join_field_address'])
             $sFields .= ", `p`.`{$aPart['join_field_address']}` AS `address` ";
-        if ($aPart['join_field_state'])
-            $sFields .= ", `p`.`{$aPart['join_field_state']}` AS `state` ";
+        if ($aPart['join_field_latitude'])
+            $sFields .= ", `p`.`{$aPart['join_field_latitude']}` AS `latitude` ";
+        if ($aPart['join_field_longitude'])
+            $sFields .= ", `p`.`{$aPart['join_field_longitude']}` AS `longitude` ";
         if ($aPart['join_field_privacy'])
             $sFields .= ", `p`.`{$aPart['join_field_privacy']}` AS `privacy` ";
 
-        $sSql = "SELECT '$sPart' AS `part`, `p`.`{$aPart['join_field_id']}` AS `id`, `p`.`{$aPart['join_field_country']}` AS `country`, `p`.`{$aPart['join_field_city']}` AS `city`, `p`.`{$aPart['join_field_title']}` AS `title`, `p`.`{$aPart['join_field_uri']}` AS `uri`, `p`.`{$aPart['join_field_author']}` AS `author_id`, `l`.`lat`, `l`.`lng`, `l`.`zoom`, `l`.`type` $sFields
+        $sSql = "SELECT '$sPart' AS `part`, `p`.`{$aPart['join_field_id']}` AS `id`, `p`.`{$aPart['join_field_title']}` AS `title`, `p`.`{$aPart['join_field_uri']}` AS `uri`, `p`.`{$aPart['join_field_author']}` AS `author_id`, `l`.`lat`, `l`.`lng`, `l`.`zoom`, `l`.`type` $sFields
             FROM `{$aPart['join_table']}` AS `p`
             LEFT JOIN `" . $this->_sPrefix . "locations` AS `l` ON (`l`.`id` = `p`.`{$aPart['join_field_id']}` AND `l`.`part` = '$sPart')
             WHERE `p`.`{$aPart['join_field_id']}` = '$iEntryId' {$aPart['join_where']} LIMIT 1";
@@ -128,7 +145,7 @@ class BxWmapDb extends BxDolModuleDb
 
         $sWhere .= $this->_getPrivacyCondition($mixedPrivacyIds, 'm');
 
-        return $this->getAll("SELECT `m`.`id`, `m`.`part`, `m`.`title`, `m`.`uri`, `m`.`lat`, `m`.`lng` FROM `" . $this->_sPrefix . "locations` AS `m` WHERE `m`.`failed` = 0 $sWhere LIMIT 100");
+        return $this->getAll("SELECT `m`.`id`, `m`.`part`, `m`.`title`, `m`.`uri`, `m`.`lat`, `m`.`lng` FROM `" . $this->_sPrefix . "locations` AS `m` WHERE `m`.`failed` = 0 $sWhere ORDER BY `m`.`id` DESC LIMIT 100");
     }
 
     function _getLatLngWhere ($fLatMin, $fLatMax, $fLngMin, $fLngMax)

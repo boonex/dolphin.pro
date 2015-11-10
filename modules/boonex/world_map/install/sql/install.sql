@@ -16,6 +16,8 @@ CREATE TABLE `[db_prefix]parts` (
   `join_field_state` varchar(64) NOT NULL,
   `join_field_zip` varchar(64) NOT NULL,
   `join_field_address` varchar(64) NOT NULL,
+  `join_field_latitude` varchar(64) NOT NULL,
+  `join_field_longitude` varchar(64) NOT NULL,
   `join_field_title` varchar(64) NOT NULL,
   `join_field_uri` varchar(64) NOT NULL,
   `join_field_author` varchar(64) NOT NULL,
