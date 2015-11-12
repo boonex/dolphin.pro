@@ -5,6 +5,14 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
+class BxPmtDetailsFormCheckerHelper extends BxDolFormCheckerHelper
+{
+	function checkHttps ($s)
+    {
+        return empty($s) || substr(BX_DOL_URL_ROOT, 0, 5) == 'https';
+    }
+}
+
 class BxPmtDetails
 {
     var $_oDb;
@@ -36,6 +44,7 @@ class BxPmtDetails
                     'uri_title' => '',
                     'submit_name' => 'submit'
                 ),
+                'checker_helper' => 'BxPmtDetailsFormCheckerHelper'
             ),
             'inputs' => array (
             )
@@ -86,6 +95,9 @@ class BxPmtDetails
                 'caption' => _t($aInput['caption']),
                 'value' => $aUserValues[$aInput['id']]['value'],
                 'info' => _t($aInput['description']),
+            	'attrs' => array(
+            		'bx-data-provider' => $iProviderId
+            	),
                 'checker' => array (
                     'func' => $aInput['check_type'],
                     'params' => $aInput['check_params'],
@@ -140,10 +152,18 @@ class BxPmtDetails
             $aOptions = $this->_oDb->getOptions();
             foreach($aOptions as $aOption)
                 $this->_oDb->updateOption($iUserId, $aOption['id'], process_db_input(isset($_POST[$aOption['name']]) ? $_POST[$aOption['name']] : "", BX_TAGS_STRIP));
+
             header('Location: ' . $oForm->aFormAttrs['action']);
         }
-        else
+        else {
+        	foreach($oForm->aInputs as $aInput)
+        		if(!empty($aInput['error'])) {
+        			$iProviderId = (int)$aInput['attrs']['bx-data-provider'];
+        			$oForm->aInputs['provider_' . $iProviderId . '_begin']['collapsed'] = false;
+        		}
+
 			return $oForm->getCode();
+        }
     }
 
 	function getFormBlock($iUserId = -1)

@@ -197,7 +197,7 @@ INSERT INTO `[db_prefix]providers`(`name`, `caption`, `description`, `option_pre
 SET @iProviderId = LAST_INSERT_ID();
 
 INSERT INTO `[db_prefix]providers_options`(`provider_id`, `name`, `type`, `caption`, `description`, `extra`, `check_type`, `check_params`, `check_error`, `order`) VALUES
-(@iProviderId, 'bp_active', 'checkbox', '_payment_bp_active_cpt', '_payment_bp_active_dsc', '', '', '', '', 1),
+(@iProviderId, 'bp_active', 'checkbox', '_payment_bp_active_cpt', '_payment_bp_active_dsc', '', 'https', '', '_payment_bp_active_err', 1),
 (@iProviderId, 'bp_api_key', 'text', '_payment_bp_api_key_cpt', '_payment_bp_api_key_dsc', '', '', '', '', 2),
 (@iProviderId, 'bp_transaction_speed', 'select', '_payment_bp_transaction_speed_cpt', '_payment_bp_transaction_speed_dsc', 'high|_payment_bp_transaction_speed_high,medium|_payment_bp_transaction_speed_medium,low|_payment_bp_transaction_speed_low', '', '', '', 3),
 (@iProviderId, 'bp_full_notifications', 'checkbox', '_payment_bp_full_notifications_cpt', '_payment_bp_full_notifications_dsc', '', '', '', '', 4),

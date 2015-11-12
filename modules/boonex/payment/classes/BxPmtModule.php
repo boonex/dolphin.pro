@@ -621,7 +621,7 @@ class BxPmtModule extends BxDolModule
 
         			$aTemplate = $oEmailTemplates->parseTemplate($this->_sEmailTemplatesPrefix . 'paid_need_join', array(
         				'RealName' => $aResult['payer_name'],
-        				'JoinLink' => bx_append_url_params(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'join', array($this->_sRequestKeyPending => (int)$aPending['id']))
+        				'JoinLink' => bx_append_url_params($this->_oConfig->getJoinUrl(), array($this->_sRequestKeyPending => (int)$aPending['id']))
         			));
 
         			sendMail($aResult['payer_email'], $aTemplate['Subject'], $aTemplate['Body'], 0, array(), 'html', false, true);
