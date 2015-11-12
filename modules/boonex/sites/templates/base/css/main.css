@@ -35,11 +35,7 @@ div.result_block .bx-def-hr:first-child {
 }
 
 .boxContent .bx_sites_unit_content .votes_small {
-	position: absolute;
-    top: 0px;
-    right: 0px;
 	width: auto;
-    margin-top: 5px;
 }
 
 .boxContent .bx_sites_block_prev_rater .bx_sites_unit_content .votes_small {

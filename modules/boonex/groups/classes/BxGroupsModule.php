@@ -482,7 +482,7 @@ class BxGroupsModule extends BxDolTwigModule
         return BxDolService::call('wmap', 'part_install', array('groups', array(
             'part' => 'groups',
             'title' => '_bx_groups',
-            'title_singular' => '_bx_events_single',
+            'title_singular' => '_bx_groups_group_single',
             'icon' => 'modules/boonex/groups/|map_marker.png',
             'icon_site' => 'users',
             'join_table' => 'bx_groups_main',
