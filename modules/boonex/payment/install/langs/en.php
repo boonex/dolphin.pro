@@ -150,6 +150,7 @@ $aLangContent = array(
 	'_payment_bp_dsc' => 'BitPay payment provider',
     '_payment_bp_active_cpt' => 'Active',
 	'_payment_bp_active_dsc' => 'Activate(Deactivate) provider',
+	'_payment_bp_active_err' => 'You should have SSL certificate (HTTPS connection) to activate and use BitPay on your site.',
 	'_payment_bp_api_key_cpt' => 'API Key',
 	'_payment_bp_api_key_dsc' => 'Your merchant BitPay API Access key',
 	'_payment_bp_transaction_speed_cpt' => 'Transaction speed',
