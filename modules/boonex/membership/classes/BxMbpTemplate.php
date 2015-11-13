@@ -91,7 +91,7 @@ class BxMbpTemplate extends BxDolModuleTemplate
 
         $aProviders = $oPayment->getProviders(0);
         if(empty($aProviders))
-        	return MsgBox(_t('_membership_err_no_payment_options'));
+        	return array(MsgBox(_t('_membership_err_no_payment_options')));
 
         $aTmplVarsLevels = array();
         foreach($aLevels as $aLevel) {
@@ -127,6 +127,8 @@ class BxMbpTemplate extends BxDolModuleTemplate
         			'checked' => empty($aTmplVarsProviders) ? 'checked="checked"' : ''
         		);
         	}
+		if(empty($aTmplVarsProviders))
+        	return array(MsgBox(_t('_membership_err_no_payment_options')));
 
 		$bSelectedProvider = count($aTmplVarsProviders) == 1;
 		$sSelectedProvider = $bSelectedProvider ? $aTmplVarsProviders[0]['name'] : '';
