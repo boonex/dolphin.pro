@@ -50,6 +50,7 @@ $aLangContent = array(
     '_payment_inf_successfully_added' => 'Товар был успешно добавлен в Вашу корзину',
     '_payment_inf_successfully_deleted' => 'Товар был успешно удален из Вашей корзины',
     '_payment_inf_successfully_reported' => 'Жалоба была принята',
+	'_payment_inf_successfully_processed_free' => 'Бесплатный товар был обработан.',
     '_payment_txt_payment_to' => 'Платеж для {0} за:',
     '_payment_btn_delete' => 'Удалить',
     '_payment_btn_checkout' => 'Оплатить',
