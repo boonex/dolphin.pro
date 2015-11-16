@@ -586,9 +586,50 @@ class BxPmtModule extends BxDolModule
         if(empty($aInfo) || $aInfo['vendor_id'] == BX_PMT_EMPTY_ID || empty($aInfo['items']))
             return MsgBox(_t($this->_sLangsPrefix . 'err_empty_order'));
 
+		/*
+		 * Process FREE (price = 0) items for LOGGED IN members
+		 * WITHOUT processing via payment provider.
+		 */
+		$bProcessedFree = false;
+		foreach($aInfo['items'] as $iIndex => $aItem)
+			if((int)$aInfo['client_id'] != 0 && (float)$aItem['price'] == 0) {
+				$aItemInfo = BxDolService::call((int)$aItem['module_id'], 'register_cart_item', array($aInfo['client_id'], $aInfo['vendor_id'], $aItem['id'], $aItem['quantity'], $this->_oConfig->generateLicense()));
+	            if(is_array($aItemInfo) && !empty($aItemInfo))
+	            	$bProcessedFree = true;
+
+	            $aInfo['items_count'] -= 1;
+	            unset($aInfo['items'][$iIndex]);
+
+	            $sCartItems = $this->_oDb->getCartItems($aInfo['client_id']);
+	            $sCartItems = trim(preg_replace("'" . implode(BxPmtCart::$DESCRIPTOR_DIVIDER, array($aInfo['vendor_id'], $aItem['module_id'], $aItem['id'], $aItem['quantity'])) . ":?'", "", $sCartItems), ":");
+	            $this->_oDb->setCartItems($aInfo['client_id'], $sCartItems);
+			}
+
+		if(empty($aInfo['items']))
+            return MsgBox(_t($this->_sLangsPrefix . ($bProcessedFree ? 'inf_successfully_processed_free' : 'err_empty_order')));
+
         $iPendingId = $this->_oDb->insertPending($this->_iUserId, $aProvider['name'], $aInfo);
         if(empty($iPendingId))
             return MsgBox(_t($this->_sLangsPrefix . 'err_access_db'));
+
+		/*
+		 * Perform Join WITHOUT processing via payment provider
+		 * if a client ISN'T logged in and has only ONE FREE item in the card.
+		 */
+		if((int)$aInfo['client_id'] == 0 && (int)$aInfo['items_count'] == 1) {
+			reset($aInfo['items']);
+			$aItem = current($aInfo['items']);
+
+			if(!empty($aItem) && $aItem['price'] == 0) {
+				$this->_oDb->updatePending($iPendingId, array(
+		            'order' => $this->_oConfig->generateLicense(),
+		            'error_code' => '1',
+		            'error_msg' => ''
+		        ));
+
+				$this->performJoin($iPendingId);
+			}
+		}
 
         return $oProvider->initializeCheckout($iPendingId, $aInfo);
     }
@@ -611,25 +652,8 @@ class BxPmtModule extends BxDolModule
         	$aPending = $this->_oDb->getPending(array('type' => 'id', 'id' => (int)$aResult['pending_id']));
 
         	//--- Check "Pay Before Join" situation
-        	if((int)$aPending['client_id'] == 0) {
-		    	$oSession = BxDolSession::getInstance();
-				$oSession->setValue($this->_sSessionKeyPending, (int)$aPending['id']);
-
-				if(!empty($aResult['payer_name']) && !empty($aResult['payer_email'])) {
-					bx_import('BxDolEmailTemplates');
-					$oEmailTemplates = new BxDolEmailTemplates();
-
-        			$aTemplate = $oEmailTemplates->parseTemplate($this->_sEmailTemplatesPrefix . 'paid_need_join', array(
-        				'RealName' => $aResult['payer_name'],
-        				'JoinLink' => bx_append_url_params($this->_oConfig->getJoinUrl(), array($this->_sRequestKeyPending => (int)$aPending['id']))
-        			));
-
-        			sendMail($aResult['payer_email'], $aTemplate['Subject'], $aTemplate['Body'], 0, array(), 'html', false, true);
-				}
-
-        		header('Location: ' . $this->_oConfig->getJoinUrl());
-        		exit;
-        	}
+        	if((int)$aPending['client_id'] == 0)
+        		$this->performJoin((int)$aPending['id'], $aResult);
 
         	//--- Register payment for purchased items in associated modules 
             $this->_oCart->updateInfo($aPending);
@@ -705,6 +729,26 @@ class BxPmtModule extends BxDolModule
      * Join Methods
      *
      */
+    function performJoin($iPendingId, $aPayment = array())
+    {
+		$oSession = BxDolSession::getInstance();
+		$oSession->setValue($this->_sSessionKeyPending, (int)$iPendingId);
+
+		if(!empty($aPayment['payer_name']) && !empty($aPayment['payer_email'])) {
+			bx_import('BxDolEmailTemplates');
+			$oEmailTemplates = new BxDolEmailTemplates();
+
+			$aTemplate = $oEmailTemplates->parseTemplate($this->_sEmailTemplatesPrefix . 'paid_need_join', array(
+				'RealName' => $aPayment['payer_name'],
+				'JoinLink' => bx_append_url_params($this->_oConfig->getJoinUrl(), array($this->_sRequestKeyPending => (int)$iPendingId))
+			));
+
+			sendMail($aPayment['payer_email'], $aTemplate['Subject'], $aTemplate['Body'], 0, array(), 'html', false, true);
+		}
+
+		header('Location: ' . $this->_oConfig->getJoinUrl());
+		exit;
+	}
 	function actionJoin()
     {
     	$oSession = BxDolSession::getInstance();
