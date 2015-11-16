@@ -29,9 +29,11 @@ $aLangContent = array(
     '_membership_txt_on_N_days' => 'for {0} days',
     '_membership_txt_expires_in' => 'Expires in {0} days',
     '_membership_txt_expires_never' => 'Never expires',
+	'_membership_txt_free' => 'Free',
 	'_membership_admin_menu_sitem' => 'Membership',
     '_membership_tmenu_item_my_membership' => 'My Membership',
     '_membership_mmenu_item_membership' => 'Membership',
 	'_membership_smenu_item_join' => 'Join',
 	'_membership_btn_pay' => 'Checkout',
+	'_membership_btn_select' => 'Select'
 );
