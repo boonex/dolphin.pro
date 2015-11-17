@@ -98,11 +98,14 @@ class BxMbpTemplate extends BxDolModuleTemplate
         foreach($aLevels as $iIndex => $aLevel) {
         	$bPaid = (int)$aLevel['price_amount'] > 0;
 
+        	$iPriceDays = (int)$aLevel['price_days'];
+        	$fPriceAmount = (float)$aLevel['price_amount'];
+
         	$aTmplVarsLevels[] = array(
         		'level' => $this->parseHtmlByName('select_level.html', array(
         			'js_object' => $this->_oConfig->getJsObject('join'),
 	                'id' => $aLevel['mem_id'],
-	        		'descriptor' => $oPayment->getCartItemDescriptor(0, $iModuleId, $aLevel['price_id'], 1),
+	        		'descriptor' => (int)$aLevel['mem_id'] == MEMBERSHIP_ID_STANDARD ? $this->_oConfig->getStandardDescriptor() : $oPayment->getCartItemDescriptor(0, $iModuleId, $aLevel['price_id'], 1),
 	        		'checked' => $iIndex == $iSelectedLevel ? 'checked="checked"' : '',
 	                'title' => $aLevel['mem_name'],
 	                'icon' =>  $this->_oConfig->getIconsUrl() . $aLevel['mem_icon'],
@@ -112,12 +115,12 @@ class BxMbpTemplate extends BxDolModuleTemplate
 	        				'description' => str_replace("\$", "&#36;", $aLevel['mem_description']),
 	        			)
 	        		),
-	                'days' => $aLevel['price_days'] > 0 ?  $aLevel['price_days'] . ' ' . _t('_membership_txt_days') : _t('_membership_txt_expires_never'),
-	        		'price' => $aLevel['price_amount'],
+	                'days' => $iPriceDays > 0 ?  $iPriceDays . ' ' . _t('_membership_txt_days') : _t('_membership_txt_expires_never'),
+	        		'price' => $fPriceAmount,
 	        		'bx_if:show_price_paid' => array(
 	        			'condition' => $bPaid,
 	        			'content' => array(
-	        				'price' => $aLevel['price_amount'],
+	        				'price' => $fPriceAmount,
 	                		'currency_code' => $sCurrencyCode,
 	        			)
 	        		),

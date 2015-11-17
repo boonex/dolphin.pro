@@ -19,12 +19,15 @@ BxMbpJoin.prototype.onSelect = function(oElement) {
 };
 
 BxMbpJoin.prototype.onSubmit = function(oForm) {
-	if(!$(oForm).find(":radio[name = 'descriptor']:checked").length) {
+	var oForm = $(oForm);
+	var oDescriptor = oForm.find(":radio[name = 'descriptor']:checked");
+
+	if(!oDescriptor.length) {
 		alert(this._sErrSelectLevel);
 		return false;
 	}
 
-	if(!$(oForm).find(":radio[name = 'provider']:checked").length && !$(oForm).find(":hidden[name = 'provider']").val()) {
+	if(parseInt(oDescriptor.attr('bx-data-price')) > 0 && !oForm.find(":radio[name = 'provider']:checked").length && !oForm.find(":hidden[name = 'provider']").val()) {
 		alert(this._sErrSelectProvider);
 		return false;
 	}
