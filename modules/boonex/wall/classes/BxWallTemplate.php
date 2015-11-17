@@ -412,19 +412,19 @@ class BxWallTemplate extends BxDolModuleTemplate
         return $oComments->getCommentsFirst('comment');
     }
 
-    function getJsCode($sType, $mixedOwnerId, $aRequestParams = array())
+    function getJsCode($sType, $aParams = array(), $aRequestParams = array())
     {
     	$sJsClass = $this->_oConfig->getJsClass($sType);
     	$sJsObject = $this->_oConfig->getJsObject($sType);
 
-    	$aParams = array(
+    	$aParams = array_merge(array(
     		'sActionUrl' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri(), 
     		'sObjName' => $sJsObject,
-    		'iOwnerId' => $mixedOwnerId,
+    		'iOwnerId' => 0,
     		'sAnimationEffect' => $this->_oConfig->getAnimationEffect(),
     		'iAnimationSpeed' => $this->_oConfig->getAnimationSpeed(),
     		'oRequestParams' => $aRequestParams
-    	);
+    	), $aParams);
 
         return $this->_wrapInTagJsCode("var " . $sJsObject . " = new " . $sJsClass . "(" . json_encode($aParams) . ");");
     }
