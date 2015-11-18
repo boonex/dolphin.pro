@@ -357,7 +357,17 @@ class BxPmtTemplate extends BxDolModuleTemplate
                     'item_title' => $aItem['title'],
                     'item_url' => $aItem['url'],
                     'item_quantity' => $aItem['quantity'],
-                    'item_price' => $aItem['quantity'] * $aItem['price'],
+                	'bx_if:show_price_paid' => array(
+                		'condition' => (int)$aItem['price'] != 0,
+                		'content' => array(
+                			'item_price' => $aItem['quantity'] * $aItem['price'],
+                			'vendor_currency_code' => $aVendor['vendor_currency_code'],
+                		)
+                	),
+                	'bx_if:show_price_free' => array(
+                		'condition' => (int)$aItem['price'] == 0,
+                		'content' => array()
+                	),
                     'js_object' => $sJsObject
                 );
 

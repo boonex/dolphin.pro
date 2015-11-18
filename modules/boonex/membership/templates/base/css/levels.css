@@ -105,5 +105,11 @@ div.mbp-sp-caption {
 	text-transform: uppercase;
 }
 div.mbp-pay .bx-btn {
+	display: inline-block;
+	float: none;
+
 	margin-left: 0px;
+}
+div.mbp-pay .bx-btn.mbp-select {
+	display: none;
 }

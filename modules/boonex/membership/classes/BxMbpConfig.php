@@ -10,6 +10,7 @@ class BxMbpConfig extends BxDolConfig
 {
     var $_oDb;
     var $_bDisableFreeJoin;
+    var $_bEnableStandardOnPaidJoin;
     var $_sCurrencySign;
     var $_sCurrencyCode;
     var $_sIconsFolder;
@@ -27,8 +28,10 @@ class BxMbpConfig extends BxDolConfig
         parent::BxDolConfig($aModule);
 
         $this->_oDb = null;
+        $this->_bDisableFreeJoin = false;
+        $this->_bEnableStandardOnPaidJoin = true;
         $this->_sIconsFolder = 'media/images/membership/';
-        
+
         $this->_aJsClasses = array(
         	'join' => 'BxMbpJoin',
         );
@@ -44,6 +47,7 @@ class BxMbpConfig extends BxDolConfig
         $this->_oDb = &$oDb;
 
         $this->_bDisableFreeJoin = $this->_oDb->getParam('mbp_disable_free_join') == 'on';
+        $this->_bEnableStandardOnPaidJoin = $this->_oDb->getParam('mbp_enable_standard_for_paid_join') == 'on';
 
         bx_import('BxDolPayments');
 		$oPayment = BxDolPayments::getInstance();
@@ -55,6 +59,10 @@ class BxMbpConfig extends BxDolConfig
     function isDisableFreeJoin()
     {
     	return $this->_bDisableFreeJoin;
+    }
+	function isStandardOnPaidJoin()
+    {
+    	return $this->_bEnableStandardOnPaidJoin;
     }
     function getCurrencySign()
     {
@@ -93,5 +101,9 @@ class BxMbpConfig extends BxDolConfig
 	function getAnimationSpeed()
 	{
 	    return $this->_iAnimationSpeed;
+	}
+	function getStandardDescriptor()
+	{
+		return MEMBERSHIP_ID_STANDARD;
 	}
 }

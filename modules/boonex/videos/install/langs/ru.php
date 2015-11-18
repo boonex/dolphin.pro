@@ -91,7 +91,7 @@ $aLangContent = array(
     '_bx_videos_distribute' => 'Условия распространения видео',
     '_bx_videos_embed' => 'Ссылка',
     '_bx_videos_Embed' => 'Ссылка на видео из Youtube',
-    '_bx_videos_Embed_example' => 'Пример: http://www.youtube.com/watch?v=_AANZvYn5uk',
+    '_bx_videos_Embed_example' => 'Пример: https://www.youtube.com/watch?v=_AANZvYn5uk',
     '_bx_videos_failed' => 'Ошибочное',
     '_bx_videos_fav_add' => 'Файл был добавлен в понравившиеся',
     '_bx_videos_fav_remove' => 'Файл был удален из понравившихся',

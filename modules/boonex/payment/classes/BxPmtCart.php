@@ -7,7 +7,7 @@
 
 class BxPmtCart
 {
-	static protected $DESCRIPTOR_DIVIDER = '_';
+	static public $DESCRIPTOR_DIVIDER = '_';
 
     var $_oDb;
     var $_oConfig;
@@ -123,7 +123,7 @@ class BxPmtCart
 			return;
 
 		$iClientId = (int)$aPending['client_id'];
-		$sOrderId = $this->_getLicense();
+		$sOrderId = $this->_oConfig->generateLicense();
 
         $sCartItems = $this->_oDb->getCartItems($iClientId);
         $aItems = $this->items2array($aPending['items']);
@@ -206,26 +206,6 @@ class BxPmtCart
             'items_price' => $fItemsPrice,
             'items' => $aItemsInfo
         );
-    }
-    function _getLicense()
-    {
-        list($fMilliSec, $iSec) = explode(' ', microtime());
-        $fSeed = (float)$iSec + ((float)$fMilliSec * 100000);
-        srand($fSeed);
-
-        $sResult = '';
-        for($i=0; $i < 16; ++$i) {
-            switch(rand(1,2)) {
-                case 1:
-                    $c = chr(rand(ord('A'),ord('Z')));
-                    break;
-                case 2:
-                    $c = chr(rand(ord('0'),ord('9')));
-                    break;
-            }
-            $sResult .= $c;
-        }
-        return $sResult;
     }
 
     /**

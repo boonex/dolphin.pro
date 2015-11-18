@@ -104,6 +104,7 @@ $aLangContent = array(
 	'_bx_pfw_txt_products_info' => 'Products',
 	'_bx_pfw_txt_subscription_info' => 'Subscription',
 	'_bx_pfw_txt_subscription_duration_mask' => '(auto-renew in {0} days)',
+	'_bx_pfw_txt_free' => 'free',
 
 	//--- Errors, Warnings and Messages
 	'_bx_pfw_pcpt_error' => 'Error occured',
@@ -118,6 +119,7 @@ $aLangContent = array(
 	'_bx_pfw_inf_successfully_added' => 'The item was successfully added to your shopping cart',
 	'_bx_pfw_inf_successfully_deleted' => 'The item was successfully deleted from your shopping cart',
 	'_bx_pfw_inf_successfully_reported' => 'The order was successfully reported',
+	'_bx_pfw_inf_successfully_processed_free' => 'Free item was successfully processed',
 	'_bx_pfw_err_nothing_selected' => 'You need to select at least one item',
 	'_bx_pfw_err_access_db' => 'Database access error.',
 	'_bx_pfw_err_wrong_data' => 'Incorrect input data',

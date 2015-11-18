@@ -6,7 +6,7 @@
 			</div>
 		</div>
 		<bx_if:show_providers_selector>
-			<div class="mbp-select-provider bx-def-margin-top">
+			<div class="mbp-select-provider bx-def-margin-top"<bx_if:show_providers_selector_hidden> style="display:none;"</bx_if:show_providers_selector_hidden>>
 				<div class="mbp-sp-caption bx-def-margin-sec-bottom bx-def-font-grayed">
 					<bx_text:_membership_txt_select_payment />
 				</div>
@@ -22,7 +22,7 @@
 			<bx_if:show_selected_provider>
 				<input type="hidden" name="provider" value="__name__" />
 			</bx_if:show_selected_provider>
-			<input class="bx-btn" type="submit" name="mbp-checkout" value="<bx_text:_membership_btn_pay />" />
+			<input class="bx-btn mbp-checkout" type="submit" name="mbp-checkout" value="__txt_checkout__" />
 			<div class="mbp-cb">&nbsp;</div>
 		</div>
 	</form>
