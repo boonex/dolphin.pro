@@ -13,6 +13,7 @@ bx_import('BxDolAdminSettings');
 require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 
 require_once('BxWallCmts.php');
+require_once('BxWallVoting.php');
 require_once('BxWallPrivacy.php');
 require_once('BxWallResponse.php');
 
@@ -1022,6 +1023,28 @@ class BxWallModule extends BxDolModule
     {
     	return new BxWallPrivacy($this);
     }
+	function _getObjectVoting($aEvent)
+    {
+    	if(in_array($aEvent['type'], array('profile', 'friend')) || $aEvent['action'] == 'commentPost')
+    		return $this->_getObjectVotingDefault($aEvent['id']);
+
+		$sType = $aEvent['type'];
+	    $iObjectId = $aEvent['object_id'];
+		if(strpos($iObjectId, ',') !== false) 
+			return $this->_getObjectVotingDefault($aEvent['id']);
+
+		$oVoting = new BxWallVoting($sType, $iObjectId);
+		if($oVoting->isEnabled())
+        	return $oVoting;
+
+		return $this->_getObjectVotingDefault($aEvent['id']);
+    }
+
+	function _getObjectVotingDefault($iEventId)
+    {
+        return new BxWallVoting($this->_oConfig->getVotingSystemName(), $iEventId);
+    }
+
     function _addHidden($sPostType = "photos", $sContentType = "upload", $sAction = "post")
     {
         return array(
@@ -1080,6 +1103,10 @@ class BxWallModule extends BxDolModule
 
         $aCheckResult = checkAction($iUserId, ACTION_ID_TIMELINE_DELETE_COMMENT, $bPerform);
         return $aCheckResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
+    }
+    function _isVoteAllowed($aEvent, $bPerform = false)
+    {
+    	
     }
     function _getAuthorId()
     {

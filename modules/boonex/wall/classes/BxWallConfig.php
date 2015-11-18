@@ -15,6 +15,7 @@ class BxWallConfig extends BxDolConfig
     var $_sDividerDateFormat;
     var $_sCommonPostPrefix;
     var $_sCommentSystemName;
+    var $_sVotingSystemName;
     var $_iPerPageProfileTl;
     var $_iPerPageAccountTl;
     var $_iPerPageIndex;
@@ -36,11 +37,16 @@ class BxWallConfig extends BxDolConfig
     {
         parent::BxDolConfig($aModule);
 
+        $sName = 'bx_wall';
+
         $this->_bJsMode = false;
 
-        $this->_sAlertSystemName = "bx_wall";
+        $this->_sAlertSystemName = $sName;
+        $this->_sCommentSystemName = $sName;
+        $this->_sVotingSystemName = $sName;
+
         $this->_sCommonPostPrefix = 'wall_common_';
-        $this->_sCommentSystemName = "bx_wall";
+
         $this->_sAnimationEffect = 'fade';
         $this->_iAnimationSpeed = 'slow';
         $this->_sDividerDateFormat = getLocaleFormat(BX_DOL_LOCALE_DATE_SHORT, BX_DOL_LOCALE_DB);
@@ -58,7 +64,8 @@ class BxWallConfig extends BxDolConfig
         $this->_aJsObjects = array(
             'post' => 'oWallPost',
             'view' => 'oWallView',
-            'outline' => 'oWallOutline'
+            'outline' => 'oWallOutline',
+        	'voting' => 'oWallVoting',
         );
     }
 
@@ -101,6 +108,10 @@ class BxWallConfig extends BxDolConfig
     function getCommentSystemName()
     {
         return $this->_sCommentSystemName;
+    }
+	function getVotingSystemName()
+    {
+        return $this->_sVotingSystemName;
     }
     function getPerPage($sPage = 'profile')
     {

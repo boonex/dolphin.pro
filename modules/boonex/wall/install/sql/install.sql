@@ -47,6 +47,26 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]comments_track` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
+-- Table structure for table `[db_prefix]voting`
+--
+CREATE TABLE `[db_prefix]voting` (
+  `wall_id` bigint(8) NOT NULL default '0',
+  `wall_rating_count` int(11) NOT NULL default '0',
+  `wall_rating_sum` int(11) NOT NULL default '0',
+  UNIQUE KEY `wall_id` (`wall_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `[db_prefix]voting_track`
+--
+CREATE TABLE `[db_prefix]voting_track` (
+  `wall_id` bigint(8) NOT NULL default '0',
+  `wall_ip` varchar(20) default NULL,
+  `wall_date` datetime default NULL,
+  KEY `wall_ip` (`wall_ip`,`wall_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
 -- Table structure for table `[db_prefix]handlers`
 --
 CREATE TABLE IF NOT EXISTS `[db_prefix]handlers` (
@@ -109,6 +129,9 @@ INSERT INTO `sys_menu_admin`(`parent_id`, `name`, `title`, `url`, `description`,
 INSERT INTO `sys_objects_cmts` (`ObjectName`, `TableCmts`, `TableTrack`, `AllowTags`, `Nl2br`, `SecToEdit`, `PerView`, `IsRatable`, `ViewingThreshold`, `AnimationEffect`, `AnimationSpeed`, `IsOn`, `IsMood`, `RootStylePrefix`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldComments`, `ClassName`, `ClassFile`)
 VALUES('bx_wall', '[db_prefix]comments', '[db_prefix]comments_track', 0, 1, 90, 9999, 1, -3, 'none', 0, 1, 0, 'wcmt', '', '', '', 'BxWallCmts', 'modules/boonex/wall/classes/BxWallCmts.php');
 
+
+INSERT INTO `sys_objects_vote` (`ObjectName`, `TableRating`, `TableTrack`, `RowPrefix`, `MaxVotes`, `PostName`, `IsDuplicate`, `IsOn`, `className`, `classFile`, `TriggerTable`, `TriggerFieldRate`, `TriggerFieldRateCount`, `TriggerFieldId`, `OverrideClassName`, `OverrideClassFile`) 
+VALUES ('bx_wall', '[db_prefix]voting', '[db_prefix]voting_track', 'wall_', 5, 'vote_send_result', 'BX_PERIOD_PER_VOTE', 1, '', '', '', '', '', '', 'BxWallVoting', 'modules/boonex/wall/classes/BxWallVoting.php');
 
 
 SET @iCategoryOrder = (SELECT MAX(`menu_order`) FROM `sys_options_cats`) + 1;
