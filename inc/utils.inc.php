@@ -1182,6 +1182,7 @@ function bx_file_get_contents($sFileUrl, $aParams = array())
         curl_setopt($rConnect, CURLOPT_URL, $sFileUrl);
         curl_setopt($rConnect, CURLOPT_HEADER, 0);
         curl_setopt($rConnect, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($rConnect, CURLOPT_CAINFO, BX_DIRECTORY_PATH_PLUGINS . 'curl/cacert.pem');
         if (!ini_get('open_basedir'))
             curl_setopt($rConnect, CURLOPT_FOLLOWLOCATION, 1);
 
