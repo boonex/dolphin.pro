@@ -78,6 +78,7 @@ $aLangContent = array(
 	'_wall_see_more' => 'see more',
     '_wall_spy_post' => '<a href="{profile_link}">{profile_nick}</a> posted on <a href="{recipient_p_link}">{recipient_p_nick}</a>\'s timeline',
     '_wall_spy_post_comment' => '<a href="{profile_link}">{profile_nick}</a> commented on <a href="{recipient_p_link}">{recipient_p_nick}</a>\'s timeline',
+	'_wall_do_vote' => 'Like',
     '_bx_wall_chart' => 'Wall Events',
     '_wall_alert_module_profile' => 'Profile',
     '_wall_alert_module_friend' => 'Friend',

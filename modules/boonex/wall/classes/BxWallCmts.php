@@ -90,6 +90,8 @@ class BxWallCmts extends BxTemplCmtsView
             'cmt_type' => $sType
         );
 
+        $oVoting = $this->_oModule->_getObjectVoting($aEvent);
+
         $sRet = $this->_oModule->_oTemplate->parseHtmlByTemplateName('comments_actions', array(
             'date' => $aEvent['ago'],
             'bx_if:show_delete' => array(
@@ -109,6 +111,12 @@ class BxWallCmts extends BxTemplCmtsView
                 'condition' => $this->isPostReplyAllowed(),
                 'content' => array(
                     'content' => $this->_getPostReplyBoxTo($aParams)
+                )
+            ),
+            'bx_if:show_vote' => array(
+                'condition' => $oVoting->isVotingAllowed(),
+                'content' => array(
+                    'content' => $oVoting->getVotingElement()
                 )
             ),
         ));
