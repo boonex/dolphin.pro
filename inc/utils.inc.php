@@ -1259,8 +1259,10 @@ function getSiteInfo($sSourceUrl, $aProcessAdditionalTags = array())
         if (isset($aMatch[1]))
             $sCharset = $aMatch[1];
 
-        preg_match("/<title>(.*)<\/title>/i", $sContent, $aMatch);
-        $aResult['title'] = $aMatch[1];
+        if (preg_match("/<title.*>(.*)<\/title>/i", $sContent, $aMatch))
+            $aResult['title'] = $aMatch[1];
+        else
+            $aResult['title'] = parse_url($sSourceUrl, PHP_URL_HOST);
 
         $aResult['description'] = bx_parse_html_tag($sContent, 'meta', 'name', 'description', 'content', $sCharset);
         $aResult['keywords'] = bx_parse_html_tag($sContent, 'meta', 'name', 'keywords', 'content', $sCharset);
@@ -1536,6 +1538,14 @@ function bx_mkdir_r($dirName, $rights = 0777)
                 return false;
     }
     return true;
+}
+
+/**
+ * Returns current site protocol http:// or https://
+ */
+function bx_proto ()
+{
+    return 0 == strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https://' : 'http://';
 }
 
 /**
