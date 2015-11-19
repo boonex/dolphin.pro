@@ -1576,8 +1576,10 @@ class BxDolFilesModule extends BxDolModule
         $aItems = $aTmplItems = array();
         foreach($aObjectIds as $iId) {
             $aItem = $oSearch->serviceGetItemArray($iId, $sItemThumbnailType);
-            if(empty($aItem))
+            if(empty($aItem)) {
                 $iDeleted++;
+                continue;
+            }
             else if($aItem['status'] == 'approved' && $this->oAlbumPrivacy->check('album_view', $aItem['album_id'], $this->oModule->_iProfileId))
                 $aItems[] = $aItem;
 
@@ -1585,8 +1587,8 @@ class BxDolFilesModule extends BxDolModule
 
 			$aTmplItems[] = array_merge($aItem, array(
 				'mod_prefix' => $sPrefix,
-				'cnt_item_width' => $aItem['dims']['w'],
-				'cnt_item_height' => $aItem['dims']['h'],
+				'cnt_item_width' => $aItem['width'],
+				'cnt_item_height' => $aItem['height'],
 				'cnt_item_icon' => $aItem['file'],
 				'cnt_item_icon_2x' => !empty($aItem2x['file']) ? $aItem2x['file'] : $aItem['file'],
 				'cnt_item_page' => $aItem['url'],

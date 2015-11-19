@@ -41,10 +41,9 @@ div.bx_files-wall-shp-wrapper {
 
 	overflow: hidden;
 }
-.bx_files-wall-thumbnail {
-    background-color:#fff;
-}
-img.bx_files-wall-shp {
+div.bx_files-wall-shp-wrapper img {
+	display: block;
+
     background-repeat: no-repeat;
     background-position: center;
 }
