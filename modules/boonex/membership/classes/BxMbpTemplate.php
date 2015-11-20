@@ -82,6 +82,7 @@ class BxMbpTemplate extends BxDolModuleTemplate
     function displaySelectLevelBlock($aLevels, $bDynamic = false)
     {
     	$iModuleId = $this->_oConfig->getId();
+    	$iSelectedLevel = $iSelectedProvider = 0;  	
 
         $sCurrencyCode = strtoupper($this->_oConfig->getCurrencyCode());
         $sCurrencySign = $this->_oConfig->getCurrencySign();
@@ -91,15 +92,21 @@ class BxMbpTemplate extends BxDolModuleTemplate
 
         $aProviders = $oPayment->getProviders(0);
         if(empty($aProviders))
-        	return MsgBox(_t('_membership_err_no_payment_options'));
+        	return array(MsgBox(_t('_membership_err_no_payment_options')));
 
         $aTmplVarsLevels = array();
-        foreach($aLevels as $aLevel) {
+        foreach($aLevels as $iIndex => $aLevel) {
+        	$bPaid = (int)$aLevel['price_amount'] > 0;
+
+        	$iPriceDays = (int)$aLevel['price_days'];
+        	$fPriceAmount = (float)$aLevel['price_amount'];
+
         	$aTmplVarsLevels[] = array(
         		'level' => $this->parseHtmlByName('select_level.html', array(
+        			'js_object' => $this->_oConfig->getJsObject('join'),
 	                'id' => $aLevel['mem_id'],
-	        		'descriptor' => $oPayment->getCartItemDescriptor(0, $iModuleId, $aLevel['price_id'], 1),
-	        		'checked' => empty($aTmplVarsLevels) ? 'checked="checked"' : '',
+	        		'descriptor' => (int)$aLevel['mem_id'] == MEMBERSHIP_ID_STANDARD ? $this->_oConfig->getStandardDescriptor() : $oPayment->getCartItemDescriptor(0, $iModuleId, $aLevel['price_id'], 1),
+	        		'checked' => $iIndex == $iSelectedLevel ? 'checked="checked"' : '',
 	                'title' => $aLevel['mem_name'],
 	                'icon' =>  $this->_oConfig->getIconsUrl() . $aLevel['mem_icon'],
 	        		'bx_if:show_description' => array(
@@ -108,25 +115,39 @@ class BxMbpTemplate extends BxDolModuleTemplate
 	        				'description' => str_replace("\$", "&#36;", $aLevel['mem_description']),
 	        			)
 	        		),
-	                'days' => $aLevel['price_days'] > 0 ?  $aLevel['price_days'] . ' ' . _t('_membership_txt_days') : _t('_membership_txt_expires_never') ,
-	                'price' => $aLevel['price_amount'],
-	                'currency_code' => $sCurrencyCode,
+	                'days' => $iPriceDays > 0 ?  $iPriceDays . ' ' . _t('_membership_txt_days') : _t('_membership_txt_expires_never'),
+	        		'price' => $fPriceAmount,
+	        		'bx_if:show_price_paid' => array(
+	        			'condition' => $bPaid,
+	        			'content' => array(
+	        				'price' => $fPriceAmount,
+	                		'currency_code' => $sCurrencyCode,
+	        			)
+	        		),
+	                'bx_if:show_price_free' => array(
+	        			'condition' => !$bPaid,
+	        			'content' => array()
+	        		)
 	            ))
         	);
         }
 
 		$aTmplVarsProviders = array();
 		if(!empty($aProviders))
-        	foreach($aProviders as $aProvider) {
+        	foreach($aProviders as $iIndex => $aProvider) {
         		if((int)$aProvider['for_visitor'] != 1)
         			continue;
 
         		$aTmplVarsProviders[] = array(
         			'name' => $aProvider['name'],
         			'caption' => $aProvider['caption_cart'],
-        			'checked' => empty($aTmplVarsProviders) ? 'checked="checked"' : ''
+        			'checked' => $iIndex == $iSelectedProvider ? 'checked="checked"' : ''
         		);
         	}
+		if(empty($aTmplVarsProviders))
+        	return array(MsgBox(_t('_membership_err_no_payment_options')));
+
+		$bSelectedLevelPaid = (int)$aLevels[$iSelectedLevel]['price_amount'] > 0;
 
 		$bSelectedProvider = count($aTmplVarsProviders) == 1;
 		$sSelectedProvider = $bSelectedProvider ? $aTmplVarsProviders[0]['name'] : '';
@@ -139,6 +160,10 @@ class BxMbpTemplate extends BxDolModuleTemplate
 			'bx_if:show_providers_selector' => array(
 				'condition' => !$bSelectedProvider,
 				'content' => array(
+					'bx_if:show_providers_selector_hidden' => array(
+						'condition' => !$bSelectedLevelPaid,
+						'content' => array()
+					),
 					'bx_repeat:providers' => $aTmplVarsProviders
 				)
 			),
@@ -147,7 +172,8 @@ class BxMbpTemplate extends BxDolModuleTemplate
 				'content' => array(
 					'name' => $sSelectedProvider
 				)
-			)
+			),
+			'txt_checkout' => _t($bSelectedLevelPaid ? '_membership_btn_pay' : '_membership_btn_select')
 		);
 
 		$sCssJs = '';
@@ -228,6 +254,8 @@ class BxMbpTemplate extends BxDolModuleTemplate
         	'sObjName' => $sJsObject,
         	'sAnimationEffect' => $this->_oConfig->getAnimationEffect(),
         	'iAnimationSpeed' => $this->_oConfig->getAnimationSpeed(),
+        	'sTxtPay' => bx_js_string(_t('_membership_btn_pay')),
+        	'sTxtSelect' => bx_js_string(_t('_membership_btn_select')),
         	'sErrSelectLevel' => bx_js_string(_t('_membership_err_need_select_level')),
         	'sErrSelectProvider' => bx_js_string(_t('_membership_err_need_select_provider'))
         );

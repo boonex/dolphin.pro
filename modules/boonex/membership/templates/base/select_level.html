@@ -2,7 +2,7 @@
     <div class="mbp-level-icon" style="background-image:url(__icon__);">
         <img src="<bx_image_url:spacer.gif />" />
         <div class="bx_sys_unit_checkbox mbp-level-select">
-        	<input type="radio" name="descriptor" value="__descriptor__" __checked__ />
+        	<input type="radio" name="descriptor" value="__descriptor__" onchange="javascript:return __js_object__.onSelect(this);" bx-data-price="__price__" __checked__ />
         </div>
     </div>
     <div class="mbp-level-content">
@@ -12,7 +12,10 @@
         <bx_if:show_description>
         	<div class="mbp-level-info bx-def-padding-thd-top">__description__</div>
         </bx_if:show_description>
-        <div class="mbp-level-price bx-def-padding-thd-top">__price__ <span class="mbp-level-curr-code">__currency_code__</span></div>
+        <div class="mbp-level-price bx-def-padding-thd-top">
+        	<bx_if:show_price_paid>__price__ <span class="mbp-level-curr-code">__currency_code__</span></bx_if:show_price_paid>
+        	<bx_if:show_price_free><bx_text:_membership_txt_free /></bx_if:show_price_free>
+        </div>
         <div class="mbp-level-control">
             <button type="button" class="bx-btn bx-btn-img bx-btn-ifont" onclick="javascript: loadHtmlInPopup('explanation_popup', '<bx_url_root />explanation.php?explain=membership&type=__id__');" title="<bx_text_attribute:_membership_txt_explanation />">
                 <i class="sys-icon info-circle"></i>

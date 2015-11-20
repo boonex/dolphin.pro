@@ -248,6 +248,11 @@ function check_logged()
 
     if((isset($_COOKIE['memberID']) || isset($_COOKIE['memberPassword'])) && !$bLogged)
         bx_logout(false);
+
+	if($bLogged)
+		$GLOBALS['oSysTemplate']->addCssStyle('.bx-hide-when-logged-in', array(
+			'display' => 'none'
+		));
 }
 
 // 0 - member, 1 - admin

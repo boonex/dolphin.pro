@@ -13,6 +13,7 @@ bx_import('BxDolAdminSettings');
 require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 
 require_once('BxWallCmts.php');
+require_once('BxWallVoting.php');
 require_once('BxWallPrivacy.php');
 require_once('BxWallResponse.php');
 
@@ -386,7 +387,7 @@ class BxWallModule extends BxDolModule
 
         //--- Parse template ---//
         $aVariables = array (
-            'post_js_content' => $this->_oTemplate->getJsCode('post', $this->_iOwnerId),
+            'post_js_content' => $this->_oTemplate->getJsCode('post', array('iOwnerId' => 0)),
             'post_wall_text' => $this->_getWriteForm('_getWriteFormIndex'),
             'post_wall_link' => $this->_getShareLinkForm('_getShareLinkFormIndex'),
             'post_wall_photo' => '',
@@ -413,7 +414,7 @@ class BxWallModule extends BxDolModule
         $aVariables = array(
             'timeline' => $this->_getTimeline($iStart, $iPerPage, $sFilter, $sTimeline, $aModules),
             'content' => $this->_getPosts('desc', $iStart, $iPerPage, $sFilter, $sTimeline, $aModules),
-            'view_js_content' => $this->_oTemplate->getJsCode('view', $this->_iOwnerId, array(
+            'view_js_content' => $this->_oTemplate->getJsCode('view', array('iOwnerId' => $this->_iOwnerId), array(
 				'WallOwnerId' => $this->_iOwnerId, 
 				'WallStart' => $iStart, 
 				'WallPerPage' => $iPerPage, 
@@ -462,7 +463,7 @@ class BxWallModule extends BxDolModule
 
         //--- Parse template ---//
         $aVariables = array (
-            'post_js_content' => $this->_oTemplate->getJsCode('post', $this->_iOwnerId),
+            'post_js_content' => $this->_oTemplate->getJsCode('post', array('iOwnerId' => $this->_iOwnerId)),
             'post_wall_text' => $this->_getWriteForm(),
             'post_wall_link' => $this->_getShareLinkForm(),
             'post_wall_photo' => '',
@@ -509,7 +510,7 @@ class BxWallModule extends BxDolModule
         $aVariables = array(
             'timeline' => $this->_getTimeline($iStart, $iPerPage, $sFilter, $sTimeline, $aModules),
             'content' => $this->_getPosts('desc', $iStart, $iPerPage, $sFilter, $sTimeline, $aModules),
-            'view_js_content' => $this->_oTemplate->getJsCode('view', $this->_iOwnerId, array(
+            'view_js_content' => $this->_oTemplate->getJsCode('view', array('iOwnerId' => $this->_iOwnerId), array(
 				'WallOwnerId' => $this->_iOwnerId, 
 				'WallStart' => $iStart, 
 				'WallPerPage' => $iPerPage, 
@@ -552,7 +553,7 @@ class BxWallModule extends BxDolModule
         $aVariables = array(
             'timeline' => $this->_getTimeline($iStart, $iPerPage, $sFilter, $sTimeline, $aModules),
             'content' => $this->_getPosts('desc', $iStart, $iPerPage, $sFilter, $sTimeline, $aModules),
-            'view_js_content' => $this->_oTemplate->getJsCode('view', $sOwnerId, array(
+            'view_js_content' => $this->_oTemplate->getJsCode('view', array('iOwnerId' => $sOwnerId), array(
 				'WallOwnerId' => $sOwnerId, 
 				'WallStart' => $iStart, 
 				'WallPerPage' => $iPerPage, 
@@ -588,7 +589,7 @@ class BxWallModule extends BxDolModule
             return;
 
         $aTmplVars = array(
-            'outline_js_content' => $this->_oTemplate->getJsCode('outline', 0, array(
+            'outline_js_content' => $this->_oTemplate->getJsCode('outline', array('iOwnerId' => 0), array(
 				'WallFilter' => $sFilter, 
 				'WallModules' => $aModules
 	        )),
@@ -1022,6 +1023,28 @@ class BxWallModule extends BxDolModule
     {
     	return new BxWallPrivacy($this);
     }
+	function _getObjectVoting($aEvent)
+    {
+    	if(in_array($aEvent['type'], array('profile', 'friend')) || $aEvent['action'] == 'commentPost')
+    		return $this->_getObjectVotingDefault($aEvent['id']);
+
+		$sType = $aEvent['type'];
+	    $iObjectId = $aEvent['object_id'];
+		if(strpos($iObjectId, ',') !== false) 
+			return $this->_getObjectVotingDefault($aEvent['id']);
+
+		$oVoting = new BxWallVoting($sType, $iObjectId);
+		if($oVoting->isEnabled())
+        	return $oVoting;
+
+		return $this->_getObjectVotingDefault($aEvent['id']);
+    }
+
+	function _getObjectVotingDefault($iEventId)
+    {
+        return new BxWallVoting($this->_oConfig->getVotingSystemName(), $iEventId);
+    }
+
     function _addHidden($sPostType = "photos", $sContentType = "upload", $sAction = "post")
     {
         return array(
@@ -1080,6 +1103,10 @@ class BxWallModule extends BxDolModule
 
         $aCheckResult = checkAction($iUserId, ACTION_ID_TIMELINE_DELETE_COMMENT, $bPerform);
         return $aCheckResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
+    }
+    function _isVoteAllowed($aEvent, $bPerform = false)
+    {
+    	
     }
     function _getAuthorId()
     {

@@ -26,7 +26,7 @@
                         <bx_repeat:items>
                             <div class="pmt-item">
                                 <input type="checkbox" name="items[]" value="__vendor_id_____module_id_____item_id_____item_quantity__" checked="checked" />
-                                <a href="__item_url__">__item_title__</a> (__item_quantity__) - __item_price__ __vendor_currency_code__
+                                <a href="__item_url__">__item_title__</a> (__item_quantity__) - <bx_if:show_price_paid>__item_price__ __vendor_currency_code__</bx_if:show_price_paid><bx_if:show_price_free><bx_text:_payment_txt_free /></bx_if:show_price_free>
                             </div>
                         </bx_repeat:items>
                     </div>

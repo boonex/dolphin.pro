@@ -693,6 +693,8 @@ class BxFilesSearch extends BxTemplSearchResult
             'cpt_item_url' => $aItem['url'],
             'cnt_comment_text' => $aComment['cmt_text'],
             'cnt_item_page' => $aItem['url'],
+        	'cnt_item_width' => $aItem['width'],
+			'cnt_item_height' => $aItem['height'],
             'cnt_item_icon' => $aItem['file'],
             'cnt_item_title' => $aItem['title'],
             'cnt_item_description' => $aItem['description'],

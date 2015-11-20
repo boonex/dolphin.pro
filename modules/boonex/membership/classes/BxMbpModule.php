@@ -119,7 +119,7 @@ class BxMbpModule extends BxDolModule
 
         if (!isProfileActive())
             return array(MsgBox(_t('_membership_err_not_active')));
-        
+
         $aMembership = $this->_oDb->getMembershipsBy(array('type' => 'price_all'));
         if(empty($aMembership))
             return array(MsgBox(_t('_membership_txt_empty')));
@@ -131,7 +131,7 @@ class BxMbpModule extends BxDolModule
     	if(!$this->_oConfig->isDisableFreeJoin())
 			return '';
 
-        $aMembership = $this->_oDb->getMembershipsBy(array('type' => 'price_all'));
+        $aMembership = $this->_oDb->getMembershipsBy(array('type' => 'price_all', 'include_standard' => $this->_oConfig->isStandardOnPaidJoin()));
         if(empty($aMembership))
             return array(MsgBox(_t('_membership_err_no_payment_options')));
 
@@ -141,30 +141,6 @@ class BxMbpModule extends BxDolModule
     /**
      * Action Methods
      */
-    function actionJoinSubmit() {
-    	$sDescriptor = bx_get('descriptor');
-    	if($sDescriptor === false) {
-    		$this->_oTemplate->getPageCodeError('_membership_err_need_select_level');
-    		return;
-    	}
-
-    	$sProvider = bx_get('provider');
-    	if($sProvider === false) {
-    		$this->_oTemplate->getPageCodeError('_membership_err_need_select_provider');
-    		return;
-    	}
-
-    	$sRedirect = BX_DOL_URL_ROOT . 'join.php';
-
-    	bx_import('BxDolPayments');
-    	$aResult = BxDolPayments::getInstance()->initializeCheckout(0, $sProvider, $sDescriptor);
-    	if(is_array($aResult) && !empty($aResult['redirect']))
-			$sRedirect = $aResult['redirect'];
-
-    	header('Location: ' . $sRedirect);
-    	exit;
-    }
-
     function actionIndex()
     {
     	if(!isLogged()) {
@@ -201,6 +177,60 @@ class BxMbpModule extends BxDolModule
             ),
             'content' => array(
                 'page_main_code' => $oPage->getCode()
+            )
+        );
+        $this->_oTemplate->getPageCode($aParams);
+    }
+
+    function actionJoinSubmit()
+    {
+    	$sDescriptor = bx_get('descriptor');
+    	if($sDescriptor === false) {
+    		$this->_oTemplate->getPageCodeError('_membership_err_need_select_level');
+    		return;
+    	}
+    	else if($sDescriptor == $this->_oConfig->getStandardDescriptor()) {
+    		header('Location: ' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'join_form');
+    		exit;
+    	}
+
+    	$sProvider = bx_get('provider');
+    	if($sProvider === false) {
+    		$this->_oTemplate->getPageCodeError('_membership_err_need_select_provider');
+    		return;
+    	}
+
+    	$sRedirect = BX_DOL_URL_ROOT . 'join.php';
+
+    	bx_import('BxDolPayments');
+    	$aResult = BxDolPayments::getInstance()->initializeCheckout(0, $sProvider, $sDescriptor);
+    	if(is_array($aResult) && !empty($aResult['redirect']))
+			$sRedirect = $aResult['redirect'];
+
+    	header('Location: ' . $sRedirect);
+    	exit;
+    }
+
+    function actionJoinForm()
+    {
+    	if(!$this->_oConfig->isStandardOnPaidJoin()) {
+    		$this->_oTemplate->getPageCodeError('_membership_err_access_denied');
+    		return;
+    	}
+
+    	bx_import('ProfileFields', $this->_aModule);
+    	$oProfileFields = new BxMbpProfileFields(1, $this);
+
+    	bx_import('BxDolJoinProcessor');
+    	$oJoin = new BxDolJoinProcessor(array('profile_fields' => $oProfileFields));
+
+    	$aParams = array(
+    		'index' => 1,
+            'title' => array(
+                'page' => _t('_membership_pcaption_join')
+            ),
+            'content' => array(
+                'page_main_code' => DesignBoxContent(_t('_membership_bcaption_join'), $oJoin->process(), 11)
             )
         );
         $this->_oTemplate->getPageCode($aParams);

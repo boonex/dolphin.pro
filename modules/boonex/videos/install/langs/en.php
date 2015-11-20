@@ -91,7 +91,7 @@ $aLangContent = array(
     '_bx_videos_distribute' => 'Terms of condition for Videos distribution',
     '_bx_videos_embed' => 'Embed',
     '_bx_videos_Embed' => 'Youtube Video link',
-    '_bx_videos_Embed_example' => 'Example: http://www.youtube.com/watch?v=_AANZvYn5uk',
+    '_bx_videos_Embed_example' => 'Example: https://www.youtube.com/watch?v=_AANZvYn5uk',
     '_bx_videos_failed' => 'Failed',
     '_bx_videos_fav_add' => 'File was added to favorite list',
     '_bx_videos_fav_remove' => 'File was removed from favorite list',

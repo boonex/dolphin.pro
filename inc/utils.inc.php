@@ -1182,6 +1182,7 @@ function bx_file_get_contents($sFileUrl, $aParams = array())
         curl_setopt($rConnect, CURLOPT_URL, $sFileUrl);
         curl_setopt($rConnect, CURLOPT_HEADER, 0);
         curl_setopt($rConnect, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($rConnect, CURLOPT_CAINFO, BX_DIRECTORY_PATH_PLUGINS . 'curl/cacert.pem');
         if (!ini_get('open_basedir'))
             curl_setopt($rConnect, CURLOPT_FOLLOWLOCATION, 1);
 
@@ -1259,8 +1260,10 @@ function getSiteInfo($sSourceUrl, $aProcessAdditionalTags = array())
         if (isset($aMatch[1]))
             $sCharset = $aMatch[1];
 
-        preg_match("/<title>(.*)<\/title>/i", $sContent, $aMatch);
-        $aResult['title'] = $aMatch[1];
+        if (preg_match("/<title[^>]*>(.*)<\/title>/i", $sContent, $aMatch))
+            $aResult['title'] = $aMatch[1];
+        else
+            $aResult['title'] = parse_url($sSourceUrl, PHP_URL_HOST);
 
         $aResult['description'] = bx_parse_html_tag($sContent, 'meta', 'name', 'description', 'content', $sCharset);
         $aResult['keywords'] = bx_parse_html_tag($sContent, 'meta', 'name', 'keywords', 'content', $sCharset);
@@ -1285,8 +1288,8 @@ function getSiteInfo($sSourceUrl, $aProcessAdditionalTags = array())
 
 function bx_parse_html_tag ($sContent, $sTag, $sAttrNameName, $sAttrNameValue, $sAttrContentName, $sCharset = false)
 {
-    if (!preg_match("/<{$sTag}\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"]\s+{$sAttrContentName}[='\" ]+([^<]*)['\"][\/\s]*>/i", $sContent, $aMatch) || !isset($aMatch[1]))
-        preg_match("/<{$sTag}\s+{$sAttrContentName}[='\" ]+([^<]*)['\"]\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"][\/\s]*>/i", $sContent, $aMatch);
+    if (!preg_match("/<{$sTag}\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"]\s+{$sAttrContentName}[='\" ]+([^('>\")]*)['\"][^>]*>/i", $sContent, $aMatch) || !isset($aMatch[1]))
+        preg_match("/<{$sTag}\s+{$sAttrContentName}[='\" ]+([^('>\")]*)['\"]\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"][^>]*>/i", $sContent, $aMatch);
 
     $s = isset($aMatch[1]) ? $aMatch[1] : '';
 
@@ -1536,6 +1539,14 @@ function bx_mkdir_r($dirName, $rights = 0777)
                 return false;
     }
     return true;
+}
+
+/**
+ * Returns current site protocol http:// or https://
+ */
+function bx_proto ()
+{
+    return 0 == strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https://' : 'http://';
 }
 
 /**

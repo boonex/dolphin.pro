@@ -83,9 +83,7 @@ div.mbp-level-description {
 }
 
 /*--- Select Level ---*/
-div.mbp-available-levels-wrp {
-	overflow: hidden;
-}
+div.mbp-available-levels-wrp, 
 div.mbp-available-levels {
 	position: relative;
 }
@@ -94,6 +92,12 @@ div.mbp-available-levels div.mbp-level {
 	display: inline-block;
 	width: 50%;
 }
+div.join-box-form {
+	margin-top: 20px;
+}
+div.join-box-form:first-child {
+	margin-top: 0px;
+}
 div.join-box-form div.mbp-available-levels div.mbp-level {
 	width: 100%;
 }
@@ -101,5 +105,11 @@ div.mbp-sp-caption {
 	text-transform: uppercase;
 }
 div.mbp-pay .bx-btn {
+	display: inline-block;
+	float: none;
+
 	margin-left: 0px;
+}
+div.mbp-pay .bx-btn.mbp-select {
+	display: none;
 }
