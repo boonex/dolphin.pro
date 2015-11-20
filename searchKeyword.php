@@ -24,20 +24,33 @@ $_page['header_text'] = _t("_Search");
 ob_start();
 ?>
 <script language="javascript">
-    $(document).ready( function() {
-         $('#searchForm').bind( 'submit', function() {
-                bx_loading('searchForm', true);
-                 var sQuery = $('input', '#searchForm').serialize();
-                 $.post('searchKeywordContent.php', sQuery, function(data) {
-                         $('#searchArea').html(data);
-                         bx_loading('searchForm', false);
-                    }
-                );
+    function toggleState(sItem) {
+        $('#'+sItem).toggleClass('bx-btn-disabled', !$('#'+sItem).hasClass('bx-btn-disabled'));
+    }
+
+    function serializeButtons() {
+        var sQuery = '';
+        $('button', '#buttonArea').each(function(index) {
+            if (!$(this).hasClass('bx-btn-disabled')) {
+                sQuery += '&section[]=' + $(this).prop('id');
+            }
+        });
+
+        return sQuery;
+    }
+
+    $(document).ready(function() {
+        $('#searchForm').bind('submit', function() {
+            bx_loading('searchForm', true);
+            var sQuery = $('input', '#searchForm').serialize();
+            sQuery += serializeButtons();
+            $.post('searchKeywordContent.php', sQuery, function(data) {
+                    $('#searchArea').html(data);
+                    bx_loading('searchForm', false);
+            });
             return false;
-          }
-         );
-      }
-    );
+        });
+    });
 </script>
 <?php
 $sCode = '';
@@ -83,6 +96,12 @@ function getSearchForm ()
         $oClass->addCustomParts();
     }
 
+    $sButtons = '<div id="buttonArea" class="bx-btn-area">';
+    foreach ($aList as $sKey => $aValue) {
+        $sButtons .= '<button class="bx-btn bx-btn-centered" type="button" id="' . $sKey . '" onclick="toggleState(\'' . $sKey . '\');">' . _t($aValue['title']) . '</button>';
+    }
+    $sButtons .= '<div class="clear_both"></div></div>';
+
     if (isset($_GET['type'])) {
         $aValue = strip_tags($_GET['type']);
     } else
@@ -96,13 +115,6 @@ function getSearchForm ()
            'onsubmit' => '',
         ),
         'inputs' => array(
-            'section' => array(
-                'type' => 'checkbox_set',
-                'name' => 'section',
-                'caption' => _t('_Section'),
-                'values' => $aValues,
-                'value' => $aValue,
-            ),
             'keyword' => array(
                 'type' => 'text',
                 'name' => 'keyword',
@@ -119,5 +131,5 @@ function getSearchForm ()
     $oForm = new BxTemplFormView($aForm);
     $sFormVal = $oForm->getCode();
 
-    return DesignBoxContent(_t( "_Search" ), $sFormVal, 11);
+    return DesignBoxContent(_t( "_Search" ), $sButtons . $sFormVal, 11);
 }
