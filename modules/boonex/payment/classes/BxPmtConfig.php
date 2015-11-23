@@ -107,11 +107,19 @@ class BxPmtConfig extends BxDolConfig
     }
     function getReturnUrl($bSsl = false)
     {
-        return ($bSsl ? BX_DOL_URL_ROOT_SSL : BX_DOL_URL_ROOT) . $this->_sReturnUrl;
+    	$sResult = BX_DOL_URL_ROOT . $this->_sReturnUrl;
+    	if($bSsl && strpos($sResult, 'https://') === false)
+    		$sResult = 'https://' . bx_ltrim_str($sResult, 'http://');
+
+        return $sResult;
     }
     function getDataReturnUrl($bSsl = false)
     {
-        return ($bSsl ? BX_DOL_URL_ROOT_SSL : BX_DOL_URL_ROOT) . $this->_sDataReturnUrl;
+    	$sResult = BX_DOL_URL_ROOT . $this->_sDataReturnUrl;
+    	if($bSsl && strpos($sResult, 'https://') === false)
+    		$sResult = 'https://' . bx_ltrim_str($sResult, 'http://');
+
+        return $sResult;
     }
     function getDateFormat($sType)
     {

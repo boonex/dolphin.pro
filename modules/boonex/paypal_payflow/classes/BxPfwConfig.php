@@ -130,15 +130,27 @@ class BxPfwConfig extends BxPmtConfig
     	 		break;
     	}
 
-        return ($bSsl ? BX_DOL_URL_ROOT_SSL : BX_DOL_URL_ROOT) . $sResult;
+    	$sResult = BX_DOL_URL_ROOT . $sResult;
+    	if($bSsl && strpos($sResult, 'https://') === false)
+    		$sResult = 'https://' . bx_ltrim_str($sResult, 'http://');
+
+        return $sResult;
     }
 	function getCancelUrl($bSsl = false)
     {
-        return ($bSsl ? BX_DOL_URL_ROOT_SSL : BX_DOL_URL_ROOT) . $this->_sCancelUrl;
+    	$sResult = BX_DOL_URL_ROOT . $this->_sCancelUrl;
+    	if($bSsl && strpos($sResult, 'https://') === false)
+    		$sResult = 'https://' . bx_ltrim_str($sResult, 'http://');
+
+        return $sResult;
     }
 	function getResponseUrl($bSsl = false)
     {
-        return ($bSsl ? BX_DOL_URL_ROOT_SSL : BX_DOL_URL_ROOT) . $this->_sResponseUrl;
+    	$sResult = BX_DOL_URL_ROOT . $this->_sResponseUrl;
+    	if($bSsl && strpos($sResult, 'https://') === false)
+    		$sResult = 'https://' . bx_ltrim_str($sResult, 'http://');
+
+        return $sResult;
     }
     function getPfwEndpoint($sType = BX_PFW_ENDPOINT_TYPE_CALL)
     {

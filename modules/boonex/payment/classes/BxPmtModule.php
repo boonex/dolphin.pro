@@ -501,8 +501,13 @@ class BxPmtModule extends BxDolModule
                 list($iVendorId, $iModuleId, $iItemId, $iItemCount) = explode('_', $sItem);
                 $this->_oCart->deleteFromCart($this->_iUserId, $iVendorId, $iModuleId, $iItemId);
             }
-		else if(isset($aData['pmt-checkout']) && !empty($aData['items']))
-			$this->initializeCheckout((int)$aData['vendor_id'], $aData['provider'], $aData['items']);
+		else if(isset($aData['pmt-checkout']) && !empty($aData['items'])) {
+			$sError = $this->initializeCheckout((int)$aData['vendor_id'], $aData['provider'], $aData['items']);
+			if(!empty($sError)){
+	    		$this->_oTemplate->getPageCodeError($sError, false);
+	            return;
+	    	}
+		}
 
         header('Location: ' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'cart/');
         exit;
@@ -631,7 +636,11 @@ class BxPmtModule extends BxDolModule
 			}
 		}
 
-        return $oProvider->initializeCheckout($iPendingId, $aInfo);
+		$sError = $oProvider->initializeCheckout($iPendingId, $aInfo);
+		if(!empty($sError))
+			return MsgBox($sError);
+
+        return ''; 
     }
     function actionFinalizeCheckout($sProvider, $mixedVendorId = "")
     {

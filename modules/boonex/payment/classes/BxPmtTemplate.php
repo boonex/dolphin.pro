@@ -494,14 +494,14 @@ class BxPmtTemplate extends BxDolModuleTemplate
         $this->getPageCode($aParams);
     }
 
-    function getPageCodeError($sMessage)
+    function getPageCodeError($sMessage, $bWrap = true)
     {
 		$aParams = array(
             'title' => array(
                 'page' => _t($this->_sLangsPrefix . 'pcpt_error')
             ),
             'content' => array(
-                'page_main_code' => MsgBox(_t($sMessage))
+                'page_main_code' => $bWrap ? MsgBox(_t($sMessage)) : $sMessage
             )
         );
         $this->getPageCode($aParams);
