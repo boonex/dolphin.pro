@@ -470,6 +470,7 @@ class BxEventsModule extends BxDolTwigModule
     function serviceGetWallPost ($aEvent)
     {
         $aParams = array(
+        	'icon' => 'calendar',
             'txt_object' => '_bx_events_wall_object',
             'txt_added_new_single' => '_bx_events_wall_added_new',
             'txt_added_new_plural' => '_bx_events_wall_added_new_items',

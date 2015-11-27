@@ -686,24 +686,25 @@ class BxFilesSearch extends BxTemplSearchResult
 
         $sTextAddedNew = _t('_bx_files_wall_added_new_comment');
         $sTextWallObject = _t('_bx_files_wall_object');
-        $aTmplVars = array(
-            'cpt_user_name' => $sOwner,
-            'cpt_added_new' => $sTextAddedNew,
-            'cpt_object' => $sTextWallObject,
-            'cpt_item_url' => $aItem['url'],
-            'cnt_comment_text' => $aComment['cmt_text'],
-            'cnt_item_page' => $aItem['url'],
-        	'cnt_item_width' => $aItem['width'],
-			'cnt_item_height' => $aItem['height'],
-            'cnt_item_icon' => $aItem['file'],
-            'cnt_item_title' => $aItem['title'],
-            'cnt_item_description' => $aItem['description'],
-            'post_id' => $aEvent['id'],
-        );
         return array(
             'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
             'description' => $aComment['cmt_text'],
-            'content' => $sCss . $this->oModule->_oTemplate->parseHtmlByName('wall_post_comment.html', $aTmplVars)
+            'content' => $sCss . $this->oModule->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_comment.html', array(
+        		'mod_prefix' => 'bx_files',
+				'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => $sTextAddedNew,
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $aItem['url'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	        	'snippet' => $this->oModule->_oTemplate->parseHtmlByName('wall_post_comment.html', array(
+        			'cnt_item_page' => $aItem['url'],
+		        	'cnt_item_width' => $aItem['width'],
+					'cnt_item_height' => $aItem['height'],
+		            'cnt_item_icon' => $aItem['file'],
+		            'cnt_item_title' => $aItem['title'],
+		            'cnt_item_description' => $aItem['description'],
+	        	))
+        	))
         );
     }
 

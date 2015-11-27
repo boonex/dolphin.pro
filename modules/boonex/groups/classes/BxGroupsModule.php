@@ -418,6 +418,7 @@ class BxGroupsModule extends BxDolTwigModule
     function serviceGetWallPost ($aEvent)
     {
         $aParams = array(
+        	'icon' => 'users',
             'txt_object' => '_bx_groups_wall_object',
             'txt_added_new_single' => '_bx_groups_wall_added_new',
             'txt_added_new_plural' => '_bx_groups_wall_added_new_items',

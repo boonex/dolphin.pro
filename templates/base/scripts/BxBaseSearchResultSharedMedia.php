@@ -710,7 +710,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         return BX_DOL_URL_ROOT . $this->oModule->_oConfig->getBaseUri() . 'view/' . $a['uri'];
     }
 
-    function serviceGetWallPostComment($aEvent)
+    function serviceGetWallPostComment($aEvent, $aParams = array())
     {
         $iId = (int)$aEvent['object_id'];
         $iOwner = (int)$aEvent['owner_id'];
@@ -740,22 +740,28 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
 
         $sTextAddedNew = _t('_bx_' . $sUri . '_wall_added_new_comment');
         $sTextWallObject = _t('_bx_' . $sUri . '_wall_object');
-        $aTmplVars = array(
-            'cpt_user_name' => $sOwner,
-            'cpt_added_new' => $sTextAddedNew,
-            'cpt_object' => $sTextWallObject,
-            'cpt_item_url' => $aItem['url'],
-            'cnt_comment_text' => $aComment['cmt_text'],
-            'cnt_item_page' => $aItem['url'],
-            'cnt_item_icon' => $aItem['file'],
-            'cnt_item_title' => $aItem['title'],
-            'cnt_item_description' => $aItem['description'],
-            'post_id' => $aEvent['id'],
-        );
+
+        $sTmplName = isset($aParams['templates']['main']) ? $aParams['templates']['main'] : 'modules/boonex/wall/|timeline_comment.html';
+        $sTmplNameSnippet = isset($aParams['templates']['snippet']) ? $aParams['templates']['snippet'] : 'modules/boonex/wall/|timeline_comment_files.html';
         return array(
             'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
             'description' => $aComment['cmt_text'],
-            'content' => $sCss . $this->oModule->_oTemplate->parseHtmlByName('wall_post_comment.html', $aTmplVars)
+            'content' => $sCss . $this->oModule->_oTemplate->parseHtmlByName($sTmplName, array(
+        		'mod_prefix' => 'bx_' . $sUri,
+        		'cpt_user_name' => $sOwner,
+        		'cpt_added_new' => $sTextAddedNew,
+        		'cpt_object' => $sTextWallObject,
+        		'cpt_item_url' => $aItem['url'],
+        		'cnt_comment_text' => $aComment['cmt_text'],
+        		'snippet' => $this->oModule->_oTemplate->parseHtmlByName($sTmplNameSnippet, array(
+		            'cnt_item_page' => $aItem['url'],
+		            'cnt_item_icon' => $aItem['file'],
+		            'cnt_item_title' => $aItem['title'],
+		        	'cnt_item_title_attr' => bx_html_attribute($aItem['title']),
+		            'cnt_item_description' => $aItem['description'],
+		            'post_id' => $aEvent['id'],
+        		))
+        	))
         );
     }
 }

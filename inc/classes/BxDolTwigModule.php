@@ -1003,6 +1003,7 @@ class BxDolTwigModule extends BxDolModule
             return '';
 
         $sCss = '';
+        $sCssPrefix = str_replace('_', '-', $this->_sPrefix);
         $sBaseUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
         if($aEvent['js_mode'])
             $sCss = $this->_oTemplate->addCss(array('wall_post.css', 'unit.css', 'twig.css'), true);
@@ -1029,16 +1030,18 @@ class BxDolTwigModule extends BxDolModule
                 );
 
             $sTextAddedNewItems = _t($aParams['txt_added_new_plural'], $iItems);
-            $aTmplVars = array(
-                'cpt_user_name' => $sOwner,
-                'cpt_added_new' => $sTextAddedNewItems,
-                'bx_repeat:items' => $aTmplItems,
-                'post_id' => $aEvent['id']
-            );
+
+            $sTmplName = isset($aParams['templates']['grouped']) ? $aParams['templates']['grouped'] : 'modules/boonex/wall/|timeline_post_twig_grouped.html';
             return array(
                 'title' => $sOwner . ' ' . $sTextAddedNewItems,
                 'description' => '',
-                'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_grouped', $aTmplVars)
+                'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
+	            	'mod_prefix' => $sCssPrefix,
+	            	'mod_icon' => $aParams['icon'],
+	                'cpt_user_name' => $sOwner,
+	                'cpt_added_new' => $sTextAddedNewItems,
+	                'bx_repeat:items' => $aTmplItems,
+	            ))
             );
         }
 
@@ -1047,18 +1050,20 @@ class BxDolTwigModule extends BxDolModule
 
         $sTextAddedNew = _t($aParams['txt_added_new_single']);
         $sTextWallObject = _t($aParams['txt_object']);
-        $aTmplVars = array(
-            'cpt_user_name' => $sOwner,
-            'cpt_added_new' => $sTextAddedNew,
-            'cpt_object' => $sTextWallObject,
-            'cpt_item_url' => $sBaseUrl . $aItem[$this->_oDb->_sFieldUri],
-            'unit' => $this->_oTemplate->unit($aItem, 'unit', $oVoting, true),
-            'post_id' => $aEvent['id'],
-        );
+
+        $sTmplName = isset($aParams['templates']['single']) ? $aParams['templates']['single'] : 'modules/boonex/wall/|timeline_post_twig.html';
         return array(
             'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
             'description' => $aItem[$this->_oDb->_sFieldDescription],
-            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post', $aTmplVars)
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
+				'mod_prefix' => $sCssPrefix,
+				'mod_icon' => $aParams['icon'],
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => $sTextAddedNew,
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $sBaseUrl . $aItem[$this->_oDb->_sFieldUri],
+	            'content' => $this->_oTemplate->unit($aItem, 'unit', $oVoting, true),
+	        ))
         );
     }
 
@@ -1234,19 +1239,20 @@ class BxDolTwigModule extends BxDolModule
 
         $sTextAddedNew = _t('_bx_' . $sUri . '_wall_added_new_comment');
         $sTextWallObject = _t('_bx_' . $sUri . '_wall_object');
-        $aTmplVars = array(
-            'cpt_user_name' => $sOwner,
-            'cpt_added_new' => $sTextAddedNew,
-            'cpt_object' => $sTextWallObject,
-            'cpt_item_url' => $sBaseUrl . $aItem[$this->_oDb->_sFieldUri],
-            'cnt_comment_text' => $aComment['cmt_text'],
-            'unit' => $this->_oTemplate->unit($aItem, 'unit', $oVoting),
-            'post_id' => $aEvent['id'],
-        );
+
+        $sTmplName = isset($aParams['templates']['main']) ? $aParams['templates']['main'] : 'modules/boonex/wall/|timeline_comment.html';
         return array(
             'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
             'description' => $aComment['cmt_text'],
-            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_comment', $aTmplVars)
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
+        		'mod_prefix' => $this->_sPrefix,
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => $sTextAddedNew,
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $sBaseUrl . $aItem[$this->_oDb->_sFieldUri],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'snippet' => $this->_oTemplate->unit($aItem, 'unit', $oVoting)
+        	))
         );
     }
 

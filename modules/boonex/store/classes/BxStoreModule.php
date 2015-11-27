@@ -321,6 +321,7 @@ class BxStoreModule extends BxDolTwigModule
     function serviceGetWallPost ($aEvent)
     {
         $aParams = array(
+        	'icon' => 'shopping-cart',
             'txt_object' => '_bx_store_wall_object',
             'txt_added_new_single' => '_bx_store_wall_added_new',
             'txt_added_new_plural' => '_bx_store_wall_added_new_items',

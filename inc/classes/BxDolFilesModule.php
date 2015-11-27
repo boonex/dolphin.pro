@@ -1626,7 +1626,7 @@ class BxDolFilesModule extends BxDolModule
             $aAlbumInfo = $oAlbum->getAlbumInfo(array('fileUri' => $sAlbumUri, 'owner' => $iOwner));
 
             $sAddedNewTxt = _t('_' . $sPrefix . '_wall_added_new_items', $iItems);
-            $sTemplateName = isset($aParams['templates']['grouped']) ? $aParams['templates']['grouped'] : 'modules/boonex/wall/|timeline_post_grouped.html';
+            $sTemplateName = isset($aParams['templates']['grouped']) ? $aParams['templates']['grouped'] : 'modules/boonex/wall/|timeline_post_files_grouped.html';
             return array(
                 'title' => $sOwner . ' ' . $sAddedNewTxt,
                 'description' => '',
@@ -1653,7 +1653,7 @@ class BxDolFilesModule extends BxDolModule
 
         //--- Single public event
         $sItemTxt = _t('_' . $sPrefix . '_wall_object');
-        $sTemplateName = isset($aParams['templates']['single']) ? $aParams['templates']['single'] : 'modules/boonex/wall/|timeline_post.html';
+        $sTemplateName = isset($aParams['templates']['single']) ? $aParams['templates']['single'] : 'modules/boonex/wall/|timeline_post_files.html';
         return array(
             'title' => $sOwner . ' ' . $sAddedNewTxt . ' ' . $sItemTxt,
             'description' => $aItem['description'],
