@@ -228,5 +228,7 @@ $aLangContent = array(
   '_mma_events_mark_as_featured' => 'events marked as featured',
   '_mma_events_search' => 'events search',
   '_mma_events_view' => 'events view',
+  '_wall_reposted_bx_events_add' => 'reposted an event',
+  '_wall_reposted_bx_events_commentPost' => 'reposted an event comment',
   '_sbs_txt_title_bx_events' => 'Events',
 );

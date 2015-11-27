@@ -176,5 +176,7 @@ $aLangContent = array(
   '_mma_store_product_comments_delete_and_edit' => 'Магазин: удалять и редактировать комментарии к товарам',
   '_mma_store_search' => 'Магазин: искать',
   '_mma_store_view_product' => 'Магазин: смотреть товар',
+  '_wall_reposted_bx_store_add' => 'зарепостил товар',
+  '_wall_reposted_bx_store_commentPost' => 'зарепостил комментарий к товару',
   '_sbs_txt_title_bx_store' => 'Магазин',
 );

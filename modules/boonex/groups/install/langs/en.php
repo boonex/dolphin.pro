@@ -216,5 +216,7 @@ $aLangContent = array(
   '_mma_groups_mark_as_featured' => 'groups mark as featured',
   '_mma_groups_search' => 'groups search',
   '_mma_groups_view_group' => 'groups view group',
+  '_wall_reposted_bx_groups_add' => 'reposted a group',
+  '_wall_reposted_bx_groups_commentPost' => 'reposted a group comment',
   '_sbs_txt_title_bx_groups' => 'Groups',
 );

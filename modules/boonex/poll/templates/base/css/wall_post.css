@@ -1,9 +1,8 @@
-div.bx-poll-wall-event {
+div.wall-event-bx_poll {
     position: relative;    
 }
 
 div.bx-poll-wall-caption {
-    padding-left: 20px;
     position: relative;
     background-repeat: no-repeat;
     background-position: 0px center;
@@ -18,39 +17,23 @@ a.bx-poll-wall-caption-link,
 a.bx-poll-wall-caption-link:link {
     text-decoration: none;
 }
+
 a.bx-poll-wall-caption-link:hover,
 a.bx-poll-wall-caption-link:active {
     text-decoration: underline;
 }
-div.bx-poll-wall-content {
+
+div.bx-poll-wall-content,
+div.bx-poll-wall-content div.bx-poll-wall-title {
     position: relative;
+}
+
+div.bx-poll-wall-content div.bx-poll-wall-title div.pollInfo {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
 }
 
 div.wall-content div.pollAnswerBlock {
     background-color: #ffffff;
-}
-
-
-div.bx-poll-wall-comments {
-    padding-left: 0px;
-}
-
-div.bx-poll-wall-event div.bx-poll-wall-comments div.pollInfo {
-	position: absolute;
-	top: 0px;
-	right: 0px;
-}
-
-/*--- Overwrite default Comment styles ---*/
-div.bx-poll-wall-comments div.cmts {
-    padding: 0px;
-    /*display: none;*/
-}
-div.bx-poll-wall-comments div.cmt-reply {
-    padding: 0px;
-    /*display: none;*/
-}
-div.bx-poll-wall-comments div.thumbnail_block {
-    left: -38px;
-    top: 1px;
-}
+} 

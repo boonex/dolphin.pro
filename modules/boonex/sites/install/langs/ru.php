@@ -137,5 +137,7 @@ $aLangContent = array(
   '_mma_sites_mark_as_featured' => 'Сайты: добавлять в Избранные',
   '_mma_sites_search' => 'Сайты: искать',
   '_mma_sites_view' => 'Сайты: смотреть',
+  '_wall_reposted_bx_sites_add' => 'зарепостил сайт',
+  '_wall_reposted_bx_sites_commentPost' => 'зарепостил комментарий к сайту',
   '_sbs_txt_title_bx_sites' => 'Сайты',
 );

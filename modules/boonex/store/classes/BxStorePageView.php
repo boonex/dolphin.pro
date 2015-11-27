@@ -64,9 +64,11 @@ class BxStorePageView extends BxDolTwigPageView
         global $oFunctions;
 
         if ($this->_oMain->_iProfileId || $this->_oMain->isAdmin()) {
+        	$sCode = '';
 
             $oSubscription = BxDolSubscription::getInstance();
             $aSubscribeButton = $oSubscription->getButton($this->_oMain->_iProfileId, 'bx_store', '', (int)$this->aDataEntry['id']);
+            $sCode .= $oSubscription->getData();
 
             $aInfo = array (
                 'BaseUri' => $this->_oMain->_oConfig->getBaseUri(),
@@ -84,10 +86,18 @@ class BxStorePageView extends BxDolTwigPageView
                 'TitleActivate' => method_exists($this->_oMain, 'isAllowedActivate') && $this->_oMain->isAllowedActivate($this->aDataEntry) ? _t('_bx_store_admin_activate') : '',
             );
 
-            if (!$aInfo['TitleEdit'] && !$aInfo['TitleDelete'] && !$aInfo['TitleShare'] && !$aInfo['AddToFeatured'] && !$aInfo['TitleBroadcast'] && !$aInfo['TitleSubscribe'])
+        	if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+				$sCode .= BxDolService::call('wall', 'get_repost_js_script');
+
+				$aInfo['repostCpt'] = _t('_Repost');
+				$aInfo['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->_oMain->_iProfileId, 'bx_store', 'add', (int)$this->aDataEntry['id']));
+			}
+
+			$sCodeActions = $oFunctions->genObjectsActions($aInfo, 'bx_store');
+            if(empty($sCodeActions))
                 return '';
 
-            return $oSubscription->getData() . $oFunctions->genObjectsActions($aInfo, 'bx_store');
+            return $sCode . $sCodeActions;
         }
 
         return '';

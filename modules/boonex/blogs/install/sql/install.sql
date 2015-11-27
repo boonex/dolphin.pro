@@ -282,7 +282,8 @@ INSERT INTO `sys_objects_actions` (`ID`, `Caption`, `Icon`, `Url`, `Script`, `Ev
 (NULL, '{evalResult}', 'check-circle-o', '{post_inside_entry_url}&sa={sSAAction}', '', '$sButAct = ''{sSACaption}'';\r\nif ({admin_mode} == true || {allow_approve}) {\r\nreturn $sButAct;\r\n}\r\nelse\r\nreturn null;', 7, 'bx_blogs', 0),
 (NULL, '{sbs_blogs_title}', 'paperclip', '', '{sbs_blogs_script}', '', 8, 'bx_blogs', 0),
 (NULL, '{TitleShare}', 'share-square-o', '', 'showPopupAnyHtml(''{base_url}blogs.php?action=share_post&post_id={post_id}'');', '', 9, 'bx_blogs', 0),
-(NULL, '_bx_blog_Back_to_Blog', 'book', '{evalResult}', '', 'return ''{blog_owner_link}'';\r\n', 10, 'bx_blogs', 0);
+(NULL, '_bx_blog_Back_to_Blog', 'book', '{evalResult}', '', 'return ''{blog_owner_link}'';\r\n', 10, 'bx_blogs', 0),
+(NULL, '{repostCpt}', 'repeat', '', '{repostScript}', '', 11, 'bx_blogs', 0);
 
 INSERT INTO `sys_objects_actions` (`ID`, `Caption`, `Icon`, `Url`, `Script`, `Eval`, `Order`, `Type`, `bDisplayInSubMenuHeader`) VALUES
 (NULL, '{evalResult}', 'rss', '{site_url}rss_factory.php?action=blogs&pid={owner_id}', '', 'return _t(''_bx_blog_RSS'');', 1, 'bx_blogs_m', 0),

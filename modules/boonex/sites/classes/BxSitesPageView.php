@@ -32,6 +32,8 @@ class BxSitesPageView extends BxDolTwigPageView
         global $oFunctions;
 
         if ($this->_oSites->iOwnerId || $this->_oSites->isAdmin()) {
+        	$sCode = '';
+
             $aInfo = array(
                 'iViewer' => $this->_oSites->iOwnerId,
                 'ownerID' => (int)$this->_aSite['ownerid'],
@@ -45,6 +47,7 @@ class BxSitesPageView extends BxDolTwigPageView
 
             $oSubscription = BxDolSubscription::getInstance();
             $aButton = $oSubscription->getButton($this->_oSites->iOwnerId, 'bx_sites', '', $this->_aSite['id']);
+			$sCode .= $oSubscription->getData();
 
             $aInfo['sbs_sites_title'] = $aButton['title'];
             $aInfo['sbs_sites_script'] = $aButton['script'];
@@ -52,10 +55,9 @@ class BxSitesPageView extends BxDolTwigPageView
             if (!$aInfo['TitleEdit'] && !$aInfo['TitleDelete'] && !$aInfo['TitleShare'] && !$aInfo['AddToFeatured'] && !$aInfo['sbs_sites_title'])
                 return '';
 
-            $sScript = '';
             if ($aInfo['TitleShare']) {
                 $sUrlSharePopup = BX_DOL_URL_ROOT . $this->_oSites->_oConfig->getBaseUri() . "share_popup/" . $this->_aSite['id'];
-                $sScript = <<<EOF
+                $sCode .= <<<EOF
                     <script type="text/javascript">
                     function bx_site_show_share_popup ()
                     {
@@ -74,7 +76,18 @@ class BxSitesPageView extends BxDolTwigPageView
 EOF;
             }
 
-            return $oSubscription->getData() . $sScript . $oFunctions->genObjectsActions($aInfo, 'bx_sites');
+	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+				$sCode .= BxDolService::call('wall', 'get_repost_js_script');
+
+				$aInfo['repostCpt'] = _t('_Repost');
+				$aInfo['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->_oSites->iOwnerId, 'bx_sites', 'add', (int)$this->_aSite['id']));
+			}
+
+            $aCodeActions = $oFunctions->genObjectsActions($aInfo, 'bx_sites');
+            if(empty($aCodeActions))
+            	return '';
+
+            return $sCode . $aCodeActions;
         }
 
         return '';

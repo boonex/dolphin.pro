@@ -10,7 +10,10 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]events` (
   `content` text collate utf8_unicode_ci NOT NULL,
   `title` varchar(255) collate utf8_unicode_ci NOT NULL,
   `description` text collate utf8_unicode_ci NOT NULL,
+  `reposts` int(11) unsigned NOT NULL default '0',
   `date` int(8) NOT NULL default '0',
+  `active` tinyint(4) NOT NULL default '1',
+  `hidden` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `owner_id` (`owner_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -45,6 +48,19 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]comments_track` (
   `cmt_rate_ts` int(11) NOT NULL default '0',
   PRIMARY KEY  (`cmt_system_id`,`cmt_id`,`cmt_rate_author_nip`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Table structure for table `[db_prefix]repost_track`
+--
+CREATE TABLE IF NOT EXISTS `[db_prefix]repost_track` (
+  `event_id` int(11) NOT NULL default '0',
+  `author_id` int(11) NOT NULL default '0',
+  `author_nip` int(11) unsigned NOT NULL default '0',
+  `reposted_id` int(11) NOT NULL default '0',
+  `date` int(11) NOT NULL default '0',
+  UNIQUE KEY `event_id` (`event_id`),
+  KEY `repost` (`reposted_id`, `author_nip`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `[db_prefix]voting`
@@ -90,6 +106,7 @@ INSERT INTO `[db_prefix]handlers`(`alert_unit`, `alert_action`, `module_uri`, `m
 ('wall_common_photos', '', '', '', '', 0, '', 1, 0),
 ('wall_common_sounds', '', '', '', '', 0, '', 1, 0),
 ('wall_common_videos', '', '', '', '', 0, '', 1, 0),
+('wall_common_repost', '', '', '', '', 0, '', 1, 0),
 ('profile', 'edit', '', '', '', 0, '', 1, 0),
 ('profile', 'edit_status_message', '', '', '', 0, '', 1, 0),
 ('profile', 'commentPost', '', '', '', 0, '', 1, 0),
@@ -155,6 +172,12 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 SET @iLevelNonMember := 1;
 SET @iLevelStandard := 2;
 SET @iLevelPromotion := 3;
+
+INSERT INTO `sys_acl_actions`(`Name`, `AdditionalParamName`) VALUES ('timeline repost', '');
+SET @iAction := LAST_INSERT_ID();
+INSERT INTO `sys_acl_matrix` (`IDLevel`, `IDAction`) VALUES 
+(@iLevelStandard, @iAction), 
+(@iLevelPromotion, @iAction);
 
 INSERT INTO `sys_acl_actions`(`Name`, `AdditionalParamName`) VALUES ('timeline post comment', '');
 SET @iAction := LAST_INSERT_ID();

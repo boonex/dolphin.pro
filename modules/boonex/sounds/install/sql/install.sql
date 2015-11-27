@@ -224,6 +224,7 @@ INSERT INTO `sys_objects_actions` (`Type`, `Caption`, `Icon`, `Url`, `Script`, `
 ('[db_prefix]', '{featuredCpt}', 'star-o', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}feature/{ID}/{featured}'', false, ''post''); return false;', '', 7),
 ('[db_prefix]', '{downloadCpt}', 'download', '{moduleUrl}get_file/{ID}', '', '', 8),
 ('[db_prefix]', '{approvedCpt}', 'check', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}approve/{ID}/{approvedAct}'', false, ''post''); return false;', '', 9),
+('[db_prefix]', '{repostCpt}', 'repeat', '', '{repostScript}', '', 10),
 ('[db_prefix]_title', '{evalResult}', 'plus', '', 'showPopupAnyHtml(''{BaseUri}upload'');', 'return (getLoggedId() && BxDolModule::getInstance(''BxSoundsModule'')->isAllowedAdd()) ? _t(''_sys_upload'') : '''';', 1),
 ('[db_prefix]_title', '{evalResult}', 'music', '{BaseUri}albums/my/main/', '', 'return $GLOBALS[''logged''][''member''] || $GLOBALS[''logged''][''admin''] ? _t(''_[db_prefix]_albums_my'') : '''';', 2),
 ('[db_prefix]_album', '{evalResult}', 'remove', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}album_delete/{albumUri}'', false, ''post'', true); return false;', 'return (getLoggedId() && BxDolModule::getInstance(''BxSoundsModule'')->isAllowedDeleteAlbum({ID})) ? _t(''_Delete'') : '''';', 1);

@@ -176,5 +176,7 @@ $aLangContent = array(
   '_mma_store_product_comments_delete_and_edit' => 'store product comments delete and edit',
   '_mma_store_search' => 'store search',
   '_mma_store_view_product' => 'store view product',
+  '_wall_reposted_bx_store_add' => 'reposted a product',
+  '_wall_reposted_bx_store_commentPost' => 'reposted a product comment',
   '_sbs_txt_title_bx_store' => 'Store',
 );

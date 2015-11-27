@@ -48,4 +48,7 @@ $aLangContent = array(
     '_mma_avatar_upload' => 'avatar upload',
     '_mma_avatar_edit_any' => 'avatar edit any',
     '_mma_avatar_delete_any' => 'avatar delete any',
+
+	'_wall_reposted_bx_avatar_add' => 'reposted a new avatar',
+	'_wall_reposted_bx_avatar_change' => 'reposted a changed avatar',
 );

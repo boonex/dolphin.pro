@@ -24,6 +24,13 @@ define('BX_WALL_FILTER_OTHER', 'other');
 define('BX_WALL_VIEW_TIMELINE', 'timeline');
 define('BX_WALL_VIEW_OUTLINE', 'outline');
 
+define('BX_WALL_PARSE_TYPE_TEXT', 'text');
+define('BX_WALL_PARSE_TYPE_LINK', 'link');
+define('BX_WALL_PARSE_TYPE_PHOTOS', 'photos');
+define('BX_WALL_PARSE_TYPE_SOUNDS', 'sounds');
+define('BX_WALL_PARSE_TYPE_VIDEOS', 'videos');
+define('BX_WALL_PARSE_TYPE_REPOST', 'repost');
+
 define('BX_WALL_MEDIA_CATEGORY_NAME', 'wall');
 
 define('BX_WALL_DIVIDER_ID', ',');
@@ -53,7 +60,7 @@ class BxWallModule extends BxDolModule
         $this->_iOwnerId = 0;
 
         //--- Define Membership Actions ---//
-        defineMembershipActions(array('timeline post comment', 'timeline delete comment'), 'ACTION_ID_');
+        defineMembershipActions(array('timeline repost', 'timeline post comment', 'timeline delete comment'), 'ACTION_ID_');
     }
 
     /**
@@ -118,11 +125,7 @@ class BxWallModule extends BxDolModule
                    'description' => process_db_input($aResult['description'], BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION)
                 ));
 
-                //--- Event -> Post for Alerts Engine ---//
-                bx_import('BxDolAlerts');
-                $oAlert = new BxDolAlerts($this->_oConfig->getAlertSystemName(), 'post', $iId, $this->_getAuthorId());
-                $oAlert->alert();
-                //--- Event -> Post for Alerts Engine ---//
+                $this->onPost($iId);
 
                 $sResult = "parent.$('form#WallPost" . ucfirst($sPostType) . "').find(':input:not(:button,:submit,[type = hidden],[type = radio],[type = checkbox])').val('');\n";
                 $sResult .= "parent." . $sJsObject . "._getPost(null, " . $iId . ");";
@@ -133,6 +136,63 @@ class BxWallModule extends BxDolModule
 
         return '<script>' . $sResult . '</script>';
     }
+
+	function actionRepost()
+    {
+    	$iAuthorId = $this->_getAuthorId();
+
+        $iOwnerId = process_db_input(bx_get('owner_id'), BX_DATA_INT);
+        $aContent = array(
+            'type' => process_db_input(bx_get('type'), BX_DATA_TEXT),
+            'action' => process_db_input(bx_get('action'), BX_DATA_TEXT),
+            'object_id' => process_db_input(bx_get('object_id'), BX_DATA_INT),
+        );
+
+        $aReposted = $this->_oDb->getReposted($aContent['type'], $aContent['action'], $aContent['object_id']);
+        if(empty($aReposted) || !is_array($aReposted)) {
+            $this->_echoResultJson(array('code' => 1, 'msg' => _t('_wall_txt_err_cannot_repost')));
+            return;
+        }
+
+        $mixedAllowed = $this->_isRepostAllowed($aReposted, true);
+        if($mixedAllowed !== true) {
+            $this->_echoResultJson(array('code' => 2, 'msg' => strip_tags($mixedAllowed)));
+            return;
+        }
+
+        $bReposted = $this->_oDb->isReposted($aReposted['id'], $iOwnerId, $iAuthorId);
+		if($bReposted) {
+        	$this->_echoResultJson(array('code' => 3, 'msg' => _t('_wall_txt_err_already_reposted')));
+            return;
+        }
+
+        $iId = $this->_oDb->insertEvent(array(
+            'owner_id' => $iOwnerId,
+            'type' => $this->_oConfig->getPrefix('common_post') . 'repost',
+            'action' => '',
+            'object_id' => $iAuthorId,
+            'content' => serialize($aContent),
+            'title' => _t('_wall_reposted_' . bx_ltrim_str($aReposted['type'], $this->_oConfig->getPrefix('common_post'), ''), getNickName($iAuthorId)),
+            'description' => ''
+        ));
+
+        if(empty($iId)) {
+	        $this->_echoResultJson(array('code' => 4, 'msg' => _t('_wall_txt_err_cannot_repost')));        
+	        return;
+        }
+
+        $this->onRepost($iId, $aReposted);
+
+        $aReposted = $this->_oDb->getReposted($aContent['type'], $aContent['action'], $aContent['object_id']);
+		$this->_echoResultJson(array(
+			'code' => 0, 
+			'msg' => _t('_wall_txt_msg_success_repost'), 
+			'count' => $aReposted['reposts'], 
+			'counter' => $this->_oTemplate->getRepostCounter($aReposted),
+			'disabled' => !$bReposted
+		));
+    }
+
     /**
      * Delete post from the wall. Allow to wall owner only.
      *
@@ -146,19 +206,14 @@ class BxWallModule extends BxDolModule
         $this->_iOwnerId = (int)$_POST['WallOwnerId'];
 
         $iEvent = (int)$_POST['WallEventId'];
-        $aEvent = $this->_oDb->getEvents(array('type' => 'id', 'object_id' => $iEvent));
-        $aEvent = array_shift($aEvent);
+        $aEvent = $this->_oDb->getEvents(array('browse' => 'id', 'object_id' => $iEvent));
 
         if(!$this->_isCommentDeleteAllowed($aEvent, true))
             return $oJson->encode(array('code' => 1));
 
         $bResult = $this->_oDb->deleteEvent(array('id' => $iEvent));
         if($bResult) {
-            //--- Event -> Delete for Alerts Engine ---//
-            bx_import('BxDolAlerts');
-            $oAlert = new BxDolAlerts($this->_oConfig->getAlertSystemName(), 'delete', $iEvent, $this->_getAuthorId());
-            $oAlert->alert();
-            //--- Event -> Delete for Alerts Engine ---//
+        	$this->onDelete($aEvent);
 
             return $oJson->encode(array('code' => 0, 'id' => $iEvent));
         } else
@@ -175,10 +230,10 @@ class BxWallModule extends BxDolModule
         $this->_iOwnerId = (int)$_POST['WallOwnerId'];
         $iPostId = (int)$_POST['WallPostId'];
 
-        $aEvents = $this->_oDb->getEvents(array('type' => 'id', 'object_id' => $iPostId));
+        $aEvent = $this->_oDb->getEvents(array('browse' => 'id', 'object_id' => $iPostId));
 
         header('Content-Type: text/html; charset=utf-8');
-        return $this->_oTemplate->getCommon($aEvents[0]);
+        return $this->_oTemplate->getCommon($aEvent);
     }
     /**
      * Get posts content.
@@ -302,6 +357,21 @@ class BxWallModule extends BxDolModule
         return BxDolService::call('videos', 'get_uploader_form', array(array('mode' => 'single', 'category' => 'wall', 'album'=>_t('_wall_video_album', getNickName(getLoggedId())), 'albumPrivacy' => BX_DOL_PG_ALL, 'from_wall' => 1, 'owner_id' => $this->_iOwnerId)), 'Uploader');
     }
     /**
+     * Get popup with profiles.
+     *
+     * @return string with popup.
+     */
+	function actionGetRepostedBy()
+    {
+        $iRepostedId = (int)bx_get('id');
+
+        header('Content-Type:text/javascript; charset=utf-8');
+        return json_encode(array(
+        	'code' => 0,
+        	'content' => $this->_oTemplate->getRepostedBy($iRepostedId)
+        ));
+    }
+    /**
      * Get RSS for specified owner.
      *
      * @param  string $sUsername wall owner username
@@ -312,7 +382,7 @@ class BxWallModule extends BxDolModule
         $aOwner = $this->_oDb->getUser($sUsername, 'username');
 
         $aEvents = $this->_oDb->getEvents(array(
-            'type' => 'owner',
+            'browse' => 'owner',
             'owner_id' => $aOwner['id'],
             'order' => 'desc',
             'start' => 0,
@@ -490,7 +560,7 @@ class BxWallModule extends BxDolModule
     		return $sContent;
 
         $oSubscription = BxDolSubscription::getInstance();
-        $aButton = $oSubscription->getButton($this->getUserId(), 'bx_wall', '', $this->_iOwnerId);
+        $aButton = $oSubscription->getButton($this->_getAuthorId(), 'bx_wall', '', $this->_iOwnerId);
 
         $aTopMenu = array(
             'wall-view-all' => array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changeFilter(this)', 'title' => _t('_wall_view_all'), 'active' => 1),
@@ -693,9 +763,7 @@ class BxWallModule extends BxDolModule
 
     function serviceGetSpyPost($sAction, $iObjectId = 0, $iSenderId = 0, $aExtraParams = array())
     {
-        $aEvent = $this->_oDb->getEvents(array('type' => 'id', 'object_id' => $iObjectId));
-        $aEvent = array_shift($aEvent);
-
+        $aEvent = $this->_oDb->getEvents(array('browse' => 'id', 'object_id' => $iObjectId));
         if($aEvent['owner_id'] == $iSenderId)
         	return array();
 
@@ -719,6 +787,93 @@ class BxWallModule extends BxDolModule
             'recipient_id' => $aEvent['owner_id'],
             'lang_key' => $sLangKey
         );
+    }
+
+	function serviceGetRepostElementBlock($iOwnerId, $sType, $sAction, $iObjectId, $aParams = array())
+    {
+        $aParams = array_merge($this->_oConfig->getRepostDefaults(), $aParams);
+        return $this->_oTemplate->getRepostElement($iOwnerId, $sType, $sAction, $iObjectId, $aParams);
+    }
+
+    function serviceGetRepostCounter($sType, $sAction, $iObjectId)
+    {
+		$aReposted = $this->_oDb->getRepost($sType, $sAction, $iObjectId);
+
+        return $this->_oTemplate->getRepostCounter($aReposted);
+    }
+
+    function serviceGetRepostJsScript()
+    {
+        return $this->_oTemplate->getRepostJsScript();
+    }
+
+    function serviceGetRepostJsClick($iOwnerId, $sType, $sAction, $iObjectId)
+    {
+        return $this->_oTemplate->getRepostJsClick($iOwnerId, $sType, $sAction, $iObjectId);
+    }
+
+    function onPost($iId)
+    {
+    	$iUserId = $this->_getAuthorId();
+
+		//--- Event -> Post for Alerts Engine ---//
+		bx_import('BxDolAlerts');
+		$oAlert = new BxDolAlerts($this->_oConfig->getAlertSystemName(), 'post', $iId, $iUserId);
+		$oAlert->alert();
+		//--- Event -> Post for Alerts Engine ---//
+    }
+
+    function onDelete($aEvent)
+    {
+    	$iUserId = $this->_getAuthorId();
+    	$sCommonPostPrefix = $this->_oConfig->getPrefix('common_post');
+
+       	//--- Update parent event when repost event was deleted.
+        if($aEvent['type'] == $sCommonPostPrefix . BX_WALL_PARSE_TYPE_REPOST) {
+            $this->_oDb->deleteRepostTrack($aEvent['id']);
+
+            $aContent = unserialize($aEvent['content']);
+            $aReposted = $this->_oDb->getReposted($aContent['type'], $aContent['action'], $aContent['object_id']);
+            if(!empty($aReposted) && is_array($aReposted))
+                $this->_oDb->updateRepostCounter($aReposted['id'], $aReposted['reposts'], -1);
+        }
+
+	    //--- Find and delete repost events when parent event was deleted.
+        $bSystem = $this->_oConfig->isSystem($aEvent['type'], $aEvent['action']);
+	    $aRepostEvents = $this->_oDb->getEvents(array('browse' => 'reposted_by_descriptor', 'type' => $aEvent['type']));
+		foreach($aRepostEvents as $aRepostEvent) {
+			$aContent = unserialize($aRepostEvent['content']);
+			if(isset($aContent['type']) && $aContent['type'] == $aEvent['type'] && isset($aContent['object_id']) && (($bSystem && (int)$aContent['object_id'] == (int)$aEvent['object_id']) || (!$bSystem  && (int)$aContent['object_id'] == (int)$aEvent['id'])))
+				$this->_oDb->deleteEvent(array('id' => (int)$aRepostEvent['id']));
+		}
+
+    	//--- Event -> Delete for Alerts Engine ---//
+		bx_import('BxDolAlerts');
+		$oAlert = new BxDolAlerts($this->_oConfig->getAlertSystemName(), 'delete', $iId, $iUserId);
+		$oAlert->alert();
+		//--- Event -> Delete for Alerts Engine ---//
+    }
+
+	function onRepost($iId, $aReposted = array())
+    {
+        $aEvent = $this->_oDb->getEvents(array('browse' => 'id', 'object_id' => $iId));
+
+        if(empty($aReposted)) {
+            $aContent = unserialize($aEvent['content']);
+
+            $aReposted = $this->_oDb->getReposted($aContent['type'], $aContent['action'], $aContent['object_id']);
+            if(empty($aReposted) || !is_array($aReposted))
+                return;
+        }
+
+        $iUserId = $this->_getAuthorId();
+        $this->_oDb->insertRepostTrack($aEvent['id'], $iUserId, $this->_getAuthorIp(), $aReposted['id']);
+        $this->_oDb->updateRepostCounter($aReposted['id'], $aReposted['reposts']);
+
+        //--- Wall -> Update for Alerts Engine ---//
+        $oAlert = new BxDolAlerts($this->_oConfig->getAlertSystemName(), 'repost', $aReposted['id'], $iUserId);
+        $oAlert->alert();
+        //--- Wall -> Update for Alerts Engine ---//
     }
 
     /**
@@ -763,7 +918,7 @@ class BxWallModule extends BxDolModule
 					)
 				),
             )),
-            'title' => $aOwner['username'] . ' ' . _t('_wall_wrote'),
+            'title' => _t('_wall_added_text', $aOwner['username']),
             'description' => $sContent
         );
     }
@@ -789,7 +944,7 @@ class BxWallModule extends BxDolModule
                'url' => strpos($sUrl, 'http://') === false && strpos($sUrl, 'https://') === false ? 'http://' . $sUrl : $sUrl,
                'description' => $sDescription
            )),
-           'title' => $aOwner['username'] . ' ' . _t('_wall_shared_link'),
+           'title' => _t('_wall_added_link', $aOwner['username']),
            'description' => $sUrl . ' - ' . $sTitle
         );
     }
@@ -841,7 +996,7 @@ class BxWallModule extends BxDolModule
         //--- Check for Next
         $iPerPageEv += 1;
         $aEvents = $this->_oDb->getEvents(array(
-        	'type' => 'owner', 
+        	'browse' => 'owner', 
         	'owner_id' => $this->_iOwnerId, 
         	'order' => $sOrder, 
         	'start' => $iStartEv, 
@@ -894,7 +1049,7 @@ class BxWallModule extends BxDolModule
         //--- Check for Next
         $iPerPageEv += 1;
         $aEvents = $this->_oDb->getEvents(array(
-        	'type' => 'outline', 
+        	'browse' => BX_WALL_VIEW_OUTLINE, 
         	'order' => $sOrder, 
         	'start' => $iStartEv, 
         	'count' => $iPerPageEv, 
@@ -1104,9 +1259,19 @@ class BxWallModule extends BxDolModule
         $aCheckResult = checkAction($iUserId, ACTION_ID_TIMELINE_DELETE_COMMENT, $bPerform);
         return $aCheckResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
-    function _isVoteAllowed($aEvent, $bPerform = false)
+	function _isRepostAllowed($aEvent, $bPerform = false)
     {
-    	
+    	$sCommonPostPrefix = $this->_oConfig->getCommonPostPrefix();
+
+        if(isAdmin())
+            return true;
+
+        $iUserId = (int)$this->_getAuthorId();
+        if((int)$aEvent['owner_id'] == $iUserId || (strpos($aEvent['type'], $sCommonPostPrefix) === 0 && (int)$aEvent['object_id'] == $iUserId))
+           return true;
+
+        $aCheckResult = checkAction($iUserId, ACTION_ID_TIMELINE_REPOST, $bPerform);
+        return $aCheckResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
     function _getAuthorId()
     {
@@ -1115,5 +1280,18 @@ class BxWallModule extends BxDolModule
     function _getAuthorPassword()
     {
         return !isLogged() ? '' : getLoggedPassword();
+    }
+    function _getAuthorIp()
+    {
+        return getVisitorIP();
+    }
+	function _echoResultJson($a, $isAutoWrapForFormFileSubmit = false)
+    {
+        header('Content-type: text/html; charset=utf-8');
+
+        $s = json_encode($a);
+        if ($isAutoWrapForFormFileSubmit && !empty($_FILES))
+            $s = '<textarea>' . $s . '</textarea>';
+        echo $s;
     }
 }

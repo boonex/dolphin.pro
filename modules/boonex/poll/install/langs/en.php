@@ -94,5 +94,7 @@ $aLangContent = array(
   '_bx_polls_profile' => 'Profile\'s polls',
   '_bx_polls_public' => 'Public polls',
   '_mma_create_polls' => 'create polls',
+  '_wall_reposted_bx_poll_add' => 'reposted a poll',
+  '_wall_reposted_bx_poll_commentPost' => 'reposted a poll comment',
   '_sbs_txt_title_bx_poll' => 'Poll',
 );

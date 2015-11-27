@@ -1613,3 +1613,13 @@ function bx_linkify_html($sHtmlOrig, $sAttrs = '')
 
     return mb_substr($s, 54, -6); // strip added tags
 }
+
+/**
+ * Transform string to method name string, for example it changes 'some_method' string to 'SomeMethod' string
+ * @param string where words are separated with underscore
+ * @return string where every word begins with capital letter
+ */
+function bx_gen_method_name ($s, $sWordsDelimiter = '_')
+{
+    return str_replace(' ', '', ucwords(str_replace($sWordsDelimiter, ' ', $s)));
+}

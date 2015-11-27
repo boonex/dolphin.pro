@@ -1650,6 +1650,7 @@ EOF;
             bx_import('BxDolSubscription');
             $oSubscription = BxDolSubscription::getInstance();
             $aButton = $oSubscription->getButton($this->_iVisitorID, $this->_oConfig->getUri(), '', $iAdvertisementID);
+            $sSubsAddon = $oSubscription->getData();
 
             $aActionKeys = array(
             	'BaseUri' => $this->_oConfig->getBaseUri(),
@@ -1667,8 +1668,14 @@ EOF;
                 'sbs_ads_script' => $aButton['script'],
             	'TitleShare' => $this->isAllowedShare($aSqlResStr) ? _t('_Share') : '',
             );
+	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+	        	$sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
+
+				$aActionKeys['repostCpt'] = _t('_Repost');
+				$aActionKeys['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->_iVisitorID, 'ads', 'create', $iAdvertisementID));
+	        }
             $sActionsTable = $GLOBALS['oFunctions']->genObjectsActions($aActionKeys, 'bx_ads', false);
-            $sSubsAddon = $oSubscription->getData();
+
             $sActionsSectContent = $sSubsAddon . $sMemberActionForms . $sActionsTable;
             $sActionsSect = ($this->_iVisitorID>0 || $this->bAdminMode) ? DesignBoxContent ( $sActionsC, $sActionsSectContent, 1) : '';
             $this->sTAActionsContent = ($this->_iVisitorID>0 || $this->bAdminMode) ? $sActionsSectContent : '';

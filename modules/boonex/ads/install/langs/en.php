@@ -110,5 +110,7 @@ $aLangContent = array(
   '_mma_ads_edit_any_ad' => 'ads edit any ad',
   '_mma_ads_search' => 'ads search',
   '_mma_ads_view' => 'ads view',
+  '_wall_reposted_ads_create' => 'reposted an ad',
+  '_wall_reposted_ads_commentPost' => 'reposted an ad comment',
   '_sbs_txt_title_ads' => 'Ads',
 );

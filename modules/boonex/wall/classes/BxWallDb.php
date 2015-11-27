@@ -54,12 +54,18 @@ class BxWallDb extends BxDolModuleDb
     }
     function insertEvent($aParams)
     {
-        if((int)$this->query("INSERT INTO `" . $this->_sPrefix . "events`(`" . implode("`, `", array_keys($aParams)) . "`, `date`) VALUES('" . implode("', '", array_values($aParams)) . "', UNIX_TIMESTAMP())") <= 0)
+    	$aSet = array();
+        foreach($aParams as $sKey => $sValue)
+           $aSet[] = "`" . $sKey . "`='" . $sValue . "'";
+		if(!array_key_exists('date', $aParams))
+			$aSet[] = "`date`=UNIX_TIMESTAMP()";
+
+        if((int)$this->query("INSERT INTO `" . $this->_sPrefix . "events` SET " . implode(", ", $aSet)) <= 0)
             return 0;
 
         $iId = (int)$this->lastId();
         if($iId > 0 && isset($aParams['owner_id']) && (int)$aParams['owner_id'] > 0) {
-               //--- Wall -> Update for Alerts Engine ---//
+			//--- Wall -> Update for Alerts Engine ---//
             bx_import('BxDolAlerts');
             $oAlert = new BxDolAlerts('bx_' . $this->_oConfig->getUri(), 'update', $aParams['owner_id']);
             $oAlert->alert();
@@ -144,7 +150,7 @@ class BxWallDb extends BxDolModuleDb
 
     function getEvents($aParams)
     {
-        global $sHomeUrl;
+        $sMethod = "getAll";
         $sJoinClause = $sWhereClause = $sOrderClause = $sLimitClause = "";
 
         $sWhereModuleFilter = '';
@@ -159,8 +165,9 @@ class BxWallDb extends BxDolModuleDb
             $sWhereClause .= "AND `date`>='" . ($iNowMorning - 86400 * $iTLEnd) . "' AND `date`<='" . ($iNowEvening - 86400 * $iTLStart) . "' ";
         }
 
-        switch($aParams['type']) {
+        switch($aParams['browse']) {
             case 'id':
+            	$sMethod = 'getRow';
                 $sWhereClause = "AND `te`.`id`='" . $aParams['object_id'] . "' ";
                 $sLimitClause = "LIMIT 1";
                 break;
@@ -190,6 +197,8 @@ class BxWallDb extends BxDolModuleDb
                 break;
 
             case 'last':
+            	$sMethod = 'getRow';
+
 		        if($sWhereModuleFilter == '') {
 					$aHidden = $this->_oConfig->getHandlersHidden(BX_WALL_VIEW_TIMELINE);
 					$sWhereModuleFilter = "AND `th`.`timeline`='1' AND `th`.`id` NOT IN ('" . implode("','", $aHidden) . "') ";
@@ -211,6 +220,30 @@ class BxWallDb extends BxDolModuleDb
                 $sWhereClause .= $sWhereModuleFilter;
                 $sOrderClause = "ORDER BY `te`.`date` ASC";
                 $sLimitClause = "LIMIT 1";
+                break;
+
+			case 'descriptor':
+                $sMethod = 'getRow';
+                $sWhereClause = "";
+
+                if(isset($aParams['type']))
+                	$sWhereClause .= "AND `te`.`type`='" . $aParams['type'] . "' ";
+				if(isset($aParams['action']))
+					$sWhereClause .= "AND `te`.`action`='" . $aParams['action'] . "' ";
+				if(isset($aParams['object_id']))
+					$sWhereClause .= "AND `te`.`object_id`='" . $aParams['object_id'] . "' ";
+
+				$sLimitClause = "LIMIT 1";
+                break;
+
+            case 'reposted_by_descriptor':
+            	$sWhereClause = "";
+
+            	if(isset($aParams['type']))
+                	$sWhereClause .= "AND `te`.`content` LIKE '%" . $this->escape($aParams['type']) . "%'";
+
+                if(isset($aParams['action']))
+                	$sWhereClause .= "AND `te`.`content` LIKE '%" . $this->escape($aParams['action']) . "%'";
                 break;
 
             case BX_WALL_VIEW_OUTLINE:
@@ -237,7 +270,10 @@ class BxWallDb extends BxDolModuleDb
                 `te`.`content` AS `content`,
                 `te`.`title` AS `title`,
                 `te`.`description` AS `description`,
+                `te`.`reposts` AS `reposts`,
                 `te`.`date` AS `date`,
+                `te`.`active` AS `active`, 
+                `te`.`hidden` AS `hidden`,
                 DATE_FORMAT(FROM_UNIXTIME(`te`.`date`), '" . $this->_oConfig->getDividerDateFormat() . "') AS `print_date`,
                 DAYOFYEAR(FROM_UNIXTIME(`te`.`date`)) AS `days`,
                 DAYOFYEAR(NOW()) AS `today`,
@@ -247,15 +283,15 @@ class BxWallDb extends BxDolModuleDb
             LEFT JOIN `" . $this->_sPrefix . "handlers` AS `th` ON `te`.`type`=`th`.`alert_unit` AND `te`.`action`=`th`.`alert_action` " . $sJoinClause . " 
             WHERE 1 " . $sWhereClause . " " . $sOrderClause . " " . $sLimitClause;
 
-        $aEvents = array();
-        $aEvent = $this->getFirstRow($sSql);
-        while($aEvent) {
-            $aEvent['content'] = str_replace("[ray_url]", $sHomeUrl, $aEvent['content']);
-            $aEvent['ago'] = defineTimeInterval($aEvent['date']);
-            $aEvents[] = $aEvent;
+        $aEvents = $this->$sMethod($sSql);
+        if(empty($aEvents) || !is_array($aEvents))
+        	return array();
 
-            $aEvent = $this->getNextRow();
-        }
+		if($sMethod == 'getRow')
+			$this->_processEvent($aEvents);
+		else 
+			foreach($aEvents as $iKey => $aEvent)
+				$this->_processEvent($aEvents[$iKey]);
 
         return $aEvents;
     }
@@ -352,6 +388,82 @@ class BxWallDb extends BxDolModuleDb
         return $this->getOne($sSql);
     }
 
+	/**
+	 * Repost related methods
+	 */
+    function insertRepostTrack($iEventId, $iAuthorId, $sAuthorIp, $iRepostedId)
+    {
+        $iNow = time();
+        $iAuthorNip = ip2long($sAuthorIp);
+        return (int)$this->query("INSERT INTO `" . $this->_sPrefix . "repost_track` SET `event_id`='" . $iEventId . "', `author_id`='" . $iAuthorId . "', `author_nip`='" . $iAuthorNip . "', `reposted_id`='" . $iRepostedId . "', `date`='" . $iNow . "'") > 0;
+    }
+
+    function deleteRepostTrack($iEventId)
+    {
+        return (int)$this->query("DELETE FROM `" . $this->_sPrefix . "repost_track` WHERE `event_id`='" . $iEventId . "'") > 0;
+    }
+
+    function updateRepostCounter($iId, $iCounter, $iIncrement = 1)
+    {
+        return (int)$this->updateEvent(array('reposts' => (int)$iCounter + $iIncrement), $iId) > 0;
+    }
+
+    function getReposted($sType, $sAction, $iObjectId)
+    {
+    	$bSystem = $this->_oConfig->isSystem($sType, $sAction);
+        if($bSystem)
+            $aParams = array('browse' => 'descriptor', 'type' => $sType, 'action' => $sAction, 'object_id' => $iObjectId);
+        else
+            $aParams = array('browse' => 'id', 'object_id' => $iObjectId);
+
+		$aReposted = $this->getEvents($aParams);
+		if($bSystem && (empty($aReposted) || !is_array($aReposted))) {
+			$iOwnerId = 0;
+			$iDate = 0;
+			$iHidden = 1;
+
+			$mixedResult = $this->_oConfig->getSystemDataByDescriptor($sType, $sAction, $iObjectId);
+			if(is_array($mixedResult)) {
+				$iOwnerId = !empty($mixedResult['owner_id']) ? (int)$mixedResult['owner_id'] : 0;
+				$iDate = !empty($mixedResult['date']) ? (int)$mixedResult['date'] : 0;
+				if(!empty($iOwnerId) && !empty($iDate))
+					$iHidden = 0;
+			}
+
+			$iId = $this->insertEvent(array(
+				'owner_id' => $iOwnerId,
+				'type' => $sType,
+				'action' => $sAction,
+				'object_id' => $iObjectId,
+				'content' => '',
+				'title' => '',
+				'description' => '',
+				'date' => $iDate,
+				'hidden' => $iHidden
+			));
+
+			$aReposted = $this->getEvents(array('browse' => 'id', 'object_id' => $iId));
+		}
+
+        return $aReposted;
+    }
+
+    function getRepostedBy($iRepostedId)
+    {
+        return $this->getColumn("SELECT `author_id` FROM `" . $this->_sPrefix . "repost_track` WHERE `reposted_id`='" . $iRepostedId . "'");
+    }
+
+    function isReposted($iRepostedId, $iOwnerId, $iAuthorId)
+    {
+    	$sQuery = "SELECT 
+    			`te`.`id`
+    		FROM `" . $this->_sPrefix . "repost_track` AS `trt` 
+    		LEFT JOIN `" . $this->_sPrefix . "events` AS `te` ON `trt`.`event_id`=`te`.`id` 
+    		WHERE `trt`.`author_id`='" . $iAuthorId . "' AND `trt`.`reposted_id`='" . $iRepostedId . "' AND `te`.`owner_id`='" . $iOwnerId . "'";
+
+    	return (int)$this->getOne($sQuery) > 0;
+    }
+
     //--- Private functions ---//
     function _getFilterAddon($iOwnerId, $sFilter)
     {
@@ -367,5 +479,12 @@ class BxWallDb extends BxDolModuleDb
                 $sFilterAddon = "";
         }
         return $sFilterAddon;
+    }
+    function _processEvent(&$aEvent)
+    {
+    	global $sHomeUrl;
+
+		$aEvent['content'] = str_replace("[ray_url]", $sHomeUrl, $aEvent['content']);
+		$aEvent['ago'] = defineTimeInterval($aEvent['date']);
     }
 }

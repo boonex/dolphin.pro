@@ -1,19 +1,19 @@
 div.bx-ads-wall-main {    
     position: relative;    
 }
-
-div.bx-ads-wall-caption {
-    padding-left: 20px;
+div.bx-ads-wall-caption,
+div.bx-ads-comment-wall-caption {
     position: relative;
     background-repeat: no-repeat;
     background-position: 0px center;
     line-height: 30px; 
 }
-
+div.wall-event-repost div.wall-caption.bx-ads-wall-caption {
+	padding-left: 5px;
+}
 span.bx-ads-wall-caption-owner {
     font-weight: bold;
 }
-
 a.bx-ads-wall-caption-link,
 a.bx-ads-wall-caption-link:link {
     text-decoration: none;
@@ -22,9 +22,14 @@ a.bx-ads-wall-caption-link:hover,
 a.bx-ads-wall-caption-link:active {
     text-decoration: underline;
 }
-div.bx-ads-wall-content {
+div.bx-ads-wall-content,
+div.bx-ads-comment-wall-content {
     position: relative;
 }
+div.bx-ads-wall-content .bx-twig-unit-thumb-cont {
+	width: auto;
+}
+
 
 div.bx-ads-wall-comments {
     padding-left: 0px;

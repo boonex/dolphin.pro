@@ -732,6 +732,7 @@ $LANG= array(
   '_Report Spam' => 'Спам',
   '_Report about spam failed to sent' => 'Сообщение о спаме не было отправлено',
   '_Report about spam was sent' => 'Сообщение о спаме отправлено',
+  '_Repost' => 'Зарепостить',
   '_Reset' => 'Сбросить',
   '_Restore' => 'Восстановить',
   '_Results' => 'Результаты',

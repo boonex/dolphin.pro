@@ -1,0 +1,54 @@
+/*--- Repost element ---*/
+.wall-repost {
+	white-space: nowrap;
+}
+.wall-repost .wall-repost-element-holder .wall-repost-do-share.wall-repost-disabled {
+	color: #ddd;
+}
+.wall-repost .wall-repost-counter-holder {
+	margin-left: 5px;
+	margin-left: 0.3125rem;
+}
+.wall-repost-button .wall-repost-element-holder,
+.wall-repost-button .wall-repost-counter-holder {
+	line-height: 36px;
+	line-height: 2.2rem;
+}
+.wall-repost.wall-repost-button .wall-repost-counter-holder {
+	margin-left: 10px;
+	margin-left: 0.625rem;
+}
+.wall-repost-button-small .wall-repost-element-holder,
+.wall-repost-button-small .wall-repost-counter-holder {
+	line-height: 24px;
+	line-height: 1.6rem;
+}
+.wall-repost-button .wall-repost-counter-holder,
+.wall-repost-button-small .wall-repost-counter-holder {
+	font-size: 1.5rem;
+}
+
+div.wall-repost div.wall-repost-element-holder,
+div.wall-repost div.wall-repost-counter-holder {
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+}
+.wall-repost-do-repost.wall-repost-disabled {
+	text-decoration: none;
+	color: #cccccc;
+	cursor: default;
+}
+
+/*--- Reposted By popup ---*/
+div.wall-reposted-by-list {
+	width: 200px;
+	height: 250px;
+
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+div.wall-reposted-by-list .thumbnail_block {
+	display: inline-block;
+	float: none;
+}

@@ -19,20 +19,22 @@ class BxWallConfig extends BxDolConfig
     var $_iPerPageProfileTl;
     var $_iPerPageAccountTl;
     var $_iPerPageIndex;
-    var $_sAnimationEffect;
-    var $_iAnimationSpeed;
     var $_iCharsDisplayMax;
     var $_iRssLength;
     var $_aHideTimeline;
     var $_aHideOutline;
+	var $_aRepostDefaults;
 
-    var $_aHandlers;
+	var $_sAnimationEffect;
+    var $_iAnimationSpeed;
+
+	var $_aHtmlIds;
+    var $_aPrefixes;
     var $_aJsClasses;
     var $_aJsObjects;
 
-    /**
-     * Constructor
-     */
+    var $_aHandlers;
+
     function BxWallConfig($aModule)
     {
         parent::BxDolConfig($aModule);
@@ -45,7 +47,21 @@ class BxWallConfig extends BxDolConfig
         $this->_sCommentSystemName = $sName;
         $this->_sVotingSystemName = $sName;
 
+        $this->_aRepostDefaults = array(
+            'show_do_repost_as_button' => false,
+            'show_do_repost_as_button_small' => false,
+            'show_do_repost_icon' => false,
+            'show_do_repost_label' => true,
+            'show_counter' => true
+        );
+
         $this->_sCommonPostPrefix = 'wall_common_';
+        $this->_aPrefixes = array(
+        	'style' => 'wall',
+        	'language' => '_wall',
+        	'option' => 'wall_',
+        	'common_post' => $this->_sCommonPostPrefix
+        );
 
         $this->_sAnimationEffect = 'fade';
         $this->_iAnimationSpeed = 'slow';
@@ -57,15 +73,26 @@ class BxWallConfig extends BxDolConfig
 
         $this->_aJsClasses = array(
             'post' => 'BxWallPost',
+        	'repost' => 'BxWallRepost',
             'view' => 'BxWallView',
             'outline' => 'BxWallOutline'
         );
 
         $this->_aJsObjects = array(
             'post' => 'oWallPost',
+        	'repost' => 'oWallRepost',
             'view' => 'oWallView',
             'outline' => 'oWallOutline',
         	'voting' => 'oWallVoting',
+        );
+
+        $sHtmlPrefix = str_replace('_', '-', $sName);
+        $this->_aHtmlIds = array(
+        	'repost' => array(
+				'main' => $sHtmlPrefix . '-repost-',
+				'counter' => $sHtmlPrefix . '-repost-counter-',
+				'by_popup' => $sHtmlPrefix . '-repost-by-',
+        	)
         );
     }
 
@@ -133,6 +160,10 @@ class BxWallConfig extends BxDolConfig
 
         return $iResult;
     }
+    function getRepostDefaults()
+    {
+        return $this->_aRepostDefaults;
+    }
     function getAnimationEffect()
     {
         return $this->_sAnimationEffect;
@@ -148,6 +179,13 @@ class BxWallConfig extends BxDolConfig
     function getRssLength()
     {
         return $this->_iRssLength;
+    }
+	function getPrefix($sType = '')
+    {
+    	if(empty($sType))
+            return $this->_aPrefixes;
+
+        return isset($this->_aPrefixes[$sType]) ? $this->_aPrefixes[$sType] : '';
     }
 	function getJsClass($sType)
     {
@@ -172,6 +210,13 @@ class BxWallConfig extends BxDolConfig
 
         return $aResult;
     }
+	function getHtmlIds($sType, $sKey = '')
+    {
+        if(empty($sKey))
+            return isset($this->_aHtmlIds[$sType]) ? $this->_aHtmlIds[$sType] : array();
+
+        return isset($this->_aHtmlIds[$sType][$sKey]) ? $this->_aHtmlIds[$sType][$sKey] : '';
+    }
     function getHandlers($sKey = '')
     {
         if($sKey == '')
@@ -194,5 +239,31 @@ class BxWallConfig extends BxDolConfig
     function isJsMode()
     {
         return $this->_bJsMode;
+    }
+	function isSystem($sType, $sAction)
+    {
+        $sPrefix = $this->getCommonPostPrefix();
+        return strpos($sType, $sPrefix) === false && !empty($sAction);
+    }
+    function getSystemData(&$aEvent, $sDisplayType = BX_WALL_VIEW_TIMELINE)
+    {
+		$sHandler = $aEvent['type'] . '_' . $aEvent['action'];
+        if(!$this->isHandler($sHandler))
+            return false;
+
+        $aHandler = $this->getHandlers($sHandler);
+        if(empty($aHandler['module_uri']) || empty($aHandler['module_class']) || empty($aHandler['module_method']))
+        	return false; 
+
+		return BxDolService::call($aHandler['module_uri'], $aHandler['module_method'] . ($sDisplayType == BX_WALL_VIEW_OUTLINE ? '_' . BX_WALL_VIEW_OUTLINE : ''), array($aEvent), $aHandler['module_class']);
+    }
+    function getSystemDataByDescriptor($sType, $sAction, $iObjectId, $sDisplayType = BX_WALL_VIEW_TIMELINE)
+    {
+    	$aDescriptor = array(
+    		'type' => $sType, 
+    		'action' => $sAction,
+    		'object_id' => $iObjectId
+    	);
+    	return $this->getSystemData($aDescriptor, $sDisplayType);
     }
 }

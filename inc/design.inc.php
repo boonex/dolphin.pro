@@ -97,6 +97,10 @@ function PageCode($oTemplate = null)
     if(empty($oTemplate))
        $oTemplate = $oSysTemplate;
 
+   	bx_import('BxDolAlerts');
+	$oZ = new BxDolAlerts('system', 'design_before_output', 0, 0, array('_page' => &$_page, '_page_cont' => &$_page_cont));
+	$oZ->alert();
+
     header( 'Content-type: text/html; charset=utf-8' );
     $echo($oTemplate, 'page_' . $_page['name_index'] . '.html');
 }

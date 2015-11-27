@@ -110,5 +110,7 @@ $aLangContent = array(
   '_mma_ads_edit_any_ad' => 'Объявления: изменять любые',
   '_mma_ads_search' => 'Объявления: искать',
   '_mma_ads_view' => 'Объявления: просматривать',
+  '_wall_reposted_ads_create' => 'зарепостил объявление',
+  '_wall_reposted_ads_commentPost' => 'зарепостил комментарий к объявлению',
   '_sbs_txt_title_ads' => 'Объявления',
 );

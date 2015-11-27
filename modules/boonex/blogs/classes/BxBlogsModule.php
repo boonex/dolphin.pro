@@ -1368,6 +1368,7 @@ EOF;
             bx_import('BxDolSubscription');
             $oSubscription = BxDolSubscription::getInstance();
             $aButton = $oSubscription->getButton($this->_iVisitorID, 'bx_' . $this->_oConfig->getUri(), '', $this->iViewingPostID);
+			$sSubsAddon = $oSubscription->getData();
 
             $aActionKeys = array(
                 'edit_allowed' => $this -> isAllowedPostEdit(-1) ? 'true' : 'false',
@@ -1393,9 +1394,13 @@ EOF;
                 'base_url' => $this->sHomeUrl,
             	'TitleShare' => $this->isAllowedShare($this->aViewingPostInfo) ? _t('_Share') : '',
             );
+	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+	        	$sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
+	
+				$aActionKeys['repostCpt'] = _t('_Repost');
+				$aActionKeys['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->_iVisitorID, 'bx_blogs', 'create', $this->iViewingPostID));
+	        }
             $sActionsVal = $GLOBALS['oFunctions']->genObjectsActions($aActionKeys, 'bx_blogs', false);
-
-            $sSubsAddon = $oSubscription->getData();
 
             return $sSubsAddon . $sActionsVal;
         }

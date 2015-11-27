@@ -330,7 +330,8 @@ INSERT INTO `sys_objects_actions` (`ID`, `Caption`, `Icon`, `Url`, `Script`, `Ev
 (NULL, '{evalResult}', 'check-circle-o', '', '$(''#ActivateAdvertisementID'').val(''{ads_id}''); $(''#ActType'').val(''{ads_act_type}''); document.forms.command_activate_advertisement.submit(); return false;', 'if (!isAdmin() && !isModerator())\r\nreturn null;\r\nif (''{ads_status}''!=''active'') {\r\nreturn _t(''_bx_ads_Activate'');\r\n}\r\nelse\r\nreturn _t(''_bx_ads_DeActivate'');', 9, 'bx_ads', 0),
 (NULL, '{evalResult}', 'star-o', '{ads_entry_url}&do=cfs', '', '$iAdsFeature = (int)''{ads_featured}'';\r\nif ({admin_mode}==true) {\r\nreturn ($iAdsFeature==1) ? _t(''_bx_ads_De-Feature_it'') : _t(''_bx_ads_Feature_it'');\r\n}\r\nelse\r\nreturn null;', 10, 'bx_ads', 0),
 (NULL, '{sbs_ads_title}', 'paperclip', '', '{sbs_ads_script}', '', 11, 'bx_ads', 0),
-(NULL, '{TitleShare}', 'share-square-o', '', 'showPopupAnyHtml (''{BaseUri}share_popup/{ads_id}'');', '', '12', 'bx_ads', 0);
+(NULL, '{TitleShare}', 'share-square-o', '', 'showPopupAnyHtml (''{BaseUri}share_popup/{ads_id}'');', '', '12', 'bx_ads', 0),
+(NULL, '{repostCpt}', 'repeat', '', '{repostScript}', '', 13, 'bx_ads', 0);
 
 -- subscriptions
 INSERT INTO `sys_sbs_types`(`unit`, `action`, `template`, `params`) VALUES

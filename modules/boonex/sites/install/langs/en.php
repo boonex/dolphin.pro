@@ -137,5 +137,7 @@ $aLangContent = array(
   '_mma_sites_mark_as_featured' => 'sites mark as featured',
   '_mma_sites_search' => 'sites search',
   '_mma_sites_view' => 'sites view',
+  '_wall_reposted_bx_sites_add' => 'reposted a site',
+  '_wall_reposted_bx_sites_commentPost' => 'reposted a site comment',
   '_sbs_txt_title_bx_sites' => 'Sites',
 );

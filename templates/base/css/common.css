@@ -518,7 +518,8 @@ div.dbPrivacyMenu a.dbPrivacyGroupActive:active {
 }
 
 div.disignBoxFirst div.dbClose a {
-    text-decoration:none;
+    text-decoration: none;
+	outline-style: none;
 }
 div.disignBoxFirst div.dbClose .sys-icon {
     display:block;

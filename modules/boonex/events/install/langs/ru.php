@@ -228,5 +228,7 @@ $aLangContent = array(
   '_mma_events_mark_as_featured' => 'События: помещать в избранное',
   '_mma_events_search' => 'События: искать',
   '_mma_events_view' => 'События: видеть',
+  '_wall_reposted_bx_events_add' => 'зарепостил событие',
+  '_wall_reposted_bx_events_commentPost' => 'зарепостил комментарий к событию',
   '_sbs_txt_title_bx_events' => 'События',
 );

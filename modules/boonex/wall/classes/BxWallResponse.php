@@ -34,7 +34,7 @@ class BxWallResponse extends BxDolAlertsResponse
         if($bFromWall) {
             $this->_oModule->_iOwnerId = (int)$oAlert->aExtras['owner_id'];
             $sMedia = strtolower(str_replace('bx_', '', $oAlert->sUnit));
-            $aMediaInfo = $this->_oModule->_oTemplate->getCommonMedia($sMedia, $oAlert->iObject);
+            $aMediaInfo = $this->_oModule->_oTemplate->_getCommonMedia($sMedia, $oAlert->iObject);
 
             $iOwnerId = $this->_oModule->_iOwnerId;
             $iObjectId = $this->_oModule->_getAuthorId();
@@ -43,7 +43,8 @@ class BxWallResponse extends BxDolAlertsResponse
             $sContent = serialize(array('type' => $sMedia, 'id' => $oAlert->iObject));
             $sTitle = $aMediaInfo['title'];
             $sDescription = $aMediaInfo['description'];
-        } else {
+        } 
+        else {
             $iOwnerId = $oAlert->iSender;
             $iObjectId = $oAlert->iObject;
             $sType = $oAlert->sUnit;

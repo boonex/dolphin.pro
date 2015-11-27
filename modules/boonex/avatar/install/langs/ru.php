@@ -48,4 +48,7 @@ $aLangContent = array(
     '_mma_avatar_upload' => 'Аватар: загружать',
     '_mma_avatar_edit_any' => 'Аватар: редактировать любой',
     '_mma_avatar_delete_any' => 'Аватар: удалять любой',
+
+	'_wall_reposted_bx_avatar_add' => 'зарепостил новый аватар',
+	'_wall_reposted_bx_avatar_change' => 'зарепостил измененный аватар',
 );

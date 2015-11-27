@@ -39,10 +39,13 @@ class BxVideosPageView extends BxDolPageView
     function getBlockCode_ActionList ()
     {
         $sCode = null;
-        bx_import('BxDolSubscription');
-        $oSubscription = BxDolSubscription::getInstance();
         $sMainPrefix = $this->oConfig->getMainPrefix();
+
+        bx_import('BxDolSubscription');
+        $oSubscription = BxDolSubscription::getInstance();        
         $aButton = $oSubscription->getButton($this->iProfileId, $sMainPrefix, '', (int)$this->aFileInfo['medID']);
+        $sCode .= $oSubscription->getData();
+
         $aReplacement = array(
             'favorited' => $this->aFileInfo['favorited'] == false ? '' : 'favorited',
             'featured' => (int)$this->aFileInfo['Featured'],
@@ -65,8 +68,7 @@ class BxVideosPageView extends BxDolPageView
             $sMsg = $aReplacement['featured'] > 0 ? 'un' : '';
             $aReplacement['featuredCpt'] = _t('_' . $sMainPrefix . '_action_' . $sMsg . 'feature');
         }
-        if ($this->oModule->isAllowedApprove($this->aFileInfo))
-        {
+        if ($this->oModule->isAllowedApprove($this->aFileInfo)) {
             $sMsg = '';
             $iAppr = 1;
             if ($this->aFileInfo['Approved'] == 'approved')
@@ -76,11 +78,20 @@ class BxVideosPageView extends BxDolPageView
             }
             $aReplacement['approvedCpt'] = _t('_' . $sMainPrefix . '_admin_' . $sMsg . 'activate');
             $aReplacement['approvedAct'] = $iAppr;
-        }        
+        }
+
+	    if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+        	$sCode .= BxDolService::call('wall', 'get_repost_js_script');
+
+			$aReplacement['repostCpt'] = _t('_Repost');
+			$aReplacement['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->iProfileId, $sMainPrefix, 'add', (int)$this->aFileInfo['medID']));
+        }
+
         $sActionsList = $GLOBALS['oFunctions']->genObjectsActions($aReplacement, $sMainPrefix);
-        if (!is_null($sActionsList))
-            $sCode = $oSubscription->getData() . $sActionsList;
-        return $sCode;
+        if(is_null($sActionsList))
+        	return '';
+
+        return $sCode . $sActionsList;
     }
 
     function getBlockCode_FileAuthor()

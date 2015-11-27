@@ -1,15 +1,16 @@
-div.bx-store-wall-event {
+div.wall-event-bx_store {
     position: relative;    
 }
-
-div.bx-store-wall-caption {
-    padding-left: 20px;
+div.bx-store-wall-caption,
+div.bx-store-comment-wall-caption {
     position: relative;
     background-repeat: no-repeat;
     background-position: 0px center;
     line-height: 30px; 
 }
-
+div.wall-event-repost div.wall-caption.bx-store-wall-caption {
+	padding-left: 5px;
+}
 span.bx-store-wall-caption-owner {
     font-weight: bold;
 }
@@ -22,7 +23,8 @@ a.bx-store-wall-caption-link:hover,
 a.bx-store-wall-caption-link:active {
     text-decoration: underline;
 }
-div.bx-store-wall-content {
+div.bx-store-wall-content,
+div.bx-store-comment-wall-content {
     position: relative;
 }
 div.bx-store-wall-comments {

@@ -94,5 +94,7 @@ $aLangContent = array(
   '_bx_polls_profile' => 'Опросы профиля',
   '_bx_polls_public' => 'Публичные опросы',
   '_mma_create_polls' => 'Опросы: создавать',
+  '_wall_reposted_bx_poll_add' => 'зарепостил опрос',
+  '_wall_reposted_bx_poll_commentPost' => 'зарепостил комментарий к опросу',
   '_sbs_txt_title_bx_poll' => 'Опрос',
 );
