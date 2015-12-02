@@ -291,4 +291,14 @@ class BxPhotosModule extends BxDolFilesModule
 
 		return BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'albums/my/manage_profile_photos/' . $sSelectedAlbum . '/owner/' . getUsername($iProfileId);
     }
+
+	function serviceGetWallPost($aEvent)
+    {
+        return $this->getWallPost($aEvent, 'picture-o');
+    }
+
+    function serviceGetWallPostOutline($aEvent)
+    {
+        return $this->getWallPostOutline($aEvent, 'picture-o');
+    }
 }

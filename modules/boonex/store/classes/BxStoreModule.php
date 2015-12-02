@@ -324,13 +324,27 @@ class BxStoreModule extends BxDolTwigModule
         	'icon' => 'shopping-cart',
             'txt_object' => '_bx_store_wall_object',
             'txt_added_new_single' => '_bx_store_wall_added_new',
+        	'txt_added_new_title_single' => '_bx_store_wall_added_new_title',
             'txt_added_new_plural' => '_bx_store_wall_added_new_items',
+        	'txt_added_new_title_plural' => '_bx_store_wall_added_new_title_items',
             'txt_privacy_view_event' => 'view_product',
             'obj_privacy' => $this->_oPrivacyProduct
         );
         return parent::_serviceGetWallPost($aEvent, $aParams);
     }
 
+    function serviceGetWallAddComment($aEvent)
+    {
+        $aParams = array(
+            'txt_privacy_view_event' => 'view_product',
+            'obj_privacy' => $this->_oPrivacyProduct
+        );
+        return parent::_serviceGetWallAddComment($aEvent, $aParams);
+    }
+
+	/**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPostComment($aEvent)
     {
         $aParams = array(

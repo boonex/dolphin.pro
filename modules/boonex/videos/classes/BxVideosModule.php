@@ -114,4 +114,14 @@ class BxVideosModule extends BxDolFilesModule
             return false;
         return $this->isAllowedView($aFile, $isPerformAction);
     }
+
+    function serviceGetWallPost($aEvent)
+    {
+        return $this->getWallPost($aEvent, 'film');
+    }
+
+    function serviceGetWallPostOutline($aEvent)
+    {
+        return $this->getWallPostOutline($aEvent, 'film');
+    }
 }

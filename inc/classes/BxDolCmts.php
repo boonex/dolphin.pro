@@ -459,9 +459,13 @@ class BxDolCmts extends BxDolMistake
 
     function actionCmtPost()
     {
-        if(!$this->isEnabled()) return '';
-        if(!$this->isPostReplyAllowed()) return $this->msgErrPostReplyAllowed ();
+        if(!$this->isEnabled())
+        	return '';
 
+        if(!$this->isPostReplyAllowed())
+        	return $this->msgErrPostReplyAllowed();
+
+        $iCmtObjectId = (int)$this->getId();
         $iCmtParentId = (int)$_REQUEST['CmtParent'];
         $iCmtAuthorId = $this->_getAuthorId();
 
@@ -472,7 +476,7 @@ class BxDolCmts extends BxDolMistake
 
         $iMood = (int)$_REQUEST['CmtMood'];
 
-        $iCmtNewId = $this->_oQuery->addComment ($this->getId(), $iCmtParentId, $iCmtAuthorId, $sText, $iMood);
+        $iCmtNewId = $this->_oQuery->addComment ($iCmtObjectId, $iCmtParentId, $iCmtAuthorId, $sText, $iMood);
 
         if(false === $iCmtNewId)
             return '';
@@ -482,8 +486,11 @@ class BxDolCmts extends BxDolMistake
         $this->isPostReplyAllowed(true);
 
         bx_import('BxDolAlerts');
-        $oZ = new BxDolAlerts($this->_sSystem, 'commentPost', $this->getId(), $this->_getAuthorId(), array('comment_id' => $iCmtNewId, 'comment_author_id' => $iCmtAuthorId));
-        $oZ->alert();        
+        $oZ = new BxDolAlerts($this->_sSystem, 'commentPost', $iCmtObjectId, $iCmtAuthorId, array('comment_id' => $iCmtNewId, 'comment_author_id' => $iCmtAuthorId));
+        $oZ->alert();
+
+        $oZ = new BxDolAlerts('comment', 'add', $iCmtNewId, $iCmtAuthorId, array('object_system' => $this->_sSystem, 'object_id' => $iCmtObjectId));
+        $oZ->alert();
 
         return $iCmtNewId;
     }
@@ -492,32 +499,38 @@ class BxDolCmts extends BxDolMistake
 
     function actionCmtRemove ()
     {
-        if (!$this->isEnabled()) return '';
+        if(!$this->isEnabled())
+        	return '';
 
         $iCmtId = (int)$_REQUEST['Cmt'];
-        $aCmt = $this->_oQuery->getCommentSimple ($this->getId(), $iCmtId);
+        $iObjectId = (int)$this->getId();
+        $iAuthorId = $this->_getAuthorId();
 
-        if (!$aCmt)
-            return _t('_No such comment');
+        $aCmt = $this->_oQuery->getCommentSimple ($iObjectId, $iCmtId);
+        if(!$aCmt)
+			return _t('_No such comment');
 
-        if ($aCmt['cmt_replies'] > 0)
-            return _t('_Can not delete comments with replies');
+        if($aCmt['cmt_replies'] > 0)
+			return _t('_Can not delete comments with replies');
 
-        $isRemoveAllowed = $this->isRemoveAllowedAll() || ($aCmt['cmt_author_id'] == $this->_getAuthorId() && $this->isRemoveAllowed());
+        $isRemoveAllowed = $this->isRemoveAllowedAll() || ($aCmt['cmt_author_id'] == $iAuthorId && $this->isRemoveAllowed());
         if (!$isRemoveAllowed && $aCmt['cmt_secs_ago'] > ($this->getAllowedEditTime()+20))
-            return $aCmt['cmt_author_id'] == $this->_getAuthorId() && !$this->isRemoveAllowed() ? strip_tags($this->msgErrRemoveAllowed()) : _t('_Access denied');
+            return $aCmt['cmt_author_id'] == $iAuthorId && !$this->isRemoveAllowed() ? strip_tags($this->msgErrRemoveAllowed()) : _t('_Access denied');
 
-        if (!$this->_oQuery->removeComment ($this->getId(), $aCmt['cmt_id'], $aCmt['cmt_parent_id']))
+        if (!$this->_oQuery->removeComment ($iObjectId, $aCmt['cmt_id'], $aCmt['cmt_parent_id']))
             return _t('_Database Error');
 
         $this->_triggerComment();
 
-        if ($aCmt['cmt_author_id'] == $this->_getAuthorId())
+        if ($aCmt['cmt_author_id'] == $iAuthorId)
            $this->isRemoveAllowed(true);
 
         bx_import('BxDolAlerts');
-        $oZ = new BxDolAlerts($this->_sSystem, 'commentRemoved', $this->getId(), $this->_getAuthorId(), array('comment_id' => $aCmt['cmt_id'], 'comment_author_id' => $aCmt['cmt_author_id']));
-        $oZ->alert();        
+        $oZ = new BxDolAlerts($this->_sSystem, 'commentRemoved', $iObjectId, $iAuthorId, array('comment_id' => $aCmt['cmt_id'], 'comment_author_id' => $aCmt['cmt_author_id']));
+        $oZ->alert();
+
+        $oZ = new BxDolAlerts('comment', 'delete', $aCmt['cmt_id'], $iAuthorId, array('object_system' => $this->_sSystem, 'object_id' => $iObjectId));
+        $oZ->alert();
 
         return '';
     }
@@ -552,31 +565,36 @@ class BxDolCmts extends BxDolMistake
         if ($this->_isSpam($_REQUEST['CmtText']))
             return $oJson->encode(array('err' => sprintf(_t("_sys_spam_detected"), BX_DOL_URL_ROOT . 'contact.php')));
 
+		$iObjectId = $this->getId();
+        $iAuthorId = $this->_getAuthorId();
+
         $sText = $this->_prepareTextForSave ($_REQUEST['CmtText']);
+		$sTextRet = stripslashes($sText);
 
         $iCmtMood = (int)$_REQUEST['CmtMood'];
 
-        $sTextRet = stripslashes($sText);
-
-        $aCmt = $this->_oQuery->getCommentSimple ($this->getId(), $iCmtId);
+        $aCmt = $this->_oQuery->getCommentSimple ($iObjectId, $iCmtId);
         if(!$aCmt)
             return '{}';
 
-        $isEditAllowed = $this->isEditAllowedAll() || ($aCmt['cmt_author_id'] == $this->_getAuthorId() && $this->isEditAllowed());
+        $isEditAllowed = $this->isEditAllowedAll() || ($aCmt['cmt_author_id'] == $iAuthorId && $this->isEditAllowed());
 
         if (!$isEditAllowed && $aCmt['cmt_secs_ago'] > ($this->getAllowedEditTime()+20))
             return '{}';
 
-        if (($sTextRet != $aCmt['cmt_text'] || $iCmtMood != $aCmt['cmt_mood']) && $this->_oQuery->updateComment ($this->getId(), $aCmt['cmt_id'], $sText, $iCmtMood)) {
-            if ($aCmt['cmt_author_id'] == $this->_getAuthorId())
+        if (($sTextRet != $aCmt['cmt_text'] || $iCmtMood != $aCmt['cmt_mood']) && $this->_oQuery->updateComment ($iObjectId, $aCmt['cmt_id'], $sText, $iCmtMood)) {
+            if ($aCmt['cmt_author_id'] == $iAuthorId)
                $this->isEditAllowed(true);
 
             bx_import('BxDolAlerts');
-            $oZ = new BxDolAlerts($this->_sSystem, 'commentUpdated', $this->getId(), $this->_getAuthorId(), array('comment_id' => $aCmt['cmt_id'], 'comment_author_id' => $aCmt['cmt_author_id']));
+            $oZ = new BxDolAlerts($this->_sSystem, 'commentUpdated', $iObjectId, $iAuthorId, array('comment_id' => $aCmt['cmt_id'], 'comment_author_id' => $aCmt['cmt_author_id']));
             $oZ->alert();
+
+			$oZ = new BxDolAlerts('comment', 'change', $aCmt['cmt_id'], $iAuthorId, array('object_system' => $this->_sSystem, 'object_id' => $iObjectId));
+			$oZ->alert();
         }
 
-        $aCmt = $this->_oQuery->getCommentSimple ($this->getId(), $iCmtId);
+        $aCmt = $this->_oQuery->getCommentSimple($iObjectId, $iCmtId);
 
         return $oJson->encode(array('text' => $aCmt['cmt_text'], 'mood' => $aCmt['cmt_mood'], 'mood_text' => _t($this->_aMoodText[$aCmt['cmt_mood']])));
     }

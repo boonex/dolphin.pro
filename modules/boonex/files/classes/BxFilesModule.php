@@ -389,9 +389,42 @@ class BxFilesModule extends BxDolFilesModule
     {
         return parent::serviceGetMemberMenuItem ('save');
     }
+
     function serviceGetMemberMenuItemAddContent ()
     {
         return parent::serviceGetMemberMenuItemAddContent ('save');
+    }
+
+    function serviceGetWallPost($aEvent)
+    {
+        return $this->getWallPost($aEvent, 'save', array(
+            'templates' => array(
+                'single' => 'wall_post.html',
+                'grouped' => 'wall_post_grouped.html'
+            )
+        ));
+    }
+
+    function serviceGetWallPostOutline($aEvent)
+    {
+        return $this->getWallPostOutline($aEvent, 'save', array(
+            'templates' => array(
+                'single' => 'wall_outline.html',
+                'grouped' => 'wall_outline_grouped.html'
+            ),
+            'grouped' => array(
+                'items_limit' => 2
+            )
+        ));
+    }
+
+    function serviceGetWallAddComment($aEvent)
+    {
+    	return parent::serviceGetWallAddComment($aEvent, array(
+    		'templates' => array(
+    			'snippet' => 'wall_post_comment.html'
+    		)
+    	));
     }
 
     function getInstanceUploadFormArray($aAlbums, $aPrivFieldView, $sAlbumsCaption = false, $sAlbumTitleCaption = false, $sCreateNewAlbumCaption = false)

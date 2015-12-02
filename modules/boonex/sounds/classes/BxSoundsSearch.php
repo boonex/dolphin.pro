@@ -223,11 +223,17 @@ class BxSoundsSearch extends BxTemplSearchResultSharedMedia
         return $aFiles;
     }
 
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPost($aEvent)
     {
         return $this->oModule->getWallPost($aEvent, 'music');
     }
 
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPostOutline($aEvent)
     {
         return $this->oModule->getWallPostOutline($aEvent, 'music');

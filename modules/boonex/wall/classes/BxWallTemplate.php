@@ -57,7 +57,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 	                    'description' => process_db_input($aResult['description'], BX_TAGS_STRIP)
 	                ), $aEvent['id']);
 	
-	            if(!in_array($aEvent['type'], array('profile', 'friend')) && $aEvent['action'] != 'commentPost') {
+	            if(!in_array($aEvent['type'], array('profile', 'friend')) && !in_array($aEvent['action'], array('commentPost', 'comment_add'))) {
 	                $sType = $aEvent['type'];
 	                $iObjectId = $aEvent['object_id'];
 	                if(strpos($iObjectId, ',') !== false) {
@@ -70,8 +70,9 @@ class BxWallTemplate extends BxDolModuleTemplate
 	                    $sComments = $oComments->getCommentsFirstSystem('comment', $aEvent['id']);
 	                else
 	                    $sComments = $this->getDefaultComments($aEvent['id']);
-	            } else
-	                $sComments = $this->getDefaultComments($aEvent['id']);
+	            }
+	            else
+					$sComments = $this->getDefaultComments($aEvent['id']);
 
 				break;
 
@@ -184,7 +185,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 					return array();
 
 				$sTmplName = 'repost';
-				$aTmplVars['cpt_reposted'] = _t('_wall_reposted_' . $sRepostedType . (!empty($aReposted['action']) ? '_' . $aReposted['action'] : ''), '');
+				$aTmplVars['cpt_reposted'] = _t('_wall_reposted_' . $sRepostedType . (!empty($aReposted['action']) ? '_' . $aReposted['action'] : ''));
                 break;
         }
 
@@ -218,7 +219,7 @@ class BxWallTemplate extends BxDolModuleTemplate
         $aContent = array('title' => '', 'description' => '', 'content' => '');
         if(!empty($aMediaInfo) && is_array($aMediaInfo) && !empty($aMediaInfo['file']))
             $aContent = array(
-                'title' => _t('_wall_added_' . $sType, getNickName($aMediaInfo['owner'])),
+                'title' => _t('_wall_added_title_' . $sType, getNickName($aMediaInfo['owner'])),
                 'description' => $aMediaInfo['description'],
                 'content' => $this->parseHtmlByTemplateName('common_media', array(
                     'image_url' =>  isset($aMediaInfo['file']) ? $aMediaInfo['file'] : '',
@@ -400,6 +401,51 @@ class BxWallTemplate extends BxDolModuleTemplate
         );
     }
 
+	function displayProfileCommentAdd($aEvent)
+    {
+        $iId = (int)$aEvent['object_id'];
+        $iOwner = (int)$aEvent['owner_id'];
+        $sOwner = getNickName($iOwner);
+
+        $aContent = unserialize($aEvent['content']);
+        if(empty($aContent) || empty($aContent['object_id']))
+            return '';
+
+		$iItem = (int)$aContent['object_id'];
+        $aItem = getProfileInfo($iItem);
+		if(empty($aItem) || !is_array($aItem))
+        	return array('perform_delete' => true);
+
+        bx_import('BxDolCmtsProfile');
+        $oCmts = new BxDolCmtsProfile('profile', $iItem);
+        if(!$oCmts->isEnabled())
+            return '';
+
+		$aItem['url'] = getProfileLink($iId);
+        $aComment = $oCmts->getCommentRow($iId);
+
+        $sTextWallObject = _t('_wall_object_profile');
+        return array(
+            'title' => _t('_wall_added_new_title_comment_profile', $sOwner, $sTextWallObject),
+            'description' => $aComment['cmt_text'],
+            'content' => $this->parseHtmlByName('p_comment.html', array(
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_wall_added_new_comment_profile'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $aItem['url'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'cnt_item_page' => $aItem['url'],
+	            'cnt_item_icon' => get_member_thumbnail($iId, 'none', true),
+	            'cnt_item_title' => $aItem['title'],
+	            'cnt_item_description' => $aItem['description'],
+	            'post_id' => $aEvent['id'],
+        	))
+        );
+    }
+
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function displayProfileCommentPost($aEvent)
     {
         $iId = (int)$aEvent['object_id'];
@@ -422,24 +468,22 @@ class BxWallTemplate extends BxDolModuleTemplate
         $aItem['url'] = getProfileLink($iId);
         $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
 
-        $sTextAddedNew = _t('_wall_added_new_comment_profile');
         $sTextWallObject = _t('_wall_object_profile');
-        $aTmplVars = array(
-            'cpt_user_name' => $sOwner,
-            'cpt_added_new' => $sTextAddedNew,
-            'cpt_object' => $sTextWallObject,
-            'cpt_item_url' => $aItem['url'],
-            'cnt_comment_text' => $aComment['cmt_text'],
-            'cnt_item_page' => $aItem['url'],
-            'cnt_item_icon' => get_member_thumbnail($iId, 'none', true),
-            'cnt_item_title' => $aItem['title'],
-            'cnt_item_description' => $aItem['description'],
-            'post_id' => $aEvent['id'],
-        );
         return array(
-            'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
+            'title' => _t('_wall_added_new_title_comment_profile', $sOwner, $sTextWallObject),
             'description' => $aComment['cmt_text'],
-            'content' => $this->parseHtmlByName('p_comment.html', $aTmplVars)
+            'content' => $this->parseHtmlByName('p_comment.html', array(
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_wall_added_new_comment_profile'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $aItem['url'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'cnt_item_page' => $aItem['url'],
+	            'cnt_item_icon' => get_member_thumbnail($iId, 'none', true),
+	            'cnt_item_title' => $aItem['title'],
+	            'cnt_item_description' => $aItem['description'],
+	            'post_id' => $aEvent['id'],
+        	))
         );
     }
 

@@ -80,4 +80,14 @@ class BxSoundsModule extends BxDolFilesModule
             return false;
         return $this->isAllowedView($aFile, $isPerformAction);
     }
+
+	function serviceGetWallPost($aEvent)
+    {
+        return $this->getWallPost($aEvent, 'music');
+    }
+
+    function serviceGetWallPostOutline($aEvent)
+    {
+        return $this->getWallPostOutline($aEvent, 'music');
+    }
 }

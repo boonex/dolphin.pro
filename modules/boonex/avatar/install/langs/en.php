@@ -11,7 +11,9 @@ $aLangContent = array(
     '_bx_ava_avatar' => 'Avatar',
     '_bx_ava_administration' => 'Avatar',
     '_bx_ava_wall_add' => 'added new',
+	'_bx_ava_wall_title_add' => '{0} added new {1}',
     '_bx_ava_wall_change' => 'changed',
+	'_bx_ava_wall_title_change' => '{0} changed {1}',
     '_bx_ava_wall_object' => 'avatar',
     '_bx_ava_you_can_store_different_avatars' => 'You can save several avatars and select which one you want to be used.',
     '_bx_ava_my_avatars' => 'My Avatars',
@@ -50,5 +52,7 @@ $aLangContent = array(
     '_mma_avatar_delete_any' => 'avatar delete any',
 
 	'_wall_reposted_bx_avatar_add' => 'reposted a new avatar',
+	'_wall_reposted_title_bx_avatar_add' => '{0} reposted a new avatar',
 	'_wall_reposted_bx_avatar_change' => 'reposted a changed avatar',
+	'_wall_reposted_title_bx_avatar_change' => '{0} reposted a changed avatar',
 );
