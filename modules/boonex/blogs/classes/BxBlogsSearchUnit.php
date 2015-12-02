@@ -26,7 +26,7 @@ class BxBlogsSearchUnit extends BxTemplSearchResultText
         'name' => 'blogposts',
         'title' => '_bx_blog_Blogs',
         'table' => 'bx_blogs_posts',
-        'ownFields' => array('PostID', 'PostCaption', 'PostUri', 'PostDate', 'PostText', 'Tags', 'PostPhoto','PostStatus', 'Rate', 'RateCount', 'CommentsCount', 'Categories'),
+        'ownFields' => array('PostID', 'PostCaption', 'PostUri', 'PostDate', 'PostText', 'Tags', 'PostPhoto','PostStatus', 'Rate', 'RateCount', 'CommentsCount', 'Categories', 'Views'),
         'searchFields' => array('PostCaption', 'PostText', 'Tags'),
         'join' => array(
             'profile' => array(
@@ -256,6 +256,7 @@ EOF;
 
         //$oCmtsView = new BxTemplCmtsView ('blogposts', (int)$iPostID);
         $iCommentsCnt = (int)$aResSQL['CommentsCount'];
+        $iViewsCnt = (int)$aResSQL['Views'];
 
         $sTagsCommas = $aResSQL['tag'];
         //$aTags = split(',', $sTagsCommas);
@@ -325,6 +326,7 @@ EOF;
             'post_date' => $sDateTime,
             'all_categories' => $sAllCategoriesLinks,
             'comments_count' => $iCommentsCnt,
+            'views_count' => $iViewsCnt,
             'post_tags' => $sTags,
             'friend_style' => $sFriendStyle,
             'post_uthumb' => $sOwnerThumb,
@@ -342,6 +344,7 @@ EOF;
                     'author_link' => $sAuthorLink,
                     'post_date' => $sDateTime,
                     'comments_count' => $iCommentsCnt,
+                    'views_count' => $iViewsCnt,
                 ),
             ),
         );
