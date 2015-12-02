@@ -46,11 +46,9 @@ class BxWallTemplate extends BxDolModuleTemplate
         else if(!$bResult || ($bResult && empty($aResult['content'])))
             return '';
 
-        $sIcon = $sComments = "";
+        $sResult = "";
         switch($sDisplayType) {
 			case BX_WALL_VIEW_TIMELINE:
-	        	$sIcon = get_member_thumbnail($aEvent['owner_id'], 'none');
-
 	            if((empty($aEvent['title']) && !empty($aResult['title'])) || (empty($aEvent['description']) && !empty($aResult['description'])))
 	                $this->_oDb->updateEvent(array(
 	                    'title' => process_db_input($aResult['title'], BX_TAGS_STRIP),
@@ -74,20 +72,25 @@ class BxWallTemplate extends BxDolModuleTemplate
 	            else
 					$sComments = $this->getDefaultComments($aEvent['id']);
 
+				$sResult = $this->parseHtmlByTemplateName('balloon', array(
+		        	'post_type' => $aEvent['type'],
+		            'post_id' => $aEvent['id'],
+		            'post_owner_icon' => get_member_thumbnail($aEvent['owner_id'], 'none'),
+		        	'post_content' => $aResult['content'],
+		            'comments_content' => $sComments
+		        ));
 				break;
 
 			case BX_WALL_VIEW_OUTLINE:
-				$sIcon = get_member_icon($aEvent['owner_id'], 'none');
+				$sResult = $this->parseHtmlByContent($aResult['content'], array(
+		            'post_id' => $aEvent['id'],
+		            'post_owner_icon' => get_member_icon($aEvent['owner_id'], 'none'),
+		            'comments_content' => $sComments
+		        ));
 				break;
         }
 
-        return $this->parseHtmlByTemplateName('balloon', array(
-        	'post_type' => $aEvent['type'],
-            'post_id' => $aEvent['id'],
-            'post_owner_icon' => $sIcon,
-        	'post_content' => $aResult['content'],
-            'comments_content' => $sComments
-        ));
+        return $sResult;
     }
 
     function getCommon($aEvent)
