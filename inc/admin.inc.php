@@ -10,7 +10,7 @@ require_once( BX_DIRECTORY_PATH_INC . 'utils.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'admin_design.inc.php' );
 
-function login_form($text = "", $member = 0, $bAjaxMode = false)
+function login_form($text = "", $member = 0, $bAjaxMode = false, $sLoginFormParams = '')
 {
     global $site;
     global $_page_cont;
@@ -21,7 +21,9 @@ function login_form($text = "", $member = 0, $bAjaxMode = false)
         exit;
     }
 
-    $sLoginFormParams = $bAjaxMode ? 'no_join_text' : '';
+    if ($bAjaxMode)
+        $sLoginFormParams .= ' no_join_text';
+
     $sLoginFormContent = getMemberLoginFormCode('login_box_form', $sLoginFormParams);
 
     if($bAjaxMode) {
@@ -51,7 +53,7 @@ function login_form($text = "", $member = 0, $bAjaxMode = false)
 	$_page['name_index'] = 0;
     $_page['header'] = $site['title'] . ' ' . _t('_Login');
     $_page['header_text'] = _t('_Login');
-    $_page_cont[0]['page_main_code'] = '<div class="controlsDiv">' . $sLoginFormContent . '</div>';
+    $_page_cont[0]['page_main_code'] = '<div class="controlsDiv">' . ($text ? "<h3>$text</h3>" : '') . $sLoginFormContent . '</div>';
 
     PageCode();
     exit;

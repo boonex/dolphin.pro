@@ -378,7 +378,7 @@ function getMemberLoginFormCode($sID = 'member_login_form', $sParams = '')
     return $GLOBALS['oSysTemplate']->parseHtmlByName('login_join_form.html', array(
     	'action' => $sAction,
     	'bx_if:show_auth' => array(
-    		'condition' => !empty($sAuthCode),
+    		'condition' => !empty($sAuthCode) && false === strpos($sParams, 'disable_external_auth'),
     		'content' => array(
     			'auth' => $sAuthCode
     		)
