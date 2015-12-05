@@ -44,6 +44,17 @@ class BxWallResponse extends BxDolAlertsResponse
             $sTitle = $aMediaInfo['title'];
             $sDescription = $aMediaInfo['description'];
         } 
+        else if($this->_oModule->_oConfig->isSystemComment($oAlert->sUnit, $oAlert->sAction)) {
+            $sType = $oAlert->aExtras['object_system'];
+            $sAction = $oAlert->sUnit . '_' . $oAlert->sAction;
+	        if(!$this->_oModule->_oConfig->isHandler($sType . '_' . $sAction))
+	            return;
+
+			$iOwnerId = $oAlert->iSender;
+            $iObjectId = $oAlert->iObject;
+            $sContent = serialize(array('object_id' => $oAlert->aExtras['object_id']));
+            $sTitle = $sDescription = '';
+        }
         else {
             $iOwnerId = $oAlert->iSender;
             $iObjectId = $oAlert->iObject;

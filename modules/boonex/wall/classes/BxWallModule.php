@@ -172,7 +172,7 @@ class BxWallModule extends BxDolModule
             'action' => '',
             'object_id' => $iAuthorId,
             'content' => serialize($aContent),
-            'title' => _t('_wall_reposted_' . bx_ltrim_str($aReposted['type'], $this->_oConfig->getPrefix('common_post'), ''), getNickName($iAuthorId)),
+            'title' => _t('_wall_reposted_title_' . bx_ltrim_str($aReposted['type'], $this->_oConfig->getPrefix('common_post'), '') . (!empty($aReposted['action']) ? '_' . $aReposted['action'] : ''), getNickName($iAuthorId)),
             'description' => ''
         ));
 
@@ -918,7 +918,7 @@ class BxWallModule extends BxDolModule
 					)
 				),
             )),
-            'title' => _t('_wall_added_text', $aOwner['username']),
+            'title' => _t('_wall_added_title_text', $aOwner['username']),
             'description' => $sContent
         );
     }
@@ -944,7 +944,7 @@ class BxWallModule extends BxDolModule
                'url' => strpos($sUrl, 'http://') === false && strpos($sUrl, 'https://') === false ? 'http://' . $sUrl : $sUrl,
                'description' => $sDescription
            )),
-           'title' => _t('_wall_added_link', $aOwner['username']),
+           'title' => _t('_wall_added_title_link', $aOwner['username']),
            'description' => $sUrl . ' - ' . $sTitle
         );
     }
@@ -1261,13 +1261,15 @@ class BxWallModule extends BxDolModule
     }
 	function _isRepostAllowed($aEvent, $bPerform = false)
     {
-    	$sCommonPostPrefix = $this->_oConfig->getCommonPostPrefix();
+    	$bSystem = $this->_oConfig->isSystem($aEvent['type'], $aEvent['action']);
+    	if($bSystem && strcmp($aEvent['action'], 'commentPost') == 0)
+    		return false;
 
         if(isAdmin())
             return true;
 
         $iUserId = (int)$this->_getAuthorId();
-        if((int)$aEvent['owner_id'] == $iUserId || (strpos($aEvent['type'], $sCommonPostPrefix) === 0 && (int)$aEvent['object_id'] == $iUserId))
+        if(($bSystem && (int)$aEvent['owner_id'] == $iUserId) || (!$bSystem && (int)$aEvent['object_id'] == $iUserId))
            return true;
 
         $aCheckResult = checkAction($iUserId, ACTION_ID_TIMELINE_REPOST, $bPerform);

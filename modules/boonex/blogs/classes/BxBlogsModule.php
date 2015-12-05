@@ -2979,14 +2979,19 @@ EOF;
 
     function serviceGetWallData ()
     {
+    	$sUri = $this->_oConfig->getUri();
+    	$sName = 'bx_' . $sUri;
+
         return array(
             'handlers' => array(
-                array('alert_unit' => 'bx_blogs', 'alert_action' => 'create', 'module_uri' => 'blogs', 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 1),
-                array('alert_unit' => 'bx_blogs', 'alert_action' => 'commentPost', 'module_uri' => 'blogs', 'module_class' => 'Module', 'module_method' => 'get_wall_post_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0)
+                array('alert_unit' => $sName, 'alert_action' => 'create', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 1),
+                array('alert_unit' => $sName, 'alert_action' => 'comment_add', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_add_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0),
+
+                //DEPRICATED, saved for backward compatibility
+                array('alert_unit' => $sName, 'alert_action' => 'commentPost', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_post_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0)
             ),
             'alerts' => array(
-                array('unit' => 'bx_blogs', 'action' => 'create'),
-                array('unit' => 'bx_blogs', 'action' => 'commentPost')
+                array('unit' => $sName, 'action' => 'create')
             )
         );
     }
@@ -3040,17 +3045,15 @@ EOF;
                 $aTmplItems[] = array('unit' => $sPostUnit);
             }
 
-            $sTextAddedNewItems = _t('_bx_blog_wall_added_new_items', $iItems);
-            $aTmplVars = array(
-                'cpt_user_name' => $sOwner,
-                'cpt_added_new' => $sTextAddedNewItems,
-                'bx_repeat:items' => $aTmplItems,
-                'post_id' => $aEvent['id']
-            );
             return array(
-                'title' => $sOwner . ' ' . $sTextAddedNewItems,
+                'title' => _t('_bx_blog_wall_added_new_title_items', $sOwner, $iItems),
                 'description' => '',
-                'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_grouped.html', $aTmplVars)
+                'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_grouped.html', array(
+	                'cpt_user_name' => $sOwner,
+	                'cpt_added_new' => _t('_bx_blog_wall_added_new_items', $iItems),
+	                'bx_repeat:items' => $aTmplItems,
+	                'post_id' => $aEvent['id']
+	            ))
             );
         }
 
@@ -3058,29 +3061,83 @@ EOF;
         $aItem = $aItems[0];
         $aItem['url'] = $this->genUrl($aItem['PostID'], $aItem['PostUri'], 'entry');
 
-        $sTextAddedNew = _t('_bx_blog_wall_added_new');
+        $oTmpBlogSearch = false;
+        $sPostUnit = $this->_GenPosts (5, 1, 'post', array ('id' => $aItem['PostID']), 'last', $oTmpBlogSearch);
+        if ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0)
+            return '';
+
         $sTextWallObject = _t('_bx_blog_wall_object');
+        return array(
+            'title' => _t('_bx_blog_wall_added_new_title', $sOwner, $sTextWallObject),
+            'description' => $aItem['PostText'],
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post.html', array(
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_blog_wall_added_new'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $aItem['url'],
+	            'unit' => $sPostUnit,
+	            'post_id' => $aEvent['id'],
+	        ))
+        );
+    }
+
+    function serviceGetWallAddComment($aEvent)
+    {
+        $iId = (int)$aEvent['object_id'];
+        $iOwner = (int)$aEvent['owner_id'];
+        $sOwner = getNickName($iOwner);
+
+        $aContent = unserialize($aEvent['content']);
+        if(empty($aContent) || empty($aContent['object_id']))
+            return '';
+
+		$iItem = (int)$aContent['object_id'];
+        $aItem = $this->_oDb->getPostInfo($iItem);
+        if(empty($aItem) || !is_array($aItem))
+        	return array('perform_delete' => true);
+
+        if(!$this->oPrivacy->check('view', $iItem, $this->_iVisitorID))
+            return;
+
+        bx_import('Cmts', $this->_aModule);
+        $oCmts = new BxBlogsCmts($this->_oConfig->getCommentSystemName(), $iItem);
+        if(!$oCmts->isEnabled())
+            return '';
+
+        $aComment = $oCmts->getCommentRow($iId);
+
+        $sCss = '';
+        if($aEvent['js_mode'])
+            $sCss = $this->_oTemplate->addCss(array('wall_post.css', 'wall_post_phone.css', 'blogs_common.css'), true);
+        else
+            $this->_oTemplate->addCss(array('wall_post.css', 'wall_post_phone.css', 'blogs_common.css'));
 
         $oTmpBlogSearch = false;
         $sPostUnit = $this->_GenPosts (5, 1, 'post', array ('id' => $aItem['PostID']), 'last', $oTmpBlogSearch);
         if ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0)
             return '';
 
-        $aTmplVars = array(
-            'cpt_user_name' => $sOwner,
-            'cpt_added_new' => $sTextAddedNew,
-            'cpt_object' => $sTextWallObject,
-            'cpt_item_url' => $aItem['url'],
-            'unit' => $sPostUnit,
-            'post_id' => $aEvent['id'],
-        );
+		$aItem['url'] = $this->genUrl($aItem['ID'], $aItem['PostUri'], 'entry');
+
+        $sTextWallObject = _t('_bx_blog_wall_object');
         return array(
-            'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
-            'description' => $aItem['PostText'],
-            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post.html', $aTmplVars)
+            'title' => _t('_bx_blog_wall_added_new_title_comment', $sOwner, $sTextWallObject),
+            'description' => $aComment['cmt_text'],
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_comment.html', array(
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_blog_wall_added_new_comment'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $aItem['url'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'unit' => $sPostUnit,
+	            'post_id' => $aEvent['id'],
+	        ))
         );
     }
 
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPostComment($aEvent)
     {
         $iId = (int)$aEvent['object_id'];
@@ -3117,21 +3174,19 @@ EOF;
         if ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0)
             return '';
 
-        $sTextAddedNew = _t('_bx_blog_wall_added_new_comment');
         $sTextWallObject = _t('_bx_blog_wall_object');
-        $aTmplVars = array(
-            'cpt_user_name' => $sOwner,
-            'cpt_added_new' => $sTextAddedNew,
-            'cpt_object' => $sTextWallObject,
-            'cpt_item_url' => $aItem['url'],
-            'cnt_comment_text' => $aComment['cmt_text'],
-            'unit' => $sPostUnit,
-            'post_id' => $aEvent['id'],
-        );
         return array(
-            'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
+            'title' => _t('_bx_blog_wall_added_new_title_comment', $sOwner, $sTextWallObject),
             'description' => $aComment['cmt_text'],
-            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_comment.html', $aTmplVars)
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_comment.html', array(
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_blog_wall_added_new_comment'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $aItem['url'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'unit' => $sPostUnit,
+	            'post_id' => $aEvent['id'],
+	        ))
         );
     }
 

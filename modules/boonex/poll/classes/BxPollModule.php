@@ -2155,22 +2155,20 @@
             //--- Single public event
             $aItem['url'] = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . '&action=show_poll_info&id=' . $aItem['id_poll'];
 
-            $sTextAddedNew = _t('_bx_poll_wall_added_new');
             $sTextWallObject = _t('_bx_poll_wall_object');
-            $aTmplVars = array(
-                'cpt_user_name' => $sOwner,
-                'cpt_added_new' => $sTextAddedNew,
-                'cpt_object' => $sTextWallObject,
-                'cpt_item_url' => $aItem['url'],
-                'cnt_item_page' => $aItem['url'],
-                'cnt_item_title' => $aItem['poll_question'],
-                'cnt_item_id' => $aItem['id_poll'],
-                'post_id' => $aEvent['id'],
-            );
             return array(
-                'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
+                'title' => _t('_bx_poll_wall_added_new_title', $sOwner, $sTextWallObject),
                 'description' => $aItem['poll_question'],
-                'content' => $sJs . $sCss . $sInit . $this->_oTemplate->parseHtmlByName('wall_post.html', $aTmplVars)
+                'content' => $sJs . $sCss . $sInit . $this->_oTemplate->parseHtmlByName('wall_post.html', array(
+	                'cpt_user_name' => $sOwner,
+	                'cpt_added_new' => _t('_bx_poll_wall_added_new'),
+	                'cpt_object' => $sTextWallObject,
+	                'cpt_item_url' => $aItem['url'],
+	                'cnt_item_page' => $aItem['url'],
+	                'cnt_item_title' => $aItem['poll_question'],
+	                'cnt_item_id' => $aItem['id_poll'],
+	                'post_id' => $aEvent['id'],
+	            ))
             );
         }
 
@@ -2199,24 +2197,78 @@
             //--- Single public event
             $aItem['poll_url'] = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . '&action=show_poll_info&id=' . $aItem['id_poll'];
 
-            $aTmplVars = array(
-                'mod_prefix' => $sPrefix,
-                'mod_icon' => 'tasks',
-                'user_name' => $sOwner,
-                'user_link' => $sOwnerLink,
-                'item_page' => $aItem['poll_url'],
-                'item_title' => $aItem['poll_question'],
-                'item_description' => $this->_getWallContent($aItem),
-                'item_comments' => (int)$aItem['poll_comments_count'] > 0 ? _t('_wall_n_comments', $aItem['poll_comments_count']) : _t('_wall_no_comments'),
-                'item_comments_link' => $aItem['poll_url'] . '#cmta-' . $sPrefix . '-' . $aItem['id'],
-                'post_id' => $aEvent['id'],
-                'post_ago' => $aEvent['ago']
-            );
             return array(
-                'content' => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|outline_item_text.html', $aTmplVars)
+                'content' => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|outline_item_text.html', array(
+	                'mod_prefix' => $sPrefix,
+	                'mod_icon' => 'tasks',
+	                'user_name' => $sOwner,
+	                'user_link' => $sOwnerLink,
+	                'item_page' => $aItem['poll_url'],
+	                'item_title' => $aItem['poll_question'],
+	                'item_description' => $this->_getWallContent($aItem),
+	                'item_comments' => (int)$aItem['poll_comments_count'] > 0 ? _t('_wall_n_comments', $aItem['poll_comments_count']) : _t('_wall_no_comments'),
+	                'item_comments_link' => $aItem['poll_url'] . '#cmta-' . $sPrefix . '-' . $aItem['id'],
+	                'post_id' => $aEvent['id'],
+	                'post_ago' => $aEvent['ago']
+	            ))
             );
         }
 
+    	function serviceGetWallAddComment($aEvent)
+        {
+            $iId = (int)$aEvent['object_id'];
+            $iOwner = (int)$aEvent['owner_id'];
+            $sOwner = getNickName($iOwner);
+
+			$aContent = unserialize($aEvent['content']);
+			if(empty($aContent) || empty($aContent['object_id']))
+				return '';
+
+			$iItem = (int)$aContent['object_id'];
+            $aItem = $this->_oDb->getPollInfo($iItem);
+            if(empty($aItem) || !is_array($aItem))
+        		return array('perform_delete' => true);
+
+            if(!$this->oPrivacy->check('view', $iItem, getLoggedId()))
+                return '';
+
+            bx_import('BxTemplCmtsView');
+            $oCmts = new BxTemplCmtsView('bx_poll', $iItem);
+            if(!$oCmts->isEnabled())
+                return '';
+
+            $aComment = $oCmts->getCommentRow($iId);
+
+            $sCss = '';
+            if($aEvent['js_mode'])
+                $sCss = $this->_oTemplate->addCss('wall_post.css', true);
+            else
+                $this->_oTemplate->addCss('wall_post.css');
+
+			$aItem = array_shift($aItem);
+            $aItem['url'] = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . '&action=show_poll_info&id=' . $aItem['id_poll'];               
+
+            $sTextWallObject = _t('_bx_poll_wall_object');
+            return array(
+                'title' => _t('_bx_poll_wall_added_new_title_comment', $sOwner, $sTextWallObject),
+                'description' => $aComment['cmt_text'],
+                'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_comment.html', array(
+	                'cpt_user_name' => $sOwner,
+	                'cpt_added_new' => _t('_bx_poll_wall_added_new_comment'),
+	                'cpt_object' => $sTextWallObject,
+	                'cpt_item_url' => $aItem['url'],
+	                'cnt_comment_text' => $aComment['cmt_text'],
+	                'cnt_item_page' => $aItem['url'],
+	                'cnt_item_title' => $aItem['poll_question'],
+	                'cnt_item_description' => $this->_getWallContent($aItem),
+	                'post_id' => $aEvent['id'],
+	            ))
+            );
+        }
+
+        /**
+	     * DEPRICATED, saved for backward compatibility
+	     */
         function serviceGetWallPostComment($aEvent)
         {
             $iId = (int)$aEvent['object_id'];
@@ -2249,36 +2301,39 @@
             else
                 $this->_oTemplate->addCss('wall_post.css');
 
-            $sTextAddedNew = _t('_bx_poll_wall_added_new_comment');
             $sTextWallObject = _t('_bx_poll_wall_object');
-            $aTmplVars = array(
-                'cpt_user_name' => $sOwner,
-                'cpt_added_new' => $sTextAddedNew,
-                'cpt_object' => $sTextWallObject,
-                'cpt_item_url' => $aItem['url'],
-                'cnt_comment_text' => $aComment['cmt_text'],
-                'cnt_item_page' => $aItem['url'],
-                'cnt_item_title' => $aItem['poll_question'],
-                'cnt_item_description' => $this->_getWallContent($aItem),
-                'post_id' => $aEvent['id'],
-            );
             return array(
-                'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
+                'title' => _t('_bx_poll_wall_added_new_title_comment', $sOwner, $sTextWallObject),
                 'description' => $aComment['cmt_text'],
-                'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_comment.html', $aTmplVars)
+                'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_comment.html', array(
+	                'cpt_user_name' => $sOwner,
+	                'cpt_added_new' => _t('_bx_poll_wall_added_new_comment'),
+	                'cpt_object' => $sTextWallObject,
+	                'cpt_item_url' => $aItem['url'],
+	                'cnt_comment_text' => $aComment['cmt_text'],
+	                'cnt_item_page' => $aItem['url'],
+	                'cnt_item_title' => $aItem['poll_question'],
+	                'cnt_item_description' => $this->_getWallContent($aItem),
+	                'post_id' => $aEvent['id'],
+	            ))
             );
         }
 
         function serviceGetWallData ()
         {
+        	$sUri = $this->_oConfig->getUri();
+        	$aName = 'bx_' . $sUri;
+
             return array(
                 'handlers' => array(
-                    array('alert_unit' => 'bx_poll', 'alert_action' => 'add', 'module_uri' => 'poll', 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 1),
-                    array('alert_unit' => 'bx_poll', 'alert_action' => 'commentPost', 'module_uri' => 'poll', 'module_class' => 'Module', 'module_method' => 'get_wall_post_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0)
+                    array('alert_unit' => $aName, 'alert_action' => 'add', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 1),
+                    array('alert_unit' => $aName, 'alert_action' => 'comment_add', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_add_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0),
+
+                    //DEPRICATED, saved for backward compatibility
+                    array('alert_unit' => $aName, 'alert_action' => 'commentPost', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_post_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0)
                 ),
                 'alerts' => array(
-                    array('unit' => 'bx_poll', 'action' => 'add'),
-                    array('unit' => 'bx_poll', 'action' => 'commentPost')
+                    array('unit' => $aName, 'action' => 'add')
                 )
             );
         }

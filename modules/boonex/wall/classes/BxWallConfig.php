@@ -266,4 +266,9 @@ class BxWallConfig extends BxDolConfig
     	);
     	return $this->getSystemData($aDescriptor, $sDisplayType);
     }
+
+	function isSystemComment($sType, $sAction)
+    {
+        return strcmp($sType, 'comment') == 0 && strcmp($sAction, 'add') == 0;
+    }
 }

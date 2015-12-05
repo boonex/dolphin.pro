@@ -109,9 +109,11 @@ INSERT INTO `[db_prefix]handlers`(`alert_unit`, `alert_action`, `module_uri`, `m
 ('wall_common_repost', '', '', '', '', 0, '', 1, 0),
 ('profile', 'edit', '', '', '', 0, '', 1, 0),
 ('profile', 'edit_status_message', '', '', '', 0, '', 1, 0),
+('profile', 'comment_add', '', '', '', 0, '', 1, 0),
 ('profile', 'commentPost', '', '', '', 0, '', 1, 0),
 ('profile', 'delete', '', '', '', 0, '', 1, 0),
-('friend', 'accept', '', '', '', 0, '', 1, 0);
+('friend', 'accept', '', '', '', 0, '', 1, 0),
+('comment', 'add', '', '', '', 0, '', 1, 0);
 
 
 SELECT @iPCPOrder:=MAX(`Order`) FROM `sys_page_compose_pages`;
@@ -203,9 +205,9 @@ SET @iHandlerId = LAST_INSERT_ID();
 INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('profile', 'edit', @iHandlerId),
 ('profile', 'edit_status_message', @iHandlerId),
-('profile', 'commentPost', @iHandlerId),
 ('profile', 'delete', @iHandlerId),
-('friend', 'accept', @iHandlerId);
+('friend', 'accept', @iHandlerId),
+('comment', 'add', @iHandlerId);
 
 INSERT INTO `sys_sbs_types`(`unit`, `action`, `template`, `params`) VALUES
 ('bx_wall', '', '', 'return BxDolService::call(\'wall\', \'get_subscription_params\', array($arg1, $arg2, $arg3));'),

@@ -1548,17 +1548,90 @@ class BxDolFilesModule extends BxDolModule
 
         return array(
             'handlers' => array(
-                array('alert_unit' => $sPrefix, 'alert_action' => 'add', 'module_uri' => $sUri, 'module_class' => 'Search', 'module_method' => 'get_wall_post', 'groupable' => 1, 'group_by' => 'album', 'timeline' => 1, 'outline' => 1),
+                array('alert_unit' => $sPrefix, 'alert_action' => 'add', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'groupable' => 1, 'group_by' => 'album', 'timeline' => 1, 'outline' => 1),
+                array('alert_unit' => $sPrefix, 'alert_action' => 'comment_add', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_add_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0),
+
+                //DEPRICATED, saved for backward compatibility
                 array('alert_unit' => $sPrefix, 'alert_action' => 'commentPost', 'module_uri' => $sUri, 'module_class' => 'Search', 'module_method' => 'get_wall_post_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0)
             ),
             'alerts' => array(
-                array('unit' => $sPrefix, 'action' => 'add'),
-                array('unit' => $sPrefix, 'action' => 'commentPost')
+                array('unit' => $sPrefix, 'action' => 'add')
             )
         );
     }
 
-    function getWallPost($aEvent, $sIcon, $aParams = array())
+	function serviceGetWallPost($aEvent)
+    {
+        return $this->getWallPost($aEvent);
+    }
+
+    function serviceGetWallPostOutline($aEvent)
+    {
+        return $this->getWallPostOutline($aEvent);
+    }
+
+	function serviceGetWallAddComment($aEvent, $aParams = array())
+    {
+    	$iId = (int)$aEvent['object_id'];
+        $iOwner = (int)$aEvent['owner_id'];
+        $sOwner = getNickName($iOwner);
+
+        $aContent = unserialize($aEvent['content']);
+        if(empty($aContent) || empty($aContent['object_id']))
+            return '';
+
+        $sClassName = $this->_oConfig->getClassPrefix() . 'Search';
+        bx_import('Search', $this->_aModule);
+        $oSearch = new $sClassName();
+        
+        $iItem = (int)$aContent['object_id'];
+        $aItem = $oSearch->serviceGetEntry($iItem, 'browse');
+        if(empty($aItem) || !is_array($aItem))
+        	return array('perform_delete' => true);
+
+        bx_import('BxTemplCmtsView');
+        $oCmts = new BxTemplCmtsView($this->_oConfig->getMainPrefix(), $iItem);
+        if(!$oCmts->isEnabled())
+            return '';
+
+        $aComment = $oCmts->getCommentRow($iId);
+
+        $sCss = '';
+        $sUri = $this->_oConfig->getUri();
+        if($aEvent['js_mode'])
+            $sCss = $this->_oTemplate->addCss('wall_post.css', true);
+        else
+            $this->_oTemplate->addCss('wall_post.css');
+
+        $sTextWallObject = _t('_bx_' . $sUri . '_wall_object');
+
+        $sTmplName = isset($aParams['templates']['main']) ? $aParams['templates']['main'] : 'modules/boonex/wall/|timeline_comment.html';
+        $sTmplNameSnippet = isset($aParams['templates']['snippet']) ? $aParams['templates']['snippet'] : 'modules/boonex/wall/|timeline_comment_files.html';
+        return array(
+            'title' => _t('_bx_' . $sUri . '_wall_added_new_comment_title', $sOwner, $sTextWallObject),
+            'description' => $aComment['cmt_text'],
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
+        		'mod_prefix' => 'bx_' . $sUri,
+        		'cpt_user_name' => $sOwner,
+        		'cpt_added_new' => _t('_bx_' . $sUri . '_wall_added_new_comment'),
+        		'cpt_object' => $sTextWallObject,
+        		'cpt_item_url' => $aItem['url'],
+        		'cnt_comment_text' => $aComment['cmt_text'],
+        		'snippet' => $this->_oTemplate->parseHtmlByName($sTmplNameSnippet, array(
+		            'cnt_item_page' => $aItem['url'],
+        			'cnt_item_width' => $aItem['width'],
+					'cnt_item_height' => $aItem['height'],
+		            'cnt_item_icon' => $aItem['file'],
+		            'cnt_item_title' => $aItem['title'],
+		        	'cnt_item_title_attr' => bx_html_attribute($aItem['title']),
+		            'cnt_item_description' => $aItem['description'],
+		            'post_id' => $aEvent['id'],
+        		))
+        	))
+        );
+    }
+
+    function getWallPost($aEvent, $sIcon = 'save', $aParams = array())
     {
         $sPrefix = $this->_oConfig->getMainPrefix();
 		$aOwner = getProfileInfo((int)$aEvent['owner_id']);
@@ -1625,10 +1698,9 @@ class BxDolFilesModule extends BxDolModule
             $oAlbum = new BxDolAlbums($sPrefix);
             $aAlbumInfo = $oAlbum->getAlbumInfo(array('fileUri' => $sAlbumUri, 'owner' => $iOwner));
 
-            $sAddedNewTxt = _t('_' . $sPrefix . '_wall_added_new_items', $iItems);
             $sTemplateName = isset($aParams['templates']['grouped']) ? $aParams['templates']['grouped'] : 'modules/boonex/wall/|timeline_post_files_grouped.html';
             return array(
-                'title' => $sOwner . ' ' . $sAddedNewTxt,
+                'title' => _t('_' . $sPrefix . '_wall_added_new_items_title', $sOwner, $iItems),
                 'description' => '',
                 'grouped' => array(
                     'group_id' => $aAlbumInfo['ID'],
@@ -1638,7 +1710,7 @@ class BxDolFilesModule extends BxDolModule
                     'mod_prefix' => $sPrefix,
                     'mod_icon' => $sIcon,
                     'cpt_user_name' => $sOwner,
-                    'cpt_added_new' => $sAddedNewTxt,
+                    'cpt_added_new' => _t('_' . $sPrefix . '_wall_added_new_items', $iItems),
                     'cpt_album_url' => $oSearch->getCurrentUrl('album', $aAlbumInfo['ID'], $aAlbumInfo['Uri']) . '/owner/' . getUsername($iOwner),
                     'cpt_album_title' => $aAlbumInfo['Caption'],
                     'bx_repeat:items' => $aTmplItems,
@@ -1649,20 +1721,19 @@ class BxDolFilesModule extends BxDolModule
 
         $aItem = $aItems[0];
         $aTmplItem = $aTmplItems[0];
-        $sAddedNewTxt = _t('_' . $sPrefix . '_wall_added_new');
 
         //--- Single public event
         $sItemTxt = _t('_' . $sPrefix . '_wall_object');
         $sTemplateName = isset($aParams['templates']['single']) ? $aParams['templates']['single'] : 'modules/boonex/wall/|timeline_post_files.html';
         return array(
-            'title' => $sOwner . ' ' . $sAddedNewTxt . ' ' . $sItemTxt,
+            'title' => _t('_' . $sPrefix . '_wall_added_new_title', $sOwner, $sItemTxt),
             'description' => $aItem['description'],
             'grouped' => false,
             'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTemplateName, array_merge($aTmplItem, array(
                 'mod_prefix' => $sPrefix,
                 'mod_icon' => $sIcon,
                 'cpt_user_name' => $sOwner,
-                'cpt_added_new' => $sAddedNewTxt,
+                'cpt_added_new' => _t('_' . $sPrefix . '_wall_added_new'),
                 'cpt_item_url' => $aItem['url'],
                 'cpt_item' => $sItemTxt,
                 'post_id' => $aEvent['id']
@@ -1670,7 +1741,7 @@ class BxDolFilesModule extends BxDolModule
         );
     }
 
-    function getWallPostOutline($aEvent, $sIcon, $aParams = array())
+    function getWallPostOutline($aEvent, $sIcon = 'save', $aParams = array())
     {
         $sPrefix = $this->_oConfig->getMainPrefix();
         $sPrefixAlbum = $sPrefix . '_albums';

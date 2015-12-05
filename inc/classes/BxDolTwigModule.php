@@ -1029,17 +1029,15 @@ class BxDolTwigModule extends BxDolModule
                     'unit' => $this->_oTemplate->unit($aItem, 'unit', $oVoting, true),
                 );
 
-            $sTextAddedNewItems = _t($aParams['txt_added_new_plural'], $iItems);
-
             $sTmplName = isset($aParams['templates']['grouped']) ? $aParams['templates']['grouped'] : 'modules/boonex/wall/|timeline_post_twig_grouped.html';
             return array(
-                'title' => $sOwner . ' ' . $sTextAddedNewItems,
+                'title' => _t($aParams['txt_added_new_title_plural'], $sOwner, $iItems),
                 'description' => '',
                 'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
 	            	'mod_prefix' => $sCssPrefix,
 	            	'mod_icon' => $aParams['icon'],
 	                'cpt_user_name' => $sOwner,
-	                'cpt_added_new' => $sTextAddedNewItems,
+	                'cpt_added_new' => _t($aParams['txt_added_new_plural'], $iItems),
 	                'bx_repeat:items' => $aTmplItems,
 	            ))
             );
@@ -1048,18 +1046,17 @@ class BxDolTwigModule extends BxDolModule
         //--- Single public event
         $aItem = $aItems[0];
 
-        $sTextAddedNew = _t($aParams['txt_added_new_single']);
         $sTextWallObject = _t($aParams['txt_object']);
 
         $sTmplName = isset($aParams['templates']['single']) ? $aParams['templates']['single'] : 'modules/boonex/wall/|timeline_post_twig.html';
         return array(
-            'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
+            'title' => _t($aParams['txt_added_new_title_single'], $sOwner, $sTextWallObject),
             'description' => $aItem[$this->_oDb->_sFieldDescription],
             'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
 				'mod_prefix' => $sCssPrefix,
 				'mod_icon' => $aParams['icon'],
 	            'cpt_user_name' => $sOwner,
-	            'cpt_added_new' => $sTextAddedNew,
+	            'cpt_added_new' => _t($aParams['txt_added_new_single']),
 	            'cpt_object' => $sTextWallObject,
 	            'cpt_item_url' => $sBaseUrl . $aItem[$this->_oDb->_sFieldUri],
 	            'content' => $this->_oTemplate->unit($aItem, 'unit', $oVoting, true),
@@ -1192,6 +1189,74 @@ class BxDolTwigModule extends BxDolModule
         return $aResult;
     }
 
+    function _serviceGetWallAddComment($aEvent, $aParams)
+    {
+    	$iId = (int)$aEvent['object_id'];
+        $iOwner = (int)$aEvent['owner_id'];
+        $sOwner = getNickName($iOwner);
+
+        $aContent = unserialize($aEvent['content']);
+        if(empty($aContent) || empty($aContent['object_id']))
+            return '';
+
+		$iItem = (int)$aContent['object_id'];
+        $aItem = $this->_oDb->getEntryByIdAndOwner($iItem, $iOwner, 1);
+        if(empty($aItem) || !is_array($aItem))
+        	return array('perform_delete' => true);
+
+        if(!$aParams['obj_privacy']->check($aParams['txt_privacy_view_event'], $iItem, $this->_iProfileId))
+            return '';
+
+        bx_import('Cmts', $this->_aModule);
+        $sClass = $this->_aModule['class_prefix'] . 'Cmts';
+        $oCmts = new $sClass($this->_sPrefix, $iItem);
+        if(!$oCmts->isEnabled())
+            return '';
+
+        $aComment = $oCmts->getCommentRow($iId);
+
+        $sImage = '';
+        if($aItem[$this->_oDb->_sFieldThumb]) {
+            $a = array('ID' => $aItem[$this->_oDb->_sFieldAuthorId], 'Avatar' => $aItem[$this->_oDb->_sFieldThumb]);
+            $aImage = BxDolService::call('photos', 'get_image', array($a, 'browse'), 'Search');
+            $sImage = $aImage['no_image'] ? '' : $aImage['file'];
+        }
+
+        $sCss = '';
+        $sCssPrefix = str_replace('_', '-', $this->_sPrefix);
+        $sUri = $this->_oConfig->getUri();
+        $sBaseUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
+        $sNoPhoto = $this->_oTemplate->getIconUrl('no-photo.png');
+        if($aEvent['js_mode'])
+            $sCss = $this->_oTemplate->addCss(array('wall_post.css', 'unit.css', 'twig.css'), true);
+        else
+            $this->_oTemplate->addCss(array('wall_post.css', 'unit.css', 'twig.css'));
+
+        bx_import('Voting', $this->_aModule);
+        $sClass = $this->_aModule['class_prefix'] . 'Voting';
+        $oVoting = new $sClass ($this->_sPrefix, 0, 0);
+
+        $sTextWallObject = _t('_bx_' . $sUri . '_wall_object');
+
+        $sTmplName = isset($aParams['templates']['main']) ? $aParams['templates']['main'] : 'modules/boonex/wall/|timeline_comment.html';
+        return array(
+            'title' => _t('_bx_' . $sUri . '_wall_added_new_title_comment', $sOwner, $sTextWallObject),
+            'description' => $aComment['cmt_text'],
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
+        		'mod_prefix' => $sCssPrefix,
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_' . $sUri . '_wall_added_new_comment'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $sBaseUrl . $aItem[$this->_oDb->_sFieldUri],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'snippet' => $this->_oTemplate->unit($aItem, 'unit', $oVoting)
+        	))
+        );
+    }
+
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function _serviceGetWallPostComment($aEvent, $aParams)
     {
         $iId = (int)$aEvent['object_id'];
@@ -1237,17 +1302,16 @@ class BxDolTwigModule extends BxDolModule
         $sClass = $this->_aModule['class_prefix'] . 'Voting';
         $oVoting = new $sClass ($this->_sPrefix, 0, 0);
 
-        $sTextAddedNew = _t('_bx_' . $sUri . '_wall_added_new_comment');
         $sTextWallObject = _t('_bx_' . $sUri . '_wall_object');
 
         $sTmplName = isset($aParams['templates']['main']) ? $aParams['templates']['main'] : 'modules/boonex/wall/|timeline_comment.html';
         return array(
-            'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
+            'title' => _t('_bx_' . $sUri . '_wall_added_new_title_comment', $sOwner, $sTextWallObject),
             'description' => $aComment['cmt_text'],
             'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
         		'mod_prefix' => $this->_sPrefix,
 	            'cpt_user_name' => $sOwner,
-	            'cpt_added_new' => $sTextAddedNew,
+	            'cpt_added_new' => _t('_bx_' . $sUri . '_wall_added_new_comment'),
 	            'cpt_object' => $sTextWallObject,
 	            'cpt_item_url' => $sBaseUrl . $aItem[$this->_oDb->_sFieldUri],
 	            'cnt_comment_text' => $aComment['cmt_text'],
@@ -1261,11 +1325,13 @@ class BxDolTwigModule extends BxDolModule
         return array(
             'handlers' => array(
                 array('alert_unit' => $this->_sPrefix, 'alert_action' => 'add', 'module_uri' => $this->_aModule['uri'], 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 1),
+                array('alert_unit' => $this->_sPrefix, 'alert_action' => 'comment_add', 'module_uri' => $this->_aModule['uri'], 'module_class' => 'Module', 'module_method' => 'get_wall_add_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0),
+
+                //DEPRICATED, saved for backward compatibility
                 array('alert_unit' => $this->_sPrefix, 'alert_action' => 'commentPost', 'module_uri' => $this->_aModule['uri'], 'module_class' => 'Module', 'module_method' => 'get_wall_post_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0)
             ),
             'alerts' => array(
-                array('unit' => $this->_sPrefix, 'action' => 'add'),
-                array('unit' => $this->_sPrefix, 'action' => 'commentPost')
+                array('unit' => $this->_sPrefix, 'action' => 'add')
             )
         );
     }

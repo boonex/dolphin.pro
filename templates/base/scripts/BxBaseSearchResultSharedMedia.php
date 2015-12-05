@@ -710,6 +710,9 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         return BX_DOL_URL_ROOT . $this->oModule->_oConfig->getBaseUri() . 'view/' . $a['uri'];
     }
 
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPostComment($aEvent, $aParams = array())
     {
         $iId = (int)$aEvent['object_id'];

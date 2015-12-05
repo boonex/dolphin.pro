@@ -633,18 +633,17 @@ class BxAvaModule extends BxDolModule
             $this->_oTemplate->addCss('wall_post.css');
 
         $sOwner = getNickName((int)$aEvent['owner_id']);
-        $sText = _t('_bx_ava_wall_' . $aEvent['action']);
+        $sTxtWallObject = _t('_bx_ava_wall_object');
 
-        $aVars = array(
-            'cpt_user_name' => $sOwner,
-            'cpt_added_new' => $sText,
-            'cpt_object' => _t('_bx_ava_wall_object'),
-            'post_id' => $aEvent['id'],
-        );
         return array(
-            'title' => $sOwner . ' ' . $sText . ' ' . _t('_bx_ava_wall_object'),
+            'title' => _t('_bx_ava_wall_title_' . $aEvent['action'], $sOwner, $sTxtWallObject),
             'description' => '',
-            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post', $aVars)
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post', array(
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_ava_wall_' . $aEvent['action']),
+	            'cpt_object' => $sTxtWallObject,
+	            'post_id' => $aEvent['id'],
+	        ))
         );
     }
 
@@ -654,14 +653,17 @@ class BxAvaModule extends BxDolModule
      */
     function serviceGetWallData ()
     {
+    	$sUri = $this->_oConfig->getUri();
+    	$sName = 'bx_' . $sUri;
+
         return array(
             'handlers' => array(
-                array('alert_unit' => 'bx_avatar', 'alert_action' => 'add', 'module_uri' => 'avatar', 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'timeline' => 1, 'outline' => 0),
-                array('alert_unit' => 'bx_avatar', 'alert_action' => 'change', 'module_uri' => 'avatar', 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'timeline' => 1, 'outline' => 0)
+                array('alert_unit' => $sName, 'alert_action' => 'add', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'timeline' => 1, 'outline' => 0),
+                array('alert_unit' => $sName, 'alert_action' => 'change', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'timeline' => 1, 'outline' => 0)
             ),
             'alerts' => array(
-                array('unit' => 'bx_avatar', 'action' => 'add'),
-                array('unit' => 'bx_avatar', 'action' => 'change')
+                array('unit' => $sName, 'action' => 'add'),
+                array('unit' => $sName, 'action' => 'change')
             )
         );
     }
@@ -671,7 +673,7 @@ class BxAvaModule extends BxDolModule
 
     // ================================== events
 
-    function onEventCreate ($iEntrytId)
+    function onEventCreate ($iEntryId)
     {
         $oAlert = new BxDolAlerts('bx_avatar', 'add', $iEntryId, $this->_iProfileId);
         $oAlert->alert();
