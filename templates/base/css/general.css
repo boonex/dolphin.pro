@@ -999,10 +999,12 @@ div.extra_top_menu table.fixed_menu div.popup_html div.popup_content{
 	overflow: hidden;
 }
 
-div.extra_top_menu table.fixed_menu div.popup_html  div.extra_data{
-	position:relative;
-    background-color:#E4E4E4;
-    font-weight:bold;
+div.extra_top_menu table.fixed_menu div.popup_html  div.extra_data {
+	position: relative;
+    background-color: #E4E4E4;
+
+	white-space: nowrap;
+    font-weight: bold;
 }
 
 div.extra_top_menu table.fixed_menu div.popup_html  div.extra_data div.part_img,
