@@ -1208,12 +1208,7 @@
         function actionGetPollBlock($iPollId, $bViewMode = false)
         {
             $aPollInfo = $this -> _oDb -> getPollInfo( (int) $iPollId );
-            $aPoll = array (
-                'id_poll'       => $aPollInfo[0]['id_poll'],
-                'id_profile'    => $aPollInfo[0]['id_profile'],
-                'poll_ago'     => $aPollInfo[0]['poll_ago'],
-                'poll_approval' => $aPollInfo[0]['poll_approval'],
-            );
+            $aPoll = array_shift($aPollInfo);
 
             header('Content-Type: application/xml; charset=utf-8');
             echo $this -> getPollBlock($aPoll, true, $bViewMode) ;
