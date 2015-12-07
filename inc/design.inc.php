@@ -283,7 +283,7 @@ function getMemberJoinFormCode($sParams = '')
 		return MsgBox(_t('_registration by invitation only'));
 
 	$sCodeBefore = '';
-    $sCodeAfter = '';
+    $sCodeAfter = $GLOBALS['oSysTemplate']->parseHtmlByName('join_form_code_after.html', array());
 
 	bx_import("BxDolJoinProcessor");
     $oJoin = new BxDolJoinProcessor();
@@ -359,7 +359,7 @@ function getMemberLoginFormCode($sID = 'member_login_form', $sParams = '')
 				'tr_attrs' => array(
 					'class' => 'bx-form-element-forgot'
 				),
-				'content' => '<a href="' . BX_DOL_URL_ROOT . 'forgot.php">' . _t("_forgot_your_password") . '?</a>',
+				'content' => '<a href="' . BX_DOL_URL_ROOT . 'forgot.php">' . _t('_forgot_your_password') . '?</a> ' . _t('_or') . ' <a href="javascript:void(0)" onclick="javascript:hidePopupLoginForm()">' . _t('_Close') . '</a>',
 			)
         ),
     );

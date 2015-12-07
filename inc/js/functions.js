@@ -885,9 +885,15 @@ function showPopupLoginFormOld() {
 function showPopupJoinForm() {
 	showPopupLoginForm(1);
 }
+function hidePopupJoinForm() {
+	hidePopupLoginForm();
+}
+
 function showPopupLoginForm(iActiveTab) {
 	var sPopupId = 'login_div';
-	var oPopupOptions = {};
+	var oPopupOptions = {
+		closeOnOuterClick: false
+	};
 
 	var sContentId = 'sys-form-login-join';
 
@@ -916,6 +922,9 @@ function showPopupLoginForm(iActiveTab) {
             }
         );
     }
+}
+function hidePopupLoginForm() {
+	$('#login_div').dolPopup({});
 }
 
 function showPopupAnyHtml(sUrl, oCustomOptions) {

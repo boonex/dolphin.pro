@@ -300,15 +300,18 @@ div.login_ajax_wrap div.sys-form-login-join button {
 	font-family: Helvetica Neue, Helvetica, Arial, Verdana, sans-serif;
 }
 
-div.sys-form-login-join .bx-form-element a,
-div.sys-form-login-join .bx-form-element a:link,
-div.sys-form-login-join .bx-form-element a:hover,
-div.sys-form-login-join .bx-form-element a:active {
+div.sys-form-login-join .sys-flj-content a,
+div.sys-form-login-join .sys-flj-content a:link,
+div.sys-form-login-join .sys-flj-content a:hover,
+div.sys-form-login-join .sys-flj-content a:active {
 	color:#006699;	
 }
 
-div.sys-form-login-join .bx-form-element a:visited {
+div.sys-form-login-join .sys-flj-content a:visited {
 	color:#003366;	
+}
+div.sys-form-login-join .sys-flj-close {
+	text-align: center;
 }
 
 /*--- Login Join Auth Section ---*/
