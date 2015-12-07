@@ -968,17 +968,30 @@ div.extra_top_menu table.fixed_menu div.popup_html div.menu_item_active {
 /*1st sub level menu*/
 div.extra_top_menu table.fixed_menu div.popup_html ul ul{
     position: absolute;
-    left: 0;
     display: block;
     visibility: hidden;
+}
+div.extra_top_menu table.fixed_menu div#primary_menu_section ul ul{
+	left: 0px;
+}
+div.extra_top_menu table.fixed_menu div#extra_menu_section ul ul{
+	right: 0px;
 }
 
 /*Sub level menu list items (undo style from Top level List Items)*/
 div.extra_top_menu table.fixed_menu div.popup_html ul ul li{
     display: list-item;
     float: none;
-    margin:0;
-    width:100%;
+
+	width: 100%;
+    margin: 0px;
+
+	white-space: normal;
+}
+
+div.extra_top_menu table.fixed_menu div.popup_html ul ul.extra_menu_popup_Mail li,
+div.extra_top_menu table.fixed_menu div.popup_html ul ul.extra_menu_popup_Friends li {
+	white-space: nowrap;
 }
 
 div.extra_top_menu table.fixed_menu div.popup_html div.popup_content{

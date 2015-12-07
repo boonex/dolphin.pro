@@ -401,24 +401,6 @@
                                 {
                                 	var iTargetId = parseInt($targetul.attr('id').replace(membermenu.sMenuPopupPrefix, ''));
 
-                                    // set element hidden, need for the correct menu width definition;
-                                    if ( $targetul.css("visibility") == 'visible' ) {
-                                            $targetul.css({display:'block', visibility:'hidden'});
-                                    }
-
-                                    // submenu weight ;
-                                    var iSubMenuWidth = $(self).find('ul li table:first').width();
-
-                                    var menuleft = 0;
-                                    var iParentWidth = $(self).outerWidth();
-
-                                    menuleft = (menuid != 'primary_menu_section') ? -iSubMenuWidth + iParentWidth - 2 : 0;
-
-                                    //set element visible, need for the correct menu width definition;
-                                    if ( $targetul.css("visibility") == 'hidden' ) {
-                                        $targetul.css({display:'none', visibility:'visible'});
-                                    }
-
                                     // set hidden all active sub menus;
                                     $('#extra_top_menu ul ul').each(function (i){
                                         if( this.id != $targetul.attr('id') ) {
@@ -433,9 +415,7 @@
                                         // set menu item as active state ;
                                         $(self).children().addClass('menu_item_active');
 
-                                        $targetul
-                                            .css({left:menuleft+"px"})
-                                            .fadeIn( membermenu.animateduration.over);
+                                        $targetul.fadeIn( membermenu.animateduration.over);
                                     }
 
                                     // check onclick script and execute this if isset;
