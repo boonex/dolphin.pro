@@ -1,0 +1,14 @@
+<div id="bx-auth-form" class="controlsDiv">
+    <h3>__text__</h3>
+    <form method="post" action="__url__">
+        <input type="hidden" name="client_id" value="__client_id__" />
+        <input type="hidden" name="response_type" value="__response_type__" />
+        <input type="hidden" name="redirect_uri" value="__redirect_uri__" />
+        <input type="hidden" name="state" value="__state__" />
+        <input type="hidden" name="confirm" id="bx-confirm" value="0" />
+        <div class="bx-auth-form-buttons">
+            <button class="bx-btn" onclick="$('#bx-confirm').val(0); $('#bx-auth-form form').submit(); return false;"><bx_text:_bx_oauth_deny /></button>
+            <button class="bx-btn bx-btn-primary" onclick="$('#bx-confirm').val(1); $('#bx-auth-form form').submit(); return false;"><bx_text:_bx_oauth_allow /></button>
+        </div>
+    </form>
+</div>

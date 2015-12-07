@@ -632,6 +632,7 @@ function bx_check_profile_visibility ($iViewedId, $iViewerId = 0, $bReturn = fal
         exit;
     }
 
+    bx_import('BxBaseProfileView');
     $oProfile = new BxBaseProfileGenerator( $iViewedId );
     $p_arr  = $oProfile -> _aProfile;
 

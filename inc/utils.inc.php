@@ -1170,9 +1170,10 @@ function bx_php_string_quot ($mixedInput)
  * @param array $aParams - an array of parameters to be pathed with URL.
  * @return string the file's contents.
  */
-function bx_file_get_contents($sFileUrl, $aParams = array())
+function bx_file_get_contents($sFileUrl, $aParams = array(), $sMethod = 'get', $aHeaders = array(), &$sHttpCode = null)
 {
-	$sFileUrl = bx_append_url_params($sFileUrl, $aParams);
+    if ('post' != $sMethod)
+    	$sFileUrl = bx_append_url_params($sFileUrl, $aParams);
 
     $sResult = '';
     if(function_exists('curl_init')) {
@@ -1180,22 +1181,41 @@ function bx_file_get_contents($sFileUrl, $aParams = array())
 
         curl_setopt($rConnect, CURLOPT_TIMEOUT, 10);
         curl_setopt($rConnect, CURLOPT_URL, $sFileUrl);
-        curl_setopt($rConnect, CURLOPT_HEADER, 0);
+        curl_setopt($rConnect, CURLOPT_HEADER, NULL === $sHttpCode ? false : true);
         curl_setopt($rConnect, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($rConnect, CURLOPT_CAINFO, BX_DIRECTORY_PATH_PLUGINS . 'curl/cacert.pem');
+
         if (!ini_get('open_basedir'))
             curl_setopt($rConnect, CURLOPT_FOLLOWLOCATION, 1);
 
+        if ($aHeaders)
+            curl_setopt($rConnect, CURLOPT_HTTPHEADER, $aHeaders);
+
+        if ('post' == $sMethod) {
+            curl_setopt($rConnect, CURLOPT_POST, true);
+            curl_setopt($rConnect, CURLOPT_POSTFIELDS, $aParams);
+        }
+
         $sAllCookies = '';
         foreach($_COOKIE as $sKey=>$sValue){
-            $sAllCookies .= $sKey."=".$sValue.";";
+            $sAllCookies .= $sKey . '=' . $sValue . ';';
         }
         curl_setopt($rConnect, CURLOPT_COOKIE, $sAllCookies);
 
         $sResult = curl_exec($rConnect);
+
+        if (curl_errno($rConnect) == 60) { // CURLE_SSL_CACERT
+            curl_setopt($rConnect, CURLOPT_CAINFO, BX_DIRECTORY_PATH_PLUGINS . 'curl/cacert.pem');
+            $sResult = curl_exec($rConnect);
+        }
+
+        if (NULL !== $sHttpCode)
+            $sHttpCode = curl_getinfo($rConnect, CURLINFO_HTTP_CODE);
+
         curl_close($rConnect);
-    } else
+    }
+    else {
         $sResult = @file_get_contents($sFileUrl);
+    }
 
     return $sResult;
 }
