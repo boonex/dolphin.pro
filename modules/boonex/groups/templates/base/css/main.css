@@ -1,12 +1,14 @@
 
 .bx_groups_main_photo {
-    margin-left:auto;
-    margin-right:auto;
-    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+
+    text-align: center;
 }
 
 .bx_groups_main_photo img {
-    background-color:#fff;
+	max-width: 100%;
+    background-color: #fff;
 }
 
 .bx_groups_main_info_text {
