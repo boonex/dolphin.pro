@@ -58,7 +58,12 @@ $_page['name_index'] = $_ni;
 $_page['css_name'] = array('profile_view.css', 'profile_view_tablet.css', 'profile_view_phone.css');
 
 $p_arr  = $oProfile -> _aProfile;
-$_page['header'] = process_line_output(getNickName($p_arr['ID'])) . (empty($p_arr['Headline']) ? '' : ": " . htmlspecialchars_adv($p_arr['Headline']));
+
+$sUserInfo = $oFunctions->getUserInfo($p_arr['ID']);
+if(!empty($sUserInfo))
+	$sUserInfo = ': ' . htmlspecialchars_adv($sUserInfo);
+
+$_page['header'] = process_line_output(getNickName($p_arr['ID'])) . $sUserInfo;
 
 $oPPV = new BxTemplProfileView($oProfile, $site, $dir);
 $_page_cont[$_ni]['page_main_code'] = $oPPV->getCode();
