@@ -14,6 +14,10 @@ $aLangContent = array(
     '_bx_oauth_help_text' => '
         Some help text
     ',
+    '_bx_oauth_client_id' => 'Client Key',
+    '_bx_oauth_client_secret' => 'Client Secret',
+    '_bx_oauth_add' => 'Add new client',
+    '_bx_oauth_clients' => 'OAuth2 clients',
     '_bx_oauth_authorization' => 'Authorization',
     '_bx_oauth_authorize_app' => 'Allow "{0}" to use your profile info?',
     '_bx_oauth_allow' => 'Yes',

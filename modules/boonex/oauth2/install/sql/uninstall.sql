@@ -1,4 +1,6 @@
 
+DROP TABLE IF EXISTS `bx_oauth_access_tokens`, `bx_oauth_authorization_codes`, `bx_oauth_clients`, `bx_oauth_refresh_tokens`, `bx_oauth_scopes`;
+
 -- permalink
 DELETE FROM `sys_permalinks` WHERE `standard` = 'modules/?r=oauth2/';
 

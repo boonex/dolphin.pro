@@ -14,6 +14,10 @@ $aLangContent = array(
     '_bx_oauth_help_text' => '
         Здесь Будет Помощь
     ',
+    '_bx_oauth_client_id' => 'Ключ клиента',
+    '_bx_oauth_client_secret' => 'Секретный код',
+    '_bx_oauth_add' => 'Добавить',
+    '_bx_oauth_clients' => 'Клиенты OAuth2',
     '_bx_oauth_authorization' => 'Authorization',
     '_bx_oauth_authorize_app' => 'Разрешить "{0}" использовать информацию о профайле?',
     '_bx_oauth_allow' => 'Да',
