@@ -813,7 +813,6 @@ div.search_res_members_nickname {
 }
 
 /* ------ */
-
 .sys_icon {
     width:32px;
     background-color:#FFF;
@@ -821,15 +820,15 @@ div.search_res_members_nickname {
 }
 
 .sys_msg_pending_approval {
-    background-color:#ffcccc; 
-    line-height:30px; 
-    text-align:center; 
-    min-width:600px;
-    margin-bottom: 0px;  
+	margin-bottom: 0px;
+
+    background-color: #ffcccc;
+
+    line-height: 30px;
+    text-align: center;
 }
 
 /* Extra top menu */
-
 div.extra_top_menu {
 	display: none;
     width: 100%;
