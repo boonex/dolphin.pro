@@ -3565,8 +3565,8 @@ EOF;
             if(empty($aItem))
                 $iDeleted++;
             else if($aItem['Status'] == 'active' && $this->oPrivacy->check('view', $aItem['ID'], $this->_iVisitorID)) {
-                $aItem['thumb_file'] = $this->getAdCover($aItem['Media'], 'thumb');
-                $aItem['thumb_file_path'] = $this->getAdCoverPath($aItem['Media'], 'thumb');
+                $aItem['thumb_file'] = $this->getAdCover($aItem['Media'], 'big_thumb');
+                $aItem['thumb_file_path'] = $this->getAdCoverPath($aItem['Media'], 'big_thumb');
                 $sPath = file_exists($aItem['thumb_file_path']) ? $aItem['thumb_file_path'] : $aItem['thumb_file'];
 
                 $aItem['thumb_dims'] = array();
@@ -3579,6 +3579,14 @@ EOF;
                     $aItem['thumb_dims'] = $aContent['idims'][$iId];
                 }
 
+                $aItem['thumb_file_2x'] = $this->getAdCover($aItem['Media'], 'img');
+                if(empty($aItem['thumb_file_2x']))
+                	$aItem['thumb_file_2x'] = $aItem['thumb_file'];
+
+                $aItem['thumb_file_2x_path'] = $this->getAdCoverPath($aItem['Media'], 'img');
+                if(empty($aItem['thumb_file_2x_path']))
+                	$aItem['thumb_file_2x_path'] = $aItem['thumb_file_path'];
+
                 $aItem['EntryUri'] = $this->genUrl($aItem['ID'], $aItem['EntryUri'], 'entry');
                 $aItems[] = $aItem;
 
@@ -3587,6 +3595,7 @@ EOF;
                     'item_width' => isset($aItem['thumb_dims']['w']) ? $aItem['thumb_dims']['w'] : $this->iThumbSize,
                     'item_height' => isset($aItem['thumb_dims']['h']) ? $aItem['thumb_dims']['h'] : $this->iThumbSize,
                     'item_icon' => $aItem['thumb_file'],
+                	'item_icon_2x' => $aItem['thumb_file_2x'],
                     'item_page' => $aItem['EntryUri'],
                     'item_title' => $aItem['Subject']
                 );
