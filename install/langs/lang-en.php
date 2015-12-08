@@ -59,6 +59,7 @@ $LANG= array(
   '_Allowed actions' => 'Allowed actions',
   '_Anonymous' => 'Anonymous',
   '_Any' => '- Any -',
+  '_Approval' => 'Approval',
   '_Approve' => 'Approve',
   '_April' => 'April',
   '_Archive' => 'Archive',

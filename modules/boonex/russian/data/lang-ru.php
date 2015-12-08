@@ -59,6 +59,7 @@ $LANG= array(
     '_Allowed actions' => 'Разрешённые действия',
     '_Anonymous' => 'Анонимный',
     '_Any' => '- Любой -',
+    '_Approval' => 'На модерации',
     '_Approve' => 'Одобрить',
     '_April' => 'Апрель',
     '_Archive' => 'Архив',
