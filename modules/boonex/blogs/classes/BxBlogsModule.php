@@ -3223,8 +3223,8 @@ EOF;
                 $aItem['thumb_file'] = '';
                 $aItem['thumb_dims'] = array();
                 if(!empty($aItem['PostPhoto'])) {
-                    $aItem['thumb_file'] = BX_BLOGS_IMAGES_URL . 'big_' . $aItem['PostPhoto'];
-                    $aItem['thumb_file_path'] = BX_BLOGS_IMAGES_PATH . 'big_' . $aItem['PostPhoto'];
+                    $aItem['thumb_file'] = BX_BLOGS_IMAGES_URL . 'orig_' . $aItem['PostPhoto'];
+                    $aItem['thumb_file_path'] = BX_BLOGS_IMAGES_PATH . 'orig_' . $aItem['PostPhoto'];
 
                     if(!isset($aContent['idims'][$iId])) {
                         $sPath = file_exists($aItem['thumb_file_path']) ? $aItem['thumb_file_path'] : $aItem['thumb_file'];
@@ -3233,6 +3233,9 @@ EOF;
                     }
 
                     $aItem['thumb_dims'] = $aContent['idims'][$iId];
+
+                    $aItem['thumb_file_2x'] = $aItem['thumb_file'];
+                    $aItem['thumb_file_2x_path'] = $aItem['thumb_file_path'];
                 }
 
                 $aItem['PostUrl'] = $this->genUrl($aItem['PostID'], $aItem['PostUri'], 'entry');
@@ -3243,6 +3246,7 @@ EOF;
                     'item_width' => isset($aItem['thumb_dims']['w']) ? $aItem['thumb_dims']['w'] : $this->iThumbSize,
                     'item_height' => isset($aItem['thumb_dims']['h']) ? $aItem['thumb_dims']['h'] : $this->iThumbSize,
                     'item_icon' => $aItem['thumb_file'],
+                	'item_icon_2x' => $aItem['thumb_file_2x'],
                     'item_page' => $aItem['PostUrl'],
                     'item_title' => $aItem['PostCaption'],
                     'item_description' => strmaxtextlen($aItem['PostText'], 300),

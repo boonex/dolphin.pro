@@ -1,0 +1,9 @@
+div.wall-oii-image.bx_blogs-wall-oii-image {
+	text-align: center;
+}
+div.wall-oii-image.bx_blogs-wall-oii-image img {
+	display: inline-block;
+
+	width: auto;
+	max-width: 100%;
+}
