@@ -155,7 +155,7 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 ('[db_prefix]_number_related', '4', @iKatID, 'Number of related files by user', 'digit', '', '', 6, ''),
 ('[db_prefix]_thumb_width', '64', @iKatID, 'Thumbnail width of file', 'digit', '', '', 7, ''),
 ('[db_prefix]_activation', 'on', @iKatID, 'Enable auto-activation for files', 'checkbox', '', '', 8, ''),
-('[db_prefix]_max_file_size', '32', @iKatID, 'Maximal size of one file (in Megabytes)', 'digit', '', '', 8, ''),
+('[db_prefix]_max_file_size', '32', @iKatID, 'Maximum size of one file (in Megabytes)', 'digit', '', '', 8, ''),
 ('category_auto_app_[db_prefix]', 'on', @iKatID, 'Autoapprove categories of files', 'checkbox', '', '', 9, ''),
 ('[db_prefix]_allowed_exts', '', @iKatID, 'Allowed extensions (leave blank to have all types)', 'digit', '', '', 10, ''),
 ('[db_prefix]_profile_album_name', '{nickname}''s files', @iKatID, 'Default profile folder name', 'digit', '', '', 11, ''),
