@@ -310,6 +310,15 @@ div.sys-form-login-join .sys-flj-content a:active {
 div.sys-form-login-join .sys-flj-content a:visited {
 	color:#003366;	
 }
+
+div.sys-form-login-join .sys-flj-content a.bx-btn,
+div.sys-form-login-join .sys-flj-content a.bx-btn:link,
+div.sys-form-login-join .sys-flj-content a.bx-btn:hover,
+div.sys-form-login-join .sys-flj-content a.bx-btn:active,
+div.sys-form-login-join .sys-flj-content a.bx-btn:visited {
+	color: #ffffff;
+}
+
 div.sys-form-login-join .sys-flj-close {
 	text-align: center;
 }
