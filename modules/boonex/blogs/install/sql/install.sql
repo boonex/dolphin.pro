@@ -169,7 +169,7 @@ INSERT INTO `sys_menu_top` (`ID`, `Parent`, `Name`, `Caption`, `Link`, `Order`, 
 SET @menu_id = (SELECT LAST_INSERT_ID());
 
 INSERT INTO `sys_menu_top` (`ID`, `Parent`, `Name`, `Caption`, `Link`, `Order`, `Visible`, `Target`, `Onclick`, `Check`, `Editable`, `Deletable`, `Active`, `Type`, `Picture`, `BQuickLink`, `Statistics`) VALUES
-(NULL, 9, 'Profile Blog', '_bx_blog_Blog', 'modules/boonex/blogs/blogs.php?action=show_member_blog&ownerName={profileUsername}|blogs/posts/', 4, 'non,memb', '', '', '', 1, 1, 1, 'custom', '', 0, ''),
+(NULL, 9, 'Profile Blog', '_bx_blog_Blog', 'modules/boonex/blogs/blogs.php?action=show_member_blog&blogOwnerName={profileUsername}|blogs/posts/', 4, 'non,memb', '', '', '', 1, 1, 1, 'custom', '', 0, ''),
 (NULL, 4, 'Profile Blog', '_bx_blog_Blog', 'modules/boonex/blogs/blogs.php?action=my_page&mode=main|modules/boonex/blogs/blogs.php?action=show_member_blog&ownerID={memberID}', 4, 'non,memb', '', '', '', 1, 1, 1, 'custom', '', 0, ''),
 (NULL, @menu_id, 'All Blogs', '_bx_blog_All_Blogs', 'modules/boonex/blogs/blogs.php?action=all', 1, 'non,memb', '', '', '', 1, 1, 1, 'custom', '', 0, ''),
 (NULL, @menu_id, 'Blog Calendar', '_sys_calendar', 'modules/boonex/blogs/blogs.php?action=show_calendar', 10, 'non,memb', '', '', '', 1, 1, 1, 'custom', '', 0, ''),
@@ -205,7 +205,7 @@ INSERT INTO `sys_permalinks`(`standard`, `permalink`, `check`) VALUES
 ('modules/boonex/blogs/blogs.php?action=tags', 'blogs/tags/', 'permalinks_blogs'),
 ('modules/boonex/blogs/blogs.php?action=show_calendar', 'blogs/show_calendar/', 'permalinks_blogs'),
 ('modules/boonex/blogs/blogs.php?action=my_page&mode=main', 'blogs/my_page/', 'permalinks_blogs'),
-('modules/boonex/blogs/blogs.php?action=show_member_blog&ownerName=', 'blogs/posts/', 'permalinks_blogs');
+('modules/boonex/blogs/blogs.php?action=show_member_blog&blogOwnerName=', 'blogs/posts/', 'permalinks_blogs');
 
 
 -- views objects

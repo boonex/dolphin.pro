@@ -218,7 +218,7 @@ class BxBlogsModule extends BxDolModule
         $this->_iVisitorID = isLogged() ? getLoggedId() : 0;
 
         //temple
-        $this->bAdminMode = ($this->isAdmin()==true) ? true: $this->bAdminMode;
+        $this->bAdminMode = $this->isAdmin() == true;
 
         $this->iPostViewType = 1;
         $this->iViewingPostID = -1;
@@ -233,7 +233,7 @@ class BxBlogsModule extends BxDolModule
     }
 
     function CheckLogged()
-    {        
+    {
         if (!getLoggedId())
             member_auth(0);
     }
@@ -1472,7 +1472,7 @@ EOF;
             $aCatLinks = array();
             if (count($aCategories)>0) {
                 foreach ($aCategories as $iKey => $sCatValue) {
-                    $sCatLink = $oBlogSearch->getCurrentUrl('category', title2uri(trim($sCatValue)), title2uri(trim($sCatValue)), array('ownerId' => $iMemberID, 'ownerName' => $aAuthor['NickName']));
+                    $sCatLink = $oBlogSearch->getCurrentUrl('category', title2uri(trim($sCatValue)), title2uri(trim($sCatValue)), array('ownerId' => $iMemberID, 'blogOwnerName' => $aAuthor['NickName']));
                     $aCatLinks[] = '<a href="' . $sCatLink . '" rel="nofollow">' . $sCatValue . '</a>';
                 }
                 $sCats = implode(", ", $aCatLinks);
@@ -2254,7 +2254,7 @@ EOF;
 
         $iCheckedMemberID = $this->_iVisitorID;
 
-        $bNoProfileMode = ( false !== bx_get('ownerID') || false !== bx_get('ownerName') ) ? false : true;
+        $bNoProfileMode = ( false !== bx_get('ownerID') || false !== bx_get('blogOwnerName') ) ? false : true;
 
         $sRetHtml = '';
         $sSearchedTag = uri2title(process_db_input(bx_get('tagKey'), BX_TAGS_STRIP));
@@ -2631,8 +2631,8 @@ EOF;
     {
         $iMemberId = 0;
 
-        if (false !== bx_get('ownerName')) {
-            $sNickName = process_db_input(bx_get('ownerName'), BX_TAGS_STRIP);
+        if (false !== bx_get('blogOwnerName')) {
+            $sNickName = process_db_input(bx_get('blogOwnerName'), BX_TAGS_STRIP);
             $iMemberId = $this->_oDb->getMemberIDByNickname($sNickName);
         } elseif(bx_get('ownerID')) {
             $iMemberId = (int)bx_get('ownerID');

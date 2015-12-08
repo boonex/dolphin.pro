@@ -217,7 +217,7 @@ class BxBlogsSearchUnit extends BxTemplSearchResultText
         $sAllCategoriesLinks = '';
         if (count($aCategories)>0) {
             foreach ($aCategories as $iKey => $sCatValue) {
-                $sCatLink = $this->getCurrentUrl('category', title2uri($sCatValue), title2uri($sCatValue), array('ownerId' => $aResSQL['ownerId'], 'ownerName' => $sAuthorUsername));
+                $sCatLink = $this->getCurrentUrl('category', title2uri($sCatValue), title2uri($sCatValue), array('ownerId' => $aResSQL['ownerId'], 'blogOwnerName' => $sAuthorUsername));
                 $sCatName = process_line_output($sCatValue);
                 $aAllCategoriesLinks[] = '<a href="' . $sCatLink . '">' . $sCatName . '</a>';
             }
