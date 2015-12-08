@@ -75,6 +75,7 @@ div.wall-oii-image-wrp {
 div.wall-oii-image {
 	position: relative;
 	width: 100%;
+
 	text-align: center;
 }
 div.wall-oi-item-grouped div.wall-oii-image {
@@ -83,11 +84,16 @@ div.wall-oi-item-grouped div.wall-oii-image {
 div.wall-oi-item-grouped div.wall-oii-image:first-child {
 	margin-top: 0px;
 }
-img.wall-oii-image {
+div.wall-oii-image img,
+div.wall-oii-image img.wall-oii-image {
 	position: relative;
 	display: block;
 
-	width: 100%;
+	width: auto;
+	max-width: 100%;
+
+	margin-left: auto;
+	margin-right: auto; 
 }
 
 /*--- Author section ---*/

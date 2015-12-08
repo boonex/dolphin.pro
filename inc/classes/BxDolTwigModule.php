@@ -1109,6 +1109,9 @@ class BxDolTwigModule extends BxDolModule
                         $aItem['thumb_file'] = $aImage['file'];
                         $aItem['thumb_dims'] = $aContent['idims'][$iId];
                     }
+
+                    $aImage = BxDolService::call('photos', 'get_entry', array($aItem[$this->_oDb->_sFieldThumb], 'browse2x'), 'Search');
+                    $aItem['thumb_file_2x'] = !empty($aImage) ? $aImage['file'] : $aItem['thumb_file'];
                 }
 
                 $aItem[$this->_oDb->_sFieldUri] = $sBaseUrl . $aItem[$this->_oDb->_sFieldUri];
@@ -1119,6 +1122,7 @@ class BxDolTwigModule extends BxDolModule
                     'item_width' => isset($aItem['thumb_dims']['w']) ? $aItem['thumb_dims']['w'] : $iNoPhotoWidth,
                     'item_height' => isset($aItem['thumb_dims']['h']) ? $aItem['thumb_dims']['h'] : $iNoPhotoHeight,
                     'item_icon' => !empty($aItem['thumb_file']) ? $aItem['thumb_file'] : $sNoPhoto,
+                	'item_icon_2x' => !empty($aItem['thumb_file_2x']) ? $aItem['thumb_file_2x'] : $sNoPhoto,
                     'item_page' => $aItem[$this->_oDb->_sFieldUri],
                     'item_title' => $aItem[$this->_oDb->_sFieldTitle]
                 );
