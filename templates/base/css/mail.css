@@ -104,6 +104,11 @@ div.view_message_container div.message_container {
 	padding:10px;
 }
 
+div.view_message_container div.message_container img {
+   max-width: 100%;
+   height: auto;
+}
+
 div.view_message_container div.message_container textarea {
 	width:100%;
 	height:300px;
