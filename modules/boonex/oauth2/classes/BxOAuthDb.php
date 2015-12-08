@@ -16,8 +16,19 @@ class BxOAuthDb extends BxDolModuleDb
         $this->_oConfig = $oConfig;
     }
 
+    function getClients()
+    {
+        return $this->getAll("SELECT * FROM `bx_oauth_clients` ORDER BY `title`");
+    }
+
     function getSettingsCategory()
     {
         return $this->getOne("SELECT `ID` FROM `sys_options_cats` WHERE `name` = 'OAuth2 Server' LIMIT 1");
+    }
+
+    function deleteClients($aClients)
+    {        
+        foreach ($aClients as $sClientId)
+            $this->query("DELETE FROM `bx_oauth_clients` WHERE `client_id` = '" . process_db_input($sClientId) . "'");
     }
 }

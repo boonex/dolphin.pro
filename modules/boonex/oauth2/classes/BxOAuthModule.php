@@ -134,38 +134,46 @@ class BxOAuthModule extends BxDolModule
             return;
         }
 
-        $this->_oTemplate->pageStart();
+        $this->_oTemplate->pageStart();        
 
-        $iId = $this->_oDb->getSettingsCategory();
-        if(empty($iId)) {
-            echo MsgBox(_t('_sys_request_page_not_found_cpt'));
-            $this->_oTemplate->pageCodeAdmin (_t('_bx_oauth_administration'));
-            return;
+
+        bx_import('FormAdd', $this->_aModule);
+        $oForm = new BxOAuthFormAdd($this);
+        $oForm->initChecker();
+
+        $sContent = '';
+        if ($oForm->isSubmittedAndValid ()) {
+            $oForm->insert ();
+            $sContent = MsgBox(_t('_Success'));
         }
-
-        bx_import('BxDolAdminSettings');
-
-        $mixedResult = '';
-        if(isset($_POST['save']) && isset($_POST['cat'])) {
-            $oSettings = new BxDolAdminSettings($iId);
-            $mixedResult = $oSettings->saveChanges($_POST);
-        }
-
-        $oSettings = new BxDolAdminSettings($iId);
-        $sResult = $oSettings->getForm();
-
-        if($mixedResult !== true && !empty($mixedResult))
-            $sResult = $mixedResult . $sResult;
+        $sContent .= $oForm->getCode ();
 
         $aVars = array (
-            'content' => $sResult,
+            'content' => $sContent,
         );
-        echo $this->_oTemplate->adminBlock ($this->_oTemplate->parseHtmlByName('default_padding', $aVars), _t('_bx_oauth_administration'));
+        echo $this->_oTemplate->adminBlock ($this->_oTemplate->parseHtmlByName('default_padding', $aVars), _t('_bx_oauth_add'));
+
+
+        if (is_array($_POST['clients']) && $_POST['clients'])
+            $this->_oDb->deleteClients($_POST['clients']);
+        bx_import('BxTemplSearchResult');
+        $sControls = BxTemplSearchResult::showAdminActionsPanel('bx-oauth-form-add', array(
+            'bx-oauth-delete' => _t('_Delete'),
+        ), 'clients');
+
+        $aClients = $this->_oDb->getClients();
+        $aVars = array (
+            'bx_repeat:clients' => $aClients,
+            'controls' => $sControls,
+        );
+        echo $this->_oTemplate->adminBlock ($this->_oTemplate->parseHtmlByName('clients', $aVars), _t('_bx_oauth_clients'));
+
 
         $aVars = array (
             'content' => _t('_bx_oauth_help_text')
         );
         echo $this->_oTemplate->adminBlock ($this->_oTemplate->parseHtmlByName('default_padding', $aVars), _t('_bx_oauth_help'));
+
 
         $this->_oTemplate->addCssAdmin ('forms_adv.css');
         $this->_oTemplate->pageCodeAdmin (_t('_bx_oauth_administration'));
