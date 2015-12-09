@@ -19,4 +19,5 @@ Then enter generated on the master site the Key & Server pair in the form below:
     '_bx_dolphcon_profile_error_api_keys' => 'Please configure the module in admin panel (can\'t define API key, secret & URL)',
     '_bx_dolphcon_chart' => 'Dolphin Profiles',
     '_bx_dolphcon_auth_title' => 'Dolphin Connect',
+    '_bx_dolphcon_state_invalid' => 'State parameter isn\'t matching',
 );

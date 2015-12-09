@@ -19,4 +19,5 @@ $aLangContent = array (
     '_bx_dolphcon_profile_error_api_keys' => 'Пожалуйста, настройте модуль в административной панели (невозможно определить ключи)',
     '_bx_dolphcon_chart' => 'Dolphin профили',
     '_bx_dolphcon_auth_title' => 'Dolphin-соединение',
+    '_bx_dolphcon_state_invalid' => '\'State\' параметр не совпадает',
 );

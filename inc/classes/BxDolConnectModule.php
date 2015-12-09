@@ -233,7 +233,7 @@ class BxDolConnectModule extends BxDolModule
      * @param $sAlternativeName - suffix to add to NickName to make it unique
      * @return profile array info, ready for the local database
      */
-    function _convertRemoteFields($aProfileInfo, $sAlternativeName = '')
+    protected function _convertRemoteFields($aProfileInfo, $sAlternativeName = '')
     {
     }
 
