@@ -99,30 +99,32 @@ function PerformCollectFilterCustomActions() {
 	$('#CustomFieldCaption_2').val($('#CustomFieldCaption2').attr('action'));
 }
 
-function AdmCreateSubcategory(sSubmitUrl) {
-    
-    var iCateg = parseInt($(".form_advanced_table select[name='IDClassified']").val());
-    var sTitle = $(".form_advanced_table input[name='NameSub']").val();
-    var sDesc = $(".form_advanced_table input[name='Description']").val();
-    var sAction = $("#create_sub_cats_form input[name='action']").val();
-    var sID = $("#create_sub_cats_form input[name='id']").val();
-    var sButton = $("#create_sub_cats_form input[name='add_button']").val();
+function AdmCreateSubcategory(oElement, sSubmitUrl) {
+    var oForm = $(oElement).parents('form:first');
+
+    var sID = oForm.find("input[name='id']").val();
+    var sAction = oForm.find("input[name='action']").val();
+    var iCateg = parseInt(oForm.find("select[name='IDClassified']").val());
+    var sTitle = oForm.find("input[name='NameSub']").val();
+    var sDesc = oForm.find("input[name='Description']").val();
+    var sButton = oForm.find("input[name='add_button']").val();
 
     if (iCateg > 0) {
-    	var oRequest = {};
-    	if($("#create_sub_cats_form input[name='csrf_token']").length > 0)
-    		oRequest['csrf_token'] = $("#create_sub_cats_form input[name='csrf_token']").val();
-    	oRequest['IDClassified'] = iCateg;
-    	oRequest['NameSub'] = sTitle;
-    	oRequest['Description'] = sDesc;
-    	oRequest['action'] = sAction;
-    	oRequest['id'] = sID;
-    	oRequest['add_button'] = sButton;
-    	oRequest['mode'] = 'json';
+    	var oRequest = {
+    		'id': sID,
+    		'IDClassified': iCateg,
+    		'action': sAction,
+    		'NameSub': sTitle,
+    		'Description': sDesc,
+    		'add_button': sButton,
+    		'mode': 'json'
+    	};
 
-        var sReceiver = $('#ads_add_sub_category .boxContent .bx-def-bc-margin');
+    	if(oForm.find("input[name='csrf_token']").length > 0)
+    		oRequest['csrf_token'] = oForm.find("input[name='csrf_token']").val();
+
     	$.post(sSubmitUrl, oRequest, function(oData) {
-            sReceiver.html(oData);
+            oForm.parents('.boxContent:first').find('.bx-def-bc-margin:first').html(oData);
     	}, 'json');
     }
 }

@@ -2540,8 +2540,8 @@ EOF;
     }
 
     function getAddSubcatForm($iSubCategoryID = 0, $bOnlyForm = false) { //admin side only
-        $sSubmitC = _t('_bx_ads_add_subcategory');
-        $sAction = 'add_sub_category';
+    	$sAction = 'add_sub_category';
+        $sSubmitC = !empty($iSubCategoryID) ? _t('_Edit') : _t('_bx_ads_add_subcategory');
 
         $aParentCategories = array();
         $vParentValues = $this->_oDb->getAllCatsInfo();
@@ -2619,7 +2619,7 @@ EOF;
                     'name' => 'add_button',
                     'value' => $sSubmitC,
                     'attrs' => array(
-                        'onClick' => "AdmCreateSubcategory('{$this->sHomeUrl}{$this->sCurrBrowsedFile}'); return false;"
+                        'onClick' => "AdmCreateSubcategory(this, '{$this->sHomeUrl}{$this->sCurrBrowsedFile}'); return false;"
                     )
                 ),
             ),
@@ -2640,7 +2640,6 @@ EOF;
         $oForm = new BxTemplFormView($aForm);
         $oForm->initChecker();
         if ($oForm->isSubmittedAndValid()) {
-
             $aValsAdd = array ();
             if ($iSubCategoryID == 0) {
                 $sCategUri = uriGenerate(bx_get('NameSub'), $this->_oConfig->sSQLSubcatTable, 'SEntryUri');
@@ -2648,23 +2647,23 @@ EOF;
             }
 
             $iLastId = -1;
-            if ($iSubCategoryID>0) {
+            $sMessage = '';
+            if($iSubCategoryID > 0) {
                 $oForm->update($iSubCategoryID, $aValsAdd);
+
                 $iLastId = $iSubCategoryID;
-            } else {
-                $iLastId = $oForm->insert($aValsAdd);
+                $sMessage = '_bx_ads_Sub_category_successfully_updated';
+            }
+            else {
+				$iLastId = $oForm->insert($aValsAdd);
+				$sMessage = '_bx_ads_Sub_category_successfully_added';
             }
 
-            if ($iLastId > 0) {
-                $sCode = MsgBox(_t('_bx_ads_Sub_category_successfully_added'), 3);
-            } else {
-                $sCode = MsgBox(_t('_bx_ads_Sub_category_failed_add'), 3);
-            }
+            $sCode = MsgBox(_t($iLastId > 0 ? $sMessage : '_bx_ads_Sub_category_failed_add'), 3);
         }
 
-        if ($bOnlyForm) {
+        if ($bOnlyForm)
             return $sCode . $oForm->getCode();
-        }
 
         $sResult = $sJS . $sCode . $oForm->getCode();
 
