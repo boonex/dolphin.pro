@@ -120,7 +120,7 @@ class BxOAuthModule extends BxDolModule
         }
 
         if (empty($_POST))
-            $this->_oTemplate->pageAuth();
+            $this->_oTemplate->pageAuth($this->_oDb->getClientTitle(bx_get('client_id')));
 
         $this->_oServer->handleAuthorizeRequest($oRequest, $oResponse, (bool)bx_get('confirm'), getLoggedId());
 
