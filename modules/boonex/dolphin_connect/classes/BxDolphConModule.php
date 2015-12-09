@@ -51,7 +51,7 @@ class BxDolphConModule extends BxDolConnectModule
                 'client_id' => $this->_oConfig->sApiID,
                 'redirect_uri' => $this->_oConfig->sPageHandle,
                 'scope' => $this->_oConfig->sScope,
-                'state' => 'xyz', // TODO:
+                'state' => $this->_genCsrfToken(),
             ));
             $this->_redirect($sUrl);
         }
@@ -59,7 +59,11 @@ class BxDolphConModule extends BxDolConnectModule
 
     function actionHandle()
     {
-        // TODO: check 'state'
+        // check CSRF token
+        if ($this->_getCsrfToken() != bx_get('state')) {
+            $this->_oTemplate->getPage(_t('_Error'), MsgBox(_t('_bx_dolphcon_state_invalid')));
+            return;
+        }
 
         // check code
         $sCode = bx_get('code');
@@ -145,10 +149,37 @@ class BxDolphConModule extends BxDolConnectModule
      * @param $sAlternativeName - suffix to add to NickName to make it unique
      * @return profile array info, ready for the local database
      */
-    function _convertRemoteFields($aProfileInfo, $sAlternativeName = '')
+    protected function _convertRemoteFields($aProfileInfo, $sAlternativeName = '')
     {
         $aProfileFields = $aProfileInfo;
         $aProfileFields['NickName'] = $aProfileInfo['NickName'] . $sAlternativeName;
         return $aProfileFields;
     }
+
+    protected function _genCsrfToken($bReturn = false)
+    {
+        if ($GLOBALS['MySQL']->getParam('sys_security_form_token_enable') != 'on' || defined('BX_DOL_CRON_EXECUTE'))
+            return false;
+
+        $oSession = BxDolSession::getInstance();
+
+        $iCsrfTokenLifetime = (int)$this->_oDb->getParam('sys_security_form_token_lifetime');
+        if ($oSession->getValue('bx_dolphcon_csrf_token') === false || ($iCsrfTokenLifetime != 0 && time() - (int)$oSession->getValue('csrf_token_time') > $iCsrfTokenLifetime)) {
+            $sToken = genRndPwd(20, true);
+            $oSession->setValue('bx_dolphcon_csrf_token', $sToken);
+            $oSession->setValue('bx_dolphcon_csrf_token_time', time());
+        }
+        else {
+            $sToken = $oSession->getValue('bx_dolphcon_csrf_token');
+        }
+
+        return $sToken;
+    }
+
+    protected function _getCsrfToken()
+    {
+        $oSession = BxDolSession::getInstance();
+        return $oSession->getValue('bx_dolphcon_csrf_token');
+    }
+
 }
