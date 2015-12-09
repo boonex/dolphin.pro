@@ -10,10 +10,11 @@ $aLangContent = array(
     '_sys_module_oauth2' => 'OAuth2 Server',
     '_bx_oauth_administration' => 'OAuth2 Server',
     '_bx_oauth' => 'OAuth2 Server',
-    '_bx_oauth_help' => 'Help',
-    '_bx_oauth_help_text' => '
-        Some help text
-    ',
+    '_bx_oauth_help' => 'Information',
+    '_bx_oauth_help_text' => 'Add clients to allow them to use profile information from this site on client\'s sites. <br />
+Client\'s sites must have "Dolphin Connect" module installed. <br />
+Specify the following "Dolphin Connect URL" on the client sites:<br />
+<strong>{0}</strong>',
     '_bx_oauth_client_id' => 'Client Key',
     '_bx_oauth_client_secret' => 'Client Secret',
     '_bx_oauth_add' => 'Add new client',
