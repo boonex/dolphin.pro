@@ -70,7 +70,7 @@ function PageCompPageMainCode()
     }
 
     //get lists
-    $aLists = array( '' => _t('_Select'));
+    $aLists = array();
     $aKeys = getPreKeys();
     foreach ($aKeys as $aList)
         $aLists[ $aList['Key'] ] = $aList['Key'];
@@ -223,14 +223,11 @@ function PageCompPageMainCode()
 
 function genListOptions( $aLists, $sActive )
 {
-    $sRet = '';
-    foreach( $aLists as $sKey => $sValue ) {
-        $sRet .= '
-            <option value="' .
-            htmlspecialchars( $sKey ) .
-            '"' . ( ( $sKey == $sActive ) ? ' selected="selected"' : '' ) .
-            '>' . htmlspecialchars( $sValue ) . '</option>';
-    }
+	asort($aLists);
+
+    $sRet = '<option value="">' . _t('_Select') . '</option>';
+    foreach( $aLists as $sKey => $sValue )
+        $sRet .= '<option value="' . htmlspecialchars( $sKey ) . '"' . ( ( $sKey == $sActive ) ? ' selected="selected"' : '' ) . '>' . htmlspecialchars( $sValue ) . '</option>';
 
     return $sRet;
 }
