@@ -130,22 +130,34 @@ class BxOAuthAPI extends Thing
 
     protected function _prepareProfileArray ($aProfileInfo, $bPublicFieldsOnly = true) 
     {
+        $aProfileInfo['id'] = $aProfileInfo['ID'];
+
         if ($bPublicFieldsOnly) {
             $aProfileInfo = array(
-                'ID' => $aProfileInfo['ID'],
+                'id' => $aProfileInfo['id'],
             );
         } 
         else {
             unset($aProfileInfo['Password']);
             unset($aProfileInfo['Salt']);
             unset($aProfileInfo['LangID']);
+            unset($aProfileInfo['ID']);
+            unset($aProfileInfo['Status']);
+            unset($aProfileInfo['DateLastLogin']);
+            unset($aProfileInfo['DateLastNav']);
+            unset($aProfileInfo['Featured']);
+            unset($aProfileInfo['Location']);
+            unset($aProfileInfo['Keyword']);
+            unset($aProfileInfo['Couple']);
+            unset($aProfileInfo['Avatar']);
+            unset($aProfileInfo['aff_num']);
+            unset($aProfileInfo['allow_view_to']);
         }
 
-        $aProfileInfo['profile_display_name'] = $GLOBALS['oFunctions']->getUserTitle($aProfileInfo['ID']);
-        $aProfileInfo['profile_display_info'] = $GLOBALS['oFunctions']->getUserInfo($aProfileInfo['ID']);
-        $aProfileInfo['profile_link'] = getProfileLink($aProfileInfo['ID']);
-        $aProfileInfo['picture'] = $GLOBALS['oFunctions']->getMemberAvatar($aProfileInfo['ID']);
-        $aProfileInfo['id'] = $aProfileInfo['ID'];
+        $aProfileInfo['profile_display_name'] = $GLOBALS['oFunctions']->getUserTitle($aProfileInfo['id']);
+        $aProfileInfo['profile_display_info'] = $GLOBALS['oFunctions']->getUserInfo($aProfileInfo['id']);
+        $aProfileInfo['profile_link'] = getProfileLink($aProfileInfo['id']);
+        $aProfileInfo['picture'] = $GLOBALS['oFunctions']->getMemberAvatar($aProfileInfo['id']);
 
         return $aProfileInfo;
     }

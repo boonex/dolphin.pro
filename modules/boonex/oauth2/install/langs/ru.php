@@ -10,10 +10,11 @@ $aLangContent = array(
     '_sys_module_oauth2' => 'OAuth2 сервер',
     '_bx_oauth_administration' => 'OAuth2 сервер',
     '_bx_oauth' => 'OAuth2 сервер',
-    '_bx_oauth_help' => 'Помощь',
-    '_bx_oauth_help_text' => '
-        Здесь Будет Помощь
-    ',
+    '_bx_oauth_help' => 'Информация',
+    '_bx_oauth_help_text' => 'Что-бы использовать информацию из профайла на клиентских сайтах, нужно добавить новый клиентский сайт. <br />
+На клиентском сайте должен быть установлен "Dolphin Connect" модуль.<br />
+Нужно указать следующий "Dolphin Connect URL" на клиентских сайтах:<br />
+<strong>{0}</strong>',
     '_bx_oauth_client_id' => 'Ключ клиента',
     '_bx_oauth_client_secret' => 'Секретный код',
     '_bx_oauth_add' => 'Добавить',

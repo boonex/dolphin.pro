@@ -120,7 +120,7 @@ class BxOAuthModule extends BxDolModule
         }
 
         if (empty($_POST))
-            $this->_oTemplate->pageAuth();
+            $this->_oTemplate->pageAuth($this->_oDb->getClientTitle(bx_get('client_id')));
 
         $this->_oServer->handleAuthorizeRequest($oRequest, $oResponse, (bool)bx_get('confirm'), getLoggedId());
 
@@ -170,7 +170,7 @@ class BxOAuthModule extends BxDolModule
 
 
         $aVars = array (
-            'content' => _t('_bx_oauth_help_text')
+            'content' => _t('_bx_oauth_help_text', BX_DOL_URL_ROOT)
         );
         echo $this->_oTemplate->adminBlock ($this->_oTemplate->parseHtmlByName('default_padding', $aVars), _t('_bx_oauth_help'));
 

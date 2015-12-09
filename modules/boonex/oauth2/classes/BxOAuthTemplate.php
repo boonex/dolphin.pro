@@ -18,10 +18,10 @@ class BxOAuthTemplate extends BxDolTwigTemplate
         $this->_page(_t('_bx_oauth_authorization'), MsgBox($sErrorMsg));
     }
 
-    function pageAuth() 
+    function pageAuth($sTitle) 
     {
         $this->_page(_t('_bx_oauth_authorization'), $this->parseHtmlByName('page_auth.html', array(
-            'text' => _t('_bx_oauth_authorize_app', htmlspecialchars_adv(bx_get('client_id'))),
+            'text' => _t('_bx_oauth_authorize_app', htmlspecialchars_adv($sTitle)),
             'url' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'auth',
             'client_id' => bx_get('client_id'),
             'response_type' => bx_get('response_type'),
