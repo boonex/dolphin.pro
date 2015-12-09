@@ -88,7 +88,7 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 ('max_blog_preview', '256', @iGlCategID, 'Maximum length of Blog preview', 'digit', '', '', 6),
 ('bx_blogs_iconsize', '45', @iGlCategID, 'Size of post icons', 'digit', '', '', 7),
 ('bx_blogs_thumbsize', '110', @iGlCategID, 'Size of post thumbs', 'digit', '', '', 8),
-('bx_blogs_bigthumbsize', '340', @iGlCategID, 'Size of post bit thumbs', 'digit', '', '', 9),
+('bx_blogs_bigthumbsize', '240', @iGlCategID, 'Size of post bit thumbs', 'digit', '', '', 9),
 ('bx_blogs_imagesize', '800', @iGlCategID, 'Size of post full images', 'digit', '', '', 10),
 ('category_auto_app_bx_blogs', 'on', @iGlCategID, 'Auto-activation for categories after blog posts creation', 'checkbox', '', '', 11),
 ('permalinks_blogs', 'on', 26, 'Enable friendly blogs permalinks', 'checkbox', '', '', NULL);

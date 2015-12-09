@@ -2056,16 +2056,21 @@ EOF;
                                     @unlink($sTmpFile);
 
                                     if (strlen($sExt)) {
-                                        imageResize(BX_BLOGS_IMAGES_PATH . $sFileName.$sExt, BX_BLOGS_IMAGES_PATH . 'small_' . $sFileName.$sExt, $this->iIconSize / 1, $this->iIconSize / 1);
-                                        imageResize(BX_BLOGS_IMAGES_PATH . $sFileName.$sExt, BX_BLOGS_IMAGES_PATH . 'big_' . $sFileName.$sExt, $this->iThumbSize, $this->iThumbSize);
-                                        imageResize(BX_BLOGS_IMAGES_PATH . $sFileName.$sExt, BX_BLOGS_IMAGES_PATH . 'orig_' . $sFileName.$sExt, $this->iImgSize, $this->iImgSize);
+                                    	$sPathSrc = BX_BLOGS_IMAGES_PATH . $sFileName . $sExt;
+                                    	$sPathDst = BX_BLOGS_IMAGES_PATH . '%s_' . $sFileName . $sExt;
 
-                                        chmod(BX_BLOGS_IMAGES_PATH . 'small_' . $sFileName . $sExt, 0644);
-                                        chmod(BX_BLOGS_IMAGES_PATH . 'big_' . $sFileName . $sExt, 0644);
-                                        chmod(BX_BLOGS_IMAGES_PATH . 'orig_' . $sFileName . $sExt, 0644);
+                                        imageResize($sPathSrc, sprintf($sPathDst, 'small'), $this->iIconSize / 1, $this->iIconSize / 1);
+                                        imageResize($sPathSrc, sprintf($sPathDst, 'big'), $this->iThumbSize, $this->iThumbSize);
+                                        imageResize($sPathSrc, sprintf($sPathDst, 'browse'), $this->iBigThumbSize, null);
+                                        imageResize($sPathSrc, sprintf($sPathDst, 'orig'), $this->iImgSize, $this->iImgSize);
+
+                                        chmod(sprintf($sPathDst, 'small'), 0644);
+                                        chmod(sprintf($sPathDst, 'big'), 0644);
+                                        chmod(sprintf($sPathDst, 'browse'), 0644);
+                                        chmod(sprintf($sPathDst, 'orig'), 0644);
 
                                         $this->_oDb->performUpdatePostWithPhoto($iBlogPostID, $sFileName . $sExt);
-                                        @unlink(BX_BLOGS_IMAGES_PATH . $sFileName . $sExt);
+                                        @unlink($sPathSrc);
                                     }
 
                                     break;
@@ -3223,8 +3228,12 @@ EOF;
                 $aItem['thumb_file'] = '';
                 $aItem['thumb_dims'] = array();
                 if(!empty($aItem['PostPhoto'])) {
-                    $aItem['thumb_file'] = BX_BLOGS_IMAGES_URL . 'orig_' . $aItem['PostPhoto'];
-                    $aItem['thumb_file_path'] = BX_BLOGS_IMAGES_PATH . 'orig_' . $aItem['PostPhoto'];
+                    $aItem['thumb_file'] = BX_BLOGS_IMAGES_URL . 'browse_' . $aItem['PostPhoto'];
+                    $aItem['thumb_file_path'] = BX_BLOGS_IMAGES_PATH . 'browse_' . $aItem['PostPhoto'];
+                    if(!file_exists($aItem['thumb_file_path'])) {
+                    	$aItem['thumb_file'] = BX_BLOGS_IMAGES_URL . 'big_' . $aItem['PostPhoto'];
+                    	$aItem['thumb_file_path'] = BX_BLOGS_IMAGES_PATH . 'big_' . $aItem['PostPhoto'];
+                    }
 
                     if(!isset($aContent['idims'][$iId])) {
                         $sPath = file_exists($aItem['thumb_file_path']) ? $aItem['thumb_file_path'] : $aItem['thumb_file'];
@@ -3234,8 +3243,8 @@ EOF;
 
                     $aItem['thumb_dims'] = $aContent['idims'][$iId];
 
-                    $aItem['thumb_file_2x'] = $aItem['thumb_file'];
-                    $aItem['thumb_file_2x_path'] = $aItem['thumb_file_path'];
+                    $aItem['thumb_file_2x'] = BX_BLOGS_IMAGES_URL . 'orig_' . $aItem['PostPhoto'];
+                    $aItem['thumb_file_2x_path'] = BX_BLOGS_IMAGES_PATH . 'orig_' . $aItem['PostPhoto'];
                 }
 
                 $aItem['PostUrl'] = $this->genUrl($aItem['PostID'], $aItem['PostUri'], 'entry');
