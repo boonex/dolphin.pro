@@ -112,7 +112,7 @@ class BxDolphConModule extends BxDolConnectModule
         if ($aRemoteProfileInfo) {
 
             // check if user logged in before
-            $iLocalProfileId = $this->_oDb->getProfileId($aRemoteProfileInfo['ID']);
+            $iLocalProfileId = $this->_oDb->getProfileId($aRemoteProfileInfo['id']);
             
             if ($iLocalProfileId) { 
                 // user already exists

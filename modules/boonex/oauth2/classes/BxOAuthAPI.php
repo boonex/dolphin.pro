@@ -157,7 +157,11 @@ class BxOAuthAPI extends Thing
         $aProfileInfo['profile_display_name'] = $GLOBALS['oFunctions']->getUserTitle($aProfileInfo['id']);
         $aProfileInfo['profile_display_info'] = $GLOBALS['oFunctions']->getUserInfo($aProfileInfo['id']);
         $aProfileInfo['profile_link'] = getProfileLink($aProfileInfo['id']);
-        $aProfileInfo['picture'] = $GLOBALS['oFunctions']->getMemberAvatar($aProfileInfo['id']);
+
+        if (BxDolRequest::serviceExists('photos', 'profile_photo', 'Search'))
+            $aProfileInfo['picture'] = BxDolService::call('photos', 'profile_photo', array($aProfileInfo['id'], 'file'), 'Search');
+        else
+            $aProfileInfo['picture'] = $GLOBALS['oFunctions']->getMemberAvatar($aProfileInfo['id']);
 
         return $aProfileInfo;
     }
