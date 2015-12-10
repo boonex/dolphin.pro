@@ -288,7 +288,7 @@ EOF;
         $bOwner = ($iVisitorID==$aResSQL['ownerId']) ? true : false;
 
         $sOwnerThumb = $sPostPicture = $sPreviewPicture = '';
-        if($aResSQL['PostPhoto'] && $this->iPostViewType==3) {
+        if($aResSQL['PostPhoto'] && in_array($this->iPostViewType, array(1, 3, 4, 5))) {
         	$oMain->_oTemplate->addJs('plugins/fancybox/|jquery.fancybox.js');
         	$oMain->_oTemplate->addCss('plugins/fancybox/|jquery.fancybox.css');
 
@@ -298,16 +298,11 @@ EOF;
             ));
         }
 
-        if ($aResSQL['PostPhoto'] && ($this->iPostViewType==1 || $this->iPostViewType==4 || $this->iPostViewType==5)) {
-            $sStyle = 'padding-right:' . ($this->iThumbSize + 10) . 'px; min-height:' . $this->iThumbSize . 'px;';
-            $sPreviewPicture = '<div class="unit_img"><img class="bx-def-shadow bx-def-round-corners" src="' . $sBlogsImagesUrl . 'big_' . $aResSQL['PostPhoto'] . '" /></div>';
-        }
-
         if ($this->iPostViewType==4) {
             $sOwnerThumb = $GLOBALS['oFunctions']->getMemberIcon($aResSQL['ownerId'], 'left');
         }
 
-        if ($this->iPostViewType==4 || $this->iPostViewType==1 || $this->iPostViewType==5) {
+        if (in_array($this->iPostViewType, array(1, 4, 5))) {
             $iBlogLimitChars = (int)getParam('max_blog_preview');
             $sPostText = trim(strip_tags($sPostText));
             if (mb_strlen($sPostText) > $iBlogLimitChars) {
