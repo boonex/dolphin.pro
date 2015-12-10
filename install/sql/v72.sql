@@ -3616,8 +3616,8 @@ CREATE TABLE IF NOT EXISTS `sys_box_download` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 INSERT INTO `sys_box_download` (`id`, `title`, `url`, `onclick`, `desc`, `icon`, `order`, `disabled`) VALUES
-(1, '_sbd_iPhone_title', 'http://itunes.apple.com/us/app/oo/id345450186', '', '_sbd_iPhone_desc', 'iphone.png', 2, 0),
-(2, '_sbd_Android_title', 'https://play.google.com/store/apps/details?id=com.boonex.oo', '', '_sbd_Android_desc', 'android.png', 3, 0);
+(1, '_sbd_iPhone_title', 'http://itunes.apple.com/us/app/oo/id345450186', '', '_sbd_iPhone_desc', 'apple', 2, 0),
+(2, '_sbd_Android_title', 'https://play.google.com/store/apps/details?id=com.boonex.oo', '', '_sbd_Android_desc', 'android', 3, 0);
 
 
 --

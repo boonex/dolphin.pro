@@ -130,7 +130,6 @@ class BxBaseIndexPageView extends BxDolPageView
             if (!$r['url'])
                 continue;
 
-            $r['icon'] = $GLOBALS['oSysTemplate']->getIconUrl($r['icon']);
             $s .= $GLOBALS['oSysTemplate']->parseHtmlByName('download_box_unit.html', $r);
         }
 

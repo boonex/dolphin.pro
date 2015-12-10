@@ -32,19 +32,18 @@
 	/*##############################################################*/
 
 	.sys_download_unit {
-		background-position:0 0; 
-		background-repeat:no-repeat; 
-		min-height:56px; 
-		padding-left:63px;   
+		position: relative;   
 	}
 
-	.boxContent>.sys_download_unit:first-child {
-		margin-top: 0px;
-	}
+	.sys_download_unit > div > .bx-btn {
+		float: none;
+		display: inline-block;
 
-	.sys_download_unit>div>a {
-		font-size:12px;
-		font-weight:bold;
+		width: 100%;
+
+		text-align: center;
+		font-size: 12px;
+		font-weight: bold;
 	}
 
 	/*##############################################################*/
