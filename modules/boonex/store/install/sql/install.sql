@@ -340,6 +340,7 @@ INSERT INTO `sys_objects_actions` (`Caption`, `Icon`, `Url`, `Script`, `Eval`, `
     ('{AddToFeatured}', 'star-o', '', 'getHtmlData( ''ajaxy_popup_result_div_{ID}'', ''{evalResult}'', false, ''post'');return false;', '$oConfig = $GLOBALS[''oBxStoreModule'']->_oConfig; return BX_DOL_URL_ROOT . $oConfig->getBaseUri() . ''mark_featured/{ID}'';', 6, 'bx_store'),
     ('{TitleSubscribe}', 'paperclip', '', '{ScriptSubscribe}', '', 7, 'bx_store'),
     ('{TitleActivate}', 'check-circle-o', '', 'getHtmlData( ''ajaxy_popup_result_div_{ID}'', ''{evalResult}'', false, ''post'');return false;', '$oConfig = $GLOBALS[''oBxStoreModule'']->_oConfig; return BX_DOL_URL_ROOT . $oConfig->getBaseUri() . ''activate/{ID}'';', '8', 'bx_store'),
+    ('{repostCpt}', 'repeat', '', '{repostScript}', '', 9, 'bx_store'),
 
     ('{evalResult}', 'plus', '{BaseUri}browse/my&bx_store_filter=add_product', '', 'return ($GLOBALS[''logged''][''member''] && BxDolModule::getInstance(''BxStoreModule'')->isAllowedAdd()) || $GLOBALS[''logged''][''admin''] ? _t(''_bx_store_action_add_product'') : '''';', 1, 'bx_store_title'),
     ('{evalResult}', 'shopping-cart', '{BaseUri}browse/my', '', 'return $GLOBALS[''logged''][''member''] || $GLOBALS[''logged''][''admin''] ? _t(''_bx_store_action_my_products'') : '''';', '2', 'bx_store_title');

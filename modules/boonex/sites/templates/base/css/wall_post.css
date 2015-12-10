@@ -1,19 +1,19 @@
-div.bx-sites-wall-event {
+div.wall-event-bx_sites {
     position: relative;    
 }
-
-div.bx-sites-wall-caption {
-    padding-left: 20px;
+div.bx-sites-wall-caption,
+div.bx-sites-comment-wall-caption {
     position: relative;
     background-repeat: no-repeat;
     background-position: 0px center;
     line-height: 30px; 
 }
-
+div.wall-event-repost div.wall-caption.bx-sites-wall-caption {
+	padding-left: 5px;
+}
 span.bx-sites-wall-caption-owner {
     font-weight: bold;
 }
-
 a.bx-sites-wall-caption-link,
 a.bx-sites-wall-caption-link:link {
     text-decoration: none;
@@ -22,7 +22,8 @@ a.bx-sites-wall-caption-link:hover,
 a.bx-sites-wall-caption-link:active {
     text-decoration: underline;
 }
-div.bx-sites-wall-content {
+div.bx-sites-wall-content,
+div.bx-sites-comment-wall-content {
     position: relative;
 }
 div.bx-sites-wall-comments {
@@ -38,7 +39,7 @@ div.bx-sites-wall-comments div.cmt-reply {
     padding: 0px;
     /*display: none;*/
 }
-div.bx-sites-wall-event div.bx-sites-wall-comments div.thumbnail_block {
+div.wall-event-bx_sites div.wall-comments-bx_sites div.thumbnail_block {
     left: -38px;
     top: 1px;
 }

@@ -64,9 +64,11 @@ class BxGroupsPageView extends BxDolTwigPageView
         global $oFunctions;
 
         if ($this->_oMain->_iProfileId || $this->_oMain->isAdmin()) {
+        	$sCode = '';
 
             $oSubscription = BxDolSubscription::getInstance();
             $aSubscribeButton = $oSubscription->getButton($this->_oMain->_iProfileId, 'bx_groups', '', (int)$this->aDataEntry['id']);
+            $sCode .= $oSubscription->getData();
 
             $isFan = $this->_oDb->isFan((int)$this->aDataEntry['id'], $this->_oMain->_iProfileId, 0) || $this->_oDb->isFan((int)$this->aDataEntry['id'], $this->_oMain->_iProfileId, 1);
 
@@ -94,10 +96,18 @@ class BxGroupsPageView extends BxDolTwigPageView
                 'TitleActivate' => method_exists($this->_oMain, 'isAllowedActivate') && $this->_oMain->isAllowedActivate($this->aDataEntry) ? _t('_bx_groups_admin_activate') : '',
             );
 
-            if (!$aInfo['TitleEdit'] && !$aInfo['TitleDelete'] && !$aInfo['TitleJoin'] && !$aInfo['TitleInvite'] && !$aInfo['TitleShare'] && !$aInfo['TitleBroadcast'] && !$aInfo['AddToFeatured'] && !$aInfo['TitleManageFans'] && !$aInfo['TitleUploadPhotos'] && !$aInfo['TitleUploadVideos'] && !$aInfo['TitleUploadSounds'] && !$aInfo['TitleUploadFiles'])
+	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+				$sCode .= BxDolService::call('wall', 'get_repost_js_script');
+
+				$aInfo['repostCpt'] = _t('_Repost');
+				$aInfo['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->_oMain->_iProfileId, 'bx_groups', 'add', (int)$this->aDataEntry['id']));
+			}
+
+			$sCodeActions = $oFunctions->genObjectsActions($aInfo, 'bx_groups');
+			if(empty($sCodeActions))
                 return '';
 
-            return $oSubscription->getData() . $oFunctions->genObjectsActions($aInfo, 'bx_groups');
+            return $sCode . $sCodeActions;
         }
 
         return '';

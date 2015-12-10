@@ -34,8 +34,10 @@ class BxMbpDb extends BxDolModuleDb
                     break;
                 case 'price_all':
                     $sSelectClause .= ", `tlp`.`id` AS `price_id`, `tlp`.`Days` AS `price_days`, `tlp`.`Price` AS `price_amount`";
-                    $sJoinClause .= "INNER JOIN `sys_acl_level_prices` AS `tlp` ON `tl`.`ID`=`tlp`.`IDLevel`";
+                    $sJoinClause .= "LEFT JOIN `sys_acl_level_prices` AS `tlp` ON `tl`.`ID`=`tlp`.`IDLevel`";
                     $sWhereClause = " AND `tl`.`Active`='yes' AND `tl`.`Purchasable`='yes'";
+                    if(isset($aParams['include_standard']) && $aParams['include_standard'] === true)
+                    	$sWhereClause .= " OR `tl`.`ID`=" . MEMBERSHIP_ID_STANDARD;
                     $sOrderClause = " ORDER BY `tl`.`Order` ASC, `tlp`.`Price` ASC";
                     break;
                 case 'level_id':

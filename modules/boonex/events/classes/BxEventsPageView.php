@@ -65,9 +65,11 @@ class BxEventsPageView extends BxDolTwigPageView
         global $oFunctions;
 
         if ($this->_oMain->_iProfileId || $this->_oMain->isAdmin()) {
+			$sCode = '';
 
             $oSubscription = BxDolSubscription::getInstance();
             $aSubscribeButton = $oSubscription->getButton($this->_oMain->_iProfileId, 'bx_events', '', (int)$this->aDataEntry['ID']);
+            $sCode .= $oSubscription->getData();
 
             $isFan = $this->_oDb->isFan((int)$this->aDataEntry['ID'], $this->_oMain->_iProfileId, 0) || $this->_oDb->isFan((int)$this->aDataEntry['ID'], $this->_oMain->_iProfileId, 1);
 
@@ -95,10 +97,18 @@ class BxEventsPageView extends BxDolTwigPageView
                 'TitleActivate' => method_exists($this->_oMain, 'isAllowedActivate') && $this->_oMain->isAllowedActivate($this->aDataEntry) ? _t('_bx_events_admin_activate') : '',
             );
 
-            if (!$this->aInfo['TitleEdit'] && !$this->aInfo['TitleDelete'] && !$this->aInfo['TitleJoin'] && !$this->aInfo['TitleInvite'] && !$this->aInfo['TitleShare'] && !$this->aInfo['AddToFeatured'] && !$this->aInfo['TitleBroadcast'] && !$this->aInfo['TitleSubscribe'] && !$this->aInfo['TitleManageFans'] && !$this->aInfo['TitleUploadPhotos'] && !$this->aInfo['TitleUploadVideos'] && !$this->aInfo['TitleUploadSounds'] && !$this->aInfo['TitleUploadFiles'])
+			if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+				$sCode .= BxDolService::call('wall', 'get_repost_js_script');
+
+				$this->aInfo['repostCpt'] = _t('_Repost');
+				$this->aInfo['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->_oMain->_iProfileId, 'bx_events', 'add', (int)$this->aDataEntry['ID']));
+			}
+
+            $sCodeActions = $oFunctions->genObjectsActions($this->aInfo, 'bx_events');
+            if(empty($sCodeActions))
                 return '';
 
-            return $oSubscription->getData() . $oFunctions->genObjectsActions($this->aInfo, 'bx_events');
+            return $sCode . $sCodeActions;
         }
 
         return '';

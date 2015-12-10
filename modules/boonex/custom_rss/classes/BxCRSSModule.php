@@ -227,11 +227,8 @@ EOF;
                     $iRssQuantity = (int)$aRSSInfo['Quantity'];
                     $sRssUrl = process_line_output($aRSSInfo['RSSUrl']);
 
-                    $sActiveRSSList .= '<div class="RSSAggrCont_{$iRssID}" rssnum="{$iRssQuantity}">' . $GLOBALS['oFunctions']->loadingBoxInline() . '</div>';
-
-                    $sRssAggr .= <<<EOF
-$('div.RSSAggrCont_{$iRssID}').dolRSSFeed('{$sHomeUrl}get_rss_feed.php?ID={$iRssID}');
-EOF;
+                    $sActiveRSSList .= "<div class='RSSAggrCont_" . $iRssID . "' rssnum='" . $iRssQuantity . "'>" . $GLOBALS['oFunctions']->loadingBoxInline() . "</div>";
+                    $sRssAggr .= "$('div.RSSAggrCont_" . $iRssID . "').dolRSSFeed('" . $sHomeUrl . "get_rss_feed.php?ID=" . $iRssID . "');";
                 }
 
                 $sRssContent = $sActiveRSSList;

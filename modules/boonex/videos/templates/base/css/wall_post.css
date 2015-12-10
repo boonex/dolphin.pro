@@ -1,15 +1,17 @@
-div.bx_videos-wall-event {
+div.wall-event-bx_videos {
     position: relative;    
 }
-div.bx_videos-wall-caption {
-    padding-left: 20px;
-    
+div.bx_videos-wall-caption,
+div.bx_videos_comment-wall-caption {
     position: relative;
-    
+
     background-repeat: no-repeat;
     background-position: 0px center;
     
     line-height: 30px; 
+}
+div.wall-event-repost div.wall-caption.bx_videos-wall-caption {
+	padding-left: 5px;
 }
 span.bx_videos-wall-caption-owner {
     font-weight: bold;
@@ -22,7 +24,8 @@ a.bx_videos-wall-caption-link:hover,
 a.bx_videos-wall-caption-link:active {
     text-decoration: underline;
 }
-div.bx_videos-wall-content {
+div.bx_videos-wall-content,
+div.bx_videos_comment-wall-content {
     position: relative;
 }
 div.wall-content.bx_videos-wall-content-grouped {

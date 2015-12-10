@@ -214,6 +214,7 @@ class BxDolVoting extends BxDolMistake
             return false;
 
         if ($this->_oQuery->putVote ($this->getId(), getVisitorIP(), $iVote)) {
+        	$this->checkAction(true);
             $this->_triggerVote();
 
             $oZ = new BxDolAlerts($this->_sSystem, 'rate', $this->getId(), getLoggedId(), array ('rate' => $iVote));
@@ -224,13 +225,14 @@ class BxDolVoting extends BxDolMistake
         return false;
     }
 
-    function checkAction ()
+    function checkAction ($bPerformAction = false)
     {
         if (isset($this->_checkActionResult))
             return $this->_checkActionResult;
+
         $iId = getLoggedId();
-        $check_res = checkAction( $iId, ACTION_ID_VOTE );
-        return ($this->_checkActionResult = ($check_res[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED));
+        $aResult = checkAction($iId, ACTION_ID_VOTE, $bPerformAction);
+        return ($this->_checkActionResult = ($aResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED));
     }
 
     function isDublicateVote ()

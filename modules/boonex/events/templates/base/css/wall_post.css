@@ -1,15 +1,16 @@
-div.bx-events-wall-event {
+div.wall-event-bx_events {
     position: relative;    
 }
-
-div.bx-events-wall-caption {
-    padding-left: 20px;
+div.bx-events-wall-caption,
+div.bx-events-comment-wall-caption {
     position: relative;
     background-repeat: no-repeat;
     background-position: 0px center;
     line-height: 30px; 
 }
-
+div.wall-event-repost div.wall-caption.bx-events-wall-caption {
+	padding-left: 5px;
+}
 span.bx-events-wall-caption-owner {
     font-weight: bold;
 }
@@ -23,7 +24,8 @@ a.bx-events-wall-caption-link:hover,
 a.bx-events-wall-caption-link:active {
     text-decoration: underline;
 }
-div.bx-events-wall-content {
+div.bx-events-wall-content,
+div.bx-events-comment-wall-content {
     position: relative;
 }
 div.bx-events-wall-comments {

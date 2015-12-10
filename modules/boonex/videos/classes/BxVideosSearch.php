@@ -205,11 +205,17 @@ class BxVideosSearch extends BxTemplSearchResultSharedMedia
         return $aFiles;
     }
 
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPost($aEvent)
     {
         return $this->oModule->getWallPost($aEvent, 'film');
     }
 
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPostOutline($aEvent)
     {
         return $this->oModule->getWallPostOutline($aEvent, 'film');

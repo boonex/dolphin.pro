@@ -1650,6 +1650,7 @@ EOF;
             bx_import('BxDolSubscription');
             $oSubscription = BxDolSubscription::getInstance();
             $aButton = $oSubscription->getButton($this->_iVisitorID, $this->_oConfig->getUri(), '', $iAdvertisementID);
+            $sSubsAddon = $oSubscription->getData();
 
             $aActionKeys = array(
             	'BaseUri' => $this->_oConfig->getBaseUri(),
@@ -1667,8 +1668,14 @@ EOF;
                 'sbs_ads_script' => $aButton['script'],
             	'TitleShare' => $this->isAllowedShare($aSqlResStr) ? _t('_Share') : '',
             );
+	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+	        	$sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
+
+				$aActionKeys['repostCpt'] = _t('_Repost');
+				$aActionKeys['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->_iVisitorID, 'ads', 'create', $iAdvertisementID));
+	        }
             $sActionsTable = $GLOBALS['oFunctions']->genObjectsActions($aActionKeys, 'bx_ads', false);
-            $sSubsAddon = $oSubscription->getData();
+
             $sActionsSectContent = $sSubsAddon . $sMemberActionForms . $sActionsTable;
             $sActionsSect = ($this->_iVisitorID>0 || $this->bAdminMode) ? DesignBoxContent ( $sActionsC, $sActionsSectContent, 1) : '';
             $this->sTAActionsContent = ($this->_iVisitorID>0 || $this->bAdminMode) ? $sActionsSectContent : '';
@@ -2533,8 +2540,8 @@ EOF;
     }
 
     function getAddSubcatForm($iSubCategoryID = 0, $bOnlyForm = false) { //admin side only
-        $sSubmitC = _t('_bx_ads_add_subcategory');
-        $sAction = 'add_sub_category';
+    	$sAction = 'add_sub_category';
+        $sSubmitC = !empty($iSubCategoryID) ? _t('_Edit') : _t('_bx_ads_add_subcategory');
 
         $aParentCategories = array();
         $vParentValues = $this->_oDb->getAllCatsInfo();
@@ -2612,7 +2619,7 @@ EOF;
                     'name' => 'add_button',
                     'value' => $sSubmitC,
                     'attrs' => array(
-                        'onClick' => "AdmCreateSubcategory('{$this->sHomeUrl}{$this->sCurrBrowsedFile}'); return false;"
+                        'onClick' => "AdmCreateSubcategory(this, '{$this->sHomeUrl}{$this->sCurrBrowsedFile}'); return false;"
                     )
                 ),
             ),
@@ -2633,7 +2640,6 @@ EOF;
         $oForm = new BxTemplFormView($aForm);
         $oForm->initChecker();
         if ($oForm->isSubmittedAndValid()) {
-
             $aValsAdd = array ();
             if ($iSubCategoryID == 0) {
                 $sCategUri = uriGenerate(bx_get('NameSub'), $this->_oConfig->sSQLSubcatTable, 'SEntryUri');
@@ -2641,23 +2647,23 @@ EOF;
             }
 
             $iLastId = -1;
-            if ($iSubCategoryID>0) {
+            $sMessage = '';
+            if($iSubCategoryID > 0) {
                 $oForm->update($iSubCategoryID, $aValsAdd);
+
                 $iLastId = $iSubCategoryID;
-            } else {
-                $iLastId = $oForm->insert($aValsAdd);
+                $sMessage = '_bx_ads_Sub_category_successfully_updated';
+            }
+            else {
+				$iLastId = $oForm->insert($aValsAdd);
+				$sMessage = '_bx_ads_Sub_category_successfully_added';
             }
 
-            if ($iLastId > 0) {
-                $sCode = MsgBox(_t('_bx_ads_Sub_category_successfully_added'), 3);
-            } else {
-                $sCode = MsgBox(_t('_bx_ads_Sub_category_failed_add'), 3);
-            }
+            $sCode = MsgBox(_t($iLastId > 0 ? $sMessage : '_bx_ads_Sub_category_failed_add'), 3);
         }
 
-        if ($bOnlyForm) {
+        if ($bOnlyForm)
             return $sCode . $oForm->getCode();
-        }
 
         $sResult = $sJS . $sCode . $oForm->getCode();
 
@@ -3337,14 +3343,18 @@ EOF;
 
     function serviceGetWallData()
     {
+    	$sUri = $this->_oConfig->getUri();
+
         return array(
             'handlers' => array(
-                array('alert_unit' => 'ads', 'alert_action' => 'create', 'module_uri' => 'ads', 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 1),
-                array('alert_unit' => 'ads', 'alert_action' => 'commentPost', 'module_uri' => 'ads', 'module_class' => 'Module', 'module_method' => 'get_wall_post_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0)
+                array('alert_unit' => $sUri, 'alert_action' => 'create', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 1),
+                array('alert_unit' => $sUri, 'alert_action' => 'comment_add', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_add_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0),
+
+                //DEPRICATED, saved for backward compatibility
+                array('alert_unit' => $sUri, 'alert_action' => 'commentPost', 'module_uri' => $sUri, 'module_class' => 'Module', 'module_method' => 'get_wall_post_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0)
             ),
             'alerts' => array(
-                array('unit' => 'ads', 'action' => 'create'),
-                array('unit' => 'ads', 'action' => 'commentPost')
+                array('unit' => $sUri, 'action' => 'create')
             )
         );
     }
@@ -3392,17 +3402,15 @@ EOF;
                     'unit' => $this->getUnit($aItem['ID']),
                 );
 
-            $sTextAddedNewItems = _t('_bx_ads_wall_added_new_items', $iItems);
-            $aTmplVars = array(
-                'cpt_user_name' => $sOwner,
-                'cpt_added_new' => $sTextAddedNewItems,
-                'bx_repeat:items' => $aTmplItems,
-                'post_id' => $aEvent['id']
-            );
             return array(
-                'title' => $sOwner . ' ' . $sTextAddedNewItems,
+                'title' => _t('_bx_ads_wall_added_new_title_items', $sOwner, $iItems),
                 'description' => '',
-                'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_grouped.html', $aTmplVars)
+                'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_grouped.html', array(
+	                'cpt_user_name' => $sOwner,
+	                'cpt_added_new' => _t('_bx_ads_wall_added_new_items', $iItems),
+	                'bx_repeat:items' => $aTmplItems,
+	                'post_id' => $aEvent['id']
+	            ))
             );
         }
 
@@ -3410,24 +3418,74 @@ EOF;
         $aItem = $aItems[0];
         $aItem['url'] = $this->genUrl($aItem['ID'], $aItem['EntryUri'], 'entry');
 
-        $sAddedNewTxt = _t('_bx_ads_wall_added_new');
         $sPostTxt = _t('_bx_ads_wall_object');
 
-        $aVars = array(
+        return array(
+            'title' => _t('_bx_ads_wall_added_new_title', $sOwner, $sPostTxt),
+            'description' => _t('_bx_ads_wall_added_new_title', $sOwner, $sPostTxt),
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post.html', array(
                 'cpt_user_name' => $sOwner,
-                'cpt_added_new' => $sAddedNewTxt,
+                'cpt_added_new' => _t('_bx_ads_wall_added_new'),
                 'cpt_object' => $sPostTxt,
                 'cpt_item_url' => $aItem['url'],
                 'unit' => $this->getUnit($aItem['ID']),
                 'post_id' => $aEvent['id'],
-        );
-        return array(
-            'title' => $sOwner . ' ' . $sAddedNewTxt . ' ' . $sPostTxt,
-            'description' => $sOwner . ' ' . $sAddedNewTxt . ' ' . $sPostTxt,
-            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post.html', $aVars)
+        	))
         );
     }
 
+    function serviceGetWallAddComment($aEvent)
+    {
+        $iId = (int)$aEvent['object_id'];
+        $iOwner = (int)$aEvent['owner_id'];
+        $sOwner = getNickName($iOwner);
+
+        $aContent = unserialize($aEvent['content']);
+        if(empty($aContent) || empty($aContent['object_id']))
+            return '';
+
+		$iItem = (int)$aContent['object_id'];
+        $aItem = $this->_oDb->getAdInfo($iItem);
+        if(empty($aItem) || !is_array($aItem))
+        	return array('perform_delete' => true);
+
+        if(!$this->oPrivacy->check('view', $iItem, $this->_iVisitorID))
+            return '';
+
+        bx_import('Cmts', $this->_aModule);
+        $oCmts = new BxAdsCmts($this->_oConfig->getCommentSystemName(), $iItem);
+        if(!$oCmts->isEnabled())
+            return '';
+
+        $aComment = $oCmts->getCommentRow($iId);
+
+        $sCss = '';
+        if($aEvent['js_mode'])
+            $sCss = $this->_oTemplate->addCss('wall_post.css', true);
+        else
+            $this->_oTemplate->addCss('wall_post.css');
+
+		$aItem['url'] = $this->genUrl($aItem['ID'], $aItem['EntryUri'], 'entry');
+
+        $sTextWallObject = _t('_bx_ads_wall_object');
+        return array(
+            'title' => _t('_bx_ads_wall_added_new_title_comment', $sOwner, $sTextWallObject),
+            'description' => $aComment['cmt_text'],
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_comment.html', array(
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_ads_wall_added_new_comment'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $aItem['url'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'unit' => $this->getUnit($aItem['ID']),
+	            'post_id' => $aEvent['id'],
+	        ))
+        );
+    }
+
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPostComment($aEvent)
     {
         $iId = (int)$aEvent['object_id'];
@@ -3459,21 +3517,20 @@ EOF;
         else
             $this->_oTemplate->addCss('wall_post.css');
 
-        $sTextAddedNew = _t('_bx_ads_wall_added_new_comment');
         $sTextWallObject = _t('_bx_ads_wall_object');
-        $aTmplVars = array(
-            'cpt_user_name' => $sOwner,
-            'cpt_added_new' => $sTextAddedNew,
-            'cpt_object' => $sTextWallObject,
-            'cpt_item_url' => $aItem['url'],
-            'cnt_comment_text' => $aComment['cmt_text'],
-            'unit' => $this->getUnit($aItem['ID']),
-            'post_id' => $aEvent['id'],
-        );
+
         return array(
-            'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
+            'title' => _t('_bx_ads_wall_added_new_title_comment', $sOwner, $sTextWallObject),
             'description' => $aComment['cmt_text'],
-            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_comment.html', $aTmplVars)
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_comment.html', array(
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_ads_wall_added_new_comment'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $aItem['url'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'unit' => $this->getUnit($aItem['ID']),
+	            'post_id' => $aEvent['id'],
+	        ))
         );
     }
 
@@ -3507,8 +3564,8 @@ EOF;
             if(empty($aItem))
                 $iDeleted++;
             else if($aItem['Status'] == 'active' && $this->oPrivacy->check('view', $aItem['ID'], $this->_iVisitorID)) {
-                $aItem['thumb_file'] = $this->getAdCover($aItem['Media'], 'thumb');
-                $aItem['thumb_file_path'] = $this->getAdCoverPath($aItem['Media'], 'thumb');
+                $aItem['thumb_file'] = $this->getAdCover($aItem['Media'], 'big_thumb');
+                $aItem['thumb_file_path'] = $this->getAdCoverPath($aItem['Media'], 'big_thumb');
                 $sPath = file_exists($aItem['thumb_file_path']) ? $aItem['thumb_file_path'] : $aItem['thumb_file'];
 
                 $aItem['thumb_dims'] = array();
@@ -3521,6 +3578,14 @@ EOF;
                     $aItem['thumb_dims'] = $aContent['idims'][$iId];
                 }
 
+                $aItem['thumb_file_2x'] = $this->getAdCover($aItem['Media'], 'img');
+                if(empty($aItem['thumb_file_2x']))
+                	$aItem['thumb_file_2x'] = $aItem['thumb_file'];
+
+                $aItem['thumb_file_2x_path'] = $this->getAdCoverPath($aItem['Media'], 'img');
+                if(empty($aItem['thumb_file_2x_path']))
+                	$aItem['thumb_file_2x_path'] = $aItem['thumb_file_path'];
+
                 $aItem['EntryUri'] = $this->genUrl($aItem['ID'], $aItem['EntryUri'], 'entry');
                 $aItems[] = $aItem;
 
@@ -3529,6 +3594,7 @@ EOF;
                     'item_width' => isset($aItem['thumb_dims']['w']) ? $aItem['thumb_dims']['w'] : $this->iThumbSize,
                     'item_height' => isset($aItem['thumb_dims']['h']) ? $aItem['thumb_dims']['h'] : $this->iThumbSize,
                     'item_icon' => $aItem['thumb_file'],
+                	'item_icon_2x' => $aItem['thumb_file_2x'],
                     'item_page' => $aItem['EntryUri'],
                     'item_title' => $aItem['Subject']
                 );

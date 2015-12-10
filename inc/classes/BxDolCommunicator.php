@@ -322,44 +322,31 @@
          */
         function _acceptFriendInvite($sTableName, $iMemberID)
         {
-             $sTableName = process_db_input($sTableName, BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION);
-            $iMemberID = (int) $iMemberID;
+			$sTableName = process_db_input($sTableName, BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION);
 
-            $sQuery =
-            "
-                UPDATE
-                    `{$sTableName}`
-                SET
-                    `Check` = 1
-                WHERE
-                    `ID` = {$iMemberID}
-                        AND
-                    `Profile` = {$this -> aCommunicatorSettings['member_id']}
-            ";
+            $iMemberID = (int)$iMemberID;
+            $iAccepted = (int)db_value("SELECT `Check` FROM `{$sTableName}` WHERE `ID`={$iMemberID} AND `Profile`={$this -> aCommunicatorSettings['member_id']} LIMIT 1");
+            if($iAccepted == 1)
+            	return;
 
-            // send system alert
-            db_res($sQuery);
+			db_res("UPDATE `{$sTableName}` SET `Check`=1 WHERE `ID`={$iMemberID} AND `Profile`={$this -> aCommunicatorSettings['member_id']}");
+            	
+            //--- Friend -> Accept for Alerts Engine --//
             $oZ = new BxDolAlerts('friend', 'accept', $iMemberID, $this -> aCommunicatorSettings['member_id']);
             $oZ -> alert();
+            //--- Friend -> Accept for Alerts Engine --//
 
-            //-- send email notification --//
-
+            //--- Send email notification ---//
             $oEmailTemplate = new BxDolEmailTemplates();
             $aTemplate = $oEmailTemplate->getTemplate('t_FriendRequestAccepted', $iMemberID);
 
             $aRecipient = getProfileInfo($iMemberID);
-
-            // assing all necessary data
-            $aPlus = array(
-                'Recipient'     => getNickName($aRecipient['ID']),
-                'SenderLink'	=> getProfileLink($this -> aCommunicatorSettings['member_id']),
-                'Sender'		=> getNickName($this -> aCommunicatorSettings['member_id']),
-            );
-
-            // send notification
-            sendMail( $aRecipient['Email'], $aTemplate['Subject'], $aTemplate['Body'], '', $aPlus );
-
-            //--
+            sendMail($aRecipient['Email'], $aTemplate['Subject'], $aTemplate['Body'], '', array(
+                'Recipient' => getNickName($aRecipient['ID']),
+                'SenderLink' => getProfileLink($this -> aCommunicatorSettings['member_id']),
+                'Sender' => getNickName($this -> aCommunicatorSettings['member_id']),
+            ));
+			//--- Send email notification ---//
         }
 
         function _getJsObject()

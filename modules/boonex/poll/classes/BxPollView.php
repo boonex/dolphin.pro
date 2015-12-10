@@ -71,7 +71,8 @@ class BxPollView extends BxDolPageView
 
         $this -> aModule = $aModule;
 
-        $GLOBALS['oTopMenu']->setCustomSubHeaderUrl(BX_DOL_URL_ROOT . $this -> oModule -> _oConfig -> getBaseUri() . '&action=show_poll_info&id=' . $this -> iPollId);
+        if($sPageName == 'show_poll_info')
+        	$GLOBALS['oTopMenu']->setCustomSubHeaderUrl(BX_DOL_URL_ROOT . $this -> oModule -> _oConfig -> getBaseUri() . '&action=show_poll_info&id=' . $this -> iPollId);
 
         $GLOBALS['oTopMenu']->setCustomBreadcrumbs(array(
             _t('_bx_poll') => BX_DOL_URL_ROOT . $this -> oModule -> _oConfig -> getBaseUri() . '&action=poll_home',
@@ -197,6 +198,8 @@ class BxPollView extends BxDolPageView
      */
     function getBlockCode_ActionsBlock()
     {
+    	$sCode = '';
+
         if(!$this -> aPollInfo)
             return MsgBox(_t('_Empty'));
 
@@ -237,14 +240,24 @@ class BxPollView extends BxDolPageView
 
         $oSubscription = BxDolSubscription::getInstance();
         $aButton = $oSubscription -> getButton($this -> iMemberId, $sMainPrefix, '', $this -> aPollInfo['id_poll']);
+        $sCode .= $oSubscription -> getData();
         $aUnitInfo['sbs_poll_title']  =  $aButton['title'];
         $aUnitInfo['sbs_poll_script'] =  $aButton['script'];
-        
+
         $aUnitInfo['TitleShare'] = $this->oModule->isAllowedShare($this -> aPollInfo) ? _t('_Share') : '';
 
-        $sActions = $GLOBALS['oFunctions'] -> genObjectsActions($aUnitInfo, $sMainPrefix);
+    	if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+        	$sCode .= BxDolService::call('wall', 'get_repost_js_script');
 
-        return  $oSubscription -> getData() . $sActions;
+			$aUnitInfo['repostCpt'] = _t('_Repost');
+			$aUnitInfo['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->iMemberId, $sMainPrefix, 'add', $this->aPollInfo['id_poll']));
+        }
+
+        $sActions = $GLOBALS['oFunctions'] -> genObjectsActions($aUnitInfo, $sMainPrefix);
+        if(empty($sActions))
+        	return '';
+
+        return  $sCode . $sActions;
     }
 
     /**

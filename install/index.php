@@ -162,7 +162,7 @@ EOF;
 //check correct hostname
 \$aUrl = parse_url( \$site['url'] );
 if ( isset(\$_SERVER['HTTP_HOST']) and 0 != strcasecmp(\$_SERVER['HTTP_HOST'], \$aUrl['host']) and 0 != strcasecmp(\$_SERVER['HTTP_HOST'], \$aUrl['host'] . ':80') ) {
-    header( "Location:{\$aUrl['scheme']}://{\$aUrl['host']}{\$_SERVER['REQUEST_URI']}" );
+    header( "Location:{\$aUrl['scheme']}://{\$aUrl['host']}{\$_SERVER['REQUEST_URI']}", true, 301 );
     exit;
 }
 

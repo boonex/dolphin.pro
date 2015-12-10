@@ -518,7 +518,8 @@ div.dbPrivacyMenu a.dbPrivacyGroupActive:active {
 }
 
 div.disignBoxFirst div.dbClose a {
-    text-decoration:none;
+    text-decoration: none;
+	outline-style: none;
 }
 div.disignBoxFirst div.dbClose .sys-icon {
     display:block;
@@ -1347,6 +1348,9 @@ div.navPanel .navPanelLinkPrev.sys-icon {
 .rss_item_desc {
     margin-top:5px;
     margin-bottom:5px;
+}
+.rss_item_desc img {
+	max-width: 100%;
 }
 .rss_read_more {
     background-color:#EDEDED;

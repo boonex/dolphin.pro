@@ -470,15 +470,30 @@ class BxEventsModule extends BxDolTwigModule
     function serviceGetWallPost ($aEvent)
     {
         $aParams = array(
+        	'icon' => 'calendar',
             'txt_object' => '_bx_events_wall_object',
             'txt_added_new_single' => '_bx_events_wall_added_new',
+        	'txt_added_new_title_single' => '_bx_events_wall_added_new_title',
             'txt_added_new_plural' => '_bx_events_wall_added_new_items',
+        	'txt_added_new_title_plural' => '_bx_events_wall_added_new_title_items',
             'txt_privacy_view_event' => 'view_event',
             'obj_privacy' => $this->_oPrivacy
         );
         return parent::_serviceGetWallPost($aEvent, $aParams);
     }
 
+	function serviceGetWallAddComment($aEvent)
+    {
+        $aParams = array(
+            'txt_privacy_view_event' => 'view_event',
+            'obj_privacy' => $this->_oPrivacy
+        );
+        return parent::_serviceGetWallAddComment($aEvent, $aParams);
+    }
+
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPostComment($aEvent)
     {
         $aParams = array(

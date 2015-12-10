@@ -1,15 +1,17 @@
-div.bx_photos-wall-event {
+div.wall-event-bx_photos {
     position: relative;    
 }
-div.bx_photos-wall-caption {
-    padding-left: 20px;
-    
+div.bx_photos-wall-caption,
+div.bx_photos_comment-wall-caption {
     position: relative;
-    
+
     background-repeat: no-repeat;
     background-position: 0px center;
-    
+
     line-height: 30px; 
+}
+div.wall-event-repost div.wall-caption.bx_photos-wall-caption {
+	padding-left: 5px;
 }
 span.bx_photos-wall-caption-owner {
     font-weight: bold;
@@ -22,7 +24,8 @@ a.bx_photos-wall-caption-link:hover,
 a.bx_photos-wall-caption-link:active {
     text-decoration: underline;
 }
-div.bx_photos-wall-content {
+div.bx_photos-wall-content,
+div.bx_photos_comment-wall-content {
     position: relative;
 }
 div.wall-content.bx_photos-wall-content-grouped {

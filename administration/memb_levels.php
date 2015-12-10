@@ -579,10 +579,15 @@ function deleteMembership($iId)
     if($aLevel['removable'] != 'yes')
         return '_adm_txt_mlevels_cannot_remove';
 
-    //Check if there are still members using this membership
+    //Check if there are still members using this ANNUAL membership
     $iDateExpires = $GLOBALS['MySQL']->getOne("SELECT UNIX_TIMESTAMP(MAX(`DateExpires`)) as `MaxDateExpires` FROM `sys_acl_levels_members` WHERE `IDLevel`='" . $iId . "'");
     if($iDateExpires > time())
         return "_adm_txt_mlevels_is_used";
+
+	//Check if there are members using this LIFETIME membership
+	$iLifetime = (int)$GLOBALS['MySQL']->getOne("SELECT COUNT(`IDMember`) FROM `sys_acl_levels_members` WHERE `DateStarts`<=NOW() AND ISNULL(`DateExpires`) AND `IDLevel`='" . $iId . "'");
+	if($iLifetime > 0)
+		return "_adm_txt_mlevels_is_used";
 
     @unlink(BX_DIRECTORY_PATH_ROOT . 'media/images/membership/' . $aLevel['icon']);
     db_res("DELETE FROM `sys_acl_level_prices` WHERE `IDLevel`='" . $iId . "'");

@@ -1,11 +1,13 @@
 (function( $ ){
-	$.fn.dolEmbedly = function() {
+	$.fn.dolEmbedly = function(options) {
+        var o = $.extend({}, {'max-width':900}, options);
 		var sEmbedlyKey = bx_get_param('sys_embedly_key');
 		if(!sEmbedlyKey)
 			return this;
-        var eBox = $(this).parents('.dbContent');
-        var iMaxWidth = eBox.size() ? eBox.width() : $(window).width() - 70;
-        if (iMaxWidth > 900) iMaxWidth = 900;
+        var eBox = $(this).parents('.wall-post-text, .dbContent, .boxContent');
+        var iMaxWidth = eBox.size() ? eBox.innerWidth() : $(window).width() - 70;
+        console.log(eBox.innerWidth());
+        if (iMaxWidth > o['max-width']) iMaxWidth = o['max-width'];
         
 		return this.each(function() {
 			$(this).embedly({

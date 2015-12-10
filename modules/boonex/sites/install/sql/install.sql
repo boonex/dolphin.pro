@@ -219,7 +219,8 @@ INSERT INTO `sys_objects_actions` (`Caption`, `Icon`, `Url`, `Script`, `Eval`, `
     ('{AddToFeatured}', 'star-o', '', 'getHtmlData( ''ajaxy_popup_result_div_{ID}'', ''{evalResult}'');return false;', '$oConfig = $GLOBALS[''oBxSitesModule'']->_oConfig; return  BX_DOL_URL_ROOT . $oConfig->getBaseUri() . ''featured/{ID}'';', 3, 'bx_sites'),
     ('{evalResult}', 'plus', '{BaseUri}browse/my/add', '', 'if (($GLOBALS[''logged''][''member''] || $GLOBALS[''logged''][''admin'']) && {isAllowedAdd} == 1) return _t(''_bx_sites_action_add_site''); return;', 1, 'bx_sites_title'),
     ('{evalResult}', 'link', '{BaseUri}browse/my', '', 'if ($GLOBALS[''logged''][''member''] || $GLOBALS[''logged''][''admin'']) return _t(''_bx_sites_action_my_sites''); return;', 2, 'bx_sites_title'),
-    ('{sbs_sites_title}', 'paperclip', '', '{sbs_sites_script}', '', 6, 'bx_sites');
+    ('{sbs_sites_title}', 'paperclip', '', '{sbs_sites_script}', '', 6, 'bx_sites'),
+    ('{repostCpt}', 'repeat', '', '{repostScript}', '', 7, 'bx_sites');
 
 -- site stats
 SET @iStatSiteOrder := (SELECT `StatOrder` + 1 FROM `sys_stat_site` WHERE 1 ORDER BY `StatOrder` DESC LIMIT 1);

@@ -373,7 +373,8 @@
 
                                 // define top menu's popup section ;
                                 $aContentKeys = array (
-                                    'menu_id'     => $aReplaced[$sPosition][$iKey]['ID'],
+                                    'menu_id' => $aReplaced[$sPosition][$iKey]['ID'],
+                                	'menu_name' => $aReplaced[$sPosition][$iKey]['Name'],
 
                                     // draw reduce element by top side ;
                                     'bx_if:reduce_element_top' => array (

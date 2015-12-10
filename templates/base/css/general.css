@@ -300,15 +300,27 @@ div.login_ajax_wrap div.sys-form-login-join button {
 	font-family: Helvetica Neue, Helvetica, Arial, Verdana, sans-serif;
 }
 
-div.sys-form-login-join .bx-form-element a,
-div.sys-form-login-join .bx-form-element a:link,
-div.sys-form-login-join .bx-form-element a:hover,
-div.sys-form-login-join .bx-form-element a:active {
+div.sys-form-login-join .sys-flj-content a,
+div.sys-form-login-join .sys-flj-content a:link,
+div.sys-form-login-join .sys-flj-content a:hover,
+div.sys-form-login-join .sys-flj-content a:active {
 	color:#006699;	
 }
 
-div.sys-form-login-join .bx-form-element a:visited {
+div.sys-form-login-join .sys-flj-content a:visited {
 	color:#003366;	
+}
+
+div.sys-form-login-join .sys-flj-content a.bx-btn,
+div.sys-form-login-join .sys-flj-content a.bx-btn:link,
+div.sys-form-login-join .sys-flj-content a.bx-btn:hover,
+div.sys-form-login-join .sys-flj-content a.bx-btn:active,
+div.sys-form-login-join .sys-flj-content a.bx-btn:visited {
+	color: #ffffff;
+}
+
+div.sys-form-login-join .sys-flj-close {
+	text-align: center;
 }
 
 /*--- Login Join Auth Section ---*/
@@ -801,7 +813,6 @@ div.search_res_members_nickname {
 }
 
 /* ------ */
-
 .sys_icon {
     width:32px;
     background-color:#FFF;
@@ -809,15 +820,15 @@ div.search_res_members_nickname {
 }
 
 .sys_msg_pending_approval {
-    background-color:#ffcccc; 
-    line-height:30px; 
-    text-align:center; 
-    min-width:600px;
-    margin-bottom: 0px;  
+	margin-bottom: 0px;
+
+    background-color: #ffcccc;
+
+    line-height: 30px;
+    text-align: center;
 }
 
 /* Extra top menu */
-
 div.extra_top_menu {
 	display: none;
     width: 100%;
@@ -968,17 +979,30 @@ div.extra_top_menu table.fixed_menu div.popup_html div.menu_item_active {
 /*1st sub level menu*/
 div.extra_top_menu table.fixed_menu div.popup_html ul ul{
     position: absolute;
-    left: 0;
     display: block;
     visibility: hidden;
+}
+div.extra_top_menu table.fixed_menu div#primary_menu_section ul ul{
+	left: 0px;
+}
+div.extra_top_menu table.fixed_menu div#extra_menu_section ul ul{
+	right: 0px;
 }
 
 /*Sub level menu list items (undo style from Top level List Items)*/
 div.extra_top_menu table.fixed_menu div.popup_html ul ul li{
     display: list-item;
     float: none;
-    margin:0;
-    width:100%;
+
+	width: 100%;
+    margin: 0px;
+
+	white-space: normal;
+}
+
+div.extra_top_menu table.fixed_menu div.popup_html ul ul.extra_menu_popup_Mail li,
+div.extra_top_menu table.fixed_menu div.popup_html ul ul.extra_menu_popup_Friends li {
+	white-space: nowrap;
 }
 
 div.extra_top_menu table.fixed_menu div.popup_html div.popup_content{
@@ -986,10 +1010,12 @@ div.extra_top_menu table.fixed_menu div.popup_html div.popup_content{
 	overflow: hidden;
 }
 
-div.extra_top_menu table.fixed_menu div.popup_html  div.extra_data{
-	position:relative;
-    background-color:#E4E4E4;
-    font-weight:bold;
+div.extra_top_menu table.fixed_menu div.popup_html  div.extra_data {
+	position: relative;
+    background-color: #E4E4E4;
+
+	white-space: nowrap;
+    font-weight: bold;
 }
 
 div.extra_top_menu table.fixed_menu div.popup_html  div.extra_data div.part_img,

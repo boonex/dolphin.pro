@@ -97,6 +97,10 @@ function PageCode($oTemplate = null)
     if(empty($oTemplate))
        $oTemplate = $oSysTemplate;
 
+   	bx_import('BxDolAlerts');
+	$oZ = new BxDolAlerts('system', 'design_before_output', 0, 0, array('_page' => &$_page, '_page_cont' => &$_page_cont));
+	$oZ->alert();
+
     header( 'Content-type: text/html; charset=utf-8' );
     $echo($oTemplate, 'page_' . $_page['name_index'] . '.html');
 }
@@ -279,7 +283,7 @@ function getMemberJoinFormCode($sParams = '')
 		return MsgBox(_t('_registration by invitation only'));
 
 	$sCodeBefore = '';
-    $sCodeAfter = '';
+    $sCodeAfter = $GLOBALS['oSysTemplate']->parseHtmlByName('join_form_code_after.html', array());
 
 	bx_import("BxDolJoinProcessor");
     $oJoin = new BxDolJoinProcessor();
@@ -355,7 +359,7 @@ function getMemberLoginFormCode($sID = 'member_login_form', $sParams = '')
 				'tr_attrs' => array(
 					'class' => 'bx-form-element-forgot'
 				),
-				'content' => '<a href="' . BX_DOL_URL_ROOT . 'forgot.php">' . _t("_forgot_your_password") . '?</a>',
+				'content' => '<a href="' . BX_DOL_URL_ROOT . 'forgot.php">' . _t('_forgot_your_password') . '?</a> ' . _t('_or') . ' <a href="javascript:void(0)" onclick="javascript:hidePopupLoginForm()">' . _t('_Close') . '</a>',
 			)
         ),
     );
@@ -374,7 +378,7 @@ function getMemberLoginFormCode($sID = 'member_login_form', $sParams = '')
     return $GLOBALS['oSysTemplate']->parseHtmlByName('login_join_form.html', array(
     	'action' => $sAction,
     	'bx_if:show_auth' => array(
-    		'condition' => !empty($sAuthCode),
+    		'condition' => !empty($sAuthCode) && false === strpos($sParams, 'disable_external_auth'),
     		'content' => array(
     			'auth' => $sAuthCode
     		)

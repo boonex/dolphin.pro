@@ -155,7 +155,7 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 ('[db_prefix]_number_related', '4', @iKatID, 'Number of related files by user', 'digit', '', '', 6, ''),
 ('[db_prefix]_thumb_width', '64', @iKatID, 'Thumbnail width of file', 'digit', '', '', 7, ''),
 ('[db_prefix]_activation', 'on', @iKatID, 'Enable auto-activation for files', 'checkbox', '', '', 8, ''),
-('[db_prefix]_max_file_size', '32', @iKatID, 'Maximal size of one file (in Megabytes)', 'digit', '', '', 8, ''),
+('[db_prefix]_max_file_size', '32', @iKatID, 'Maximum size of one file (in Megabytes)', 'digit', '', '', 8, ''),
 ('category_auto_app_[db_prefix]', 'on', @iKatID, 'Autoapprove categories of files', 'checkbox', '', '', 9, ''),
 ('[db_prefix]_allowed_exts', '', @iKatID, 'Allowed extensions (leave blank to have all types)', 'digit', '', '', 10, ''),
 ('[db_prefix]_profile_album_name', '{nickname}''s files', @iKatID, 'Default profile folder name', 'digit', '', '', 11, ''),
@@ -286,6 +286,7 @@ INSERT INTO `sys_objects_actions` (`Type`, `Caption`, `Icon`, `Url`, `Script`, `
 ('[db_prefix]', '{evalResult}', 'remove', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}delete/{ID}/{AlbumUri}/{OwnerName}'', false, ''post'', true); return false;', '$sTitle = _t(''_Delete'');\r\nif ({Owner} == {iViewer})\r\nreturn $sTitle;\r\n$mixedCheck = BxDolService::call(''files'', ''check_delete'', array({ID}));\r\nif ($mixedCheck !== false)\r\nreturn $sTitle;\r\nelse\r\nreturn null;', 6),
 ('[db_prefix]', '{featuredCpt}', 'star-o', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}feature/{ID}/{featured}'', false, ''post''); return false;', '', 7),
 ('[db_prefix]', '{approvedCpt}', 'check', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}approve/{ID}/{approvedAct}'', false, ''post''); return false;', '', 8),
+('[db_prefix]', '{repostCpt}', 'repeat', '', '{repostScript}', '', 9),
 ('[db_prefix]_title', '{evalResult}', 'plus', '', 'showPopupAnyHtml(''{BaseUri}upload'');', 'return getLoggedId() ? _t(''_sys_upload'') : '''';', 20),
 ('[db_prefix]_title', '{evalResult}', 'save', '{BaseUri}albums/my/main/', '', 'return $GLOBALS[''logged''][''member''] || $GLOBALS[''logged''][''admin''] ? _t(''_[db_prefix]_albums_my'') : '''';', 21),
 ('[db_prefix]_album', '{evalResult}', 'remove', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}album_delete/{albumUri}'', false, ''post'', true); return false;', 'return (getLoggedId() && BxDolModule::getInstance(''BxFilesModule'')->isAllowedDeleteAlbum({ID})) ? _t(''_Delete'') : '''';', 1);

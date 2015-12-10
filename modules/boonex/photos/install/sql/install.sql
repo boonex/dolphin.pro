@@ -271,6 +271,7 @@ INSERT INTO `sys_objects_actions` (`Type`, `Caption`, `Icon`, `Url`, `Script`, `
 ('[db_prefix]', '{approvedCpt}', 'check', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}approve/{ID}/{approvedAct}'', false, ''post''); return false;', '', 8),
 ('[db_prefix]', '{cropCpt}', 'crop', '{moduleUrl}crop/{ID}', '', '', 9),
 ('[db_prefix]', '{SetAvatarCpt}', 'user', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}set_avatar/{ID}'', false, ''post''); return false;', '', 10),
+('[db_prefix]', '{repostCpt}', 'repeat', '', '{repostScript}', '', 11),
 ('[db_prefix]_title', '{evalResult}', 'plus', '', 'showPopupAnyHtml(''{BaseUri}upload'');', 'return (getLoggedId() && BxDolModule::getInstance(''BxPhotosModule'')->isAllowedAdd()) ? _t(''_sys_upload'') : '''';', 20),
 ('[db_prefix]_title', '{evalResult}', 'picture-o', '{BaseUri}albums/my/main/', '', 'return $GLOBALS[''logged''][''member''] || $GLOBALS[''logged''][''admin''] ? _t(''_[db_prefix]_albums_my'') : '''';', 21),
 ('[db_prefix]_album', '{evalResult}', 'remove', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}album_delete/{albumUri}'', false, ''post'', true); return false;', 'return (getLoggedId() && BxDolModule::getInstance(''BxPhotosModule'')->isAllowedDeleteAlbum({ID})) ? _t(''_Delete'') : '''';', 1);

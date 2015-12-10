@@ -555,6 +555,11 @@ class BxFilesSearch extends BxTemplSearchResult
         return $aFiles;
     }
 
+    function serviceGetEntry($iId, $sType = 'thumb')
+    {
+        return $this->serviceGetFileArray($iId);
+    }
+
     function serviceGetItemArray($iId, $sType = 'browse')
     {
         return $this->serviceGetFileArray($iId);
@@ -632,31 +637,25 @@ class BxFilesSearch extends BxTemplSearchResult
         return $this->getAlbumsBlock(array('owner' => $iProfileId), array('hide_default' => TRUE), array('enable_center' => false, 'paginate_url' => $sPaginateUrl, 'simple_paginate_url' => $sSimpleUrl));
     }
 
+	/**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPost($aEvent)
     {
-        $aParams = array(
-            'templates' => array(
-                'single' => 'wall_post.html',
-                'grouped' => 'wall_post_grouped.html'
-            )
-        );
-        return $this->oModule->getWallPost($aEvent, 'save', $aParams);
+        return $this->oModule->serviceGetWallPost($aEvent);
     }
 
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPostOutline($aEvent)
     {
-        $aParams = array(
-            'templates' => array(
-                'single' => 'wall_outline.html',
-                'grouped' => 'wall_outline_grouped.html'
-            ),
-            'grouped' => array(
-                'items_limit' => 2
-            )
-        );
-        return $this->oModule->getWallPostOutline($aEvent, 'save', $aParams);
+        return $this->oModule->serviceGetWallPostOutline($aEvent);
     }
 
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPostComment($aEvent)
     {
         $iId = (int)$aEvent['object_id'];
@@ -684,24 +683,26 @@ class BxFilesSearch extends BxTemplSearchResult
         else
             $this->oModule->_oTemplate->addCss('wall_post.css');
 
-        $sTextAddedNew = _t('_bx_files_wall_added_new_comment');
         $sTextWallObject = _t('_bx_files_wall_object');
-        $aTmplVars = array(
-            'cpt_user_name' => $sOwner,
-            'cpt_added_new' => $sTextAddedNew,
-            'cpt_object' => $sTextWallObject,
-            'cpt_item_url' => $aItem['url'],
-            'cnt_comment_text' => $aComment['cmt_text'],
-            'cnt_item_page' => $aItem['url'],
-            'cnt_item_icon' => $aItem['file'],
-            'cnt_item_title' => $aItem['title'],
-            'cnt_item_description' => $aItem['description'],
-            'post_id' => $aEvent['id'],
-        );
         return array(
-            'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
+            'title' => _t('_bx_files_wall_added_new_comment_title', $sOwner, $sTextWallObject),
             'description' => $aComment['cmt_text'],
-            'content' => $sCss . $this->oModule->_oTemplate->parseHtmlByName('wall_post_comment.html', $aTmplVars)
+            'content' => $sCss . $this->oModule->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_comment.html', array(
+        		'mod_prefix' => 'bx_files',
+				'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_files_wall_added_new_comment'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $aItem['url'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	        	'snippet' => $this->oModule->_oTemplate->parseHtmlByName('wall_post_comment.html', array(
+        			'cnt_item_page' => $aItem['url'],
+		        	'cnt_item_width' => $aItem['width'],
+					'cnt_item_height' => $aItem['height'],
+		            'cnt_item_icon' => $aItem['file'],
+		            'cnt_item_title' => $aItem['title'],
+		            'cnt_item_description' => $aItem['description'],
+	        	))
+        	))
         );
     }
 

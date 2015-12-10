@@ -404,6 +404,7 @@ INSERT INTO `sys_objects_actions` (`Caption`, `Icon`, `Url`, `Script`, `Eval`, `
     ('{TitleUploadFiles}', 'save', '{BaseUri}upload_files/{URI}', '', '', '12', 'bx_groups'),
     ('{TitleSubscribe}', 'paperclip', '', '{ScriptSubscribe}', '', '13', 'bx_groups'),
     ('{TitleActivate}', 'check-circle-o', '', 'getHtmlData( ''ajaxy_popup_result_div_{ID}'', ''{evalResult}'', false, ''post'');return false;', '$oConfig = $GLOBALS[''oBxGroupsModule'']->_oConfig; return BX_DOL_URL_ROOT . $oConfig->getBaseUri() . ''activate/{ID}'';', '14', 'bx_groups'),
+    ('{repostCpt}', 'repeat', '', '{repostScript}', '', 15, 'bx_groups'),
 
     ('{evalResult}', 'plus', '{BaseUri}browse/my&bx_groups_filter=add_group', '', 'return ($GLOBALS[''logged''][''member''] && BxDolModule::getInstance(''BxGroupsModule'')->isAllowedAdd()) || $GLOBALS[''logged''][''admin''] ? _t(''_bx_groups_action_add_group'') : '''';', 1, 'bx_groups_title'),
     ('{evalResult}', 'users', '{BaseUri}browse/my', '', 'return $GLOBALS[''logged''][''member''] || $GLOBALS[''logged''][''admin''] ? _t(''_bx_groups_action_my_groups'') : '''';', '2', 'bx_groups_title');

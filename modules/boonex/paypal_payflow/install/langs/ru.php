@@ -104,6 +104,7 @@ $aLangContent = array(
 	'_bx_pfw_txt_products_info' => 'Товары',
 	'_bx_pfw_txt_subscription_info' => 'Подписка',
 	'_bx_pfw_txt_subscription_duration_mask' => '(автообновление через {0} дней)',
+	'_bx_pfw_txt_free' => 'бесплатно',
 
 	//--- Errors, Warnings and Messages
 	'_bx_pfw_pcpt_error' => 'Ошибка',
@@ -118,6 +119,7 @@ $aLangContent = array(
 	'_bx_pfw_inf_successfully_added' => 'Товар был успешно добавлен в Вашу корзину.',
 	'_bx_pfw_inf_successfully_deleted' => 'Товар был успешно удален из Вашей корзины.',
 	'_bx_pfw_inf_successfully_reported' => 'Жалоба была принята.',
+	'_bx_pfw_inf_successfully_processed_free' => 'Бесплатный товар был обработан.',
 	'_bx_pfw_err_nothing_selected' => 'Вы должны выбрать как минимум один товар.',
 	'_bx_pfw_err_access_db' => 'Ошибка доступа к базе даных.',
 	'_bx_pfw_err_wrong_data' => 'Неверные входные данные.',

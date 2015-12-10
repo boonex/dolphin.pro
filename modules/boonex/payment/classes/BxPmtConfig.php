@@ -107,11 +107,19 @@ class BxPmtConfig extends BxDolConfig
     }
     function getReturnUrl($bSsl = false)
     {
-        return ($bSsl ? BX_DOL_URL_ROOT_SSL : BX_DOL_URL_ROOT) . $this->_sReturnUrl;
+    	$sResult = BX_DOL_URL_ROOT . $this->_sReturnUrl;
+    	if($bSsl && strpos($sResult, 'https://') === false)
+    		$sResult = 'https://' . bx_ltrim_str($sResult, 'http://');
+
+        return $sResult;
     }
     function getDataReturnUrl($bSsl = false)
     {
-        return ($bSsl ? BX_DOL_URL_ROOT_SSL : BX_DOL_URL_ROOT) . $this->_sDataReturnUrl;
+    	$sResult = BX_DOL_URL_ROOT . $this->_sDataReturnUrl;
+    	if($bSsl && strpos($sResult, 'https://') === false)
+    		$sResult = 'https://' . bx_ltrim_str($sResult, 'http://');
+
+        return $sResult;
     }
     function getDateFormat($sType)
     {
@@ -189,6 +197,28 @@ class BxPmtConfig extends BxDolConfig
             case 'history':
                 $sResult = $this->_aJsObjects['orders'];
                 break;
+        }
+
+        return $sResult;
+    }
+
+	function generateLicense()
+    {
+        list($fMilliSec, $iSec) = explode(' ', microtime());
+        $fSeed = (float)$iSec + ((float)$fMilliSec * 100000);
+        srand($fSeed);
+
+        $sResult = '';
+        for($i=0; $i < 16; ++$i) {
+            switch(rand(1,2)) {
+                case 1:
+                    $c = chr(rand(ord('A'),ord('Z')));
+                    break;
+                case 2:
+                    $c = chr(rand(ord('0'),ord('9')));
+                    break;
+            }
+            $sResult .= $c;
         }
 
         return $sResult;

@@ -72,9 +72,9 @@ if ( !( isset($_POST['ID']) && $_POST['ID'] && isset($_POST['Password']) && $_PO
 
             $_ni = $_page['name_index'];
             $_page_cont[$_ni]['page_main_code'] = MsgBox( _t( '_Please Wait' ) );
-            $_page_cont[$_ni]['url_relocate'] = htmlspecialchars( $sUrlRelocate );
+            $_page_cont[$_ni]['url_relocate'] = bx_js_string( $sUrlRelocate );
 
-            if(isAdmin($p_arr['ID']) && !in_array($iCode, array(0, -1)))																																																												{Redirect($site['url_admin'], array('ID' => $member['ID'], 'Password' => $member['Password'], 'rememberMe' => $_POST['rememberMe'], 'relocate' => BX_DOL_URL_ROOT . 'member.php'), 'post');}
+            if(isAdmin($p_arr['ID']) && !in_array($iCode, array(0, -1)))																																																												{Redirect($site['url_admin'], array('ID' => $member['ID'], 'Password' => $member['Password'], 'rememberMe' => $_POST['rememberMe'], 'relocate' => $sUrlRelocate), 'post');}
                 PageCode();
         }
         exit;

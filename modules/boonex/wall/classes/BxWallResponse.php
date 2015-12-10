@@ -34,7 +34,7 @@ class BxWallResponse extends BxDolAlertsResponse
         if($bFromWall) {
             $this->_oModule->_iOwnerId = (int)$oAlert->aExtras['owner_id'];
             $sMedia = strtolower(str_replace('bx_', '', $oAlert->sUnit));
-            $aMediaInfo = $this->_oModule->_oTemplate->getCommonMedia($sMedia, $oAlert->iObject);
+            $aMediaInfo = $this->_oModule->_oTemplate->_getCommonMedia($sMedia, $oAlert->iObject);
 
             $iOwnerId = $this->_oModule->_iOwnerId;
             $iObjectId = $this->_oModule->_getAuthorId();
@@ -43,7 +43,19 @@ class BxWallResponse extends BxDolAlertsResponse
             $sContent = serialize(array('type' => $sMedia, 'id' => $oAlert->iObject));
             $sTitle = $aMediaInfo['title'];
             $sDescription = $aMediaInfo['description'];
-        } else {
+        } 
+        else if($this->_oModule->_oConfig->isSystemComment($oAlert->sUnit, $oAlert->sAction)) {
+            $sType = $oAlert->aExtras['object_system'];
+            $sAction = $oAlert->sUnit . '_' . $oAlert->sAction;
+	        if(!$this->_oModule->_oConfig->isHandler($sType . '_' . $sAction))
+	            return;
+
+			$iOwnerId = $oAlert->iSender;
+            $iObjectId = $oAlert->iObject;
+            $sContent = serialize(array('object_id' => $oAlert->aExtras['object_id']));
+            $sTitle = $sDescription = '';
+        }
+        else {
             $iOwnerId = $oAlert->iSender;
             $iObjectId = $oAlert->iObject;
             $sType = $oAlert->sUnit;

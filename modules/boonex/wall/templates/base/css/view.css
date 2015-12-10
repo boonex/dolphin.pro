@@ -132,7 +132,6 @@ div.wall-event-circle-empty {
 div.wall-event-circle {
     position: absolute;
 
-    top: 10px;
     right: 10px;
 
     text-align: center;
@@ -179,10 +178,13 @@ a.wall-cl-bold {
 }
 
 /*--- Event Content Styles ---*/
-div.wall-content {
+div.wall-content,
+div.wall-content-with-image {
     position: relative;
+
 	margin-left: 20px;
 	margin-right: 20px;
+
     overflow: hidden;
 }
 span.wall-content-see-more {
@@ -247,12 +249,6 @@ div.wall-event div.wall-snippet div.thumbnail_block {
 }
 
 /*--- Common Post styles ---*/
-div.common div.wall-caption {
-	padding-left: 0px;
-}
-div.common .wall-caption-divider {
-	font-size: 10px;
-}
 div.wall-event div.wall-event-owner div.thumbnail_block {
 	position: absolute;
 	top: 0px;
@@ -328,6 +324,10 @@ div.wall-comments {
 	margin-left: 20px;
 	margin-right: 20px;
 }
+div.wall-comments div.wall-repost {
+	display: inline-block;
+	vertical-align: top;
+}
 div.wall-comments-view-ctl,
 div.wall-comments-post-ctl {    
     position: relative;
@@ -349,6 +349,20 @@ div.wall-comments-post-cnt {
     display: none;
 }
 
+
+/*--- Voting Styles ---*/
+div.wall-post-voting {
+	display: inline-block;
+	vertical-align: top;
+}
+div.wall-post-voting-slider {
+	display: none;
+}
+b.wall-post-voting-count {
+	font-weight: normal;
+}
+
+
 /*--- Overwrite default Comment styles ---*/
 div.wall-event div.wall-comments{
     margin-top: 5px;
@@ -369,10 +383,13 @@ div.wall-event div.wall-comments span.wall-date,
 div.wall-event div.wall-comments a.cmt-replies-show,
 div.wall-event div.wall-comments a.cmt-replies-hide,
 div.wall-event div.wall-comments a.cmt-reply-toggle,
+div.wall-event div.wall-comments a.wall-post-voting-vote,
 div.wall-event div.wall-comments a.wall-delete {
     margin: 0px;
 	padding: 0px;
+
     text-transform: capitalize;
+	text-decoration: none;
 }
 div.wall-event div.wall-comments div.thumbnail_block {
     left: -38px;
@@ -383,6 +400,21 @@ div.wall-event div.wall-comments li.cmt div.cmt-post-reply-to {
 	margin: 0px 0px 0px 5px;
 }
 
+
+/*--- Profile Edit item styles ---*/
+div.wall-content div.wall-caption.p-edit-wall-caption {
+	min-height: 32px;
+	margin-bottom: 0px;
+
+	line-height: 32px;
+}
+
+/*--- Repost item styles ---*/
+div.wall-event-repost div.wall-caption.wall-caption-photos,
+div.wall-event-repost div.wall-caption.wall-caption-sounds,
+div.wall-event-repost div.wall-caption.wall-caption-videos {
+	padding-left: 5px;
+}
 
 /*--- Animation ---*/
 @media only screen and (min-width: 1024px) {

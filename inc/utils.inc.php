@@ -1170,9 +1170,10 @@ function bx_php_string_quot ($mixedInput)
  * @param array $aParams - an array of parameters to be pathed with URL.
  * @return string the file's contents.
  */
-function bx_file_get_contents($sFileUrl, $aParams = array())
+function bx_file_get_contents($sFileUrl, $aParams = array(), $sMethod = 'get', $aHeaders = array(), &$sHttpCode = null)
 {
-	$sFileUrl = bx_append_url_params($sFileUrl, $aParams);
+    if ('post' != $sMethod)
+    	$sFileUrl = bx_append_url_params($sFileUrl, $aParams);
 
     $sResult = '';
     if(function_exists('curl_init')) {
@@ -1180,21 +1181,41 @@ function bx_file_get_contents($sFileUrl, $aParams = array())
 
         curl_setopt($rConnect, CURLOPT_TIMEOUT, 10);
         curl_setopt($rConnect, CURLOPT_URL, $sFileUrl);
-        curl_setopt($rConnect, CURLOPT_HEADER, 0);
+        curl_setopt($rConnect, CURLOPT_HEADER, NULL === $sHttpCode ? false : true);
         curl_setopt($rConnect, CURLOPT_RETURNTRANSFER, 1);
+
         if (!ini_get('open_basedir'))
             curl_setopt($rConnect, CURLOPT_FOLLOWLOCATION, 1);
 
+        if ($aHeaders)
+            curl_setopt($rConnect, CURLOPT_HTTPHEADER, $aHeaders);
+
+        if ('post' == $sMethod) {
+            curl_setopt($rConnect, CURLOPT_POST, true);
+            curl_setopt($rConnect, CURLOPT_POSTFIELDS, $aParams);
+        }
+
         $sAllCookies = '';
         foreach($_COOKIE as $sKey=>$sValue){
-            $sAllCookies .= $sKey."=".$sValue.";";
+            $sAllCookies .= $sKey . '=' . $sValue . ';';
         }
         curl_setopt($rConnect, CURLOPT_COOKIE, $sAllCookies);
 
         $sResult = curl_exec($rConnect);
+
+        if (curl_errno($rConnect) == 60) { // CURLE_SSL_CACERT
+            curl_setopt($rConnect, CURLOPT_CAINFO, BX_DIRECTORY_PATH_PLUGINS . 'curl/cacert.pem');
+            $sResult = curl_exec($rConnect);
+        }
+
+        if (NULL !== $sHttpCode)
+            $sHttpCode = curl_getinfo($rConnect, CURLINFO_HTTP_CODE);
+
         curl_close($rConnect);
-    } else
+    }
+    else {
         $sResult = @file_get_contents($sFileUrl);
+    }
 
     return $sResult;
 }
@@ -1259,8 +1280,10 @@ function getSiteInfo($sSourceUrl, $aProcessAdditionalTags = array())
         if (isset($aMatch[1]))
             $sCharset = $aMatch[1];
 
-        preg_match("/<title>(.*)<\/title>/i", $sContent, $aMatch);
-        $aResult['title'] = $aMatch[1];
+        if (preg_match("/<title[^>]*>(.*)<\/title>/i", $sContent, $aMatch))
+            $aResult['title'] = $aMatch[1];
+        else
+            $aResult['title'] = parse_url($sSourceUrl, PHP_URL_HOST);
 
         $aResult['description'] = bx_parse_html_tag($sContent, 'meta', 'name', 'description', 'content', $sCharset);
         $aResult['keywords'] = bx_parse_html_tag($sContent, 'meta', 'name', 'keywords', 'content', $sCharset);
@@ -1285,8 +1308,8 @@ function getSiteInfo($sSourceUrl, $aProcessAdditionalTags = array())
 
 function bx_parse_html_tag ($sContent, $sTag, $sAttrNameName, $sAttrNameValue, $sAttrContentName, $sCharset = false)
 {
-    if (!preg_match("/<{$sTag}\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"]\s+{$sAttrContentName}[='\" ]+([^<]*)['\"][\/\s]*>/i", $sContent, $aMatch) || !isset($aMatch[1]))
-        preg_match("/<{$sTag}\s+{$sAttrContentName}[='\" ]+([^<]*)['\"]\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"][\/\s]*>/i", $sContent, $aMatch);
+    if (!preg_match("/<{$sTag}\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"]\s+{$sAttrContentName}[='\" ]+([^('>\")]*)['\"][^>]*>/i", $sContent, $aMatch) || !isset($aMatch[1]))
+        preg_match("/<{$sTag}\s+{$sAttrContentName}[='\" ]+([^('>\")]*)['\"]\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"][^>]*>/i", $sContent, $aMatch);
 
     $s = isset($aMatch[1]) ? $aMatch[1] : '';
 
@@ -1539,6 +1562,14 @@ function bx_mkdir_r($dirName, $rights = 0777)
 }
 
 /**
+ * Returns current site protocol http:// or https://
+ */
+function bx_proto ()
+{
+    return 0 == strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https://' : 'http://';
+}
+
+/**
  * Wrap in A tag links in TEXT string
  * @param $sHtmlOrig - text string without tags
  * @param $sAttrs - attributes string to add to the added A tag
@@ -1601,4 +1632,14 @@ function bx_linkify_html($sHtmlOrig, $sAttrs = '')
         $s = mb_substr($s, $iPos + 12, -15); // strip <html><body> tags and everything before them
 
     return mb_substr($s, 54, -6); // strip added tags
+}
+
+/**
+ * Transform string to method name string, for example it changes 'some_method' string to 'SomeMethod' string
+ * @param string where words are separated with underscore
+ * @return string where every word begins with capital letter
+ */
+function bx_gen_method_name ($s, $sWordsDelimiter = '_')
+{
+    return str_replace(' ', '', ucwords(str_replace($sWordsDelimiter, ' ', $s)));
 }

@@ -357,7 +357,17 @@ class BxPmtTemplate extends BxDolModuleTemplate
                     'item_title' => $aItem['title'],
                     'item_url' => $aItem['url'],
                     'item_quantity' => $aItem['quantity'],
-                    'item_price' => $aItem['quantity'] * $aItem['price'],
+                	'bx_if:show_price_paid' => array(
+                		'condition' => (int)$aItem['price'] != 0,
+                		'content' => array(
+                			'item_price' => $aItem['quantity'] * $aItem['price'],
+                			'vendor_currency_code' => $aVendor['vendor_currency_code'],
+                		)
+                	),
+                	'bx_if:show_price_free' => array(
+                		'condition' => (int)$aItem['price'] == 0,
+                		'content' => array()
+                	),
                     'js_object' => $sJsObject
                 );
 
@@ -484,14 +494,14 @@ class BxPmtTemplate extends BxDolModuleTemplate
         $this->getPageCode($aParams);
     }
 
-    function getPageCodeError($sMessage)
+    function getPageCodeError($sMessage, $bWrap = true)
     {
 		$aParams = array(
             'title' => array(
                 'page' => _t($this->_sLangsPrefix . 'pcpt_error')
             ),
             'content' => array(
-                'page_main_code' => MsgBox(_t($sMessage))
+                'page_main_code' => $bWrap ? MsgBox(_t($sMessage)) : $sMessage
             )
         );
         $this->getPageCode($aParams);

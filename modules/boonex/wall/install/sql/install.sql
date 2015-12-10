@@ -10,7 +10,10 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]events` (
   `content` text collate utf8_unicode_ci NOT NULL,
   `title` varchar(255) collate utf8_unicode_ci NOT NULL,
   `description` text collate utf8_unicode_ci NOT NULL,
+  `reposts` int(11) unsigned NOT NULL default '0',
   `date` int(8) NOT NULL default '0',
+  `active` tinyint(4) NOT NULL default '1',
+  `hidden` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `owner_id` (`owner_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -47,6 +50,39 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]comments_track` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
+-- Table structure for table `[db_prefix]repost_track`
+--
+CREATE TABLE IF NOT EXISTS `[db_prefix]repost_track` (
+  `event_id` int(11) NOT NULL default '0',
+  `author_id` int(11) NOT NULL default '0',
+  `author_nip` int(11) unsigned NOT NULL default '0',
+  `reposted_id` int(11) NOT NULL default '0',
+  `date` int(11) NOT NULL default '0',
+  UNIQUE KEY `event_id` (`event_id`),
+  KEY `repost` (`reposted_id`, `author_nip`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `[db_prefix]voting`
+--
+CREATE TABLE `[db_prefix]voting` (
+  `wall_id` bigint(8) NOT NULL default '0',
+  `wall_rating_count` int(11) NOT NULL default '0',
+  `wall_rating_sum` int(11) NOT NULL default '0',
+  UNIQUE KEY `wall_id` (`wall_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `[db_prefix]voting_track`
+--
+CREATE TABLE `[db_prefix]voting_track` (
+  `wall_id` bigint(8) NOT NULL default '0',
+  `wall_ip` varchar(20) default NULL,
+  `wall_date` datetime default NULL,
+  KEY `wall_ip` (`wall_ip`,`wall_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
 -- Table structure for table `[db_prefix]handlers`
 --
 CREATE TABLE IF NOT EXISTS `[db_prefix]handlers` (
@@ -70,11 +106,14 @@ INSERT INTO `[db_prefix]handlers`(`alert_unit`, `alert_action`, `module_uri`, `m
 ('wall_common_photos', '', '', '', '', 0, '', 1, 0),
 ('wall_common_sounds', '', '', '', '', 0, '', 1, 0),
 ('wall_common_videos', '', '', '', '', 0, '', 1, 0),
+('wall_common_repost', '', '', '', '', 0, '', 1, 0),
 ('profile', 'edit', '', '', '', 0, '', 1, 0),
 ('profile', 'edit_status_message', '', '', '', 0, '', 1, 0),
+('profile', 'comment_add', '', '', '', 0, '', 1, 0),
 ('profile', 'commentPost', '', '', '', 0, '', 1, 0),
 ('profile', 'delete', '', '', '', 0, '', 1, 0),
-('friend', 'accept', '', '', '', 0, '', 1, 0);
+('friend', 'accept', '', '', '', 0, '', 1, 0),
+('comment', 'add', '', '', '', 0, '', 1, 0);
 
 
 SELECT @iPCPOrder:=MAX(`Order`) FROM `sys_page_compose_pages`;
@@ -110,6 +149,9 @@ INSERT INTO `sys_objects_cmts` (`ObjectName`, `TableCmts`, `TableTrack`, `AllowT
 VALUES('bx_wall', '[db_prefix]comments', '[db_prefix]comments_track', 0, 1, 90, 9999, 1, -3, 'none', 0, 1, 0, 'wcmt', '', '', '', 'BxWallCmts', 'modules/boonex/wall/classes/BxWallCmts.php');
 
 
+INSERT INTO `sys_objects_vote` (`ObjectName`, `TableRating`, `TableTrack`, `RowPrefix`, `MaxVotes`, `PostName`, `IsDuplicate`, `IsOn`, `className`, `classFile`, `TriggerTable`, `TriggerFieldRate`, `TriggerFieldRateCount`, `TriggerFieldId`, `OverrideClassName`, `OverrideClassFile`) 
+VALUES ('bx_wall', '[db_prefix]voting', '[db_prefix]voting_track', 'wall_', 5, 'vote_send_result', 'BX_PERIOD_PER_VOTE', 1, '', '', '', '', '', '', 'BxWallVoting', 'modules/boonex/wall/classes/BxWallVoting.php');
+
 
 SET @iCategoryOrder = (SELECT MAX(`menu_order`) FROM `sys_options_cats`) + 1;
 INSERT INTO `sys_options_cats` (`name` , `menu_order` ) VALUES ('Timeline', @iCategoryOrder);
@@ -132,6 +174,12 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 SET @iLevelNonMember := 1;
 SET @iLevelStandard := 2;
 SET @iLevelPromotion := 3;
+
+INSERT INTO `sys_acl_actions`(`Name`, `AdditionalParamName`) VALUES ('timeline repost', '');
+SET @iAction := LAST_INSERT_ID();
+INSERT INTO `sys_acl_matrix` (`IDLevel`, `IDAction`) VALUES 
+(@iLevelStandard, @iAction), 
+(@iLevelPromotion, @iAction);
 
 INSERT INTO `sys_acl_actions`(`Name`, `AdditionalParamName`) VALUES ('timeline post comment', '');
 SET @iAction := LAST_INSERT_ID();
@@ -157,9 +205,9 @@ SET @iHandlerId = LAST_INSERT_ID();
 INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('profile', 'edit', @iHandlerId),
 ('profile', 'edit_status_message', @iHandlerId),
-('profile', 'commentPost', @iHandlerId),
 ('profile', 'delete', @iHandlerId),
-('friend', 'accept', @iHandlerId);
+('friend', 'accept', @iHandlerId),
+('comment', 'add', @iHandlerId);
 
 INSERT INTO `sys_sbs_types`(`unit`, `action`, `template`, `params`) VALUES
 ('bx_wall', '', '', 'return BxDolService::call(\'wall\', \'get_subscription_params\', array($arg1, $arg2, $arg3));'),

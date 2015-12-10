@@ -68,7 +68,7 @@ SET @iKatID = LAST_INSERT_ID();
 INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `err_text`, `order_in_kateg`, `AvailableValues`)  VALUES
 ('category_auto_app_[db_prefix]', 'on', @iKatID, 'Autoapprove categories of files', 'checkbox', '', '', 2, ''),
 ('[db_prefix]_allowed_exts', 'avi flv mpg wmv mp4 m4v mov divx xvid mpeg 3gp webm', @iKatID, 'Allowed extensions', 'digit', '', '', 3, ''),
-('[db_prefix]_max_file_size', '64', @iKatID, 'Maximal size of one file (in Megabytes)', 'digit', '', '', 3, ''),
+('[db_prefix]_max_file_size', '64', @iKatID, 'Maximum size of one file (in Megabytes)', 'digit', '', '', 3, ''),
 ('[db_prefix]_profile_album_name', '{nickname}''s videos', @iKatID, 'Default profile album name', 'digit', '', '', 4, ''),
 ('[db_prefix]_mode_index', 'last', @iKatID, 'Show files on index page<br /> (if enabled in the template)', 'select', '', '', 10, 'last,top'),
 ('[db_prefix]_number_all', '12', @iKatID, 'How many files show on browse page', 'digit', '', '', 20, ''),
@@ -225,6 +225,7 @@ INSERT INTO `sys_objects_actions` (`Type`, `Caption`, `Icon`, `Url`, `Script`, `
 ('[db_prefix]', '{featuredCpt}', 'star-o', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}feature/{ID}/{featured}'', false, ''post''); return false;', '', 7),
 ('[db_prefix]', '{downloadCpt}', 'download', '{moduleUrl}get_file/{ID}', '', '', 8),
 ('[db_prefix]', '{approvedCpt}', 'check', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}approve/{ID}/{approvedAct}'', false, ''post''); return false;', '', 9),
+('[db_prefix]', '{repostCpt}', 'repeat', '', '{repostScript}', '', 10),
 ('[db_prefix]_title', '{evalResult}', 'plus', '', 'showPopupAnyHtml(''{BaseUri}upload'');', 'return (getLoggedId() && BxDolModule::getInstance(''BxVideosModule'')->isAllowedAdd()) ? _t(''_sys_upload'') : '''';', 1),
 ('[db_prefix]_title', '{evalResult}', 'film', '{BaseUri}albums/my/main/', '', 'return $GLOBALS[''logged''][''member''] || $GLOBALS[''logged''][''admin''] ? _t(''_[db_prefix]_albums_my'') : '''';', 2),
 ('[db_prefix]_album', '{evalResult}', 'remove', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{moduleUrl}album_delete/{albumUri}'', false, ''post'', true); return false;', 'return (getLoggedId() && BxDolModule::getInstance(''BxVideosModule'')->isAllowedDeleteAlbum({ID})) ? _t(''_Delete'') : '''';', 1);

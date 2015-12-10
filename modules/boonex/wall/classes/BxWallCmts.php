@@ -27,11 +27,11 @@ class BxWallCmts extends BxTemplCmtsView
         if(empty($mixedResult))
             return $mixedResult;
 
-        $aEvents = $this->_oModule->_oDb->getEvents(array('type' => 'id', 'object_id' => (int)$this->getId()));
-        if(isset($aEvents[0]['owner_id']) && (int)$aEvents[0]['owner_id'] > 0) {
+        $aEvent = $this->_oModule->_oDb->getEvents(array('browse' => 'id', 'object_id' => (int)$this->getId()));
+        if(isset($aEvent['owner_id']) && (int)$aEvent['owner_id'] > 0) {
             //--- Wall -> Update for Alerts Engine ---//
             bx_import('BxDolAlerts');
-            $oAlert = new BxDolAlerts('bx_' . $this->_oModule->_oConfig->getUri(), 'update', $aEvents[0]['owner_id']);
+            $oAlert = new BxDolAlerts('bx_' . $this->_oModule->_oConfig->getUri(), 'update', $aEvent['owner_id']);
             $oAlert->alert();
             //--- Wall -> Update for Alerts Engine ---//
         }
@@ -78,17 +78,32 @@ class BxWallCmts extends BxTemplCmtsView
 
     function getActions($iCmtId, $sType = 'reply', $iEventId = 0)
     {
-        $aEvent = $this->_oModule->_oDb->getEvents(array('type' => 'id', 'object_id' => $iEventId));
-        $aEvent = array_shift($aEvent);
+        $aEvent = $this->_oModule->_oDb->getEvents(array('browse' => 'id', 'object_id' => $iEventId));
 
         //$this->_oModule->_iOwnerId = (int)$aEvent['owner_id'];
 
+        //--- Comment
         $iObjectId = $this->getId();
         $aParams = array(
             'cmt_id' => $iCmtId,
             'cmt_replies' => $this->_oQuery->getObjectCommentsCount($iObjectId, $iCmtId),
             'cmt_type' => $sType
         );
+
+        //--- Vote
+        $oVoting = $this->_oModule->_getObjectVoting($aEvent);
+
+        //--- Repost
+        $sRepost = '';
+        $bRepost = $this->_oModule->_isRepostAllowed($aEvent);
+        if($bRepost) {
+        	$iOwnerId = $this->_oModule->_getAuthorId(); //--- in whose timeline the content will be shared
+        	$sType = $aEvent['type'];
+        	$sAction = $aEvent['action'];
+        	$iObjectId = $this->_oModule->_oConfig->isSystem($sType, $sAction) ? $aEvent['object_id'] : $aEvent['id'];
+
+        	$sRepost = $this->_oModule->serviceGetRepostElementBlock($iOwnerId, $sType, $sAction, $iObjectId);
+        }
 
         $sRet = $this->_oModule->_oTemplate->parseHtmlByTemplateName('comments_actions', array(
             'date' => $aEvent['ago'],
@@ -109,6 +124,18 @@ class BxWallCmts extends BxTemplCmtsView
                 'condition' => $this->isPostReplyAllowed(),
                 'content' => array(
                     'content' => $this->_getPostReplyBoxTo($aParams)
+                )
+            ),
+            'bx_if:show_vote' => array(
+                'condition' => $oVoting->isVotingAllowed(),
+                'content' => array(
+                    'content' => $oVoting->getVotingElement()
+                )
+            ),
+            'bx_if:show_repost' => array(
+                'condition' => $bRepost,
+                'content' => array(
+                    'content' => $sRepost
                 )
             ),
         ));

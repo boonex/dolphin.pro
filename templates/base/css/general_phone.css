@@ -1,20 +1,20 @@
 @media (max-width:720px) {
 
-
 	.controlsDiv {
 	    clear: both;
 		width: 230px;
 	    margin: 20px auto;
 	}
-	
+
 	/*--- Extra top menu ---*/
 	div.extra_top_menu table.fixed_menu div.popup_html div.menu_item b.menu_item_username {
 		display: none;
 	}
 
 	/*--- Login Join Form Section ---*/
-    div#bx_tellfriend div.login_ajax_wrap,
-	div#login_div div.login_ajax_wrap {
+	div#login_div div.login_ajax_wrap,
+	div#bx_tellfriend div.login_ajax_wrap,
+	div#sys_popup_ajax div.login_ajax_wrap {
 	    width: 300px;
 	}
 }

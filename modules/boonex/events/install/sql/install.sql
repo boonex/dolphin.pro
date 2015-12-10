@@ -392,6 +392,7 @@ INSERT INTO `sys_objects_actions` (`Caption`, `Icon`, `Url`, `Script`, `Eval`, `
     ('{TitleUploadFiles}', 'save', '{BaseUri}upload_files/{URI}', '', '', '11', 'bx_events'),    
     ('{TitleSubscribe}', 'paperclip', '', '{ScriptSubscribe}', '', 12, 'bx_events'),
     ('{TitleActivate}', 'check-circle-o', '', 'getHtmlData( ''ajaxy_popup_result_div_{ID}'', ''{evalResult}'', false, ''post'');return false;', '$oConfig = $GLOBALS[''oBxEventsModule'']->_oConfig; return BX_DOL_URL_ROOT . $oConfig->getBaseUri() . ''activate/{ID}'';', '13', 'bx_events'),
+    ('{repostCpt}', 'repeat', '', '{repostScript}', '', 14, 'bx_events'),
 
     ('{evalResult}', 'plus', '{BaseUri}browse/my&bx_events_filter=add_event', '', 'return ($GLOBALS[''logged''][''member''] && BxDolModule::getInstance(''BxEventsModule'')->isAllowedAdd()) || $GLOBALS[''logged''][''admin''] ? _t(''_bx_events_action_create_event'') : '''';', 1, 'bx_events_title'),
     ('{evalResult}', 'calendar', '{BaseUri}browse/my', '', 'return $GLOBALS[''logged''][''member''] || $GLOBALS[''logged''][''admin''] ? _t(''_bx_events_action_my_events'') : '''';', '2', 'bx_events_title');

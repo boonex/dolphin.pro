@@ -11,7 +11,9 @@ $aLangContent = array(
     '_bx_ava_avatar' => 'Аватар',
     '_bx_ava_administration' => 'Аватар',
     '_bx_ava_wall_add' => 'добавлен новый',
-    '_bx_ava_wall_change' => 'изменён',
+	'_bx_ava_wall_title_add' => '{0} добавлен новый {1}',
+    '_bx_ava_wall_change' => 'изменил',
+	'_bx_ava_wall_title_change' => '{0} изменил {1}',
     '_bx_ava_wall_object' => 'аватар',
     '_bx_ava_you_can_store_different_avatars' => 'Вы можете сохранить несколько аватаров и выбрать тот, который хотите использовать.',
     '_bx_ava_my_avatars' => 'Мои аватары',
@@ -48,4 +50,9 @@ $aLangContent = array(
     '_mma_avatar_upload' => 'Аватар: загружать',
     '_mma_avatar_edit_any' => 'Аватар: редактировать любой',
     '_mma_avatar_delete_any' => 'Аватар: удалять любой',
+
+	'_wall_reposted_bx_avatar_add' => 'зарепостил новый аватар',
+	'_wall_reposted_title_bx_avatar_add' => '{0} зарепостил новый аватар',
+	'_wall_reposted_bx_avatar_change' => 'зарепостил измененный аватар',
+	'_wall_reposted_title_bx_avatar_change' => '{0} зарепостил измененный аватар',
 );

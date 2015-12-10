@@ -560,6 +560,7 @@ class BxSitesModule extends BxDolTwigModule
             return '';
 
         $sCss = '';
+        $sCssPrefix = str_replace('_', '-', $this->_sPrefix);
         $sBaseUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
         if($aEvent['js_mode'])
             $sCss = $this->_oTemplate->addCss(array('wall_post.css', 'main.css', 'twig.css'), true);
@@ -584,34 +585,37 @@ class BxSitesModule extends BxDolTwigModule
                     'unit' => $this->_oTemplate->unit ($aItem, 'unit_wall', $oVoting),
                 );
 
-            $sTextAddedNewItems = _t('_bx_sites_wall_added_new_items', $iItems);
-            $aTmplVars = array(
-                'cpt_user_name' => $sOwner,
-                'cpt_added_new' => $sTextAddedNewItems,
-                'bx_repeat:items' => $aTmplItems,
-                'post_id' => $aEvent['id']
-            );
             return array(
-                'title' => $sOwner . ' ' . $sTextAddedNewItems,
+                'title' => _t('_bx_sites_wall_added_new_title_items', $sOwner, $iItems),
                 'description' => '',
-                'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_grouped.html', $aTmplVars)
+                'content' => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_post_twig_grouped.html', array(
+	            	'mod_prefix' => $sCssPrefix,
+					'mod_icon' => 'link',
+	                'cpt_user_name' => $sOwner,
+	                'cpt_added_new' => _t('_bx_sites_wall_added_new_items', $iItems),
+	                'bx_repeat:items' => $aTmplItems,
+	                'post_id' => $aEvent['id']
+	            ))
             );
         }
 
         //--- Single public event
+        $sTxtWallObject = _t('_bx_sites_wall_object');
+
         $aItem = $aItems[0];
-        $aTmplVars = array(
+        return array(
+            'title' => _t('_bx_sites_wall_added_new_title', $sOwner, $sTxtWallObject),
+            'description' => $aItem['description'],
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_post_twig.html', array(
+        		'mod_prefix' => $sCssPrefix,
+				'mod_icon' => 'link',
                 'cpt_user_name' => $sOwner,
                 'cpt_added_new' => _t('_bx_sites_wall_added_new'),
-                'cpt_object' => _t('_bx_sites_wall_object'),
-                'cpt_site_url' => $sBaseUrl . $aItem['entryUri'],
+                'cpt_object' => $sTxtWallObject,
+                'cpt_item_url' => $sBaseUrl . $aItem['entryUri'],
                 'post_id' => $aEvent['id'],
-                'unit' => $this->_oTemplate->unit ($aItem, 'unit_wall', $oVoting),
-        );
-        return array(
-            'title' => $sOwner . ' ' . _t('_bx_sites_wall_added_new') . ' ' . _t('_bx_sites_wall_object'),
-            'description' => $aItem['description'],
-            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post.html', $aTmplVars)
+                'content' => $this->_oTemplate->unit ($aItem, 'unit_wall', $oVoting),
+	        ))
         );
     }
 
@@ -736,6 +740,68 @@ class BxSitesModule extends BxDolTwigModule
         return $aResult;
     }
 
+	function serviceGetWallAddComment($aEvent)
+    {
+        $iId = (int)$aEvent['object_id'];
+        $iOwner = (int)$aEvent['owner_id'];
+        $sOwner = getNickName($iOwner);
+
+        $aContent = unserialize($aEvent['content']);
+        if(empty($aContent) || empty($aContent['object_id']))
+            return '';
+
+		$iItem = (int)$aContent['object_id'];
+        $aItem = $this->_oDb->getSiteById($iItem);
+        if(empty($aItem) || !is_array($aItem))
+        	return array('perform_delete' => true);
+
+        if(!$this->oPrivacy->check('view', $iItem, $this->iOwnerId))
+            return;
+
+        bx_import('Cmts', $this->_aModule);
+        $oCmts = new BxSitesCmts('bx_sites', $iItem);
+        if(!$oCmts->isEnabled())
+            return '';
+
+        $aComment = $oCmts->getCommentRow($iId);
+
+        $sImage = '';
+        if($aItem['photo']) {
+            $a = array('ID' => $aItem['id'], 'Avatar' => $aItem['photo']);
+            $aImage = BxDolService::call('photos', 'get_image', array($a, 'browse'), 'Search');
+            $sImage = $aImage['no_image'] ? '' : $aImage['file'];
+        }
+
+        $sCss = '';
+        $sCssPrefix = str_replace('_', '-', $this->_sPrefix);
+        $sBaseUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
+        if($aEvent['js_mode'])
+            $sCss = $this->_oTemplate->addCss(array('wall_post.css', 'main.css', 'twig.css'), true);
+        else
+            $this->_oTemplate->addCss(array('wall_post.css', 'main.css', 'twig.css'));
+
+        bx_import('BxTemplVotingView');
+        $oVoting = new BxTemplVotingView ('bx_sites', 0, 0);
+
+        $sTextWallObject = _t('_bx_sites_wall_object');
+        return array(
+            'title' => _t('_bx_sites_wall_added_new_title_comment', $sOwner, $sTextWallObject),
+            'description' => $aComment['cmt_text'],
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_comment.html', array(
+        		'mod_prefix' => $sCssPrefix,
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_sites_wall_added_new_comment'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $sBaseUrl . $aItem['entryUri'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'snippet' => $this->_oTemplate->unit ($aItem, 'unit_wall', $oVoting),
+	        ))
+        );
+    }
+
+    /**
+     * DEPRICATED, saved for backward compatibility
+     */
     function serviceGetWallPostComment($aEvent)
     {
         $iId = (int)$aEvent['object_id'];
@@ -777,35 +843,19 @@ class BxSitesModule extends BxDolTwigModule
         bx_import('BxTemplVotingView');
         $oVoting = new BxTemplVotingView ('bx_sites', 0, 0);
 
-        $sTextAddedNew = _t('_bx_sites_wall_added_new_comment');
         $sTextWallObject = _t('_bx_sites_wall_object');
-        $aTmplVars = array(
-            'cpt_user_name' => $sOwner,
-            'cpt_added_new' => $sTextAddedNew,
-            'cpt_object' => $sTextWallObject,
-            'cpt_item_url' => $sBaseUrl . $aItem['entryUri'],
-            'cnt_comment_text' => $aComment['cmt_text'],
-            'unit' => $this->_oTemplate->unit ($aItem, 'unit_wall', $oVoting),
-            'post_id' => $aEvent['id'],
-        );
         return array(
-            'title' => $sOwner . ' ' . $sTextAddedNew . ' ' . $sTextWallObject,
+            'title' => _t('_bx_sites_wall_added_new_title_comment', $sOwner, $sTextWallObject),
             'description' => $aComment['cmt_text'],
-            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_comment.html', $aTmplVars)
-        );
-    }
-
-    function serviceGetWallData()
-    {
-        return array(
-            'handlers' => array(
-                array('alert_unit' => 'bx_sites', 'alert_action' => 'add', 'module_uri' => 'sites', 'module_class' => 'Module', 'module_method' => 'get_wall_post', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 1),
-                array('alert_unit' => 'bx_sites', 'alert_action' => 'commentPost', 'module_uri' => 'sites', 'module_class' => 'Module', 'module_method' => 'get_wall_post_comment', 'groupable' => 0, 'group_by' => '', 'timeline' => 1, 'outline' => 0)
-            ),
-            'alerts' => array(
-                array('unit' => 'bx_sites', 'action' => 'add'),
-                array('unit' => 'bx_sites', 'action' => 'commentPost')
-            )
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_comment.html', array(
+        		'mod_prefix' => str_replace('_', '-', $this->_sPrefix),
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_sites_wall_added_new_comment'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $sBaseUrl . $aItem['entryUri'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'snippet' => $this->_oTemplate->unit ($aItem, 'unit_wall', $oVoting),
+	        ))
         );
     }
 

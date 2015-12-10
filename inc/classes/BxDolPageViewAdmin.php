@@ -385,11 +385,12 @@ class BxDolPageViewAdmin
             )
         );
 
-        foreach($this->aPages as $iKey => $sPage)
+        asort($this->aTitles);
+        foreach($this->aTitles as $sName => $sTitle)
             $aPages[] = array(
-                'value' => htmlspecialchars_adv( urlencode($sPage)),
-                'title' => htmlspecialchars( isset($this -> aTitles[$sPage]) ? $this -> aTitles[$sPage] : $sPage ),
-                'selected' => $this->oPage->sName == $sPage ? 'selected="selected"' : ''
+                'value' => htmlspecialchars_adv(urlencode($sName)),
+                'title' => htmlspecialchars(!empty($sTitle) ? $sTitle : $sName),
+                'selected' => $this->oPage->sName == $sName ? 'selected="selected"' : ''
             );
 
         return $GLOBALS['oAdmTemplate']->parseHtmlByName('pbuilder_cpanel.html', array(
