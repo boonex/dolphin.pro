@@ -397,7 +397,7 @@ class BxDolConnectModule extends BxDolModule
         foreach($aProfileFields as $sFieldName => $sValue)
             $oJoin -> aValues[0][$sFieldName] = $sValue;
 
-        $this->_oTemplate->getPage(_t('_JOIN_H'), $oJoin->process());
+        $this->_oTemplate->getPage(_t('_JOIN_H'), $this->_oTemplate->parseHtmlByName('default_padding.html', array('content' => $oJoin->process())));
         exit;
     }
 
