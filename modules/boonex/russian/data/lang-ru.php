@@ -986,6 +986,7 @@ $LANG= array(
   '_adm_btn_modules_update' => 'Проверить на обновления',
   '_adm_btn_mp_activate' => 'Включить',
   '_adm_btn_mp_ban' => 'Запретить',
+  '_adm_btn_mp_ban_duration' => 'Введите количество дней',
   '_adm_btn_mp_browse' => 'Просмотреть',
   '_adm_btn_mp_calendar' => 'Календарь',
   '_adm_btn_mp_confirm' => 'Подтвердить e-mail',

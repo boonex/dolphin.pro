@@ -122,7 +122,7 @@ BxManageProfiles.prototype.getMembers = function(onSuccess) {
         onSuccess = function(){};
 
     $('#adm-mp-members-loading').bx_loading();
-    
+
     var oOptions = {
         action: 'get_members', 
         view_type: this._sViewType, 
@@ -136,7 +136,7 @@ BxManageProfiles.prototype.getMembers = function(onSuccess) {
     $.each(this._oCtlValue, function(sKey, sValue) {
         oOptions['ctl_value[]'].push(sKey + '=' + sValue);
     });
-    
+
     $.post(
         this._sActionsUrl,
         oOptions,
@@ -151,4 +151,13 @@ BxManageProfiles.prototype.getMembers = function(onSuccess) {
         },
         'json'
     );
+};
+
+BxManageProfiles.prototype.actionBan = function(oElement) {
+	var iDuration = parseInt(prompt(_t('_adm_btn_mp_ban_duration')));
+	if(isNaN(iDuration) || iDuration <= 0)
+		return false;
+
+	$("input[name = 'adm-mp-members-ban-duration']").val(iDuration);
+	return true;
 };

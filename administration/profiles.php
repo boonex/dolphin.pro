@@ -46,8 +46,10 @@ if(isset($_POST['adm-mp-activate']) && (bool)$_POST['members']) {
     echo "<script>window.parent." . BX_DOL_ADM_MP_JS_NAME . ".reload();</script>";
     exit;
 } else if(isset($_POST['adm-mp-ban']) && (bool)$_POST['members']) {
+	$iBanDuration = isset($_POST['adm-mp-members-ban-duration']) ? (int)$_POST['adm-mp-members-ban-duration'] : 0;
+
     foreach($_POST['members'] as $iId)
-        bx_admin_profile_ban_control($iId, TRUE);
+        bx_admin_profile_ban_control($iId, true, $iBanDuration);
 
     echo "<script>window.parent." . BX_DOL_ADM_MP_JS_NAME . ".reload();</script>";
     exit;
@@ -371,10 +373,17 @@ function getMembers($aParams)
     $sPaginate = $oPaginate->getPaginate();
 
     //--- Get Controls ---//
+    $GLOBALS['oAdmTemplate']->addJsTranslation(array('_adm_btn_mp_ban_duration'));
+
     $aButtons = array(
         'adm-mp-activate' => _t('_adm_btn_mp_activate'),
         'adm-mp-deactivate' => _t('_adm_btn_mp_deactivate'),
-        'adm-mp-ban' => _t('_adm_btn_mp_ban'),
+        'adm-mp-ban' => array(
+			'type' => 'submit',
+			'name' => 'adm-mp-ban',
+			'value' => _t('_adm_btn_mp_ban'),
+			'onclick' => 'onclick="javascript: return ' . BX_DOL_ADM_MP_JS_NAME . '.actionBan(this);"',
+		),
         'adm-mp-unban' => _t('_adm_btn_mp_unban'),
         'adm-mp-confirm' => _t('_adm_btn_mp_confirm'),
         'adm-mp-delete' => _t('_adm_btn_mp_delete'),

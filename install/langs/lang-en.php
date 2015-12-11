@@ -986,6 +986,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_btn_modules_update' => 'Check For Updates',
   '_adm_btn_mp_activate' => 'Activate',
   '_adm_btn_mp_ban' => 'Ban',
+  '_adm_btn_mp_ban_duration' => 'Enter a number of days',
   '_adm_btn_mp_browse' => 'Browse',
   '_adm_btn_mp_calendar' => 'Calendar',
   '_adm_btn_mp_confirm' => 'Confirm Email',

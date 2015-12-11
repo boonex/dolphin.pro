@@ -407,15 +407,20 @@ function get_user_online_status ($ID)
  * Add / delete profile to / from ban list table
  * 
  * @param int $iProfileId - id of member
- * @param boolean $bBan - add / delete member 
+ * @param boolean $bBan - add / delete member
+ * @param integer $iDuration - ban duration (in days)
  * @return int / boolean - number of rows affected / false
  */
-function bx_admin_profile_ban_control($iProfileId, $bBan = TRUE)
+function bx_admin_profile_ban_control($iProfileId, $bBan = true, $iDuration = 0)
 {
     $iProfileId = (int)$iProfileId;
-    $sqlQuery = "REPLACE INTO `sys_admin_ban_list` SET `ProfID`='$iProfileId', `Time`='0',  `DateTime`=NOW()";
-    if (!$bBan)
-        $sqlQuery = "DELETE FROM `sys_admin_ban_list` WHERE `ProfID`=$iProfileId";
+	$iDuration = 86400 * (!empty($iDuration) ? $iDuration : (int)getParam('ban_duration'));
+
+    if($bBan)
+    	$sqlQuery = "REPLACE INTO `sys_admin_ban_list` SET `ProfID`='" . $iProfileId . "', `Time`='" . $iDuration . "',  `DateTime`=NOW()";
+    else
+        $sqlQuery = "DELETE FROM `sys_admin_ban_list` WHERE `ProfID`='" . $iProfileId . "'";
+
     return $GLOBALS['MySQL']->query($sqlQuery);
 }
 

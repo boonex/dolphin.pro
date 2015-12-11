@@ -1113,7 +1113,8 @@ INSERT INTO `sys_options` VALUES
 ('autoApproval_ifJoin', '', @iCatModeration, 'Auto-activate profiles after joining', 'checkbox', '', '', 10, ''),
 ('autoApproval_ifProfile', 'on', @iCatModeration, 'Preserve profile status after profile info editing', 'checkbox', '', '', 20, ''),
 ('autoApproval_ifNoConfEmail', '', @iCatModeration, 'Auto-confirm profile without confirmation email', 'checkbox', '', '', 30, ''),
-('newusernotify', 'on', @iCatModeration, 'Enable notification about new members', 'checkbox', '', '', 40, '');
+('newusernotify', 'on', @iCatModeration, 'Enable notification about new members', 'checkbox', '', '', 40, ''),
+('ban_duration', '10', @iCatModeration, 'Profile ban duration (in days)', 'digit', '', '', 50, '');
 
 
 -- CAT: Site 
