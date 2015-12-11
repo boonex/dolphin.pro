@@ -913,8 +913,10 @@ function showPopupLoginForm(iActiveTab) {
                 relocate: String(window.location)
             },
             function() {
+            	var sHref = location.href.replace(location.hash, '');
+
         		$("#" + sContentId + " ul.sys-flj-navigation li a").each(function() {
-        		    jQuery(this).attr("href", location.href.toString()+jQuery(this).attr("href"));
+        		    jQuery(this).attr("href", sHref + jQuery(this).attr("href"));
         		});
         		$("#" + sContentId).tabs({active: iActiveTab}).addWebForms();
         		
