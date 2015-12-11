@@ -328,13 +328,22 @@ $(document).ready(function() {
 (function($){
     $.fn.formsToggleHtmlEditor = function() {
 		$(this).each(function() {
-            if ($(this).is(':hidden'))
+			if(!tinyMCE)
+				return;
+
+			var sCookieKey = 'bx_mce_editor_disabled';
+            if ($(this).is(':hidden')) {
                 tinyMCE.execCommand('mceRemoveEditor', false, this.id);
-            else
-                tinyMCE.execCommand('mceAddEditor', false, this.id);
+
+                $.cookie(sCookieKey, 1, {path: '/', expires: 999});
+            }
+            else {
+            	jQuery('#' + this.id).tinymce(tinyMCE.activeEditor["settings"]);
+
+                $.removeCookie(sCookieKey, {path: '/'});
+            }
                 
         });
         return this;
     };
 })(jQuery);
-

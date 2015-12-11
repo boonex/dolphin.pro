@@ -587,8 +587,11 @@ BxDolPageBuilder.prototype.openProperties = function( iBlockID ) {
 			oPopup.prependTo('body').dolPopup({
             	closeOnOuterClick: false,
             	onHide: function () {
-            		if('undefined' != typeof(jQuery(document).tinymce))
-	            		jQuery('#form_input_html' + iBlockID).tinymce().remove();
+            		if(typeof(jQuery(document).tinymce) != 'undefined') {
+            			var oEditor = jQuery('#form_input_html' + iBlockID).tinymce();
+            			if(oEditor)
+            				oEditor.remove();
+            		}
 
                     $('#' + oPopup.attr('id')).remove();
             	}

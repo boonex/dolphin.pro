@@ -147,7 +147,7 @@ class BxDolPageViewAdmin
         $_page = array(
             'name_index' => $iNameIndex,
             'css_name' => array('pageBuilder.css', 'forms_adv.css'),
-            'js_name' => array('jquery.ui.core.min.js', 'jquery.ui.widget.min.js', 'jquery.ui.mouse.min.js', 'jquery.ui.sortable.min.js', 'jquery.ui.slider.min.js', 'BxDolPageBuilder.js'),
+            'js_name' => array('jquery.ui.core.min.js', 'jquery.ui.widget.min.js', 'jquery.ui.mouse.min.js', 'jquery.ui.sortable.min.js', 'jquery.ui.slider.min.js', 'jquery.cookie.min.js', 'BxDolPageBuilder.js'),
             'header' => _t('_adm_pbuilder_title'),
             'header_text' => _t('_adm_pbuilder_box_title'),
         );
@@ -340,7 +340,16 @@ class BxDolPageViewAdmin
 
     function showBuildZone()
     {
-        return $GLOBALS['oAdmTemplate']->parseHtmlByName('pbuilder_content.html', array(
+    	$sEditorId = $sEditorCode = ''; 
+
+    	bx_import('BxDolEditor');
+        $oEditor = BxDolEditor::getObjectInstance();
+        if($oEditor) {
+        	$sEditorId = 'buildZoneEditor';
+            $sEditorCode = $oEditor->attachEditor('#' . $sEditorId, BX_EDITOR_FULL);
+        }
+
+        return $sInitEditor . $GLOBALS['oAdmTemplate']->parseHtmlByName('pbuilder_content.html', array(
             'top_controls' => $this->getPageSelector(),
             'bx_if:page' => array(
                 'condition' => (bool)$this -> oPage,
@@ -370,6 +379,13 @@ class BxDolPageViewAdmin
                 'content' => array(
                     'content' => MsgBox(_t('_Empty'))
                 )
+            ),
+            'bx_if:editor' => array(
+            	'condition' => !empty($sEditorCode),
+            	'content' => array(
+            		'editor_id' => $sEditorId,
+            		'editor_code' => $sEditorCode
+            	)
             )
         ));
     }
@@ -541,9 +557,12 @@ class BxDolPageViewAdmin
         //$sBlockContent = htmlspecialchars_adv( $aItem['Content'] );
 
         if( $aItem['Func'] == 'Echo' ) {
+        	$sMceEditorKey = 'bx_mce_editor_disabled';
+			$bMceEditor = !isset($_COOKIE[$sMceEditorKey]) || (int)$_COOKIE[$sMceEditorKey] != 1;
+
             $aForm['inputs']['Content'] = array(
                 'type' => 'textarea',
-                'html' => 2,
+                'html' => $bMceEditor ? 2 : 0,
                 'html_toggle' => true,
                 'dynamic' => true,
                 'attrs' => array ('id' => 'form_input_html'.$iBlockID, 'style' => 'height:250px;'),

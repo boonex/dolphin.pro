@@ -34,6 +34,10 @@ div.block_cont_nd {
 	position:relative;
 }
 
+#buildZoneEditorWrapper {
+	display: none;
+}
+
 #pageWidthValue,
 #pageWidthValue1 {
 	position: absolute;
