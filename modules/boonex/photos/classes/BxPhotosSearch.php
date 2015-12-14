@@ -151,6 +151,7 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
     function _getAlbumUnitItem($iIndex, $aPicture, $aParams = array())
     {
     	$aResult = parent::_getAlbumUnitItem($iIndex, $aPicture, $aParams);
+    	$aResult['bx_if:exist']['content']['url'] = '';
 
     	$sClass = '';
     	if(empty($aPicture)){
@@ -177,7 +178,6 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
 	    	}
     		$aResult['bx_if:exist']['content']['class'] = ' ' . $sClass;
 
-    		$aResult['bx_if:exist']['content']['url'] = '';
     		if(!empty($aPicture['Uri']))
     			$aResult['bx_if:exist']['content']['url'] = $this->getCurrentUrl('file', $aPicture['id_object'], $aPicture['Uri']);
     		if(empty($aResult['bx_if:exist']['content']['url']) && !empty($aParams['album_url']))
