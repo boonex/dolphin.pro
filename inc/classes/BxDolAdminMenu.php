@@ -19,11 +19,26 @@ class BxDolAdminMenu extends BxDolMistake
 
     function getTopMenu()
     {
-        $aItems = $GLOBALS['MySQL']->getAll("SELECT `caption`, `url`, `target`, `icon` FROM `sys_menu_admin_top` ORDER BY `Order`");
+    	$sTmplVarsAddons = '';
+    	$aTmplVarsItems = array();
 
-        $aItemsResult = array();
+    	$aItems = array();
+		if(count(getLangsArr()) > 1) {
+			$aItems[] = array(
+				'caption' => '_adm_tmi_language',
+				'url' => 'javascript:void(0)',
+				'onclick' => 'showPopupLanguage()',
+				'target' => '',
+				'icon' => 'language'
+			);
+
+			$sLangName = getCurrentLangName();
+			$sTmplVarsAddons .= $GLOBALS['oFunctions']->getLanguageSwitcher($sLangName);
+		}
+
+        $aItems = array_merge($aItems, $GLOBALS['MySQL']->getAll("SELECT `caption`, `url`, `target`, `icon` FROM `sys_menu_admin_top` ORDER BY `Order`"));
         foreach($aItems as $aItem)
-            $aItemsResult[] = array(
+            $aTmplVarsItems[] = array(
                 'caption' => _t($aItem['caption']),
                 'url' => str_replace(
                     array(
@@ -36,11 +51,22 @@ class BxDolAdminMenu extends BxDolMistake
                     ),
                     $aItem['url']
                 ),
-                'target' => !empty($aItem['target']) ? $aItem['target'] : '_self', 
+                'target' => !empty($aItem['target']) ? $aItem['target'] : '_self',
+                'bx_if:show_onclick' => array(
+                	'condition' => !empty($aItem['onclick']),
+                	'content' => array(
+                		'onclick' => $aItem['onclick']
+                	)
+                ), 
                 'icon' => false === strpos($aItem['icon'], '.') ? '<i class="sys-icon ' . $aItem['icon'] . '"></i>' : '<img src="' . $GLOBALS['oAdmTemplate']->getIconUrl($aItem['icon']) . '" alt="' . _t($aItem['caption']) . '" />',
             );
-        return $GLOBALS['oAdmTemplate']->parseHtmlByName('top_menu.html', array('bx_repeat:items' => $aItemsResult));
+
+        return $GLOBALS['oAdmTemplate']->parseHtmlByName('top_menu.html', array(
+        	'bx_repeat:items' => $aTmplVarsItems,
+        	'addons' => $sTmplVarsAddons
+        ));
     }
+
     function getMainMenu()
     {
         if(!isAdmin())

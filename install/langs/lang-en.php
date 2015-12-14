@@ -1292,6 +1292,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_tmi_extensions' => 'Add Modules',
   '_adm_tmi_home' => 'Site Home',
   '_adm_tmi_info' => 'Documentation',
+  '_adm_tmi_language' => 'Select Language',
   '_adm_tmi_logout' => 'Logout',
   '_adm_txt_cache' => 'Cache',
   '_adm_txt_clear_cache' => 'Clear Cache',

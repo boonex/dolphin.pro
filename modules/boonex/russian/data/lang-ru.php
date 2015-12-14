@@ -1292,6 +1292,7 @@ $LANG= array(
   '_adm_tmi_extensions' => 'Добавить модули',
   '_adm_tmi_home' => 'Домой',
   '_adm_tmi_info' => 'Документация',
+  '_adm_tmi_language' => 'Выбрать язык',
   '_adm_tmi_logout' => 'Выход',
   '_adm_txt_cache' => 'Кэш',
   '_adm_txt_clear_cache' => 'Очистить кэш',

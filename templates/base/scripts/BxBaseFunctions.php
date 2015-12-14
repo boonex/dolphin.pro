@@ -893,4 +893,75 @@ EOF;
         $o = BxDolMemberInfo::getObjectInstance(getParam('sys_member_info_info'));
         return $o ? $o->get($aProfile) : '';
     }
+
+	function getLanguageSwitcher($sCurrent)
+	{
+		$sOutputCode = '';
+
+		$aLangs = getLangsArrFull();
+		if(count( $aLangs ) < 2)
+			return $sOutputCode;
+
+		$sGetTransfer = bx_encode_url_params($_GET, array('lang'));
+
+		$aTmplVars = array();
+		foreach( $aLangs as $sName => $aLang ) {
+			$sFlag  = $GLOBALS['site']['flags'] . $aLang['Flag'] . '.gif';
+			$aTmplVars[] = array (
+				'bx_if:show_icon' => array (
+					'condition' => $sFlag,
+					'content' => array (
+						'icon_src'      => $sFlag,
+						'icon_alt'      => $sName,
+						'icon_width'    => 18,
+						'icon_height'   => 12,
+					),
+				),
+				'class' => $sName == $sCurrent ? 'sys-bm-sub-item-selected' : '',
+				'link'    => bx_html_attribute($_SERVER['PHP_SELF']) . '?' . $sGetTransfer . 'lang=' . $sName,
+				'onclick' => '',
+				'title'   => $aLang['Title'],
+			);
+		}
+
+		$sOutputCode .= $GLOBALS['oSysTemplate']->parseHtmlByName('popup_switcher.html', array(
+			'name_method' => 'Language',
+			'name_block' => 'language',
+			'bx_repeat:items' => $aTmplVars
+		));
+
+		return PopupBox('sys-bm-switcher-language', _t('_sys_bm_popup_cpt_language'), $sOutputCode);
+	}
+
+	function getTemplateSwitcher($sCurrent)
+	{
+		$sOutputCode = "";
+
+		$aTemplates = get_templates_array();
+		if(count($aTemplates) < 2)
+			return $sOutputCode;
+
+		$sGetTransfer = bx_encode_url_params($_GET, array('skin'));
+
+		$aTmplVars = array();
+		foreach($aTemplates as $sName => $sTitle)
+			$aTmplVars[] = array (
+				'bx_if:show_icon' => array (
+					'condition' => false,
+					'content' => array(),
+				),
+				'class' => $sName == $sCurrent ? 'sys-bm-sub-item-selected' : '',
+				'link' => bx_html_attribute($_SERVER['PHP_SELF']) . '?' . $sGetTransfer . 'skin=' . $sName,
+				'onclick' => '',
+				'title' => $sTitle
+			);
+
+		$sOutputCode .= $GLOBALS['oSysTemplate']->parseHtmlByName('popup_switcher.html', array(
+			'name_method' => 'Template',
+			'name_block' => 'template',
+			'bx_repeat:items' => $aTmplVars
+		));
+
+		return PopupBox('sys-bm-switcher-template', _t('_sys_bm_popup_cpt_design'), $sOutputCode);
+	}
 }
