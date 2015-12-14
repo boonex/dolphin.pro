@@ -153,11 +153,19 @@ BxManageProfiles.prototype.getMembers = function(onSuccess) {
     );
 };
 
-BxManageProfiles.prototype.actionBan = function(oElement) {
-	var iDuration = parseInt(prompt(_t('_adm_btn_mp_ban_duration')));
-	if(isNaN(iDuration) || iDuration <= 0)
-		return false;
+BxManageProfiles.prototype.actionBan = function(oButton) {
+	$(document).dolPopupPrompt({
+		message: _t('_adm_btn_mp_ban_duration'), 
+		onClickOk: function(oPopup) {
+			var iDuration = parseInt(oPopup.getValue());
+			if(isNaN(iDuration) || iDuration <= 0)
+				return;
 
-	$("input[name = 'adm-mp-members-ban-duration']").val(iDuration);
-	return true;
+			$('input[name = "adm-mp-members-ban-duration"]').val(iDuration);
+
+			$(oButton).off('onclick').removeAttr('onclick').trigger('click');
+		}
+	});
+
+	return false;
 };
