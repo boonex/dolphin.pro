@@ -240,8 +240,8 @@ class BxDolSubscription extends BxDolMistake
 		}
 
         $sCssJs = '';
-        $sCssJs .= $oSysTemplate->addCss('subscription.css', $bDynamic);
-        $sCssJs .= $oSysTemplate->addJs('BxDolSubscription.js', $bDynamic);
+        $sCssJs .= $oSysTemplate->addCss(array('subscription.css', 'subscription_phone.css'), $bDynamic);
+        $sCssJs .= $oSysTemplate->addJs(array('BxDolSubscription.js'), $bDynamic);
         return ($bDynamic ? $sCssJs : '') . $sContent;
     }
     function getButton($iUserId, $sUnit, $sAction = '', $iObjectId = 0)

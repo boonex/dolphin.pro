@@ -1,0 +1,6 @@
+@media (max-width:720px) {
+	/*--- Subscribe Popup ---*/
+	div#sbs_visitor_popup {
+	    width: 300px;
+	}
+}
