@@ -253,9 +253,20 @@ table.MsgBox tr td {
 	display: inline-block;
 }
 
+/* * * * Prompt Popup * * * */
+.popup_prompt_text {
+	max-width: 350px;
+	text-align: center;
+}
+.popup_prompt_actions {
+	text-align: center;
+}
+.popup_prompt_actions .bx-btn {
+	float: none;
+	display: inline-block;
+}
 
 /* * * * Popup for profile thumbs * * * */
-
 #short_profile_info {
     width:350px;
 }

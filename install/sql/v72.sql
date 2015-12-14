@@ -3340,7 +3340,8 @@ INSERT INTO `sys_injections` (`name`, `page_index`, `key`, `type`, `data`, `repl
 ('banner_right', 0, 'banner_right', 'php', 'return banner_put_nv(3);', 0, 1),
 ('banner_top', 0, 'banner_top', 'php', 'return banner_put_nv(1);', 0, 1),
 ('banner_left', 0, 'banner_left', 'php', 'return banner_put_nv(2);', 0, 1),
-('sys_confirm_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxConfirm.html'', array());', '0', '1');
+('sys_confirm_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxConfirm.html'', array());', '0', '1'),
+('sys_prompt_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxPrompt.html'', array());', '0', '1');
 
 --
 -- Table structure for table `sys_injections_admin`
@@ -3364,7 +3365,8 @@ CREATE TABLE `sys_injections_admin` (
 INSERT INTO `sys_injections_admin` (`name`, `page_index`, `key`, `type`, `data`, `replace`, `active`) VALUES 
 ('flash_integration', '0', 'injection_header', 'php', 'return getRayIntegrationJS();', '0', '1'),
 ('lfa', '0', 'injection_header', 'php', 'return lfa();', '0', '1'),
-('sys_confirm_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxConfirm.html'', array());', '0', '1');
+('sys_confirm_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxConfirm.html'', array());', '0', '1'),
+('sys_prompt_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxPrompt.html'', array());', '0', '1');
 
 --
 -- Table structure for table `sys_permalinks`
