@@ -933,16 +933,32 @@ class BxWallModule extends BxDolModule
                 'message' => '_wall_msg_link_empty_link'
             );
 
-        $a = getSiteInfo($sUrl);
-        $sTitle = isset($a['title']) ? $a['title'] : $sUrl;
-        $sDescription = isset($a['description']) ? $a['description'] : '';
+        $aSiteInfo = getSiteInfo($sUrl, array(
+			'thumbnailUrl' => array('tag' => 'link', 'content_attr' => 'href'),
+			'OGImage' => array('name_attr' => 'property', 'name' => 'og:image'),
+		));
+        $sTitle = isset($aSiteInfo['title']) ? $aSiteInfo['title'] : $sUrl;
+        $sDescription = isset($aSiteInfo['description']) ? $aSiteInfo['description'] : '';
+
+		$sThumbnail = '';
+		if(!empty($aSiteInfo['thumbnailUrl']))
+			$sThumbnail = $aSiteInfo['thumbnailUrl'];
+		else if(!empty($aSiteInfo['OGImage']))
+			$sThumbnail = $aSiteInfo['OGImage'];
+		$bThumbnail = !empty($sThumbnail);
 
         return array(
            'object_id' => $aOwner['id'],
            'content' => $this->_oTemplate->parseHtmlByName('common_link.html', array(
-               'title' => $sTitle,
-               'url' => strpos($sUrl, 'http://') === false && strpos($sUrl, 'https://') === false ? 'http://' . $sUrl : $sUrl,
-               'description' => $sDescription
+        		'bx_if:show_thumnail' => array(
+        			'condition' => $bThumbnail,
+        			'content' => array(
+        				'thumbnail' => $sThumbnail
+        			)
+        		),
+				'title' => $sTitle,
+				'url' => strpos($sUrl, 'http://') === false && strpos($sUrl, 'https://') === false ? 'http://' . $sUrl : $sUrl,
+				'description' => $sDescription
            )),
            'title' => _t('_wall_added_title_link', $aOwner['username']),
            'description' => $sUrl . ' - ' . $sTitle

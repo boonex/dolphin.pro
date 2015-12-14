@@ -274,10 +274,15 @@ div.wall-body {
     position: relative;
 }
 
-
-
 div.wall-post-link {
     position: relative;
+}
+div.wall-lnk-thumbnail {
+	position: relative;
+}
+div.wall-lnk-thumbnail img {
+    height: auto;
+    max-width: 100%;
 }
 div.wall-lnk-title {
     position: relative;
