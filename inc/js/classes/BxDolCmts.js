@@ -244,12 +244,12 @@ BxDolCmts.prototype.toggleType = function(oLink) {
 BxDolCmts.prototype.toggleCmts = function(e, iCmtParentId) {
     //--- Load Root Comments ---//
     if(iCmtParentId == 0) {
-    	$('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' .cmt-comments').toggle();
+    	$(e).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('.cmt-comments').toggle();
 
-        if(!$('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' div.cmts > ul > li').length)
+        if(!$(e).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('div.cmts > ul > li').length)
             this._getCmts(e, iCmtParentId, function() {});
         else
-            $('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' div.cmts').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
+        	$(e).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('div.cmts').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
     }
     //--- Load Replies ---//
     else {
@@ -398,14 +398,14 @@ BxDolCmts.prototype._getCmts = function (e, iCmtParentId, onLoad, iStart, iPerPa
         oData,
         function(s) {
             if(iCmtParentId == 0) {
-                $('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' .cmts > ul').bxdolcmtanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+                $(e).parents('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ':first').find('.cmts > ul').bxdolcmtanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
                     $(this).replaceWith(s).bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
                     	$(this).find('a.bx-link').dolEmbedly();
                     });
                 });
             }
             else
-                $('#cmt' + iCmtParentId).append($(s).filter('.cmts').addClass('cmts-margin').hide()).children('.cmts').bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+                $(e).parents('#cmt' + iCmtParentId + ':first').append($(s).filter('.cmts').addClass('cmts-margin').hide()).children('.cmts').bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
                 	$(this).find('a.bx-link').dolEmbedly();
                 });
             onLoad();

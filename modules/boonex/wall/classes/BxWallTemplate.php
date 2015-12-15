@@ -55,9 +55,15 @@ class BxWallTemplate extends BxDolModuleTemplate
 	                    'description' => process_db_input($aResult['description'], BX_TAGS_STRIP)
 	                ), $aEvent['id']);
 	
-	            if(!in_array($aEvent['type'], array('profile', 'friend')) && !in_array($aEvent['action'], array('commentPost', 'comment_add'))) {
+	            if(!in_array($aEvent['type'], array('profile', 'friend'))) {
 	                $sType = $aEvent['type'];
+
 	                $iObjectId = $aEvent['object_id'];
+	                if($aEvent['action'] == 'comment_add') {
+	                	$aContent = unserialize($aEvent['content']);
+	                	$iObjectId = (int)$aContent['object_id'];
+	                }
+
 	                if(strpos($iObjectId, ',') !== false) {
 	                    $sType = isset($aResult['grouped']['group_cmts_name']) ? $aResult['grouped']['group_cmts_name'] : '';
 	                    $iObjectId = isset($aResult['grouped']['group_id']) ? (int)$aResult['grouped']['group_id'] : 0;
