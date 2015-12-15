@@ -930,6 +930,14 @@ class BxDolFilesUploader extends BxDolTemplate
     }
 
     /**
+     * Get array of available uploaders.
+     */
+	function serviceGetUploadersList()
+	{
+		return $this->oModule->_oConfig->getUploaderList();
+	}
+
+    /**
      * Generate video upload main form
      *
      * @param $aExtras - predefined album and category should appear here 

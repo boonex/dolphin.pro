@@ -219,7 +219,7 @@ class BxWallTemplate extends BxDolModuleTemplate
     {
         $aConverter = array(
         	BX_WALL_PARSE_TYPE_PHOTOS => 'photo', 
-        	BX_WALL_PARSE_TYPE_SOUNDS => 'music', 
+        	BX_WALL_PARSE_TYPE_SOUNDS => 'sound', 
         	BX_WALL_PARSE_TYPE_VIDEOS => 'video'
         );
 
@@ -345,6 +345,45 @@ class BxWallTemplate extends BxDolModuleTemplate
             )
         );
         return $this->parseHtmlByName('load_more.html', $aTmplVars);
+    }
+
+    function getUploader($sType, $sSubType)
+    {
+    	$sModule = $sType . 's';
+
+    	$aUploaders = BxDolService::call($sModule, 'get_uploaders_list', array(), 'Uploader');
+    	$bUploaders = !empty($aUploaders) && is_array($aUploaders);
+
+    	$aTmplVarsItems = array();
+    	if($bUploaders)
+    		foreach($aUploaders as $sValue => $sCaption)
+    			$aTmplVarsItems[] = array(
+    				'value' => $sValue,
+    				'caption' => _t($sCaption),
+    				'bx_if:show_selected' => array(
+    					'condition' => $sValue == $sSubType,
+    					'content' => array()
+    				)
+    			);
+
+    	return $this->parseHtmlByName('uploader.html', array(
+    		'bx_if:show_selector' => array(
+    			'condition' => $bUploaders,
+    			'content' => array(
+    				'js_object' => $this->_oConfig->getJsObject('post'),
+    				'type' => $sType,
+    				'bx_repeat:items' => $aTmplVarsItems
+    			)
+    		),
+    		'uploader' => BxDolService::call($sModule, 'get_uploader_form', array(array(
+    			'mode' => $sSubType, 
+    			'category' => 'wall', 
+    			'album'=>_t('_wall_' . $sType . '_album', getNickName(getLoggedId())), 
+    			'albumPrivacy' => BX_DOL_PG_ALL, 
+    			'from_wall' => 1, 
+    			'owner_id' => $this->_iOwnerId)
+    		), 'Uploader')
+    	));
     }
 
     function displayProfileEdit($aEvent)

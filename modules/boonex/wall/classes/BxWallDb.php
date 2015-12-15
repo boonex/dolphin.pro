@@ -380,7 +380,7 @@ class BxWallDb extends BxDolModuleDb
     {
         $aType2Db = array(
             'sharedPhoto' => array('table' =>'bx_shared_photo_files', 'id' => 'medID'),
-            'sharedMusic' => array('table' => 'RayMp3Files', 'id' => 'ID'),
+            'sharedSound' => array('table' => 'RayMp3Files', 'id' => 'ID'),
             'sharedVideo' => array('table' => 'RayVideoFiles', 'id' => 'ID')
         );
 

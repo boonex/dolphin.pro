@@ -1,0 +1,12 @@
+<bx_if:show_selector>
+	<div class="wall-ptype-uploader-selector bx-def-margin-bottom">
+		<div class="input_wrapper input_wrapper_select clearfix">
+			<select class="form_input_select bx-def-font-inputs" id="wall-ptype-us-__type__" onchange="javascript:__js_object__.changePostType(this)">
+				<bx_repeat:items>
+					<option value="__value__"<bx_if:show_selected> selected="selected"</bx_if:show_selected>>__caption__</option>
+				</bx_repeat:items>
+			</select>
+		</div>
+	</div>
+</bx_if:show_selector>
+<div class="wall-ptype-uploader">__uploader__</div>

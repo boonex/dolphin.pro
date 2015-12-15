@@ -324,37 +324,19 @@ class BxWallModule extends BxDolModule
         return $oPaginate->getPaginate($iStart, $iPerPage);
     }
     /**
-     * Get photo uploading form.
+     * Get photo/sound/video uploading form.
      *
      * @return string with form.
      */
-    function actionGetPhotoUploaders($iOwnerId)
+    function actionGetUploader($iOwnerId, $sType, $sSubType = '')
     {
         $this->_iOwnerId = $iOwnerId;
         header('Content-Type: text/html; charset=utf-8');
-        return BxDolService::call('photos', 'get_uploader_form', array(array('mode' => 'single', 'category' => 'wall', 'album'=>_t('_wall_photo_album', getNickName(getLoggedId())), 'albumPrivacy' => BX_DOL_PG_ALL, 'from_wall' => 1, 'owner_id' => $this->_iOwnerId)), 'Uploader');
-    }
-    /**
-     * Get music uploading form.
-     *
-     * @return srting with form.
-     */
-    function actionGetMusicUploaders($iOwnerId)
-    {
-        $this->_iOwnerId = $iOwnerId;
-        header('Content-Type: text/html; charset=utf-8');
-        return BxDolService::call('sounds', 'get_uploader_form', array(array('mode' => 'single', 'category' => 'wall', 'album'=>_t('_wall_sound_album', getNickName(getLoggedId())), 'albumPrivacy' => BX_DOL_PG_ALL, 'from_wall' => 1, 'owner_id' => $this->_iOwnerId)), 'Uploader');
-    }
-    /**
-     * Get video uploading form.
-     *
-     * @return string with form.
-     */
-    function actionGetVideoUploaders($iOwnerId)
-    {
-        $this->_iOwnerId = $iOwnerId;
-        header('Content-Type: text/html; charset=utf-8');
-        return BxDolService::call('videos', 'get_uploader_form', array(array('mode' => 'single', 'category' => 'wall', 'album'=>_t('_wall_video_album', getNickName(getLoggedId())), 'albumPrivacy' => BX_DOL_PG_ALL, 'from_wall' => 1, 'owner_id' => $this->_iOwnerId)), 'Uploader');
+
+        if(!in_array($sType, array('photo', 'sound', 'video')))
+        	return '';
+
+        return $this->_oTemplate->getUploader($sType, $sSubType);
     }
     /**
      * Get popup with profiles.
@@ -451,7 +433,7 @@ class BxWallModule extends BxDolModule
         if($this->_oDb->isModule('photos'))
             $aTopMenu['wall-ptype-photo'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'picture-o', 'title' => _t('_wall_add_photo'));
         if($this->_oDb->isModule('sounds'))
-            $aTopMenu['wall-ptype-music'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'music', 'title' => _t('_wall_add_music'));
+            $aTopMenu['wall-ptype-sound'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'music', 'title' => _t('_wall_add_sound'));
         if($this->_oDb->isModule('videos'))
             $aTopMenu['wall-ptype-video'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'film', 'title' => _t('_wall_add_video'));
 
@@ -462,7 +444,7 @@ class BxWallModule extends BxDolModule
             'post_wall_link' => $this->_getShareLinkForm('_getShareLinkFormIndex'),
             'post_wall_photo' => '',
             'post_wall_video' => '',
-            'post_wall_music' => '',
+            'post_wall_sound' => '',
         );
 
         $this->_oTemplate->addCss('post.css');
@@ -527,7 +509,7 @@ class BxWallModule extends BxDolModule
         if($this->_oDb->isModule('photos'))
             $aTopMenu['wall-ptype-photo'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'picture-o', 'title' => _t('_wall_add_photo'));
         if($this->_oDb->isModule('sounds'))
-            $aTopMenu['wall-ptype-music'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'music', 'title' => _t('_wall_add_music'));
+            $aTopMenu['wall-ptype-sound'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'music', 'title' => _t('_wall_add_sound'));
         if($this->_oDb->isModule('videos'))
             $aTopMenu['wall-ptype-video'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'film', 'title' => _t('_wall_add_video'));
 
@@ -538,7 +520,7 @@ class BxWallModule extends BxDolModule
             'post_wall_link' => $this->_getShareLinkForm(),
             'post_wall_photo' => '',
             'post_wall_video' => '',
-            'post_wall_music' => '',
+            'post_wall_sound' => '',
         );
 
         $GLOBALS['oTopMenu']->setCurrentProfileID((int)$this->_iOwnerId);

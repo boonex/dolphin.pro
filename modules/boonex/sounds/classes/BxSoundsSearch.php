@@ -184,6 +184,11 @@ class BxSoundsSearch extends BxTemplSearchResultSharedMedia
         return $this->serviceGetEntry($iId, $sType);
     }
 
+	function serviceGetSoundArray($iId, $sType)
+    {
+        return $this->serviceGetEntry($iId, $sType);
+    }
+
     function serviceGetMusicArray($iId, $sType)
     {
         return $this->serviceGetEntry($iId, $sType);

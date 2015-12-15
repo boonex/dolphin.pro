@@ -7,46 +7,63 @@ function BxWallPost(oOptions) {
     this._iAnimationSpeed = oOptions.iAnimationSpeed == undefined ? 'slow' : oOptions.iAnimationSpeed;
 }
 
-BxWallPost.prototype.changePostType = function(oLink) {    
+BxWallPost.prototype.changePostType = function(oElement) {    
     var $this = this;
-    var sId = $(oLink).attr('id');
+    var sId = $(oElement).attr('id');
     var sType = sId.substr(sId.lastIndexOf('-') + 1, sId.length);
+    
+    var sSubType = '';
+    if($(oElement).is('select'))
+    	sSubType = $(oElement).val();
 
     var oLoading = $('#bx-wall-post-loading');
     if(oLoading)
     	oLoading.bx_loading();
 
     //--- Change Control ---//
-    $(oLink).parent().siblings('.active:visible').hide().siblings('.notActive:hidden').show().siblings('#' + sId + '-pas:visible').hide().siblings('#' + sId + '-act:hidden').show();
-
+    if($(oElement).is('a'))
+    	$(oElement).parent().siblings('.active:visible').hide().siblings('.notActive:hidden').show().siblings('#' + sId + '-pas:visible').hide().siblings('#' + sId + '-act:hidden').show();
 
     //--- Change Content ---//
-    var oContents = $(oLink).parents('.boxFirstHeader').siblings('.boxContent').find('.wall-ptype-cnt');
-    if((sType == 'photo' || sType == 'music' || sType == 'video') && oContents.filter('.wall_' + sType).html() == '') {
+    var oContents = $(oElement).parents('.disignBoxFirst').find('.wall-ptype-cnt');
+    if((sType == 'photo' || sType == 'sound' || sType == 'video')) {
         jQuery.post (
-            $this._sActionsUrl + 'get_' + sType + '_uploaders/' + this._iOwnerId,
+            $this._sActionsUrl + 'get_uploader/' + this._iOwnerId + '/' + sType + (sSubType && sSubType.length >0 ? '/' + sSubType : ''),
             {},
             function(sResult) {
             	if($.trim(sResult).length) {
             		oContents.filter(':visible').find('iframe[name=upload_file_frame]').remove();
-            		oContents.filter('.wall_' + sType).html(sResult).addWebForms();
-            		$this._animContent(oLink, sType);
+
+            		var oContent = oContents.filter('.wall_' + sType);
+            		if(oContent.is(':visible')) {
+	            		oContent.bxwallanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
+	            			$(this).html(sResult).addWebForms().bxwallanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+	            				if(oLoading)
+	            	            	oLoading.bx_loading();
+	            			});
+	            		});
+
+	            		return;
+            		}
+
+            		oContent.html(sResult).addWebForms();
+            		$this._animContent(oElement, sType);
             	}
             }
         );
-    }    
+    }
     else
-        this._animContent(oLink, sType);    
+        this._animContent(oElement, sType);
 };
 
-BxWallPost.prototype._animContent = function(oLink, sType) {
+BxWallPost.prototype._animContent = function(oElement, sType) {
     var $this = this;
     var oLoading = $('#bx-wall-post-loading');
 
-    $(oLink).parents('.boxFirstHeader').siblings('.boxContent').find('.wall-ptype-cnt:visible').bxwallanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
+    $(oElement).parents('.disignBoxFirst').find('.wall-ptype-cnt:visible').bxwallanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
     	var sIdHide = $(this).attr('id');
     	var sTypeHide = sIdHide.substr(sIdHide.lastIndexOf('-') + 1, sIdHide.length);
-    	if(sTypeHide == 'photo' || sTypeHide == 'music' || sTypeHide == 'video')
+    	if(sTypeHide == 'photo' || sTypeHide == 'sound' || sTypeHide == 'video')
     		$(this).html('');
 
         $(this).siblings('.wall-ptype-cnt').filter('.wall_' + sType).bxwallanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {

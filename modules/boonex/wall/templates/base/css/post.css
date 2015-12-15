@@ -20,10 +20,18 @@ div.wall_text,
 div.wall_link,
 div.wall_photo,
 div.wall_video,
-div.wall_music {
+div.wall_sound {
     padding: 0px;
     display: none;
     border: 0px;
+}
+
+div.wall-ptype-uploader-selector {
+	text-align: right; 
+}
+
+div.wall-ptype-uploader-selector .input_wrapper_select .form_input_select {
+	width: auto;
 }
 
 /*--- Post Type TEXT Styles ---*/
