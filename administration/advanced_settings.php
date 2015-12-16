@@ -34,7 +34,7 @@ $_page = array(
     'css_name' => array('forms_adv.css', 'settings.css'),
     'header' => _t('_adm_page_cpt_settings_advanced')
 );
-$_page_cont[$iNameIndex]['page_main_code'] = DesignBoxAdmin(_t('_adm_box_cpt_settings_advanced'), $sResult . $oSettings->getForm(array('1','3','6','9','11','12','14','25','26')), '', '', 11);
+$_page_cont[$iNameIndex]['page_main_code'] = DesignBoxAdmin(_t('_adm_box_cpt_settings_advanced'), $sResult . $oSettings->getForm(array('1','3','6','11','12','14','25','26')), '', '', 11);
 
 define('BX_PROMO_CODE', adm_hosting_promo());
 
