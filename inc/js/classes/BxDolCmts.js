@@ -415,14 +415,16 @@ BxDolCmts.prototype._getCmts = function (e, iCmtParentId, onLoad, iStart, iPerPa
 };
 
 // get just posted 1 comment via ajax request
-BxDolCmts.prototype._getCmt = function (f, iCmtParentId, iCmtId)
+BxDolCmts.prototype._getCmt = function (oForm, iCmtParentId, iCmtId)
 {
     var $this = this;
     var oData = this._getDefaultActions();
     oData['action'] = 'CmtGet';
     oData['Cmt'] = iCmtId;
 
-    var eUl = $('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' div.cmts > ul').get();
+    var oBox = $(oForm).parents('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ':first');
+
+    var eUl = oBox.find('div.cmts > ul').get();
     this._loading (eUl, true);        
 
     jQuery.post (
@@ -433,12 +435,12 @@ BxDolCmts.prototype._getCmt = function (f, iCmtParentId, iCmtId)
 
         	if (iCmtParentId == 0) {
         		var oProcessResults = function () {
-	        	    var oParent = $('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' div.cmts > ul');
-	        	    var iRepliesCount = parseInt($('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' .cmt-comments:first .cmt-comments-count').html());
+	        	    var oParent = oBox.find('div.cmts > ul');
+	        	    var iRepliesCount = parseInt(oBox.find('.cmt-comments:first .cmt-comments-count').html());
 
 	        		//--- Some number of comments already loaded ---//
 	        		if(oParent.children('li.cmt:last').length) {
-	        			$('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' .cmt-comments .cmt-comments-count').html(iRepliesCount + 1);
+	        			oBox.find('.cmt-comments .cmt-comments-count').html(iRepliesCount + 1);
 
 	        			if(oParent.is(':visible'))
 	        				oParent.append($(s).hide()).find('li.cmt:hidden').bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
@@ -451,8 +453,8 @@ BxDolCmts.prototype._getCmt = function (f, iCmtParentId, iCmtId)
 	        		}
 	                //--- Some number of comments exists but NOT loaded ---//
 	            	else if(iRepliesCount > 0) {
-	            	    $this._getCmts(f, 0, function(){
-	            	        $('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' .cmt-comments').toggle().find('.cmt-comments-count').html(iRepliesCount + 1);
+	            	    $this._getCmts(oForm, 0, function(){
+	            	    	oBox.find('.cmt-comments').toggle().find('.cmt-comments-count').html(iRepliesCount + 1);
 	            	    });
 	            	}
 	            	//-- There is no comments at all ---//
@@ -463,52 +465,43 @@ BxDolCmts.prototype._getCmt = function (f, iCmtParentId, iCmtId)
         		};
 
         		if($this._bAutoHideRootPostForm)
-        			$('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' .cmt-reply').bxdolcmtanim(
-						'hide', 
-						$this._sAnimationEffect, 
-						$this._iAnimationSpeed, 
-						function() {
-							oProcessResults();
-						}
-        			);
+        			oBox.find('.cmt-reply').bxdolcmtanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+        				oProcessResults();
+					});
         		else
         			oProcessResults();
             }
         	else {
-        		$('#cmt' + iCmtParentId + ' > .cmt-post-reply').bxdolcmtanim(
-                    'hide', 
-                    $this._sAnimationEffect, 
-                    $this._iAnimationSpeed, 
-                    function() {
-                    	var iRepliesCount = parseInt($('#cmt' + iCmtParentId + ' > .cmt-cont .cmt-replies-count').html());
+        		oBox.find('#cmt' + iCmtParentId + ' > .cmt-post-reply').bxdolcmtanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+                	var iRepliesCount = parseInt(oBox.find('#cmt' + iCmtParentId + ' > .cmt-cont .cmt-replies-count').html());
 
-                        //--- there was no comments and we added new
-                        if(!$('#cmt' + iCmtParentId + ' > ul').length && !iRepliesCount)
-                            $(s).wrap($('<ul />').addClass('cmts').addClass('cmts-margin')).parent().hide().appendTo('#cmt' + iCmtParentId).bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+                    //--- there was no comments and we added new
+                    if(!oBox.find('#cmt' + iCmtParentId + ' > ul').length && !iRepliesCount)
+                        $(s).wrap($('<ul />').addClass('cmts').addClass('cmts-margin')).parent().hide().appendTo(oBox.find('#cmt' + iCmtParentId)).bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+                        	$(this).find('a.bx-link').dolEmbedly();
+                        });
+                    //--- there is some number of comments but they are not loaded.
+                    else if(!oBox.find('#cmt' + iCmtParentId + ' > ul').length && iRepliesCount > 0) {
+                        $this._getCmts(oForm, iCmtParentId, function() {
+                        	oBox.find('#cmt' + iCmtParentId + ' > .cmt-cont .cmt-replies').toggle().find('.cmt-replies-count').html(iRepliesCount + 1);
+                        });
+                    }
+                    //--- there is some number of comments and they are loaded.
+                    else if(oBox.find('#cmt' + iCmtParentId + ' > ul').length) {
+                    	oBox.find('#cmt' + iCmtParentId + ' > .cmt-cont .cmt-replies .cmt-replies-count').html(iRepliesCount + 1);
+
+                        if(oBox.find('#cmt' + iCmtParentId + ' > ul').is(':visible')) {
+                        	oBox.find('#cmt' + iCmtParentId + ' > ul').append($(s).hide());
+                        	oBox.find('#cmt' + iCmtParentId + ' > ul > :last').bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
                             	$(this).find('a.bx-link').dolEmbedly();
                             });
-                        //--- there is some number of comments but they are not loaded.
-                        else if(!$('#cmt' + iCmtParentId + ' > ul').length && iRepliesCount > 0) {
-                            $this._getCmts(f, iCmtParentId, function() {
-                                $('#cmt' + iCmtParentId + ' > .cmt-cont .cmt-replies').toggle().find('.cmt-replies-count').html(iRepliesCount + 1);
+                        }
+                        else
+                        	oBox.find('#cmt' + iCmtParentId + ' > ul').append(s).bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+                            	$(this).find('a.bx-link').dolEmbedly();
                             });
-                        }
-                        //--- there is some number of comments and they are loaded.
-                        else if($('#cmt' + iCmtParentId + ' > ul').length) {
-                            $('#cmt' + iCmtParentId + ' > .cmt-cont .cmt-replies .cmt-replies-count').html(iRepliesCount + 1);
-
-                            if($('#cmt' + iCmtParentId + ' > ul').is(':visible')) {
-                                $('#cmt' + iCmtParentId + ' > ul').append($(s).hide());
-                                $('#cmt' + iCmtParentId + ' > ul > :last').bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
-                                	$(this).find('a.bx-link').dolEmbedly();
-                                });
-                            }
-                            else
-                                $('#cmt' + iCmtParentId + ' > ul').append(s).bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
-                                	$(this).find('a.bx-link').dolEmbedly();
-                                });
-                        }
-                    });
+                    }
+                });
         	}
 
         	$this._runCountdown(iCmtId);
