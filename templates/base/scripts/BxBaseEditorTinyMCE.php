@@ -33,18 +33,21 @@ class BxBaseEditorTinyMCE extends BxDolEditor
      * Standard view initialization params
      */
     protected static $WIDTH_STANDARD = '100%';
+    protected static $MODULES_STANDARD = array (
+                            "advlist: '{bx_url_tinymce}plugins/advlist/plugin.min.js'",
+                            "autolink: '{bx_url_tinymce}plugins/autolink/plugin.min.js'",
+                            "autosave: '{bx_url_tinymce}plugins/autosave/plugin.min.js'",
+                            "code: '{bx_url_tinymce}plugins/code/plugin.min.js'",
+                            "hr: '{bx_url_tinymce}plugins/hr/plugin.min.js'",
+                            "image: '{bx_url_tinymce}plugins/image/plugin.min.js'",
+                            "link: '{bx_url_tinymce}plugins/link/plugin.min.js'",
+                            "lists: '{bx_url_tinymce}plugins/lists/plugin.min.js'",
+                            "media: '{bx_url_tinymce}plugins/media/plugin.min.js'",
+                            "moxiemanager: '{bx_url_tinymce}../moxiemanager/plugin.min.js'",
+    );
     protected static $CONF_STANDARD = "
                         external_plugins: {
-                            advlist: '{bx_url_tinymce}plugins/advlist/plugin.min.js',
-                            autolink: '{bx_url_tinymce}plugins/autolink/plugin.min.js',
-                            autosave: '{bx_url_tinymce}plugins/autosave/plugin.min.js',
-                            code: '{bx_url_tinymce}plugins/code/plugin.min.js',
-                            hr: '{bx_url_tinymce}plugins/hr/plugin.min.js', 
-                            image: '{bx_url_tinymce}plugins/image/plugin.min.js',
-                            link: '{bx_url_tinymce}plugins/link/plugin.min.js',
-                            lists: '{bx_url_tinymce}plugins/lists/plugin.min.js',
-                            media: '{bx_url_tinymce}plugins/media/plugin.min.js',
-                            moxiemanager: '{bx_url_tinymce}../moxiemanager/plugin.min.js'
+                            {modules}
                         },
                         width: '100%',
                         height: '270',
@@ -58,14 +61,17 @@ class BxBaseEditorTinyMCE extends BxDolEditor
      * Minimal view initialization params
      */
     protected static $WIDTH_MINI = '100%';
+    protected static $MODULES_MINI = array (
+                            "autolink: '{bx_url_tinymce}plugins/autolink/plugin.min.js'",
+                            "image: '{bx_url_tinymce}plugins/image/plugin.min.js'",
+                            "link: '{bx_url_tinymce}plugins/link/plugin.min.js'",
+                            "lists: '{bx_url_tinymce}plugins/lists/plugin.min.js'",
+                            "moxiemanager: '{bx_url_tinymce}../moxiemanager/plugin.min.js'",
+    );
     protected static $CONF_MINI = "
                         menubar: false,
                         external_plugins: {
-                            autolink: '{bx_url_tinymce}plugins/autolink/plugin.min.js',
-                            image: '{bx_url_tinymce}plugins/image/plugin.min.js',
-                            link: '{bx_url_tinymce}plugins/link/plugin.min.js',
-                            lists: '{bx_url_tinymce}plugins/lists/plugin.min.js',
-                            moxiemanager: '{bx_url_tinymce}../moxiemanager/plugin.min.js'
+                            {modules}
                         },
                         width: '100%',
                         height: '150',
@@ -78,31 +84,34 @@ class BxBaseEditorTinyMCE extends BxDolEditor
      * Full view initialization params
      */
     protected static $WIDTH_FULL = '100%';
+    protected static $MODULES_FULL = array (
+                            "advlist: '{bx_url_tinymce}plugins/advlist/plugin.min.js'",
+                            "anchor: '{bx_url_tinymce}plugins/anchor/plugin.min.js'",
+                            "autolink: '{bx_url_tinymce}plugins/autolink/plugin.min.js'",
+                            "autoresize: '{bx_url_tinymce}plugins/autoresize/plugin.min.js'",
+                            "autosave: '{bx_url_tinymce}plugins/autosave/plugin.min.js'",
+                            "charmap: '{bx_url_tinymce}plugins/charmap/plugin.min.js'",
+                            "code: '{bx_url_tinymce}plugins/code/plugin.min.js'",
+                            "emoticons: '{bx_url_tinymce}plugins/emoticons/plugin.min.js'",
+                            "hr: '{bx_url_tinymce}plugins/hr/plugin.min.js'",
+                            "image: '{bx_url_tinymce}plugins/image/plugin.min.js'",
+                            "link: '{bx_url_tinymce}plugins/link/plugin.min.js'",
+                            "lists: '{bx_url_tinymce}plugins/lists/plugin.min.js'",
+                            "media: '{bx_url_tinymce}plugins/media/plugin.min.js'",
+                            "nonbreaking: '{bx_url_tinymce}plugins/nonbreaking/plugin.min.js'",
+                            "pagebreak: '{bx_url_tinymce}plugins/pagebreak/plugin.min.js'",
+                            "preview: '{bx_url_tinymce}plugins/preview/plugin.min.js'",
+                            "print: '{bx_url_tinymce}plugins/print/plugin.min.js'",
+                            "save: '{bx_url_tinymce}plugins/save/plugin.min.js'",
+                            "searchreplace: '{bx_url_tinymce}plugins/searchreplace/plugin.min.js'",
+                            "table: '{bx_url_tinymce}plugins/table/plugin.min.js'",
+                            "textcolor: '{bx_url_tinymce}plugins/textcolor/plugin.min.js'",
+                            "visualblocks: '{bx_url_tinymce}plugins/visualblocks/plugin.min.js'",
+                            "moxiemanager: '{bx_url_tinymce}../moxiemanager/plugin.min.js'",
+    );
     protected static $CONF_FULL = "
                         external_plugins: {
-                            advlist: '{bx_url_tinymce}plugins/advlist/plugin.min.js',
-                            anchor: '{bx_url_tinymce}plugins/anchor/plugin.min.js',
-                            autolink: '{bx_url_tinymce}plugins/autolink/plugin.min.js',
-                            autoresize: '{bx_url_tinymce}plugins/autoresize/plugin.min.js',
-                            autosave: '{bx_url_tinymce}plugins/autosave/plugin.min.js',
-                            charmap: '{bx_url_tinymce}plugins/charmap/plugin.min.js',
-                            code: '{bx_url_tinymce}plugins/code/plugin.min.js',
-                            emoticons: '{bx_url_tinymce}plugins/emoticons/plugin.min.js',
-                            hr: '{bx_url_tinymce}plugins/hr/plugin.min.js',
-                            image: '{bx_url_tinymce}plugins/image/plugin.min.js',
-                            link: '{bx_url_tinymce}plugins/link/plugin.min.js',
-                            lists: '{bx_url_tinymce}plugins/lists/plugin.min.js',
-                            media: '{bx_url_tinymce}plugins/media/plugin.min.js',
-                            nonbreaking: '{bx_url_tinymce}plugins/nonbreaking/plugin.min.js',
-                            pagebreak: '{bx_url_tinymce}plugins/pagebreak/plugin.min.js',
-                            preview: '{bx_url_tinymce}plugins/preview/plugin.min.js',
-                            print: '{bx_url_tinymce}plugins/print/plugin.min.js',
-                            save: '{bx_url_tinymce}plugins/save/plugin.min.js',
-                            searchreplace: '{bx_url_tinymce}plugins/searchreplace/plugin.min.js',
-                            table: '{bx_url_tinymce}plugins/table/plugin.min.js',
-                            textcolor: '{bx_url_tinymce}plugins/textcolor/plugin.min.js',
-                            visualblocks: '{bx_url_tinymce}plugins/visualblocks/plugin.min.js',
-                            moxiemanager: '{bx_url_tinymce}../moxiemanager/plugin.min.js'
+                            {modules}
                         },
                         width: '100%',
                         height: '320',
@@ -172,22 +181,24 @@ class BxBaseEditorTinyMCE extends BxDolEditor
         // set visual mode
         switch ($iViewMode) {
             case BX_EDITOR_MINI:
-                 $sToolsItems = self::$CONF_MINI;
+                $sToolsItems = self::$CONF_MINI;
+                $aModules = self::$MODULES_MINI;
                 break;
             case BX_EDITOR_FULL:
                 $sToolsItems = self::$CONF_FULL;
+                $aModules = self::$MODULES_FULL;
             break;
             case BX_EDITOR_STANDARD:
             default:
-                 $sToolsItems = self::$CONF_STANDARD;
+                $sToolsItems = self::$CONF_STANDARD;
+                $aModules = self::$MODULES_STANDARD;
         }
 
         // detect language
         $sLang = (isset(self::$CONF_LANGS[$GLOBALS['sCurrentLanguage']]) ? $GLOBALS['sCurrentLanguage'] : 'en');
 
-        // initialize editor
-        $sInitEditor = $this->_replaceMarkers(self::$CONF_COMMON, array(
-            'bx_var_custom_init' => $sToolsItems,
+        $aMarkers = array(
+            'bx_var_custom_init' => &$sToolsItems,
             'bx_var_custom_conf' => $this->_sConfCustom,
             'bx_var_plugins_path' => bx_js_string(BX_DOL_URL_PLUGINS, BX_ESCAPE_STR_APOS),
             'bx_var_css_path' => bx_js_string($this->_oTemplate->getCssUrl('editor.css'), BX_ESCAPE_STR_APOS),
@@ -196,7 +207,15 @@ class BxBaseEditorTinyMCE extends BxDolEditor
             'bx_var_selector' => bx_js_string($sSelector, BX_ESCAPE_STR_APOS),
             'bx_url_root' => bx_js_string(BX_DOL_URL_ROOT, BX_ESCAPE_STR_APOS),
             'bx_url_tinymce' => bx_js_string(BX_DOL_URL_PLUGINS . 'tinymce/', BX_ESCAPE_STR_APOS),
-        ));
+        );
+
+        $o = new BxDolAlerts('system', 'attach_editor', 0, 0, array('markers' => &$aMarkers, 'modules' => &$aModules, 'view_mode' => $iViewMode, 'dynamic_mode' => $bDynamicMode, 'selector' => $sSelector, 'editor' => $this));
+        $o->alert();
+
+        $sToolsItems = str_replace('{modules}', join(",\n", $aModules), $sToolsItems);
+
+        // initialize editor
+        $sInitEditor = $this->_replaceMarkers(self::$CONF_COMMON, $aMarkers);
 
         if ($bDynamicMode) {
 
