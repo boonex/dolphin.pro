@@ -257,6 +257,8 @@ class BxDolConnectModule extends BxDolModule
 
         // convert fields
         $aProfileFields = $this->_convertRemoteFields($aProfileInfo, $sAlternativeName);
+        if (empty($aProfileFields['email']))
+            return _t('_Incorrect Email');
 
         // antispam check
         bx_import('BxDolStopForumSpam');
