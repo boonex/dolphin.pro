@@ -117,6 +117,7 @@ INSERT INTO `sys_menu_admin`(`parent_id`, `name`, `title`, `url`, `description`,
 (@iParentId, 'membership_levels', '_adm_mmi_membership_levels', '{siteAdminUrl}memb_levels.php', 'For setting up different membership levels, different actions for each membership level and action limits', 'star-o col-blue2', '', '', 5),
 (@iParentId, 'email_templates', '_adm_mmi_email_templates', '{siteAdminUrl}email_templates.php', 'For setting up email texts which are sent from your website to members automatically', 'clipboard col-blue2', '', '', 6),
 (@iParentId, 'templates', '_adm_mmi_templates', '{siteAdminUrl}templates.php', 'Templates management', 'eye col-blue2', '', '', 7),
+(@iParentId, 'privacy', '_adm_mmi_privacy', '{siteAdminUrl}privacy.php', 'Privacy settings', 'lock col-blue2', '', '', 8),
 (@iParentId, 'categories_settings', '_adm_mmi_categories_settings', '{siteAdminUrl}categories.php', 'Categories settings', 'folder col-blue2', '', '', 15),
 (@iParentId, 'watermark', '_adm_mmi_watermark', '{siteAdminUrl}settings.php?cat=16', 'Setting up watermark for media content', 'certificate col-blue2', '', '', 16);
 

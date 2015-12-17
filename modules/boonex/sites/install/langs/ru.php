@@ -6,6 +6,7 @@
 
 $aLangContent = array(
   '_sys_module_sites' => 'Сайты',
+  '_sys_module_bx_sites' => 'Сайты',
   '_bx_site_caption_edit' => 'Редактировать сайты',
   '_bx_sites' => 'Сайты',
   '_bx_sites_action_add_site' => 'Добавить сайт',
