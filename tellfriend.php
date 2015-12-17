@@ -63,15 +63,15 @@ $aForm = array(
             'name' => 'ID',
             'value' => $profileID,
         ),
-        'name' => array(
+        'sender_name' => array(
             'type' => 'text',
-            'name' => 'name',
+            'name' => 'sender_name',
             'caption' => _t("_Your name"),
             'value' => getNickName($aSenderInfo['ID']),
         ),
-        'email' => array(
+        'sender_email' => array(
             'type' => 'text',
-            'name' => 'email',
+            'name' => 'sender_email',
             'caption' => _t("_Your email"),
             'value' => $aSenderInfo['Email'],
             'checker' => array (
@@ -79,14 +79,13 @@ $aForm = array(
                 'error' => _t('_Incorrect Email'),
             ),
         ),
-        'friends_emails' => array(
+        'recipient_email' => array(
             'type' => 'text',
-            'name' => 'friends_emails',
+            'name' => 'recipient_email',
             'caption' => _t("_Friend email"),
             'value' => '',
             'checker' => array (
-                'func' => 'length',
-                'params' => array(3, 256),
+                'func' => 'email',
                 'error' => _t('_sys_adm_form_err_required_field'),
             ),
         ),
@@ -143,28 +142,30 @@ function SendTellFriend($iSenderID = 0)
 {
     global $profileID;
 
-    $sRecipient   = clear_xss($_POST['friends_emails']);
-    $sSenderName  = clear_xss($_POST['name']);
-    $sSenderEmail = clear_xss($_POST['email']);
-    if ( strlen( trim($sRecipient) ) <= 0 )
+    $sSenderName  = clear_xss(bx_get('sender_name'));
+    $sSenderEmail = clear_xss(bx_get('sender_email'));
+    if(strlen(trim($sSenderEmail)) <= 0)
         return 0;
-    if ( strlen( trim($sSenderEmail) ) <= 0 )
+
+    $sRecipientEmail   = clear_xss(bx_get('recipient_email'));
+    if(strlen(trim($sRecipientEmail)) <= 0)
         return 0;
 
     $sLinkAdd = $iSenderID > 0 ? 'idFriend=' . $iSenderID : '';
     $rEmailTemplate = new BxDolEmailTemplates();
-    if ( $profileID ) {
+    if($profileID) {
         $aTemplate = $rEmailTemplate -> getTemplate('t_TellFriendProfile', getLoggedId());
         $Link = getProfileLink($profileID, $sLinkAdd);
-    } else {
+    } 
+    else {
         $aTemplate = $rEmailTemplate -> getTemplate('t_TellFriend', getLoggedId());
         $Link = BX_DOL_URL_ROOT;
         if (strlen($sLinkAdd) > 0)
             $Link .= '?' . $sLinkAdd;
     }
-    $aPlus = array(
+
+    return sendMail($sRecipientEmail, $aTemplate['Subject'], $aTemplate['Body'], '', array(
         'Link' => $Link,
         'FromName' => $sSenderName
-    );
-    return sendMail($sRecipient, $aTemplate['Subject'], $aTemplate['Body'], '', $aPlus);
+    ));
 }
