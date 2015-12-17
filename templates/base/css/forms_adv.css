@@ -64,6 +64,7 @@
 }
 
 .form_advanced_table .input_wrapper_wraptext,
+.form_advanced_table .input_wrapper_value,
 .form_advanced_table .bx-form-value label {
     white-space: normal;
 }
