@@ -124,23 +124,19 @@ function _getDefaults($mixedResult, $bActive = false)
             );
     	}
 
-    	if(in_array($sValue, $aGroupIds))
-	        $aForm['inputs'][$sName] = array(
-				'type' => 'select',
-				'name' => $sName,
-				'caption' => _t($aAction['title']),
-				'value' =>  (int)$sValue,
-				'values' => $aValues,
-				'db' => array (
-					'pass' => 'Int',
-				)
-			);
-		else
-			$aForm['inputs'][$sName] = array(
-				'type' => 'value',
-				'caption' => _t($aAction['title']),
-				'value' =>  $sValue,
-			);
+    	if(!in_array($sValue, $aGroupIds))
+    		continue;
+
+        $aForm['inputs'][$sName] = array(
+			'type' => 'select',
+			'name' => $sName,
+			'caption' => _t($aAction['title']),
+			'value' =>  (int)$sValue,
+			'values' => $aValues,
+			'db' => array (
+				'pass' => 'Int',
+			)
+		);
     }
 
     $aForm['inputs'][$sModule . '_end'] = array(
