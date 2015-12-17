@@ -43,7 +43,6 @@ class BxBaseEditorTinyMCE extends BxDolEditor
                             "link: '{bx_url_tinymce}plugins/link/plugin.min.js'",
                             "lists: '{bx_url_tinymce}plugins/lists/plugin.min.js'",
                             "media: '{bx_url_tinymce}plugins/media/plugin.min.js'",
-                            "moxiemanager: '{bx_url_tinymce}../moxiemanager/plugin.min.js'",
     );
     protected static $CONF_STANDARD = "
                         external_plugins: {
@@ -66,7 +65,6 @@ class BxBaseEditorTinyMCE extends BxDolEditor
                             "image: '{bx_url_tinymce}plugins/image/plugin.min.js'",
                             "link: '{bx_url_tinymce}plugins/link/plugin.min.js'",
                             "lists: '{bx_url_tinymce}plugins/lists/plugin.min.js'",
-                            "moxiemanager: '{bx_url_tinymce}../moxiemanager/plugin.min.js'",
     );
     protected static $CONF_MINI = "
                         menubar: false,
@@ -107,7 +105,6 @@ class BxBaseEditorTinyMCE extends BxDolEditor
                             "table: '{bx_url_tinymce}plugins/table/plugin.min.js'",
                             "textcolor: '{bx_url_tinymce}plugins/textcolor/plugin.min.js'",
                             "visualblocks: '{bx_url_tinymce}plugins/visualblocks/plugin.min.js'",
-                            "moxiemanager: '{bx_url_tinymce}../moxiemanager/plugin.min.js'",
     );
     protected static $CONF_FULL = "
                         external_plugins: {

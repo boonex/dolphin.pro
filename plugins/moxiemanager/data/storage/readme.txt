@@ -1,1 +1,0 @@
-This is where storage files are stored you can reconfigure the location of this dir with the storage.path option.

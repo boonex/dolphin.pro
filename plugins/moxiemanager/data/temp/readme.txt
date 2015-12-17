@@ -1,1 +1,0 @@
-This is where temp files are stored you can reconfigure the location of this dir with the general.temp_dir option.

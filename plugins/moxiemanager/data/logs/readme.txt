@@ -1,1 +1,0 @@
-This is where log files are stored you can reconfigure the location of this dir with the log.path option.

@@ -1,1 +1,0 @@
-This is where cache files are stored you can reconfigure the location of this dir with the general.cache_dir option.
