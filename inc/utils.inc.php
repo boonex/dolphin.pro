@@ -1065,10 +1065,13 @@ function bx_import($sClassName, $aModule = array())
         return;
     }
     if (0 == strncmp($sClassName, 'BxTempl', 7) && !class_exists($sClassName)) {
-        if(isset($GLOBALS['iAdminPage']) && (int)$GLOBALS['iAdminPage'] == 1)
-            require_once(BX_DIRECTORY_PATH_ROOT . "templates/tmpl_uni/scripts/" . $sClassName . '.php');
-        else
+        if (isset($GLOBALS['iAdminPage']) && (int)$GLOBALS['iAdminPage'] == 1) {
+            if (!defined('BX_DOL_TEMPLATE_DEFAULT_CODE'))
+                require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolTemplate.php');
+            require_once(BX_DIRECTORY_PATH_ROOT . "templates/tmpl_" . BX_DOL_TEMPLATE_DEFAULT_CODE . "/scripts/" . $sClassName . '.php');
+        } else {
             require_once(BX_DIRECTORY_PATH_ROOT . "templates/tmpl_{$GLOBALS['tmpl']}/scripts/" . $sClassName . '.php');
+        }
         return;
     }
 }
