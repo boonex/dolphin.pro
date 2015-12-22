@@ -76,11 +76,9 @@ class BxWallCmts extends BxTemplCmtsView
         ));
     }
 
-    function getActions($iCmtId, $sType = 'reply', $iEventId = 0)
+    function getActions($iCmtId, $sType = 'comment', $iEventId = 0)
     {
         $aEvent = $this->_oModule->_oDb->getEvents(array('browse' => 'id', 'object_id' => $iEventId));
-
-        //$this->_oModule->_iOwnerId = (int)$aEvent['owner_id'];
 
         //--- Comment
         $iObjectId = $this->getId();
@@ -90,8 +88,36 @@ class BxWallCmts extends BxTemplCmtsView
             'cmt_type' => $sType
         );
 
-        //--- Vote
-        $oVoting = $this->_oModule->_getObjectVoting($aEvent);
+        //--- Reply
+        $aReply = array();
+        $bReply = $this->isPostReplyAllowed();
+        if($bReply)
+			$aReply = array(
+				'js_object' => $this->_sJsObjName,
+				'id' => $aParams['cmt_id']
+			);
+
+		//--- Replies
+		$aReplies = array();
+		$bReplies = (int)$aParams['cmt_replies'] > 0;
+		if($bReplies)
+			$aReplies = array(
+				'js_object' => $this->_sJsObjName,
+				'id' => $aParams['cmt_id'], 
+				'show_attr' => _t('_wall_show_n_comments', $aParams['cmt_replies']),
+				'show' => $aParams['cmt_replies'],
+				'hide_attr' => _t('_wall_hide_n_comments', $aParams['cmt_replies']),
+				'hide' => $aParams['cmt_replies'],
+			);
+
+		//--- Vote
+		$aVote = array();
+        $oVote = $this->_oModule->_getObjectVoting($aEvent);
+        $bVote = $oVote->isVotingAllowed();
+        if($bVote)
+        	$aVote = array(
+				'content' => $oVote->getVotingElement()
+        	);
 
         //--- Repost
         $sRepost = '';
@@ -102,7 +128,10 @@ class BxWallCmts extends BxTemplCmtsView
         	$sAction = $aEvent['action'];
         	$iObjectId = $this->_oModule->_oConfig->isSystem($sType, $sAction) ? $aEvent['object_id'] : $aEvent['id'];
 
-        	$sRepost = $this->_oModule->serviceGetRepostElementBlock($iOwnerId, $sType, $sAction, $iObjectId);
+        	$sRepost = $this->_oModule->serviceGetRepostElementBlock($iOwnerId, $sType, $sAction, $iObjectId, array(
+        		'show_do_repost_icon' => true,
+        		'show_do_repost_label' => false
+        	));
         }
 
         $sRet = $this->_oModule->_oTemplate->parseHtmlByTemplateName('comments_actions', array(
@@ -114,23 +143,17 @@ class BxWallCmts extends BxTemplCmtsView
                     'id' => $aEvent['id']
                 )
             ),
-            'bx_if:show_replies' => array(
-                'condition' => $aParams['cmt_replies'],
-                'content' => array(
-                    'content' => $this->_getRepliesBox($aParams)
-                )
-            ),
             'bx_if:show_reply' => array(
-                'condition' => $this->isPostReplyAllowed(),
-                'content' => array(
-                    'content' => $this->_getPostReplyBoxTo($aParams)
-                )
+                'condition' => $bReply,
+                'content' => $aReply
+            ),
+            'bx_if:show_replies' => array(
+                'condition' => $bReplies,
+                'content' => $aReplies
             ),
             'bx_if:show_vote' => array(
-                'condition' => $oVoting->isVotingAllowed(),
-                'content' => array(
-                    'content' => $oVoting->getVotingElement()
-                )
+                'condition' => $bVote,
+                'content' => $aVote
             ),
             'bx_if:show_repost' => array(
                 'condition' => $bRepost,

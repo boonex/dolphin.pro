@@ -2,9 +2,9 @@
 	<script language="javascript">
 		var __js_object__ = new BxDolVoting('<bx_url_root />', '__name__', '__object_id__', '__html_id__', '__html_id_slider__', __size_x__, __max__);
 	</script>
-	<a class="wall-post-voting-vote" href="javascript:void(0)" onclick="javascript:__js_object__.vote(__max__)">
-		<bx_text:_wall_do_vote />
-		<bx_if:show_count>&#160;<b class="wall-post-voting-count">__count__</b></bx_if:show_count>
+	<a class="wall-post-voting-vote" href="javascript:void(0)" onclick="javascript:__js_object__.vote(__max__)" title="<bx_text_attribute:_wall_do_vote />">
+		<i class="sys-icon thumbs-up"></i>
+		<bx_if:show_count><b class="wall-post-voting-count">__count__</b></bx_if:show_count>
 	</a>
 	<div id="__html_id_slider__" class="wall-post-voting-slider"></div>
 </div>

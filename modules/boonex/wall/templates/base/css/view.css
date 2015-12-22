@@ -388,13 +388,20 @@ div.wall-event div.wall-comments span.wall-date,
 div.wall-event div.wall-comments a.cmt-replies-show,
 div.wall-event div.wall-comments a.cmt-replies-hide,
 div.wall-event div.wall-comments a.cmt-reply-toggle,
+div.wall-event div.wall-comments a.wall-delete,
 div.wall-event div.wall-comments a.wall-post-voting-vote,
-div.wall-event div.wall-comments a.wall-delete {
+div.wall-event div.wall-comments a.wall-repost-do-repost {
+	display: inline-block;
+
     margin: 0px;
 	padding: 0px;
 
     text-transform: capitalize;
 	text-decoration: none;
+}
+div.wall-event div.wall-comments span.cmt-comments-count,
+div.wall-event div.wall-comments b.wall-post-voting-count {
+	padding-left: 3px;
 }
 div.wall-event div.wall-comments div.thumbnail_block {
     left: -38px;
