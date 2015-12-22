@@ -34,6 +34,7 @@ define('BX_WALL_PARSE_TYPE_REPOST', 'repost');
 define('BX_WALL_MEDIA_CATEGORY_NAME', 'wall');
 
 define('BX_WALL_DIVIDER_ID', ',');
+define('BX_WALL_DIVIDER_OBJECT_ID', ',');
 define('BX_WALL_DIVIDER_TIMELINE', '-');
 
 class BxWallModule extends BxDolModule
@@ -172,7 +173,7 @@ class BxWallModule extends BxDolModule
             'action' => '',
             'object_id' => $iAuthorId,
             'content' => serialize($aContent),
-            'title' => _t('_wall_reposted_title_' . bx_ltrim_str($aReposted['type'], $this->_oConfig->getPrefix('common_post'), '') . (!empty($aReposted['action']) ? '_' . $aReposted['action'] : ''), getNickName($iAuthorId)),
+            'title' => _t($this->getRepostedLanguageKey($aReposted['type'], $aReposted['action'], $aReposted['object_id'], true), getNickName($iAuthorId)),
             'description' => ''
         ));
 
@@ -794,6 +795,23 @@ class BxWallModule extends BxDolModule
         return $this->_oTemplate->getRepostJsClick($iOwnerId, $sType, $sAction, $iObjectId);
     }
 
+	function getRepostedLanguageKey($sType, $sAction, $mixedObjectId, $bTitle = false)
+    {
+    	$sLanguageKey = '_wall_reposted_';
+		if($bTitle)
+			$sLanguageKey .= 'title_';
+
+		$sLanguageKey .= bx_ltrim_str($sType, $this->_oConfig->getPrefix('common_post'), '');
+
+        if(!empty($sAction))
+        	$sLanguageKey .= '_' . $sAction;
+
+		if($this->_oConfig->isGrouped($sType, $sAction, $mixedObjectId))
+			$sLanguageKey .= '_grouped';
+
+		return $sLanguageKey;
+    }
+
     function onPost($iId)
     {
     	$iUserId = $this->_getAuthorId();
@@ -1182,8 +1200,9 @@ class BxWallModule extends BxDolModule
     		return $this->_getObjectVotingDefault($aEvent['id']);
 
 		$sType = $aEvent['type'];
+		$sAction = $aEvent['action'];
 	    $iObjectId = $aEvent['object_id'];
-		if(strpos($iObjectId, ',') !== false) 
+		if($this->_oConfig->isGrouped($sType, $sAction, $iObjectId)) 
 			return $this->_getObjectVotingDefault($aEvent['id']);
 
 		$oVoting = new BxWallVoting($sType, $iObjectId);

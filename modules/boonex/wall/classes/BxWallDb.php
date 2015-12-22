@@ -351,7 +351,7 @@ class BxWallDb extends BxDolModuleDb
 
         $sSql = "UPDATE `" . $this->_sPrefix . "events`
             SET
-                `object_id`=CONCAT(`object_id`, '," . $oAlert->iObject . "'),
+                `object_id`=CONCAT(`object_id`, '" . BX_WALL_DIVIDER_OBJECT_ID . $oAlert->iObject . "'),
                 `title`='',
                 `description`='',
                 `date`=UNIX_TIMESTAMP()

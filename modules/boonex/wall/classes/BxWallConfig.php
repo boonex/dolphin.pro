@@ -271,4 +271,17 @@ class BxWallConfig extends BxDolConfig
     {
         return strcmp($sType, 'comment') == 0 && strcmp($sAction, 'add') == 0;
     }
+
+	function isGrouped($sType, $sAction, $mixedObjectId)
+    {
+    	$sHandler = $sType . '_' . $sAction;
+        if(!$this->isHandler($sHandler))
+            return false;
+            
+		$aHandler = $this->getHandlers($sHandler);
+		if((int)$aHandler['groupable'] == 0 || empty($aHandler['group_by']))
+			return false;
+
+        return strpos($mixedObjectId, BX_WALL_DIVIDER_OBJECT_ID) !== false;
+    }
 }

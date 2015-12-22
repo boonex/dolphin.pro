@@ -64,7 +64,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 	                	$iObjectId = (int)$aContent['object_id'];
 	                }
 
-	                if(strpos($iObjectId, ',') !== false) {
+	                if($this->_oConfig->isGrouped($aEvent['type'], $aEvent['action'], $iObjectId)) {
 	                    $sType = isset($aResult['grouped']['group_cmts_name']) ? $aResult['grouped']['group_cmts_name'] : '';
 	                    $iObjectId = isset($aResult['grouped']['group_id']) ? (int)$aResult['grouped']['group_id'] : 0;
 	                }
@@ -186,7 +186,6 @@ class BxWallTemplate extends BxDolModuleTemplate
 
                 $aContent = unserialize($aEvent['content']);
                 $aReposted = $this->_oDb->getReposted($aContent['type'], $aContent['action'], $aContent['object_id']);
-                $sRepostedType = bx_ltrim_str($aReposted['type'], $sPrefix, '');
 
                 $sMethod = $this->_oConfig->isSystem($aContent['type'] , $aContent['action']) ? '_getSystemData' : '_getCommonData';
 				$aResult = array_merge($aResult, $this->$sMethod($aReposted));
@@ -194,7 +193,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 					return array();
 
 				$sTmplName = 'repost';
-				$aTmplVars['cpt_reposted'] = _t('_wall_reposted_' . $sRepostedType . (!empty($aReposted['action']) ? '_' . $aReposted['action'] : ''));
+				$aTmplVars['cpt_reposted'] = _t($this->_oModule->getRepostedLanguageKey($aReposted['type'], $aReposted['action'], $aReposted['object_id']));
                 break;
         }
 
@@ -725,12 +724,12 @@ class BxWallTemplate extends BxDolModuleTemplate
         ));
     }
 
-    function getRepostJsClick($iOwnerId, $sType, $sAction, $iObjectId)
+    function getRepostJsClick($iOwnerId, $sType, $sAction, $mixedObjectId)
     {
         $sJsObject = $this->_oConfig->getJsObject('repost');
-        $sFormat = "%s.repostItem(this, %d, '%s', '%s', %d);";
+        $sFormat = "%s.repostItem(this, %d, '%s', '%s', " . (is_int($mixedObjectId) ? "%d" : "'%s'") . ");";
 
         $iOwnerId = !empty($iOwnerId) ? (int)$iOwnerId : $this->_oModule->_getAuthorId(); //--- in whose timeline the content will be reposted
-        return sprintf($sFormat, $sJsObject, $iOwnerId, $sType, $sAction, (int)$iObjectId);
+        return sprintf($sFormat, $sJsObject, $iOwnerId, $sType, $sAction, $mixedObjectId);
     }
 }
