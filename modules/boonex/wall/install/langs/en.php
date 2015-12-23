@@ -85,6 +85,8 @@ $aLangContent = array(
     '_wall_load_more' => 'Load More',
 	'_wall_see_more' => 'see more',
     '_wall_spy_post' => '<a href="{profile_link}">{profile_nick}</a> posted on <a href="{recipient_p_link}">{recipient_p_nick}</a>\'s timeline',
+	'_wall_spy_repost' => '<a href="{profile_link}">{profile_nick}</a> reposted <a href="{recipient_p_link}">{recipient_p_nick}</a>\'s timeline post',
+	'_wall_spy_rate' => '<a href="{profile_link}">{profile_nick}</a> rated <a href="{recipient_p_link}">{recipient_p_nick}</a>\'s timeline post',
     '_wall_spy_post_comment' => '<a href="{profile_link}">{profile_nick}</a> commented on <a href="{recipient_p_link}">{recipient_p_nick}</a>\'s timeline',
 	'_wall_do_vote' => 'Like',
     '_bx_wall_chart' => 'Wall Events',

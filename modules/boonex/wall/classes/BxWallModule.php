@@ -733,11 +733,15 @@ class BxWallModule extends BxDolModule
         return array(
             'handlers' => array(
                 array('alert_unit' => $AlertName, 'alert_action' => 'post', 'module_uri' => $this->_oConfig->getUri(), 'module_class' => 'Module', 'module_method' => 'get_spy_post'),
+                array('alert_unit' => $AlertName, 'alert_action' => 'repost', 'module_uri' => $this->_oConfig->getUri(), 'module_class' => 'Module', 'module_method' => 'get_spy_post'),
+                array('alert_unit' => $AlertName, 'alert_action' => 'rate', 'module_uri' => $this->_oConfig->getUri(), 'module_class' => 'Module', 'module_method' => 'get_spy_post'),
                 array('alert_unit' => $AlertName, 'alert_action' => 'commentPost', 'module_uri' => $this->_oConfig->getUri(), 'module_class' => 'Module', 'module_method' => 'get_spy_post'),
             ),
             'alerts' => array(
                 array('unit' => $AlertName, 'action' => 'post'),
+                array('unit' => $AlertName, 'action' => 'repost'),
                 array('unit' => $AlertName, 'action' => 'delete'),
+                array('unit' => $AlertName, 'action' => 'rate'),
                 array('unit' => $AlertName, 'action' => 'commentPost'),
                 array('unit' => $AlertName, 'action' => 'commentRemoved')
             )
@@ -755,6 +759,12 @@ class BxWallModule extends BxDolModule
             case 'post':
                 $sLangKey = '_wall_spy_post';
                 break;
+			case 'repost':
+                $sLangKey = '_wall_spy_repost';
+                break;
+			case 'rate':
+				$sLangKey = '_wall_spy_rate';
+				break;
             case 'commentPost':
                 $sLangKey = '_wall_spy_post_comment';
                 break;
@@ -871,7 +881,7 @@ class BxWallModule extends BxDolModule
         $this->_oDb->updateRepostCounter($aReposted['id'], $aReposted['reposts']);
 
         //--- Wall -> Update for Alerts Engine ---//
-        $oAlert = new BxDolAlerts($this->_oConfig->getAlertSystemName(), 'repost', $aReposted['id'], $iUserId);
+        $oAlert = new BxDolAlerts($this->_oConfig->getAlertSystemName(), 'repost', $aReposted['id'], $iUserId, array('repost_id' => $aEvent['id']));
         $oAlert->alert();
         //--- Wall -> Update for Alerts Engine ---//
     }

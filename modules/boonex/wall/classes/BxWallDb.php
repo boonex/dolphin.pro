@@ -405,7 +405,11 @@ class BxWallDb extends BxDolModuleDb
 
     function updateRepostCounter($iId, $iCounter, $iIncrement = 1)
     {
-        return (int)$this->updateEvent(array('reposts' => (int)$iCounter + $iIncrement), $iId) > 0;
+    	$iReposts = (int)$iCounter + $iIncrement;
+    	if($iReposts < 0)
+    		$iReposts = 0;
+
+        return (int)$this->updateEvent(array('reposts' => $iReposts), $iId) > 0;
     }
 
     function getReposted($sType, $sAction, $iObjectId)
