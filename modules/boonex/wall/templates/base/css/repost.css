@@ -11,8 +11,8 @@
 }
 .wall-repost-button .wall-repost-element-holder,
 .wall-repost-button .wall-repost-counter-holder {
-	line-height: 36px;
-	line-height: 2.2rem;
+	line-height: 48px;
+	line-height: 3.0rem;
 }
 .wall-repost.wall-repost-button .wall-repost-counter-holder {
 	margin-left: 10px;
@@ -20,12 +20,17 @@
 }
 .wall-repost-button-small .wall-repost-element-holder,
 .wall-repost-button-small .wall-repost-counter-holder {
-	line-height: 24px;
-	line-height: 1.6rem;
+	line-height: 36px;
+	line-height: 2.25rem;
+}
+.wall-repost-button .wall-repost-element-holder .sys-icon,
+.wall-repost-button-small .wall-repost-element-holder .sys-icon {
+	margin-right: 0px;
 }
 .wall-repost-button .wall-repost-counter-holder,
 .wall-repost-button-small .wall-repost-counter-holder {
-	font-size: 1.5rem;
+	font-size: 16px;
+	font-size: 1.0rem;
 }
 
 div.wall-repost div.wall-repost-element-holder,

@@ -356,14 +356,14 @@ div.wall-comments-post-cnt {
 
 
 /*--- Voting Styles ---*/
-div.wall-post-voting {
+div.wall-voting {
 	display: inline-block;
 	vertical-align: top;
 }
-div.wall-post-voting-slider {
+div.wall-voting-slider {
 	display: none;
 }
-b.wall-post-voting-count {
+b.wall-voting-count {
 	font-weight: normal;
 }
 
@@ -389,7 +389,7 @@ div.wall-event div.wall-comments a.cmt-replies-show,
 div.wall-event div.wall-comments a.cmt-replies-hide,
 div.wall-event div.wall-comments a.cmt-reply-toggle,
 div.wall-event div.wall-comments a.wall-delete,
-div.wall-event div.wall-comments a.wall-post-voting-vote,
+div.wall-event div.wall-comments a.wall-voting-do-vote,
 div.wall-event div.wall-comments a.wall-repost-do-repost {
 	display: inline-block;
 
@@ -400,7 +400,7 @@ div.wall-event div.wall-comments a.wall-repost-do-repost {
 	text-decoration: none;
 }
 div.wall-event div.wall-comments span.cmt-comments-count,
-div.wall-event div.wall-comments b.wall-post-voting-count {
+div.wall-event div.wall-comments b.wall-voting-count {
 	padding-left: 3px;
 }
 div.wall-event div.wall-comments div.thumbnail_block {

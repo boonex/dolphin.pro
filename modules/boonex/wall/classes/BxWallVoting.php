@@ -18,10 +18,34 @@ class BxWallVoting extends BxTemplVotingView
         $this->_oModule = BxDolModule::getInstance('BxWallModule');
     }
 
-    function getVotingElement($bCount = true)
+    function getVotingTimeline($bCount = true)
+    {
+    	return $this->_getVotingElement(array(
+    		'show_count' => $bCount
+    	));
+    }
+
+	function getVotingOutline($bCount = true)
+    {
+    	return $this->_getVotingElement(array(
+    		'template_do_vote' => 'outline_voting_do_vote.html',
+    		'show_count' => $bCount
+    	));
+    }
+
+	function isVotingAllowed($isPerformAction = false)
+    {
+        return $this->checkAction($isPerformAction);
+    }
+
+    protected function _getVotingElement($aParams = array())
     {
     	if(!$this->isVotingAllowed())
     		return '';
+
+		$sTmplMain = !empty($aParams['template_main']) ? $aParams['template_main'] : 'voting.html';
+    	$sTmplDoVote = !empty($aParams['template_do_vote']) ? $aParams['template_do_vote'] : 'voting_do_vote.html';
+    	$bCount = isset($aParams['show_count']) ? (bool)$aParams['show_count'] : true;
 
     	$sName = $this->getSystemName();
     	$iObjId = $this->getId();
@@ -30,26 +54,27 @@ class BxWallVoting extends BxTemplVotingView
 		$sHtmlIdSlider = $sHtmlId . '_slider' . $iObjId;
 		$sJsObject = $this->_oModule->_oConfig->getJsObject('voting') . $this->_toName($sHtmlId);
 
-    	return $this->_oModule->_oTemplate->parseHtmlByName('voting.html', array(
+		$iMax = $this->getMaxVote();
+		return $this->_oModule->_oTemplate->parseHtmlByName($sTmplMain, array(
     		'html_id' => $sHtmlId,
     		'html_id_slider' => $sHtmlIdSlider,
     		'js_object' => $sJsObject,
+			'class' => 'wall-voting',
     		'name' => $sName,
     		'object_id' => $iObjId,
     		'size_x' => $this->_iSizeStarSmallX,
-    		'max' => $this->getMaxVote(),
-    		'bx_if:show_count' => array(
-    			'condition' => $bCount,
-    			'content' => array(
-    				'count' => $this->getVoteCount()
-    			)
-    		)
+    		'max' => $iMax,
+			'do_vote' => $this->_oModule->_oTemplate->parseHtmlByName($sTmplDoVote, array(
+				'js_object' => $sJsObject,
+				'max' => $iMax,
+				'bx_if:show_count' => array(
+	    			'condition' => $bCount,
+	    			'content' => array(
+	    				'count' => $this->getVoteCount()
+	    			)
+	    		)
+			))
     	));
-    }
-
-	function isVotingAllowed($isPerformAction = false)
-    {
-        return $this->checkAction($isPerformAction);
     }
 
     protected function _toName($s)

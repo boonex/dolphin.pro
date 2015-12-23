@@ -114,13 +114,38 @@ div.wall-oii-author-name {
 }
 div.wall-oii-posted {}
 
-/*--- Comments section ---*/
-div.wall-oii-comments {
-	position: relative;
-	line-height: 27px;
-	text-align: center;
+/*--- Actions section ---*/
+div.wall-oii-actions .bx-btn {
+	height: 24px;
+	padding-left: 10px;
+	padding-right: 10px;
+
+	line-height: 22px;
 }
-div.wall-oii-comments,
-div.wall-oii-comments a {
-	color: #666666;
+div.wall-oii-actions .bx-btn,
+div.wall-oii-actions .bx-btn .sys-icon {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+div.wall-oii-actions .bx-btn,
+div.wall-oii-actions .wall-comment,
+div.wall-oii-actions .wall-voting,
+div.wall-oii-actions .wall-repost,
+div.wall-oii-actions .wall-oii-action-counter,
+div.wall-oii-actions .wall-repost-counter-holder {
+	position: relative;
+	display: inline-block;
+	float: none;
+
+	vertical-align: top;
+}
+div.wall-oii-actions .wall-voting,
+div.wall-oii-actions .wall-repost {
+	margin-left: 5px;
+}
+div.wall-oii-actions .wall-oii-action-counter,
+div.wall-oii-actions .wall-repost-counter-holder {
+	margin-left: 2px;
+
+	line-height: 24px;
 }

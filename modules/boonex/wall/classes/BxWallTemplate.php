@@ -88,10 +88,30 @@ class BxWallTemplate extends BxDolModuleTemplate
 				break;
 
 			case BX_WALL_VIEW_OUTLINE:
+				//--- Votes
+				$sVote = '';
+				$oVote = $this->_oModule->_getObjectVoting($aEvent);
+        		if($oVote->isVotingAllowed())
+        			$sVote = $oVote->getVotingOutline();
+
+				//--- Repost
+				$sRepost = '';
+				if($this->_oModule->_isRepostAllowed($aEvent)) {
+					$iOwnerId = $this->_oModule->_getAuthorId(); //--- in whose timeline the content will be shared
+		        	$iObjectId = $this->_oModule->_oConfig->isSystem($aEvent['type'], $aEvent['action']) ? $aEvent['object_id'] : $aEvent['id'];
+
+					$sRepost = $this->_oModule->serviceGetRepostElementBlock($iOwnerId, $aEvent['type'], $aEvent['action'], $iObjectId, array(
+						'show_do_repost_as_button_small' => true,
+		        		'show_do_repost_icon' => true,
+		        		'show_do_repost_label' => false
+		        	));
+				}
+
 				$sResult = $this->parseHtmlByContent($aResult['content'], array(
 		            'post_id' => $aEvent['id'],
 		            'post_owner_icon' => get_member_icon($aEvent['owner_id'], 'none'),
-		            'comments_content' => $sComments
+					'post_vote' => $sVote,
+					'post_repost' => $sRepost
 		        ));
 				break;
         }

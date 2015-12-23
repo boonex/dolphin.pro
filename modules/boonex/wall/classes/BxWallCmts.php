@@ -116,7 +116,7 @@ class BxWallCmts extends BxTemplCmtsView
         $bVote = $oVote->isVotingAllowed();
         if($bVote)
         	$aVote = array(
-				'content' => $oVote->getVotingElement()
+				'content' => $oVote->getVotingTimeline()
         	);
 
         //--- Repost
@@ -124,11 +124,9 @@ class BxWallCmts extends BxTemplCmtsView
         $bRepost = $this->_oModule->_isRepostAllowed($aEvent);
         if($bRepost) {
         	$iOwnerId = $this->_oModule->_getAuthorId(); //--- in whose timeline the content will be shared
-        	$sType = $aEvent['type'];
-        	$sAction = $aEvent['action'];
-        	$iObjectId = $this->_oModule->_oConfig->isSystem($sType, $sAction) ? $aEvent['object_id'] : $aEvent['id'];
+        	$iObjectId = $this->_oModule->_oConfig->isSystem($aEvent['type'], $aEvent['action']) ? $aEvent['object_id'] : $aEvent['id'];
 
-        	$sRepost = $this->_oModule->serviceGetRepostElementBlock($iOwnerId, $sType, $sAction, $iObjectId, array(
+        	$sRepost = $this->_oModule->serviceGetRepostElementBlock($iOwnerId, $aEvent['type'], $aEvent['action'], $iObjectId, array(
         		'show_do_repost_icon' => true,
         		'show_do_repost_label' => false
         	));
