@@ -16,6 +16,7 @@ div.wall-outline div.wall-load-more .bx-btn {
 	margin-right: auto;
 }
 
+
 /*--- Item main layout ---*/
 div.wall-oi-item {
 	position: relative;
@@ -53,6 +54,7 @@ div.wall-oi-item-circle i.sys-icon {
 	font-size: 16px;
 } 
 
+
 /*--- Content section ---*/
 div.wall-oii-description {
 	margin-top: 5px;
@@ -67,6 +69,7 @@ div.wall-oii-description-extra {
 div.wall-oii-description-extra-special {
     font-weight:bold;
 }
+
 
 /*--- Image base content ---*/
 div.wall-oii-image-wrp {
@@ -96,6 +99,7 @@ div.wall-oii-image img.wall-oii-image {
 	margin-right: auto; 
 }
 
+
 /*--- Author section ---*/
 div.wall-oii-author {
 	position: relative;
@@ -114,13 +118,30 @@ div.wall-oii-author-name {
 }
 div.wall-oii-posted {}
 
+
 /*--- Actions section ---*/
 div.wall-oii-actions .bx-btn {
 	height: 24px;
 	padding-left: 10px;
 	padding-right: 10px;
 
-	line-height: 22px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	box-shadow: none;
+
+	background-color: transparent;
+	border-color: #cccccc;
+    border-width: 1px;
+	border-style: solid;
+
+	line-height: 20px;
+}
+div.wall-oii-actions .bx-btn:hover {
+	background-color: #ffffff;
+}
+div.wall-oii-actions .bx-btn.bx-btn-disabled:hover {
+	background-color: transparent;
 }
 div.wall-oii-actions .bx-btn,
 div.wall-oii-actions .bx-btn .sys-icon {
@@ -131,19 +152,27 @@ div.wall-oii-actions .bx-btn,
 div.wall-oii-actions .wall-comment,
 div.wall-oii-actions .wall-voting,
 div.wall-oii-actions .wall-repost,
-div.wall-oii-actions .wall-oii-action-counter,
+div.wall-oii-actions .wall-comment-counter-holder,
+div.wall-oii-actions .wall-voting-counter-holder,
 div.wall-oii-actions .wall-repost-counter-holder {
 	position: relative;
 	display: inline-block;
 	float: none;
 
 	vertical-align: top;
+
+	color: #666666;
+}
+div.wall-oii-actions .wall-repost-counter-holder a {
+	text-decoration: none;
+	color: #666666;
 }
 div.wall-oii-actions .wall-voting,
 div.wall-oii-actions .wall-repost {
 	margin-left: 5px;
 }
-div.wall-oii-actions .wall-oii-action-counter,
+div.wall-oii-actions .wall-comment-counter-holder,
+div.wall-oii-actions .wall-voting-counter-holder,
 div.wall-oii-actions .wall-repost-counter-holder {
 	margin-left: 2px;
 
