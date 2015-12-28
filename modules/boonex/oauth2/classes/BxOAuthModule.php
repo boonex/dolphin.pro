@@ -119,10 +119,15 @@ class BxOAuthModule extends BxDolModule
             return;
         }
 
-        if (empty($_POST))
+        if (!($iProfileId = $this->_oDb->getSavedProfile(getLoggedId())) && empty($_POST)) {
             $this->_oTemplate->pageAuth($this->_oDb->getClientTitle(bx_get('client_id')));
+            return;
+        }
 
-        $this->_oServer->handleAuthorizeRequest($oRequest, $oResponse, (bool)bx_get('confirm'), getLoggedId());
+        $bConfirm = $iProfileId ? true : (bool)bx_get('confirm');
+        $iProfileId = getLoggedId();
+
+        $this->_oServer->handleAuthorizeRequest($oRequest, $oResponse, $bConfirm, $iProfileId);
 
         $oResponse->send();
     }
