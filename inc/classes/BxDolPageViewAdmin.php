@@ -733,8 +733,7 @@ class BxDolPVAPage
             ORDER BY `Column`";
 
         $aColumns = $MySQL->getAllWithKey($sQuery, 'Column');
-        if(!isset($aColumns['1']))
-        	$aColumns['1'] = array('Column' => 1, 'ColWidth' => 100);
+        
 		ksort($aColumns);
 
         foreach($aColumns as $aColumn) {
@@ -883,8 +882,6 @@ class BxDolPageViewCacher
                 ORDER BY `Column`";
             $aColumns = $MySQL->getAllWithKey($sQuery, 'Column');
 
-            if(!isset($aColumns['1']))
-            	$aColumns['1'] = array('Column' => 1, 'ColWidth' => 100);
 			ksort($aColumns);
 
             foreach($aColumns as $aColumn) {
