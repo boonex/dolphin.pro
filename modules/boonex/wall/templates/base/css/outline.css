@@ -73,13 +73,17 @@ div.wall-oii-description-extra-special {
 
 /*--- Image base content ---*/
 div.wall-oii-image-wrp {
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+
 	border: 1px  solid #ffffff;
+
+	text-align: center;
 }
 div.wall-oii-image {
 	position: relative;
-	width: 100%;
-
-	text-align: center;
+	display: inline-block;
 }
 div.wall-oi-item-grouped div.wall-oii-image {
 	margin-top: 1px;
@@ -93,10 +97,7 @@ div.wall-oii-image img.wall-oii-image {
 	display: block;
 
 	width: auto;
-	max-width: 100%;
-
-	margin-left: auto;
-	margin-right: auto; 
+	max-width: 100%; 
 }
 
 
