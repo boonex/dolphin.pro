@@ -287,6 +287,18 @@ div.login_ajax_wrap div.sys-form-login-join button  {
 	font-family: Roboto, Noto, Open Sans, Helvetica Neue, Helvetica, sans-serif;
 }
 
+div.sys-form-login-join .sys-flj-content .bx-btn {
+	font-size: 16px;
+}
+
+div.sys-form-login-join .sys-flj-content a.bx-btn,
+div.sys-form-login-join .sys-flj-content a.bx-btn:link,
+div.sys-form-login-join .sys-flj-content a.bx-btn:hover,
+div.sys-form-login-join .sys-flj-content a.bx-btn:active,
+div.sys-form-login-join .sys-flj-content a.bx-btn:visited {
+	color: #ffffff;
+}
+
 /*--- Bottom Menu Section ---*/
 div.sys_cr_wrapper {
 	border-color: rgba(0, 0, 0, 0.6);

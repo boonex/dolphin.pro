@@ -276,9 +276,10 @@ div.sys-form-login-join ul.sys-flj-navigation li.ui-tabs-active {
 div.sys-form-login-join ul.sys-flj-navigation li a,
 div.sys-form-login-join ul.sys-flj-navigation li.ui-tabs-active a {
 	position: relative;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
 
 	width: 100%;
-	padding: 0px;
 	outline-width: 0px;
 
 	line-height: 40px;
@@ -310,13 +311,16 @@ div.sys-form-login-join .sys-flj-content a:active {
 div.sys-form-login-join .sys-flj-content a:visited {
 	color:#003366;	
 }
-
+div.sys-form-login-join .sys-flj-content .bx-btn {
+	font-size: 20px;
+}
 div.sys-form-login-join .sys-flj-content a.bx-btn,
 div.sys-form-login-join .sys-flj-content a.bx-btn:link,
 div.sys-form-login-join .sys-flj-content a.bx-btn:hover,
 div.sys-form-login-join .sys-flj-content a.bx-btn:active,
 div.sys-form-login-join .sys-flj-content a.bx-btn:visited {
-	color: #ffffff;
+	text-decoration: none;
+	color: #333333;
 }
 
 div.sys-form-login-join .sys-flj-close {
