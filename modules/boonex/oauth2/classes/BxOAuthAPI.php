@@ -152,9 +152,10 @@ class BxOAuthAPI extends Thing
             unset($aProfileInfo['Avatar']);
             unset($aProfileInfo['aff_num']);
             unset($aProfileInfo['allow_view_to']);
+            $aProfileInfo['email'] = $aProfileInfo['Email'];
         }
 
-        $aProfileInfo['profile_display_name'] = $GLOBALS['oFunctions']->getUserTitle($aProfileInfo['id']);
+        $aProfileInfo['profile_display_name'] = $aProfileInfo['name'] = $GLOBALS['oFunctions']->getUserTitle($aProfileInfo['id']);
         $aProfileInfo['profile_display_info'] = $GLOBALS['oFunctions']->getUserInfo($aProfileInfo['id']);
         $aProfileInfo['profile_link'] = getProfileLink($aProfileInfo['id']);
 

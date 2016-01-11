@@ -26,6 +26,11 @@ class BxOAuthDb extends BxDolModuleDb
         return $this->getOne("SELECT `title` FROM `bx_oauth_clients` WHERE `client_id` = '" . process_db_input($sClientId) . "'");
     }
 
+    function getSavedProfile($iProfileId)
+    {
+        return $this->getOne("SELECT `user_id` FROM `bx_oauth_refresh_tokens` WHERE `user_id` = '" . process_db_input($iProfileId) . "' LIMIT 1");
+    }
+
     function getSettingsCategory()
     {
         return $this->getOne("SELECT `ID` FROM `sys_options_cats` WHERE `name` = 'OAuth2 Server' LIMIT 1");
