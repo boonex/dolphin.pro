@@ -72,4 +72,16 @@ class BxDolModuleDb extends BxDolDb
         $sSql = "SELECT `id`, `title` FROM `sys_modules` WHERE `dependencies` LIKE '%" . $sUri . "%'";
         return $this->getAll($sSql);
     }
+
+    /**
+     * Function will return category's id;
+     *
+     * @param  : $sCatName (string) - catregory's name;
+     * @return : (integer) - category's id;
+     */
+    function getSettingsCategoryId($sCatName)
+    {
+        $sCatName = process_db_input($sCatName);
+        return $this -> getOne('SELECT `kateg` FROM `sys_options` WHERE `Name` = "' . $sCatName . '"');
+    }    
 }

@@ -18,7 +18,7 @@ class BxDolConnectModule extends BxDolModule
      *
      * @return : (text) - html presentation data;
      */
-    function _actionAdministration($sOptionApiKey, $sLangSettingsTitle, $sLangInfoTitle, $sLangInfoText)
+    function _actionAdministration($sOptionApiKey, $sLangSettingsTitle, $sLangInfoTitle = '', $sLangInfoText = '')
     {
         $GLOBALS['iAdminPage'] = 1;
 
@@ -47,9 +47,11 @@ class BxDolConnectModule extends BxDolModule
 
         $this->_oTemplate->pageCodeAdminStart();
 
-        echo DesignBoxAdmin(_t($sLangInfoTitle), $GLOBALS['oSysTemplate']->parseHtmlByName('default_padding.html', array(
-            'content' => _t($sLangInfoText, BX_DOL_URL_ROOT)
-        )));
+        if ($sLangInfoText) {
+            echo DesignBoxAdmin(_t($sLangInfoTitle), $GLOBALS['oSysTemplate']->parseHtmlByName('default_padding.html', array(
+                'content' => _t($sLangInfoText, BX_DOL_URL_ROOT)
+            )));
+        }
 
         echo DesignBoxAdmin(_t('_Settings'), $GLOBALS['oSysTemplate']->parseHtmlByName('default_padding.html', array(
             'content' => $sCssStyles . $sOptions

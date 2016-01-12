@@ -679,13 +679,23 @@ class BxBaseFunctions
      */
     function genSiteLogo()
     {
+        $sLogoUrl = $this->getLogoUrl();
+
+        if (!$sLogoUrl)
+            return '<a class="mainLogoText" href="' . BX_DOL_URL_ROOT . 'index.php' . '">' . getParam('site_title') . '</a>';
+
+        return '<a href="' . BX_DOL_URL_ROOT . '"><img src="' . $sLogoUrl . '" class="mainLogo" alt="' . bx_html_attribute(getParam('site_title')) . '" /></a>';
+    }
+
+    function getLogoUrl() 
+    {
         global $dir, $site;
 
         $sFileName = getParam('sys_main_logo');
         if (!$sFileName || !file_exists($dir['mediaImages'] . $sFileName))
-            return '<a class="mainLogoText" href="' . BX_DOL_URL_ROOT . 'index.php' . '">' . getParam('site_title') . '</a>';
+            return '';
 
-        return '<a href="' . BX_DOL_URL_ROOT . '"><img src="' . $site['mediaImages'] . $sFileName . '" class="mainLogo" alt="logo" /></a>';
+        return $site['mediaImages'] . $sFileName;
     }
 
     /**
