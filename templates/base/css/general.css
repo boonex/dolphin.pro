@@ -229,7 +229,7 @@ div.sys-service-menu {
     float: left;
     line-height: 60px;
 }
-div.sys-service-menu span.bullet:last-child {
+div.sys-service-menu span.sys-bullet:last-child {
     display: none;
 }
 
