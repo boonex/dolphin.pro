@@ -1013,7 +1013,6 @@ input.bx-btn {
 .admin_actions_panel {
     margin-top: 1px;
     background-color:#ffcccc;
-    white-space: nowrap;
 }
 .admin_actions_panel div.admin-actions-select,
 .admin_actions_panel div.admin-actions-buttons,
