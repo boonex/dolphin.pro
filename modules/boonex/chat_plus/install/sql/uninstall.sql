@@ -19,3 +19,7 @@ DELETE FROM `sys_permalinks` WHERE `standard`  = 'modules/?r=chat_plus/';
 
 DELETE FROM `sys_menu_top` WHERE `Name` = 'Chat+';
 
+-- Injections
+
+DELETE FROM `sys_injections` WHERE `name` = 'bx_chat_plus';
+
