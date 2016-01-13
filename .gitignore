@@ -5,6 +5,7 @@ cache_public/*
 tmp/*
 logs/*
 langs/*
+backup/*.sql
 
 # Exclude main config file
 inc/header*
@@ -36,9 +37,11 @@ modules/boonex/forum/layout/alt_ru/*
 modules/boonex/forum/layout/evo_en/*
 modules/boonex/forum/layout/evo_ru/*
 
+flash/modules/global/app/ffmpeg_*.exe
 flash/modules/mp3/files/*.jpg
 flash/modules/mp3/files/*.mp3
 flash/modules/mp3/files/*.ogg
+flash/modules/mp3/files/[0-9]*
 flash/modules/video/files/*.jpg
 flash/modules/video/files/*.m4v
 flash/modules/video/files/*.flv
