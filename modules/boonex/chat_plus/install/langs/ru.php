@@ -5,13 +5,13 @@
  */
 
 $aLangContent = array (
-    '_sys_module_chat_webrtc' => 'WebRTC Чат',
-    '_bx_chat_webrtc' => 'WebRTC Чат',
-    '_bx_chat_webrtc_chat' => 'Чат',
-    '_bx_chat_webrtc_setting' => 'Настройки WebRTC Чат',
-    '_bx_chat_webrtc_not_configured' => 'Чат не сконфигурирован',
-    '_bx_chat_webrtc_information' => 'Информация',
-    '_bx_chat_webrtc_information_block' => 'Чат сервер должен быть сконфигурирован, чтобы этот модуль заработал. <br />
+    '_sys_module_chat_plus' => 'Чат+',
+    '_bx_chat_plus' => 'Чат+',
+    '_bx_chat_plus_chat' => 'Чат',
+    '_bx_chat_plus_setting' => 'Настройки Чата',
+    '_bx_chat_plus_not_configured' => 'Чат не сконфигурирован',
+    '_bx_chat_plus_information' => 'Информация',
+    '_bx_chat_plus_information_block' => 'Чат сервер должен быть сконфигурирован, чтобы этот модуль заработал. <br />
 
 Нужно ввести URL чата в форме ниже. <br />
 

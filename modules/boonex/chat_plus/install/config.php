@@ -8,7 +8,7 @@ $aConfig = array(
     /**
      * Main Section.
      */
-    'title' => 'WebRTC Chat',
+    'title' => 'Chat+',
     'version' => '1.2.1',
     'vendor' => 'Boonex',
     'update_url' => '',
@@ -20,11 +20,11 @@ $aConfig = array(
     /**
      * 'home_dir' and 'home_uri' - should be unique. Don't use spaces in 'home_uri' and the other special chars.
      */
-    'home_dir' => 'boonex/chat_webrtc/',
-    'home_uri' => 'chat_webrtc',
+    'home_dir' => 'boonex/chat_plus/',
+    'home_uri' => 'chat_plus',
 
-    'db_prefix' => 'bx_chat_webrtc_',
-    'class_prefix' => 'BxChatWebRTC',
+    'db_prefix' => 'bx_chat_plus_',
+    'class_prefix' => 'BxChatPlus',
 
     /**
      * Installation/Uninstallation Section.
@@ -91,7 +91,7 @@ $aConfig = array(
     /**
      * Category for language keys.
      */
-    'language_category' => 'WebRTC Chat',
+    'language_category' => 'Chat+',
 
     /**
      * Permissions Section

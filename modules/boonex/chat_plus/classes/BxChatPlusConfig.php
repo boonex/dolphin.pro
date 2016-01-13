@@ -6,9 +6,9 @@
 
 bx_import('BxDolConfig');
 
-class BxChatWebRTCConfig extends BxDolConfig
+class BxChatPlusConfig extends BxDolConfig
 {
-    function BxChatWebRTCConfig($aModule)
+    function BxChatPlusConfig($aModule)
     {
         parent::BxDolConfig($aModule);
     }

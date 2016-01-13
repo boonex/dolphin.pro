@@ -6,11 +6,11 @@
 
 bx_import('BxDolAlertsResponse');
 
-class BxChatWebRTCAlerts extends BxDolAlertsResponse
+class BxChatPlusAlerts extends BxDolAlertsResponse
 {
-    function BxChatWebRTCAlerts()
+    function BxChatPlusAlerts()
     {
         parent::BxDolAlertsResponse();
-        //$this -> oModule = BxDolModule::getInstance('BxChatWebRTCModule');
+        //$this -> oModule = BxDolModule::getInstance('BxChatPlusModule');
     }
 }

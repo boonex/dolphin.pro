@@ -6,27 +6,27 @@
 
 bx_import('BxDolConnectModule');
 
-class BxChatWebRTCModule extends BxDolConnectModule
+class BxChatPlusModule extends BxDolConnectModule
 {
-    function BxChatWebRTCModule(&$aModule)
+    function BxChatPlusModule(&$aModule)
     {
         parent::BxDolConnectModule($aModule);
     }
 
     function actionAdministration()
     {
-        parent::_actionAdministration('bx_chat_webrtc_url', '_bx_chat_webrtc_setting', '_bx_chat_webrtc_information', '_bx_chat_webrtc_information_block');
+        parent::_actionAdministration('bx_chat_plus_url', '_bx_chat_plus_setting', '_bx_chat_plus_information', '_bx_chat_plus_information_block');
     }
 
     function actionRedirect ()
     {
         // check CSRF token
-        if (!getParam('bx_chat_webrtc_url')) {
-            $this->_oTemplate->displayMsg(_t('_bx_chat_webrtc_not_configured'));
+        if (!getParam('bx_chat_plus_url')) {
+            $this->_oTemplate->displayMsg(_t('_bx_chat_plus_not_configured'));
             return;
         }
 
-        header("Location:" . getParam('bx_chat_webrtc_url'), true, 302);
+        header("Location:" . getParam('bx_chat_plus_url'), true, 302);
     }
 
     function actionLogo ()

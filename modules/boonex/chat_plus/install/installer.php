@@ -4,11 +4,11 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_CLASSES . "BxDolInstaller.php");
+bx_import('BxDolInstaller');
 
-class BxChatWebRTCInstaller extends BxDolInstaller
+class BxChatPlusInstaller extends BxDolInstaller
 {
-    function BxChatWebRTCInstaller(&$aConfig)
+    function BxChatPlusInstaller(&$aConfig)
     {
         parent::BxDolInstaller($aConfig);
     }

@@ -5,13 +5,13 @@
  */
 
 $aLangContent = array (
-    '_sys_module_chat_webrtc' => 'WebRTC Chat',
-    '_bx_chat_webrtc' => 'WebRTC Chat',
-    '_bx_chat_webrtc_chat' => 'Chat',
-    '_bx_chat_webrtc_setting' => 'WebRTC Chat Setting',
-    '_bx_chat_webrtc_not_configured' => 'Chat isn\'t configured',
-    '_bx_chat_webrtc_information' => 'Information',
-    '_bx_chat_webrtc_information_block' => 'To enable this module, chat server must be installed separately. <br />
+    '_sys_module_chat_plus' => 'Chat Plus',
+    '_bx_chat_plus' => 'Chat+',
+    '_bx_chat_plus_chat' => 'Chat',
+    '_bx_chat_plus_setting' => 'Chat Setting',
+    '_bx_chat_plus_not_configured' => 'Chat isn\'t configured',
+    '_bx_chat_plus_information' => 'Information',
+    '_bx_chat_plus_information_block' => 'To enable this module, chat server must be installed separately. <br />
 
 Enter the chat URL in the form below. <br />
 

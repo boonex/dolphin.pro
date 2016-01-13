@@ -6,12 +6,12 @@
 
 bx_import('BxDolConnectDb');
 
-class BxChatWebRTCDb extends BxDolConnectDb
+class BxChatPlusDb extends BxDolConnectDb
 {
     /**
      * Constructor.
      */
-    function BxChatWebRTCDb(&$oConfig)
+    function BxChatPlusDb(&$oConfig)
     {
         parent::BxDolConnectDb($oConfig);
     }

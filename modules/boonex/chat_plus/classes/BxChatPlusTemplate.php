@@ -6,9 +6,9 @@
 
 bx_import('BxDolModuleTemplate');
 
-class BxChatWebRTCTemplate extends BxDolModuleTemplate
+class BxChatPlusTemplate extends BxDolModuleTemplate
 {
-    function BxChatWebRTCTemplate(&$oConfig, &$oDb)
+    function BxChatPlusTemplate(&$oConfig, &$oDb)
     {
         parent::BxDolModuleTemplate($oConfig, $oDb);
     }
