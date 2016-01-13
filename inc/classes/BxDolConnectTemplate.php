@@ -15,26 +15,6 @@ class BxDolConnectTemplate extends BxDolModuleTemplate
         parent::BxDolModuleTemplate($oConfig, $oDb);
     }
 
-    function pageCodeAdminStart()
-    {
-        ob_start();
-    }
-
-    function pageCodeAdmin ($sTitle)
-    {
-        global $_page;
-        global $_page_cont;
-
-        $_page['name_index'] = 9;
-
-        $_page['header'] = $sTitle ? $sTitle : $GLOBALS['site']['title'];
-        $_page['header_text'] = $sTitle;
-
-        $_page_cont[$_page['name_index']]['page_main_code'] = ob_get_clean();
-
-        PageCodeAdmin();
-    }
-
     /**
      * Function will generate default dolphin's page;
      *
