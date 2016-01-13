@@ -222,20 +222,12 @@ class BxBaseCmtsView extends BxDolCmts
      */
     function getCmtsInit ()
     {
-        global $site;
-
-        $sReturn = $sToggleAdd = $sUseHtmlAdd = '';
-
-        if($this->iGlobAllowHtml == 1 && $this->iGlobUseTinyMCE == 1 && ($this->isEditAllowed() || $this->isPostReplyAllowed() || $this->isEditAllowedAll()) && !isset($GLOBALS['glBxDolCommentsEditorInitialized'])) { 
-            bx_import('BxDolEditor');
-            $oEditor = BxDolEditor::getObjectInstance();
-            $sReturn .= $oEditor ? $oEditor->attachEditor ('textarea[name=CmtText]', BX_EDITOR_MINI) : '';
-            $GLOBALS['glBxDolCommentsEditorInitialized'] = 1;
-        }
+    	$this->getExtraJs();
+        $this->getExtraCss();
 
         $aParams = array(
         	'sObjName' => $this->_sJsObjName,
-        	'sBaseUrl' => $site['url'],
+        	'sBaseUrl' => BX_DOL_URL_ROOT,
         	'sSystem' => $this->getSystemName(),
         	'sSystemTable' => $this->_aSystem['table_cmts'],
         	'iAuthorId' => $this->_getAuthorId(),
@@ -248,18 +240,11 @@ class BxBaseCmtsView extends BxDolCmts
         	'isEditAllowed' => $this->isEditAllowed() || $this->isEditAllowedAll() ? 1 : 0,
         	'isRemoveAllowed' => $this->isRemoveAllowed() || $this->isRemoveAllowedAll() ? 1 : 0,
         	'iAutoHideRootPostForm' => $this->iAutoHideRootPostForm,
-        	'sTextAreaId' => $this->sTextAreaId,
-        	'iGlobAllowHtml' => $this->iGlobAllowHtml == 1 && $this->iGlobUseTinyMCE == 1 ? 1 : 0,
+        	'iGlobAllowHtml' => $this->iGlobAllowHtml == 1 ? 1 : 0,
         	'iSecsToEdit' => (int)$this->getAllowedEditTime(),
         	'oCmtElements' => $this->_aCmtElements
         );
-
-        $this->getExtraJs();
-        $this->getExtraCss();
-        return $sReturn . $sToggleAdd . $GLOBALS['oSysTemplate']->_wrapInTagJsCode(
-        	"var " . $this->_sJsObjName . " = new BxDolCmts(" . json_encode($aParams) . ");" . 
-        	($this->iGlobAllowHtml == 1 && $this->iGlobUseTinyMCE == 1 ? $this->_sJsObjName . ".createEditor(0, $('#cmts-box-" . $this->_sSystem . "-" . $this->_iId . "> .cmt-post-reply form [name=CmtText][tinypossible=true]'), true);" : "")
-        );
+        return $GLOBALS['oSysTemplate']->_wrapInTagJsCode("var " . $this->_sJsObjName . " = new BxDolCmts(" . json_encode($aParams) . ");");
     }
 
     /**
@@ -377,7 +362,7 @@ class BxBaseCmtsView extends BxDolCmts
                         </tr>
                         <tr class="cmt-cont">
                             <td class="cmt-cont-l">&nbsp;</td>
-                            <td class="cmt-cont-m">' . $this->_getFormBox($iCmtParentId) . '</td>
+                            <td class="cmt-cont-m">' . $this->_getFormBox('post', array('parent_id' => $iCmtParentId)) . '</td>
                             <td class="cmt-cont-r">&nbsp;</td>
                         </tr>
                         <tr class="cmt-foot">
@@ -388,9 +373,24 @@ class BxBaseCmtsView extends BxDolCmts
                     </table>
                 </div>';
     }
-    function _getFormBox($iCmtParentId = 0, $sText = "", $sFunction = "submitComment(this)")
+    function _getFormBox($sType, $aCmt = array())
     {
-        $sTinyStyle = ($this->iGlobAllowHtml == 1 && $this->iGlobUseTinyMCE == 1) ? ' tinypossible="true" ' : '';
+    	$iCmtId = !empty($aCmt['id']) ? (int)$aCmt['id'] : 0;
+    	$iCmtParentId = !empty($aCmt['parent_id']) ? (int)$aCmt['parent_id'] : 0;
+    	$sCmtText = !empty($aCmt['text']) ? $this->_prepareTextForEdit($aCmt['text']) : '';
+
+    	$sTextareaId = "cmt" . bx_gen_method_name($this->_sSystem . "_" . $sType) . "TextArea";
+    	switch($sType) {
+    		case 'post':
+    			$sFunction = "submitComment(this)";
+    			$sTextareaId .= $iCmtParentId;
+    			break;
+
+    		case 'edit':
+    			$sFunction = "updateComment(this, '" . $iCmtId . "')";
+    			$sTextareaId .= $iCmtId;   				
+        		break;
+    	}
 
         if($this->_aSystem['is_mood'])
             $sMood = '
@@ -404,17 +404,25 @@ class BxBaseCmtsView extends BxDolCmts
                         <div class="clear_both">&nbsp;</div>
                     </div>';
 
-        return '
-                <form name="cmt-post-reply" onsubmit="' . $this->_sJsObjName . '.' . $sFunction . '; return false;">
-                    <input type="hidden" name="CmtParent" value="' . $iCmtParentId . '" />
-                    <input type="hidden" name="CmtType" value="text" />
-                    <div class="cmt-post-reply-text">
-                        <textarea class="bx-def-round-corners-with-border" name="CmtText" ' . $sTinyStyle . ' >' . $sText . '</textarea>
-                    </div>
-                    <div class="cmt-post-reply-video">' . getApplicationContent('video_comments', 'recorder', array('user' => $this->_getAuthorId(), 'password' => $this->_getAuthorPassword(), 'extra' => implode('_', array($this->_sSystem . '-' . $this->getId(), $iCmtParentId))), true) . '</div>
-                    <div class="cmt-post-reply-post"><button class="bx-btn bx-btn-small" type="submit">' . _t('_Submit Comment') . '</button></div>
-                    ' . $sMood . '
-                </form>';
+		$sContent = '
+			<form name="cmt-post-reply" onsubmit="' . $this->_sJsObjName . '.' . $sFunction . '; return false;">
+				<input type="hidden" name="CmtParent" value="' . $iCmtParentId . '" />
+				<input type="hidden" name="CmtType" value="text" />
+				<div class="cmt-post-reply-text">
+					<textarea class="cmt-text-' . $sType . ' bx-def-round-corners-with-border" id="' . $sTextareaId . '" name="CmtText">' . $sCmtText . '</textarea>
+				</div>
+				<div class="cmt-post-reply-video">' . getApplicationContent('video_comments', 'recorder', array('user' => $this->_getAuthorId(), 'password' => $this->_getAuthorPassword(), 'extra' => implode('_', array($this->_sSystem . '-' . $this->getId(), $iCmtParentId))), true) . '</div>
+				<div class="cmt-post-reply-post"><button class="bx-btn bx-btn-small" type="submit">' . _t('_Submit Comment') . '</button></div>
+				' . $sMood . '
+			</form>';
+
+		if($this->iGlobAllowHtml == 1) { 
+            bx_import('BxDolEditor');
+            $oEditor = BxDolEditor::getObjectInstance();
+            $sContent .= $oEditor ? $oEditor->attachEditor ('#' . $sTextareaId, BX_EDITOR_MINI, $this->bDynamic) : '';
+        }
+
+        return $sContent;
     }
     function _getAuthorIcon ($a)
     {

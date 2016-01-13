@@ -100,10 +100,9 @@ class BxDolCmts extends BxDolMistake
 {
 
     var $_iId = 0;  // obect id to be commented
-    var $sTextAreaId;
     var $iGlobAllowHtml;
-    var $iGlobUseTinyMCE;
     var $iAutoHideRootPostForm = 0;
+    var $bDynamic = false;
 
     var $_sSystem = 'profile';  // current comment system name
     var $_aSystem = array ();   // current comments system array
@@ -142,9 +141,9 @@ class BxDolCmts extends BxDolMistake
         if ($iInit)
             $this->init($iId);
 
-        $this->sTextAreaId = "cmt" . str_replace(' ', '', ucwords(str_replace('_', ' ', $this->_sSystem))) . "TextAreaParent";
         $this->iGlobAllowHtml = (getParam("enable_tiny_in_comments") == "on") ? 1 : 0;
-        $this->iGlobUseTinyMCE = $this->iGlobAllowHtml;
+
+        $this->bDynamic = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
     }
 
     /**
@@ -167,7 +166,7 @@ class BxDolCmts extends BxDolMistake
             $sClassName = $aSystems[$sSys]['class_name'];  
         } 
 
-        $oCmts = new $sClassName($sSys, $iId, true);
+        $oCmts = new $sClassName($sSys, $iId, $iInit);
         return $oCmts;
     }
 
@@ -203,10 +202,11 @@ class BxDolCmts extends BxDolMistake
 
     function init ($iId)
     {
-        if (!$this->isEnabled()) return;
-        if (empty($this->iId) && $iId) {
+        if(!$this->isEnabled()) 
+        	return;
+
+        if(empty($this->iId) && $iId)
             $this->setId($iId);
-        }
     }
 
     /**
@@ -551,7 +551,7 @@ class BxDolCmts extends BxDolMistake
         if (!$isEditAllowed && $aCmt['cmt_secs_ago'] > ($this->getAllowedEditTime()+20))
             return 'err' . ($aCmt['cmt_author_id'] == $this->_getAuthorId() && !$this->isEditAllowed() ? strip_tags($this->msgErrEditAllowed()) : _t('_Access denied'));
 
-        return $this->_getFormBox (0, $this->_prepareTextForEdit($aCmt['cmt_text']), 'updateComment(this, \''.$iCmtId.'\')');
+        return $this->_getFormBox ('edit', array('id' => $iCmtId, 'parent_id' => $aCmt['cmt_parent_id'], 'text' => $aCmt['cmt_text']));
     }
 
     function actionCmtEditSubmit()
@@ -656,10 +656,10 @@ class BxDolCmts extends BxDolMistake
 
     function _prepareTextForSave ($s)
     {
-        if ($this->iGlobUseTinyMCE || $this->isTagsAllowed()) {
+        if ($this->iGlobAllowHtml || $this->isTagsAllowed()) {
             $iTagsAction = BX_TAGS_VALIDATE;
         } 
-        elseif (!$this->iGlobUseTinyMCE && $this->isNl2br()) {
+        elseif (!$this->iGlobAllowHtml && $this->isNl2br()) {
             $s = WordWrapStr($s);
             $iTagsAction = BX_TAGS_STRIP_AND_NL2BR;
         } 

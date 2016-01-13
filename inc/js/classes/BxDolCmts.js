@@ -74,8 +74,6 @@ function BxDolCmts (options) {
     this._sAnimationEffect = undefined == options.sAnimationEffect ? 'slide' : options.sAnimationEffect;
     this._iAnimationSpeed = undefined == options.sAnimationSpeed ? 'slow' : options.sAnimationSpeed;
 
-	//'A' Use global allow HTML param
-    this._sTextAreaId = undefined == options.sTextAreaId || options.sTextAreaId == '' ? 'cmtTextAreaParent' : options.sTextAreaId;
     this._iGlobAllowHtml = undefined == options.iGlobAllowHtml ? '0' : options.iGlobAllowHtml;
 
     this._oCmtElements = undefined == options.oCmtElements ? {} : options.oCmtElements; // form elements
@@ -182,11 +180,9 @@ BxDolCmts.prototype.toggleReply = function(e, iCmtParentId) {
                 this._sActionsUrl,
                 oData,
                 function (s) {                	            
-                	$this._loading(e, false);                	
-                	$('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' .cmt-reply').append($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).children('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
-                        if($this._iGlobAllowHtml == 1)
-                        	$this.createEditor($this._iObjId, $('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' .cmt-post-reply form').find('[name=CmtText][tinypossible=true]'));
-                	});
+                	$this._loading(e, false);
+
+                	$('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' .cmt-reply').append($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).children('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
                 }
             );
             
@@ -209,11 +205,9 @@ BxDolCmts.prototype.toggleReply = function(e, iCmtParentId) {
                 this._sActionsUrl,
                 oData,
                 function (s) {                	            
-                	$this._loading(e, false);                	
-                	$('#cmt' + iCmtParentId).children('.cmt-cont').after($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).next('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
-                        if($this._iGlobAllowHtml == 1)
-                        	$this.createEditor(iCmtParentId, $('#cmt' + iCmtParentId + ' > .cmt-post-reply form').find('[name=CmtText][tinypossible=true]'));
-                	});
+                	$this._loading(e, false);
+
+                	$('#cmt' + iCmtParentId).children('.cmt-cont').after($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).next('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
                 }
             );					
 		}
@@ -309,44 +303,40 @@ BxDolCmts.prototype.cmtRemove = function(e, iCmtId) {
 
 BxDolCmts.prototype.cmtEdit = function(e, iCmtId) {	
     var $this = this;
+    var oBody = $('#cmt' + iCmtId + ' .cmt-body:first');
+    if (oBody.find('textarea.cmt-text-edit').length) {
+    	oBody.bxdolcmtanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+    		if($this._iGlobAllowHtml == 1)
+    			$this.editorDestroy($(this).find("textarea.cmt-text-edit[name='CmtText']"));
+
+    		$(this).html($this._oSavedTexts[iCmtId]).bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed);
+    	});
+
+    	return;
+    }
+
     var oData = this._getDefaultActions();
     oData['action'] = 'CmtEdit';
     oData['Cmt'] = iCmtId;
 
-    if ($('#cmt' + iCmtId + ' .cmt-body > form').length) {
-    	$('#cmt' + iCmtId + ' .cmt-body').bxdolcmtanim(
-            'hide', 
-            $this._sAnimationEffect, 
-            $this._iAnimationSpeed, 
-            function() { 
-                $(this).html($this._oSavedTexts[iCmtId]).bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed);
-            });
-    	return;
-    }
-    else
-    	this._oSavedTexts[iCmtId] = $('#cmt' + iCmtId + ' .cmt-body').html();
-    
+    this._oSavedTexts[iCmtId] = oBody.html();
+
     jQuery.post (
         this._sActionsUrl,
         oData,
-        function (s) {                	            
-        	
-        	if ('err' == s.substring(0,3))
+        function(s) {
+        	if (s.substring(0,3) == 'err') {
         		alert (s.substring(3));
-        	else
-        		$('#cmt' + iCmtId + ' .cmt-body').bxdolcmtanim(
-                    'hide', 
-                    $this._sAnimationEffect, 
-                    $this._iAnimationSpeed, 
-                    function() {
-                        var eMood = $(this).html(s).find('[name=CmtMood]');
-                        if (eMood.size())
-                            eMood.find('[value' + $.trim($('#cmt' + iCmtId + ' .cmt-mood').html()) + ']').attr('checked', 'checked');
-                        $(this).bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
-                            if($this._iGlobAllowHtml == 1)
-                            	$this.createEditor(iCmtId, $('#cmt' + iCmtId + ' .cmt-body > form').find('[name=CmtText][tinypossible=true]'));
-                        });
-                    });
+        		return;
+        	}
+
+        	oBody.bxdolcmtanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+				var oMood = $(this).html(s).find("[name='CmtMood']");
+				if(oMood.size())
+					oMood.find("[value='" + $.trim($('#cmt' + iCmtId + ' .cmt-mood:first').html()) + "']").attr('checked', 'checked');
+
+				$(this).bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed);
+    		});
         }
     );
 };
@@ -574,7 +564,7 @@ BxDolCmts.prototype.submitComment = function (f)
     );
 };
 
-// update comment and show it after posting
+// Update comment OnEdit
 BxDolCmts.prototype.updateComment = function (f, iCmtId)
 {
 	var eSubmit = $(f).find(':submit').get();
@@ -596,21 +586,21 @@ BxDolCmts.prototype.updateComment = function (f, iCmtId)
         oData,
         function (oResponse) {                	
         	$this._loading (eSubmit, false);
-            if (!jQuery.trim(oResponse.text).length)
-            	$this._err(eSubmit, true, jQuery.trim(oResponse.err).length ? oResponse.err : $this._sDefaultErrMsg); // display error
-            else                
-        		$('#cmt' + iCmtId + ' .cmt-body').bxdolcmtanim(
-                    'hide', 
-                    $this._sAnimationEffect, 
-                    $this._iAnimationSpeed, 
-                    function() {
-                        if($this._iGlobAllowHtml == 1)
-                        	$this.toggleEditor($this._sTextAreaId + iCmtId);
 
-                        $('#cmt' + iCmtId + ' .cmt-mood').html(' ' + oResponse.mood + ' ');
-                        $('#cmt' + iCmtId + ' .cmt-mood-text').html(oResponse.mood_text);
-                        $(this).html(oResponse.text).bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed);
-                    });
+            if(!jQuery.trim(oResponse.text).length) {
+            	$this._err(eSubmit, true, jQuery.trim(oResponse.err).length ? oResponse.err : $this._sDefaultErrMsg); // display error
+            	return;
+            }
+
+            var oBody = $('#cmt' + iCmtId + ' .cmt-body:first');
+            oBody.bxdolcmtanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+    			if($this._iGlobAllowHtml == 1)
+    				$this.editorDestroy(oBody.find("textarea.cmt-text-edit[name='CmtText']"));
+
+    			oBody.find(".cmt-mood").html(' ' + oResponse.mood + ' ');
+    			oBody.find(".cmt-mood-text").html(oResponse.mood_text);
+    			$(this).html(oResponse.text).bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed);
+    		});
         },
         'json'
     );	
@@ -623,30 +613,30 @@ BxDolCmts.prototype._toggleHidden = function(e, iCmtId) {
 
 // rate comment 
 BxDolCmts.prototype._rateComment = function(e, iCmtId, iRate) {
-    		var $this = this;
-		    var oData = this._getDefaultActions();
-		    oData['action'] = 'CmtRate';
-		    oData['Cmt'] = iCmtId;
-		    oData['Rate'] = iRate;
+	var $this = this;
+    var oData = this._getDefaultActions();
+    oData['action'] = 'CmtRate';
+    oData['Cmt'] = iCmtId;
+    oData['Rate'] = iRate;
 
-		    this._loading (e, true);
+    this._loading (e, true);
 
-		    jQuery.post (
-        		this._sActionsUrl,
-        		oData,
-		        function (s) {
-		        	$this._loading (e, false);
-        			if(jQuery.trim(s).length)
-		        		alert(s);        			
-        			else if(iRate == 1) {
-        				$(e).html(parseInt($(e).html()) + iRate);
-        				$(e).parent().parent().addClass('cmt-rate-disabled');
-        			}
-        			else if(iRate == -1) {
-                        $this.reloadComment(iCmtId);
-        			}
-        		}
-    		);    		
+    jQuery.post (
+		this._sActionsUrl,
+		oData,
+        function (s) {
+        	$this._loading (e, false);
+			if(jQuery.trim(s).length)
+        		alert(s);        			
+			else if(iRate == 1) {
+				$(e).html(parseInt($(e).html()) + iRate);
+				$(e).parent().parent().addClass('cmt-rate-disabled');
+			}
+			else if(iRate == -1) {
+                $this.reloadComment(iCmtId);
+			}
+		}
+	);    		
 };
 
 // check and get post new comment form elements
@@ -661,11 +651,9 @@ BxDolCmts.prototype._getCheckElements = function(f, oData) {
 			//--- Check form's data ---//
 			if ($this._oCmtElements[this.name]['reg']) {
 				try {
-					if(this.type == 'textarea' && $this._iGlobAllowHtml == 1 && typeof tinyMCE != 'undefined') {
-						var ed = tinyMCE.get(this.id);
-						var tinyValue = $(ed.getContent()).text();
+					if(this.type == 'textarea' && $this._iGlobAllowHtml == 1) {
                         var r = new RegExp($this._oCmtElements[this.name]['reg']);
-                        isValid = r.test(tinyValue.replace(/(\n|\r)/g, ''));
+                        isValid = r.test($this.editorGetText($(this)).replace(/(\n|\r)/g, ''));
 					} else {                 
                         var r = new RegExp($this._oCmtElements[this.name]['reg']);
                         isValid = r.test(this.value.replace(/(\n|\r)/g, ''));
@@ -681,13 +669,10 @@ BxDolCmts.prototype._getCheckElements = function(f, oData) {
 			}
 
 			//--- Fill in data array ---//
-			if(this.type == 'textarea' && $this._iGlobAllowHtml == 1 && typeof tinyMCE != 'undefined') {
-				var edT = tinyMCE.get(this.id);
-				if (edT) {
-					var tinyValueT = edT.getContent();
-					oData[this.name] = tinyValueT;
-				}
-			} else if(this.type == 'radio') {
+			if(this.type == 'textarea' && $this._iGlobAllowHtml == 1) {
+				oData[this.name] = $this.editorGetText($(this));
+			} 
+			else if(this.type == 'radio') {
                 if(this.checked)
                     oData[this.name] = this.value;
 			}
@@ -695,6 +680,7 @@ BxDolCmts.prototype._getCheckElements = function(f, oData) {
 				oData[this.name] = this.value;
 		}
 	});
+
 	return bSuccess;
 };
 
@@ -748,33 +734,16 @@ BxDolCmts.prototype._getDefaultActions = function() {
     };
 };
 
-BxDolCmts.prototype.createEditor = function(iCmtId, oTextarea, bDelayed) {
-    var sId = this._sTextAreaId + iCmtId;
-    
-    if(!oTextarea.length)
-    	return;
+BxDolCmts.prototype.editorGetText = function(oTextarea) {
+	if(typeof tinyMCE == 'undefined' || !$(oTextarea).is('textarea'))
+		return;
 
-    if(oTextarea.attr('id') == undefined || oTextarea.attr('id') == '')
-        oTextarea.attr('id', sId);
-
-    if(bDelayed)
-    	window.setTimeout(this._sObjName + ".showEditor('" + sId + "');", 1000);
-    else
-    	this.showEditor(sId);
-    
+	return oTextarea.html();
 };
 
-BxDolCmts.prototype.showEditor = function(sId) {
-    if ('undefined' == typeof(tinyMCE))
-        return;
-	tinyMCE.execCommand('mceAddEditor', false, sId);
-};
+BxDolCmts.prototype.editorDestroy = function(oTextarea) {
+	if(typeof tinyMCE == 'undefined' || !$(oTextarea).is('textarea'))
+		return;
 
-BxDolCmts.prototype.toggleEditor = function(sId) {
-    if ('undefined' == typeof(tinyMCE))
-        return;
-	if(!tinyMCE.get(sId))
-		tinyMCE.execCommand('mceAddEditor', false, sId);
-	else
-		tinyMCE.execCommand('mceRemoveEditor', false, sId);
+	oTextarea.tinymce().remove();
 };
