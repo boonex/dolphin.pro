@@ -1205,8 +1205,8 @@ div.logo-section {
 
 #bx_attr {
     position:fixed;
-    right:-50px;
-    bottom:25px;
+    left:25px;
+    bottom:30px;
     width:auto;
     height:auto;
     min-height:29px;
