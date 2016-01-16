@@ -267,7 +267,7 @@ class BxBaseCmtsView extends BxDolCmts
         return '
                 <td class="' . $this->_sStylePrefix . '-cont-l">&nbsp;</td>
                 <td class="' . $this->_sStylePrefix . '-cont-m">' .
-                    ($this->_aSystem['is_mood'] ? '<div class="cmt-mood">' . $a['cmt_mood'] . '</div>' : '') .
+                    ($this->_aSystem['is_mood'] ? '<div class="cmt-mood">' . _t($this->_aMoodText[$a['cmt_mood']]) . '</div>' : '') .
                     '<div class="cmt-body">' . $this->_prepareTextForOutput($a['cmt_text']) . '</div>
                 </td>
                 <td class="' . $this->_sStylePrefix . '-cont-r">&nbsp;</td>';
