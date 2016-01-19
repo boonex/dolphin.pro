@@ -24,7 +24,7 @@ Thumbs.db
 media/images/membership/1*.png
 media/images/blog/*.jpg
 
-modules/boonex/moxiemanager
+modules/boonex/moxie
 
 modules/boonex/forum/classes/en/*
 modules/boonex/forum/classes/ru/*
