@@ -202,7 +202,11 @@
 
             bx_import('BxDolEditor');
             $oEditor = BxDolEditor::getObjectInstance();
-            $sEditor = $oEditor ? $oEditor->attachEditor ('#compose_message', BX_EDITOR_FULL) : '';
+            $sEditor = '';
+            if ($oEditor) {
+                $oEditor->setCustomConf ("remove_script_host: false,\nrelative_urls: false,\n");
+                $sEditor = $oEditor->attachEditor ('#compose_message', BX_EDITOR_FULL);
+            }
 
             return array($sEditor . $sOutputHtml, $aTopToggleEllements);
         }
@@ -1572,7 +1576,11 @@
 
             bx_import('BxDolEditor');
             $oEditor = BxDolEditor::getObjectInstance();
-            $sEditor = $oEditor ? $oEditor->attachEditor ('#compose_message', BX_EDITOR_FULL, true) : '';
+            $sEditor = '';
+            if ($oEditor) {
+                $oEditor->setCustomConf ("remove_script_host: false,\nrelative_urls: false,\n");
+                $sEditor = $oEditor->attachEditor ('#compose_message', BX_EDITOR_FULL);
+            }
 
             return $sEditor . $sOutputHtml;
         }

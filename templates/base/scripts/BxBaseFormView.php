@@ -602,6 +602,9 @@ class BxBaseFormView extends BxDolForm
         if (!$oEditor)
             return false;
 
+        if (isset($aInput['html_no_link_conversion']) && $aInput['html_no_link_conversion'])
+            $oEditor->setCustomConf ("remove_script_host: false,\nrelative_urls: false,\n");
+
         $this->_sCodeAdd .= $oEditor->attachEditor ((!empty($this->aFormAttrs['id']) ? '#' . $this->aFormAttrs['id'] . ' ': '') . '[name="'.$aInput['name'].'"]', $iViewMode, isset($aInput['dynamic']) ? $aInput['dynamic'] : false);
         if (!isset($aInput['attrs_wrapper']['style']))
             $aInput['attrs_wrapper']['style'] = '';
