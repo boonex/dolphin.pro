@@ -20,10 +20,6 @@ $aFields = array(
     'Value'  => _t('_adm_pvalues_help_value'),
     'LKey'   => _t('_adm_pvalues_help_lkey'),
     'LKey2'  => _t('_adm_pvalues_help_lkey2'),
-    'LKey3'  => _t('_adm_pvalues_help_lkey3'),
-    'Extra'  => _t('_adm_pvalues_help_extra'),
-    'Extra2' => _t('_adm_pvalues_help_extra2'),
-    'Extra3' => _t('_adm_pvalues_help_extra3')
 );
 
 if(bx_get('popup') !== false && (int)bx_get('popup') == 1) {
@@ -193,7 +189,7 @@ function PageCompPageMainCode()
         $( document ).ready( sortZebra );
     </script>
 
-    <form action="<?=$GLOBALS['site']['url_admin'] . 'preValues.php'; ?>" method="post">
+    <form action="<?=$GLOBALS['site']['url_admin'] . 'preValues.php'; ?>" method="post" enctype="multipart/form-data">
     	<div class="adm-pv-cp-selector bx-def-margin-bottom">
 			<div class="adm-pv-cp-item">
 				<span><?php echo _t('_adm_pvalues_txt_select_list'); ?>:</span>
