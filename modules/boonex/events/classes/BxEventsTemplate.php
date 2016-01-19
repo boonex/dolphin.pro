@@ -112,8 +112,8 @@ class BxEventsTemplate extends BxDolTwigTemplate
 
     // ======================= output display filters functions
 
-    function filterDate ($i)
+    function filterDateUTC ($sTimestamp)
     {
-        return getLocaleDate($i, BX_DOL_LOCALE_DATE) . ' ('.defineTimeInterval($i, false) . ')';
+        return gmdate(getLocaleFormat(BX_DOL_LOCALE_DATE), $sTimestamp);
     }
 }

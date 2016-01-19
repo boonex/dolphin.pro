@@ -571,13 +571,24 @@ class BxDolFormCheckerHelper
         }
         return $this->_passDate ($s);
     }
-    function _passDate ($s)
+    function passDateUTC ($s)
+    {
+        if (is_array($s)) {
+            $a = array ();
+            foreach ($s as $k => $v) {
+                $a[$k] = $this->_passDate ($v, 'gmmktime');
+            }
+            return $a;
+        }
+        return $this->_passDate ($s, 'gmmktime');
+    }
+    function _passDate ($s, $sFunc = 'mktime')
     {
         list($iYear, $iMonth, $iDay) = explode( '-', $s);
         $iDay   = (int)$iDay;
         $iMonth = (int)$iMonth;
         $iYear  = (int)$iYear;
-        $iRet = mktime (0, 0, 0, $iMonth, $iDay, $iYear);
+        $iRet = $sFunc (0, 0, 0, $iMonth, $iDay, $iYear);
         return $iRet > 0 ? $iRet : 0;
     }
     function passDateTime ($s)
@@ -591,7 +602,18 @@ class BxDolFormCheckerHelper
         }
         return $this->_passDateTime ($s);
     }
-    function _passDateTime ($s)
+    function passDateTimeUTC ($s)
+    {
+        if (is_array($s)) {
+            $a = array ();
+            foreach ($s as $k => $v) {
+                $a[$k] = $this->_passDateTime ($v, 'gmmktime');
+            }
+            return $a;
+        }
+        return $this->_passDateTime ($s, 'gmmktime');
+    }
+    function _passDateTime ($s, $sFunc = 'mktime')
     {
         if (preg_match('#(\d+)\-(\d+)\-(\d+)[\sT]{1}(\d+):(\d+)#', $s, $m)) {
             $iDay   = $m[3];
@@ -599,7 +621,7 @@ class BxDolFormCheckerHelper
             $iYear  = $m[1];
             $iH = $m[4];
             $iM = $m[5];
-            $iRet = mktime ($iH, $iM, 0, $iMonth, $iDay, $iYear);
+            $iRet = $sFunc ($iH, $iM, 0, $iMonth, $iDay, $iYear);
             return $iRet > 0 ? $iRet : 0;
         }
         return $this->passDate ($s);
@@ -708,6 +730,14 @@ class BxDolFormCheckerHelper
     function displayDateTime ($i)
     {
         return date("Y-m-d H:i", $i);
+    }
+    function displayDateUTC ($i)
+    {
+        return gmdate("Y-m-d", $i);
+    }
+    function displayDateTimeUTC ($i)
+    {
+        return gmdate("Y-m-d H:i", $i);
     }
 
     // for internal usage only
