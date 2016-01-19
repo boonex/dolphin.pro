@@ -29,8 +29,7 @@ class BxWmapModule extends BxDolModule
         $this->_iProfileId = getLoggedId();
         $this->_aParts = $this->_oDb->getParts();
         $this->_oDb->_aParts = &$this->_aParts;
-        if (0 == strncmp('https', BX_DOL_URL_ROOT, 5))
-            $this->_sProto = 'https';
+        $this->_sProto = bx_proto();
     }
 
     function actionHome ()

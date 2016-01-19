@@ -64,8 +64,7 @@ class BxGSearchModule extends BxDolModule
         $GLOBALS['aModule'] = $aModule;
         $this->_iProfileId = getLoggedId();
         $GLOBALS['oBxGSearchModule'] = &$this;
-        if (0 == strncmp('https', BX_DOL_URL_ROOT, 5))
-            $this->_sProto = 'https';
+        $this->_sProto = bx_proto();
     }
 
     function actionHome ()

@@ -33,8 +33,7 @@ class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
         $this->_sKeyPublic = getParam('sys_recaptcha_key_public');
         $this->_sKeyPrivate = getParam('sys_recaptcha_key_private');
 
-        if (0 == strncmp('https', BX_DOL_URL_ROOT, 5))
-            $this->_sProto = 'https';
+        $this->_sProto = bx_proto();
     }
 
     /**
