@@ -6,7 +6,7 @@
 			return this;
         var eBox = $(this).parents('.wall-post-text, .dbContent, .boxContent');
         var iMaxWidth = eBox.size() ? eBox.innerWidth() : $(window).width() - 70;
-        console.log(eBox.innerWidth());
+
         if (iMaxWidth > o['max-width']) iMaxWidth = o['max-width'];
         
 		return this.each(function() {

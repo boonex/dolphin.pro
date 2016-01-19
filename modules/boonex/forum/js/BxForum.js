@@ -1119,7 +1119,7 @@ Forum.prototype.livePost = function (ts)
 Forum.prototype.setWindowTitle = function (s) {
 
     if (!s || !s.length)
-        s = $("#orca_main .disignBoxFirst:first .boxFirstHeader .dbTitle").text();
+        s = $("#orca_main .disignBoxFirst:first .boxContent .forum_topic_caption").text();
 
     if (!s || !s.length)
         window.document.title = defTitle;
