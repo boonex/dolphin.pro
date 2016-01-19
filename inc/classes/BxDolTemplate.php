@@ -724,6 +724,10 @@ class BxDolTemplate extends BxDolMistake
     {
         if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->beginPage($sName);
 
+        // add facebook meta tag
+        if ($sFbId = getParam('bx_facebook_connect_api_key'))
+            $this->setOpenGraphInfo(array('app_id' => $sFbId), 'fb');
+
         $sContent = $this->parseHtmlByName($sName, $aVariables, $this->_sKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH);
         if(empty($sContent))
             $sContent = $this->parseHtmlByName('default.html', $aVariables, $this->_sKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH);
