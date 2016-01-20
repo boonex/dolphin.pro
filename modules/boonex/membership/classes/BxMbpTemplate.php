@@ -94,6 +94,7 @@ class BxMbpTemplate extends BxDolModuleTemplate
         if(empty($aProviders))
         	return array(MsgBox(_t('_membership_err_no_payment_options')));
 
+        //--- Prepare levels
         $aTmplVarsLevels = array();
         foreach($aLevels as $iIndex => $aLevel) {
         	$bPaid = (int)$aLevel['price_amount'] > 0;
@@ -132,6 +133,7 @@ class BxMbpTemplate extends BxDolModuleTemplate
         	);
         }
 
+        //--- Prepare providers
 		$aTmplVarsProviders = array();
 		if(!empty($aProviders))
         	foreach($aProviders as $iIndex => $aProvider) {
@@ -152,6 +154,15 @@ class BxMbpTemplate extends BxDolModuleTemplate
 		$bSelectedProvider = count($aTmplVarsProviders) == 1;
 		$sSelectedProvider = $bSelectedProvider ? $aTmplVarsProviders[0]['name'] : '';
 
+		//--- Prepare captcha
+		$sCaptcha = '';
+		$bCaptcha = $this->_oConfig->isCaptchaOnPaidJoin();
+		if($bCaptcha) {
+			bx_import('BxDolCaptcha');
+	        $oCaptcha = BxDolCaptcha::getObjectInstance();
+	        $sCaptcha = $oCaptcha ? $oCaptcha->display($bDynamic) : _t('_sys_txt_captcha_not_available');
+		}
+
 		$aTmplParams = array(
 			'js_object' => $this->_oConfig->getJsObject('join'),
 			'js_code' => $this->getJsCode('join', true),
@@ -165,6 +176,12 @@ class BxMbpTemplate extends BxDolModuleTemplate
 						'content' => array()
 					),
 					'bx_repeat:providers' => $aTmplVarsProviders
+				)
+			),
+			'bx_if:show_captcha' => array(
+				'condition' => $bCaptcha,
+				'content' => array(
+					'captcha' => $sCaptcha
 				)
 			),
 			'bx_if:show_selected_provider' => array(

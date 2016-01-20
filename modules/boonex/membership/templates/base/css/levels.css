@@ -21,10 +21,7 @@ div.mbp-current-levels,
 div.mbp-available-levels {}
 div.mbp-level {
 	position: relative;
-    margin: 20px 0px 0px 0px;
-}
-div.mbp-level:first-child {
-	margin-top: 0px;
+    margin: 10px 0px 10px 0px;
 }
 div.mbp-level-icon {
 	top: 0px;
@@ -90,6 +87,7 @@ div.mbp-available-levels {
 div.mbp-available-levels div.mbp-level {
 	position: relative;
 	display: inline-block;
+	vertical-align: top; 
 	width: 50%;
 }
 div.join-box-form {

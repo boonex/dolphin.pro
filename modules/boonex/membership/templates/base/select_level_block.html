@@ -18,6 +18,12 @@
 				</bx_repeat:providers>
 			</div>
 		</bx_if:show_providers_selector>
+		<bx_if:show_captcha>
+			<div class="mbp-captcha bx-def-margin-top">
+				__captcha__
+				<input type="hidden" name="captcha" value="" />
+			</div>
+		</bx_if:show_captcha>
 		<div class="mbp-pay bx-def-margin-top">
 			<bx_if:show_selected_provider>
 				<input type="hidden" name="provider" value="__name__" />
