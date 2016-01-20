@@ -971,6 +971,7 @@ $LANG= array(
   '_adm_btn_Create_page' => 'Создать страницу',
   '_adm_btn_Go' => 'Переход',
   '_adm_btn_add_column' => 'Добавить столбец',
+  '_adm_btn_add_full_column' => 'Добавить широкий столбец',
   '_adm_btn_add_page' => 'Добавить страницу',
   '_adm_btn_email_save' => 'Сохранить',
   '_adm_btn_lang_import' => 'Импортировать',
