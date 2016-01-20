@@ -353,7 +353,7 @@ div.page_column {
     overflow: visible;
 }
 div.page_block_container {}
-div.page_column_single .page_block_container {
+div.page_column_full .page_block_container {
     margin-left: 0px;
     margin-right: 0px;
 }

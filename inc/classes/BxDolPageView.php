@@ -103,7 +103,6 @@ class BxDolPageView
     var $iMemberID = 0;
     var $bAjaxMode = false;
 
-    var $bColumnSpecialExists = false; //--- indicates whether the page has a full-width special column or not.
     var $aColumnsWidth = array ();
 
     var $sTableName = 'sys_page_compose';
@@ -332,42 +331,36 @@ class BxDolPageView
 
     function genColumnHeader( $iColumn, $fColumnWidth )
     {
-    	$iPageWidth = (int)$this->aPage['Width'];
+        $iPageWidth = (int)$this->aPage['Width'];
         $iColumnsCount = count($this -> aPage['Columns']);
 
-        $bColumnSpecial = $iColumn == 1 && $fColumnWidth == 100;
-        if($bColumnSpecial)
-        	$this->bColumnSpecialExists = true;
+        $bColumnFull = ($fColumnWidth == 100);
+        $bLastColumnWasFull = ($this -> aPage['Columns'][$iColumn - 1]['Width'] == 100);
+        $bNextColumnIsFull = ($this -> aPage['Columns'][$iColumn + 1]['Width'] == 100);
 
         $sAddClass = ' page_column_';
-        if($iColumnsCount == 1 || ($iColumnsCount == 2 && $this->bColumnSpecialExists) || $bColumnSpecial)
-            $sAddClass .= 'single';
-        else if(($iColumn == 1 && !$bColumnSpecial) || ($iColumn == 2 && $this->bColumnSpecialExists))
+        if($bColumnFull)
+            $sAddClass .= 'full';
+        else if(($iColumn == 1) || ($bLastColumnWasFull))
             $sAddClass .= 'first';
-        else if($iColumn == $iColumnsCount)
+        else if($iColumn == $iColumnsCount || ($bNextColumnIsFull))
             $sAddClass .= 'last';
-		else
-			$sAddClass .= 'middle';
+        else
+            $sAddClass .= 'middle';
 
-		if(preg_replace('/\d+/', '', $this->aPage['Width']) == 'px' && $GLOBALS['oTemplConfig']->PageComposeColumnCalculation == 'px') {
-			$iPageContentWidth = $iPageWidth - (int)$GLOBALS['oTemplConfig']->iPageGap;
+        if(preg_replace('/\d+/', '', $this->aPage['Width']) == 'px' && $GLOBALS['oTemplConfig']->PageComposeColumnCalculation == 'px') {
+            $iPageContentWidth = $iPageWidth - (int)$GLOBALS['oTemplConfig']->iPageGap;
 
-			$fColumnWidth = $iColumn == $iColumnsCount ? $iPageContentWidth - array_sum($this->aColumnsWidth) : (int)round($iPageContentWidth * $fColumnWidth / 100);
+            $fColumnWidth = $iColumn == $iColumnsCount ? $iPageContentWidth - array_sum($this->aColumnsWidth) : (int)round($iPageContentWidth * $fColumnWidth / 100);
             $sColumnWidth = $fColumnWidth . 'px';
-		}
-		else {
-			$iPageContentWidth = 100;
+        }
+        else {
+            $sColumnWidth = $fColumnWidth . '%';
+        }
 
-			$fColumnWidth = $iColumn == $iColumnsCount ? $iPageContentWidth - array_sum($this->aColumnsWidth) : $fColumnWidth;
-			$sColumnWidth = $fColumnWidth . '%';
-		}
-
-		if(!$bColumnSpecial)
-			$this->aColumnsWidth[$iColumn] = $fColumnWidth;
-
-        $sAddClassWidth = $sAddClass . '_width';
+        $sAddClassWidth = $sAddClass . '_width_' . str_replace('.', '_', $fColumnWidth);
         $GLOBALS['oSysTemplate']->addCssStyle('.' . trim($this->getPageClass()) . ' .' . trim ($sAddClassWidth), array(
-        	'width' => $sColumnWidth
+            'width' => $sColumnWidth
         ));
 
         $this -> sCode .= '<div class="page_column' . $sAddClass . $sAddClassWidth . '" id="page_column_' . $iColumn . '">';

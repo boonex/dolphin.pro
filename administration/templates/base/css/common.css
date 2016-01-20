@@ -116,6 +116,12 @@ div.paginate {
 
 	filter: none;
 }
+.bx-btn-small {
+	height:38px;
+	padding:0px 8px 0px 8px;
+	line-height:36px;
+	font-size:16px;
+}
 
 /* * * * Admin Actions panel * * * */
 .admin_actions_panel {
