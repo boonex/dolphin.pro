@@ -108,7 +108,10 @@ class BxGroupsSearchResult extends BxDolTwigSearchResult
                     $this->aCurrent['restriction']['owner']['value'] = $iProfileId;
                 $sValue = $GLOBALS['MySQL']->unescape($sValue);
                 $this->sBrowseUrl = "browse/user/$sValue";
-                $this->aCurrent['title'] = ucfirst(strtolower($sValue)) . _t('_bx_groups_page_title_browse_by_author');
+
+                $iProfileId = getID($sValue);
+                $this->aCurrent['title'] = _t('_bx_groups_page_title_browse_by_author', $iProfileId ? getNickName($iProfileId) : $sValue);
+
                 if (bx_get('rss')) {
                     $aData = getProfileInfo($iProfileId);
                     if ($aData['Avatar']) {
@@ -153,7 +156,9 @@ class BxGroupsSearchResult extends BxDolTwigSearchResult
 
                 $sValue = $GLOBALS['MySQL']->unescape($sValue);
                 $this->sBrowseUrl = "browse/joined/$sValue";
-                $this->aCurrent['title'] = ucfirst(strtolower($sValue)) . _t('_bx_groups_page_title_browse_by_author_joined_groups');
+
+                $iProfileId = getID($sValue);
+                $this->aCurrent['title'] = _t('_bx_groups_page_title_browse_by_author_joined_groups', $iProfileId ? getNickName($iProfileId) : $sValue);
 
                 if (bx_get('rss')) {
                     $aData = getProfileInfo($iProfileId);
@@ -186,14 +191,14 @@ class BxGroupsSearchResult extends BxDolTwigSearchResult
                 $this->aCurrent['restriction']['category']['value'] = $sValue;
                 $sValue = $GLOBALS['MySQL']->unescape($sValue);
                 $this->sBrowseUrl = "browse/category/" . title2uri($sValue);
-                $this->aCurrent['title'] = _t('_bx_groups_page_title_browse_by_category') . ' ' . $sValue;
+                $this->aCurrent['title'] = _t('_bx_groups_page_title_browse_by_category', $sValue);
                 break;
 
             case 'tag':
                 $this->aCurrent['restriction']['tag']['value'] = $sValue;
                 $sValue = $GLOBALS['MySQL']->unescape($sValue);
                 $this->sBrowseUrl = "browse/tag/" . title2uri($sValue);
-                $this->aCurrent['title'] = _t('_bx_groups_page_title_browse_by_tag') . ' ' . $sValue;
+                $this->aCurrent['title'] = _t('_bx_groups_page_title_browse_by_tag', $sValue);
                 break;
 
             case 'recent':
@@ -223,8 +228,7 @@ class BxGroupsSearchResult extends BxDolTwigSearchResult
                 $this->aCurrent['restriction']['calendar-min'] = array('value' => "UNIX_TIMESTAMP('{$sValue}-{$sValue2}-{$sValue3} 00:00:00')", 'field' => 'created', 'operator' => '>=', 'no_quote_value' => true);
                 $this->aCurrent['restriction']['calendar-max'] = array('value' => "UNIX_TIMESTAMP('{$sValue}-{$sValue2}-{$sValue3} 23:59:59')", 'field' => 'created', 'operator' => '<=', 'no_quote_value' => true);
                 $this->sEventsBrowseUrl = "browse/calendar/{$sValue}/{$sValue2}/{$sValue3}";
-                $this->aCurrent['title'] = _t('_bx_groups_page_title_browse_by_day')
-                    . getLocaleDate( strtotime("{$sValue}-{$sValue2}-{$sValue3}"), BX_DOL_LOCALE_DATE_SHORT);
+                $this->aCurrent['title'] = _t('_bx_groups_page_title_browse_by_day', getLocaleDate(strtotime("{$sValue}-{$sValue2}-{$sValue3}"), BX_DOL_LOCALE_DATE_SHORT));
                 break;
 
             case '':

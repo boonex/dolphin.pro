@@ -296,9 +296,11 @@ div.block_cont_nd {
 div.adm-pb-cp-item {
     position: relative;
     float: left;
+    margin-bottom:5px;
 }
 div.adm-pb-cp-item-right {
 	float: right;
+    margin-bottom:5px;
 }
 .adm-pb-cp-selector span,
 .adm-pb-cp-selector .input_wrapper {

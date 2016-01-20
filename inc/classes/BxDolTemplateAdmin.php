@@ -43,6 +43,9 @@ class BxDolTemplateAdmin extends BxDolTemplate
             case 'current_version':
                 $sRet = $GLOBALS['site']['ver'] . '.' . $GLOBALS['site']['build'];
                 break;
+            case 'dir':
+                $a = bx_lang_info();
+                return $a['Direction'];
             case 'page_charset':
                 $sRet = 'UTF-8';
                 break;

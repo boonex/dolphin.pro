@@ -602,6 +602,9 @@ class BxBaseFormView extends BxDolForm
         if (!$oEditor)
             return false;
 
+        if (isset($aInput['html_no_link_conversion']) && $aInput['html_no_link_conversion'])
+            $oEditor->setCustomConf ("remove_script_host: false,\nrelative_urls: false,\n");
+
         $this->_sCodeAdd .= $oEditor->attachEditor ((!empty($this->aFormAttrs['id']) ? '#' . $this->aFormAttrs['id'] . ' ': '') . '[name="'.$aInput['name'].'"]', $iViewMode, isset($aInput['dynamic']) ? $aInput['dynamic'] : false);
         if (!isset($aInput['attrs_wrapper']['style']))
             $aInput['attrs_wrapper']['style'] = '';
@@ -1060,12 +1063,23 @@ class BxBaseFormView extends BxDolForm
             'plugins/jquery/themes/|jquery-ui.css',
         );
 
+        $aLang = bx_lang_info();
+        $sLanguageCountry = str_replace('_', '-', $aLang['LanguageCountry']);
+
         if ($isDateControl || $isDateTimeControl) {
 
             $aUiLangs = array ('af' => 1, 'ar-DZ' => 1, 'ar' => 1, 'az' => 1, 'be' => 1, 'bg' => 1, 'bs' => 1, 'ca' => 1, 'cs' => 1, 'cy-GB' => 1, 'da' => 1, 'de' => 1, 'el' => 1, 'en-AU' => 1, 'en-GB' => 1, 'en-NZ' => 1, 'en' => 1, 'eo' => 1, 'es' => 1, 'et' => 1, 'eu' => 1, 'fa' => 1, 'fi' => 1, 'fo' => 1, 'fr-CA' => 1, 'fr-CH' => 1, 'fr' => 1, 'gl' => 1, 'he' => 1, 'hi' => 1, 'hr' => 1, 'hu' => 1, 'hy' => 1, 'id' => 1, 'is' => 1, 'it' => 1, 'ja' => 1, 'ka' => 1, 'kk' => 1, 'km' => 1, 'ko' => 1, 'ky' => 1, 'lb' => 1, 'lt' => 1, 'lv' => 1, 'mk' => 1, 'ml' => 1, 'ms' => 1, 'nb' => 1, 'nl-BE' => 1, 'nl' => 1, 'nn' => 1, 'no' => 1, 'pl' => 1, 'pt-BR' => 1, 'pt' => 1, 'rm' => 1, 'ro' => 1, 'ru' => 1, 'sk' => 1, 'sl' => 1, 'sq' => 1, 'sr-SR' => 1, 'sr' => 1, 'sv' => 1, 'ta' => 1, 'th' => 1, 'tj' => 1, 'tr' => 1, 'uk' => 1, 'vi' => 1, 'zh-CN' => 1, 'zh-HK' => 1, 'zh-TW' => 1);
 
+            // detect language
+            if (isset($aUiLangs[$sLanguageCountry]))
+                $sLang = $sLanguageCountry;
+            elseif (isset($aUiLangs[$aLang['Name']]))
+                $sLang = $aLang['Name'];
+            else 
+                $sLang = 'en';
+
             $aJs [] = 'jquery.ui.datepicker.min.js';
-            $aJs [] = 'plugins/jquery/i18n/|jquery.ui.datepicker-' . (isset($aUiLangs[$GLOBALS['sCurrentLanguage']]) ? $GLOBALS['sCurrentLanguage'] : 'en') . '.js';
+            $aJs [] = 'plugins/jquery/i18n/|jquery.ui.datepicker-' . $sLang . '.js';
         }
 
         if ($isDateTimeControl) {
@@ -1074,8 +1088,13 @@ class BxBaseFormView extends BxDolForm
 
             $aJs[] = 'jquery-ui-timepicker-addon.min.js';
             $aJs[] = 'jquery-ui-sliderAccess.js';
-            if (isset($aCalendarLangs[$GLOBALS['sCurrentLanguage']]))
-                $aJs[] = 'plugins/jquery/i18n/|jquery-ui-timepicker-' . $GLOBALS['sCurrentLanguage'] . '.js';
+
+            // detect language
+            if (isset($aCalendarLangs[$sLanguageCountry]))
+                $aJs[] = 'plugins/jquery/i18n/|jquery-ui-timepicker-' . $sLanguageCountry . '.js';
+            elseif (isset($aCalendarLangs[$aLang['Name']]))
+                $aJs[] = 'plugins/jquery/i18n/|jquery-ui-timepicker-' . $aLang['Name'] . '.js';
+
             $aCss[] = 'plugins/jquery/themes/|jquery-ui-timepicker-addon.css';
         }
 

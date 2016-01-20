@@ -79,7 +79,7 @@ class BxDolAdminDashboard extends BxDolMistake
         foreach ($aObjects as $k => $a)
             $aObjects[$k]['title'] = _t($a['title']);
         $sContent = $GLOBALS['oAdmTemplate']->parseHtmlByName('dashboard_charts.html', array(
-            'proto' => 0 == strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https' : 'http',
+            'proto' => bx_proto(),
             'admin_url' => BX_DOL_URL_ADMIN,
             'from' => date('Y-m-d', time() - 30*24*60*60),
             'to' => date('Y-m-d', time()),

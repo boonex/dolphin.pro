@@ -64,7 +64,7 @@ if(isset($_POST['create_language'])) {
     if(empty($aResults['langs']))
         $aResults['langs'] = '_adm_txt_langs_success_delete';
 } else if(isset($_GET['action']) && $_GET['action'] == 'export' && isset($_GET['id'])) {
-    $aLanguage = $GLOBALS['MySQL']->getRow("SELECT `Name`, `Flag`, `Title` FROM `sys_localization_languages` WHERE `ID`='" . (int)$_GET['id'] . "' LIMIT 1");
+    $aLanguage = $GLOBALS['MySQL']->getRow("SELECT `Name`, `Flag`, `Title`, `Direction`, `LanguageCountry` FROM `sys_localization_languages` WHERE `ID`='" . (int)$_GET['id'] . "' LIMIT 1");
 
     $aContent = array();
     $aItems = $GLOBALS['MySQL']->getAll("SELECT `tlk`.`Key` AS `key`, `tls`.`String` AS `string` FROM `sys_localization_keys` AS `tlk` LEFT JOIN `sys_localization_strings` AS `tls` ON `tlk`.`ID`=`tls`.`IDKey` WHERE `tls`.`IDLanguage`='" . (int)$_GET['id'] . "'");
@@ -270,7 +270,7 @@ function _getLanguagesList($mixedResult, $bActive = false)
 function _getLanguageCreateForm($mixedResult, $bActive = false)
 {
     if(isset($_POST['action']) && $_POST['action'] == 'get_edit_form_language' && isset($_POST['id']))
-        $aLanguage = $GLOBALS['MySQL']->getRow("SELECT `ID` AS `id`, `Name` AS `name`, `Flag` AS `flag`, `Title` AS `title` FROM `sys_localization_languages` WHERE `ID`='" . (int)$_POST['id'] . "' LIMIT 1");
+        $aLanguage = $GLOBALS['MySQL']->getRow("SELECT `ID` AS `id`, `Name` AS `name`, `Flag` AS `flag`, `Title` AS `title`, `Direction` AS `direction`, `LanguageCountry` AS `lang_country` FROM `sys_localization_languages` WHERE `ID`='" . (int)$_POST['id'] . "' LIMIT 1");
 
     //--- Create language form ---//
     $aFormCreate = array(
@@ -293,6 +293,19 @@ function _getLanguageCreateForm($mixedResult, $bActive = false)
                 'name' => 'CopyLanguage_Name',
                 'caption' => _t('_adm_txt_langs_code'),
                 'value' => isset($aLanguage['name']) ? $aLanguage['name'] : '',
+            ),
+            'LanguageCountry' => array(
+                'type' => 'text',
+                'name' => 'LanguageCountry',
+                'caption' => _t('_adm_txt_langs_country_code'),
+                'value' => isset($aLanguage['lang_country']) ? $aLanguage['lang_country'] : '',
+            ),
+            'Direction' => array(
+                'type' => 'select',
+                'name' => 'Direction',
+                'caption' => _t('_adm_txt_langs_direction'),
+                'values' => array('LTR' => 'LTR', 'RTL' => 'RTL'),
+                'value' => isset($aLanguage['direction']) ? $aLanguage['direction'] : 'LTR',
             ),
             'Flag' => array(
                 'type' => 'select',
@@ -533,7 +546,9 @@ function createLanguage(&$aData)
 
     $sTitle = process_db_input($aData['CopyLanguage_Title']);
     $sName  = mb_strtolower( process_db_input($aData['CopyLanguage_Name']) );
-    $sFlag = htmlspecialchars_adv($aData['Flag']);
+    $sFlag = process_db_input($aData['Flag']);
+    $sDir = process_db_input($aData['Direction']);
+    $sLangCountry = process_db_input($aData['LanguageCountry']);
     $iSourceId = isset($aData['CopyLanguage_SourceLangID']) ? (int)$aData['CopyLanguage_SourceLangID'] : 0;
 
     if(strlen($sTitle) <= 0)
@@ -542,7 +557,7 @@ function createLanguage(&$aData)
         return '_adm_txt_langs_empty_name';
 
     if(isset($aData['id']) && (int)$aData['id'] != 0) {
-        $MySQL->query("UPDATE `sys_localization_languages` SET `Name`='" . $sName . "', `Flag`='" . $sFlag . "', `Title`='" . $sTitle . "' WHERE `ID`='" . (int)$aData['id'] . "'");
+        $MySQL->query("UPDATE `sys_localization_languages` SET `Name`='" . $sName . "', `Flag`='" . $sFlag . "', `Title`='" . $sTitle . "', `Direction`='" . $sDir . "', `LanguageCountry`='" . $sLangCountry . "' WHERE `ID`='" . (int)$aData['id'] . "'");
 
         return '_adm_txt_langs_success_updated';
     }
@@ -550,7 +565,7 @@ function createLanguage(&$aData)
     if (_checkLangUnique($sName) === true)
         return '_adm_txt_langs_cannot_create';
 
-    $mixedResult = $MySQL->query("INSERT INTO `sys_localization_languages` (`Name`, `Flag`, `Title`) VALUES ('{$sName}', '{$sFlag}', '{$sTitle}')");
+    $mixedResult = $MySQL->query("INSERT INTO `sys_localization_languages` (`Name`, `Flag`, `Title`, `Direction`, `LanguageCountry`) VALUES ('{$sName}', '{$sFlag}', '{$sTitle}', '{$sDir}', '{$sLangCountry}')");
     if($mixedResult === false)
         return '_adm_txt_langs_cannot_create';
     $iId = (int)$MySQL->lastId();
@@ -587,7 +602,7 @@ function importLanguage(&$aData, &$aFiles)
     if (_checkLangUnique($aLangInfo['Name']) === true)
         return '_adm_txt_langs_cannot_create';
 
-    $mixedResult = $MySQL->query("INSERT INTO `sys_localization_languages` (`Name`, `Flag`, `Title`) VALUES ('" . $aLangInfo['Name'] . "', '" . $aLangInfo['Flag'] . "', '" . $aLangInfo['Title'] . "')");
+    $mixedResult = $MySQL->query("INSERT INTO `sys_localization_languages` (`Name`, `Flag`, `Title`, `Direction`, `LanguageCountry`) VALUES ('" . process_db_input($aLangInfo['Name']) . "', '" . process_db_input($aLangInfo['Flag']) . "', '" . process_db_input($aLangInfo['Title']) . "', '" . process_db_input($aLangInfo['Direction']) . "', '" . process_db_input($aLangInfo['LanguageCountry']) . "')");
     if($mixedResult === false) {
         @unlink($sTmpPath);
         return '_adm_txt_langs_cannot_create';

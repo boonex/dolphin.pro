@@ -1569,7 +1569,7 @@ function bx_mkdir_r($dirName, $rights = 0777)
  */
 function bx_proto ()
 {
-    return 0 == strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https://' : 'http://';
+    return 0 == strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https' : 'http';
 }
 
 /**

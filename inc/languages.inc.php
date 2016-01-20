@@ -307,7 +307,7 @@ function compileLanguage($langID = 0)
         $resLangs = db_res('SELECT `ID`, `Name` FROM `sys_localization_languages`');
     } else {
         $resLangs = db_res('
-            SELECT	`ID`, `Name`
+            SELECT	*
             FROM	`sys_localization_languages`
             WHERE	`ID` = '.$langID
         );
@@ -327,7 +327,7 @@ function compileLanguage($langID = 0)
         if($handle === false) 
         	return false;
 
-        $fileContent = "<"."?PHP{$newLine}\$LANG = array(";
+        $fileContent = "<"."?PHP{$newLine}\$LANG_INFO=" . var_export($arrLanguage, true) . ";{$newLine}\$LANG = array(";
 
         foreach($aKeys as $aKey) {
             $langKey = str_replace(array("\\", "'"), array("\\\\", "\\'"), $aKey['key']);
@@ -545,4 +545,9 @@ function _t_format_size ($iBytes, $iPrecision = 2)
 function bx_lang_name()
 {
     return $GLOBALS['sCurrentLanguage'];
+}
+
+function bx_lang_info()
+{
+    return $GLOBALS['LANG_INFO'];
 }

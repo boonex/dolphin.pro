@@ -46,15 +46,13 @@ class BxVideosConfig extends BxDolFilesConfig
             'profile_album_name' => 'bx_videos_profile_album_name',
         );
 
-        $sProto = 'http://';
-        if (0 == strncmp('https', BX_DOL_URL_ROOT, 5))
-            $sProto = 'https://';
+        $sProto = bx_proto();
         
         if(!defined("YOUTUBE_VIDEO_PLAYER"))
-            define("YOUTUBE_VIDEO_PLAYER", '<iframe width="100%" height="360" src="' . $sProto . 'www.youtube-nocookie.com/embed/#video#?rel=0&amp;showinfo=0#autoplay#" frameborder="0" allowfullscreen></iframe>');
+            define("YOUTUBE_VIDEO_PLAYER", '<iframe width="100%" height="360" src="' . $sProto . '://www.youtube-nocookie.com/embed/#video#?rel=0&amp;showinfo=0#autoplay#" frameborder="0" allowfullscreen></iframe>');
 
         if(!defined("YOUTUBE_VIDEO_EMBED"))
-            define("YOUTUBE_VIDEO_EMBED", '<iframe width="480" height="360" src="' . $sProto . 'www.youtube-nocookie.com/embed/#video#?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>');
+            define("YOUTUBE_VIDEO_EMBED", '<iframe width="480" height="360" src="' . $sProto . '://www.youtube-nocookie.com/embed/#video#?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>');
 
         $this->initConfig();
     }

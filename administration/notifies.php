@@ -284,6 +284,7 @@ function getEmailMessage($sAction)
                 'caption' => $sBodyC,
                 'required' => true,
                 'html' => 2,
+                'html_no_link_conversion' => true,
                 'attrs' => array('style' => "height:400px;"),
                 'checker' => array (
                     'func' => 'length',

@@ -284,7 +284,7 @@ div.login_ajax_wrap div.sys-form-login-join input,
 div.login_ajax_wrap div.sys-form-login-join select, 
 div.login_ajax_wrap div.sys-form-login-join textarea, 
 div.login_ajax_wrap div.sys-form-login-join button  {
-	font-family: Roboto, Noto, Open Sans, Helvetica Neue, Helvetica, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 div.sys-form-login-join .sys-flj-content .bx-btn {

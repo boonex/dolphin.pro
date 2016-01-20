@@ -192,7 +192,13 @@ class BxBaseEditorTinyMCE extends BxDolEditor
         }
 
         // detect language
-        $sLang = (isset(self::$CONF_LANGS[$GLOBALS['sCurrentLanguage']]) ? $GLOBALS['sCurrentLanguage'] : 'en');
+        $aLang = bx_lang_info();
+        if (isset(self::$CONF_LANGS[$aLang['LanguageCountry']]))
+            $sLang = $aLang['LanguageCountry'];
+        elseif (isset(self::$CONF_LANGS[$aLang['Name']]))
+            $sLang = $aLang['Name'];
+        else 
+            $sLang = 'en';
 
         $aMarkers = array(
             'bx_var_custom_init' => &$sToolsItems,

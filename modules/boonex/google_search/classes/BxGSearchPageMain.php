@@ -29,7 +29,7 @@ class BxGSearchPageMain extends BxDolPageView
 
     function getBlockCode_SearchResults()
     {
-        $sProto = 0 == strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https' : 'http';
+        $sProto = bx_proto();
         $this->_oTemplate->addJs ($sProto . '://www.google.com/jsapi');
 
         $a = parse_url ($GLOBALS['site']['url']);

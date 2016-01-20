@@ -497,7 +497,9 @@ function walkThroughLanguage($aLanguage, $aLangInfo)
     $sLangName = $aLangInfo['Name'];
     $sLangFlag = $aLangInfo['Flag'];
     $sLangTitle = $aLangInfo['Title'];
-    $sInsertLanguageSQL = "INSERT INTO `sys_localization_languages` VALUES (NULL, '{$sLangName}', '{$sLangFlag}', '{$sLangTitle}')";
+    $sLangDir = isset($aLangInfo['Direction']) && $aLangInfo['Direction'] ? $aLangInfo['Direction'] : 'LTR';
+    $sLangCountryCode = isset($aLangInfo['LanguageCountry']) && $aLangInfo['LanguageCountry'] ? $aLangInfo['LanguageCountry'] : $aLangInfo['Name'] . '_' . strtoupper($aLangInfo['Flag']);
+    $sInsertLanguageSQL = "INSERT INTO `sys_localization_languages` VALUES (NULL, '{$sLangName}', '{$sLangFlag}', '{$sLangTitle}', '{$sLangDir}', '{$sLangCountryCode}')";
     db_res($sInsertLanguageSQL);
     $iLangKey = db_last_id();
 

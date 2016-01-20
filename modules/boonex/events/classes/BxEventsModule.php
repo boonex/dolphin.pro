@@ -965,12 +965,7 @@ class BxEventsModule extends BxDolTwigModule
 
     function _formatDateInBrowse (&$aEvent)
     {
-        if ($aEvent['EventStart'] < time() && $aEvent['EventEnd'] > time())
-            return _t('_bx_events_event_is_in_process');
-        elseif ($aEvent['EventEnd'] < time())
-            return defineTimeInterval($aEvent['EventEnd']);
-        else
-            return defineTimeInterval($aEvent['EventStart']);
+        return $this->_oTemplate->filterDateUTC($aEvent['EventStart']);
     }
 
     function _formatLocation (&$aEvent, $isCountryLink = false, $isFlag = false)

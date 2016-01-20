@@ -729,7 +729,10 @@ class BxDolInstaller extends BxDolInstallerUtils
         $sLangName = $oDb->escape($aLangInfo['Name']);
         $sLangFlag = $oDb->escape($aLangInfo['Flag']);
         $sLangTitle = $oDb->escape($aLangInfo['Title']);
-        if (!$oDb->res("INSERT INTO `sys_localization_languages` VALUES (NULL, '{$sLangName}', '{$sLangFlag}', '{$sLangTitle}')"))
+        $sLangDir = $oDb->escape(isset($aLangInfo['Direction']) && $aLangInfo['Direction'] ? $aLangInfo['Direction'] : 'LTR');
+        $sLangCountryCode = $oDb->escape(isset($aLangInfo['LanguageCountry']) && $aLangInfo['LanguageCountry'] ? $aLangInfo['LanguageCountry'] : $aLangInfo['Name'] . '_' . strtoupper($aLangInfo['Flag']));
+
+        if (!$oDb->res("INSERT INTO `sys_localization_languages` VALUES (NULL, '{$sLangName}', '{$sLangFlag}', '{$sLangTitle}', '{$sLangDir}', '{$sLangCountryCode}')"))
             return false;
         $iLangKey = $oDb->lastId();
 

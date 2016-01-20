@@ -242,9 +242,9 @@ class BxEventsFormAdd extends BxDolFormMedia
                         'error' => _t ('_bx_events_err_event_start'),
                     ),
                     'db' => array (
-                        'pass' => 'DateTime',
+                        'pass' => 'DateTimeUTC',
                     ),
-                    'display' => 'filterDate',
+                    'display' => 'filterDateUTC',
                 ),
                 'EventEnd' => array(
                     'type' => 'datetime',
@@ -256,9 +256,9 @@ class BxEventsFormAdd extends BxDolFormMedia
                         'error' => _t ('_bx_events_err_event_end'),
                     ),
                     'db' => array (
-                        'pass' => 'DateTime',
+                        'pass' => 'DateTimeUTC',
                     ),
-                    'display' => 'filterDate',
+                    'display' => 'filterDateUTC',
                 ),
                 'Tags' => array(
                     'type' => 'text',
