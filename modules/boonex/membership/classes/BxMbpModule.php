@@ -184,6 +184,20 @@ class BxMbpModule extends BxDolModule
 
     function actionJoinSubmit()
     {
+    	if($this->_oConfig->isCaptchaOnPaidJoin()) {
+    		bx_import('BxDolCaptcha');
+	        $oCaptcha = BxDolCaptcha::getObjectInstance();
+	        if(!$oCaptcha) {
+	        	$this->_oTemplate->getPageCodeError('_sys_txt_captcha_not_available');
+    			return;
+	        }
+
+	        if(!$oCaptcha->check ()) {
+	        	$this->_oTemplate->getPageCodeError('_Captcha check failed');
+    			return;
+	        }
+    	} 
+
     	$sDescriptor = bx_get('descriptor');
     	if($sDescriptor === false) {
     		$this->_oTemplate->getPageCodeError('_membership_err_need_select_level');

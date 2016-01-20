@@ -9,6 +9,7 @@ SET @iCategoryId = LAST_INSERT_ID();
 INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `err_text`, `order_in_kateg`, `AvailableValues`) VALUES
 ('mbp_disable_free_join', '', @iCategoryId, 'Disable free join', 'checkbox', '', '', 1, ''),
 ('mbp_enable_standard_for_paid_join', 'on', @iCategoryId, 'Enable Standard membership level on "Pay Before Join" form', 'checkbox', '', '', 2, ''),
+('mbp_enable_captcha_for_paid_join', 'on', @iCategoryId, 'Enable Captcha on "Pay Before Join" form', 'checkbox', '', '', 3, ''),
 ('permalinks_module_membership', 'on', 26, 'Enable friendly membership permalink', 'checkbox', '', '', 0, '');
 
 
