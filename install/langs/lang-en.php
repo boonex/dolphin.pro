@@ -971,6 +971,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_btn_Create_page' => 'Create page',
   '_adm_btn_Go' => 'Go',
   '_adm_btn_add_column' => 'Add Column',
+  '_adm_btn_add_full_column' => 'Add Full Column',
   '_adm_btn_add_page' => 'Add Page',
   '_adm_btn_email_save' => 'Save',
   '_adm_btn_lang_import' => 'Import',
