@@ -50,7 +50,7 @@
 /* fonts */
 .bx-def-font,
 .bx-def-font-inputs {
-    font-family: Roboto, Noto, Open Sans, Helvetica Neue, Helvetica, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: rgba(0, 0, 0, 0.7);
 }
 .bx-def-font-inputs-captions {

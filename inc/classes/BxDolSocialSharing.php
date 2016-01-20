@@ -86,12 +86,12 @@ class BxDolSocialSharing extends BxDolMistake
      * @param $sLang lang code
      * @return locale string or empty string if no lacale is found
      */
-    protected function _getLocaleFacebook ($sLang)
+    protected function _getLocaleFacebook ($sLocale)
     {
         $aLocales = $this->_getLocalesFacebook();
-        if (!$aLocales || !isset($aLocales[$sLang]))
+        if (!isset($aLocales[$sLocale]))
             return '';
-        return $aLocales[$sLang];
+        return $sLocale;
     }
 
     /**
@@ -111,9 +111,7 @@ class BxDolSocialSharing extends BxDolMistake
             $aData = array ();
             foreach ($xmlLocates->locale as $xmlLocale) {
                 $sLocale = (string)($xmlLocale->codes->code->standard->representation);
-                list ($sLang,) = explode('_', $sLocale);
-                if (!isset($aData[$sLang]) || $sLocale == $sLang . '_' . strtoupper($sLang))
-                    $aData[$sLang] = $sLocale;
+                $aData[$sLocale] = 1;
             }
             $oCache->setData ($sCacheKey, $aData);
         }

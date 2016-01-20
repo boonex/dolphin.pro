@@ -24,12 +24,14 @@ class BxBaseSocialSharing extends BxDolSocialSharing
     {
         $this->_addOpenGraphInfo($sTitle, isset($aCustomVars['img_url']) ? $aCustomVars['img_url'] : '');
 
+        $aLang = bx_lang_info();
+
         // define markers for replacments
         $aMarkers = array (
             'url' => $sUrl,
             'url_encoded' => rawurlencode($sUrl),
             'lang' => $GLOBALS['sCurrentLanguage'],
-            'locale' => $this->_getLocaleFacebook($GLOBALS['sCurrentLanguage']),
+            'locale' => $this->_getLocaleFacebook($aLang['LanguageCountry']),
             'twit' => _t('_sys_social_sharing_twit'),
             'title' => $sTitle,
             'title_encoded' => rawurlencode($sTitle),

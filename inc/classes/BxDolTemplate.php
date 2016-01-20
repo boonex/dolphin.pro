@@ -772,6 +772,9 @@ class BxDolTemplate extends BxDolMistake
 
         $sRet = '';
         switch( $sKey ) {
+            case 'dir':
+                $a = bx_lang_info();
+                return $a['Direction'];
             case 'page_charset':
                 $sRet = 'UTF-8';
                 break;
