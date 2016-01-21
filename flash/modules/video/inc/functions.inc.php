@@ -313,14 +313,15 @@ function grabImages($sInputFile, $sOutputFile, $iSecond = 0, $bForse = false, $a
     if (!$aFilesConfig)
         $aFilesConfig = BxDolService::call('videos', 'get_files_config');
 
+    $fRatio = 0;
     foreach ($aFilesConfig as $a) {
         if (!isset($a['image']) || !$a['image'])
             continue;
 
         $sResize = '';
-        if (isset($a['square']) && $a['square'] && isset($a['w']) && $a['w'] && isset($a['h']) && $a['h'] > $a['w'])
+        if ($fRatio && isset($a['square']) && $a['square'] && isset($a['w']) && $a['w'] && $fRatio < 1)
             $sResize = "-vf crop=out_h=in_w -s {$a['w']}x{$a['w']}";
-        if (isset($a['square']) && $a['square'] && isset($a['w']) && $a['w'])
+        elseif ($fRatio && isset($a['square']) && $a['square'] && isset($a['w']) && $a['w'])
             $sResize = "-vf crop=out_w=in_h -s {$a['w']}x{$a['w']}";
         elseif (isset($a['w']) && isset($a['h']) && $a['w'] && $a['h'])
             $sResize = "-s {$a['w']}x{$a['h']}";
@@ -330,6 +331,11 @@ function grabImages($sInputFile, $sOutputFile, $iSecond = 0, $bForse = false, $a
 
         if (!grabImage($sInputFile, $sOutputFile . $a['postfix'], $sResize, $iSecond, $bForse))
             return false;
+
+        if (!$fRatio) {
+            $aSize = getimagesize($sOutputFile . $a['postfix']);
+            $fRatio = $aSize[0]/$aSize[1];
+        }
     }
 
     return true;
