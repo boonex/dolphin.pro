@@ -1716,6 +1716,7 @@ CREATE TABLE `sys_page_compose` (
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`, `Cache`) VALUES
 ('', '1140px', 'RSS Feed', '_RSS Feed', 0, 0, 'Sample', 'RSS', 1, 0, 'non,memb', 0, 0),
 ('', '1140px', 'Simple HTML Block', '_HTML Block', 0, 0, 'Sample', 'Echo', 11, 0, 'non,memb', 0, 0),
+('', '1140px', 'Simple Text Block', '_Text Block', 0, 0, 'Sample', 'Text', 11, 0, 'non,memb', 0, 0),
 
 ('index', '1140px', 'Shows statistic information about your site content', '_Site Stats', 3, 2, 'SiteStats', '', 1, 28.1, 'non,memb', 0, 3600),
 ('index', '1140px', 'Display form to subscribe to newsletters', '_Subscribe_block_caption', 3, 1, 'Subscribe', '', 1, 28.1, 'non,memb', 0, 0),
