@@ -79,6 +79,11 @@
                     iHeight = eImg != undefined && eImg.complete > 0 ? parseInt(eImg.height) : 0;
                 if (undefined == iWidth || !iWidth)
                     iWidth = eImg != undefined && eImg.complete > 0 ? parseInt(eImg.width) : 0;
+                if (iWidth && iWidth > eCont.innerWidth()) {
+                    var fRatio = iWidth/eCont.innerWidth();
+                    iWidth = eCont.innerWidth();
+                    iHeight = parseInt(iHeight / fRatio);
+                }
                 eCont.find('.bx-gallery-imgs').css('height',  iHeight ? iHeight + 'px' : 'auto');
                 eImgCont.find('.bx-gallery-img').css('marginLeft', iWidth && eCont.innerWidth() ? (eCont.innerWidth() - iWidth) / 2 + 'px': 0);
 
