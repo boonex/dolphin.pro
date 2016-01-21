@@ -233,6 +233,10 @@
     padding: 0px 20px;
 }
 
+.form_advanced_table .bx-btn.form_input_multiply_remove {
+    float:none;
+}
+
 .form_advanced_table .sys-icon.multiply_add_button,
 .form_advanced_table .sys-icon.multiply_remove_button,
 .form_advanced_table .sys-icon.multiply_other_button,
