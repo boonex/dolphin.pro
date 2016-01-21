@@ -104,7 +104,7 @@ function BxDolMenu( idContainer, urlParser, aTopItems, aCustomItems, aSystemItem
 	
 	for( id in aInactiveItems ) // create inactive items
 	{
-		var oNewIItem = new BxDolMenuItem( this, ( this.iMaxActiveID + 1 ), 'inactive', aInactiveItems[id], iInactiveCounterX, iInactiveCounterY, id );
+		var oNewIItem = new BxDolMenuItem( this, ( this.iMaxActiveID + 1 ), 'inactive', aInactiveItems[id], iInactiveCounterX, iInactiveCounterY, parseInt(id) );
 		
 		this.aItems.push( oNewIItem );
 		this.aInactiveItems.push( oNewIItem );

@@ -114,7 +114,7 @@ if(bx_get('action') !== false) {
 $sTopQuery = "SELECT `ID`, `Name`, `Movable` FROM `" . $oMenu->sDbTable . "`	WHERE `Active`='1' ORDER BY `Order`";
 $rTopItems = db_res($sTopQuery);
 
-$sAllQuery = "SELECT `ID`, `Name` FROM `" . $oMenu->sDbTable . "` WHERE `Clonable`='1' OR (`Clonable`='0' AND `Active`='0') ORDER BY `ID`";
+$sAllQuery = "SELECT `ID`, `Name` FROM `" . $oMenu->sDbTable . "` WHERE `Clonable`='1' OR (`Clonable`='0' AND `Active`='0') ORDER BY `Name`";
 $rAllItems = db_res( $sAllQuery );
 
 $sComposerInit = "
@@ -146,7 +146,7 @@ $iIndex = 0;
 while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
     $sComposerInit .= "
 
-        aTopItems[$iIndex] = [{$aTopItem['ID']}, '" . addslashes( $aTopItem['Name'] ) . "', {$aTopItem['Movable']}];
+        aTopItems[$iIndex] = [{$aTopItem['ID']}, '" . bx_js_string( $aTopItem['Name'], BX_ESCAPE_STR_APOS ) . "', {$aTopItem['Movable']}];
         aCustomItems[$iIndex] = {};";
 
     $iIndex++;
@@ -155,7 +155,7 @@ while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
 $sComposerInit .= "\n";
 while(($aAllItem = mysql_fetch_assoc($rAllItems)) !== false) {
     $sComposerInit .= "
-        aAllItems[{$aAllItem['ID']}] = '" . addslashes( $aAllItem['Name'] ) . "';";
+        aAllItems['{$aAllItem['ID']} '] = '" . bx_js_string( $aAllItem['Name'], BX_ESCAPE_STR_APOS ) . "';";
 }
     $sComposerInit .= "
     </script>
@@ -369,7 +369,7 @@ function updateLangFile( $key, $string )
         return;
 
     $langName = getParam( 'lang_default' );
-    $langID = db_value( "SELECT `ID` FROM `sys_localization_languages` WHERE `Name` = '" . addslashes( $langName ) . "'" );
+    $langID = db_value( "SELECT `ID` FROM `sys_localization_languages` WHERE `Name` = '" . process_db_input( $langName ) . "'" );
 
     $keyID = db_value( "SELECT `ID` FROM `sys_localization_keys` WHERE `Key` = '" . process_db_input( $key ) . "'" );
     if( $keyID ) {
