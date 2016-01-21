@@ -9,13 +9,8 @@ div.sys_root_bg {
 	height: 120%;
 	height: 120vh;
 
-	background-image: url(../images/sys-bg-main-2x.jpg);
-	background-repeat: no-repeat;
-	background-position: center center;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover !important;
+	background-image: url(../images/sys-bg-main.jpg);
+	background-repeat: repeat;
 }
 
 div.sys_root {
@@ -26,7 +21,7 @@ div.sys_root {
 div.sys_main_logo {
 	z-index: 1;
 
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.3);
 	border-bottom: 0px;
 }
 div.sys_ml_wrapper {
