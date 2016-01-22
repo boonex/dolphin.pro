@@ -145,6 +145,12 @@ class BxAvaModule extends BxDolModule
             return;
         }
 
+        if ('bx_photos_thumb' == getParam('sys_member_info_thumb') && 'bx_photos_icon' == getParam('sys_member_info_thumb_icon')) {
+            $sProfilePhotosUrl = BxDolService::call('photos', 'get_manage_profile_photo_url', array($this->_iProfileId, 'profile_album_name'));
+            header('Location: ' . $sProfilePhotosUrl);
+            exit;
+        }  
+
         $this->_oTemplate->pageStart();
 
         if ($_GET['make_avatar_from_shared_photo'] > 0) {
@@ -180,7 +186,7 @@ class BxAvaModule extends BxDolModule
         bx_avatar_import ('PageMain');
         $oPage = new BxAvaPageMain ($this);
         echo $oPage->getCode();
-        $this->_oTemplate->addCss (array('main.css', 'colors.css'));
+        $this->_oTemplate->addCss (array('main.css', 'colors.css', 'imgareaselect-default.css'));
         $this->_oTemplate->addJs ('jquery.imgareaselect.min.js');
         $this->_oTemplate->pageCode(_t('_bx_ava_page_title_home'), false, false);
     }
@@ -551,7 +557,7 @@ class BxAvaModule extends BxDolModule
         if (!$this->isAdmin())
             return '';
 
-        $this->_oTemplate->addCss (array('main.css', 'colors.css'));
+        $this->_oTemplate->addCss (array('main.css', 'colors.css', 'imgareaselect-default.css'));
 
         $aVars = array (
             'content' => $this->serviceGetMyAvatars ($iProfileId),
