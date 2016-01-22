@@ -351,7 +351,7 @@ class BxDolPageView
         if(preg_replace('/\d+/', '', $this->aPage['Width']) == 'px' && $GLOBALS['oTemplConfig']->PageComposeColumnCalculation == 'px') {
             $iPageContentWidth = $iPageWidth - (int)$GLOBALS['oTemplConfig']->iPageGap;
 
-            $fColumnWidth = $iColumn == $iColumnsCount ? $iPageContentWidth - array_sum($this->aColumnsWidth) : (int)round($iPageContentWidth * $fColumnWidth / 100);
+            $fColumnWidth = (int)round($iPageContentWidth * $fColumnWidth / 100);
             $sColumnWidth = $fColumnWidth . 'px';
         }
         else {
