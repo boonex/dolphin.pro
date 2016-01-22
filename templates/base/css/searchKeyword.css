@@ -11,3 +11,11 @@
     margin: 5px auto;
 }
 
+.bx-btn-area {
+    text-align: center;
+}
+.bx-btn-area .bx-btn-centered {
+    margin: 0px 10px 10px 0px;
+    float: none;
+    display: inline;
+}
