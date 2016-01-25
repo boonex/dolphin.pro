@@ -6,7 +6,7 @@ Licensed MIT
 (function(w){
 	"use strict";
 	/* exported loadCSS */
-	w.loadCSS = function( href, before, media ){
+	var loadCSS = function( href, before, media ){
 		// Arguments explained:
 		// `href` [REQUIRED] is the URL for your CSS file.
 		// `before` [OPTIONAL] is the element the script should use as a reference for injecting our stylesheet <link> before
@@ -19,13 +19,7 @@ Licensed MIT
 			ref = before;
 		}
 		else {
-			var refs;
-			if( doc.querySelectorAll ){
-				refs = doc.querySelectorAll(  "style,link[rel=stylesheet],script" );
-			}
-			else {
-				refs = ( doc.body || doc.getElementsByTagName( "head" )[ 0 ] ).childNodes;
-			}
+			var refs = ( doc.body || doc.getElementsByTagName( "head" )[ 0 ] ).childNodes;
 			ref = refs[ refs.length - 1];
 		}
 
@@ -40,21 +34,17 @@ Licensed MIT
 			// Note: `insertBefore` is used instead of `appendChild`, for safety re: http://www.paulirish.com/2011/surefire-dom-element-insertion/
 		ref.parentNode.insertBefore( ss, ( before ? ref : ref.nextSibling ) );
 		// A method (exposed on return object for external use) that mimics onload by polling until document.styleSheets until it includes the new sheet.
-		var onloadcssdefined = function ( cb ){
-			var defined;
-			for( var i = 0; i < sheets.length; i++ ){
-				var sheet = sheets[i];
-				if( sheet.href && sheet.href === ss.href ){
-					defined = true;
+		var onloadcssdefined = function( cb ){
+			var resolvedHref = ss.href;
+			var i = sheets.length;
+			while( i-- ){
+				if( sheets[ i ].href === resolvedHref ){
+					return cb();
 				}
 			}
-			if( defined ){
-				cb();
-			} else {
-				setTimeout(function() {
-					onloadcssdefined( cb );
-				});
-			}
+			setTimeout(function() {
+				onloadcssdefined( cb );
+			});
 		};
 
 		// once loaded, set link's media back to `all` so that the stylesheet applies once it loads
@@ -64,4 +54,12 @@ Licensed MIT
 		});
 		return ss;
 	};
-}(this));
+	// commonjs
+	if( typeof module !== "undefined" ){
+		module.exports = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ));
+
