@@ -9,11 +9,11 @@ $aConfig = array(
      * Main Section.
      */
     'title' => 'Custom RSS',
-    'version' => '1.2.1',
+    'version' => '1.3.0',
     'vendor' => 'Boonex',
     'update_url' => '',
     'compatible_with' => array(
-        '7.2.1'
+        '7.3.0'
     ),
 
     /**
