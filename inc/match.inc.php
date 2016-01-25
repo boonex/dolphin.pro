@@ -66,7 +66,7 @@ function getMatchProfiles($iProfileId, $bForce = false, $sSort = 'none')
             if ($sCond) {
                 $aMathFields[$sKey]['profiles'] = $oDb->getAllWithKey("SELECT `ID` FROM `Profiles` WHERE `Status` = 'Active' AND `ID` != $iProfileId AND $sCond", 'ID');
             }
-    }
+        }
     }
 
     $sCondSort = '';
