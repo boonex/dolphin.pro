@@ -3204,8 +3204,8 @@ INSERT INTO `sys_objects_actions` (`Caption`, `Icon`, `Url`, `Script`, `Eval`, `
 
 ('{cpt_activate}', 'check', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action={act_activate}&ID={ID}'', false, ''post''); return false;', '', 11, 'Profile', 0),
 ('{cpt_ban}', 'exclamation-circle', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action={act_ban}&ID={ID}'', false, ''post''); return false;', '', 12, 'Profile', 0),
-('{cpt_delete}', 'times', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action=delete&ID={ID}'', false, ''post''); return false;', '', 13, 'Profile', 0),
-('{cpt_delete_spam}', 'times', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action=delete_spam&ID={ID}'', false, ''post''); return false;', '', 14, 'Profile', 0),
+('{cpt_delete}', 'times', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action=delete&ID={ID}'', false, ''post'', true); return false;', '', 13, 'Profile', 0),
+('{cpt_delete_spam}', 'times', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action=delete_spam&ID={ID}'', false, ''post'', true); return false;', '', 14, 'Profile', 0),
 ('{cpt_feature}', 'asterisk', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action={act_feature}&ID={ID}'', false, ''post''); return false;', '', 15, 'Profile', 0),
 
 ('{evalResult}', 'plus', '{BaseUri}mail.php?mode=compose', '', 'return $GLOBALS[''logged''][''member''] || $GLOBALS[''logged''][''admin''] ? _t(''_sys_am_mailbox_compose'') : '''';', 1, 'Mailbox', 1),
