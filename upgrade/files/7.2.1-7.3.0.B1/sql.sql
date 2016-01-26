@@ -65,5 +65,5 @@ UPDATE `sys_box_download` SET `icon` = 'android' WHERE `icon` = 'android.png';
 
 -- last step is to update current version
 
-UPDATE `sys_options` SET `VALUE` = '7.3.0' WHERE `Name` = 'sys_tmp_version';
+UPDATE `sys_options` SET `VALUE` = '7.3.0.B1' WHERE `Name` = 'sys_tmp_version';
 
