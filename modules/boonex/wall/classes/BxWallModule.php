@@ -1323,20 +1323,22 @@ class BxWallModule extends BxDolModule
         if($iAuthorId == 0 && getParam('wall_enable_guest_comments') == 'on')
                return true;
 
-           if(isBlocked($this->_iOwnerId, $iAuthorId))
-            return false;
+		if(isBlocked($this->_iOwnerId, $iAuthorId))
+			return false;
 
         $aCheckResult = checkAction($iAuthorId, ACTION_ID_TIMELINE_POST_COMMENT, $bPerform);
         return $aCheckResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
     function _isCommentDeleteAllowed($aEvent, $bPerform = false)
     {
-    	$sCommonPostPrefix = $this->_oConfig->getCommonPostPrefix();
+    	if(!isLogged())
+    		return false;
 
         if(isAdmin())
             return true;
 
         $iUserId = (int)$this->_getAuthorId();
+        $sCommonPostPrefix = $this->_oConfig->getCommonPostPrefix();
         if((int)$aEvent['owner_id'] == $iUserId || (strpos($aEvent['type'], $sCommonPostPrefix) === 0 && (int)$aEvent['object_id'] == $iUserId))
            return true;
 
@@ -1345,6 +1347,9 @@ class BxWallModule extends BxDolModule
     }
 	function _isRepostAllowed($aEvent, $bPerform = false)
     {
+		if(!isLogged())
+    		return false;
+
     	$bSystem = $this->_oConfig->isSystem($aEvent['type'], $aEvent['action']);
     	if($bSystem && strcmp($aEvent['action'], 'commentPost') == 0)
     		return false;
