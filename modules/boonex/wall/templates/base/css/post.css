@@ -14,16 +14,14 @@ img.wall-ptype-ctl {}
 
 div.wall-ptype-cnt {
     position: relative;
-    display: block;
-}
-div.wall_text,
-div.wall_link,
-div.wall_photo,
-div.wall_video,
-div.wall_sound {
-    padding: 0px;
     display: none;
+
+	padding: 0px;
     border: 0px;
+}
+
+div.wall-ptype-cnt.wall-ptc-active {
+	display: block;
 }
 
 div.wall-ptype-uploader-selector {

@@ -162,7 +162,7 @@ class BxDolFilesUploader extends BxDolTemplate
         }
         ob_start();
         ?>
-            <iframe style="display:none;" name="upload_file_frame"></iframe>
+            <iframe style="display:none;" name="__upload_type___upload_frame"></iframe>
             <script src="__modules_url__boonex/__upload_type__s/js/upload.js" type="text/javascript" language="javascript"></script>
             <script type="text/javascript">
                 var __js_post_object__ = new Bx__upload_type_nc__Upload({
@@ -204,7 +204,7 @@ class BxDolFilesUploader extends BxDolTemplate
                 'action' => $this->sWorkingFile,
                 'method' => 'post',
                 'enctype' => 'multipart/form-data',
-                'target' => 'upload_file_frame'
+                'target' => $this->sUploadTypeLC . '_upload_frame'
             ),
             'inputs' => array(
                 'header1' => array(
@@ -260,7 +260,7 @@ class BxDolFilesUploader extends BxDolTemplate
                 'action' => $this->sWorkingFile,
                 'method' => 'post',
                 'enctype' => 'multipart/form-data',
-                'target' => 'upload_file_frame'
+                'target' => $this->sUploadTypeLC . '_upload_frame'
             ),
             'inputs' => array(
                 'header1' => array(
@@ -385,7 +385,7 @@ class BxDolFilesUploader extends BxDolTemplate
                 'action' => bx_append_url_params($this->sWorkingFile, array('action' => 'accept_multi_html5')),
                 'method' => 'post',
                 'enctype' => 'multipart/form-data',
-                'target' => 'upload_file_frame'
+                'target' => $this->sUploadTypeLC . '_upload_frame'
             ),
             'inputs' => array(
                 'submit' => array (
@@ -578,7 +578,7 @@ class BxDolFilesUploader extends BxDolTemplate
                 'action' => bx_append_url_params($this->sWorkingFile, array('action' => $aUploaders['regular']['action'])),
                 'method' => 'post',
                 'enctype' => 'multipart/form-data',
-                'target' => 'upload_file_frame'
+                'target' => $this->sUploadTypeLC . '_upload_frame'
             ),
             'inputs' => array(
                 'header1' => array(

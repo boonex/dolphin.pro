@@ -168,7 +168,8 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 ('wall_events_chars_display_max', '500', @iCategoryId, 'Max number of displayed character in text post', 'digit', '', '', 7, ''),
 ('wall_rss_length', '5', @iCategoryId, 'The length of RSS feed', 'digit', '', '', 8, ''),
 ('wall_events_hide_timeline', '', @iCategoryId, 'Hide events from Timeline', 'select_multiple', '', '', 9, 'PHP:return BxDolService::call(\'wall\', \'get_actions_checklist\', array(\'timeline\'));'),
-('wall_events_hide_outline', '', @iCategoryId, 'Hide events from Outline', 'select_multiple', '', '', 10, 'PHP:return BxDolService::call(\'wall\', \'get_actions_checklist\', array(\'outline\'));');
+('wall_events_hide_outline', '', @iCategoryId, 'Hide events from Outline', 'select_multiple', '', '', 10, 'PHP:return BxDolService::call(\'wall\', \'get_actions_checklist\', array(\'outline\'));'),
+('wall_uploaders_hide_timeline', '', @iCategoryId, 'Hide uploaders from Post to Timeline block', 'select_multiple', '', '', 11, 'PHP:return BxDolService::call(\'wall\', \'get_uploaders_checklist\', array(\'timeline\'));');
 
 
 SET @iLevelNonMember := 1;
