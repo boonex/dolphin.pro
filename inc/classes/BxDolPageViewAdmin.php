@@ -41,6 +41,16 @@ class BxDolPageViewAdmin
                 	header('Content-Type:text/javascript');
                     echo json_encode($this->createUserPage());
                 break;
+
+                case 'addCodeBlock':
+                	header('Content-Type:text/javascript');
+                    echo json_encode(array('result' => $GLOBALS['MySQL']->query("INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`, `Cache`) VALUES ('', '1140px', 'Simple PHP Block', '_Code Block', 0, 0, 'Sample', 'Code', 11, 0, 'non,memb', 0, 0)") ? 'ok' : 'fail'));
+                break;
+
+                case 'removeCodeBlock':
+                	header('Content-Type:text/javascript');
+                    echo json_encode(array('result' => $GLOBALS['MySQL']->query("DELETE FROM `sys_page_compose` WHERE `Func` = 'Sample' AND `Content` = 'Code'") ? 'ok' : 'fail'));
+                break;
             }
             exit;
         }
@@ -270,7 +280,7 @@ class BxDolPageViewAdmin
 
         if( $sFunc == 'RSS' )
             $sContentUpd = "`Content` = '" . process_db_input($aData['Url'], BX_TAGS_STRIP) . '#' . (int)$aData['Num'] . "',";
-        elseif( $sFunc == 'Echo' )
+        elseif( $sFunc == 'Echo' || $sFunc == 'Text' || $sFunc == 'Code' )
             $sContentUpd = "`Content` = '" . process_db_input($aData['Content'], BX_TAGS_NO_ACTION) . "',";
         elseif( $sFunc == 'XML' ) {
             $iApplicationID = (int)$aData['application_id'];
@@ -443,6 +453,8 @@ class BxDolPageViewAdmin
         $sHtmlBlockC = _t('_adm_pbuilder_HTML_Block');
         $sXmlBlockC = _t('_adm_pbuilder_XML_Block');
         $sRssBlockC = _t('_adm_pbuilder_RSS_Feed');
+        $sPhpBlockC = _t('_adm_pbuilder_Code_Block');
+        $sTextBlockC = _t('_adm_pbuilder_Text_Block');
         $sSpecialBlockC = _t('_adm_pbuilder_Special_Block');
         $sXmlPathC = _t('_adm_pbuilder_XML_path');
         $sUrlRssFeedC = _t('_adm_pbuilder_Url_of_RSS_feed');
@@ -466,6 +478,8 @@ class BxDolPageViewAdmin
         switch( $aItem['Func'] ) {
             case 'PFBlock': $sBlockType = $sProfileFieldsC; break;
             case 'Echo':    $sBlockType = $sHtmlBlockC; break;
+            case 'Text':    $sBlockType = $sTextBlockC; break;
+            case 'Code':    $sBlockType = $sPhpBlockC; break;
             case 'XML':     $sBlockType = $sXmlBlockC; break;
             case 'RSS':     $sBlockType = $sRssBlockC; break;
             default:        $sBlockType = $sSpecialBlockC; break;
@@ -476,8 +490,6 @@ class BxDolPageViewAdmin
             $aVisibleValues[] = 'non';
         if(strpos( $aItem['Visible'], 'memb' ) !== false)
             $aVisibleValues[] = 'memb';
-
-        $sDeleteButton = ($aItem['Func'] == 'RSS' or $aItem['Func'] == 'Echo' or $aItem['Func'] == 'XML') ? '<input type="reset" value="Delete" name="Delete" />' : '';
 
         $aForm = array(
             'form_attrs' => array(
@@ -562,14 +574,23 @@ class BxDolPageViewAdmin
 
             $aForm['inputs']['Content'] = array(
                 'type' => 'textarea',
-                'html' => $bMceEditor ? 2 : 0,
-                'html_toggle' => true,
+                'html' => 2, // $bMceEditor ? 2 : 0,
+                // 'html_toggle' => true,
                 'dynamic' => true,
                 'attrs' => array ('id' => 'form_input_html'.$iBlockID, 'style' => 'height:250px;'),
                 'name' => 'Content',
                 'value' => $sBlockContent,
                 'colspan' => true,
             );
+        } elseif( $aItem['Func'] == 'Text' || $aItem['Func'] == 'Code') {
+
+            $aForm['inputs']['Content'] = array(
+                'type' => 'textarea',
+                'name' => 'Content',
+                'value' => $sBlockContent,
+                'colspan' => true,
+            );
+
         } elseif( $aItem['Func'] == 'XML' ) {
             $aExistedApplications = BxDolService::call('open_social', 'get_admin_applications', array());
 
@@ -608,7 +629,7 @@ class BxDolPageViewAdmin
             )
         );
 
-        if ($aItem['Func'] == 'RSS' || $aItem['Func'] == 'Echo' || $aItem['Func'] == 'XML') {
+        if ($aItem['Func'] == 'RSS' || $aItem['Func'] == 'Echo' || $aItem['Func'] == 'Text' || $aItem['Func'] == 'Code' || $aItem['Func'] == 'XML') {
             $aForm['inputs']['controls'][] = array(
                 'type' => 'reset',
                 'name' => 'Delete',

@@ -1,5 +1,5 @@
 --
--- Database: v 7.2.1
+-- Database: v 7.3.0
 --
 
 -- --------------------------------------------------------
@@ -1276,7 +1276,7 @@ INSERT INTO `sys_options` VALUES
 SET @iCatHidden = 0;
 INSERT INTO `sys_options` VALUES
 
-('sys_tmp_version', '7.2.1', @iCatHidden, 'Dolphin version ', 'digit', '', '', 10, ''),
+('sys_tmp_version', '7.3.0.B1', @iCatHidden, 'Dolphin version ', 'digit', '', '', 10, ''),
 ('license_code', '', @iCatHidden, 'Dolphin License Code', 'digit', '', '', 11, ''),
 ('license_expiration', '', @iCatHidden, 'Dolphin License Expiration', 'digit', '', '', 12, ''),
 ('license_checksum', '', @iCatHidden, 'Dolphin License Checksum', 'digit', '', '', 13, ''),
@@ -1716,6 +1716,7 @@ CREATE TABLE `sys_page_compose` (
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`, `Cache`) VALUES
 ('', '1140px', 'RSS Feed', '_RSS Feed', 0, 0, 'Sample', 'RSS', 1, 0, 'non,memb', 0, 0),
 ('', '1140px', 'Simple HTML Block', '_HTML Block', 0, 0, 'Sample', 'Echo', 11, 0, 'non,memb', 0, 0),
+('', '1140px', 'Simple Text Block', '_Text Block', 0, 0, 'Sample', 'Text', 11, 0, 'non,memb', 0, 0),
 
 ('index', '1140px', 'Shows statistic information about your site content', '_Site Stats', 3, 2, 'SiteStats', '', 1, 28.1, 'non,memb', 0, 3600),
 ('index', '1140px', 'Display form to subscribe to newsletters', '_Subscribe_block_caption', 3, 1, 'Subscribe', '', 1, 28.1, 'non,memb', 0, 0),
@@ -2307,11 +2308,11 @@ INSERT INTO `sys_profile_fields` VALUES(6, 'DateLastEdit', 'system', NULL, '', N
 INSERT INTO `sys_profile_fields` VALUES(7, 'Status', 'system', NULL, '', NULL, NULL, 'Unconfirmed\nApproval\nActive\nRejected\nSuspended', 'LKey', '', 0, '', 0, 0, 0, 0, NULL, 0, NULL, 21, 1, 21, 1, 0, NULL, 17, 6, 17, 3, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(8, 'DateLastLogin', 'system', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 0, 0, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 21, 3, 21, 3, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(9, 'Featured', 'system', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 0, 0, 0, NULL, 0, NULL, 21, 2, 21, 2, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
-INSERT INTO `sys_profile_fields` VALUES(10, 'Sex', 'select_one', 'select', '', NULL, NULL, '#!Sex', 'LKey', '', 0, '', 1, 0, 0, 20, 2, 17, 6, 17, 5, 17, 3, 17, 4, 17, 7, 17, 4, 17, 5, '', 20, 2, 20, 2, 17, 2, 11, 15);
+INSERT INTO `sys_profile_fields` VALUES(10, 'Sex', 'select_one', 'select', '', NULL, NULL, '#!Sex', 'LKey', '', 0, '', 1, 0, 0, 20, 2, 17, 6, 17, 5, 17, 3, 17, 4, 17, 7, 17, 4, 17, 5, '', 20, 2, 20, 2, 17, 2, 11, 30);
 INSERT INTO `sys_profile_fields` VALUES(11, 'LookingFor', 'select_set', 'checkbox', '', NULL, NULL, '#!Sex', 'LKey2', '', 0, '', 0, 0, 0, 0, NULL, 20, 1, 20, 1, 17, 7, 17, 8, 17, 11, 17, 5, 17, 7, '', 20, 1, 20, 1, 0, NULL, 10, 30);
 INSERT INTO `sys_profile_fields` VALUES(12, 'DescriptionMe', 'area', NULL, '', 20, NULL, '', 'LKey', '', 0, '', 1, 0, 0, 20, 4, 20, 4, 20, 4, 20, 2, 0, NULL, 0, NULL, 22, 2, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(13, 'DateOfBirth', 'date', NULL, '', 18, 75, '', 'LKey', '', 0, '', 1, 1, 0, 20, 3, 20, 2, 20, 2, 17, 4, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 20, 3, 20, 3, 17, 3, 13, 0);
-INSERT INTO `sys_profile_fields` VALUES(15, 'Country', 'select_one', 'select', '', NULL, NULL, '#!Country', 'LKey', '', 0, '', 1, 0, 0, 0, NULL, 20, 5, 20, 5, 17, 5, 17, 6, 17, 9, 20, 2, 17, 4, '', 20, 4, 20, 4, 20, 1, 15, 40);
+INSERT INTO `sys_profile_fields` VALUES(15, 'Country', 'select_one', 'select', '', NULL, NULL, '#!Country', 'LKey', '', 0, '', 1, 0, 0, 0, NULL, 20, 5, 20, 5, 17, 5, 17, 6, 17, 9, 20, 2, 17, 4, '', 20, 4, 20, 4, 20, 1, 15, 25);
 INSERT INTO `sys_profile_fields` VALUES(16, 'City', 'text', NULL, '', 2, 64, '', 'LKey', '', 0, '', 1, 0, 0, 0, NULL, 20, 6, 20, 6, 17, 6, 17, 7, 17, 10, 20, 3, 17, 6, '', 0, NULL, 0, NULL, 20, 2, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(17, 'General Info', 'block', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 1, 0, 0, 1, 0, 1, 0, 2, 0, 2, 0, 1, 0, 1, 0, 1, 0, 1, '', 0, 1, 0, 1, 0, 1, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(18, 'Location', 'system', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 0, 0, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 20, 5, 0, 0);
@@ -3203,8 +3204,8 @@ INSERT INTO `sys_objects_actions` (`Caption`, `Icon`, `Url`, `Script`, `Eval`, `
 
 ('{cpt_activate}', 'check', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action={act_activate}&ID={ID}'', false, ''post''); return false;', '', 11, 'Profile', 0),
 ('{cpt_ban}', 'exclamation-circle', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action={act_ban}&ID={ID}'', false, ''post''); return false;', '', 12, 'Profile', 0),
-('{cpt_delete}', 'times', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action=delete&ID={ID}'', false, ''post''); return false;', '', 13, 'Profile', 0),
-('{cpt_delete_spam}', 'times', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action=delete_spam&ID={ID}'', false, ''post''); return false;', '', 14, 'Profile', 0),
+('{cpt_delete}', 'times', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action=delete&ID={ID}'', false, ''post'', true); return false;', '', 13, 'Profile', 0),
+('{cpt_delete_spam}', 'times', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action=delete_spam&ID={ID}'', false, ''post'', true); return false;', '', 14, 'Profile', 0),
 ('{cpt_feature}', 'asterisk', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''list_pop.php?action={act_feature}&ID={ID}'', false, ''post''); return false;', '', 15, 'Profile', 0),
 
 ('{evalResult}', 'plus', '{BaseUri}mail.php?mode=compose', '', 'return $GLOBALS[''logged''][''member''] || $GLOBALS[''logged''][''admin''] ? _t(''_sys_am_mailbox_compose'') : '''';', 1, 'Mailbox', 1),

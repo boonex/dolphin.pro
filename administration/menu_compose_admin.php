@@ -106,11 +106,8 @@ if(bx_get('action') !== false) {
 $sTopQuery = "SELECT `id`, `title` FROM `sys_menu_admin` WHERE `parent_id`='0' ORDER BY `order`";
 $rTopItems = db_res( $sTopQuery );
 
-$sAllQuery = "SELECT `id`, `title` FROM `sys_menu_admin`";
-$rAllItems = db_res( $sAllQuery );
-
-$sAllTopQuery = "SELECT `id`, `title` FROM `sys_menu_admin` WHERE `parent_id`='0'";
-$rAllTopItems = db_res( $sAllTopQuery );
+$sAllTopQuery = "SELECT * FROM (SELECT `id` + 1000 AS `id`, `title` FROM `sys_menu_admin` WHERE `parent_id`='0' UNION SELECT `id`, `title` FROM `sys_menu_admin`) AS `t`";
+$aAllTopItems = $GLOBALS['MySQL']->getPairs($sAllTopQuery, 'id', 'title');
 
 $sComposerInit = "
     <script type=\"text/javascript\">
@@ -139,7 +136,7 @@ $sComposerInit = "
 
 $iIndex = 0;
 while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
-    $sTopestTitle = bx_js_string(_t($aTopItem['title']));
+    $sTopestTitle = bx_js_string(_t($aTopItem['title']), BX_ESCAPE_STR_APOS);
     $sComposerInit .= "
 
         aTopItems[$iIndex] = [" . ($aTopItem['id'] + 1000) . ", '{$sTopestTitle}', 3];
@@ -149,7 +146,7 @@ while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
     $iSubIndex = 0;
     $rCustomItems = db_res( $sQuery );
     while(($aCustomItem = mysql_fetch_assoc($rCustomItems)) !== false) {
-        $sCustomTitle = bx_js_string(_t($aCustomItem['title']));
+        $sCustomTitle = bx_js_string(_t($aCustomItem['title']), BX_ESCAPE_STR_APOS);
         $sComposerInit .= "
         aCustomItems[$iIndex][" . ($iSubIndex++) . "] = [{$aCustomItem['id']}, '{$sCustomTitle}', 3];";
     }
@@ -158,17 +155,16 @@ while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
 }
 
 $sComposerInit .= "\n";
-while(($aAllTopItem = mysql_fetch_assoc($rAllTopItems)) !== false) {
-    $sTopTitle = bx_js_string(_t($aAllTopItem['title']));
-    $sComposerInit .= "
-        aAllItems[" . ($aAllTopItem['id'] + 1000) . "] = '{$sTopTitle}';";
-}
 
-$sComposerInit .= "\n";
-while(($aAllItem = mysql_fetch_assoc($rAllItems)) !== false) {
-    $sOrdTitle = bx_js_string(_t($aAllItem['title']));
+foreach ($aAllTopItems as $iId => $sLangKey)
+    $aAllTopItems[$iId] = _t($sLangKey);
+
+asort($aAllTopItems);
+
+foreach ($aAllTopItems as $iId => $sTitle) {
+    $sTopTitle = bx_js_string($sTitle, BX_ESCAPE_STR_APOS);
     $sComposerInit .= "
-        aAllItems[{$aAllItem['id']}] = '{$sOrdTitle}';";
+        aAllItems['{$iId} '] = '{$sTopTitle}';";
 }
 
 $sComposerInit .= "

@@ -55,6 +55,7 @@
 
 .bx-gallery-img-cont img {
     background-color:#fff;
+    max-width:100%;
 }
 
 .bx-gallery-img-title {

@@ -1,5 +1,5 @@
 <?php
 
-$site['ver']               = '7.2';
-$site['build']             = '1';
+$site['ver']               = '7.3';
+$site['build']             = '0'; // B1
 

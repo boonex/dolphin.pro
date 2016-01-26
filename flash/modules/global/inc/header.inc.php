@@ -10,7 +10,7 @@
 /**
  * Current version information.
  */
-if(!defined("VERSION")) define("VERSION", "7.2.1");
+if(!defined("VERSION")) define("VERSION", "7.3.0");
 
 /**
  * Data Base Settings

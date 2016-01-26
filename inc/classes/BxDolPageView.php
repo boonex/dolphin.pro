@@ -351,7 +351,7 @@ class BxDolPageView
         if(preg_replace('/\d+/', '', $this->aPage['Width']) == 'px' && $GLOBALS['oTemplConfig']->PageComposeColumnCalculation == 'px') {
             $iPageContentWidth = $iPageWidth - (int)$GLOBALS['oTemplConfig']->iPageGap;
 
-            $fColumnWidth = $iColumn == $iColumnsCount ? $iPageContentWidth - array_sum($this->aColumnsWidth) : (int)round($iPageContentWidth * $fColumnWidth / 100);
+            $fColumnWidth = (int)round($iPageContentWidth * $fColumnWidth / 100);
             $sColumnWidth = $fColumnWidth . 'px';
         }
         else {
@@ -699,6 +699,11 @@ BLAH;
         return '<div class="dbContentHtml">' . $sContent . '</div>';
     }
 
+    function getBlockCode_Text($iBlockID, $sContent)
+    {
+        return $this->getBlockCode_Echo($iBlockID, $sContent);
+    }
+
     function getBlockCode_XML( $iBlockID, $sContent )
     {
         $sApplication = BxDolService::call('open_social', 'gen_application', array($sContent));
@@ -715,6 +720,11 @@ EOF;
         $aResult = eval($sContent);
         $sContent = ob_get_clean();
         return !empty($aResult) ? $aResult : $sContent;
+    }
+
+    function getBlockCode_Code( $iBlockID, $sContent )
+    {
+        return $this->getBlockCode_PHP( $iBlockID, $sContent );
     }
 
     function getBlockCode_RSS( $iBlockID, $sContent )

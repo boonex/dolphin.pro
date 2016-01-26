@@ -1551,14 +1551,15 @@ function bx_show_service_unavailable_error_and_exit ($sMsg = false, $iRetryAfter
     exit;
 }
 
-function bx_mkdir_r($dirName, $rights = 0777)
+function bx_mkdir_r($sDirName, $rights = 0777)
 {
-    $dirs = explode('/', $dirName);
-    $dir = '';
-    foreach ($dirs as $part) {
-        $dir .= $part . '/';
-        if (!is_dir($dir) && strlen($dir) > 0 && !file_exists($dir))
-            if (!mkdir($dir, $rights))
+    $sDirName = bx_ltrim_str ($sDirName, BX_DIRECTORY_PATH_ROOT);
+    $aDirs = explode('/', $sDirName);
+    $sDir = '';
+    foreach ($aDirs as $sPart) {
+        $sDir .= $sPart . '/';
+        if (!is_dir(BX_DIRECTORY_PATH_ROOT . $sDir) && strlen(BX_DIRECTORY_PATH_ROOT . $sDir) > 0 && !file_exists(BX_DIRECTORY_PATH_ROOT . $sDir))
+            if (!mkdir(BX_DIRECTORY_PATH_ROOT . $sDir, $rights))
                 return false;
     }
     return true;

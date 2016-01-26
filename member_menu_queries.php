@@ -23,7 +23,7 @@ $oMemberMenu = new BxTemplMemberMenu();
 if ( isset($_GET['action']) ) {
 
     // read data from cache file ;
-    $oCache = $GLOBALS['MySQL']->getDbCacheObject();
+    $oCache = $oMemberMenu->getCacheObject();
     $aMenuStructure = $oCache
         ->getData($GLOBALS['MySQL']->genDbCacheKey($oMemberMenu -> sMenuCacheFile));
 

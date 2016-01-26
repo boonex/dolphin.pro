@@ -121,7 +121,7 @@ $rTopItems = db_res( $sTopQuery );
 $sSysQuery = "SELECT `ID`, `Name`, `Movable` FROM `sys_menu_top` WHERE `Active`=1 AND `Type`='system' ORDER BY `Order`";
 $rSysItems = db_res( $sSysQuery );
 
-$sAllQuery = "SELECT `ID`, `Name` FROM `sys_menu_top` WHERE `Type`!='system' AND (`Clonable`='1' OR (`Clonable`='0' AND `Active`='0'))";
+$sAllQuery = "SELECT `ID`, `Name` FROM `sys_menu_top` WHERE `Type`!='system' AND (`Clonable`='1' OR (`Clonable`='0' AND `Active`='0')) ORDER BY `Name`";
 $rAllItems = db_res( $sAllQuery );
 
 $sAdminUrl = BX_DOL_URL_ADMIN;
@@ -156,7 +156,7 @@ $iIndex = 0;
 while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
     $sComposerInit .= "
 
-        aTopItems[$iIndex] = [{$aTopItem['ID']}, '" . addslashes( $aTopItem['Name'] ) . "', " . $aTopItem['Movable'] . "];
+        aTopItems[$iIndex] = [{$aTopItem['ID']}, '" . bx_js_string( $aTopItem['Name'], BX_ESCAPE_STR_APOS ) . "', " . $aTopItem['Movable'] . "];
         aCustomItems[$iIndex] = {};";
     $sQuery = "SELECT `ID`, `Name`, `Movable` FROM `sys_menu_top` WHERE `Active`=1 AND `Type`='custom' AND `Parent`={$aTopItem['ID']} ORDER BY `Order`";
 
@@ -164,7 +164,7 @@ while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
     $rCustomItems = db_res( $sQuery );
     while(($aCustomItem = mysql_fetch_assoc($rCustomItems)) !== false) {
         $sComposerInit .= "
-        aCustomItems[$iIndex][" . ($iSubIndex++) . "] = [{$aCustomItem['ID']}, '" . addslashes( $aCustomItem['Name'] ) . "', " . $aCustomItem['Movable'] . "];";
+        aCustomItems[$iIndex][" . ($iSubIndex++) . "] = [{$aCustomItem['ID']}, '" . bx_js_string( $aCustomItem['Name'], BX_ESCAPE_STR_APOS ) . "', " . $aCustomItem['Movable'] . "];";
     }
 
     $iIndex++;
@@ -173,7 +173,7 @@ while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
 while(($aSystemItem = mysql_fetch_assoc($rSysItems)) !== false) {
     $sComposerInit .= "
 
-        aSystemItems[$iIndex] = [{$aSystemItem['ID']}, '" . addslashes( $aSystemItem['Name'] ) . "', " . $aSystemItem['Movable'] . "];
+        aSystemItems[$iIndex] = [{$aSystemItem['ID']}, '" . bx_js_string( $aSystemItem['Name'], BX_ESCAPE_STR_APOS ) . "', " . $aSystemItem['Movable'] . "];
         aCustomItems[$iIndex] = {};";
     $sQuery = "SELECT `ID`, `Name`, `Movable` FROM `sys_menu_top` WHERE `Active`=1 AND `Type`='custom' AND `Parent`={$aSystemItem['ID']} ORDER BY `Order`";
 
@@ -181,7 +181,7 @@ while(($aSystemItem = mysql_fetch_assoc($rSysItems)) !== false) {
     $rCustomItems = db_res( $sQuery );
     while(($aCustomItem = mysql_fetch_assoc($rCustomItems)) !== false) {
         $sComposerInit .= "
-        aCustomItems[$iIndex][" . ($iSubIndex++) . "] = [{$aCustomItem['ID']}, '" . addslashes( $aCustomItem['Name'] ) . "', " . $aCustomItem['Movable'] . "];";
+        aCustomItems[$iIndex][" . ($iSubIndex++) . "] = [{$aCustomItem['ID']}, '" . bx_js_string( $aCustomItem['Name'], BX_ESCAPE_STR_APOS ) . "', " . $aCustomItem['Movable'] . "];";
     }
 
     $iIndex++;
@@ -190,7 +190,7 @@ while(($aSystemItem = mysql_fetch_assoc($rSysItems)) !== false) {
 $sComposerInit .= "\n";
 while(($aAllItem = mysql_fetch_assoc($rAllItems)) !== false) {
     $sComposerInit .= "
-        aAllItems[{$aAllItem['ID']}] = '" . addslashes( $aAllItem['Name'] ) . "';";
+        aAllItems['{$aAllItem['ID']} '] = '" . bx_js_string( $aAllItem['Name'], BX_ESCAPE_STR_APOS ) . "';";
 }
 $sComposerInit .= "
     -->
@@ -406,7 +406,7 @@ function updateLangFile( $key, $string )
         return;
 
     $langName = getParam( 'lang_default' );
-    $langID = db_value( "SELECT `ID` FROM `sys_localization_languages` WHERE `Name` = '" . addslashes( $langName ) . "'" );
+    $langID = db_value( "SELECT `ID` FROM `sys_localization_languages` WHERE `Name` = '" . process_db_input( $langName ) . "'" );
 
     $keyID = db_value( "SELECT `ID` FROM `sys_localization_keys` WHERE `Key` = '" . process_db_input( $key ) . "'" );
     if( $keyID ) {

@@ -19,9 +19,9 @@ class BxVideosConfig extends BxDolFilesConfig
         // only image files can added/removed here, changing list of video files requires source code modification
         // image files support square resizing, just specify 'square' => true
         $this->aFilesConfig = array (
+            'poster' => array('postfix' => IMAGE_EXTENSION, 'image' => true), // first image must be not square
             'browse' => array('postfix' => THUMB_FILE_NAME . IMAGE_EXTENSION, 'image' => true, 'w' => 240, 'h' => 240, 'square' => true),
-        	'browse2x' => array('postfix' => THUMB_FILE_NAME . '_2x' . IMAGE_EXTENSION, 'image' => true, 'w' => 480, 'h' => 480, 'square' => true),
-            'poster' => array('postfix' => IMAGE_EXTENSION, 'image' => true),
+            'browse2x' => array('postfix' => THUMB_FILE_NAME . '_2x' . IMAGE_EXTENSION, 'image' => true, 'w' => 480, 'h' => 480, 'square' => true),
             'main' => array('postfix' => FLV_EXTENSION),
             'mpg' => array('postfix' => '.mpg'),
             'file' => array('postfix' => MOBILE_EXTENSION),

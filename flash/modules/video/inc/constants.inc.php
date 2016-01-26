@@ -14,6 +14,7 @@ if(!defined("M4V_EXTENSION")) define("M4V_EXTENSION", ".m4v");
 if(!defined("IMAGE_EXTENSION")) define("IMAGE_EXTENSION", ".jpg");
 if(!defined("VIDEO_SIZE_4_3")) define("VIDEO_SIZE_4_3", "480x360");
 if(!defined("VIDEO_SIZE_16_9")) define("VIDEO_SIZE_16_9", "640x360");
+if(!defined("VIDEO_SIZE_9_16")) define("VIDEO_SIZE_9_16", "360x640");
 
 if(!defined("STATUS_APPROVED")) define("STATUS_APPROVED", "approved");
 if(!defined("STATUS_DISAPPROVED")) define("STATUS_DISAPPROVED", "disapproved");

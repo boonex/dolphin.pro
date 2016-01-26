@@ -9,12 +9,12 @@ $aConfig = array(
      * Main Section.
      */
     'title' => 'Chat+',
-    'version' => '1.2.1',
+    'version' => '1.3.0',
     'vendor' => 'Boonex',
     'update_url' => '',
 
     'compatible_with' => array(
-        '7.2.x'
+        '7.3.0'
     ),
 
     /**

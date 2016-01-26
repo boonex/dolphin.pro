@@ -295,7 +295,7 @@ class BxDolImageResize
                 $this->_oManager
                     ->make($sSrcImage)
                     ->orientate()
-                    ->fit($this->w, $this->_isSquareResize ? $this->w : $this->h)
+                    ->fit($this->w, $this->_isSquareResize ? $this->w : $this->h, null, 'top')
                     ->save($sDstImage ? $sDstImage : $sSrcImage, $this->_iJpegQuality);
             } 
             else {
