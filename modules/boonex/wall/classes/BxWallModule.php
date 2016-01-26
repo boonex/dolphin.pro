@@ -337,7 +337,7 @@ class BxWallModule extends BxDolModule
         if(!in_array($sType, array('photo', 'sound', 'video')))
         	return '';
 
-        return $this->_oTemplate->getUploader($sType, $sSubType);
+        return $this->_oTemplate->getUploader($iOwnerId, $sType, $sSubType);
     }
     /**
      * Get popup with profiles.
@@ -418,39 +418,35 @@ class BxWallModule extends BxDolModule
     	if(!isLogged())
     		return '';
 
-    	$sJsObject = $this->_oConfig->getJsObject('post');
-
         $aOwner = $this->_oDb->getUser(getLoggedId(), $sType);
         $this->_iOwnerId = $aOwner['id'];
 
         if(!$this->_isCommentPostAllowed())
             return "";
 
-        $aTopMenu = array(
-            'wall-ptype-text' => array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'comment-o', 'title' => _t('_wall_write'), 'active' => 1),
-            'wall-ptype-link' => array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'link', 'title' => _t('_wall_share_link')),
-        );
-
-        if($this->_oDb->isModule('photos'))
-            $aTopMenu['wall-ptype-photo'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'picture-o', 'title' => _t('_wall_add_photo'));
-        if($this->_oDb->isModule('sounds'))
-            $aTopMenu['wall-ptype-sound'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'music', 'title' => _t('_wall_add_sound'));
-        if($this->_oDb->isModule('videos'))
-            $aTopMenu['wall-ptype-video'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'film', 'title' => _t('_wall_add_video'));
+        $aTopMenu = $this->_getPostTabs(BX_WALL_VIEW_TIMELINE);
+		if(empty($aTopMenu) || empty($aTopMenu['tabs']))
+			return "";
 
         //--- Parse template ---//
-        $aVariables = array (
-            'post_js_content' => $this->_oTemplate->getJsCode('post', array('iOwnerId' => 0)),
-            'post_wall_text' => $this->_getWriteForm('_getWriteFormIndex'),
-            'post_wall_link' => $this->_getShareLinkForm('_getShareLinkFormIndex'),
-            'post_wall_photo' => '',
-            'post_wall_video' => '',
-            'post_wall_sound' => '',
-        );
+        $sClassActive = ' wall-ptc-active';
+        $sContent = $this->_oTemplate->parseHtmlByName('post.html', array (
+            'js_code' => $this->_oTemplate->getJsCode('post', array('iOwnerId' => 0)),
+        	'class_text' => !empty($aTopMenu['mask']['text']) ? $sClassActive : '',
+            'content_text' => isset($aTopMenu['mask']['text']) ? $this->_getWriteForm('_getWriteFormIndex') : '',
+        	'class_link' => !empty($aTopMenu['mask']['link']) ? $sClassActive : '',
+            'content_link' => isset($aTopMenu['mask']['link']) ? $this->_getShareLinkForm('_getShareLinkFormIndex') : '',
+        	'class_photo' => !empty($aTopMenu['mask']['photo']) ? $sClassActive : '',
+            'content_photo' => isset($aTopMenu['mask']['photo']) ? $this->_oTemplate->getUploader(0, 'photo') : '',
+        	'class_sound' => !empty($aTopMenu['mask']['sound']) ? $sClassActive : '',
+            'content_sound' => isset($aTopMenu['mask']['sound']) ? $this->_oTemplate->getUploader(0, 'sound') : '',
+        	'class_video' => !empty($aTopMenu['mask']['video']) ? $sClassActive : '',
+            'content_video' => isset($aTopMenu['mask']['video']) ? $this->_oTemplate->getUploader(0, 'video') : '',
+        ));
 
         $this->_oTemplate->addCss('post.css');
         $this->_oTemplate->addJs(array('main.js', 'post.js'));
-        return array($this->_oTemplate->parseHtmlByName('post.html', $aVariables), $aTopMenu, LoadingBox('bx-wall-post-loading'), true, 'getBlockCaptionMenu');
+        return array($sContent, $aTopMenu['tabs'], LoadingBox('bx-wall-post-loading'), true, 'getBlockCaptionMenu');
     }
 
 	function serviceViewBlockIndexTimeline($iStart = -1, $iPerPage = -1, $sFilter = '', $sTimeline = '', $sType = 'id', $aModules = array())
@@ -494,41 +490,82 @@ class BxWallModule extends BxDolModule
      */
     function servicePostBlockProfileTimeline($mixed, $sType = 'id')
     {
-    	$sJsObject = $this->_oConfig->getJsObject('post');
-
         $aOwner = $this->_oDb->getUser($mixed, $sType);
         $this->_iOwnerId = $aOwner['id'];
 
         if(($aOwner['id'] != $this->_getAuthorId() && !$this->_isCommentPostAllowed()) || !$this->_isViewAllowed())
             return "";
 
-        $aTopMenu = array(
-            'wall-ptype-text' => array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'comment-o', 'title' => _t('_wall_write'), 'active' => 1),
-            'wall-ptype-link' => array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'link', 'title' => _t('_wall_share_link')),
-        );
-
-        if($this->_oDb->isModule('photos'))
-            $aTopMenu['wall-ptype-photo'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'picture-o', 'title' => _t('_wall_add_photo'));
-        if($this->_oDb->isModule('sounds'))
-            $aTopMenu['wall-ptype-sound'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'music', 'title' => _t('_wall_add_sound'));
-        if($this->_oDb->isModule('videos'))
-            $aTopMenu['wall-ptype-video'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'film', 'title' => _t('_wall_add_video'));
+		$aTopMenu = $this->_getPostTabs(BX_WALL_VIEW_TIMELINE);
+		if(empty($aTopMenu) || empty($aTopMenu['tabs']))
+			return "";
 
         //--- Parse template ---//
-        $aVariables = array (
-            'post_js_content' => $this->_oTemplate->getJsCode('post', array('iOwnerId' => $this->_iOwnerId)),
-            'post_wall_text' => $this->_getWriteForm(),
-            'post_wall_link' => $this->_getShareLinkForm(),
-            'post_wall_photo' => '',
-            'post_wall_video' => '',
-            'post_wall_sound' => '',
-        );
+        $sClassActive = ' wall-ptc-active';
+        $sContent = $this->_oTemplate->parseHtmlByName('post.html', array (
+            'js_code' => $this->_oTemplate->getJsCode('post', array('iOwnerId' => $this->_iOwnerId)),
+        	'class_text' => !empty($aTopMenu['mask']['text']) ? $sClassActive : '',
+            'content_text' => isset($aTopMenu['mask']['text']) ? $this->_getWriteForm() : '',
+        	'class_link' => !empty($aTopMenu['mask']['link']) ? $sClassActive : '',
+            'content_link' => isset($aTopMenu['mask']['link']) ? $this->_getShareLinkForm() : '',
+        	'class_photo' => !empty($aTopMenu['mask']['photo']) ? $sClassActive : '',
+            'content_photo' => isset($aTopMenu['mask']['photo']) ? $this->_oTemplate->getUploader($this->_iOwnerId, 'photo') : '',
+        	'class_sound' => !empty($aTopMenu['mask']['sound']) ? $sClassActive : '',
+            'content_sound' => isset($aTopMenu['mask']['sound']) ? $this->_oTemplate->getUploader($this->_iOwnerId, 'sound') : '',
+        	'class_video' => !empty($aTopMenu['mask']['video']) ? $sClassActive : '',
+        	'content_video' => isset($aTopMenu['mask']['video']) ? $this->_oTemplate->getUploader($this->_iOwnerId, 'video') : '',
+        ));
 
         $GLOBALS['oTopMenu']->setCurrentProfileID((int)$this->_iOwnerId);
 
         $this->_oTemplate->addCss('post.css');
         $this->_oTemplate->addJs(array('main.js', 'post.js'));
-        return array($this->_oTemplate->parseHtmlByName('post.html', $aVariables), $aTopMenu, LoadingBox('bx-wall-post-loading'), true, 'getBlockCaptionMenu');
+        return array($sContent, $aTopMenu['tabs'], LoadingBox('bx-wall-post-loading'), true, 'getBlockCaptionMenu');
+    }
+
+    function _getPostTabs($sType)
+    {
+    	$sJsObject = $this->_oConfig->getJsObject('post');
+    	$aUploadersHidden = $this->_oConfig->getUploadersHidden($sType);
+
+    	$aTabs = $aMask = array();
+		if(!in_array('text', $aUploadersHidden)) {
+			$aMask['text'] = 0;
+			$aTabs['wall-ptype-text'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'comment-o', 'title' => _t('_wall_write'));
+		}
+
+		if(!in_array('link', $aUploadersHidden)) {
+			$aMask['link'] = 0;
+        	$aTabs['wall-ptype-link'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'link', 'title' => _t('_wall_share_link'));
+		}
+
+        if(!in_array('photo', $aUploadersHidden) && $this->_oDb->isModule('photos')) {
+        	$aMask['photo'] = 0;
+            $aTabs['wall-ptype-photo'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'picture-o', 'title' => _t('_wall_add_photo'));
+        }
+
+        if(!in_array('sound', $aUploadersHidden) && $this->_oDb->isModule('sounds')) {
+        	$aMask['sound'] = 0;
+            $aTabs['wall-ptype-sound'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'music', 'title' => _t('_wall_add_sound'));
+        }
+
+        if(!in_array('video', $aUploadersHidden) && $this->_oDb->isModule('videos')) {
+        	$aMask['video'] = 0;
+            $aTabs['wall-ptype-video'] = array('href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $sJsObject . '.changePostType(this)', 'class' => 'wall-ptype-ctl', 'icon' => 'film', 'title' => _t('_wall_add_video'));
+        }
+
+		if(!empty($aTabs)) {
+			reset($aTabs);
+			$sActive = key($aTabs);
+
+			$aTabs[$sActive]['active'] = 1;
+			$aMask[bx_ltrim_str($sActive, 'wall-ptype-')] = 1;
+		}
+
+		return array(
+			'tabs' => $aTabs,
+			'mask' => $aMask
+		);
     }
 
     function serviceViewBlockProfileTimeline($mixed, $iStart = -1, $iPerPage = -1, $sFilter = '', $sTimeline = '', $sType = 'id', $aModules = array())
@@ -671,6 +708,26 @@ class BxWallModule extends BxDolModule
         }
 
         asort($aResults);
+        return $aResults;
+    }
+
+    function serviceGetUploadersChecklist($sType)
+    {
+    	$aResults = array(
+    		'text' => _t('_wall_write'),
+    		'link' => _t('_wall_share_link') 
+    	);
+
+        if($this->_oDb->isModule('photos'))
+            $aResults['photo'] = _t('_wall_add_photo');
+
+        if($this->_oDb->isModule('sounds'))
+            $aResults['sound'] = _t('_wall_add_sound');
+
+        if($this->_oDb->isModule('videos'))
+            $aResults['video'] = _t('_wall_add_video');
+
+    	asort($aResults);
         return $aResults;
     }
 
@@ -1266,20 +1323,22 @@ class BxWallModule extends BxDolModule
         if($iAuthorId == 0 && getParam('wall_enable_guest_comments') == 'on')
                return true;
 
-           if(isBlocked($this->_iOwnerId, $iAuthorId))
-            return false;
+		if(isBlocked($this->_iOwnerId, $iAuthorId))
+			return false;
 
         $aCheckResult = checkAction($iAuthorId, ACTION_ID_TIMELINE_POST_COMMENT, $bPerform);
         return $aCheckResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
     function _isCommentDeleteAllowed($aEvent, $bPerform = false)
     {
-    	$sCommonPostPrefix = $this->_oConfig->getCommonPostPrefix();
+    	if(!isLogged())
+    		return false;
 
         if(isAdmin())
             return true;
 
         $iUserId = (int)$this->_getAuthorId();
+        $sCommonPostPrefix = $this->_oConfig->getCommonPostPrefix();
         if((int)$aEvent['owner_id'] == $iUserId || (strpos($aEvent['type'], $sCommonPostPrefix) === 0 && (int)$aEvent['object_id'] == $iUserId))
            return true;
 
@@ -1288,6 +1347,9 @@ class BxWallModule extends BxDolModule
     }
 	function _isRepostAllowed($aEvent, $bPerform = false)
     {
+		if(!isLogged())
+    		return false;
+
     	$bSystem = $this->_oConfig->isSystem($aEvent['type'], $aEvent['action']);
     	if($bSystem && strcmp($aEvent['action'], 'commentPost') == 0)
     		return false;

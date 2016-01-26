@@ -366,7 +366,7 @@ class BxWallTemplate extends BxDolModuleTemplate
         return $this->parseHtmlByName('load_more.html', $aTmplVars);
     }
 
-    function getUploader($sType, $sSubType)
+    function getUploader($iOwnerId, $sType, $sSubType = '')
     {
     	$sModule = $sType . 's';
 
@@ -400,7 +400,7 @@ class BxWallTemplate extends BxDolModuleTemplate
     			'album'=>_t('_wall_' . $sType . '_album', getNickName(getLoggedId())), 
     			'albumPrivacy' => BX_DOL_PG_ALL, 
     			'from_wall' => 1, 
-    			'owner_id' => $this->_iOwnerId)
+    			'owner_id' => $iOwnerId)
     		), 'Uploader')
     	));
     }

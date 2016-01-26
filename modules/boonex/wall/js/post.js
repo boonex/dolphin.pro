@@ -26,14 +26,12 @@ BxWallPost.prototype.changePostType = function(oElement) {
 
     //--- Change Content ---//
     var oContents = $(oElement).parents('.disignBoxFirst').find('.wall-ptype-cnt');
-    if((sType == 'photo' || sType == 'sound' || sType == 'video')) {
+    if((sType == 'photo' || sType == 'sound' || sType == 'video') && sSubType != '' ) {
         jQuery.post (
             $this._sActionsUrl + 'get_uploader/' + this._iOwnerId + '/' + sType + (sSubType && sSubType.length >0 ? '/' + sSubType : ''),
             {},
             function(sResult) {
             	if($.trim(sResult).length) {
-            		oContents.filter(':visible').find('iframe[name=upload_file_frame]').remove();
-
             		var oContent = oContents.filter('.wall_' + sType);
             		if(oContent.is(':visible')) {
 	            		oContent.bxwallanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
@@ -61,11 +59,6 @@ BxWallPost.prototype._animContent = function(oElement, sType) {
     var oLoading = $('#bx-wall-post-loading');
 
     $(oElement).parents('.disignBoxFirst').find('.wall-ptype-cnt:visible').bxwallanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
-    	var sIdHide = $(this).attr('id');
-    	var sTypeHide = sIdHide.substr(sIdHide.lastIndexOf('-') + 1, sIdHide.length);
-    	if(sTypeHide == 'photo' || sTypeHide == 'sound' || sTypeHide == 'video')
-    		$(this).html('');
-
         $(this).siblings('.wall-ptype-cnt').filter('.wall_' + sType).bxwallanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
         	if(oLoading)
             	oLoading.bx_loading();

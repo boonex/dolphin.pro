@@ -21,8 +21,9 @@ class BxWallConfig extends BxDolConfig
     var $_iPerPageIndex;
     var $_iCharsDisplayMax;
     var $_iRssLength;
-    var $_aHideTimeline;
-    var $_aHideOutline;
+    var $_aHideEventsTimeline;
+    var $_aHideEventsOutline;
+    var $_aHideUploadersTimeline;
 	var $_aRepostDefaults;
 
 	var $_sAnimationEffect;
@@ -67,8 +68,9 @@ class BxWallConfig extends BxDolConfig
         $this->_iAnimationSpeed = 'slow';
         $this->_sDividerDateFormat = getLocaleFormat(BX_DOL_LOCALE_DATE_SHORT, BX_DOL_LOCALE_DB);
 
-        $this->_aHideTimeline = array();
-        $this->_aHideOutline = array();
+        $this->_aHideEventsTimeline = array();
+        $this->_aHideEventsOutline = array();
+        $this->_aHideUploadersTimeline = array();
         $this->_aHandlers = array();
 
         $this->_aJsClasses = array(
@@ -108,13 +110,17 @@ class BxWallConfig extends BxDolConfig
         $this->_iCharsDisplayMax = (int)$this->_oDb->getParam('wall_events_chars_display_max');
         $this->_iRssLength = (int)$this->_oDb->getParam('wall_rss_length');
 
-        $sHideTimeline = $this->_oDb->getParam('wall_events_hide_timeline');
-        if(!empty($sHideTimeline))
-            $this->_aHideTimeline = explode(',', $sHideTimeline);
+        $sHideUploadersTimeline = $this->_oDb->getParam('wall_uploaders_hide_timeline');
+        if(!empty($sHideUploadersTimeline))
+            $this->_aHideUploadersTimeline = explode(',', $sHideUploadersTimeline);
 
-        $sHideOutline = $this->_oDb->getParam('wall_events_hide_outline');
-        if(!empty($sHideOutline))
-            $this->_aHideOutline = explode(',', $sHideOutline);
+        $sHideEventsTimeline = $this->_oDb->getParam('wall_events_hide_timeline');
+        if(!empty($sHideEventsTimeline))
+            $this->_aHideEventsTimeline = explode(',', $sHideEventsTimeline);
+
+        $sHideEventsOutline = $this->_oDb->getParam('wall_events_hide_outline');
+        if(!empty($sHideEventsOutline))
+            $this->_aHideEventsOutline = explode(',', $sHideEventsOutline);
 
         $aHandlers = $this->_oDb->getHandlers();
         foreach($aHandlers as $aHandler)
@@ -201,10 +207,25 @@ class BxWallConfig extends BxDolConfig
 
         switch($sType) {
             case BX_WALL_VIEW_TIMELINE:
-                $aResult = $this->_aHideTimeline;
+                $aResult = $this->_aHideEventsTimeline;
                 break;
             case BX_WALL_VIEW_OUTLINE:
-                $aResult = $this->_aHideOutline;
+                $aResult = $this->_aHideEventsOutline;
+                break;
+        }
+
+        return $aResult;
+    }
+	function getUploadersHidden($sType)
+    {
+        $aResult = array();
+
+        switch($sType) {
+            case BX_WALL_VIEW_TIMELINE:
+                $aResult = $this->_aHideUploadersTimeline;
+                break;
+            case BX_WALL_VIEW_OUTLINE:
+                $aResult = array();
                 break;
         }
 
