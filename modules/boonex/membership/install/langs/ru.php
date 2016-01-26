@@ -31,9 +31,11 @@ $aLangContent = array(
     '_membership_txt_on_N_days' => 'на {0} дней',
     '_membership_txt_expires_in' => 'Истекает через {0} дней',
     '_membership_txt_expires_never' => 'Не истекает',
+    '_membership_txt_free' => 'Бесплатно',
 	'_membership_admin_menu_sitem' => 'Членство',
     '_membership_tmenu_item_my_membership' => 'Мое членство',
     '_membership_mmenu_item_membership' => 'Членство',
 	'_membership_smenu_item_join' => 'Регистрация',
 	'_membership_btn_pay' => 'Оплатить',
+    '_membership_btn_select' => 'Выбрать',
 );
