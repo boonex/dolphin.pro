@@ -1646,7 +1646,7 @@
                 [count]     - (integer) number of new messages;
                 [message]   - (string) text message ( if will have a new messages );
          */
-        function get_member_menu_bubble_new_messages($iMemberId, $iOldCount = 0)
+        public static function get_member_menu_bubble_new_messages($iMemberId, $iOldCount = 0)
         {
             global $oSysTemplate, $oFunctions, $site;
 

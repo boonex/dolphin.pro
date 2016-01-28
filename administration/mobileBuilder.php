@@ -19,9 +19,9 @@ class BxDolAdminMobileBuilder extends BxDolAdminBuilder
 {
     var $_sPage;
 
-    function BxDolAdminMobileBuilder ($sPage)
+    function __construct ($sPage)
     {
-        parent::BxDolAdminBuilder(
+        parent::__construct(
             '`sys_menu_mobile`',
             BX_DOL_URL_ADMIN . 'mobileBuilder.php',
             array (

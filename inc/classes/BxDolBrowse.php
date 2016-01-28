@@ -33,7 +33,7 @@
          * @description : class constructor ;
         */
 
-        function __construct()
+        function __construct($sPageName = null)
         {
             global $aPreValues;
 
@@ -75,6 +75,10 @@
                 $this -> aCountryRange[$sKey] = 0;
             }
 
+            if($sPageName) {
+                parent::__construct($sPageName);
+            }
+
         }
 
         /**
@@ -85,6 +89,8 @@
 
         function getSexCount( $PrimaryQuery )
         {
+            $aSexArray = array();
+
             foreach( $this -> aSexRange AS $sKey => $sValue ) {
                 $sKey = process_db_input($sKey, BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION);
                 $sWhereParam = " AND `Sex` = '{$sKey}' ";

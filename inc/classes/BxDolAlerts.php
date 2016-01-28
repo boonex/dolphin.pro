@@ -104,7 +104,7 @@ class BxDolAlerts
      *
      * @return an array with all alerts and handlers.
      */
-    function cache()
+    public static function cache()
     {
         $aResult = array('alerts' => array(), 'handlers' => array());
 

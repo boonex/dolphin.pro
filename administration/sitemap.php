@@ -17,7 +17,7 @@ bx_import('BxDolSiteMaps');
 
 class BxDolAdmFormSitemap extends BxTemplFormView
 {
-    function BxDolAdmFormSitemap ()
+    function __construct ()
     {
         $aCustomForm = array(
 
@@ -51,14 +51,14 @@ class BxDolAdmFormSitemap extends BxTemplFormView
             ),
         );
 
-        parent::BxTemplFormView ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 }
 
 $logged['admin'] = member_auth(1, true, true);
 
 // process actions
-if ($_POST['sitemap_enable']) {
+if (isset($_POST['sitemap_enable'])) {
     setParam('sys_sitemap_enable', $_POST['sys_sitemap_enable'] ? 'on' : '');
     BxDolSiteMaps::generateAllSiteMaps();
 }

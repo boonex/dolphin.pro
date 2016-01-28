@@ -203,9 +203,9 @@ class BxBlogsModule extends BxDolModule
     var $_sPageHeader;
 
     // Constructor
-    function BxBlogsModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
 
         $this->iIconSize = (int)getParam('bx_blogs_iconsize');
         $this->iThumbSize = (int)getParam('bx_blogs_thumbsize');
@@ -1299,7 +1299,7 @@ EOF;
         $_oCmtsView = new BxBlogsCmts($this->_oConfig->getCommentSystemName(), $this->iViewingPostID);
         $sPostComm = $_oCmtsView->getExtraCss();
         $sPostComm .= $_oCmtsView->getExtraJs();
-        $sPostComm .= (!$_oCmtsView->isEnabled($this->aViewingPostInfo)) ? MsgBox(_t('_bx_blog_Comments_is_disabled')) : $_oCmtsView->getCommentsFirst();
+        $sPostComm .= (!$_oCmtsView->isEnabled()) ? MsgBox(_t('_bx_blog_Comments_is_disabled')) : $_oCmtsView->getCommentsFirst();
         return $sPostComm;
     }
 

@@ -120,7 +120,7 @@ if(bx_get('action') !== false) {
     }
 
     // return script's response and recompile the menu cache ;
-    $oMemeberMenu -> createMemberMenuCache( $sMenuSection );
+    $oMemeberMenu -> createMemberMenuCache();
     echo $sResponce;
     exit;
 }
@@ -369,7 +369,7 @@ function saveItem( $id, $aItem, $sMenuSection )
     db_res( $sQuery );
 
     // return script's response and recompile the menu cache ;
-    $oMemeberMenu -> createMemberMenuCache( $sMenuSection );
+    $oMemeberMenu -> createMemberMenuCache();
 
     return array('code' => 0, 'message' => _t('_Saved'), 'timer' => 3);
 }

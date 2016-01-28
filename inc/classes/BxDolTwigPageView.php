@@ -77,7 +77,6 @@ class BxDolTwigPageView extends BxDolPageView
             'cats' => $this->_oTemplate->parseCategories($aData['categories']),
             'tags' => $this->_oTemplate->parseTags($aData['tags']),
             'fields' => $sFields,
-            'author_unit' => $GLOBALS['oFunctions']->getMemberThumbnail($aAuthor['ID'], 'none', true),
             'location' => $sLocation,
         );
         return $this->_oTemplate->parseHtmlByName('entry_view_block_info', $aVars);

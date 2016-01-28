@@ -1352,7 +1352,12 @@ function simple_cmp($a, $b)
 function return_bytes($val)
 {
     $val = trim($val);
+    if(strlen($val) < 2) {
+        return $val;
+    }
+
     $last = strtolower($val{strlen($val)-1});
+
     $val = (int)$val;
     switch($last) {
         // The 'G' modifier is available since PHP 5.1.0
@@ -1646,6 +1651,30 @@ function bx_linkify_html($sHtmlOrig, $sAttrs = '')
 function bx_gen_method_name ($s, $sWordsDelimiter = '_')
 {
     return str_replace(' ', '', ucwords(str_replace($sWordsDelimiter, ' ', $s)));
+}
+
+/**
+ * Returns a field from $_POST array if it exists
+ * To avoid having to do "if(isset($_POST['field']) && $_POST['field'])" multiple times
+ *
+ * @param $sField
+ * @return string
+ */
+function getPostFieldIfSet($sField)
+{
+    return (!isset($_POST[$sField])) ? null : $_POST[$sField];
+}
+
+/**
+ * Returns a field from $_GET array if it exists
+ * To avoid having to do "if(isset($_GET['field']) && $_GET['field'])" multiple times
+ *
+ * @param $sField
+ * @return string
+ */
+function getGetFieldIfSet($sField)
+{
+    return (!isset($_GET[$sField])) ? null : $_GET[$sField];
 }
 
 /**

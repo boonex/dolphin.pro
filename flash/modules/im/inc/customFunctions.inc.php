@@ -14,6 +14,7 @@ function getUserVideoLink()
     global $sModulesUrl;
     if(BxDolInstallerUtils::isModuleInstalled("videos"))
         return $sModulesUrl . "video/videoslink.php?id=#user#";
+
     return "";
 }
 

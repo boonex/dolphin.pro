@@ -34,7 +34,7 @@ class BxDolInstallerUtils extends BxDolIO
         return !($sAllowUrlInclude == 0);
     }
 
-    function isModuleInstalled($sUri)
+    public static function isModuleInstalled($sUri)
     {
         $oModuleDb = new BxDolModuleDb();
         return $oModuleDb->isModule($sUri);

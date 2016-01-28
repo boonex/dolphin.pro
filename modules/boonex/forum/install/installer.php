@@ -13,9 +13,9 @@ function is_compiled_template ($s)
 
 class BxOrcaInstaller extends BxDolInstaller
 {
-    function BxOrcaInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
         $this->_aActions = array_merge($this->_aActions, array(
             'check_requirements' => array(
                 'title' => 'Check Orca Forum requrements',

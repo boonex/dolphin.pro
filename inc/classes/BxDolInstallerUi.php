@@ -471,7 +471,7 @@ class BxDolInstallerUi extends BxDolDb
     }
 
     //--- Static methods ---//
-    function checkForUpdates($aModule)
+    public static function checkForUpdates($aModule)
     {
     	if(empty($aModule['update_url']))
     		return array();

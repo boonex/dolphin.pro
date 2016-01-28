@@ -168,7 +168,7 @@ class BxDolCmts
         return $oCmts;
     }
 
-    function & getSystems ()
+    public static function & getSystems ()
     {
         if (!isset($GLOBALS['bx_dol_cmts_systems'])) {
             $GLOBALS['bx_dol_cmts_systems'] = $GLOBALS['MySQL']->fromCache('sys_objects_cmts', 'getAllWithKey', '
@@ -195,6 +195,7 @@ class BxDolCmts
                     `ClassFile` AS `class_file`
                 FROM `sys_objects_cmts`', 'name');
         }
+
         return $GLOBALS['bx_dol_cmts_systems'];
     }
 

@@ -268,7 +268,7 @@
                     if ($iRecipientId) {
 
                         // get chat box;
-                        $aChatBox       = $this -> getChatBox($iRecipientId, false);
+                        $aChatBox       = $this -> getChatBox($iRecipientId);
                         $sChatBox       = $aChatBox['chat_box'];
                         $aRet           = array();
 

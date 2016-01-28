@@ -424,9 +424,6 @@ EOF;
                     $sMsgMain = '_bx_ads_caption_browse_by_day';
                     $sMsgAdd = getLocaleDate(strtotime("{$iValue1}-{$iValue2}-{$iValue3}"), BX_DOL_LOCALE_DATE_SHORT);
                     break;
-                case 'show_featured':
-                    $sMsgMain = '_bx_ads_Featured';
-                    break;
                 case 'my_page':
                     switch (bx_get('mode')) {
                         case 'add':
@@ -2671,7 +2668,6 @@ EOF;
             require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
             $oJson = new Services_JSON();
             return $oJson->encode($sResult);
-            exit;
         }
 
         $sResult = $this->_oTemplate->parseHtmlByName('default_margin.html', array('content' => $sResult));

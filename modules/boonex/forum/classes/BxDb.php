@@ -40,7 +40,7 @@ class BxDb extends Mistake
         $this->link = @mysql_connect($full_host, $this->user, $this->password) or $this->error('Cannot connect to database');
         if (!$this->link) {
             echo 'Could not connect to MySQL database. <br />Did you properly edit <b>inc/header.inc.php</b> file ?';
-            exit;;
+            exit;
         }
 
         if (!$this->select_db()) {

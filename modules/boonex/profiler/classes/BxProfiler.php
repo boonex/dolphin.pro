@@ -595,7 +595,7 @@ class BxProfiler
     }
 }
 
-if (BX_PROFILER) {
+if (defined('BX_PROFILER') && BX_PROFILER) {
     $GLOBALS['bx_profiler'] = new BxProfiler($GLOBALS['bx_profiler_start']);
     if (!$GLOBALS['bx_profiler']->_isProfilerDisabled())
         register_shutdown_function (array ($GLOBALS['bx_profiler'], 'output'));

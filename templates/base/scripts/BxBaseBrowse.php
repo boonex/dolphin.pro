@@ -78,7 +78,7 @@ class BxBaseBrowse extends BxDolBrowse
 
         $this -> sKeyName = preg_replace("|\|$|", '', $this -> sKeyName);
 
-        parent::__construct();
+        parent::__construct($sPageName);
 
         // fill global array with the needed parameters ;
 
@@ -94,7 +94,7 @@ class BxBaseBrowse extends BxDolBrowse
         $this -> oSearchProfileTmpl = new BxTemplSearchProfile();
 
         // return all page's blocks from DB ;
-        $this -> BxDolPageView($sPageName);
+        //(new BxDolPageView($sPageName));
     }
 
     /**

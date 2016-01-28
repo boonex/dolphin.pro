@@ -128,7 +128,7 @@ class BxDolUserStatusView
      * @param  : $iMemberId (integer) - logged member's id;
      * @return : Html presentation data;
      */
-    function getStatusPageLight($iMemberId)
+    public static function getStatusPageLight($iMemberId)
     {
         global $oSysTemplate;
 

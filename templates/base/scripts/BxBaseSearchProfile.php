@@ -138,7 +138,7 @@ class BxBaseSearchProfile extends BxBaseSearchResultText
         return ($oCustomTemplate) ? $oCustomTemplate->parseHtmlByName($sTemplateName, $aKeys) : $GLOBALS['oSysTemplate']->parseHtmlByName($sTemplateName, $aKeys);
     }
 
-    function displaySearchBox ($sCode, $sPaginate = '')
+    function displaySearchBox ($sCode, $sPaginate = '', $bAdminBox = false)
     {
         $sCode = $GLOBALS['oFunctions']->centerContent($sCode, '.searchrow_block_simple');
         $sClearBoth = '<div class="clear_both"></div>';

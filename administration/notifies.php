@@ -27,15 +27,15 @@ $logged['admin'] = member_auth(1, true, true);
 
 $oSubscription = BxDolSubscription::getInstance();
 
-if($_POST['queue_message'] && $_POST['msgs_id']) {
+if(getPostFieldIfSet('queue_message') && getPostFieldIfSet('msgs_id')) {
     set_time_limit(1800);
     $sActionResult = QueueMessage();
 }
-if ($_POST['add_message'])
+if (getPostFieldIfSet('add_message'))
     $action = 'add';
-if($_POST['delete_message'] && $_POST['msgs_id'])
+if(getPostFieldIfSet('delete_message') && getPostFieldIfSet('msgs_id'))
     $sActionResult = DeleteMessage() ? _t('_adm_mmail_Message_was_deleted') : _t('_adm_mmail_Message_was_not_deleted');
-if($_POST['preview_message'])
+if(getPostFieldIfSet('preview_message'))
     $action = 'preview';
 if(bx_get('action') == 'empty' )
     $sActionResult = EmptyQueue() ? _t('_adm_mmail_Queue_empty') : _t('_adm_mmail_Queue_emptying_failed');
@@ -92,7 +92,7 @@ $_page = array(
     'header' => _t('_adm_mmail_title')
 );
 
-$_page_cont[$iNameIndex] = call_user_func($aPages[$sMode]['func'], $aPages[$sMode]['func_params'][0], $aPages[$sMode]['func_params'][1]);
+$_page_cont[$iNameIndex] = call_user_func_array($aPages[$sMode]['func'], $aPages[$sMode]['func_params']);
 
 PageCodeAdmin();
 
@@ -204,7 +204,7 @@ function PrintStatus($sActionResult)
 
 function getAllMessagesBox()
 {
-    $aMessages = $GLOBALS['MySQL']->getAll("SELECT `id`, `subject`, (`id`=". (int)$_POST['msgs_id'] ." OR `subject`='". process_db_input($_POST['Subj']) ."' ) AS `selected` FROM `sys_sbs_messages`");
+    $aMessages = $GLOBALS['MySQL']->getAll("SELECT `id`, `subject`, (`id`=". (int)getPostFieldIfSet('msgs_id') ." OR `subject`='". process_db_input(getPostFieldIfSet('Subj')) ."' ) AS `selected` FROM `sys_sbs_messages`");
 
     $sAllMessagesOptions = '';
     foreach($aMessages as $aMessage)
@@ -237,10 +237,10 @@ function getEmailMessage($sAction)
     $sPreviewMessageC = _t('_Preview');
     $sDeleteC = _t('_Delete');
 
-    $sMessageID = (int)$_POST['msgs_id'];
+    $sMessageID = (int)getPostFieldIfSet('msgs_id');
 
     $sSubject = $sBody = "";
-    if($_POST['body'] && $_POST['action'] != 'delete' ) {
+    if(isset($_POST['body']) && getPostFieldIfSet('action') != 'delete' ) {
         $sSubject = process_pass_data( $_POST['subject'] );
         $sBody = process_pass_data( $_POST['body'] );
     } elseif ( $sMessageID )
@@ -348,7 +348,7 @@ function getQueueMessage()
 {
     global $aPreValues;
 
-    if ( $_POST['msgs_id'] ) {
+    if ( isset($_POST['msgs_id']) ) {
         $aSexValues = getFieldValues('Sex');
         foreach($aSexValues as $sKey => $sValue)
             $aSexValues[$sKey] = _t($sValue);

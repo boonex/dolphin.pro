@@ -284,7 +284,7 @@ class BxFilesSearch extends BxTemplSearchResult
         $aUnit['pic'] = $this->oModule->_oTemplate->getIconUrl($sPicName);
 
         $aUnit['id'] = $aData['id'];
-        return $this->oModule->_oTemplate->parseHtmlByName('browse_unit_short.html', $aUnit, array('{','}'));;
+        return $this->oModule->_oTemplate->parseHtmlByName('browse_unit_short.html', $aUnit, array('{','}'));
     }
 
     function setSorting ()

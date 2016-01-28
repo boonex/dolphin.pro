@@ -342,7 +342,7 @@ class BxDolPageView
         $sAddClass = ' page_column_';
         if($bColumnFull)
             $sAddClass .= 'full';
-        else if(($iColumn == 1) || ($bLastColumnWasFull))
+        else if(($iColumn == 1) || $bLastColumnWasFull)
             $sAddClass .= 'first';
         else if($iColumn == $iColumnsCount || ($bNextColumnIsFull))
             $sAddClass .= 'last';
@@ -354,8 +354,7 @@ class BxDolPageView
 
             $fColumnWidth = (int)round($iPageContentWidth * $fColumnWidth / 100);
             $sColumnWidth = $fColumnWidth . 'px';
-        }
-        else {
+        } else {
             $sColumnWidth = $fColumnWidth . '%';
         }
 
@@ -495,7 +494,7 @@ class BxDolPageView
             return true;
     }
 
-    function getBlockCaptionItemCode( $iBlockID, $aLinks )
+    public static function getBlockCaptionItemCode( $iBlockID, $aLinks )
     {
     	if(empty($aLinks))
     		return '';
@@ -578,7 +577,8 @@ class BxDolPageView
         	)))
         ));
     }
-    function getBlockCaptionMenu( $iBlockID, $aLinks )
+
+    public static function getBlockCaptionMenu( $iBlockID, $aLinks )
     {
 		if(empty($aLinks))
     		return '';
@@ -730,8 +730,11 @@ EOF;
 
     function getBlockCode_RSS( $iBlockID, $sContent )
     {
-        list( $sUrl, $iNum ) = explode( '#', $sContent );
-        $iNum = (int)$iNum;
+        $iNum = 0;
+        if($sContent) {
+            list( $sUrl, $iNum ) = explode( '#', $sContent );
+            $iNum = (int)$iNum;
+        }
 
         $iAddID = 0;
         if (isset( $this -> oProfileGen -> _iProfileID))

@@ -198,6 +198,7 @@ class BxDolTextData
         } else
             return $oForm->getCode();
     }
+
     function getEditForm($aValues, $aAddFields = array())
     {
         $oCategories = new BxDolCategories();
@@ -278,7 +279,7 @@ class BxDolTextData
         return $iViewerType;
     }
 
-    function getAuthorId()
+    public static function getAuthorId()
     {
         return getLoggedId();
     }

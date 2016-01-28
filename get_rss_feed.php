@@ -48,4 +48,4 @@ if( $iMemID ) {
 }
 
 header( 'Content-Type: text/xml' );
-echo bx_file_get_contents(BX_PROFILER && 0 == strncmp($site['url'], $sUrl, strlen($site['url'])) ? bx_append_url_params($sUrl, 'bx_profiler_disable=1') : $sUrl);
+echo bx_file_get_contents(defined('BX_PROFILER') && BX_PROFILER && 0 == strncmp($site['url'], $sUrl, strlen($site['url'])) ? bx_append_url_params($sUrl, 'bx_profiler_disable=1') : $sUrl);

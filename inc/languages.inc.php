@@ -547,7 +547,13 @@ function bx_lang_name()
     return $GLOBALS['sCurrentLanguage'];
 }
 
+// TODO: What does this do?
 function bx_lang_info()
 {
-    return $GLOBALS['LANG_INFO'];
+    $LANG_INFO = array(
+        'Name' => 'en', 'Flag' => 'us', 'Title' => 'English', 'LanguageCountry' => 'US', 'Direction' => 'left-to-right'
+    );
+
+    return $LANG_INFO;
+    //return $GLOBALS['LANG_INFO'];
 }

@@ -16,7 +16,7 @@ bx_import('BxDolAdminDashboard');
 define('BX_DOL_ADMIN_INDEX', 1);
 
 $bLogged = isLogged();
-$bNeedCheck = $bLogged && isAdmin() && $_POST['relocate'] && strncasecmp($_POST['relocate'], BX_DOL_URL_ADMIN . 'license.php', strlen(BX_DOL_URL_ADMIN . 'license.php')) == 0;
+$bNeedCheck = $bLogged && isAdmin() && isset($_POST['relocate']) && $_POST['relocate'] && strncasecmp($_POST['relocate'], BX_DOL_URL_ADMIN . 'license.php', strlen(BX_DOL_URL_ADMIN . 'license.php')) == 0;
 
 if($bNeedCheck || (isset($_POST['ID']) && isset($_POST['Password']))) {
     $iId = getID($_POST['ID']);

@@ -215,7 +215,7 @@ class BxPmtCart
      * @param  string/array $mixed - string with cart items divided with (:) or an array of cart items.
      * @return array        with items.
      */
-    function items2array($mixed)
+    public static function items2array($mixed)
     {
         $aResult = array();
 

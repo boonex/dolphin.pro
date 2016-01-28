@@ -48,7 +48,7 @@ function getPreviewBlock($iBannerID)
 {
     $sPreview = MsgBox(_t('_Empty'));
 
-    if ($_GET['action'] == 'preview' && $iBannerID > 0) {
+    if (getGetFieldIfSet('action') == 'preview' && $iBannerID > 0) {
         $aBannerInfo = db_arr("SELECT * FROM `sys_banners` WHERE `ID` = '{$iBannerID}'");
         $sBannerTitle = process_line_output($aBannerInfo['Title']);
         $sBannerPut = banner_put($aBannerInfo['ID'], 0);
@@ -132,7 +132,7 @@ function getManageBannersBlock()
     $end_date = bx_get('end_date') !== false ? bx_get('end_date') : $end_date_default;
 
     $Title = $Url = $Active = $Text = $Position = $lhshift = $lvshift = $rhshift = $rvshift = '';
-    $iBannerID = (int)$_GET['banner_id'];
+    $iBannerID = (int)getGetFieldIfSet('banner_id');
     $action	= "new";
 
     if ($iBannerID > 0 && ! strlen(bx_get('action'))) { //banner edit

@@ -128,7 +128,7 @@ class BxDolVoting
         }
     }
 
-    function & getSystems ()
+    public static function & getSystems ()
     {
         if (isset($GLOBALS['bx_dol_voting_systems'])) {
             return $GLOBALS['bx_dol_voting_systems'];

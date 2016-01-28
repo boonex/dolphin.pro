@@ -379,7 +379,7 @@ class BxAvaModule extends BxDolModule
 
         $sImagePath = BX_AVA_DIR_TMP . '_' . $this->_iProfileId . BX_AVA_EXT;
 
-        $o =& BxDolImageResize::instance(BX_AVA_W, BX_AVA_W);
+        $o =& BxDolImageResize::instance();
         $o->removeCropOptions ();
         $o->setJpegOutput (true);
         $o->setSize (BX_AVA_W, BX_AVA_W);
@@ -821,7 +821,7 @@ class BxAvaModule extends BxDolModule
 
     function _resizeImage($sImageSrc, $sImageDst, $iWidth, $iHeight, $bSquareResize = false, $bJpegOutput = true)
     {
-    	$o =& BxDolImageResize::instance($iWidth, $iHeight);
+    	$o =& BxDolImageResize::instance();
 		$o->setJpegOutput($bJpegOutput);
 		$o->removeCropOptions();
 		$o->setSize($iWidth, $iHeight);

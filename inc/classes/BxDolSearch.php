@@ -215,7 +215,7 @@ class BxDolSearchResult
      * filling identificator field
      */
 
-    function BxDolSearchResult ()
+    function __construct ()
     {
         if (isset($this->aPseud['id']))
             $this->aCurrent['ident'] = $this->aPseud['id'];

@@ -74,8 +74,6 @@ class BxDolEditor
      */
     public function __construct($aObject)
     {
-        parent::__construct();
-
         $this->_sObject = $aObject['object'];
         $this->_aObject = $aObject;
     }

@@ -15,7 +15,7 @@ $oBxDolDNSBlacklists = bx_instance('BxDolDNSBlacklists');
 
 class BxDolAdmFormDnsblAdd extends BxTemplFormView
 {
-    function BxDolAdmFormDnsblAdd ($aChains, $sDefaultMode)
+    function __construct ($aChains, $sDefaultMode)
     {
         $aCustomForm = array(
 
@@ -127,13 +127,13 @@ class BxDolAdmFormDnsblAdd extends BxTemplFormView
             ),
         );
 
-        parent::BxTemplFormView ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 }
 
 class BxDolAdmFormDnsblRecheck extends BxTemplFormView
 {
-    function BxDolAdmFormDnsblRecheck ($sTitle, $sId)
+    function __construct ($sTitle, $sId)
     {
         $aCustomForm = array(
 
@@ -163,7 +163,7 @@ class BxDolAdmFormDnsblRecheck extends BxTemplFormView
             ),
         );
 
-        parent::BxTemplFormView ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 }
 

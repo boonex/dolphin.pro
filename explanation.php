@@ -69,5 +69,6 @@ function PageMainCode()
         case 'Suspended': $sCode = _t("_ATT_SUSPENDED_E", $GLOBALS['site']['title']); break;
         case 'membership': $sCode = membershipActionsList((int)$_GET['type']); break;
     }
+
     return $GLOBALS['oSysTemplate']->parseHtmlByName('default_padding.html', array('content' => $sCode));
 }

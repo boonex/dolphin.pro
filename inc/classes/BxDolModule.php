@@ -79,7 +79,7 @@ class BxDolModule
      *
      * @param $sClassName module's class name.
      */
-    function getInstance($sClassName)
+    public static function getInstance($sClassName)
     {
         if(empty($sClassName))
             return null;
@@ -126,7 +126,7 @@ class BxDolModule
         return getLoggedPassword();
     }
 
-    function getTitle($sUri)
+    public static function getTitle($sUri)
     {
         return _t(BxDolModule::getTitleKey($sUri));
     }

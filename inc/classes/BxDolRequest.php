@@ -78,19 +78,19 @@ class BxDolRequest
         return $oBxDolRequest->_methodExists($mixedModule, 'action', $sMethod, $sClass);
     }
 
-    function moduleNotFound($sModule)
+    public static function moduleNotFound($sModule)
     {
-        $this->_error('module', $sModule);
+        (new self())->_error('module', $sModule);
     }
 
     function pageNotFound($sPage, $sModule)
     {
-        $this->_error('page', $sPage, $sModule);
+        (new self())->_error('page', $sPage, $sModule);
     }
 
     function methodNotFound($sMethod, $sModule)
     {
-        $this->_error('method', $sMethod, $sModule);
+        (new self())->_error('method', $sMethod, $sModule);
     }
 
     function _perform($aModule, $sClass, $sMethod, $aParams, $bTerminateOnError = true)

@@ -69,7 +69,6 @@ class BxDolFilesConfig extends BxDolConfig
                 'action' => 'accept_upload',
                 'form' => 'getUploadFormFile',
                 'handle' => 'serviceAcceptFile',
-                'action' => 'accept_upload',
             ),
             'record' => array(
                 'title' => '_' . $this->sPrefix . '_record',

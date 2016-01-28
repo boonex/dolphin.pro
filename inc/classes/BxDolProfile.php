@@ -32,7 +32,7 @@ class BxDolProfile
      */
     function getProfileThumbnail( $float )
     {
-        $ret = $this -> getProfileImageUrl( $iProfileID, 0);
+        $ret = $this -> getProfileImageUrl( $iProfileID );
     }
 
     /**

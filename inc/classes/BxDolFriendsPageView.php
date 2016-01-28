@@ -288,7 +288,7 @@ class BxDolFriendsPageView extends BxDolPageView
                 [count]     - (integer) number of new messages;
                 [message]   - (string) text message ( if will have a new messages );
      */
-    function get_member_menu_bubble_online_friends($iMemberId, $iOldCount = 0)
+    public static function get_member_menu_bubble_online_friends($iMemberId, $iOldCount = 0)
     {
         global $oSysTemplate, $oFunctions, $site;
 
@@ -350,7 +350,7 @@ class BxDolFriendsPageView extends BxDolPageView
                 [count]     - (integer) number of new messages;
                 [message]   - (string) text message ( if will have a new messages );
      */
-    function get_member_menu_bubble_friend_requests($iMemberId, $iOldCount = 0)
+    public static function get_member_menu_bubble_friend_requests($iMemberId, $iOldCount = 0)
     {
         global $oSysTemplate, $oFunctions, $site;
 
@@ -397,7 +397,7 @@ class BxDolFriendsPageView extends BxDolPageView
     * @param  : $iMemberId (integer) - member's Id;
     * @return : Html presentation data;
     */
-    function get_member_menu_friends_list($iMemberId = 0)
+    public static function get_member_menu_friends_list($iMemberId = 0)
     {
         global $oFunctions;
 

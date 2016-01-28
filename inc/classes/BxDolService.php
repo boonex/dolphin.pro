@@ -40,7 +40,7 @@ class BxDolService
         return empty($aModule) ? '' : BxDolRequest::processAsService($aModule, $sMethod, $aParams, $sClass);
     }
 
-    function callArray($a)
+    public static function callArray($a)
     {
         if (!isset($a['module']) || !isset($a['method']))
             return false;

@@ -359,28 +359,28 @@ class BxDolPageViewAdmin
             $sEditorCode = $oEditor->attachEditor('#' . $sEditorId, BX_EDITOR_FULL);
         }
 
-        return $sInitEditor . $GLOBALS['oAdmTemplate']->parseHtmlByName('pbuilder_content.html', array(
+        return /*$sInitEditor. */ $GLOBALS['oAdmTemplate']->parseHtmlByName('pbuilder_content.html', array(
             'top_controls' => $this->getPageSelector(),
             'bx_if:page' => array(
                 'condition' => (bool)$this -> oPage,
                 'content' => array(
                     'bx_if:delete_link' => array(
-                        'condition' => !$this->oPage->isSystem,
+                        'condition' => (isset($this->oPage->isSystem) && !$this->oPage->isSystem),
                         'content' => array(
                         )
                     ),
                     'bx_if:view_link' => array(
-                        'condition' => !$this->oPage->isSystem,
+                        'condition' => (isset($this->oPage->isSystem) && !$this->oPage->isSystem),
                         'content' => array(
                             'site_url' => $GLOBALS['site']['url'],
-                            'page_name' => htmlspecialchars($this->oPage->sName)
+                            'page_name' => (!isset($this->oPage->sName)) ?: htmlspecialchars($this->oPage->sName)
                         )
                     ),
                     'parser_url' => bx_html_attribute($_SERVER['PHP_SELF']),
-                    'page_name' => addslashes($this->oPage->sName),
+                    'page_name' => (!isset($this->oPage->sName)) ?: addslashes($this->oPage->sName),
                     'page_width_min' => getParam('sys_template_page_width_min'),
                     'page_width_max' => getParam('sys_template_page_width_max'),
-                    'page_width' => $this->oPage->iPageWidth,
+                    'page_width' => (!isset($this->oPage->iPageWidth)) ?: $this->oPage->iPageWidth,
                     'main_width' => getParam('main_div_width')
                 )
             ),
@@ -416,7 +416,7 @@ class BxDolPageViewAdmin
             $aPages[] = array(
                 'value' => htmlspecialchars_adv(urlencode($sName)),
                 'title' => htmlspecialchars(!empty($sTitle) ? $sTitle : $sName),
-                'selected' => $this->oPage->sName == $sName ? 'selected="selected"' : ''
+                'selected' => (isset($this->oPage->sName) && $this->oPage->sName == $sName) ? 'selected="selected"' : ''
             );
 
         return $GLOBALS['oAdmTemplate']->parseHtmlByName('pbuilder_cpanel.html', array(

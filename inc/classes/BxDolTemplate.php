@@ -1481,7 +1481,8 @@ class BxDolTemplate
                         $sValue .= $this->parseHtmlByContent($aMatches[1], $aValues[$i]['content'], $mixedKeyWrapperHtml);
             } else {
                 $sKey = "'" . $aKeyWrappers['left'] . $aKeys[$i] . $aKeyWrappers['right'] . "'s";
-                $sValue = str_replace('$', '\\$', $aValues[$i]);
+                $sValue = $aValues[$i];
+                //$sValue = str_replace('$', '\\$', $aValues[$i]);
             }
 
             $aKeys[$i] = $sKey;
@@ -1489,36 +1490,56 @@ class BxDolTemplate
         }
 
         $aKeys = array_merge($aKeys, array(
-            "'<bx_include_auto:([^\s]+) \/>'se",
-            "'<bx_include_tmpl:([^\s]+) \/>'se",
-            "'<bx_include_base:([^\s]+) \/>'se",
-            "'<bx_injection:([^\s]+) />'se",
-            "'<bx_image_url:([^\s]+) \/>'se",
-            "'<bx_icon_url:([^\s]+) \/>'se",
-            "'<bx_text:([_\{\}\w\d\s]+[^\s]{1}) \/>'se",
-        	"'<bx_text_js:([^\s]+) \/>'se",
-			"'<bx_text_attribute:([^\s]+) \/>'se",
+            "'<bx_include_auto:([^\s]+) \/>'s",
+            "'<bx_include_tmpl:([^\s]+) \/>'s",
+            "'<bx_include_base:([^\s]+) \/>'s",
+            "'<bx_injection:([^\s]+) />'s",
+            "'<bx_image_url:([^\s]+) \/>'s",
+            "'<bx_icon_url:([^\s]+) \/>'s",
+            "'<bx_text:([_\{\}\w\d\s]+[^\s]{1}) \/>'s",
+        	"'<bx_text_js:([^\s]+) \/>'s",
+			"'<bx_text_attribute:([^\s]+) \/>'s",
             "'<bx_url_root />'",
             "'<bx_url_admin />'"
         ));
+
         $aValues = array_merge($aValues, array(
-            "\$this->parseHtmlByName('\\1', \$aVariables, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH)",
-            "\$this->parseHtmlByName('\\1', \$aVariables, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_TMPL)",
-            "\$this->parseHtmlByName('\\1', \$aVariables, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BASE)",
-            "\$this->processInjection(\$GLOBALS['_page']['name_index'], '\\1')",
-            "\$this->getImageUrl('\\1')",
-            "\$this->getIconUrl('\\1')",
-            "_t('\\1')",
-        	"bx_js_string(_t('\\1'))",
-        	"bx_html_attribute(_t('\\1'))",
+            function($matches) use ($aVariables, $mixedKeyWrapperHtml) { return $this->parseHtmlByName($matches[1], $aVariables, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH); },
+            function($matches) use ($aVariables, $mixedKeyWrapperHtml) { return $this->parseHtmlByName($matches[1], $aVariables, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_TMPL); },
+            function($matches) use ($aVariables, $mixedKeyWrapperHtml) { return $this->parseHtmlByName($matches[1], $aVariables, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BASE); },
+            function($matches) { return $this->processInjection($GLOBALS['_page']['name_index'], $matches[1]); },
+            function($matches) { return $this->getImageUrl($matches[1]); },
+            function($matches) { return $this->getIconUrl($matches[1]); },
+            function($matches) { return _t($matches[1]); },
+        	function($matches) { return bx_js_string(_t($matches[1])); },
+        	function($matches) { return bx_html_attribute(_t($matches[1])); },
             BX_DOL_URL_ROOT,
             BX_DOL_URL_ADMIN
         ));
 
         //--- Parse Predefined Keys ---//
-        $sContent = preg_replace($aKeys, $aValues, $sContent);
+        //$sContent = preg_replace($aKeys, $aValues, $sContent);
+
+        $aCombined = array_combine($aKeys, $aValues);
+        foreach($aCombined as $sPattern => $sValue) {
+
+            if(is_object($sValue) && ($sValue instanceof Closure)) {
+                $sContent = preg_replace_callback($sPattern, $sValue, $sContent);
+                continue;
+            }
+
+            $sContent = preg_replace_callback($sPattern, function($matches) use ($sValue) {
+                return $sValue;
+            }, $sContent);
+        }
+
         //--- Parse System Keys ---//
-        $sContent = preg_replace( "'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'e", "\$this->parseSystemKey('\\1', \$mixedKeyWrapperHtml)", $sContent);
+        //$sContent = preg_replace( "'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'e", "\$this->parseSystemKey('\\1', \$mixedKeyWrapperHtml)", $sContent);
+        $sContent = preg_replace_callback("'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'",
+            function($matches) use ($mixedKeyWrapperHtml) {
+
+                return $this->parseSystemKey($matches[1], $mixedKeyWrapperHtml);
+        }, $sContent);
 
         return $sContent;
     }

@@ -10,7 +10,7 @@ class BxDolXMLRPCMedia
 
     function _getMediaAlbums ($sType, $iIdProfile, $iIdProfileViewer, $isShowEmptyAlbums = false)
     {
-        $aAlbums = BxDolXMLRPCMedia::_getMediaAlbumsArray ($sType, $iIdProfile, $iIdProfileViewer, $isShowEmptyAlbums);
+        $aAlbums = (new BxDolXMLRPCMedia)->_getMediaAlbumsArray ($sType, $iIdProfile, $iIdProfileViewer, $isShowEmptyAlbums);
 
         $aXmlRpc = array ();
 
@@ -29,7 +29,7 @@ class BxDolXMLRPCMedia
 
     function _getMediaCount ($sType, $iIdProfile, $iIdProfileViewer)
     {
-        $a = BxDolXMLRPCMedia::_getMediaAlbumsArray ($sType, $iIdProfile, $iIdProfileViewer);
+        $a = (new BxDolXMLRPCMedia)->_getMediaAlbumsArray ($sType, $iIdProfile, $iIdProfileViewer);
         $iNum = 0;
         foreach ($a as $r)
             $iNum += $r['Num'];

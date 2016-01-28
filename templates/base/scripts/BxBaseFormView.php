@@ -209,7 +209,7 @@ class BxBaseFormView extends BxDolForm
 			'error_icon' => !empty($sErrorIcon) ? $sErrorIcon : '',
 			'input_code_extra' => !empty($sInputCodeExtra) ? $sInputCodeExtra : '',
 			'bx_if:show_toggle_html' => array(
-				'condition' => isset($aInput['html']) && $aInput['html_toggle'],
+				'condition' => isset($aInput['html']) && (isset($aInput['html_toggle']) && $aInput['html_toggle']),
 				'content' => array(
 					'attrs_id' => (!isset($aInput['attrs']['id'])) ?: $aInput['attrs']['id'],
 				),
@@ -635,7 +635,7 @@ class BxBaseFormView extends BxDolForm
         $sAttrs = $this->convertArray2Attrs($aAttrs);
 
         // generate options
-        $sCurValue = $aInput['value'];
+        $sCurValue = isset($aInput['value']) ? $aInput['value'] : null;
         $sOptions = '';
 
         if (isset($aInput['values']) and is_array($aInput['values'])) {
@@ -851,7 +851,7 @@ class BxBaseFormView extends BxDolForm
 
         // generate options
         $sDivider = isset($aInput['dv']) ? $aInput['dv'] : ' ';
-        $sCurValue = $aInput['value'];
+        $sCurValue = isset($aInput['value']) ? $aInput['value'] : '';
 
         $sOptions = '';
 

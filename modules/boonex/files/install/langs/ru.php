@@ -131,7 +131,6 @@ $aLangContent = array(
     '_bx_files_related' => 'Похожие файлы',
     '_bx_files_save_success' => 'Информация о файле сохранена',
     '_bx_files_sbs_comments' => 'Новые комментарии файла',
-    '_bx_files_single' => 'файл',
     '_bx_files_size' => 'Размер',
     '_bx_files_size_unit' => 'Кб',
     '_bx_files_special' => 'Избранные файлы',

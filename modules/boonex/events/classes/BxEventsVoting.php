@@ -20,7 +20,7 @@ class BxEventsVoting extends BxTemplVotingView
     {
         $aPathInfo = pathinfo(__FILE__);
         require_once ($aPathInfo['dirname'] . '/BxEventsSearchResult.php');
-        return BxEventsSearchResult::getMain();
+        return (new BxEventsSearchResult())->getMain();
     }
 
     function checkAction ()

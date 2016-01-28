@@ -269,7 +269,7 @@ class BxDolInstaller extends BxDolInstallerUtils
             }
             closedir($rSource);
         } else
-            $aFiles[] = $this->_info($sPath, $sFile);
+            $aFiles[] = $this->_info($sPath);
     }
     function _info($sPath)
     {

@@ -40,7 +40,7 @@ class BxDolPEditProcessor extends BxDolPageView
     var $aFormPrivacy;
     var $aFormMembership;
 
-    function BxDolPEditProcessor()
+    function __construct()
     {
         global $logged;
 
@@ -71,7 +71,7 @@ class BxDolPEditProcessor extends BxDolPageView
         $this -> bAjaxMode = ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) and $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' );
         $this -> bForceAjaxSave = bx_get('force_ajax_save');
 
-        parent::BxDolPageView('pedit');
+        parent::__construct('pedit');
     }
 
     function getBlockCode_Info()

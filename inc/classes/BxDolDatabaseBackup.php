@@ -3,10 +3,11 @@
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
+require(BX_DIRECTORY_PATH_INC . 'version.inc.php');
 
-DEFINE ('DOLPHIN_VERSION', $site['ver'] );
+define('DOLPHIN_VERSION', $site['ver'] );
 
-class BxDolDatabaseBackup extends  BxDolDb
+class BxDolDatabaseBackup extends BxDolDb
 {
 //class BxDolDatabaseBackup extends  CMySQL {
 

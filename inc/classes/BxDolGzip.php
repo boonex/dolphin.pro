@@ -40,7 +40,8 @@ class BxDolGzip
         $this->_sOutContent = "";
         $this->_sOutContentZipped = "";
     }
-    function load($sFile)
+    
+    public static function load($sFile)
     {
         $oLoader = new BxDolGzip($sFile);
 

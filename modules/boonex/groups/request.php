@@ -17,7 +17,7 @@ class BxGroupsRequest extends BxDolRequest
         parent::__construct();
     }
 
-    function processAsAction($aModule, &$aRequest, $sClass = "Module")
+    public static function processAsAction($aModule, &$aRequest, $sClass = "Module")
     {
         $sClassRequire = $aModule['class_prefix'] . $sClass;
         $oModule = BxDolRequest::_require($aModule, $sClassRequire);

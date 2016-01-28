@@ -153,7 +153,7 @@ class BxBaseProfileGenerator extends BxDolProfile
 
         $this->aMutualFriends = array();
 
-        BxDolProfile::BxDolProfile( $ID, 0 );
+        parent::__construct( $ID, 0 );
 
         $this->oVotingView = new BxTemplVotingView ('profile', (int)$ID);
         $this->oCmtsView = new BxDolCmtsProfile ('profile', (int)$ID);

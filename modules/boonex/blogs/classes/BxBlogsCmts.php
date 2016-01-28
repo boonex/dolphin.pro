@@ -20,7 +20,7 @@ class BxBlogsCmts extends BxTemplCmtsView
     {
         $aPathInfo = pathinfo(__FILE__);
         require_once ($aPathInfo['dirname'] . '/BxBlogsSearchUnit.php');
-        return BxBlogsSearchUnit::getBlogsMain();
+        return (new BxBlogsSearchUnit())->getBlogsMain();
     }
 
     function getBaseUrl()
