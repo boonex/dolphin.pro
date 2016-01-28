@@ -958,7 +958,7 @@ class BxEventsModule extends BxDolTwigModule
 
     // ================================== other function
 
-    function _browseMy (&$aProfile)
+    function _browseMy (&$aProfile, $sTitle = null)
     {
         parent::_browseMy ($aProfile, _t('_bx_events_block_my_events'));
     }

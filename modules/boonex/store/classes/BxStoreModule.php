@@ -734,7 +734,7 @@ class BxStoreModule extends BxDolTwigModule
         }
     }
 
-    function _browseMy (&$aProfile)
+    function _browseMy (&$aProfile, $sTitle = null)
     {
         parent::_browseMy ($aProfile, _t('_bx_store_page_title_my_store'));
     }

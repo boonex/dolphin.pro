@@ -31,7 +31,6 @@
          */
         'install' => array(
             'check_dependencies' => 0,
-            'check_requirements' => 1,
             'show_introduction' => 1,
             'change_permissions' => 0,
             'execute_sql' => 1,

@@ -280,10 +280,11 @@ class BxDolAdminSettings
                         'pass' => 'Xss',
                     ),
                 );
+
                 if(substr($aItem['extra'], 0, 4) == 'PHP:')
                     $aField['values'] = eval(substr($aItem['extra'], 4));
                 else
-                    foreach(split(',', $aItem['extra']) as $sValue)
+                    foreach(explode(',', $aItem['extra']) as $sValue)
                         $aField['values'][] = array('key' => $sValue, 'value' => $sValue);
                 break;
 

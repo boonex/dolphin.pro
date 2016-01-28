@@ -96,7 +96,7 @@ if ( isset($_GET['action']) ) {
                             if ($sBubbleCode) {
                                 $sCode  = str_replace('{iOldCount}', (int)$aItem[1], $sBubbleCode);
                                 $sCode  = str_replace('{ID}', (int)$iMemberId, $sCode);
-                                var_dump($sCode);
+
                                 eval($sCode);
                                 $aBubbles[$aItem[0]] = array (
                                     'count'     => $aRetEval['count'],

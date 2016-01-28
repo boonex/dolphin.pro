@@ -120,7 +120,7 @@ class BxDolRequest
         }
     }
 
-    function _require($aModule, $sClass)
+    public static function _require($aModule, $sClass)
     {
         if (!isset($GLOBALS['bxDolClasses'][$sClass])) {
             $sFile = BX_DIRECTORY_PATH_MODULES . $aModule['path'] . 'classes/' . $sClass . '.php';

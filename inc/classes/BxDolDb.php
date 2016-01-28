@@ -12,9 +12,12 @@ define( 'DB_FULL_DEBUG_MODE', false );
 define( 'DB_DO_EMAIL_ERROR_REPORT', true );
 
 require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolParams.php');
+require_once(BX_DIRECTORY_PATH_INC . 'traits/Logger.php');
 
 class BxDolDb
 {
+    use Logger;
+
     var $error_checking = true;
     var $error_message;
     var $host, $port, $socket, $dbname, $user, $password, $link;

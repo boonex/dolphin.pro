@@ -38,9 +38,9 @@ class BxDolTwigTemplate extends BxDolModuleTemplate
         $GLOBALS['oAdmTemplate']->addJs ($sName);
     }
 
-    function parseHtmlByName ($sName, $aVars)
+    function parseHtmlByName ($sName, $aVariables, $mixedKeyWrapperHtml = null, $sCheckIn = BX_DOL_TEMPLATE_CHECK_IN_BOTH)
     {
-        return parent::parseHtmlByName ($sName . (strlen($sName) < 6 || substr_compare($sName, '.html', -5, 5) !== 0 ? '.html' : ''), $aVars);
+        return parent::parseHtmlByName ($sName . (strlen($sName) < 6 || substr_compare($sName, '.html', -5, 5) !== 0 ? '.html' : ''), $aVariables);
     }
 
     // ======================= page generation functions
