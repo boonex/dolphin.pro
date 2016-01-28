@@ -336,8 +336,8 @@ class BxDolPageView
 
         $bColumnFull = ($fColumnWidth == 100);
 
-        $bLastColumnWasFull = (isset($this->aPage['Columns'][$iColumn - 1])) ? ($this->aPage['Columns'][$iColumn - 1]['Width'] == 100) : false;
-        $bNextColumnIsFull = (isset($this->aPage['Columns'][$iColumn + 1])) ? ($this->aPage['Columns'][$iColumn + 1]['Width'] == 100) : false;
+        $bLastColumnWasFull = (isset($this->aPage['Columns'][$iColumn - 1]) && ($this->aPage['Columns'][$iColumn - 1]['Width'] == 100));
+        $bNextColumnIsFull = (isset($this->aPage['Columns'][$iColumn + 1]) && ($this->aPage['Columns'][$iColumn + 1]['Width'] == 100));
 
         $sAddClass = ' page_column_';
         if($bColumnFull)
