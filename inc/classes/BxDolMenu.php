@@ -165,7 +165,7 @@ class BxDolMenu
                 break;
 
             // if profile ID isn't defined, then profile menu submenus can't be currently selected
-            if( !$this->aMenuInfo['profileID'] && BX_PROFILE_MENU_ID == $aItem['Parent'] ) 
+            if((!isset($this->aMenuInfo['profileID']) || !$this->aMenuInfo['profileID']) && BX_PROFILE_MENU_ID == $aItem['Parent'] )
                 continue;
 
             $this->aMenuInfo['currentTopLink'] = $aItem['Link'];

@@ -28,11 +28,10 @@ require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolModuleDb.php');
  */
 class BxDolService
 {
-    function call($mixed, $sMethod, $aParams = array(), $sClass = 'Module')
+    public static function call($mixed, $sMethod, $aParams = array(), $sClass = 'Module')
     {
         $oDb = new BxDolModuleDb();
 
-        $aModule = array();
         if(is_string($mixed))
             $aModule = $oDb->getModuleByUri($mixed);
         else
@@ -45,6 +44,7 @@ class BxDolService
     {
         if (!isset($a['module']) || !isset($a['method']))
             return false;
+
         return self::call($a['module'], $a['method'], isset($a['params']) ? $a['params'] : array(), isset($a['class']) ? $a['class'] : 'Module');
     }
 

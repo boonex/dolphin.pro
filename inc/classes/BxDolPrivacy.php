@@ -172,7 +172,7 @@ class BxDolPrivacy
      * Static Method.
      * Check whether Privacy Group page/menu is available.
      */
-    function isPrivacyPage()
+    public static function isPrivacyPage()
     {
         return getParam('sys_ps_enable_create_group') == 'on' || getParam('sys_ps_enable_default_values') == 'on' || getParam('sys_ps_enabled_group_1') == 'on';
     }

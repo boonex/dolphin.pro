@@ -11,11 +11,7 @@ $GLOBALS['bxDolClasses'] = array();
 
 class BxDolRequest
 {
-    public function __construct()
-    {
-    }
-
-    function processAsFile($aModule, &$aRequest)
+    public static function processAsFile($aModule, &$aRequest)
     {
         if (empty($aRequest) || ($sFileName = array_shift($aRequest)) == "") {
             $sFileName = 'index';
@@ -23,7 +19,7 @@ class BxDolRequest
 
         $sFile = BX_DIRECTORY_PATH_MODULES . $aModule['path'] . $sFileName . '.php';
         if (!file_exists($sFile)) {
-            BxDolRequest::pageNotFound($sFileName, $aModule['uri']);
+            (new self())->pageNotFound($sFileName, $aModule['uri']);
         } else {
             if (isset($GLOBALS['bx_profiler'])) {
                 $GLOBALS['bx_profiler']->beginModule('file', ($sPrHash = uniqid(rand())), $aModule, $sFileName);
@@ -35,7 +31,7 @@ class BxDolRequest
         }
     }
 
-    function processAsAction($aModule, &$aRequest, $sClass = "Module")
+    public static function processAsAction($aModule, &$aRequest, $sClass = "Module")
     {
         $sAction = empty($aRequest) || (isset($aRequest[0]) && empty($aRequest[0])) ? 'Home' : array_shift($aRequest);
         $sMethod = 'action' . str_replace(' ', '', ucwords(str_replace('_', ' ', $sAction)));
@@ -44,7 +40,7 @@ class BxDolRequest
             $GLOBALS['bx_profiler']->beginModule('action', ($sPrHash = uniqid(rand())), $aModule, $sClass, $sMethod);
         }
 
-        $mixedRet = BxDolRequest::_perform($aModule, $sClass, $sMethod, $aRequest);
+        $mixedRet = (new self())->_perform($aModule, $sClass, $sMethod, $aRequest);
 
         if (isset($GLOBALS['bx_profiler'])) {
             $GLOBALS['bx_profiler']->endModule('action', $sPrHash);
@@ -53,7 +49,7 @@ class BxDolRequest
         return $mixedRet;
     }
 
-    function processAsService($aModule, $sMethod, $aParams, $sClass = "Module")
+    public static function processAsService($aModule, $sMethod, $aParams, $sClass = "Module")
     {
         $sMethod = 'service' . str_replace(' ', '', ucwords(str_replace('_', ' ', $sMethod)));
 
@@ -61,7 +57,7 @@ class BxDolRequest
             $GLOBALS['bx_profiler']->beginModule('service', ($sPrHash = uniqid(rand())), $aModule, $sClass, $sMethod);
         }
 
-        $mixedRet = BxDolRequest::_perform($aModule, $sClass, $sMethod, $aParams, false);
+        $mixedRet = (new self())->_perform($aModule, $sClass, $sMethod, $aParams, false);
 
         if (isset($GLOBALS['bx_profiler'])) {
             $GLOBALS['bx_profiler']->endModule('service', $sPrHash);
@@ -70,38 +66,40 @@ class BxDolRequest
         return $mixedRet;
     }
 
-    function serviceExists($mixedModule, $sMethod, $sClass = "Module")
+    public static function serviceExists($mixedModule, $sMethod, $sClass = "Module")
     {
-        return BxDolRequest::_methodExists($mixedModule, 'service', $sMethod, $sClass);
+        $oBxDolRequest = new self();
+        return $oBxDolRequest->_methodExists($mixedModule, 'service', $sMethod, $sClass);
     }
 
-    function actionExists($mixedModule, $sMethod, $sClass = "Module")
+    public static function actionExists($mixedModule, $sMethod, $sClass = "Module")
     {
-        return BxDolRequest::_methodExists($mixedModule, 'action', $sMethod, $sClass);
+        $oBxDolRequest = new self();
+        return $oBxDolRequest->_methodExists($mixedModule, 'action', $sMethod, $sClass);
     }
 
     function moduleNotFound($sModule)
     {
-        BxDolRequest::_error('module', $sModule);
+        $this->_error('module', $sModule);
     }
 
     function pageNotFound($sPage, $sModule)
     {
-        BxDolRequest::_error('page', $sPage, $sModule);
+        $this->_error('page', $sPage, $sModule);
     }
 
     function methodNotFound($sMethod, $sModule)
     {
-        BxDolRequest::_error('method', $sMethod, $sModule);
+        $this->_error('method', $sMethod, $sModule);
     }
 
     function _perform($aModule, $sClass, $sMethod, $aParams, $bTerminateOnError = true)
     {
         $sClass = $aModule['class_prefix'] . $sClass;
 
-        $oModule = BxDolRequest::_require($aModule, $sClass);
+        $oModule = $this->_require($aModule, $sClass);
         if ($oModule === false && $bTerminateOnError) {
-            BxDolRequest::methodNotFound($sMethod, $aModule['uri']);
+            $this->methodNotFound($sMethod, $aModule['uri']);
         } else {
             if ($oModule === false && !$bTerminateOnError) {
                 return false;
@@ -113,7 +111,7 @@ class BxDolRequest
             return call_user_func_array(array($oModule, $sMethod), $aParams);
         } else {
             if (!$bMethod && $bTerminateOnError) {
-                BxDolRequest::methodNotFound($sMethod, $aModule['uri']);
+                $this->methodNotFound($sMethod, $aModule['uri']);
             } else {
                 if (!$bMethod && !$bTerminateOnError) {
                     return false;
@@ -149,8 +147,12 @@ class BxDolRequest
             $aModule = $oModuleDb->getModuleByUri($mixedModule);
         }
 
+        if(empty($aModule)) {
+            return false;
+        }
+
         $sClass = $aModule['class_prefix'] . $sClass;
-        if (($oModule = BxDolRequest::_require($aModule, $sClass)) === false) {
+        if (($oModule = $this->_require($aModule, $sClass)) === false) {
             return false;
         }
 

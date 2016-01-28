@@ -211,7 +211,7 @@ class BxBaseFormView extends BxDolForm
 			'bx_if:show_toggle_html' => array(
 				'condition' => isset($aInput['html']) && $aInput['html_toggle'],
 				'content' => array(
-					'attrs_id' => $aInput['attrs']['id'],
+					'attrs_id' => (!isset($aInput['attrs']['id'])) ?: $aInput['attrs']['id'],
 				),
 			),
 		));

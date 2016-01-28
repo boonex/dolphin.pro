@@ -1647,3 +1647,16 @@ function bx_gen_method_name ($s, $sWordsDelimiter = '_')
 {
     return str_replace(' ', '', ucwords(str_replace($sWordsDelimiter, ' ', $s)));
 }
+
+/**
+ * Var dumps then dies
+ *
+ * @param $dump
+ */
+function dd($dump)
+{
+    echo '<pre>';
+    var_dump($dump);
+    echo '</pre>';
+    exit;
+}

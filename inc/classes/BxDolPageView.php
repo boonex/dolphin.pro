@@ -335,8 +335,9 @@ class BxDolPageView
         $iColumnsCount = count($this -> aPage['Columns']);
 
         $bColumnFull = ($fColumnWidth == 100);
-        $bLastColumnWasFull = ($this -> aPage['Columns'][$iColumn - 1]['Width'] == 100);
-        $bNextColumnIsFull = ($this -> aPage['Columns'][$iColumn + 1]['Width'] == 100);
+
+        $bLastColumnWasFull = (isset($this->aPage['Columns'][$iColumn - 1])) ? ($this->aPage['Columns'][$iColumn - 1]['Width'] == 100) : false;
+        $bNextColumnIsFull = (isset($this->aPage['Columns'][$iColumn + 1])) ? ($this->aPage['Columns'][$iColumn + 1]['Width'] == 100) : false;
 
         $sAddClass = ' page_column_';
         if($bColumnFull)
@@ -507,7 +508,7 @@ class BxDolPageView
             if($bActive)
             	$sActive = $sTitle;
 
-            $isTextIcon = false === strpos($aLink['icon'], '.');
+            $isTextIcon = (isset($aLink['icon']) && false === strpos($aLink['icon'], '.'));
 
             $sClass = !empty($aLink['class']) ? $aLink['class'] : 'top_members_menu';
             $sClass .= isset($aLink['icon']) && !$isTextIcon ? ' with_icon' : '';
