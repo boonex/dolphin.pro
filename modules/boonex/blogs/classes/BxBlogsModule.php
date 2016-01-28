@@ -25,10 +25,10 @@ class BxDolBlogsPageView extends BxDolPageView
 {
     var $oBlogs;
 
-    function BxDolBlogsPageView(&$oBlogs)
+    function __construct(&$oBlogs)
     {
         $this->oBlogs = &$oBlogs;
-        parent::BxDolPageView('bx_blogs');
+        parent::__construct('bx_blogs');
     }
 
     function getBlockCode_PostActions()

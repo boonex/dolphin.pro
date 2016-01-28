@@ -14,7 +14,7 @@ class Thing
     /**
      * constructor
      */
-    function Thing ()
+    function __construct ()
     {
     }
 

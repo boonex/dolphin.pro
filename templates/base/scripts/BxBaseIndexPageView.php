@@ -13,9 +13,9 @@ bx_import('BxTemplCategories');
 
 class BxBaseIndexPageView extends BxDolPageView
 {
-    function BxBaseIndexPageView()
+    function __construct()
     {
-        BxDolPageView::BxDolPageView( 'index' );
+        BxDolPageView::__construct( 'index' );
     }
 
     /**

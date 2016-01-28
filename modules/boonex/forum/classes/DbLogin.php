@@ -14,10 +14,10 @@ class DbLogin extends BxDb
     /**
      * constructor
      */
-    function DbLogin ()
+    function __construct ()
     {
         global $gConf;
-        parent::BxDb ($gConf['db']['db'], $gConf['db']['user'], $gConf['db']['pwd'], $gConf['db']['host'], $gConf['db']['port'], $gConf['db']['sock']);
+        parent::__construct ($gConf['db']['db'], $gConf['db']['user'], $gConf['db']['pwd'], $gConf['db']['host'], $gConf['db']['port'], $gConf['db']['sock']);
     }
 
     function getUserByName ($s)

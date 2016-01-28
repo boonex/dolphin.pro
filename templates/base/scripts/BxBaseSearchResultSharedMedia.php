@@ -31,7 +31,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
 
     var $oPrivacy;
 
-    function BxBaseSearchResultSharedMedia ($sModuleClass = '')
+    function __construct ($sModuleClass = '')
     {
         /* main settings for shared modules
            ownFields - fields which will be got from main table ($this->aCurrent['table'])
@@ -112,7 +112,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
             'joinFields' => ''
         );
         $this->aPseud = $this->_getPseud();
-        parent::BxBaseSearchResult();
+        parent::__construct();
 
         $this->sModuleClass = $sModuleClass;
         $this->oModule = BxDolModule::getInstance($this->sModuleClass);

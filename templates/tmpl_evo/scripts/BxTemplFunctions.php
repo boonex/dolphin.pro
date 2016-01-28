@@ -6,9 +6,9 @@
         /**
          * class constructor
         */
-        function BxTemplFunctions()
+        function __construct()
         {
-            parent::BxBaseFunctions();
+            parent::__construct();
         }
 
         function genSiteSearch($sText = '')

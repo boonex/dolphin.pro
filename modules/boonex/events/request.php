@@ -12,9 +12,9 @@ bx_import('BxDolRequest');
 
 class BxEventsRequest extends BxDolRequest
 {
-    function BxEventsRequest()
+    function __construct()
     {
-        parent::BxDolRequest();
+        parent::__construct();
     }
 
     function processAsAction($aModule, &$aRequest, $sClass = "Module")

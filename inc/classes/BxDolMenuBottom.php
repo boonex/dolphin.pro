@@ -24,9 +24,9 @@
      */
     class BxDolMenuBottom extends BxTemplMenuSimple
     {
-        function BxDolMenuBottom()
+        function __construct()
         {
-            parent::BxTemplMenuSimple();
+            parent::__construct();
 
             $this->sName = 'bottom';
             $this->sDbTable = 'sys_menu_bottom';

@@ -153,9 +153,9 @@ class BxGroupsModule extends BxDolTwigModule
     var $_oPrivacy;
     var $_aQuickCache = array ();
 
-    function BxGroupsModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolTwigModule($aModule);
+        parent::__construct($aModule);
         $this->_sFilterName = 'bx_groups_filter';
         $this->_sPrefix = 'bx_groups';
 

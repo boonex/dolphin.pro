@@ -120,9 +120,9 @@ class BxStoreModule extends BxDolTwigModule
 
     var $_aQuickCache = array ();
 
-    function BxStoreModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolTwigModule($aModule);
+        parent::__construct($aModule);
         $this->_sFilterName = 'bx_store_filter';
         $this->_sPrefix = 'bx_store';
 

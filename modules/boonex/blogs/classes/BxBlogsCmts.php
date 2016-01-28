@@ -11,9 +11,9 @@ class BxBlogsCmts extends BxTemplCmtsView
     /**
      * Constructor
      */
-    function BxBlogsCmts($sSystem, $iId)
+    function __construct($sSystem, $iId)
     {
-        parent::BxTemplCmtsView($sSystem, $iId);
+        parent::__construct($sSystem, $iId);
     }
 
     function getMain()

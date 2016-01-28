@@ -9,8 +9,8 @@ bx_import('BxBaseAlbumForm');
 
 class BxTemplAlbumForm extends BxBaseAlbumForm
 {
-    function BxTemplAlbumForm($sType, $iAlbum = 0)
+    function __construct($sType, $iAlbum = 0)
     {
-        parent::BxBaseAlbumForm($sType, $iAlbum);
+        parent::__construct($sType, $iAlbum);
     }
 }

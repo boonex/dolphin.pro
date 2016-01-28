@@ -22,9 +22,9 @@ class BxDolPrivacyQuery extends BxDolDb
     /**
      * constructor
      */
-    function BxDolPrivacyQuery($sTable = '', $sFieldId = '', $sFieldOwnerId = '')
+    function __construct($sTable = '', $sFieldId = '', $sFieldOwnerId = '')
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $this->_sTable = $sTable;
         $this->_sFieldId = $sFieldId;

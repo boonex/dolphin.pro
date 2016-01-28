@@ -33,7 +33,7 @@
          * @description : class constructor ;
         */
 
-        function BxDolBrowse()
+        function __construct()
         {
             global $aPreValues;
 

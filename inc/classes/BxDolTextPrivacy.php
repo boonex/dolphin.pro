@@ -10,9 +10,9 @@ class BxDolTextPrivacy extends BxDolPrivacy
 {
     var $_oModule;
 
-    function BxDolTextPrivacy(&$oModule)
+    function __construct(&$oModule)
     {
-        parent::BxDolPrivacy($oModule->_oDb->getPrefix() . 'entries', 'id', 'author_id');
+        parent::__construct($oModule->_oDb->getPrefix() . 'entries', 'id', 'author_id');
 
         $this->_oModule = $oModule;
     }

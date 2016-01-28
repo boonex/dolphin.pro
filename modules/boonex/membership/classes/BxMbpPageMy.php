@@ -10,9 +10,9 @@ class BxMbpPageMy extends BxDolPageView
 {
 	var $_oObject;
 
-    function BxMbpPageMy(&$oObject)
+    function __construct(&$oObject)
     {
-    	parent::BxDolPageView('bx_mbp_my_membership');
+    	parent::__construct('bx_mbp_my_membership');
 
     	$this->_oObject = $oObject;
 

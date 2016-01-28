@@ -13,9 +13,9 @@ class BxSctrDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxSctrDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb($oConfig);
+        parent::__construct($oConfig);
 
         $this->_oConfig = $oConfig;
     }

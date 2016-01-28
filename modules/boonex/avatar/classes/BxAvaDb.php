@@ -17,9 +17,9 @@ class BxAvaDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxAvaDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
     }

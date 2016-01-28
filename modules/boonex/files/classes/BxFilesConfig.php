@@ -13,9 +13,9 @@ class BxFilesConfig extends BxDolFilesConfig
     /**
      * Constructor
      */
-    function BxFilesConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolFilesConfig($aModule);
+        parent::__construct($aModule);
 
         $this->aFilesConfig = array (
             'original' => array('postfix' => '_{ext}'),

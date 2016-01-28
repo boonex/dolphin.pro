@@ -9,9 +9,9 @@ bx_import('BxTemplSearchResultSharedMedia');
 
 class BxVideosSearch extends BxTemplSearchResultSharedMedia
 {
-    function BxVideosSearch ($sParamName = '', $sParamValue = '', $sParamValue1 = '', $sParamValue2 = '')
+    function __construct ($sParamName = '', $sParamValue = '', $sParamValue1 = '', $sParamValue2 = '')
     {
-        parent::BxTemplSearchResultSharedMedia('BxVideosModule');
+        parent::__construct('BxVideosModule');
         $this->aConstants['linksTempl'] = array(
             'home' => 'home',
             'file' => 'view/{uri}',

@@ -31,9 +31,9 @@ require_once($sModulesPath . $sModule . '/inc/customFunctions.inc.php');
 class BxSoundsUploader extends BxDolFilesUploader
 {
     // constructor
-    function BxSoundsUploader()
+    function __construct()
     {
-        parent::BxDolFilesUploader('Sound');
+        parent::__construct('Sound');
 
         $this->oModule = BxDolModule::getInstance('BxSoundsModule');
         $this->sWorkingFile = BX_DOL_URL_ROOT . $this->oModule->_oConfig->getBaseUri() . 'albums/my/add_objects';

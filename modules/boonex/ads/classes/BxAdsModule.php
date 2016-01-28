@@ -154,11 +154,11 @@ class BxAdsModule extends BxDolModule
     var $_iVisitorID;
 
     // Constructor
-    function BxAdsModule($aModule)
+    function __construct($aModule)
     {
         global $site;
 
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
 
         $this->sHomeUrl = $this->_oConfig->getHomeUrl();
         $this->sHomePath = $this->_oConfig->getHomePath();

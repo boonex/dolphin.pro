@@ -14,9 +14,9 @@ class BxWallTemplate extends BxDolModuleTemplate
     /**
      * Constructor
      */
-    function BxWallTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
 
         $this->_aTemplates = array('divider', 'balloon', 'repost', 'common', 'common_media', 'comments', 'comments_actions');
     }

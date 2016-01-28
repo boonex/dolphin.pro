@@ -8,10 +8,10 @@ bx_import('BxDolTextSearchResult');
 
 class BxFdbSearchResult extends BxDolTextSearchResult
 {
-    function BxFdbSearchResult($oModule = null)
+    function __construct($oModule = null)
     {
         $oModule = !empty($oModule) ? $oModule : BxDolModule::getInstance('BxFdbModule');
-        parent::BxDolTextSearchResult($oModule);
+        parent::__construct($oModule);
 
         $this->aCurrent['searchFields'] = array('caption', 'content', 'tags');
         unset($this->aCurrent['restriction']['category']);

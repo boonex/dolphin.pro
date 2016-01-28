@@ -29,7 +29,7 @@
 
         var $oPermalinks;
 
-        function BxDolMenuSimple()
+        function __construct()
         {
             $this->sName = 'bottom';
             $this->sDbTable = 'sys_menu_bottom';

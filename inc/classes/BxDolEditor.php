@@ -63,7 +63,7 @@ define('BX_EDITOR_MINI', 3);
  * @endcode
  *
  */
-class BxDolEditor extends BxDolMistake
+class BxDolEditor
 {
     protected $_sObject;
     protected $_aObject;

@@ -106,9 +106,9 @@ class BxSitesModule extends BxDolTwigModule
     /**
      * Constructor
      */
-    function BxSitesModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolTwigModule($aModule);
+        parent::__construct($aModule);
         $this->_oConfig->init($this->_oDb);
         $this->oPrivacy = new BxSitesPrivacy($this);
         $this->iOwnerId = isLogged() ? getLoggedId() : 0;

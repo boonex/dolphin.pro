@@ -11,9 +11,9 @@ class BxWallVoting extends BxTemplVotingView
 {
 	var $_oModule;
 
-    function BxWallVoting($sSystem, $iId, $iInit = 1)
+    function __construct($sSystem, $iId, $iInit = 1)
     {
-        parent::BxTemplVotingView($sSystem, $iId, $iInit);
+        parent::__construct($sSystem, $iId, $iInit);
 
         $this->_oModule = BxDolModule::getInstance('BxWallModule');
     }

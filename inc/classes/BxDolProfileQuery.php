@@ -8,9 +8,9 @@ require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolDb.php' );
 
 class BxDolProfileQuery extends BxDolDb
 {
-    function BxDolProfileQuery()
+    function __construct()
     {
-        parent::BxDolDb();
+        parent::__construct();
     }
 
     function getIdByEmail( $sEmail )

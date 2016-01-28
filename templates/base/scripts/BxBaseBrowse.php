@@ -41,7 +41,7 @@ class BxBaseBrowse extends BxDolBrowse
      *                     : mode (mode) - switch mode to extended and simple,
      * @param : $sPageName (string) - page name (need for page builder);
      */
-    function BxBaseBrowse( &$aFilteredSettings, &$aDisplaySettings, $sPageName )
+    function __construct( &$aFilteredSettings, &$aDisplaySettings, $sPageName )
     {
         if ( isset($aFilteredSettings['sex']) and $aFilteredSettings['sex'] == 'all' )
             $aFilteredSettings['sex'] = null;
@@ -78,7 +78,7 @@ class BxBaseBrowse extends BxDolBrowse
 
         $this -> sKeyName = preg_replace("|\|$|", '', $this -> sKeyName);
 
-        parent::BxDolBrowse();
+        parent::__construct();
 
         // fill global array with the needed parameters ;
 

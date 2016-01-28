@@ -13,9 +13,9 @@ class BxPmtDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxPmtDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb($oConfig);
+        parent::__construct($oConfig);
 
         $this->_oConfig = &$oConfig;
     }

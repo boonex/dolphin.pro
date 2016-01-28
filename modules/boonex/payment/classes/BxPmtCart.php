@@ -17,7 +17,7 @@ class BxPmtCart
     /*
      * Constructor.
      */
-    function BxPmtCart(&$oDb, &$oConfig, &$oTemplate)
+    function __construct(&$oDb, &$oConfig, &$oTemplate)
     {
         $this->_oDb = &$oDb;
         $this->_oConfig = &$oConfig;

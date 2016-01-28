@@ -4,10 +4,9 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
 bx_import('BxDolProfileQuery');
 
-class BxDolProfile extends BxDolMistake
+class BxDolProfile
 {
     var $_iProfileID;
     var $_aProfile;
@@ -20,7 +19,7 @@ class BxDolProfile extends BxDolMistake
      *
      * @return User
      */
-    function BxDolProfile( $vProfileID, $bWithEmail = 1 )
+    function __construct( $vProfileID, $bWithEmail = 1 )
     {
         $this -> _iProfileID = $this -> getID( $vProfileID, $bWithEmail );
     }

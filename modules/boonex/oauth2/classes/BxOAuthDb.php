@@ -10,9 +10,9 @@ class BxOAuthDb extends BxDolModuleDb
 {
     var $_oConfig;
 
-    function BxOAuthDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
         $this->_oConfig = $oConfig;
     }
 

@@ -33,9 +33,9 @@ class BxDolPermalinks extends BxDolDb
     var $sCacheFile;
     var $aLinks;
 
-    function BxDolPermalinks()
+    function __construct()
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $oCache = $GLOBALS['MySQL']->getDbCacheObject();
         $this->aLinks = $oCache->getData($GLOBALS['MySQL']->genDbCacheKey('sys_permalinks'));

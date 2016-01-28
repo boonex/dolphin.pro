@@ -35,9 +35,9 @@ class BxBaseSearchProfile extends BxBaseSearchResultText
         )
     );
 
-    function BxBaseSearchProfile ($sParamName = '', $sParamValue = '', $sParamValue1 = '', $sParamValue2 = '')
+    function __construct ($sParamName = '', $sParamValue = '', $sParamValue1 = '', $sParamValue2 = '')
     {
-        parent::BxBaseSearchResultText();
+        parent::__construct();
         $this->iRate = 0;
 
         switch ($sParamName) {

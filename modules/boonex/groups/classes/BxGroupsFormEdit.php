@@ -8,9 +8,9 @@ bx_groups_import ('FormAdd');
 
 class BxGroupsFormEdit extends BxGroupsFormAdd
 {
-    function BxGroupsFormEdit ($oMain, $iProfileId, $iEntryId, &$aDataEntry)
+    function __construct ($oMain, $iProfileId, $iEntryId, &$aDataEntry)
     {
-        parent::BxGroupsFormAdd ($oMain, $iProfileId, $iEntryId, $aDataEntry['thumb']);
+        parent::__construct ($oMain, $iProfileId, $iEntryId, $aDataEntry['thumb']);
 
         $aFormInputsId = array (
             'id' => array (

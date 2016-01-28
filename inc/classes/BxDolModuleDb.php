@@ -14,9 +14,9 @@ class BxDolModuleDb extends BxDolDb
     /*
      * Constructor.
      */
-    function BxDolModuleDb($oConfig = null)
+    function __construct($oConfig = null)
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         if(is_a($oConfig,'BxDolConfig'))
             $this->_sPrefix = $oConfig->getDbPrefix();

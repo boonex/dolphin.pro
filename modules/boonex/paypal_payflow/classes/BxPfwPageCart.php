@@ -10,9 +10,9 @@ class BxPfwPageCart extends BxDolPageView
 {
 	protected $_oMain;
 
-    function BxPfwPageCart(&$oMain)
+    function __construct(&$oMain)
     {
-        parent::BxDolPageView('bx_pfw_cart');
+        parent::__construct('bx_pfw_cart');
 
         $this->_oMain = $oMain;
 

@@ -12,9 +12,9 @@ class BxBaseTags extends BxDolTags
     var $_sTagTmplName;
     var $_sTagTmplContent;
 
-    function BxBaseTags ()
+    function __construct ()
     {
-        parent::BxDolTags();
+        parent::__construct();
 
         $this->_sTagTmplName = 'view_tags.html';
         $this->_sTagTmplContent = '';

@@ -50,7 +50,7 @@ class BxEventsSearchResult extends BxDolTwigSearchResult
         'ident' => 'ID'
     );
 
-    function BxEventsSearchResult($sMode = '', $sValue = '', $sValue2 = '', $sValue3 = '')
+    function __construct($sMode = '', $sValue = '', $sValue2 = '', $sValue3 = '')
     {
         $oMain = $this->getMain();
 
@@ -269,7 +269,7 @@ class BxEventsSearchResult extends BxDolTwigSearchResult
         $oVotingView = new BxEventsVoting ('bx_events', 0);
         $this->oVotingView = $oVotingView->isEnabled() ? $oVotingView : null;
 
-        parent::BxDolTwigSearchResult();
+        parent::__construct();
     }
 
     function getAlterOrder()

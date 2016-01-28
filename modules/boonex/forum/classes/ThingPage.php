@@ -14,7 +14,7 @@ class ThingPage extends Thing
     /**
      * constructor
      */
-    function ThingPage ()
+    function __construct ()
     {
     }
 

@@ -12,9 +12,9 @@ class BxPageACTemplate extends BxDolModuleTemplate
     /**
      * Constructor
      */
-    function BxPageACTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
     }
 
     function getTabs()

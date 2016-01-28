@@ -14,9 +14,9 @@ class BxBaseSearchResult extends BxDolSearchResult
     var $aPermalinks;
     var $aConstants;
 
-    function BxBaseSearchResult()
+    function __construct()
     {
-        parent::BxDolSearchResult();
+        parent::__construct();
     }
 
     function isPermalinkEnabled()

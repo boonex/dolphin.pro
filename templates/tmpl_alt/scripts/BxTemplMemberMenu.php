@@ -15,8 +15,8 @@
         /**
          * Class constructor;
          */
-        function BxTemplMemberMenu()
+        function __construct()
         {
-            parent::BxBaseMemberMenu();
+            parent::__construct();
         }
     }

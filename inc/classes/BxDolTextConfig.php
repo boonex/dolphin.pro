@@ -33,9 +33,9 @@ class BxDolTextConfig extends BxDolConfig
     var $_aJsObjects;
     var $_iRssLength;
 
-    function BxDolTextConfig(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
     function init(&$oDb)
     {

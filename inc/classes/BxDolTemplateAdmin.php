@@ -11,9 +11,9 @@ class BxDolTemplateAdmin extends BxDolTemplate
     /**
      * Constructor
      */
-    function BxDolTemplateAdmin($sHomeFolder)
+    function __construct($sHomeFolder)
     {
-        parent::BxDolTemplate(BX_DIRECTORY_PATH_ROOT . $sHomeFolder . DIRECTORY_SEPARATOR, BX_DOL_URL_ROOT . $sHomeFolder . '/');
+        parent::__construct(BX_DIRECTORY_PATH_ROOT . $sHomeFolder . DIRECTORY_SEPARATOR, BX_DOL_URL_ROOT . $sHomeFolder . '/');
 
         $this->_sPrefix = 'BxDolTemplateAdmin';
         $this->_sInjectionsTable = 'sys_injections_admin';

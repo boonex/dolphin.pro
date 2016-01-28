@@ -16,7 +16,7 @@ class BxPmtOrders
     /*
      * Constructor.
      */
-    function BxPmtOrders($iUserId, &$oDb, &$oConfig, &$oTemplate)
+    function __construct($iUserId, &$oDb, &$oConfig, &$oTemplate)
     {
         $this->_oDb = &$oDb;
         $this->_oConfig = &$oConfig;

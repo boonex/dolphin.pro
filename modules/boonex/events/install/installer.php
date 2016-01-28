@@ -9,9 +9,9 @@ bx_import('BxDolInstaller');
 
 class BxEventsInstaller extends BxDolInstaller
 {
-    function BxEventsInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
     }
 
     function install($aParams)

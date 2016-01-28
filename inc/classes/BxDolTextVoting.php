@@ -11,9 +11,9 @@ class BxDolTextVoting extends BxTemplVotingView
 {
     var $_oModule;
 
-    function BxDolTextVoting($sSystem, $iId, $iInit = 1)
+    function __construct($sSystem, $iId, $iInit = 1)
     {
-        parent::BxTemplVotingView($sSystem, $iId, $iInit);
+        parent::__construct($sSystem, $iId, $iInit);
 
         $this->_oModule = null;
     }

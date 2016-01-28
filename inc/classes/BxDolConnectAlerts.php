@@ -8,11 +8,6 @@ class BxDolConnectAlerts extends BxDolAlertsResponse
 {
     var $oModule;
 
-    function BxDolConnectAlerts()
-    {
-
-    }
-
     function response(&$o)
     {
         if($o->sUnit == 'system') {

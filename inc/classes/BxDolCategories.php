@@ -13,9 +13,9 @@ class BxDolCategories extends BxDolTags
 {
     var $sAutoApprovePrefix;
 
-    function BxDolCategories ($iPossOwner = 0)
+    function __construct($iPossOwner = 0)
     {
-        parent::BxDolTags();
+        parent::__construct();
         $this->iViewer = (int)$iPossOwner > 0 ? (int)$iPossOwner : $this->iViewer;
         $this->sCacheFile = 'sys_objects_categories';
         $this->sNonParseParams = 'tags_non_parsable';

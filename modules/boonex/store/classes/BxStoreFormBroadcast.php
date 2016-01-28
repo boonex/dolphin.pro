@@ -8,8 +8,8 @@ bx_import('BxDolTwigFormBroadcast');
 
 class BxStoreFormBroadcast extends BxDolTwigFormBroadcast
 {
-    function BxStoreFormBroadcast ()
+    function __construct ()
     {
-        parent::BxDolTwigFormBroadcast (_t('_bx_store_form_caption_broadcast_title'), _t('_bx_store_form_err_broadcast_title'), _t('_bx_store_form_caption_broadcast_message'), _t('_bx_store_form_err_broadcast_message'));
+        parent::__construct (_t('_bx_store_form_caption_broadcast_title'), _t('_bx_store_form_err_broadcast_title'), _t('_bx_store_form_caption_broadcast_message'), _t('_bx_store_form_err_broadcast_message'));
     }
 }

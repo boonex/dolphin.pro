@@ -71,7 +71,7 @@ class BxAdsSearchUnit extends BxTemplSearchResultText
     var $aPermalinks;
     var $sSelectedUnit;
 
-    function BxAdsSearchUnit()
+    function __construct()
     {
         $oMain = $this->getAdsMain();
 
@@ -108,7 +108,7 @@ class BxAdsSearchUnit extends BxTemplSearchResultText
 
         $this->bShowCheckboxes = false;
 
-        parent::BxBaseSearchResultText();
+        parent::__construct();
 
         $this->sSelectedUnit = 'unit_ads';
         $this->iPostViewType = $iPostViewType;

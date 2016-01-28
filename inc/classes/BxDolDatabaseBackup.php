@@ -13,7 +13,7 @@ class BxDolDatabaseBackup extends  BxDolDb
    var $sCharset,  $sCollate;
    var $sInputs;
 
-   function BxDolDatabaseBackup($sCharset = 'utf8',  $sCollate = 'utf8_unicode_ci')
+   function __construct($sCharset = 'utf8',  $sCollate = 'utf8_unicode_ci')
    {
      $this -> sCharset = $sCharset;
      $this -> sCollate = $sCollate;

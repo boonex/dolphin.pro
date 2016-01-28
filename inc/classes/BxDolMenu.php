@@ -23,7 +23,7 @@ class BxDolMenu
     var $oPermalinks;
     var $aCustomBreadcrumbs = array ();
 
-    function BxDolMenu()
+    function __construct()
     {
         global $oTemplConfig;
 

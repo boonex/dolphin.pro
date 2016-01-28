@@ -11,9 +11,9 @@ bx_import('BxDolEmailTemplates');
 
 class BxDolCronModules extends BxDolCron
 {
-    function BxDolCronModules()
+    function __construct()
     {
-        parent::BxDolCron();
+        parent::__construct();
     }
 
 	function processing()

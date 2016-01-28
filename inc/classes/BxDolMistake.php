@@ -4,13 +4,9 @@ require_once('Thing.php');
 
 class BxDolMistake extends Thing
 {
-    function BxDolMistake()
-    {
-    }
-    function log ($s)
-    {
-    }
-    function displayError ()
-    {
-    }
+    public function __construct(){}
+
+    public function log($s) {}
+
+    public function displayError() {}
 }

@@ -15,9 +15,9 @@ class BxDolTwigModule extends BxDolModule
     var $_sPrefix;
     var $_sFilterName;
 
-    function BxDolTwigModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
         $this->_iProfileId = isLogged() ? getLoggedId() : 0;
     }
 

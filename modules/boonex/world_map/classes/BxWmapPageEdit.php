@@ -15,14 +15,14 @@ class BxWmapPageEdit extends BxDolPageView
     var $_sUrlStart;
     var $_aLocation;
 
-    function BxWmapPageEdit(&$oModule, $aLocation)
+    function __construct(&$oModule, $aLocation)
     {
         $this->_oMain = &$oModule;
         $this->_oTemplate = $oModule->_oTemplate;
         $this->_oConfig = $oModule->_oConfig;
         $this->_oDb = $oModule->_oDb;
         $this->_aLocation = $aLocation;
-        parent::BxDolPageView('bx_wmap_edit');
+        parent::__construct('bx_wmap_edit');
     }
 
     function getBlockCode_MapEdit()

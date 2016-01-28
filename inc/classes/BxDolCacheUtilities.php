@@ -5,7 +5,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-class BxDolCacheUtilities extends BxDolMistake
+class BxDolCacheUtilities
 {
     protected $oMemberMenu;
     protected $oCacheMemberMenu;
@@ -15,8 +15,6 @@ class BxDolCacheUtilities extends BxDolMistake
 
     function __construct ()
     {
-        parent::BxDolMistake();
-
         // member menu
         bx_import('BxDolMemberMenu');
         $this->oMemberMenu = new BxDolMemberMenu();

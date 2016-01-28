@@ -17,9 +17,9 @@ class BxPmtTemplate extends BxDolModuleTemplate
     /**
      * Constructor
      */
-    function BxPmtTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
 
         $this->_sLangsPrefix = $this->_oConfig->getLangsPrefix();
     }

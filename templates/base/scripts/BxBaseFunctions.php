@@ -14,7 +14,7 @@ class BxBaseFunctions
 {
     var	$aSpecialKeys;
 
-    function BxBaseFunctions()
+    function __construct()
     {
         $this -> aSpecialKeys = array('rate' => '', 'rate_cnt' => '');
     }

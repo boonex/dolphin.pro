@@ -10,9 +10,9 @@ class BxDolTextDb extends BxDolModuleDb
 {
     var $_oConfig;
 
-    function BxDolTextDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb($oConfig);
+        parent::__construct($oConfig);
 
         $this->_oConfig = &$oConfig;
     }

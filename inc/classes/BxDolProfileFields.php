@@ -23,7 +23,7 @@ class BxDolProfileFields extends Thing
     	'join' => array('Country', 'Sex'),
     );
 
-    function BxDolProfileFields( $iAreaID )
+    function __construct( $iAreaID )
     {
         $this -> iAreaID = $iAreaID;
 

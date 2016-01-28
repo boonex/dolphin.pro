@@ -14,10 +14,10 @@ class BxDolVotingQuery extends BxDolDb
 {
     var $_aSystem; // current voting system
 
-    function BxDolVotingQuery(&$aSystem)
+    function __construct(&$aSystem)
     {
         $this->_aSystem = &$aSystem;
-        parent::BxDolDb();
+        parent::__construct();
     }
 
     function  getVote ($iId)

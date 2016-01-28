@@ -49,7 +49,7 @@ class BxDolCalendar
     var $iYear, $iMonth, $iPrevYear, $iPrevMonth, $iNextYear, $iNextMonth;
     var $iFirstWeekDay, $iNumDaysInMonth, $sMonthName, $iWeekStart, $iWeekEnd;
 
-    function BxDolCalendar ($iYear, $iMonth)
+    function __construct($iYear, $iMonth)
     {
         // input values
         $this->iYear = (int)$iYear ? (int)$iYear : date('Y');

@@ -13,9 +13,9 @@ class BxSitesPageMain extends BxDolTwigPageMain
     var $_oConfig;
     var $_oDb;
 
-    function BxSitesPageMain(&$oSites)
+    function __construct(&$oSites)
     {
-        parent::BxDolTwigPageMain('bx_sites_main', $oSites);
+        parent::__construct('bx_sites_main', $oSites);
 
         $this->_oSites = &$oSites;
         $this->_oTemplate = $oSites->_oTemplate;

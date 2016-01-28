@@ -11,9 +11,9 @@ class BxPfwPageOrders extends BxDolPageView
 	protected $_oMain;
     protected $_sType;
 
-    function BxPfwPageOrders($sType, &$oMain)
+    function __construct($sType, &$oMain)
     {
-        parent::BxDolPageView('bx_pfw_orders');
+        parent::__construct('bx_pfw_orders');
 
         $this->_sType = $sType;
         $this->_oMain = $oMain;

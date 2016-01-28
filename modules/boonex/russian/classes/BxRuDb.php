@@ -10,9 +10,9 @@ class BxRuDb extends BxDolModuleDb
 {
     var $_oConfig;
 
-    function BxRuDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
         $this->_oConfig = $oConfig;
     }
 

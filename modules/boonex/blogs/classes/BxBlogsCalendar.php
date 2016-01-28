@@ -12,9 +12,9 @@ class BxBlogsCalendar extends BxTemplCalendar
     var $iBlockID = 0;
     var $oBlogsModule;
 
-    function BxBlogsCalendar ($iYear, $iMonth, &$oModule)
+    function __construct ($iYear, $iMonth, &$oModule)
     {
-        parent::BxTemplCalendar($iYear, $iMonth);
+        parent::__construct($iYear, $iMonth);
         $this->oBlogsModule = &$oModule;
     }
 

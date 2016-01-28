@@ -42,7 +42,7 @@ class BxProfiler
     /**
      * constructor
      */
-    function BxProfiler($iTimeStart)
+    function __construct($iTimeStart)
     {
         $this->oConfig = new BxProfilerConfig ($GLOBALS['bx_profiler_module']);
         $this->oTemplate = new BxProfilerTemplate ($this->oConfig);

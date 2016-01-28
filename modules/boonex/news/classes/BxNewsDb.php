@@ -9,8 +9,8 @@ bx_import('BxDolTextDb');
 
 class BxNewsDb extends BxDolTextDb
 {
-    function BxNewsDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolTextDb($oConfig);
+        parent::__construct($oConfig);
     }
 }

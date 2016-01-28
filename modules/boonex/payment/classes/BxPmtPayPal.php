@@ -23,9 +23,9 @@ class BxPmtPayPal extends BxPmtProvider
     /**
      * Constructor
      */
-    function BxPmtPayPal($oDb, $oConfig, $aConfig)
+    function __construct($oDb, $oConfig, $aConfig)
     {
-        parent::BxPmtProvider($oDb, $oConfig, $aConfig);
+        parent::__construct($oDb, $oConfig, $aConfig);
         $this->_bRedirectOnResult = false;
 
         $this->_sDataReturnUrl = $this->_oConfig->getDataReturnUrl() . $this->_sName . '/';

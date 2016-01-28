@@ -18,9 +18,9 @@ class BxSitesTemplate extends BxDolModuleTemplate
     /**
      * Constructor
      */
-    function BxSitesTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
     }
 
     function unit($aData, $sTemplateName, &$oVotingView, $sThumbSize = 'browse')

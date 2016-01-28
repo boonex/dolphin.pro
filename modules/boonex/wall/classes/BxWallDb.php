@@ -13,9 +13,9 @@ class BxWallDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxWallDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
         $this->_sPrefix = $oConfig->getDbPrefix();

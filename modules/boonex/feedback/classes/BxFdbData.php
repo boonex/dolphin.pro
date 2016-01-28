@@ -8,9 +8,9 @@ bx_import('BxDolTextData');
 
 class BxFdbData extends BxDolTextData
 {
-    function BxFdbData(&$oModule)
+    function __construct(&$oModule)
     {
-        parent::BxDolTextData($oModule);
+        parent::__construct($oModule);
 
         $this->_aForm['params']['db']['table'] = $this->_oModule->_oDb->getPrefix() . 'entries';
         $this->_aForm['form_attrs']['action'] = BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'post/';

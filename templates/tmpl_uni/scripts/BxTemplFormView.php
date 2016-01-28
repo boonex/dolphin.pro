@@ -4,9 +4,9 @@ require_once( BX_DIRECTORY_PATH_ROOT . "templates/base/scripts/BxBaseFormView.ph
 
 class BxTemplFormView extends BxBaseFormView
 {
-    function BxTemplFormView($aInfo)
+    function __construct($aInfo)
     {
-        BxBaseFormView::BxBaseFormView($aInfo);
+        parent::__construct($aInfo);
 
     }
 }

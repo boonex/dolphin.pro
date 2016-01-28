@@ -6,9 +6,9 @@ class BxH5avDb extends BxDolModuleDb
 {
     var $_oConfig;
 
-    function BxH5avDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
         $this->_oConfig = $oConfig;
     }
 

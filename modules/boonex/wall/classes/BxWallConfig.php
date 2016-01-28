@@ -36,9 +36,9 @@ class BxWallConfig extends BxDolConfig
 
     var $_aHandlers;
 
-    function BxWallConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
 
         $sName = 'bx_wall';
 

@@ -11,9 +11,9 @@ class BxPhotosPrivacy extends BxDolPrivacy
     /**
      * Constructor
      */
-    function BxPhotosPrivacy($sTable = 'bx_photos_main', $sId = 'ID', $sOwner = 'Owner')
+    function __construct($sTable = 'bx_photos_main', $sId = 'ID', $sOwner = 'Owner')
     {
-        parent::BxDolPrivacy($sTable, $sId, $sOwner);
+        parent::__construct($sTable, $sId, $sOwner);
     }
 
     function getFieldAction($sAction)

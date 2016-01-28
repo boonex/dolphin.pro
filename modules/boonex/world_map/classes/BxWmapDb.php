@@ -23,9 +23,9 @@ class BxWmapDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxWmapDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
         $this->_sPrefix = $oConfig->getDbPrefix();
     }
 

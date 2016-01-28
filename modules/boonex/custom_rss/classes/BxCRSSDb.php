@@ -14,9 +14,9 @@ class BxCRSSDb extends BxDolDb
     /*
     * Constructor.
     */
-    function BxCRSSDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
     }

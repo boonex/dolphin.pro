@@ -18,7 +18,7 @@ class BxDolAdminTools extends BxDolIO
     var $aPostInstallPermFiles;
 
     //constructor
-    function BxDolAdminTools()
+    function __construct()
     {
         parent::BxDolIO();
 

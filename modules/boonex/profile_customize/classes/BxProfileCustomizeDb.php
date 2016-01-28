@@ -15,9 +15,9 @@ class BxProfileCustomizeDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxProfileCustomizeDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
     }

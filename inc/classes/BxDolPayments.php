@@ -9,7 +9,7 @@ bx_import('BxDolPaymentsQuery');
 /**
  * Payments objects.
  */
-class BxDolPayments extends BxDolMistake
+class BxDolPayments
 {
 	protected $_oDb;
 
@@ -21,8 +21,6 @@ class BxDolPayments extends BxDolMistake
      */
     public function __construct()
     {
-        parent::__construct();
-
         $this->_oDb = new BxDolPaymentsQuery();
 
         $this->_aObjects = $this->_oDb->getObjects();

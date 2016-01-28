@@ -9,9 +9,9 @@ bx_import('BxDolTextTemplate');
 
 class BxNewsTemplate extends BxDolTextTemplate
 {
-    function BxNewsTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolTextTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
 
         $this->sCssPrefix = 'news';
     }

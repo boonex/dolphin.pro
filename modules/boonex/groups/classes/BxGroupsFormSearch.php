@@ -8,7 +8,7 @@ bx_import('BxDolProfileFields');
 
 class BxGroupsFormSearch extends BxTemplFormView
 {
-    function BxGroupsFormSearch ()
+    function __construct ()
     {
         bx_import('BxDolCategories');
         $oCategories = new BxDolCategories();
@@ -70,6 +70,6 @@ class BxGroupsFormSearch extends BxTemplFormView
             ),
         );
 
-        parent::BxTemplFormView ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 }

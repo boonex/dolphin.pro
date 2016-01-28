@@ -11,10 +11,9 @@ define( 'DB_FULL_VISUAL_PROCESSING', true );
 define( 'DB_FULL_DEBUG_MODE', false );
 define( 'DB_DO_EMAIL_ERROR_REPORT', true );
 
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolMistake.php');
 require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolParams.php');
 
-class BxDolDb extends BxDolMistake
+class BxDolDb
 {
     var $error_checking = true;
     var $error_message;
@@ -27,10 +26,8 @@ class BxDolDb extends BxDolMistake
     /*
     *set database parameters and connect to it
     */
-    function BxDolDb()
+    function __construct()
     {
-        parent::BxDolMistake();
-
         $this->host = DATABASE_HOST;
         $this->port = DATABASE_PORT;
         $this->socket = DATABASE_SOCK;

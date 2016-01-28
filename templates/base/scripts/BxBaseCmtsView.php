@@ -15,9 +15,9 @@ class BxBaseCmtsView extends BxDolCmts
     var $_oPaginate;
     var $_sStylePrefix;
 
-    function BxBaseCmtsView( $sSystem, $iId, $iInit = 1 )
+    function __construct( $sSystem, $iId, $iInit = 1 )
     {
-        BxDolCmts::BxDolCmts( $sSystem, $iId, $iInit );
+        BxDolCmts::__construct( $sSystem, $iId, $iInit );
         if (empty($sSystem) || !$this->_aSystem)
             return;
 

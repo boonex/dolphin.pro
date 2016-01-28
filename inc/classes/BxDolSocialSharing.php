@@ -6,7 +6,6 @@
  */
 
 bx_import('BxDolSocialSharingQuery');
-bx_import('BxDolMistake');
 
 /**
  * Social sharing buttons for any content
@@ -30,7 +29,7 @@ bx_import('BxDolMistake');
  *      override_output - override output string
  *
  */
-class BxDolSocialSharing extends BxDolMistake
+class BxDolSocialSharing
 {
     var $_aSocialButtons = array (); // active social buttons array
 

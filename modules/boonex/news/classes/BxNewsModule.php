@@ -105,9 +105,9 @@ class BxNewsModule extends BxDolTextModule
     /**
      * Constructor
      */
-    function BxNewsModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolTextModule($aModule);
+        parent::__construct($aModule);
 
         //--- Define Membership Actions ---//
         defineMembershipActions(array('news delete'), 'ACTION_ID_');

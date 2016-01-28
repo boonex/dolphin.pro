@@ -102,9 +102,9 @@ class BxDolPaginate extends BxDolTemplate
     /**
      * Constructor
      */
-    function BxDolPaginate($aParams)
+    function __construct($aParams)
     {
-        parent::BxDolTemplate();
+        parent::__construct();
 
         //--- Main settings ---//
         $this->_iStart = isset($aParams['start']) ? (int)$aParams['start'] : 0;

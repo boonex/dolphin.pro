@@ -4,8 +4,6 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
-
 /**
  * Base class for Module classes in modules engine.
  *
@@ -38,7 +36,7 @@ bx_import('BxDolMistake');
  * no alerts available
  *
  */
-class BxDolModule extends BxDolMistake
+class BxDolModule
 {
     var $_aModule;
 
@@ -51,10 +49,8 @@ class BxDolModule extends BxDolMistake
     /**
      * constructor
      */
-    function BxDolModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolMistake();
-
         $this->_aModule = $aModule;
 
         $sClassPrefix = $aModule['class_prefix'];

@@ -14,9 +14,9 @@ class BxDolTwigTemplate extends BxDolModuleTemplate
     var $_iPageIndex = 13;
     var $_oMain = null;
 
-    function BxDolTwigTemplate(&$oConfig, &$oDb, $sRootPath = BX_DIRECTORY_PATH_ROOT, $sRootUrl = BX_DOL_URL_ROOT)
+    function __construct(&$oConfig, &$oDb, $sRootPath = BX_DIRECTORY_PATH_ROOT, $sRootUrl = BX_DOL_URL_ROOT)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb, $sRootPath, $sRootUrl);
+        parent::__construct($oConfig, $oDb, $sRootPath, $sRootUrl);
 
         if (isset($GLOBALS['oAdmTemplate']))
             $GLOBALS['oAdmTemplate']->addDynamicLocation($this->_oConfig->getHomePath(), $this->_oConfig->getHomeUrl());

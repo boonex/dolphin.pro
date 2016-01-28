@@ -29,9 +29,9 @@ class BxDolFilesUploader extends BxDolTemplate
     var $oModule;
 
     // constructor
-    function BxDolFilesUploader($sUploadTypeNC = 'Common')
+    function __construct($sUploadTypeNC = 'Common')
     {
-        parent::BxDolTemplate();
+        parent::__construct();
 
         $this->sTempFilename = '';
 

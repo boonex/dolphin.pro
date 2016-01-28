@@ -15,7 +15,7 @@ class BxDolPageViewAdmin
     var $bAjaxMode = false;
     var $aTitles; // array containing aliases of pages
 
-    function BxDolPageViewAdmin( $sDBTable, $sCacheFile )
+    function __construct( $sDBTable, $sCacheFile )
     {
         $GLOBALS['oAdmTemplate']->addJsTranslation(array(
             '_adm_pbuilder_Reset_page_warning',

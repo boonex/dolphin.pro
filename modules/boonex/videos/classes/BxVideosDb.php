@@ -11,9 +11,9 @@ class BxVideosDb extends BxDolFilesDb
     /*
      * Constructor.
      */
-    function BxVideosDb (&$oConfig)
+    function __construct (&$oConfig)
     {
-        parent::BxDolFilesDb($oConfig);
+        parent::__construct($oConfig);
         $this->aFileFields['medExt'] = 'Video';
         $this->aFileFields['medSource'] = 'Source';
         $this->sFileTable = 'RayVideoFiles';

@@ -9,9 +9,9 @@ bx_import('BxTemplSearchResultSharedMedia');
 
 class BxSoundsSearch extends BxTemplSearchResultSharedMedia
 {
-    function BxSoundsSearch($sParamName = '', $sParamValue = '', $sParamValue1 = '', $sParamValue2 = '')
+    function __construct($sParamName = '', $sParamValue = '', $sParamValue1 = '', $sParamValue2 = '')
     {
-        parent::BxTemplSearchResultSharedMedia('BxSoundsModule');
+        parent::__construct('BxSoundsModule');
         $this->aConstants['linksTempl'] = array(
             'home' => 'home',
             'file' => 'view/{uri}',

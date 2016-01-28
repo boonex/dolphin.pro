@@ -8,8 +8,8 @@ require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolFilesPageAlbumsOwner.php');
 
 class BxVideosPageAlbumsOwner extends BxDolFilesPageAlbumsOwner
 {
-    function BxVideosPageAlbumsOwner (&$oShared, $aParams = array())
+    function __construct (&$oShared, $aParams = array())
     {
-        parent::BxDolFilesPageAlbumsOwner('bx_videos_albums_owner', $oShared, $aParams);
+        parent::__construct('bx_videos_albums_owner', $oShared, $aParams);
     }
 }

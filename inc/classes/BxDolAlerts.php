@@ -57,7 +57,7 @@ class BxDolAlerts
      * @param int    $iObjectId - object id
      * @param int    $iSenderId - sender (action's author) id
      */
-    function BxDolAlerts($sUnit, $sAction, $iObjectId, $iSender = 0, $aExtras = array())
+    function __construct($sUnit, $sAction, $iObjectId, $iSender = 0, $aExtras = array())
     {
         $oCache = $GLOBALS['MySQL']->getDbCacheObject();
         $aData = $oCache->getData($GLOBALS['MySQL']->genDbCacheKey('sys_alerts'));
@@ -126,6 +126,6 @@ class BxDolAlerts
 
 class BxDolAlertsResponse
 {
-    function BxDolAlertsResponse(){}
+    function __construct(){}
     function response($oAlert) {}
 }

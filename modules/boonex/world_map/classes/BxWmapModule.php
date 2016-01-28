@@ -23,9 +23,9 @@ class BxWmapModule extends BxDolModule
             'default' => array ('w' => 24, 'h' => 24, 'url' => ''),
         );
 
-    function BxWmapModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
         $this->_iProfileId = getLoggedId();
         $this->_aParts = $this->_oDb->getParts();
         $this->_oDb->_aParts = &$this->_aParts;

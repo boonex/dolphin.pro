@@ -127,9 +127,9 @@ class BxEventsModule extends BxDolTwigModule
     var $_iProfileId;
     var $_oPrivacy;
 
-    function BxEventsModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolTwigModule($aModule);
+        parent::__construct($aModule);
         $this->_sFilterName = 'bx_events_filter';
         $this->_sPrefix = 'bx_events';
 

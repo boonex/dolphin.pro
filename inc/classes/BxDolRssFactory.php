@@ -7,7 +7,7 @@
 class BxDolRssFactory
 {
     // default constructor of factory pattern
-    function BxDolRssFactory() {}
+    function __construct() {}
 
     /*
     * params is:

@@ -34,9 +34,9 @@ class BxDolTwigModuleDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxDolTwigModuleDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb($oConfig);
+        parent::__construct($oConfig);
     }
 
     // entry functions

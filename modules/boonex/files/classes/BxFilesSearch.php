@@ -12,9 +12,9 @@ class BxFilesSearch extends BxTemplSearchResult
     var $oModule;
     var $oTemplate;
     var $bAdminMode = false;
-    function BxFilesSearch ($sParamName = '', $sParamValue = '', $sParamValue1 = '', $sParamValue2 = '')
+    function __construct ($sParamName = '', $sParamValue = '', $sParamValue1 = '', $sParamValue2 = '')
     {
-        parent::BxTemplSearchResult();
+        parent::__construct();
         // main settings
         $this->aCurrent = array(
             'name' => 'bx_files',

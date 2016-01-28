@@ -5,18 +5,8 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
-
-class BxDolAdminMenu extends BxDolMistake
+class BxDolAdminMenu
 {
-    /**
-     * constructor
-     */
-    function BxDolAdminMenu()
-    {
-        parent::BxDolMistake();
-    }
-
     function getTopMenu()
     {
     	$sTmplVarsAddons = '';

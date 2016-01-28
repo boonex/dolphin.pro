@@ -16,9 +16,9 @@
         /**
          * Constructor.
          */
-        function BxShoutBoxDb(&$oConfig)
+        function __construct(&$oConfig)
         {
-            parent::BxDolModuleDb();
+            parent::__construct();
 
             $this -> _oConfig = $oConfig;
             $this -> _aObjects = $this -> getShoutboxObjects();

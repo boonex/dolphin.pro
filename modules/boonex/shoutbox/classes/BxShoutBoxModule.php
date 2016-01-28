@@ -71,9 +71,9 @@
          *                  [ db_prefix ]    - (string)  this module's Db tables prefix ;
          *                  [ date ]         - (string)  this module's date installation ;
          */
-        function BxShoutBoxModule(&$aModule)
+        function __construct(&$aModule)
         {
-            parent::BxDolModule($aModule);
+            parent::__construct($aModule);
 
             // prepare the location link ;
             $this -> sPathToModule  = BX_DOL_URL_ROOT . $this -> _oConfig -> getBaseUri();

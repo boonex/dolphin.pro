@@ -13,9 +13,9 @@ require_once (BX_DIRECTORY_PATH_PLUGINS . "phpmailer/class.smtp.php");
 
 class BxSMTPModule extends BxDolModule
 {
-    function BxSMTPModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
     }
 
     function serviceSend ($sRecipientEmail, $sMailSubject, $sMailBody, $sMailHeader, $sMailParameters, $isHtml, $aRecipientInfo = array())

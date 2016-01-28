@@ -17,7 +17,7 @@ class BxDolGzip
     var $_sOutContent;
     var $_sOutContentZipped;
 
-    function BxDolGzip($sFile)
+    function __construct($sFile)
     {
         $this->_iExpirationOffset = 3600 * 24 * 10;
 

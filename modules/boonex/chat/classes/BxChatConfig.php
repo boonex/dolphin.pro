@@ -11,8 +11,8 @@ class BxChatConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxChatConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 }

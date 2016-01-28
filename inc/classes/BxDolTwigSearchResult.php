@@ -21,9 +21,9 @@ class BxDolTwigSearchResult extends BxTemplSearchResult
     var $sUnitTemplate = 'unit';
     var $sFilterName = 'unit';
 
-    function BxDolTwigSearchResult()
+    function __construct()
     {
-        parent::BxTemplSearchResult();
+        parent::__construct();
     }
 
     function getMain()

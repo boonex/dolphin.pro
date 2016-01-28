@@ -20,12 +20,12 @@ class BxBaseProfileView extends BxDolPageView
     var $aConfSite;
     var $aConfDir;
 
-    function BxBaseProfileView(&$oPr, &$aSite, &$aDir)
+    function __construct(&$oPr, &$aSite, &$aDir)
     {
         $this->oProfileGen = &$oPr;
         $this->aConfSite = $aSite;
         $this->aConfDir  = $aDir;
-        parent::BxDolPageView('profile');
+        parent::__construct('profile');
 
         bx_import('BxDolMemberInfo');
         $o = BxDolMemberInfo::getObjectInstance(getParam('sys_member_info_thumb'));

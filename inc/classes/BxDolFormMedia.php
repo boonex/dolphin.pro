@@ -13,7 +13,7 @@ class BxDolFormMedia extends BxTemplFormView
 {
     var $_aMedia = array();
 
-    function BxDolFormMedia ($aCustomForm)
+    function __construct ($aCustomForm)
     {
         if (isset($aCustomForm['inputs']['allow_post_in_forum_to']['type'])) {
             $oModuleDb = new BxDolModuleDb(); 
@@ -21,7 +21,7 @@ class BxDolFormMedia extends BxTemplFormView
                 $aCustomForm['inputs']['allow_post_in_forum_to']['type'] = 'hidden';
         }
 
-        parent::BxTemplFormView ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 
     /**

@@ -17,9 +17,9 @@ class BxDolFilesPageAlbumsOwner extends BxDolPageView
     var $iOwnerId;
     var $aAddParams;
 
-    function BxDolFilesPageAlbumsOwner ($sPageName, &$oShared, $aParams = array())
+    function __construct ($sPageName, &$oShared, $aParams = array())
     {
-        parent::BxDolPageView($sPageName);
+        parent::__construct($sPageName);
         $this->oModule = $oShared;
         $this->oTemplate = $oShared->_oTemplate;
         $this->oConfig = $oShared->_oConfig;

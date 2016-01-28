@@ -12,6 +12,7 @@ class BxAvaProfileDeleteResponse extends BxDolAlertsResponse
     {
         if (!($iProfileId = (int)$oTag->iObject))
             return;
+
         bx_import('BxDolService');
         BxDolService::call('avatar', 'delete_profile_avatars', array ($iProfileId));
     }

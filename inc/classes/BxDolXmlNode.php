@@ -10,7 +10,7 @@ class BxDolXmlNode
     var $value    = '';
     var $children = array();
 
-    function BxDolXmlNode( $name1 = '', $value1 = '' )
+    function __construct( $name1 = '', $value1 = '' )
     {
         $this->name  = $name1;
         $this->value = $value1;

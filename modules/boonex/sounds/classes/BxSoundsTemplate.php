@@ -8,9 +8,9 @@ bx_import('BxDolFilesTemplate');
 
 class BxSoundsTemplate extends BxDolFilesTemplate
 {
-    function BxSoundsTemplate (&$oConfig, &$oDb)
+    function __construct (&$oConfig, &$oDb)
     {
-        parent::BxDolFilesTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
     }
 
     function getFileConcept ($iFileId, $aExtra = array())

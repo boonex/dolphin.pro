@@ -15,9 +15,9 @@ class BxProfileCustomizeConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxProfileCustomizeConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
 
 		$this->_aJsClasses = array('main' => 'BxProfileCustimizer');
         $this->_aJsObjects = array('main' => 'oCustomizer');

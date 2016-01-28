@@ -11,9 +11,9 @@ class BxStoreVoting extends BxTemplVotingView
     /**
      * Constructor
      */
-    function BxStoreVoting($sSystem, $iId)
+    function __construct($sSystem, $iId)
     {
-        parent::BxTemplVotingView($sSystem, $iId);
+        parent::__construct($sSystem, $iId);
     }
 
     function getMain()

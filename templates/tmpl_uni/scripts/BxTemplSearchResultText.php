@@ -4,8 +4,8 @@ require_once( BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseSearchResultText.php' );
 
 class BxTemplSearchResultText extends BxBaseSearchResultText
 {
-    function BxTemplSearchResultText()
+    function __construct()
     {
-        parent::BxBaseSearchResultText();
+        parent::__construct();
     }
 }

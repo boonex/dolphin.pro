@@ -11,9 +11,9 @@ class BxPageACDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxPageACDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb($oConfig);
+        parent::__construct($oConfig);
 
         $this->_oConfig = &$oConfig;
     }

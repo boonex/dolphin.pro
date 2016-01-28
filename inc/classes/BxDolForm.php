@@ -114,7 +114,7 @@ class BxDolForm
      */
     var $id;
 
-    function BxDolForm ($aInfo)
+    function __construct ($aInfo)
     {
         $this->aFormAttrs    = isset($aInfo['form_attrs'])   ? $aInfo['form_attrs']  : array();
         $this->aTableAttrs   = isset($aInfo['table_attrs'])  ? $aInfo['table_attrs'] : array();

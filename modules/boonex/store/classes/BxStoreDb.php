@@ -14,9 +14,9 @@ class BxStoreDb extends BxDolTwigModuleDb
     /*
      * Constructor.
      */
-    function BxStoreDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolTwigModuleDb($oConfig);
+        parent::__construct($oConfig);
 
         $this->_sTableMain = 'products';
         $this->_sTableMediaPrefix = 'product_';

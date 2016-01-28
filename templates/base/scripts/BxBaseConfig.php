@@ -43,7 +43,7 @@ class BxBaseConfig
 
     var $bForceSortCountries = true;
 
-    function BxBaseConfig($site)
+    function __construct($site)
     {
         $this -> bAnonymousMode = getParam('anon_mode');
     }

@@ -33,9 +33,9 @@ class BxDolFriendsPageView extends BxDolPageView
                         sort (string)		- sorting parameters ;
      * @param : $iProfileID (integer) - member ID ;
     */
-    function BxDolFriendsPageView($sPageName, &$aDisplayParameters, $iProfileID)
+    function __construct($sPageName, &$aDisplayParameters, $iProfileID)
     {
-        parent::BxDolPageView($sPageName);
+        parent::__construct($sPageName);
         $this -> aDisplayParameters = &$aDisplayParameters;
         $this -> oSearchProfileTmpl = new BxTemplSearchProfile();
         $this -> sCurrentPage = 'viewFriends.php';

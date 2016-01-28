@@ -11,9 +11,9 @@ class BxStoreCmts extends BxTemplCmtsView
     /**
      * Constructor
      */
-    function BxStoreCmts($sSystem, $iId)
+    function __construct($sSystem, $iId)
     {
-        parent::BxTemplCmtsView($sSystem, $iId);
+        parent::__construct($sSystem, $iId);
     }
 
     function getMain()

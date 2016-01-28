@@ -117,7 +117,7 @@
          * Class constructor;
          *
          */
-        function BxDolMemberMenu()
+        function __construct()
         {
             $this -> sMemberMenuPosition = ( isset($_COOKIE['menu_position']) )
                 ? $_COOKIE['menu_position']

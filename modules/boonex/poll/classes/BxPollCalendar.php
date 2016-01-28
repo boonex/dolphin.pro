@@ -14,9 +14,9 @@
         var $sActionViewResult = 'view_calendar/';
         var $sActionBase       = 'calendar/';
 
-        function BxPollCalendar ($iYear, $iMonth, &$oDb, &$oTemplate, &$oConfig)
+        function __construct ($iYear, $iMonth, &$oDb, &$oTemplate, &$oConfig)
         {
-            parent::BxTemplCalendar($iYear, $iMonth);
+            parent::__construct($iYear, $iMonth);
             $this->oDb = &$oDb;
             $this->oTemplate = &$oTemplate;
             $this->oConfig = &$oConfig;

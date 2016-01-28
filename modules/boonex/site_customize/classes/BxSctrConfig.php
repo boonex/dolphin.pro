@@ -20,9 +20,9 @@ class BxSctrConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxSctrConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
 
         $this->_sSessionKeyOpen = 'bx_sctr_open';
         $this->_sSessionKeyData = 'bx_sctr_data';

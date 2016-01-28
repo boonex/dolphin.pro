@@ -10,9 +10,9 @@ bx_import('BxDolProfilesController');
 
 class BxDolAlertsResponseProfile extends BxDolAlertsResponse
 {
-    function BxDolAlertsResponseProfile()
+    function __construct()
     {
-        parent::BxDolAlertsResponse();
+        parent::__construct();
     }
 
     function response($oAlert)

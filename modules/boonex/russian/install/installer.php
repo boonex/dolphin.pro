@@ -11,9 +11,9 @@ class BxRuInstaller extends BxDolInstaller
     protected $sFileName = 'lang-ru.php';
     protected $sFilePath;
 
-    function BxRuInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
         $this->sFilePath = BX_DIRECTORY_PATH_MODULES . $aConfig['home_dir'] . 'data/' . $this->sFileName;
     }
 

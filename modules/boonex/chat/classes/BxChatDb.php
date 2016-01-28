@@ -13,9 +13,9 @@ class BxChatDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxChatDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
     }

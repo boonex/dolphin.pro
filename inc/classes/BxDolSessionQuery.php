@@ -13,9 +13,9 @@ class BxDolSessionQuery extends BxDolDb
 {
     var $sTable;
 
-    function BxDolSessionQuery()
+    function __construct()
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $this->sTable = 'sys_sessions';
     }

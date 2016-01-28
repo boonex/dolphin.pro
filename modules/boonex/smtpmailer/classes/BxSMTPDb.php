@@ -10,9 +10,9 @@ class BxSMTPDb extends BxDolModuleDb
 {
     var $_oConfig;
 
-    function BxSMTPDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
         $this->_oConfig = $oConfig;
     }
 

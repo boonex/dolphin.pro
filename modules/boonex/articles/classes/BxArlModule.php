@@ -105,9 +105,9 @@ class BxArlModule extends BxDolTextModule
     /**
      * Constructor
      */
-    function BxArlModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolTextModule($aModule);
+        parent::__construct($aModule);
 
         //--- Define Membership Actions ---//
         defineMembershipActions(array('articles delete'), 'ACTION_ID_');

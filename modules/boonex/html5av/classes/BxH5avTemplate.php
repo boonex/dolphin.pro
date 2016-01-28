@@ -4,8 +4,8 @@ bx_import ('BxDolTwigTemplate');
 
 class BxH5avTemplate extends BxDolTwigTemplate
 {
-    function BxH5avTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolTwigTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
     }
 }

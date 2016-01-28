@@ -10,9 +10,10 @@ class BxDolFilesCalendar extends BxTemplCalendar
 {
     var $iBlockID = 0;
     var $sDynamicUrl = '';
-    function BxDolFilesCalendar ($iYear, $iMonth, &$oDb, &$oTemplate, &$oConfig)
+
+    function __construct($iYear, $iMonth, &$oDb, &$oTemplate, &$oConfig)
     {
-        parent::BxTemplCalendar($iYear, $iMonth);
+        parent::__construct($iYear, $iMonth);
         $this->oDb = &$oDb;
         $this->oTemplate = &$oTemplate;
         $this->oConfig = &$oConfig;
@@ -20,7 +21,7 @@ class BxDolFilesCalendar extends BxTemplCalendar
 
     function getData()
     {
-        return $this->oDb->getFilesByMonth ($this->iYear, $this->iMonth, $this->iNextYear, $this->iNextMonth);
+        return $this->oDb->getFilesByMonth($this->iYear, $this->iMonth, $this->iNextYear, $this->iNextMonth);
     }
 
     function getUnit(&$aData)
@@ -39,15 +40,20 @@ class BxDolFilesCalendar extends BxTemplCalendar
 
     function getEntriesNames()
     {
-        return array(_t('_bx_' . $this->oConfig->getUri() . '_single'), _t('_bx_' . $this->oConfig->getUri() . '_plural'));
+        return array(
+            _t('_bx_' . $this->oConfig->getUri() . '_single'),
+            _t('_bx_' . $this->oConfig->getUri() . '_plural')
+        );
     }
 
     function getMonthUrl($isNextMoths, $isMiniMode = false)
     {
-        if ($isMiniMode && $this->iBlockID && $this->sDynamicUrl)
-            return "javascript:loadDynamicBlock('" . $this->iBlockID . "', '" . bx_append_url_params($this->sDynamicUrl, 'date=' . ($isNextMoths ? "{$this->iNextYear}/{$this->iNextMonth}" : "{$this->iPrevYear}/{$this->iPrevMonth}")) . "');";
-        else
-            return parent::getMonthUrl ($isNextMoths, $isMiniMode);
+        if ($isMiniMode && $this->iBlockID && $this->sDynamicUrl) {
+            return "javascript:loadDynamicBlock('" . $this->iBlockID . "', '" . bx_append_url_params($this->sDynamicUrl,
+                'date=' . ($isNextMoths ? "{$this->iNextYear}/{$this->iNextMonth}" : "{$this->iPrevYear}/{$this->iPrevMonth}")) . "');";
+        } else {
+            return parent::getMonthUrl($isNextMoths, $isMiniMode);
+        }
     }
 
     function setBlockId($iBlockID)

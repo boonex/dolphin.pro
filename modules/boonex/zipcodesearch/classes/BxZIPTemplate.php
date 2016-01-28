@@ -8,8 +8,8 @@ bx_import ('BxDolTwigTemplate');
 
 class BxZIPTemplate extends BxDolTwigTemplate
 {
-    function BxZIPTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolTwigTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
     }
 }

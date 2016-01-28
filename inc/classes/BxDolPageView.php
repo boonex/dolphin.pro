@@ -110,7 +110,7 @@ class BxDolPageView
 
     var $oCacher = null;
 
-    function BxDolPageView( $sPageName )
+    function __construct( $sPageName )
     {
         $this -> sCacheFile = 'sys_page_compose.inc';
         $this -> sPageName = $sPageName;

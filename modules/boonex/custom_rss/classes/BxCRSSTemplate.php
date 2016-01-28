@@ -12,9 +12,9 @@ class BxCRSSTemplate extends BxDolModuleTemplate
     /*
     * Constructor.
     */
-    function BxCRSSTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
 
         $this->_aTemplates = array('crss_unit', 'view', 'member_rss_list_loaded');
     }

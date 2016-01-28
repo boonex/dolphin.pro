@@ -14,7 +14,7 @@ class BxDolEmailTemplates
     /**
      * Class constructor.
      */
-    function BxDolEmailTemplates()
+    function __construct()
     {
         $sLang = getParam('lang_default');
         if(empty($sLang))

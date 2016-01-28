@@ -15,9 +15,9 @@ class BxDolSubscriptionQuery extends BxDolDb
     /**
      * constructor
      */
-    function BxDolSubscriptionQuery(&$oSubscription)
+    function __construct(&$oSubscription)
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $this->_oSubscription = &$oSubscription;
         $this->_sPrefix = 'sys_sbs_';

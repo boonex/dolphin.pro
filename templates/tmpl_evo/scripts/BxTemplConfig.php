@@ -19,9 +19,9 @@ $site['css_dir']= "templates/tmpl_{$GLOBALS['tmpl']}/css/";
 
 class BxTemplConfig extends BxBaseConfig
 {
-    function BxTemplConfig($site)
+    function __construct($site)
     {
-        BxBaseConfig::BxBaseConfig($site);
+        parent::__construct($site);
 
         $this->PageComposeColumnCalculation = '%';
 

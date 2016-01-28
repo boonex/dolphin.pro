@@ -24,9 +24,9 @@ class BxDolFilesModule extends BxDolModule
     /**
      * Constructor
      */
-    function BxDolFilesModule (&$aModule)
+    function __construct (&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
         $this->_iProfileId = $this->_oDb->iViewer;
         $this->_oTemplate->init($this->_oDb);
         $this->aPageTmpl = array(

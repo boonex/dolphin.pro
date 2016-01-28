@@ -14,9 +14,9 @@ class BxAdsDb extends BxDolDb
     /*
     * Constructor.
     */
-    function BxAdsDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
     }

@@ -15,12 +15,12 @@ class BxDolCmtsQuery extends BxDolDb
     var $_sTable;
     var $_sTableTrack;
 
-    function BxDolCmtsQuery(&$aSystem)
+    function __construct(&$aSystem)
     {
         $this->_aSystem = &$aSystem;
         $this->_sTable = $this->_aSystem['table_cmts'];
         $this->_sTableTrack = $this->_aSystem['table_track'];
-        parent::BxDolDb();
+        parent::__construct();
     }
 
     function getTableName ()

@@ -10,9 +10,9 @@ class BxDolProfilesCalendar extends BxTemplCalendar
 {
     var $sMode = 'dor';
 
-    function BxDolProfilesCalendar ($iYear, $iMonth)
+    function __construct ($iYear, $iMonth)
     {
-        parent::BxTemplCalendar($iYear, $iMonth);
+        parent::__construct($iYear, $iMonth);
     }
 
     function setMode($sMode)

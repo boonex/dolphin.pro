@@ -17,11 +17,12 @@ class BxBaseAlbumForm
     var $aForm;
     var $aInfo = array();
 
-    function BxBaseAlbumForm ($sType, $iAlbum = 0)
+    function __construct ($sType, $iAlbum = 0)
     {
         $this->iOwnerId = getLoggedId();
         if ($this->iOwnerId == 0)
             return;
+        
         $this->iAlbumId = (int)$iAlbum;
         $this->sType = strip_tags($sType);
         $oPrivacy = new BxDolPrivacy('sys_albums', 'ID', 'Owner');

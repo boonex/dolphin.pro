@@ -8,9 +8,9 @@ bx_import('BxDolConnectModule');
 
 class BxChatPlusModule extends BxDolConnectModule
 {
-    function BxChatPlusModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolConnectModule($aModule);
+        parent::__construct($aModule);
     }
 
     function actionAdministration()

@@ -14,7 +14,7 @@ class BxDb extends Mistake
     /*
     *set database parameters and connect to it
     */
-    function BxDb($dbname, $user, $password, $host = '', $port = '', $socket = '')
+    function __construct($dbname, $user, $password, $host = '', $port = '', $socket = '')
     {
         $this->host = $host;
         $this->port = $port;

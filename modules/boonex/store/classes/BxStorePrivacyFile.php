@@ -11,9 +11,9 @@ class BxStorePrivacyFile extends BxDolPrivacy
     /**
      * Constructor
      */
-    function BxStorePrivacyFile(&$oModule)
+    function __construct(&$oModule)
     {
-        parent::BxDolPrivacy($oModule->_oDb->getPrefix() . 'product_files', 'id', 'author_id');
+        parent::__construct($oModule->_oDb->getPrefix() . 'product_files', 'id', 'author_id');
     }
 
     /**

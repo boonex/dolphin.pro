@@ -9,9 +9,9 @@ bx_import('BxDolFilesPageHome');
 
 class BxPhotosPageHome extends BxDolFilesPageHome
 {
-    function BxPhotosPageHome (&$oShared)
+    function __construct (&$oShared)
     {
-        parent::BxDolFilesPageHome($oShared);
+        parent::__construct($oShared);
     }
 
     function getBlockCode_Cover ()

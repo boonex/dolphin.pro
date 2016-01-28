@@ -10,9 +10,9 @@ class BxSitesCalendar extends BxTemplCalendar
 {
     var $_oDb, $_oTemplate, $_oConfig;
 
-    function BxSitesCalendar($iYear, $iMonth, $oSites)
+    function __construct($iYear, $iMonth, $oSites)
     {
-        parent::BxTemplCalendar($iYear, $iMonth);
+        parent::__construct($iYear, $iMonth);
         $this->_oDb = $oSites->_oDb;
         $this->_oTemplate = $oSites->_oTemplate;
         $this->_oConfig = $oSites->_oConfig;

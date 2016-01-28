@@ -8,9 +8,9 @@ bx_import('BxDolInstaller');
 
 class BxZIPInstaller extends BxDolInstaller
 {
-    function BxZIPInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
     }
 
     function install($aParams)

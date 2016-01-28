@@ -14,9 +14,9 @@ class BxAvaTemplate extends BxDolTwigTemplate
     /**
      * Constructor
      */
-    function BxAvaTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolTwigTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
         $this->_iPageIndex = 500;
     }
 }

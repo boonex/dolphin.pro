@@ -13,9 +13,9 @@ class BxDolTextTemplate extends BxDolModuleTemplate
     var $oPaginate;
     var $sCssPrefix;
 
-    function BxDolTextTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
         $this->_aTemplates = array('comments');
 
         $this->_oModule = null;

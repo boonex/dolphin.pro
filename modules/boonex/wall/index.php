@@ -14,7 +14,7 @@ class BxWallPage extends BxTemplProfileView
     var $_sOwner;
     var $_oWall;
 
-    function BxWallPage($sOwner, &$oWall)
+    function __construct($sOwner, &$oWall)
     {
         $this->_sOwner = $sOwner;
         $this->_oWall = &$oWall;
@@ -22,7 +22,7 @@ class BxWallPage extends BxTemplProfileView
         $this->oProfileGen = new BxBaseProfileGenerator(getId($sOwner, 0));
         $this->aConfSite = $GLOBALS['site'];
         $this->aConfDir  = $GLOBALS['dir'];
-        parent::BxDolPageView('wall');
+        parent::__construct('wall');
     }
     function getBlockCode_Post()
     {

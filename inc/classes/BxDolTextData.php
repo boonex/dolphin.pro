@@ -25,7 +25,7 @@ class BxDolTextData
     var $_bComments;
     var $_iOwnerId;
 
-    function BxDolTextData(&$oModule)
+    function __construct(&$oModule)
     {
         $this->_oModule = $oModule;
 

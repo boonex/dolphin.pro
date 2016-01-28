@@ -42,10 +42,10 @@
          *                     [] contacts_page (integer)  - number of current contact's page ;
          *                     [] message_id     (integer) - number of needed message ;
          */
-        function BxBaseMailBox( $sPageName, &$aMailBoxSettings )
+        function __construct( $sPageName, &$aMailBoxSettings )
         {
             // call the parent constructor ;
-            parent::BxDolMailBox($sPageName, $aMailBoxSettings);
+            parent::__construct($sPageName, $aMailBoxSettings);
 
             // fill array with used template name ;
             $this -> aUsedTemplates = array (

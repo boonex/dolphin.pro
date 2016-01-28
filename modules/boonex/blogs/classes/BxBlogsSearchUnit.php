@@ -61,7 +61,7 @@ class BxBlogsSearchUnit extends BxTemplSearchResultText
 
     var $sSearchedTag;
 
-    function BxBlogsSearchUnit($oBlogObject = null)
+    function __construct($oBlogObject = null)
     {
         $this->bShowCheckboxes = false;
         $this->bAdminMode = false;
@@ -124,7 +124,7 @@ class BxBlogsSearchUnit extends BxTemplSearchResultText
 
             $this->aCurrent['restriction']['activeStatus'] = '';
         }
-        parent::BxBaseSearchResultText();
+        parent::__construct();
 
         $this->iPostViewType = 4;
         $this->sSearchedTag = '';

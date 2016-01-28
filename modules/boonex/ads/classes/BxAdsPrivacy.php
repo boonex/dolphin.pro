@@ -12,9 +12,9 @@ class BxAdsPrivacy extends BxDolPrivacy
     /**
     * Constructor
     */
-    function BxAdsPrivacy(&$oModule)
+    function __construct(&$oModule)
     {
-        parent::BxDolPrivacy('bx_ads_main', 'ID', 'IDProfile');
+        parent::__construct('bx_ads_main', 'ID', 'IDProfile');
     }
 
     /**

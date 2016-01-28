@@ -12,9 +12,9 @@ bx_import('BxDolModule');
 class BxFilesUploader extends BxDolFilesUploader
 {
     // constructor
-    function BxFilesUploader()
+    function __construct()
     {
-        parent::BxDolFilesUploader('File');
+        parent::__construct('File');
 
         $this->oModule = BxDolModule::getInstance('BxFilesModule');
         $this->sWorkingFile = BX_DOL_URL_ROOT . $this->oModule->_oConfig->getBaseUri() . 'albums/my/add_objects';

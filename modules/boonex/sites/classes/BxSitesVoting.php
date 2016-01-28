@@ -12,8 +12,8 @@ class BxSitesVoting extends BxTemplVotingView
     /**
      * Constructor
      */
-    function BxSitesVoting($sSystem, $iId)
+    function __construct($sSystem, $iId)
     {
-        parent::BxTemplVotingView($sSystem, $iId);
+        parent::__construct($sSystem, $iId);
     }
 }

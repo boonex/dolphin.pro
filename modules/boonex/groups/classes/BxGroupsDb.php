@@ -14,9 +14,9 @@ class BxGroupsDb extends BxDolTwigModuleDb
     /*
      * Constructor.
      */
-    function BxGroupsDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolTwigModuleDb($oConfig);
+        parent::__construct($oConfig);
 
         $this->_sTableMain = 'main';
         $this->_sTableShoutbox = 'shoutbox';

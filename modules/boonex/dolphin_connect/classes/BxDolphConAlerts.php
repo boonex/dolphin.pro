@@ -8,9 +8,9 @@ bx_import('BxDolConnectAlerts');
 
 class BxDolphConAlerts extends BxDolConnectAlerts
 {
-    function BxDolphConAlerts()
+    function __construct()
     {
-        parent::BxDolConnectAlerts();
+        parent::__construct();
         $this -> oModule = BxDolModule::getInstance('BxDolphConModule');
     }
 }

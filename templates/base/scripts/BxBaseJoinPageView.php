@@ -10,9 +10,9 @@ bx_import("BxDolPageView");
 
 class BxBaseJoinPageView extends BxDolPageView
 {
-    function BxBaseJoinPageView()
+    function __construct()
     {
-        parent::BxDolPageView('join');
+        parent::__construct('join');
     }
 
     function getBlockCode_JoinForm()

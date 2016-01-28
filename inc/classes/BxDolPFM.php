@@ -10,7 +10,7 @@
  */
 class BxDolPFM
 {
-    function BxDolPFM( $iArea )
+    function __construct( $iArea )
     {
         $this -> aColNames = array (
             1  => array( 'Page' => 'Join',   'Order' => 'JoinOrder',         'Block' => 'JoinBlock',         'ShowSysItems' => 'Couple,Captcha,TermsOfUse,ProfilePhoto', 'EditAdd' => array( 'JoinPage' ) ),

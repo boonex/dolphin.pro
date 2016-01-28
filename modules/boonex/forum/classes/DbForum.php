@@ -46,10 +46,10 @@ class DbForum extends BxDb
     /**
      * constructor
      */
-    function DbForum ()
+    function __construct ()
     {
         global $gConf;
-        parent::BxDb ($gConf['db']['db'], $gConf['db']['user'], $gConf['db']['pwd'], $gConf['db']['host'], $gConf['db']['port'], $gConf['db']['sock']);
+        parent::__construct ($gConf['db']['db'], $gConf['db']['user'], $gConf['db']['pwd'], $gConf['db']['host'], $gConf['db']['port'], $gConf['db']['sock']);
     }
 
     function searchMessages ($s, $u, $f, $type, $posts, $start, &$num = null)

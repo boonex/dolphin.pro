@@ -21,9 +21,9 @@ class BxPmt2Checkout extends BxPmtProvider
     /**
      * Constructor
      */
-    function BxPmt2Checkout($oDb, $oConfig, $aConfig)
+    function __construct($oDb, $oConfig, $aConfig)
     {
-        parent::BxPmtProvider($oDb, $oConfig, $aConfig);
+        parent::__construct($oDb, $oConfig, $aConfig);
         $this->_bRedirectOnResult = true;
 
         $this->_sDataReturnUrl = $this->_oConfig->getDataReturnUrl() . $this->_sName . '/';

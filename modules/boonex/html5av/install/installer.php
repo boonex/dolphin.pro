@@ -5,9 +5,9 @@ bx_import('BxDolInstaller');
 class BxH5avInstaller extends BxDolInstaller
 {
 
-    function BxH5avInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
     }
 
     function install($aParams)

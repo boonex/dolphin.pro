@@ -131,9 +131,9 @@ class BxAvaModule extends BxDolModule
         'png',
     );
 
-    function BxAvaModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
         $this->_iProfileId = getLoggedId();
         $GLOBALS['oBxAvaModule'] = &$this;
     }

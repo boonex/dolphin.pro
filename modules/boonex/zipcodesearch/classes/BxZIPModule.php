@@ -13,9 +13,9 @@ class BxZIPModule extends BxDolModule
     var $_maxRows = 500; // max number of zip codes to return
     var $_error = '';
 
-    function BxZIPModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
     }
 
     function serviceGetSqlParts ($mixedCountry, $sZip, $sMetric, $iDistance, &$sJoin, &$aWhere)

@@ -22,9 +22,9 @@ class BxDolTextModule extends BxDolModule
     var $_oTextData;
     var $_oPrivacy;
 
-    function BxDolTextModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
 
         $this->_oConfig->init($this->_oDb);
         $this->_oTemplate->init($this);

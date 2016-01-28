@@ -11,9 +11,9 @@ class BxGroupsConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxGroupsConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 
 }

@@ -8,8 +8,8 @@ bx_import('BxDolTextPageView');
 
 class BxFdbPageView extends BxDolTextPageView
 {
-    function BxFdbPageView($sName, &$oObject)
+    function __construct($sName, &$oObject)
     {
-        parent::BxDolTextPageView('feedback', $sName, $oObject);
+        parent::__construct('feedback', $sName, $oObject);
     }
 }

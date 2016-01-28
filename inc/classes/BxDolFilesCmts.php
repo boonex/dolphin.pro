@@ -11,9 +11,9 @@ class BxDolFilesCmts extends BxTemplCmtsView
 {
 	var $_oModule;
 
-    function BxDolFilesCmts($sSystem, $iId, $iInit = 1)
+    function __construct($sSystem, $iId, $iInit = 1)
     {
-        parent::BxTemplCmtsView($sSystem, $iId, $iInit);
+        parent::__construct($sSystem, $iId, $iInit);
 
         $this->_oModule = null;
     }

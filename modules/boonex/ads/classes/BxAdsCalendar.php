@@ -10,9 +10,9 @@ class BxAdsCalendar extends BxTemplCalendar
 {
     var $oAdsModule;
 
-    function BxAdsCalendar ($iYear, $iMonth, &$oModule)
+    function __construct ($iYear, $iMonth, &$oModule)
     {
-        parent::BxTemplCalendar($iYear, $iMonth);
+        parent::__construct($iYear, $iMonth);
         $this->oAdsModule = &$oModule;
     }
 

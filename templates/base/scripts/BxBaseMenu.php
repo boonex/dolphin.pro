@@ -27,9 +27,9 @@ class BxBaseMenu extends BxDolMenu
 
     var $sWidth;
 
-    function BxBaseMenu()
+    function __construct()
     {
-        BxDolMenu::BxDolMenu();
+        parent::__construct();
         $this->bGroupInMore = true;
         $this->iElementsCntInLine = (int)getParam('nav_menu_elements_on_line_' . (isLogged() ? 'usr' : 'gst'));
 

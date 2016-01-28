@@ -13,9 +13,9 @@ class BxWallCmts extends BxTemplCmtsView
     /**
      * Constructor
      */
-    function BxWallCmts($sSystem, $iId, $iInit = 1)
+    function __construct($sSystem, $iId, $iInit = 1)
     {
-        parent::BxTemplCmtsView($sSystem, $iId, $iInit);
+        parent::__construct($sSystem, $iId, $iInit);
 
         $this->_oModule = BxDolModule::getInstance('BxWallModule');
         $this->iAutoHideRootPostForm = 1;

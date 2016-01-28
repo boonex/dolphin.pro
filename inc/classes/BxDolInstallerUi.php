@@ -35,9 +35,9 @@ class BxDolInstallerUi extends BxDolDb
             ),
         );
 
-    function BxDolInstallerUi()
+    function __construct()
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $this->_sDefVersion = '0.0.0';
         $this->_aCheckPathes = array();

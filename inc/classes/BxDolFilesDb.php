@@ -25,9 +25,9 @@ class BxDolFilesDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxDolFilesDb (&$oConfig)
+    function __construct (&$oConfig)
     {
-        parent::BxDolModuleDb($oConfig);
+        parent::__construct($oConfig);
         $this->_oConfig = &$oConfig;
         $this->iViewer = getLoggedId();
         $this->aFileFields = array(

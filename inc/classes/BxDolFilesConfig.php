@@ -27,9 +27,10 @@ class BxDolFilesConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxDolFilesConfig ($aModule)
+    function __construct ($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
+
         $this->sPrefix = 'bx_' . $this->getUri();
         $this->isPermalinkEnabled = getParam($this->sPrefix . '_permalinks') == 'on';
 

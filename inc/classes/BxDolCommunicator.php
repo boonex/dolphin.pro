@@ -29,7 +29,7 @@
         * 					[ per_page ] (integer) - contain per page number for current page ;
         * 					[ alert_page ] (integer) - contain number of current alert's page
         */
-        function BxDolCommunicator($aCommunicatorSettings)
+        function __construct($aCommunicatorSettings)
         {
             $aCommunicatorSettings['member_id'] = (int) $aCommunicatorSettings['member_id'];
             $aCommunicatorSettings['page'] = (int) $aCommunicatorSettings['page'];
@@ -41,7 +41,7 @@
             $aCommunicatorSettings['sorting'] = process_db_input($aCommunicatorSettings['sorting'], BX_TAGS_STRIP);
 
             // call the parent constructor ;
-            parent::BxDolPageView('communicator_page');
+            parent::__construct('communicator_page');
             $this -> aCommunicatorSettings = &$aCommunicatorSettings;
 
             // init some pagination parameters ;

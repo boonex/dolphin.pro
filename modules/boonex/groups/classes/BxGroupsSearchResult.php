@@ -49,7 +49,7 @@ class BxGroupsSearchResult extends BxDolTwigSearchResult
         'ident' => 'id'
     );
 
-    function BxGroupsSearchResult($sMode = '', $sValue = '', $sValue2 = '', $sValue3 = '')
+    function __construct($sMode = '', $sValue = '', $sValue2 = '', $sValue3 = '')
     {
         switch ($sMode) {
 
@@ -260,7 +260,7 @@ class BxGroupsSearchResult extends BxDolTwigSearchResult
 
         $this->sFilterName = 'bx_groups_filter';
 
-        parent::BxDolTwigSearchResult();
+        parent::__construct();
     }
 
     function getAlterOrder()

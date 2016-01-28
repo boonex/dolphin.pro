@@ -11,9 +11,9 @@ class BxDskInstaller extends BxDolInstaller
     var $sGetDesktopUrl = "http://air.boonex.com/desktop/";
     var $sDesktopFile = "file/desktop.air";
 
-    function BxDskInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
         $this->_aActions['get_desktop'] = array('title' => 'Getting Desktop downloadable from boonex.com:');
         $this->_aActions['remove_desktop'] = array('title' => 'Removing Desktop downloadable:');
     }

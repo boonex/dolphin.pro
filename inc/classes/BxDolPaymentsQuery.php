@@ -10,7 +10,7 @@ class BxDolPaymentsQuery extends BxDolDb
 {
     public function __construct()
     {
-        parent::BxDolDb();
+        parent::__construct();
     }
 
     public function getObjects()

@@ -8,9 +8,9 @@ bx_import('BxDolFilesCmts');
 
 class BxVideosCmts extends BxDolFilesCmts
 {
-    function BxVideosCmts($sSystem, $iId, $iInit = 1)
+    function __construct($sSystem, $iId, $iInit = 1)
     {
-        parent::BxDolFilesCmts($sSystem, $iId, $iInit);
+        parent::__construct($sSystem, $iId, $iInit);
 
         $this->_oModule = BxDolModule::getInstance('BxVideosModule');
     }

@@ -14,9 +14,9 @@ class BxBlogsDb extends BxDolDb
     /*
     * Constructor.
     */
-    function BxBlogsDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
     }

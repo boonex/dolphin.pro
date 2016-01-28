@@ -5,9 +5,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolMistake.php');
-
-class BxDolAlbums extends BxDolMistake
+class BxDolAlbums
 {
     var $sAlbumTable;
     var $sAlbumObjectsTable;
@@ -16,7 +14,7 @@ class BxDolAlbums extends BxDolMistake
     var $sAlbumCoverParam;
     var $iOwnerId;
 
-    function BxDolAlbums ($sType, $iOwnerId = 0)
+    function __construct($sType, $iOwnerId = 0)
     {
         $this->iOwnerId = (int)$iOwnerId;
         $this->sType = process_db_input($sType, BX_TAGS_STRIP);

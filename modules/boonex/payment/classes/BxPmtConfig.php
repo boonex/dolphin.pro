@@ -34,9 +34,9 @@ class BxPmtConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxPmtConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
 
         $this->_iAdminId = BX_PMT_ADMINISTRATOR_ID;
         $this->_sAdminUsername = BX_PMT_ADMINISTRATOR_USERNAME;

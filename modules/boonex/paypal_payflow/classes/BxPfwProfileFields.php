@@ -8,8 +8,8 @@ require_once(BX_DIRECTORY_PATH_MODULES . 'boonex/payment/classes/BxPmtProfileFie
 
 class BxPfwProfileFields extends BxPmtProfileFields
 {
-    function BxPfwProfileFields($iAreaID)
+    function __construct($iAreaID)
     {
-        parent::BxPmtProfileFields($iAreaID);
+        parent::__construct($iAreaID);
     }
 }

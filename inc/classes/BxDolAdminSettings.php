@@ -4,7 +4,6 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
 bx_import('BxTemplFormView');
 
 /**
@@ -31,7 +30,7 @@ bx_import('BxTemplFormView');
  * no alerts available
  *
  */
-class BxDolAdminSettings extends BxDolMistake
+class BxDolAdminSettings
 {
     var $_oDb;
     var $_sActionUrl;
@@ -44,12 +43,10 @@ class BxDolAdminSettings extends BxDolMistake
     /**
      * constructor
      */
-    function BxDolAdminSettings($mixedCategory, $sActionUrl = '')
+    function __construct($mixedCategory, $sActionUrl = '')
     {
-        parent::BxDolMistake();
-
         $this->_oDb = $GLOBALS['MySQL'];
-         $this->_sActionUrl = !empty($sActionUrl) ? $sActionUrl : bx_html_attribute($_SERVER['PHP_SELF']) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+        $this->_sActionUrl = !empty($sActionUrl) ? $sActionUrl : bx_html_attribute($_SERVER['PHP_SELF']) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 
         $this->_mixedCategory = $mixedCategory;
         $this->_iCategoryActive = 0;
@@ -69,6 +66,7 @@ class BxDolAdminSettings extends BxDolMistake
             )
         );
     }
+
     function setActiveCategory($mixed)
     {
         if (is_int($mixed))

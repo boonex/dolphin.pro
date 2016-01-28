@@ -16,8 +16,6 @@ define('BX_DOL_TEMPLATE_CHECK_IN_BOTH', 'both');
 define('BX_DOL_TEMPLATE_CHECK_IN_BASE', 'base');
 define('BX_DOL_TEMPLATE_CHECK_IN_TMPL', 'tmpl');
 
-bx_import('BxDolMistake');
-
 /**
  * Template engine.
  *
@@ -118,7 +116,7 @@ bx_import('BxDolMistake');
  * no alerts available
  *
  */
-class BxDolTemplate extends BxDolMistake
+class BxDolTemplate
 {
     /**
      * Main fields
@@ -160,10 +158,8 @@ class BxDolTemplate extends BxDolMistake
     /**
      * Constructor
      */
-    function BxDolTemplate($sRootPath = BX_DIRECTORY_PATH_ROOT, $sRootUrl = BX_DOL_URL_ROOT)
+    function __construct($sRootPath = BX_DIRECTORY_PATH_ROOT, $sRootUrl = BX_DOL_URL_ROOT)
     {
-        parent::BxDolMistake();
-
         $this->_sPrefix = 'BxDolTemplate';
 
         $this->_sRootPath = $sRootPath;

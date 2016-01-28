@@ -10,9 +10,9 @@ class BxMbpCron extends BxDolCron
 {
     var $_oModule;
 
-    function BxMbpCron()
+    function __construct()
     {
-        parent::BxDolCron();
+        parent::__construct();
 
         $this->_oModule = BxDolModule::getInstance('BxMbpModule');
     }

@@ -5,10 +5,9 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
 bx_import('BxTemplFormView');
 
-class BxDolAdminIpBlockList extends BxDolMistake
+class BxDolAdminIpBlockList
 {
     var $_oDb;
     var $_sActionUrl;
@@ -16,12 +15,10 @@ class BxDolAdminIpBlockList extends BxDolMistake
     /**
      * constructor
      */
-    function BxDolAdminIpBlockList($sActionUrl = '')
+    function __construct($sActionUrl = '')
     {
-        parent::BxDolMistake();
-
         $this->_oDb = $GLOBALS['MySQL'];
-         $this->_sActionUrl = !empty($sActionUrl) ? $sActionUrl : bx_html_attribute($_SERVER['PHP_SELF']) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+        $this->_sActionUrl = !empty($sActionUrl) ? $sActionUrl : bx_html_attribute($_SERVER['PHP_SELF']) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
     }
 
     function GenStoredMemIPs()

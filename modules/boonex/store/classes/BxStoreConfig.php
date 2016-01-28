@@ -11,9 +11,9 @@ class BxStoreConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxStoreConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 
 }

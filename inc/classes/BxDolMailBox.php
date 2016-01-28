@@ -67,7 +67,7 @@
          *                          [] contacts_page (integer) - number of current contact's page ;
          *                          [] messageID      (integer) - number of needed message ;
          */
-         function BxDolMailBox( $sPageName, &$aMailBoxSettings )
+         function __construct( $sPageName, &$aMailBoxSettings )
          {
              $sPageName = process_db_input($sPageName);
 
@@ -87,7 +87,7 @@
                 $aMailBoxSettings['messages_types'] = process_db_input($aMailBoxSettings['messages_types'],BX_TAGS_STRIP);
             }
 
-            parent::BxDolPageView($sPageName);
+            parent::__construct($sPageName);
 
             $this -> aMailBoxSettings = $aMailBoxSettings;
 

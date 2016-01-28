@@ -11,9 +11,9 @@ class BxSoundsPrivacy extends BxDolPrivacy
     /**
      * Constructor
      */
-    function BxSoundsPrivacy($sTable = 'RayMp3Files', $sId = 'ID', $sOwner = 'Owner')
+    function __construct($sTable = 'RayMp3Files', $sId = 'ID', $sOwner = 'Owner')
     {
-        parent::BxDolPrivacy($sTable, $sId, $sOwner);
+        parent::__construct($sTable, $sId, $sOwner);
     }
 
     function getFieldAction($sAction)

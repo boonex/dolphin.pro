@@ -14,9 +14,9 @@ class BxEventsDb extends BxDolTwigModuleDb
     /*
      * Constructor.
      */
-    function BxEventsDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolTwigModuleDb($oConfig);
+        parent::__construct($oConfig);
 
         $this->_sTableMain = 'main';
         $this->_sTableShoutbox = 'shoutbox';

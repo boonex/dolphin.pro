@@ -43,9 +43,9 @@ class BxDolInstaller extends BxDolInstallerUtils
     var $_aActions;
     var $_aNonHashable;
 
-    function BxDolInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstallerUtils();
+        parent::__construct();
 
         $this->_aConfig = $aConfig;
         $this->_sBasePath = BX_DIRECTORY_PATH_MODULES;

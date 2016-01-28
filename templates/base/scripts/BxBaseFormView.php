@@ -43,9 +43,9 @@ class BxBaseFormView extends BxDolForm
      *
      * @return BxBaseFormView
      */
-    function BxBaseFormView($aInfo)
+    function __construct($aInfo)
     {
-        parent::BxDolForm($aInfo);
+        parent::__construct($aInfo);
     }
 
     /**

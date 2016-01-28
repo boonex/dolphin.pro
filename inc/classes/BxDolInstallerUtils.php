@@ -9,9 +9,9 @@ bx_import('BxDolIO');
 
 class BxDolInstallerUtils extends BxDolIO
 {
-    function BxDolInstallerUtils()
+    function __construct()
     {
-        parent::BxDolIO();
+        parent::__construct();
     }
 
     function isXsltEnabled()

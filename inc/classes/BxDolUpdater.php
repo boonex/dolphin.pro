@@ -8,9 +8,9 @@ bx_import('BxDolInstaller');
 
 class BxDolUpdater extends BxDolInstaller
 {
-    function BxDolUpdater($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
         $this->_sModulePath = $this->_sBasePath . $aConfig['module_dir'];
 
         $this->_aActions = array_merge($this->_aActions, array(

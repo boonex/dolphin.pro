@@ -11,9 +11,9 @@ class BxChatModule extends BxDolModule
     /**
      * Constructor
      */
-    function BxChatModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
 
         //--- Define Membership Actions ---//
         $aActions = $this->_oDb->getMembershipActions();

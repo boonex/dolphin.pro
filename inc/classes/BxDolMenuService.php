@@ -24,9 +24,9 @@
      */
     class BxDolMenuService extends BxTemplMenuSimple
     {
-        function BxDolMenuService()
+        function __construct()
         {
-            parent::BxTemplMenuSimple();
+            parent::__construct();
 
             $this->sName = 'service';
             $this->sDbTable = 'sys_menu_service';
