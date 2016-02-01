@@ -662,8 +662,13 @@ class BxDolProfileFields extends Thing
         $this -> aCoupleMutual = array( 'NickName', 'Password', 'Email' );
 
         foreach( $aAllItems as $aItem ) {
-            if( $aItem['Name'] == 'Couple' )
-                $this -> aCoupleMutual = array_merge( $this -> aCoupleMutual, explode( "\n", $aItem['Extra'] ) ); // add specified values
+            if( $aItem['Name'] == 'Couple' ) {
+                $a = explode("\n", $aItem['Extra']);
+                array_walk($a, function (&$sItem, $iKey) {
+                    $sItem = trim($sItem);
+                });
+                $this -> aCoupleMutual = array_merge( $this -> aCoupleMutual, $a ); // add specified values
+            }
 
             if( $aItem['Type'] == 'system' && 'Age' != $aItem['Name'])
                 $this -> aCoupleMutual[] = $aItem['Name'];
@@ -671,8 +676,6 @@ class BxDolProfileFields extends Thing
             if( $aItem['Type'] == 'pass' )
                 $this -> aCoupleMutual[] = $aItem['Name'] . '_confirm';
         }
-
-        //echoDbg( $this -> aCoupleMutual );
     }
 
     //external function
