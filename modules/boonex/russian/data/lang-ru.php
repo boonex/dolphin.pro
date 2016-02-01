@@ -1544,6 +1544,7 @@ $LANG= array(
   '_adm_txt_mp_couple' => 'парных',
   '_adm_txt_mp_featured' => 'популярных',
   '_adm_txt_mp_female' => 'женщина',
+  '_adm_txt_mp_intersex' => 'интерсекс',
   '_adm_txt_mp_male' => 'мужчина',
   '_adm_txt_mp_promotion' => 'Тест',
   '_adm_txt_mp_rejected' => 'отклоненных',
