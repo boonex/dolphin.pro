@@ -289,7 +289,7 @@ class BxDolConnectModule extends BxDolModule
         $aProfileFields['Salt'] 	  = $sPasswordSalt;
 
         // check if user with the same email already exists
-        $iExistingProfileId = $this->_oDb->isEmailExisting($sEmail);
+        $iExistingProfileId = $this->_oDb->isEmailExisting($aProfileFields['Email']);
 
         // check redirect page
         if ('join' == $this->_oConfig->sRedirectPage && !$iExistingProfileId)

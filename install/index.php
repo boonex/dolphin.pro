@@ -181,8 +181,8 @@ if ( !defined ('BX_SKIP_INSTALL_CHECK') && file_exists( \$dir['root'] . 'install
     <div class="adm-header">
         <div class="adm-header-content">
             <div class="adm-header-title bx-def-margin-sec-left">
-                <div class="adm-header-logo"></div>
-                <div class="adm-header-text bx-def-font-h1">Dolphin</div>
+                <div class="adm-header-logo"><img src="{\$site['url']}install/images/dolphin-white.svg" /></div>
+                <div class="adm-header-text bx-def-font-h1">DOLPHIN.PRO</div>
                 <div class="clear_both">&nbsp;</div>
             </div>
             <div class="clear_both">&nbsp;</div>

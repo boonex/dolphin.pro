@@ -1443,6 +1443,8 @@ CREATE TABLE `sys_localization_languages` (
   `Name` varchar(5) NOT NULL default '',
   `Flag` varchar(2) NOT NULL default '',
   `Title` varchar(255) NOT NULL default '',
+  `Direction` enum('LTR','RTL') NOT NULL DEFAULT 'LTR',
+  `LanguageCountry` varchar(8) NOT NULL,
   PRIMARY KEY  (`ID`),
   UNIQUE KEY `Name` (`Name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

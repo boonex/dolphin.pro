@@ -153,6 +153,7 @@ $aLangContent = array(
 	'_payment_bp_dsc' => 'Платежная система BitPay',
     '_payment_bp_active_cpt' => 'Активировать',
 	'_payment_bp_active_dsc' => 'Активировать провайдера',
+    '_payment_bp_active_err' => 'Нужен SSL сертификат (для HTTPS соединения) чтобы активировать и использовать BitPay.',
 	'_payment_bp_api_key_cpt' => 'API Ключ',
 	'_payment_bp_api_key_dsc' => 'API ключ платежной системы BitPay',
 	'_payment_bp_transaction_speed_cpt' => 'Скорость транзакции',

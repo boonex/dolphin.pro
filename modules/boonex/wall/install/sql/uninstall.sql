@@ -15,7 +15,8 @@ SET @iCategoryId = (SELECT `ID` FROM `sys_options_cats` WHERE `name`='Timeline' 
 DELETE FROM `sys_options_cats` WHERE `name`='Timeline' LIMIT 1;
 DELETE FROM `sys_options` WHERE `kateg`=@iCategoryId OR `Name`='permalinks_module_wall' OR `Name` LIKE 'wall_%';
 
-DELETE FROM `sys_acl_actions` WHERE `Name` IN ('timeline post comment', 'timeline delete comment');
+DELETE `sys_acl_actions`, `sys_acl_matrix` FROM `sys_acl_actions`, `sys_acl_matrix` WHERE `sys_acl_matrix`.`IDAction` = `sys_acl_actions`.`ID` AND `sys_acl_actions`.`Name` IN('timeline repost', 'timeline post comment', 'timeline delete comment');
+DELETE FROM `sys_acl_actions` WHERE `Name` IN ('timeline repost', 'timeline post comment', 'timeline delete comment');
 
 DELETE FROM `sys_categories` WHERE `Category`='wall';
 

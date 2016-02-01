@@ -1007,6 +1007,7 @@ $LANG= array(
   '_adm_btn_mp_tags' => 'Теги',
   '_adm_btn_mp_unban' => 'Разрешить',
   '_adm_btn_ms_delete' => 'Удалить',
+  '_adm_btn_pvc_save' => 'Сохранить',
   '_adm_btn_settings_save' => 'Сохранить',
   '_adm_btn_settings_upload' => 'Загрузить',
   '_adm_btn_settings_delete' => 'Удалить',
