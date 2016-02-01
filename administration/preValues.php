@@ -20,6 +20,7 @@ $aFields = array(
     'Value'  => _t('_adm_pvalues_help_value'),
     'LKey'   => _t('_adm_pvalues_help_lkey'),
     'LKey2'  => _t('_adm_pvalues_help_lkey2'),
+    'Extra'  => _t('_adm_pvalues_help_extra'),
 );
 
 if(bx_get('popup') !== false && (int)bx_get('popup') == 1) {
