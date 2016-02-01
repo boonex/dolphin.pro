@@ -3032,12 +3032,8 @@ CREATE TABLE `sys_shared_sites` (
 INSERT INTO `sys_shared_sites` (`Name`, `URL`, `Icon`) VALUES
 ('digg', 'http://digg.com/submit?phase=2&url=', 'digg.png'),
 ('delicious', 'http://del.icio.us/post?url=', 'delicious.png'),
-('blinklist', 'http://www.blinklist.com/index.php?Action=Blink/addblink.php&amp;Url=', 'blinklist.png'),
 ('newsvine', 'http://www.newsvine.com/_tools/seed&save?u=', 'newsvine.png'),
 ('reddit', 'http://reddit.com/submit?url=', 'reddit.png'),
-('slashdot', 'http://slashdot.org/bookmark.pl?url=', 'slashdot.png'),
-('stumbleupon', 'http://www.stumbleupon.com/url/http', 'stumbleupon.png'),
-('technorati', 'http://technorati.com/faves?add=', 'technorati.png'),
 ('facebook', 'http://www.facebook.com/sharer/sharer.php?u=', 'facebook.png'),
 ('twitter', 'https://twitter.com/share?url=', 'twitter.png');
 
