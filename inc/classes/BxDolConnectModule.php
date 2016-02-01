@@ -392,7 +392,6 @@ class BxDolConnectModule extends BxDolModule
 
         bx_import("BxDolJoinProcessor");
 
-        $GLOBALS['oSysTemplate']->addJsTranslation('_Errors in join form');
         $GLOBALS['oSysTemplate']->addJs(array('join.js', 'jquery.form.min.js'));
 
         $oJoin = new BxDolJoinProcessor();

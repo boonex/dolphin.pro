@@ -806,7 +806,6 @@ class BxPmtModule extends BxDolModule
     	$sBlockCaption = _t($this->_sLangsPrefix . 'bcpt_join');
     	$sBlockContent = (!empty($sOverrideError) ? MsgBox(_t($sOverrideError)) : '') . $oJoin->process();
 
-    	$this->_oTemplate->addJsTranslation('_Errors in join form');
         $aParams = array(
         	'index' => 1,
         	'css' => array('join.css'),

@@ -36,7 +36,6 @@ $_ni = $_page['name_index'];
 $oJoinView = new BxTemplJoinPageView();
 $_page_cont[$_ni]['page_main_code'] = $oJoinView->getCode();
 
-$GLOBALS['oSysTemplate']->addJsTranslation('_Errors in join form');
 $GLOBALS['oSysTemplate']->addJs(array('join.js', 'jquery.form.min.js'));
 $GLOBALS['oSysTemplate']->addCss(array('join.css', 'explanation.css'));
 PageCode();
