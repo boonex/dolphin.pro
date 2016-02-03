@@ -383,8 +383,8 @@ function isFriendRequest($iId, $iProfileId)
 
 function getMyFriendsEx($iID, $sWhereParam = '', $sSortParam = '', $sqlLimit = '')
 {
-    $sJoin = $sOrderBy = '';
-        $sWhereParam = "AND p.`Status`='Active' " . $sWhereParam;
+    $sOrderBy = '';
+    $sWhereParam = "AND p.`Status`='Active' " . $sWhereParam;
 
     switch($sSortParam) {
 
@@ -405,9 +405,8 @@ function getMyFriendsEx($iID, $sWhereParam = '', $sSortParam = '', $sqlLimit = '
         case 'image' : // Avatar
             $sOrderBy = 'ORDER BY p.`Avatar` DESC';
             break;
-        case 'rate' : // `sys_profile_rating`.`pr_rating_sum
-            $sOrderBy = 'ORDER BY `sys_profile_rating`.`pr_rating_sum`';
-            $sJoin = 'LEFT JOIN `sys_profile_rating` ON p.`ID` = `sys_profile_rating`.`pr_id`';
+        case 'rate' : // Rate and RateCount
+            $sOrderBy = 'ORDER BY p.`Rate` DESC, p.`RateCount` DESC';
             break;
         default : // DateLastNav
             $sOrderBy = 'ORDER BY p.`DateLastNav` DESC';
@@ -424,7 +423,6 @@ function getMyFriendsEx($iID, $sWhereParam = '', $sSortParam = '', $sqlLimit = '
                 SELECT `Profile` AS `ID` FROM `sys_friend_list` WHERE `ID` = '{$iID}' AND `Check` =1
             ) AS `f`
             INNER JOIN `Profiles` AS `p` ON `p`.`ID` = `f`.`ID`
-            {$sJoin}
             WHERE 1 {$sWhereParam}
             {$sOrderBy}
             {$sLimit}";

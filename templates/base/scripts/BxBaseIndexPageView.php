@@ -161,7 +161,7 @@ class BxBaseIndexPageView extends BxDolPageView
         }
 
         // top menu and sorting
-        $aModes = array('last', 'top', 'online');
+        $aModes = getParam('votes') ? array('last', 'top', 'online') : array('last', 'online');
         $aDBTopMenu = array();
 
         if (empty($_GET[$sBlockName . 'Mode'])) {
@@ -175,31 +175,29 @@ class BxBaseIndexPageView extends BxDolPageView
                 case 'online':
                     if ($sMode == $sMyMode) {
                         $sqlCondition .= " AND `Profiles`.`DateLastNav` > SUBDATE(NOW(), INTERVAL ".$iOnlineTime." MINUTE)";
-                        $sqlOrder = " ORDER BY `Profiles`.`Couple` ASC";
+                        $sqlOrder = " ORDER BY `Profiles`.`DateLastNav` DESC";
+                        $sViewAllQuery = 'online_only=on';
                     }
                     $sModeTitle = _t('_Online');
                 break;
                 case 'last':
-                    if ($sMode == $sMyMode)
-                        $sqlOrder = " ORDER BY `Profiles`.`Couple` ASC, `Profiles`.`DateReg` DESC";
+                    if ($sMode == $sMyMode) {
+                        $sqlOrder = " ORDER BY `Profiles`.`DateReg` DESC";
+                        $sViewAllQuery = 'sort=date_reg';
+                    }
                     $sModeTitle = _t('_Latest');
                 break;
                 case 'top':
                     if ($sMode == $sMyMode) {
-                        $oVotingView = new BxTemplVotingView ('profile', 0, 0);
-                        $aSql        = $oVotingView->getSqlParts('`Profiles`', '`ID`');
-                        $sqlOrder    = $oVotingView->isEnabled() ? " ORDER BY `Profiles`.`Couple` ASC, (`pr_rating_sum`/`pr_rating_count`) DESC, `pr_rating_count` DESC, `Profiles`.`DateReg` DESC" : $sqlOrder;
-                        $sqlMainFields .= $aSql['fields'];
-                        $sqlLJoin    = $aSql['join'];
-                        $sqlCondition .= " AND `pr_rating_count` > 1";
+                        $sqlOrder = ' ORDER BY `Profiles`.`Rate` DESC, `Profiles`.`RateCount` DESC';
+                        $sViewAllQuery = 'sort=rate';
                     }
                     $sModeTitle = _t('_Top');
                 break;
             }
             $aDBTopMenu[$sModeTitle] = array('href' => BX_DOL_URL_ROOT . "index.php?{$sBlockName}Mode=$sMyMode", 'dynamic' => true, 'active' => ( $sMyMode == $sMode ));
         }
-        if (empty($sqlLJoin)) $sqlLJoin = '';
-        $iCount = (int)db_value("SELECT COUNT(`Profiles`.`ID`) FROM `Profiles` $sqlLJoin $sqlCondition");
+        $iCount = (int)db_value("SELECT COUNT(`Profiles`.`ID`) FROM `Profiles` $sqlCondition");
         $aData = array();
         $sPaginate = '';
         if ($iCount) {
@@ -213,7 +211,7 @@ class BxBaseIndexPageView extends BxDolPageView
             $sqlFrom = ($iPage - 1) * $iLimit;
             $sqlLimit = "LIMIT $sqlFrom, $iLimit";
 
-            $sqlQuery = "SELECT " . $sqlMainFields . " FROM `Profiles` $sqlLJoin $sqlCondition $sqlOrder $sqlLimit";
+            $sqlQuery = "SELECT " . $sqlMainFields . " FROM `Profiles` $sqlCondition $sqlOrder $sqlLimit";
             $rData = db_res($sqlQuery);
             $iCurrCount = mysql_num_rows($rData);
             $aOnline = $aTmplVars = array();
@@ -235,7 +233,8 @@ class BxBaseIndexPageView extends BxDolPageView
                     'page' => $iPage,
                     'on_change_page' => 'return !loadDynamicBlock({id}, \'index.php?'.$sBlockName.'Mode='.$sMode.'&page={page}&per_page={per_page}\');',
                 ));
-                $sPaginate = $oPaginate->getSimplePaginate(BX_DOL_URL_ROOT . 'browse.php');
+                $sViewAllUrl = empty($aParams['Featured']) ? 'browse.php?' : 'search.php?show=featured&amp;';
+                $sPaginate = $oPaginate->getSimplePaginate(BX_DOL_URL_ROOT . $sViewAllUrl . $sViewAllQuery);
             }
         } else {
             $sCode = MsgBox(_t("_Empty"));

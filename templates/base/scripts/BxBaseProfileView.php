@@ -863,7 +863,7 @@ class BxBaseProfileGenerator extends BxDolProfile
                 $aWhere[] = "MONTH(`DateOfBirth`) = MONTH(CURDATE()) AND DAY(`DateOfBirth`) = DAY(CURDATE())";
                 break;
             case 'top_rated':
-                $sPossibleOrder = ' ORDER BY `Profiles`.`Rate` DESC';
+                $sPossibleOrder = ' ORDER BY `Profiles`.`Rate` DESC, `Profiles`.`RateCount` DESC';
                 break;
             case 'popular':
                 $sPossibleOrder = ' ORDER BY `Profiles`.`Views` DESC';
@@ -880,6 +880,9 @@ class BxBaseProfileGenerator extends BxDolProfile
                 break;
             case 'date_reg':
                 $sPossibleOrder = ' ORDER BY `Profiles`.`DateReg` DESC';
+                break;
+            case 'rate':
+                $sPossibleOrder = ' ORDER BY `Profiles`.`Rate` DESC, `Profiles`.`RateCount` DESC';
                 break;
             default:
                 break;
@@ -1084,13 +1087,13 @@ EOF;
 
         $sPagination = $oPaginate->getPaginate();
 
-        // fill array with sorting params ;
-        $aSortingParam = array (
+        // fill array with sorting params
+        $aSortingParam = array(
             'none' => _t('_None'),
             'activity' => _t('_Latest activity'),
             'date_reg' => _t('_FieldCaption_DateReg_View'),
-            //'rate'         => _t( '_Rate' ),
         );
+        if (getParam('votes')) $aSortingParam['rate'] = _t('_Rate');
 
         // gen sorting block ( type of : drop down ) ;
         $sSortBlock = $oPaginate->getSorting($aSortingParam);
