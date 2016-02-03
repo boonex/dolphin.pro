@@ -1547,6 +1547,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_txt_mp_female' => 'female',
   '_adm_txt_mp_intersex' => 'intersex',
   '_adm_txt_mp_male' => 'male',
+  '_adm_txt_mp_other' => 'other',
   '_adm_txt_mp_promotion' => 'Promotion',
   '_adm_txt_mp_rejected' => 'rejected',
   '_adm_txt_mp_single' => 'single',
