@@ -659,7 +659,7 @@ class BxDolProfileFields extends Thing
     {
         $aAllItems = $this -> aCache[100][0]['Items'];
 
-        $this -> aCoupleMutual = array( 'NickName', 'Password', 'Email' );
+        $this -> aCoupleMutual = array( 'NickName', 'Password', 'Email', 'Country', 'City', 'zip', 'EmailNotify' );
 
         foreach( $aAllItems as $aItem ) {
             if( $aItem['Name'] == 'Couple' ) {
