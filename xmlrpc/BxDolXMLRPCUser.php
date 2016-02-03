@@ -97,7 +97,7 @@ class BxDolXMLRPCUser
 
         $aMarkersReplace = array (
             'member_id' => $iId,
-            'member_username' => $sUser,
+            'member_username' => rawurlencode($sUser),
             'member_password' => $sPwd,
         );
         $aRet['menu'] = new xmlrpcval(BxDolXMLRPCUtil::getMenu('homepage', $aMarkersReplace), 'array');
@@ -125,7 +125,7 @@ class BxDolXMLRPCUser
 
         $aMarkersReplace = array (
             'member_id' => $iId,
-            'member_username' => $sUser,
+            'member_username' => rawurlencode($sUser),
             'member_password' => $sPwd,
             'profile_id' => $iIdProfile,
             'profile_username' => $sNick,
