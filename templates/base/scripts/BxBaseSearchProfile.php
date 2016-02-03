@@ -87,21 +87,23 @@ class BxBaseSearchProfile extends BxBaseSearchResultText
         $bExtMode = (!empty($_GET['mode']) && $_GET['mode'] == 'extended') || (!empty($_GET['search_result_mode']) && $_GET['search_result_mode'] == 'ext');
         $isShowMatchPercent = $bExtMode && $iVisitorID && ( $iVisitorID != $aProfileInfo['ID'] ) && getParam('view_match_percent') && getParam('enable_match');
 
+        $bPublic = $bExtMode ? bx_check_profile_visibility ($aProfileInfo['ID'], $iVisitorID, true) : true;
+
         $sProfileThumb = get_member_thumbnail( $aProfileInfo['ID'], 'none', ! $bExtMode, 'visitor' );
         $sProfileMatch = $isShowMatchPercent ? $GLOBALS['oFunctions']->getProfileMatch( $iVisitorID, $aProfileInfo['ID'] ) : '';
 
         $sProfileNickname = '<a href="' . getProfileLink($aProfileInfo['ID']) . '">' . getNickName($aProfileInfo['ID']) . '</a>';
         $sProfileInfo = $GLOBALS['oFunctions']->getUserInfo($aProfileInfo['ID']);
-        $sProfileDesc = strmaxtextlen($aProfileInfo['DescriptionMe'], 130);
-        $sProfileZodiac = ($bExtMode && getParam('zodiac')) ? $GLOBALS['oFunctions']->getProfileZodiac($aProfileInfo['DateOfBirth']) : '';
+        $sProfileDesc = $bPublic ? strmaxtextlen($aProfileInfo['DescriptionMe'], 130) : _t('_sys_profile_private_text_title');
+        $sProfileZodiac = ($bPublic && $bExtMode && getParam('zodiac')) ? $GLOBALS['oFunctions']->getProfileZodiac($aProfileInfo['DateOfBirth']) : '';
 
         $sProfile2ASc1 = $sProfile2ASc2 = $sProfile2Nick = $sProfile2Desc = $sProfile2Info = $sProfile2Zodiac = '';
         if ($aCoupleInfo) {
 
             $sProfile2Nick = '<a href="' . getProfileLink( $aCoupleInfo['ID'] ) . '">' . getNickName($aCoupleInfo['ID']) . '</a>';
             $sProfile2Info = $GLOBALS['oFunctions']->getUserInfo($aCoupleInfo['ID']);
-            $sProfile2Desc = strmaxtextlen($aCoupleInfo['DescriptionMe'], 130);
-            $sProfile2Zodiac = ($bExtMode && getParam('zodiac')) ? $GLOBALS['oFunctions']->getProfileZodiac($aCoupleInfo['DateOfBirth']) : '';
+            $sProfile2Desc = $bPublic ? strmaxtextlen($aCoupleInfo['DescriptionMe'], 130) : _t('_sys_profile_private_text_title');
+            $sProfile2Zodiac = ($bPublic && $bExtMode && getParam('zodiac')) ? $GLOBALS['oFunctions']->getProfileZodiac($aCoupleInfo['DateOfBirth']) : '';
 
             $sProfile2ASc1 = 'float:left;width:31%;margin-right:10px;';
             $sProfile2ASc2 = 'float:left;width:31%;display:block;';
