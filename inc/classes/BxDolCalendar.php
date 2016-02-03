@@ -51,12 +51,28 @@ class BxDolCalendar
 
     function BxDolCalendar ($iYear, $iMonth)
     {
+        $aMonths = array (
+            1 => '_January',
+            2 => '_February',
+            3 => '_March',
+            4 => '_April',
+            5 => '_May',
+            6 => '_June',
+            7 => '_July',
+            8 => '_August',
+            9 => '_September',
+            10 => '_October',
+            11 => '_November',
+            12 => '_December',
+        );
+
         // input values
         $this->iYear = (int)$iYear ? (int)$iYear : date('Y');
         $this->iMonth = (int)$iMonth ? (int)$iMonth : date('m');
         $this->iDay = date('d');
 
-        $this->sMonthName = strftime('%B', mktime(0, 0, 0, $this->iMonth+1, $iDay, $this->iYear));
+        $this->sMonthName = _t($aMonths[(int)$this->iMonth]);
+
         $this->iNumDaysInMonth = date('t', mktime(0, 0, 0, $this->iMonth+1, $iDay, $this->iYear));
         $this->iFirstWeekDay = (int)date('w', mktime(0, 0, 0, $this->iMonth, 1, $this->iYear));
 
