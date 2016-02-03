@@ -1037,6 +1037,8 @@ class BxDolProfileFields extends Thing
 
     function getFormsSearch($aParams)
     {
+        $aShowModes = array('featured', 'birthdays', 'top_rated', 'popular', 'moderators');
+
         // original member profile, used for setting default search params
         $aDefaultParams = $aParams['default_params'];
 
@@ -1059,6 +1061,13 @@ class BxDolProfileFields extends Thing
                 'type'  => 'hidden',
                 'name'  => 'search_mode',
                 'value' => $sSearchModeName,
+            );
+
+            // create show parameter as hidden input 
+            $aInputs[] = array(
+                'type'  => 'hidden',
+                'name'  => 'show',
+                'value' => isset($_REQUEST['show']) && in_array($_REQUEST['show'], $aShowModes) ? $_REQUEST['show'] : '',
             );
 
             // generate block input
