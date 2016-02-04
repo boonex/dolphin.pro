@@ -701,7 +701,7 @@ class BxStoreModule extends BxDolTwigModule
     function isAllowedCreatorCommentsDeleteAndEdit (&$aEvent, $isPerformAction = false)
     {
         if ($this->isAdmin()) return true;
-        if (!$GLOBALS['logged']['member'] || $aEvent['ResponsibleID'] != $this->_iProfileId)
+        if (!$GLOBALS['logged']['member'] || $aEvent['author_id'] != $this->_iProfileId)
             return false;
         $this->_defineActions();
         $aCheck = checkAction($this->_iProfileId, BX_STORE_PRODUCT_COMMENTS_DELETE_AND_EDIT, $isPerformAction);
