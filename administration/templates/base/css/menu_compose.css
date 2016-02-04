@@ -21,13 +21,7 @@ div#menu_app_wrapper {
 	height:21px;
 	color: #6666CC;
 	font-size:11px;
-}
-
-#mov_indic
-{
-	padding-left:23px;
-	padding-top:5px;
-	border: 1px dashed #999;
+    border: 1px dashed #999;
 }
 
 .top_item,
