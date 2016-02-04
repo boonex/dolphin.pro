@@ -200,7 +200,7 @@ function _getKeysList($mixedResult, $bActive = false)
     if(isset($_GET[$sFilterName])) {
         $sFilter = process_db_input($_GET[$sFilterName], BX_TAGS_STRIP);
 
-        $aKeys = $GLOBALS['MySQL']->getAll("SELECT `tk`.`ID` AS `id`, `tk`.`Key` AS `key`, `tc`.`Name` AS `category` FROM `sys_localization_keys` AS `tk` LEFT JOIN `sys_localization_strings` AS `ts` ON `tk`.`ID`=`ts`.`IDKey` LEFT JOIN `sys_localization_categories` AS `tc` ON `tk`.`IDCategory`=`tc`.`ID` WHERE `tk`.`Key` LIKE '%" . $sFilter . "%' OR `ts`.`String` LIKE '%" . $sFilter . "%' GROUP BY `tk`.`ID`");
+        $aKeys = $GLOBALS['MySQL']->getAll("SELECT `tk`.`ID` AS `id`, `tk`.`Key` AS `key`, `tc`.`Name` AS `category` FROM `sys_localization_keys` AS `tk` LEFT JOIN `sys_localization_strings` AS `ts` ON `tk`.`ID`=`ts`.`IDKey` LEFT JOIN `sys_localization_categories` AS `tc` ON `tk`.`IDCategory`=`tc`.`ID` WHERE `tk`.`Key` LIKE '%" . $sFilter . "%' COLLATE utf8_general_ci OR `ts`.`String` LIKE '%" . $sFilter . "%' GROUP BY `tk`.`ID`");
         foreach($aKeys as $aKey)
             $aItems[] = array(
                 'id' => $aKey['id'],
