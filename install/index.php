@@ -40,7 +40,7 @@ if (count($aErrors)) {
         echo <<<EOF
 {$sErrors} <br />
 Please go to the <br />
-<a href="http://www.boonex.com/trac/dolphin/wiki/GenDolTShooter">Dolphin Troubleshooter</a> <br />
+<a href="https://www.boonex.com/trac/dolphin/wiki/GenDol7TShooter">Dolphin Troubleshooter</a> <br />
 and solve the problem.
 EOF;
         exit;
@@ -151,7 +151,7 @@ if (defined('CHECK_DOLPHIN_REQUIREMENTS')) {
         echo <<<EOF
 {\$sErrors} <br />
 Please go to the <br />
-<a href="http://www.boonex.com/trac/dolphin/wiki/GenDolTShooter">Dolphin Troubleshooter</a> <br />
+<a href="https://www.boonex.com/trac/dolphin/wiki/GenDol7TShooter">Dolphin Troubleshooter</a> <br />
 and solve the problem.
 EOF;
         exit;
@@ -588,7 +588,7 @@ function genInstallationProcessPage($sErrorMessage = '')
 </div>
 
 <div class="bx-install-header-text bx-def-font-large bx-def-font-grayed bx-def-margin-bottom">
-    Setup Cron Jobs as specified below. Helpful info about Cron Jobs is <a href="http://www.boonex.com/trac/dolphin/wiki/DetailedInstall#InstallScript-Step5-CronJobs" target="_blank">available here</a>.
+    Setup Cron Jobs as specified below. Helpful info about Cron Jobs is <a href="https://www.boonex.com/trac/dolphin/wiki/DetailedInstall#InstallScript-Step5-CronJobs" target="_blank">available here</a>.
 </div>
 
 {$sInnerCode}
@@ -707,7 +707,7 @@ EOF;
 </div>
 
 <div class="bx-install-header-text bx-def-font-large bx-def-font-grayed bx-def-margin-bottom">
-    Reverse permissions for the files indicated below to keep your site secure. Helpful info about permissions is <a href="http://www.boonex.com/trac/dolphin/wiki/DetailedInstall#InstallScript-Step1-Permissions" target="_blank">available here</a>.
+    Reverse permissions for the files indicated below to keep your site secure. Helpful info about permissions is <a href="https://www.boonex.com/trac/dolphin/wiki/DetailedInstall#InstallScript-Step1-Permissions" target="_blank">available here</a>.
 </div>
 
 {$sErrors}
@@ -850,7 +850,7 @@ function genDatabaseConfig($sErrorMessage = '')
 </div>
 
 <div class="bx-install-header-text bx-def-font-large bx-def-font-grayed bx-def-margin-bottom">
-    Please <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/DetailedInstall#Part2:CreateaDatabaseandaUser">create a database</a> and tell Dolphin about it.
+    Please <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/DetailedInstall#Part2:CreateaDatabaseandaUser">create a database</a> and tell Dolphin about it.
 </div>
 
 {$sErrors}
@@ -996,7 +996,7 @@ function genPreInstallPermissionTable($sErrorMessage = '')
 </div>
 
 <div class="bx-install-header-text bx-def-font-large bx-def-font-grayed bx-def-margin-bottom">
-    Change permissions of files and directories as specified in the chart below. Helpful info about permissions is <a href="http://www.boonex.com/trac/dolphin/wiki/DetailedInstall#InstallScript-Step1-Permissions" target="_blank">available here</a>.
+    Change permissions of files and directories as specified in the chart below. Helpful info about permissions is <a href="https://www.boonex.com/trac/dolphin/wiki/DetailedInstall#InstallScript-Step1-Permissions" target="_blank">available here</a>.
 </div>
 
 {$sError}
@@ -1037,7 +1037,7 @@ function StartInstall()
 </div>
 
 <div class="bx-install-step-startInstall-text bx-def-font-large bx-def-margin-top">
-    Dolphin {$aConf['iVersion']}.{$aConf['iPatch']} by <a href="http://www.boonex.com" target="_blank">BoonEx</a>
+    Dolphin {$aConf['iVersion']}.{$aConf['iPatch']} by <a href="https://www.boonex.com" target="_blank">BoonEx</a>
 </div>
 
 EOF;

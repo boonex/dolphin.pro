@@ -149,8 +149,8 @@ CREATE TABLE `sys_menu_admin_top` (
 
 INSERT INTO `sys_menu_admin_top`(`name`, `caption`, `url`, `target`, `icon`, `order`) VALUES
 ('home', '_adm_tmi_home', '{site_url}index.php', '_blank', 'external-link-square', 1),
-('extensions', '_adm_tmi_extensions', 'http://www.boonex.com/market', '', 'puzzle-piece', 2),
-('info', '_adm_tmi_info', 'http://www.boonex.com/trac/dolphin/wiki/Dolphin7Docs', '', 'question-circle', 3),
+('extensions', '_adm_tmi_extensions', 'https://www.boonex.com/market', '', 'puzzle-piece', 2),
+('info', '_adm_tmi_info', 'https://www.boonex.com/trac/dolphin/wiki', '', 'question-circle', 3),
 ('logout', '_adm_tmi_logout', '{site_url}logout.php', '', 'sign-out', 4);
 
 -- --------------------------------------------------------
@@ -1728,7 +1728,7 @@ INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`
 ('index', '1140px', 'Site Categories', '_Categories', 0, 0, 'Categories', '', 1, 71.9, 'non,memb', 0, 0),
 ('index', '1140px', 'List of profiles', '_Members', 3, 0, 'Members', '', 1, 28.1, 'non,memb', 0, 0),
 ('index', '1140px', 'Shows Login Form', '_Member_Login', 0, 0, 'LoginSection', '', 11, 28.1, 'non', 0, 86400),
-('index', '1140px', '', '_BoonEx News', 2, 0, 'RSS', 'http://www.boonex.com/notes/featured_posts/?rss=1#4', 1, 71.9, 'non,memb', 0, 86400),
+('index', '1140px', '', '_BoonEx News', 2, 0, 'RSS', 'https://www.boonex.com/notes/featured_posts/?rss=1#4', 1, 71.9, 'non,memb', 0, 86400),
 ('index', '1140px', 'Download', '_sys_box_title_download', 0, 0, 'Download', '', 1, 28.1, 'non,memb', 0, 86400),
 
 ('member', '1140px', 'Quick Links', '_Quick Links', 2, 0, 'QuickLinks', '', 1, 71.9, 'memb', 0, 0),
