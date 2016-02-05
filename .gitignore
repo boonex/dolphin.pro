@@ -21,7 +21,7 @@ Thumbs.db
 
 
 # Excludes from modules
-media/images/membership/1*.png
+media/images/membership/[0-9]*
 media/images/blog/*.jpg
 
 modules/boonex/moxie
@@ -48,4 +48,4 @@ flash/modules/video/files/*.jpg
 flash/modules/video/files/*.m4v
 flash/modules/video/files/*.flv
 flash/modules/video/files/*.webm
-
+flash/modules/video_comments/files/[0-9]*
