@@ -3341,7 +3341,10 @@ INSERT INTO `sys_injections` (`name`, `page_index`, `key`, `type`, `data`, `repl
 ('banner_top', 0, 'banner_top', 'php', 'return banner_put_nv(1);', 0, 1),
 ('banner_left', 0, 'banner_left', 'php', 'return banner_put_nv(2);', 0, 1),
 ('sys_confirm_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxConfirm.html'', array());', '0', '1'),
-('sys_prompt_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxPrompt.html'', array());', '0', '1');
+('sys_prompt_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxPrompt.html'', array());', '0', '1'),
+('sys_head', 0, 'injection_head', 'text', '', 0, 1),
+('sys_body', 0, 'injection_footer', 'text', '', 0, 1);
+
 
 --
 -- Table structure for table `sys_injections_admin`

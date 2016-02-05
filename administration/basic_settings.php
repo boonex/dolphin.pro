@@ -56,10 +56,60 @@ $_page = array(
 $_page_cont[$iNameIndex] = array(
     'page_code_settings' => DesignBoxAdmin(_t('_adm_box_cpt_settings_main'), $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html', array('content' => $oSettings->getForm()))),
     'page_code_logo' => PageCodeLogo($mixedResultLogo),
-    'page_code_promo' => PageCodePromo($mixedResultPromo)
+    'page_code_promo' => PageCodePromo($mixedResultPromo),
+    'page_code_injectins' => PageCodeInjections(),
 );
 
 PageCodeAdmin();
+
+function PageCodeInjections()
+{
+    $aForm = array(
+        'form_attrs' => array(
+            'id' => 'adm-settings-injections',
+            'name' => 'adm-settings-injections',
+            'action' => $GLOBALS['site']['url_admin'] . 'basic_settings.php',
+            'method' => 'post',
+        ),
+        'params' => array(
+            'db' => array('submit_name' => 'save_injections'),
+        ),
+        'inputs' => array(
+            'head' => array(
+                'type' => 'textarea',
+                'name' => 'head',
+                'caption' => _t('_adm_txt_settings_injection_head'),
+                'info' => _t('_adm_dsc_settings_injection_head'),
+            ),
+            'body' => array(
+                'type' => 'textarea',
+                'name' => 'body',
+                'caption' => _t('_adm_txt_settings_injection_body'),
+                'info' => _t('_adm_dsc_settings_injection_body'),
+            ),
+            'save_injections' => array(
+                'type' => 'submit',
+                'name' => 'save_injections',
+                'value' => _t("_adm_btn_settings_save"),
+            )
+        )
+    );
+    $oForm = new BxTemplFormView($aForm);
+
+    $sResult = '';
+    if ($oForm->isSubmittedAndValid ()) {
+        $b = $GLOBALS['MySQL']->res("UPDATE `sys_injections` SET `data` = '" . process_db_input($_POST['head']) . "' WHERE `name` = 'sys_head'");
+        $b |= $GLOBALS['MySQL']->res("UPDATE `sys_injections` SET `data` = '" . process_db_input($_POST['body']) . "' WHERE `name` = 'sys_body'");
+        if ($b)
+            $GLOBALS['MySQL']->cleanCache('sys_injections.inc');
+        $sResult = MsgBox(_t($b ? '_Success' : '_Error'));
+    }
+
+    $oForm->aInputs['head']['value'] = $GLOBALS['MySQL']->getOne("SELECT `data` FROM `sys_injections` WHERE `name` = 'sys_head'");
+    $oForm->aInputs['body']['value'] = $GLOBALS['MySQL']->getOne("SELECT `data` FROM `sys_injections` WHERE `name` = 'sys_body'");
+
+    return DesignBoxAdmin(_t('_adm_box_cpt_injections'), $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html', array('content' => $sResult . $oForm->getCode())));
+}
 
 function PageCodePromo($mixedResultPromo)
 {
