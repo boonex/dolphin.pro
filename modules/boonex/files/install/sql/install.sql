@@ -151,7 +151,6 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 ('[db_prefix]_number_index', '2', @iKatID, 'How many files show on index page', 'digit', '', '', 2, ''),
 ('[db_prefix]_number_featured', '4', @iKatID, 'How many files show on featured section', 'digit', '', '', 3, ''),
 ('[db_prefix]_number_top', '4', @iKatID, 'How many files show on top section', 'digit', '', '', 4, ''),
-('[db_prefix]_number_user', '4', @iKatID, 'Number of latest files by user', 'digit', '', '', 5, ''),
 ('[db_prefix]_number_related', '4', @iKatID, 'Number of related files by user', 'digit', '', '', 6, ''),
 ('[db_prefix]_thumb_width', '64', @iKatID, 'Thumbnail width of file', 'digit', '', '', 7, ''),
 ('[db_prefix]_activation', 'on', @iKatID, 'Enable auto-activation for files', 'checkbox', '', '', 8, ''),
