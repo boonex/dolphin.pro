@@ -27,17 +27,6 @@ class BxSoundsConfig extends BxDolFilesConfig
         $this->aGlParams = array(
             'mode_top_index' => 'bx_sounds_mode_index',
             'category_auto_approve' => 'category_auto_activation_bx_sounds',
-            'number_all' => 'bx_sounds_number_all',
-            'number_index' => 'bx_sounds_number_index',
-            'number_related' => 'bx_sounds_number_related',
-            'number_top' => 'bx_sounds_number_top',
-            'number_previous_rated' => 'bx_sounds_number_previous_rated',
-            'number_albums_browse' => 'bx_sounds_number_albums_browse',
-            'number_albums_home' => 'bx_sounds_number_albums_home',
-            'file_width' => 'bx_sounds_file_width',
-            'file_height' => 'bx_sounds_file_height',
-            'allowed_exts' => 'bx_sounds_allowed_exts',
-            'profile_album_name' => 'bx_sounds_profile_album_name',
         );
 
         $this->initConfig();

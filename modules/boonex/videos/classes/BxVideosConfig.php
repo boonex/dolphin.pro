@@ -31,17 +31,6 @@ class BxVideosConfig extends BxDolFilesConfig
         $this->aGlParams = array(
             'mode_top_index' => 'bx_videos_mode_index',
             'category_auto_approve' => 'category_auto_activation_bx_videos',
-            'number_all' => 'bx_videos_number_all',
-            'number_index' => 'bx_videos_number_index',
-            'number_related' => 'bx_videos_number_related',
-            'number_top' => 'bx_videos_number_top',
-            'number_previous_rated' => 'bx_videos_number_previous_rated',
-            'number_albums_browse' => 'bx_videos_number_albums_browse',
-            'number_albums_home' => 'bx_videos_number_albums_home',
-            'file_width' => 'bx_videos_file_width',
-            'file_height' => 'bx_videos_file_height',
-            'allowed_exts' => 'bx_videos_allowed_exts',
-            'profile_album_name' => 'bx_videos_profile_album_name',
         );
 
         $sProto = bx_proto();
