@@ -66,18 +66,18 @@ INSERT INTO `sys_options_cats` SET `name` = 'Sounds';
 SET @iKatID = LAST_INSERT_ID();
 
 INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `err_text`, `order_in_kateg`, `AvailableValues`)  VALUES
-('category_auto_app_[db_prefix]', 'on', @iKatID, 'Autoapprove categories of files', 'checkbox', '', '', 2, ''),
+('category_auto_app_[db_prefix]', 'on', @iKatID, 'Autoapprove categories of sounds', 'checkbox', '', '', 2, ''),
 ('[db_prefix]_allowed_exts', 'mp3 wav', @iKatID, 'Allowed extensions', 'digit', '', '', 3, ''),
 ('[db_prefix]_max_file_size', '32', @iKatID, 'Maximum size of one file (in Megabytes)', 'digit', '', '', 3, ''),
 ('[db_prefix]_profile_album_name', '{nickname}''s sounds', @iKatID, 'Default profile album name', 'digit', '', '', 4, ''),
-('[db_prefix]_mode_index', 'last', @iKatID, 'Show files on index page<br /> (if enabled in the template)', 'select', '', '', 10, 'last,top'),
-('[db_prefix]_number_all', '12', @iKatID, 'How many files show on browse page', 'digit', '', '', 20, ''),
-('[db_prefix]_number_index', '9', @iKatID, 'How many files show on index page', 'digit', '', '', 21, ''),
-('[db_prefix]_number_top', '3', @iKatID, 'How many files show on featured, top and similar sections', 'digit', '', '', 22, ''),
-('[db_prefix]_number_related', '3', @iKatID, 'Number of related files by user', 'digit', '', '', 24, ''),
-('[db_prefix]_number_previous_rated', '3', @iKatID, 'Number of previous rated files', 'digit', '', '', 25, ''),
-('[db_prefix]_number_albums_browse', '9', @iKatID, 'How many albums show on browse album page', 'digit', '', '', 27, ''),
-('[db_prefix]_number_albums_home', '3', @iKatID, 'How many albums show on home page', 'digit', '', '', 28, ''),
+('[db_prefix]_mode_index', 'last', @iKatID, 'Default sort on main index page<br /> (if enabled in the template)', 'select', '', '', 10, 'last,top'),
+('[db_prefix]_number_all', '12', @iKatID, 'How many sounds show on browse sounds page', 'digit', '', '', 20, ''),
+('[db_prefix]_number_index', '9', @iKatID, 'How many sounds show on main index page', 'digit', '', '', 21, ''),
+('[db_prefix]_number_top', '3', @iKatID, 'How many sounds show in featured, top, and similar sections', 'digit', '', '', 22, ''),
+('[db_prefix]_number_related', '3', @iKatID, 'Number of related sounds by user', 'digit', '', '', 24, ''),
+('[db_prefix]_number_previous_rated', '3', @iKatID, 'Number of previous rated sounds', 'digit', '', '', 25, ''),
+('[db_prefix]_number_albums_browse', '9', @iKatID, 'How many albums show on browse albums page', 'digit', '', '', 27, ''),
+('[db_prefix]_number_albums_home', '3', @iKatID, 'How many albums show on sounds home page', 'digit', '', '', 28, ''),
 ('[db_prefix]_file_width', '600', @iKatID, 'Width of sound player (in pixels)', 'digit', '', '', 34, ''),
 ('[db_prefix]_file_height', '600', @iKatID, 'Height of sound player (in pixels)', 'digit', '', '', 35, ''),
 ('[db_prefix]_uploader_switcher', 'html5,record', @iKatID, 'Available uploaders', 'list', '', '', 38, 'html5,regular,record');
