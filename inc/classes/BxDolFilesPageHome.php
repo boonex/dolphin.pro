@@ -39,7 +39,7 @@ class BxDolFilesPageHome extends BxDolPageView
     function getBlockCode_All ($id)
     {
         $this->oSearch->clearFilters(array('activeStatus', 'allow_view', 'album_status', 'albumType', 'ownerStatus'), array('albumsObjects', 'albums'));
-        $this->oSearch->aCurrent['paginate']['perPage'] = (int)$this->oConfig->getGlParam('number_all');
+        $this->oSearch->aCurrent['paginate']['perPage'] = (int)$this->oConfig->getGlParam('number_home');
         $this->oSearch->aCurrent['view'] = 'full';
         if (isset($this->oSearch->aCurrent['rss']))
             $this->oSearch->aCurrent['rss']['link'] = $this->oSearch->getCurrentUrl('browseAll', 0, '');
