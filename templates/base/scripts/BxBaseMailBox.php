@@ -1579,7 +1579,7 @@
             $sEditor = '';
             if ($oEditor) {
                 $oEditor->setCustomConf ("remove_script_host: false,\nrelative_urls: false,\n");
-                $sEditor = $oEditor->attachEditor ('#compose_message', BX_EDITOR_FULL);
+                $sEditor = $oEditor->attachEditor ('#compose_message', BX_EDITOR_FULL, $this->bAjaxMode);
             }
 
             return $sEditor . $sOutputHtml;
