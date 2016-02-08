@@ -105,7 +105,8 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
     	$sResult .= $this->oTemplate->addCss(array(
     		'album.css'
     	), $bDynamic);
-    	return $sResult;
+
+    	return $bDynamic ? $sResult : '';
     }
 
     function getAlbumCovers ($iAlbumId, $aParams = array())
