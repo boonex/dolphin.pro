@@ -518,7 +518,11 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
             $sKeywordPost = $_POST['keyword'];
             unset($_POST['keyword']);
         }
-        
+
+        $aSavePaginate = array();
+        if(isset($_GET['page'], $_GET['per_page']))
+        	$aSavePaginate = array($_GET['page'], $_GET['per_page']);
+
         unset($_GET['page']);
         unset($_GET['per_page']);
 
@@ -531,6 +535,9 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
         );
 
         $aFilesList = $this->getSearchData();
+
+        if(!empty($aSavePaginate))
+        	list($_GET['page'], $_GET['per_page']) = $aSavePaginate;
 
         if (!is_null($sKeywordGet))
             $_GET['keyword'] = clear_xss($sKeywordGet);
