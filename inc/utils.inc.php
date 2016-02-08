@@ -656,7 +656,8 @@ function clear_xss($val)
     if (!$GLOBALS['logged']['admin'])
         $val = $oHtmlPurifier->purify($val);
 
-    bx_alert('system', 'clear_xss', 0, 0, array('oHtmlPurifier' => $oHtmlPurifier, 'return_data' => &$val));
+    $oZ = new BxDolAlerts('system', 'clear_xss', 0, 0, array('oHtmlPurifier' => $oHtmlPurifier, 'return_data' => &$val));
+    $oZ->alert();
 
     return $val;
 }
