@@ -116,23 +116,29 @@ class BxPhotosPageAlbumsMy extends BxDolPageView
         $iPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : (int)$this->oConfig->getGlParam('number_albums_browse');
         $iPage = isset($_GET['page']) ? (int)$_GET['page'] : $this->oSearch->aCurrent['paginate']['page'];
         $sCode = $this->oSearch->getAlbumList($iPage, $iPerPage, array('owner'=>$this->iOwnerId, 'show_empty' => true, 'hide_default' => true));
+        $iCount = $this->oSearch->aCurrent['paginate']['totalAlbumNum'];
         $sPgn = '';
-        if ($this->oSearch->aCurrent['paginate']['totalAlbumNum'] > 0) {
-            $aLinkAddon = $this->oSearch->getLinkAddByPrams();
-            $sLink = $sLinkJs = BX_DOL_URL_ROOT . $this->oConfig->getBaseUri() . 'albums/my';
-                if ($this->oConfig->isPermalinkEnabled)
-                    $sLinkJs .= '?';
-                $sLinkJs .= $aLinkAddon['params'];
-
+        if ($iCount > $iPerPage) {
+            $aLinkAddon = $this->oSearch->getLinkAddByPrams(array('r'));
+            $sLink = $sLinkJs = $sViewAllUrl = BX_DOL_URL_ROOT . $this->oConfig->getBaseUri() . 'albums/my/' . $this->aAddParams[0];
+            if ($this->oConfig->isPermalinkEnabled) {
+                $sLinkJs .= '?';
+                $sViewAllUrl .= '?';
+            }
+            else {
+                $sViewAllUrl .= '&amp;';
+            }
+            $sLinkJs .= $aLinkAddon['params'];
+            $sViewAllUrl .= 'per_page=' . $iCount;
             $oPaginate = new BxDolPaginate(array(
                 'page_url' => $sLink,
-                'count' => $this->oSearch->aCurrent['paginate']['totalAlbumNum'],
+                'count' => $iCount,
                 'per_page' => $iPerPage,
                 'page' => $iPage,
                 'on_change_page' => 'return !loadDynamicBlock(' . $iBoxId . ', \'' . $sLinkJs . '&page={page}&per_page={per_page}\');',
                 'on_change_per_page' => 'return !loadDynamicBlock(' . $iBoxId . ', \'' . $sLinkJs . '&page=1&per_page=\' + this.value);'
             ));
-          $sPgn = $oPaginate->getSimplePaginate(BX_DOL_URL_ROOT . $this->oConfig->getBaseUri() . 'albums/browse/owner/' . getUsername($this->iOwnerId));
+            $sPgn = $oPaginate->getSimplePaginate($sViewAllUrl);
         }
         return array($sCode, array(), $sPgn, false);
     }
@@ -474,14 +480,20 @@ class BxPhotosPageAlbumsMy extends BxDolPageView
             )
         );
         $sPaginate = '';
-        if($iCount > $iPerPage) {
+        if ($iCount > $iPerPage) {
             $sSection = isset($aCustom['section']) ? strip_tags($aCustom['section']) : '';
-            if ($this->oConfig->isPermalinkEnabled)
-                $sSection .= '?';
             $iId = isset($aCustom['page_block_id']) ? (int)$aCustom['page_block_id'] : 1;
-            $aLinkAddon = $this->oSearch->getLinkAddByPrams();
-            $sLink = BX_DOL_URL_ROOT . $this->oConfig->getBaseUri() . 'albums/my/';
-            $sLinkJs = $sLink . $sSection . $aLinkAddon['params'];
+            $aLinkAddon = $this->oSearch->getLinkAddByPrams(array('r'));
+            $sLink = $sLinkJs = $sViewAllUrl = BX_DOL_URL_ROOT . $this->oConfig->getBaseUri() . 'albums/my/' . $sSection;
+            if ($this->oConfig->isPermalinkEnabled) {
+                $sLinkJs .= '?';
+                $sViewAllUrl .= '?';
+            }
+            else {
+                $sViewAllUrl .= '&amp;';
+            }
+            $sLinkJs .= $aLinkAddon['params'];
+            $sViewAllUrl .= 'per_page=' . $iCount;
             $oPaginate = new BxDolPaginate(array(
                 'page_url' => $sLink,
                 'count' => $iCount,
@@ -490,7 +502,7 @@ class BxPhotosPageAlbumsMy extends BxDolPageView
                 'on_change_page' => 'return !loadDynamicBlock(' . $iId . ', \'' . $sLinkJs . '&page={page}&per_page={per_page}\');',
                 'on_change_per_page' => 'return !loadDynamicBlock(' . $iId . ', \'' . $sLinkJs . '&page=1&per_page=\' + this.value);'
             ));
-            $sPaginate = $oPaginate->getSimplePaginate(BX_DOL_URL_ROOT . $this->oConfig->getBaseUri() . 'albums/browse/owner/' . getUsername($this->iOwnerId));
+            $sPaginate = $oPaginate->getSimplePaginate($sViewAllUrl);
         }
         $sManage = $this->oSearch->showAdminActionsPanel($this->oSearch->aCurrent['name'] . '_admin_form', $aBtns);
         $aUnit = array(
