@@ -643,6 +643,7 @@ function setMembership($iMemberId, $iMembershipId, $iDays = 0, $bStartsNow = fal
     $oZ = new BxDolAlerts('profile', 'set_membership', '', $iMemberId, array('mlevel'=> $iMembershipId, 'days' => $iDays, 'starts_now' => $bStartsNow, 'txn_id' => $sTransactionId));
     $oZ->alert();
 
+    //Notify user about changed membership level
     bx_import('BxDolEmailTemplates');
     $oEmailTemplate = new BxDolEmailTemplates();
     $aTemplate = $oEmailTemplate->getTemplate('t_MemChanged', $iMemberId);
@@ -654,6 +655,10 @@ function setMembership($iMemberId, $iMembershipId, $iDays = 0, $bStartsNow = fal
 
     if ($isSendMail)
         sendMail( $aProfileInfo['Email'], $aTemplate['Subject'], $aTemplate['Body'], $iMemberId, $aTemplateVars);
+
+	//Notify admin about changed user's membership level
+    $aTemplate = $oEmailTemplate->parseTemplate('t_UserMemChanged', $aTemplateVars, $iMemberId);
+    sendMail($GLOBALS['site']['email'], $aTemplate['Subject'], $aTemplate['Body']);
 
     return true;
 }

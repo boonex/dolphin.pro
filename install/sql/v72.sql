@@ -950,6 +950,8 @@ INSERT INTO `sys_email_templates` (`Name`, `Subject`, `Body`, `Desc`, `LangID`) 
 ('t_Message', 'You''ve Got A New Message', '<bx_include_auto:_email_header.html />\r\n\r\n<p><b>Dear <RealName></b>,</p>\r\n\r\n<p><a href="<ProfileUrl>"><ProfileReference></a> sent you a message: </p>\r\n\r\n<hr>\r\n<p><MessageText></p>\r\n<hr>\r\n\r\n<p>Go to your account to reply: <a href="<Domain>member.php"><Domain>member.php</a></p>\r\n\r\n<bx_include_auto:_email_footer.html />', 'New message notification with message text', 0),
 ('t_UserJoined', 'New Member Joined', '<bx_include_auto:_email_header.html />\r\n\r\n<p>New user: <RealName></p> \r\n<p>Email: <Email></p> \r\n\r\n<bx_include_auto:_email_footer.html />', 'Admin notification about new member', 0),
 ('t_UserConfirmed', 'User Confirmed Email', '<bx_include_auto:_email_header.html />\r\n\r\n<p>User: <RealName></p> \r\n<p>Email: <Email></p> \r\n\r\n<bx_include_auto:_email_footer.html />', 'Admin notification - user confirmed email', 0),
+('t_UserMemChanged', 'Member Membership Changed', '<bx_include_auto:_email_header.html />\r\n\r\n<p><RealName>''s membership level was changed to: <b><MembershipLevel></b></p>\r\n\r\n\r\n<bx_include_auto:_email_footer.html />', 'Admin notification about membership change', 0),
+('t_UserUnregistered', 'Member Unregistered', '<bx_include_auto:_email_header.html />\r\n\r\n<p>User: <NickName></p> \r\n<p>Email: <Email></p> \r\n<p>was unregistered.</p> \r\n\r\n<bx_include_auto:_email_footer.html />', 'Admin notification about unregistered member', 0),
 ('t_SpamReport', 'Profile Spam Report', '<bx_include_auto:_email_header.html />\r\n\r\n<p><a href="<Domain>profile.php?ID=<reporterID>"><reporterNick></a> reported Profile SPAM:  <a href="<Domain>profile.php?ID=<spamerID>"><b><spamerNick></b></a></p>\r\n\r\n<bx_include_auto:_email_footer.html />', 'Profile Spam Report', 0),
 ('t_TellFriend', 'Check This Out!', '<bx_include_auto:_email_header.html />\r\n\r\n\r\n<p>I thought you''d be interested: <a href="<Link>"><Link></a><br />\r\n</p>\r\n\r\n<bx_include_auto:_email_footer.html />', 'Friend Invitation', 0),
 ('t_TellFriendProfile', 'Look At This Profile', '<bx_include_auto:_email_header.html />\r\n\r\n\r\n\r\n<p>Check out this profile: <a href="<Link>"><Link></a></p>\r\n\r\n<bx_include_auto:_email_footer.html />', 'Email profile to a friend', 0),
@@ -1115,7 +1117,8 @@ INSERT INTO `sys_options` VALUES
 ('autoApproval_ifProfile', 'on', @iCatModeration, 'Preserve profile status after profile info editing', 'checkbox', '', '', 20, ''),
 ('autoApproval_ifNoConfEmail', '', @iCatModeration, 'Auto-confirm profile without confirmation email', 'checkbox', '', '', 30, ''),
 ('newusernotify', 'on', @iCatModeration, 'Enable notification about new members', 'checkbox', '', '', 40, ''),
-('ban_duration', '10', @iCatModeration, 'Profile ban duration (in days)', 'digit', '', '', 50, '');
+('unregisterusernotify', 'on', @iCatModeration, 'Enable notification about unregistered members', 'checkbox', '', '', 50, ''),
+('ban_duration', '10', @iCatModeration, 'Profile ban duration (in days)', 'digit', '', '', 60, '');
 
 
 -- CAT: Site 
@@ -3429,6 +3432,7 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('profile', 'login', 2),
 ('profile', 'logout', 2),
 ('profile', 'edit', 2),
+('profile', 'delete', 2),
 ('profile', 'join', 3),
 ('profile', 'edit', 3),
 ('profile', 'delete', 3),

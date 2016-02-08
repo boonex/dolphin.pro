@@ -55,4 +55,11 @@ class BxDolAlertsResponseProfile extends BxDolAlertsResponse
         $oTags = new BxDolTags();
         $oTags->reparseObjTags('profile', $oAlert->iObject);
     }
+
+    function _processProfileDelete ($oAlert)
+    {
+    	$oPC = new BxDolProfilesController();
+    	if(getParam('unregisterusernotify') == 'on' )
+    		$oPC->sendUnregisterUserNotify($oAlert->aExtras['profile_info']);
+    }
 }

@@ -218,6 +218,20 @@ class BxDolProfilesController
         return sendMail($GLOBALS['site']['email'], $aTemplate['Subject'], $aTemplate['Body'], $iMemID);
     }
 
+    function sendUnregisterUserNotify( $aMember )
+    {
+        if(empty($aMember) || !is_array($aMember))
+			return false;
+
+        $oEmailTemplates = new BxDolEmailTemplates();
+        $aTemplate = $oEmailTemplates->parseTemplate('t_UserUnregistered', array(
+			'NickName'	=> $aMember['NickName'],
+        	'Email'	=> $aMember['Email'],
+        ));
+
+        return sendMail($GLOBALS['site']['email'], $aTemplate['Subject'], $aTemplate['Body']);
+    }
+
     function updateProfile( $iMemberID, $aData )
     {
         if( !$aData or !is_array($aData) or empty($aData) )
