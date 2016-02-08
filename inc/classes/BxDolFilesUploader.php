@@ -418,6 +418,7 @@ class BxDolFilesUploader extends BxDolTemplate
             $aCustomFormData[BX_DOL_UPLOADER_EP_PREFIX . $sKey] = $mixedValue;        
 
         $aVars = array(
+        	'upload_type' => $this->sUploadTypeLC,
             'form' => $this->getUploadFormHtml5Files(),
             'static_path' => parse_url(BX_DOL_URL_PLUGINS, PHP_URL_PATH),
             'plugins_url' => BX_DOL_URL_PLUGINS,

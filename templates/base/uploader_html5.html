@@ -1,4 +1,3 @@
-
     <script>
         window.FileAPI = {
             debug: false,
@@ -7,18 +6,17 @@
             staticPath: '__static_path__'
         };
     </script>
-
     <script type="text/javascript" src="__plugins_url__file-api/dist/FileAPI.min.js"></script>
     <script type="text/javascript" src="__plugins_url__file-api/plugins/FileAPI.exif.js"></script>
 
 	<style>
-        #bx-files-preview {
+        #bx-__upload_type__-preview {
             display:none;
             margin-left:-5px;
             margin-right:-5px;
             margin-bottom:-5px;
         }   
-        .bx-files-preview-container {
+        .bx-__upload_type__-preview-container {
             display:inline;
         }
 		.b-button {
@@ -141,17 +139,17 @@
 	</script>
 
 
-	<div id="oooops" style="display: none; margin: 10px; padding: 10px; border: 2px solid #f60; border-radius: 4px;">
+	<div id="bx-__upload_type__-oooops" style="display: none; margin: 10px; padding: 10px; border: 2px solid #f60; border-radius: 4px;">
         <bx_text:_sys_txt_uploader_html5_not_supported />
 	</div>
 
 
-    <div id="buttons-panel" class="b-button js-fileapi-wrapper bx-btn">
+    <div id="bx-__upload_type__-buttons-panel" class="b-button js-fileapi-wrapper bx-btn">
         <div class="b-button__text"><bx_text:_sys_txt_select_files /></div>
         <input name="files" class="b-button__input" type="file" accept="__accept_mime_type__" __multiple__ />
     </div>
 
-    <div id="bx-files-preview" class="bx-def-margin-top clearfix">
+    <div id="bx-__upload_type__-preview" class="bx-def-margin-top clearfix">
         __form__
     </div>
 
@@ -176,11 +174,11 @@
 	<script type="text/javascript">
 		jQuery(function ($){
 			if( !(FileAPI.support.cors || FileAPI.support.flash) ){
-				$('#oooops').show();
-				$('#buttons-panel').hide();
+				$('#bx-__upload_type__-oooops').show();
+				$('#bx-__upload_type__-buttons-panel').hide();
 			}
 
-			$(document).on('mouseenter mouseleave', '.b-button', function (evt){
+			$(document).on('mouseenter mouseleave', '#bx-__upload_type__-buttons-panel', function (evt){
 				$(evt.currentTarget).toggleClass('b-button_hover', evt.type == 'mouseenter');
 			});
 
@@ -193,7 +191,7 @@
 				});
 			}
 
-			$('input[name="files"]').on('change', function (evt){
+			$('#bx-__upload_type__-buttons-panel input[name="files"]').on('change', function (evt){
 				var files = FileAPI.getFiles(evt);
 				onFiles(files);
 				FileAPI.reset(evt.currentTarget);
@@ -329,27 +327,27 @@
             }
 
             function onAllFilesComplete(){
-                $('#bx-files-preview input[type="submit"]').removeAttr('disabled');
+                $('#bx-__upload_type__-preview input[type="submit"]').removeAttr('disabled');
                 reloadBlocks();
             }
 
 			function onFiles(files){
-                $('#bx-files-preview input[type="submit"]').attr('disabled','disabled');
+                $('#bx-__upload_type__-preview input[type="submit"]').attr('disabled','disabled');
 
-                var $Queue = $('#bx-files-preview form .bx-files-preview-container');
+                var $Queue = $('#bx-__upload_type__-preview form .bx-__upload_type__-preview-container');
                 if (!$Queue.size())
-    				$Queue = $('<div class="bx-files-preview-container clearfix" />').prependTo('#bx-files-preview form');
+    				$Queue = $('<div class="bx-__upload_type__-preview-container clearfix" />').prependTo('#bx-__upload_type__-preview form');
 
 				FileAPI.each(files, function (file){
 					if( file.size >= parseInt('__max_file_size__') ){ 
 						alert('__max_file_size_exceeded__');
 					}
 					else if( file.size === void 0 ){
-						$('#oooops').show();
-						$('#buttons-panel').hide();
+						$('#bx-__upload_type__-oooops').show();
+						$('#bx-__upload_type__-buttons-panel').hide();
 					}
 					else {
-                        $('#bx-files-preview').show();
+                        $('#bx-__upload_type__-preview').show();
 						$Queue.prepend(tmpl($('#b-file-ejs').html(), { file: file, icon: FU.icon }));
 
 						FU.add(file);
@@ -362,8 +360,8 @@
 			$(document)
 				.on('bx-files-cleanup', function () {
                     FU.cleanup();
-                    $('.bx-files-preview-container').remove();
-                    $('#bx-files-preview').hide();
+                    $('.bx-__upload_type__-preview-container').remove();
+                    $('#bx-__upload_type__-preview').hide();
                     reloadBlocks();
 				})
 				.on('click', '.js-abort', function (evt) {
