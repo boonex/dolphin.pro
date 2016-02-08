@@ -371,6 +371,33 @@ class BxDolFilesTemplate extends BxDolModuleTemplate
         return '<?xml version="1.0" encoding="utf-8" standalone="yes"?>' . $sCode;
     }
 
+	function getAlbumInfo (&$aInfo)
+    {
+        $aForm = array(
+            'form_attrs' => array('id' => $this->_oConfig->getMainPrefix() . '_album_view_form'),
+            'params'=> array('remove_form' => true),
+            'inputs' => array(
+				'location' => array(
+	                'type' => 'value',
+	                'value' => bx_linkify(process_text_output($aInfo['Location'])),
+	                'caption' => _t('_Location'),
+	            ),
+        		'description' => array(
+	                'type' => 'value',
+	                'value' => bx_linkify(process_html_output($aInfo['Description'])),
+	                'caption' => _t('_Description'),
+	            ),
+        		'date' => array(
+	                'type' => 'value',
+	                'value' => getLocaleDate($aInfo['Date'], BX_DOL_LOCALE_DATE_SHORT) . ' (' . defineTimeInterval($aInfo['Date'], false) . ')',
+	                'caption' => _t('_Date'),
+	            ),
+        	)
+        );
+        $oForm = new BxTemplFormView($aForm);
+        return array($oForm->getCode(), array(), array(), false);
+    }
+
     function getAlbumPreview ($sRssLink)
     {
     }

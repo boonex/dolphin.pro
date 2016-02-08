@@ -273,7 +273,7 @@ class BxPhotosPageAlbumsMy extends BxDolPageView
             ),
             'description' => array(
                 'name' => 'Description',
-                'value' => $aInfo['Description']
+                'value' => strip_tags($aInfo['Description'])
             ),
             'allow_view' => $aPrivFieldView,
             'id' => array(

@@ -106,6 +106,7 @@ $aLangContent = array(
     '_bx_videos_i_have_the_right_to_distribute' => 'У меня есть право выкладывать это видео',
     '_bx_videos_info' => 'Информация о файле',
     '_bx_videos_info_main' => 'Информация о видео',
+	'_bx_videos_info_album' => 'Информация об альбоме',
     '_bx_videos_latest' => 'Последние видео от этого пользователя',
     '_bx_videos_latest_file' => 'Последние избранные видео',
     '_bx_videos_main' => 'Главная',

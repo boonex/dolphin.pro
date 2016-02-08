@@ -172,7 +172,8 @@ INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Content`, `Column`
 ('[db_prefix]_album_view', '1140px', '', '', 2, 0, 0, 71.9, 0, 'non,memb', '', 'Objects'),
 ('[db_prefix]_album_view', '1140px', '', '', 2, 1, 1, 71.9, 0, 'non,memb', '_[db_prefix]_comments', 'Comments'),
 ('[db_prefix]_album_view', '1140px', '', '', 3, 0, 1, 28.1, 0, 'non,memb', '_[db_prefix]_author', 'Author'),
-('[db_prefix]_album_view', '1140px', '', '', 3, 1, 1, 28.1, 0, 'memb', '_[db_prefix]_actions', 'Actions');
+('[db_prefix]_album_view', '1140px', '', '', 3, 1, 1, 28.1, 0, 'non,memb', '_[db_prefix]_info_album', 'Info'),
+('[db_prefix]_album_view', '1140px', '', '', 3, 2, 1, 28.1, 0, 'memb', '_[db_prefix]_actions', 'Actions');
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
 ('[db_prefix]_view', '1140px', '', '_[db_prefix]_view', 2, 0, 'ViewFile', '', 1, 71.9, 'non,memb', 380),

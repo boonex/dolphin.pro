@@ -47,7 +47,17 @@ class BxDolAlbums extends BxDolMistake
         $sqlBody = "";
         foreach ($aFields as $sKey => $sValue) {
             if (in_array($sKey, $this->aAlbumFields) && strlen($sValue) > 0) {
-                $sValue = process_db_input($sValue, BX_TAGS_STRIP);
+            	switch($sKey) {
+            		case 'description':
+            		case 'Description':
+            			$sValue = process_db_input($sValue, BX_TAGS_STRIP_AND_NL2BR);
+            			break;
+
+            		default:
+            			$sValue = process_db_input($sValue, BX_TAGS_STRIP);
+            			break;
+            	}
+
                 $sqlBody .= "`{$this->sAlbumTable}`.`{$sKey}` = '$sValue'" . $sBound;
             }
         }

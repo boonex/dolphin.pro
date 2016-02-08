@@ -106,6 +106,7 @@ $aLangContent = array(
     '_bx_videos_i_have_the_right_to_distribute' => 'I have the right to distribute this Video',
     '_bx_videos_info' => 'File info',
     '_bx_videos_info_main' => 'Video info',
+	'_bx_videos_info_album' => 'Album info',
     '_bx_videos_latest' => 'Latest Videos from this user',
     '_bx_videos_latest_file' => 'Latest featured video',
     '_bx_videos_main' => 'Main',

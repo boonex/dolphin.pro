@@ -81,6 +81,11 @@ class BxPhotosPageAlbumView extends BxDolPageView
         return $this->oTemplate->getFileAuthor($aOwner);
     }
 
+	function getBlockCode_Info()
+    {
+        return $this->oTemplate->getAlbumInfo($this->aInfo);
+    }
+
     function getBlockCode_Comments()
     {
         $this->oTemplate->addCss('cmts.css');

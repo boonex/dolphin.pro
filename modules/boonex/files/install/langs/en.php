@@ -107,6 +107,7 @@ $aLangContent = array(
     '_bx_files_i_have_the_right_to_distribute' => 'I have the right to distribute these files',
     '_bx_files_info' => 'Author',
     '_bx_files_info_main' => 'File info',
+	'_bx_files_info_album' => 'Folder info',
     '_bx_files_latest' => 'Latest files from this user',
     '_bx_files_latest_file' => 'File of the day',
     '_bx_files_main' => 'Main',
