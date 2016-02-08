@@ -662,7 +662,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         $sNickName    = getUsername($iProfileId);
         $sSimpleUrl   = BX_DOL_URL_ROOT . $this->oModule->_oConfig->getBaseUri() . 'albums/browse/owner/' . $sNickName;
         $sPaginateUrl = mb_strlen($sSpecUrl) > 0 ? strip_tags($sSpecUrl) : getProfileLink($iProfileId);
-        return $this->getAlbumsBlock(array(), array('owner' => $iProfileId, 'hide_default' => TRUE), array('enable_center' => false, 'paginate_url' => $sPaginateUrl, 'simple_paginate_url' => $sSimpleUrl));
+        return $this->getAlbumsBlock(array(), array('owner' => $iProfileId, 'hide_default' => TRUE), array('enable_center' => true, 'paginate_url' => $sPaginateUrl, 'simple_paginate_url' => $sSimpleUrl));
     }
 
     function serviceGetProfileAlbumFiles ($iProfileId)
