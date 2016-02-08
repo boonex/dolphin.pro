@@ -5,7 +5,7 @@ function rayVideoReady(bMode, sExtra) {
 	bVideoRecorded = bMode;
 	shVideoEnableSubmit(bMode);
 	if(!bVideoRecorded)
-		$('#accepted_files_block').text("");
+		$('#video_accepted_files_block').text("");
 }
 
 function shVideoEnableSubmit(bMode) {
@@ -32,7 +32,7 @@ BxVideoUpload.prototype.genSendFileInfoForm = function(iMID, sForm) {
     if (iMID > 0 && sForm != '') {
     	sAcceptingIframe = '<iframe name="upload_file_info_frame_' + iMID + '" style="display: none;"></iframe>';
     	sFormInfo = '<div style="padding:5px;" id="send_file_info_'+iMID+'">' + sForm + sAcceptingIframe + '</div>';
-    	$(sFormInfo).appendTo('#accepted_files_block').addWebForms();
+    	$(sFormInfo).appendTo('#video_accepted_files_block').addWebForms();
     	this.changeContinueButtonStatus();
     }
 }
@@ -46,7 +46,7 @@ BxVideoUpload.prototype.changeContinueButtonStatus = function () {
 		case 'upload':
 			var sFileVal = $('#video_upload_form .video_upload_form_wrapper .form_input_file').val();
 			var sAgreeVal = $('#video_upload_form #video_upload_form_input_agree').is(':checked');
-			var sAcceptedFilesBlockVal = $('#accepted_files_block').text();
+			var sAcceptedFilesBlockVal = $('#video_accepted_files_block').text();
 			shVideoEnableSubmit(sFileVal != null && sFileVal != '' && sAgreeVal == true && sAcceptedFilesBlockVal == '');
 
             bPossibleToReload = true;
@@ -59,7 +59,7 @@ BxVideoUpload.prototype.changeContinueButtonStatus = function () {
 			break;
 		
 		case 'record':
-			shVideoEnableSubmit(bVideoRecorded && $('#accepted_files_block').text() == "");
+			shVideoEnableSubmit(bVideoRecorded && $('#video_accepted_files_block').text() == "");
 
             bPossibleToReload = true;
 			break;
@@ -100,8 +100,8 @@ BxVideoUpload.prototype.cancelSendFileInfoResult = function(iMID) {
 	$('#send_file_info_'+iMID).remove();
 	this.changeContinueButtonStatus();
 
-    $('#accepted_files_block script').remove();
-    if (bPossibleToReload && $('#accepted_files_block').text() == '')
+    $('#video_accepted_files_block script').remove();
+    if (bPossibleToReload && $('#video_accepted_files_block').text() == '')
         window.location.href = window.location.href;
 }
 
@@ -117,8 +117,8 @@ BxVideoUpload.prototype.onSuccessSendingFileInfo = function(iMID) {
 
 	this.changeContinueButtonStatus();
 
-    $('#accepted_files_block script').remove();
-    if (bPossibleToReload && $('#accepted_files_block').text() == '')
+    $('#video_accepted_files_block script').remove();
+    if (bPossibleToReload && $('#video_accepted_files_block').text() == '')
         window.location.href = window.location.href;
 	
 	switch(this.getType()) {
@@ -201,7 +201,7 @@ BxVideoUpload.prototype.checkEmbed = function (bAlert) {
 				break;
 			}
 	}
-	var bResult = (/^https?:\/\/(www.)?youtube.com\/watch\?v=([0-9A-Za-z_-]{11})$/.test(sText) || /^https?:\/\/(www.)?youtu.be\/([0-9A-Za-z_-]{11})$/.test(sText)) && $('#accepted_files_block').text() == "";
+	var bResult = (/^https?:\/\/(www.)?youtube.com\/watch\?v=([0-9A-Za-z_-]{11})$/.test(sText) || /^https?:\/\/(www.)?youtu.be\/([0-9A-Za-z_-]{11})$/.test(sText)) && $('#video_accepted_files_block').text() == "";
 	if(bResult)
 		tText.attr("value", sText);
     if (bAlert && !bResult)

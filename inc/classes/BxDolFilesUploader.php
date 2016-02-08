@@ -170,7 +170,7 @@ class BxDolFilesUploader extends BxDolTemplate
                 });
             </script>
               __form__
-            <div id="accepted_files_block" class="bx-def-margin-top" style="background-color:#ffdada;"></div>
+            <div id="__upload_type___accepted_files_block" class="bx-def-margin-top" style="background-color:#ffdada;"></div>
 
             <div id="__upload_type___success_message" style="display:none;">__box_upl_succ__</div>
             <div id="__upload_type___failed_file_message" style="display:none;">__box_upl_file_err__</div>

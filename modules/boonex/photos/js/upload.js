@@ -5,7 +5,7 @@ function rayPhotoReady(bMode, sExtra) {
 	bPhotoRecorded = bMode;
 	shPhotoEnableSubmit(bMode);
 	if(!bPhotoRecorded)
-		$('#accepted_files_block').text("");
+		$('#photo_accepted_files_block').text("");
 }
 
 function shPhotoEnableSubmit(bMode) {
@@ -32,7 +32,7 @@ BxPhotoUpload.prototype.genSendFileInfoForm = function(iMID, sForm) {
     if (iMID > 0 && sForm != '') {
     	sAcceptingIframe = '<iframe name="upload_file_info_frame_' + iMID + '" style="display: none;"></iframe>';
     	sFormInfo = '<div style="padding:5px;" id="send_file_info_'+iMID+'">' + sForm + sAcceptingIframe + '</div>';
-    	$(sFormInfo).appendTo('#accepted_files_block').addWebForms();
+    	$(sFormInfo).appendTo('#photo_accepted_files_block').addWebForms();
     	this.changeContinueButtonStatus();
     }
 }
@@ -46,7 +46,7 @@ BxPhotoUpload.prototype.changeContinueButtonStatus = function () {
 		case 'upload':
 			var sFileVal = $('#photo_upload_form .photo_upload_form_wrapper .form_input_file').val();
 			var sAgreeVal = $('#photo_upload_form #photo_upload_form_input_agree').is(':checked');
-			var sAcceptedFilesBlockVal = $('#accepted_files_block').text();
+			var sAcceptedFilesBlockVal = $('#photo_accepted_files_block').text();
 			shPhotoEnableSubmit(sFileVal != null && sFileVal != '' && sAgreeVal == true && sAcceptedFilesBlockVal == '');
 
             bPossibleToReload = true;
@@ -59,7 +59,7 @@ BxPhotoUpload.prototype.changeContinueButtonStatus = function () {
 			break;
 		
 		case 'record':
-			shPhotoEnableSubmit(bPhotoRecorded && $('#accepted_files_block').text() == "");
+			shPhotoEnableSubmit(bPhotoRecorded && $('#photo_accepted_files_block').text() == "");
 
             bPossibleToReload = true;
 			break;
@@ -100,8 +100,8 @@ BxPhotoUpload.prototype.cancelSendFileInfoResult = function(iMID) {
 	$('#send_file_info_'+iMID).remove();
 	this.changeContinueButtonStatus();
 
-    $('#accepted_files_block script').remove();
-    if (bPossibleToReload && $('#accepted_files_block').text() == '')
+    $('#photo_accepted_files_block script').remove();
+    if (bPossibleToReload && $('#photo_accepted_files_block').text() == '')
         window.location.href = window.location.href;
 }
 
@@ -118,8 +118,8 @@ BxPhotoUpload.prototype.onSuccessSendingFileInfo = function(iMID) {
 
 	this.changeContinueButtonStatus();
 
-    $('#accepted_files_block script').remove();
-    if (bPossibleToReload && $('#accepted_files_block').text() == '')
+    $('#photo_accepted_files_block script').remove();
+    if (bPossibleToReload && $('#photo_accepted_files_block').text() == '')
         window.location.href = window.location.href;
 	
 	switch(this.getType()) {
@@ -203,7 +203,7 @@ BxPhotoUpload.prototype.checkEmbed = function (bAlert) {
 	var tText = $('#photo_upload_form [name="embed"]');
 	var sText = tText.attr("value").split(" ").join("");
 
-	var bResult = /^https?:\/\/(www.)?flickr.com\/photos\/([0-9A-Za-z_@-]+)\/([0-9]{10})\/$/.test(sText) && $('#accepted_files_block').text() == "";
+	var bResult = /^https?:\/\/(www.)?flickr.com\/photos\/([0-9A-Za-z_@-]+)\/([0-9]{10})\/$/.test(sText) && $('#photo_accepted_files_block').text() == "";
 	if (bAlert && !bResult)
         alert(_t('_bx_photos_emb_err'));
 	return bResult;
