@@ -5,8 +5,3 @@
 #join_form .hidable {
     display: none;
 }
-
-#join_form .form_advanced_table .bx-form-block-header:first-child,
-#join_form .form_advanced_table .bx-form-block-headers:first-child {
-	display: none;
-}
