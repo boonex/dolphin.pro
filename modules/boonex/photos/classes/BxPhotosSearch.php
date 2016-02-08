@@ -363,9 +363,10 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
 
         $sOwner = getUsername($aParams['PID']);
         $sCaption = str_replace('{nickname}', $sOwner, $this->oModule->_oConfig->getGlParam('profile_album_name'));
-        $sLink = $this->getCurrentUrl('manageProfilePhoto', 0, uriFilter($sCaption)) . '/owner/' . $sOwner;
 
-        $aParams['LinkUnitTo'] = $sLink;
+        if((int)$aParams['PID'] == getLoggedId())
+        	$aParams['LinkUnitTo'] = $this->getCurrentUrl('manageProfilePhoto', 0, uriFilter($sCaption)) . '/owner/' . $sOwner;
+
         $aParams['DisplayRate'] = 0;
         $aParams['DisplayPagination'] = 0;
         $aParams['DisplayLink'] = 0;
