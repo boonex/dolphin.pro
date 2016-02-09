@@ -320,7 +320,7 @@
                     return;
 
                 // on upload page reload all blocks except itself
-                $('.page_block_container').filter(':not(#' + $('#accepted_files_block').parents('.page_block_container').attr('id') + ')').each(function () {
+                $('.page_block_container').filter(':not(#' + $('#__upload_type___accepted_files_block').parents('.page_block_container').attr('id') + ')').each(function () {
                     var iId = parseInt($(this).attr('id').replace('page_block_', ''));
                     loadDynamicBlock(iId, document.location.href);
                 });
