@@ -394,24 +394,30 @@ class BxFilesPageAlbumsMy extends BxDolPageView
         $this->oSearch->aCurrent['restriction']['albumType']['value'] = $this->oSearch->aCurrent['name'];
         $this->oSearch->aCurrent['restriction']['ownerId']['value'] = $this->iOwnerId;
         $this->oSearch->aCurrent['paginate']['perPage'] = $this->oConfig->getGlParam('number_all');
+
         $sCode = $this->oSearch->displayResultBlock();
-        if ($this->oSearch->aCurrent['paginate']['totalNum'] > 0) {
-            $sUrlBody = '';
-            for ($i = 1; $i < 4; $i++)
-                $sUrlBody .= '/' . $this->aAddParams[$i];
-            $sUrl = BX_DOL_URL_ROOT . $this->oConfig->getBaseUri() . 'browse/album' . $sUrlBody . '&per_page=' . $this->oSearch->aCurrent['paginate']['totalNum'];
-            $aBottomMenu = $this->oSearch->getBottomMenu($sUrl, $this->iOwnerId, getUsername($this->iOwnerId));
-        } else {
-            $sCode = $this->oSearch->addCustomParts() . MsgBox(_t("_Empty"));
-            $aBottomMenu = array();
+        $iCount = $this->oSearch->aCurrent['paginate']['totalNum'];
+        $sBaseHref = BX_DOL_URL_ROOT . $this->oConfig->getBaseUri() . 'albums/my/';
+        $sUri = implode('/', array_slice($this->aAddParams, 1, 3));
+
+        $sPaginate = '';
+        if ($iCount == 0)
+            $sCode = MsgBox(_t('_Empty'));
+        else {
+            if ($iCount > $this->oSearch->aCurrent['paginate']['perPage']) {
+                $sViewAllUrl = $sBaseHref . $this->aAddParams[0] . '/' . $sUri;
+                $sViewAllUrl .= ($this->oConfig->isPermalinkEnabled) ? '?' : '&amp;';
+                $sPaginate = $this->oSearch->getBottomMenu($sViewAllUrl . 'per_page=' . $iCount);
+            }
         }
+
         $aSections = array(
             'disapproved' => NULL,
             'pending' => NULL,
         );
         $sLangKey = '_' . $this->oConfig->getMainPrefix() . '_count_status_info';
         $sUnitKey = '_' . $this->oConfig->getMainPrefix() . '_album_manage_objects_';
-        $sHref = BX_DOL_URL_ROOT . $this->oConfig->getBaseUri() . 'albums/my/manage_objects_{section}/' . $this->aAddParams[1] . '/owner/' . $this->aAddParams[3];
+        $sHref = $sBaseHref . 'manage_objects_{section}/' . $sUri;
         $sInfo = '';
         $sMessage = '';
         foreach ($aSections as $sSection => $mixedStatus) {
@@ -425,7 +431,7 @@ class BxFilesPageAlbumsMy extends BxDolPageView
         }
         $aVars = array ('msg' => $sMessage);
         $sInfo = $this->oTemplate->parseHtmlByName ('pending_approval_plank.html', $aVars);
-        return array($sInfo . $sCode, array(), $aBottomMenu, '');
+        return array($sInfo . $sCode, array(), $sPaginate, '');
     }
 
     // support functions
@@ -551,13 +557,19 @@ class BxFilesPageAlbumsMy extends BxDolPageView
             $sMoveToAlbum = $this->oTemplate->parseHtmlByName('albums_select.html', array('bx_repeat:choose' => $aAlbums));
         }
         $sCode = $this->oSearch->displayResultBlock();
-        if ($this->oSearch->aCurrent['paginate']['totalNum'] == 0)
+        $iCount = $this->oSearch->aCurrent['paginate']['totalNum'];
+        $sPaginate = '';
+        if ($iCount == 0)
             $sCode = MsgBox(_t('_Empty'));
         else {
             $sCode = $GLOBALS['oFunctions']->centerContent($sCode, '.sys_file_search_unit');
-            $sPaginate = $this->oSearch->getBottomMenu('browseUserAll', $this->iOwnerId, getUsername($this->iOwnerId));
-            if ($iBoxId > 0)
-                $sPaginate = str_replace('{id}', $iBoxId, $sPaginate);
+            if ($iCount > $this->oSearch->aCurrent['paginate']['perPage']) {
+                $sViewAllUrl = BX_DOL_URL_ROOT . $this->oConfig->getBaseUri() . 'albums/my/' . implode('/', array_slice($this->aAddParams, 0, 4));
+                $sViewAllUrl .= ($this->oConfig->isPermalinkEnabled) ? '?' : '&amp;';
+                $sPaginate = $this->oSearch->getBottomMenu($sViewAllUrl . 'per_page=' . $iCount);
+                if ($iBoxId > 0)
+                    $sPaginate = str_replace('{id}', $iBoxId, $sPaginate);
+            }
         }
         $sManage = $this->oSearch->showAdminActionsPanel($this->oSearch->aCurrent['name'] . '_admin_form', $aBtns, 'entry', true, false, $sMoveToAlbum);
         $aAlbumInfo = $this->oAlbum->getAlbumInfo(array('fileUri' => $this->aAddParams[1]), array('ID'));
