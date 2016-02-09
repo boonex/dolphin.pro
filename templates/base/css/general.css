@@ -922,7 +922,7 @@ div.extra_top_menu table.fixed_menu div.popup_html div.description_bottom{
 }
 
 div.extra_top_menu table.fixed_menu div.popup_html div.bubble {        
-    padding: 0px 5px;
+    padding: 1px 5px;
 
     background-color: #e00;
     border-radius: 14px;
@@ -934,7 +934,7 @@ div.extra_top_menu table.fixed_menu div.popup_html div.bubble {
 }
 
 div.extra_top_menu table.fixed_menu div.popup_html div.bubble .bubble_count{
-    font-size: 10px;
+    font-size: 12px;
     color: #fff;
 }
 
