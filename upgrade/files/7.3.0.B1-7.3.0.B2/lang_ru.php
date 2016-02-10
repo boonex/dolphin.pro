@@ -9,8 +9,8 @@ $aLangContent = array(
   '_adm_dsc_settings_injection_head' => 'Код для вставки перед закрывающим HEAD тагом',
   '_adm_txt_mp_intersex' => 'интерсекс',
   '_adm_txt_mp_other' => 'другие',
-  '_adm_txt_settings_injection_body' => '<BODY> инъекция',
-  '_adm_txt_settings_injection_head' => '<HEAD> инъекция',
+  '_adm_txt_settings_injection_body' => '&lt;BODY&gt; инъекция',
+  '_adm_txt_settings_injection_head' => '&lt;HEAD&gt; инъекция',
 
   // ================ CHANGED KEYS ================
 

@@ -9,8 +9,8 @@ $aLangContent = array(
   '_adm_dsc_settings_injection_head' => 'Code to insert before closing HEAD tag',
   '_adm_txt_mp_intersex' => 'intersex',
   '_adm_txt_mp_other' => 'other',
-  '_adm_txt_settings_injection_body' => '<BODY> injection',
-  '_adm_txt_settings_injection_head' => '<HEAD> injection',
+  '_adm_txt_settings_injection_body' => '&lt;BODY&gt; injection',
+  '_adm_txt_settings_injection_head' => '&lt;HEAD&gt; injection',
 
   // ================ CHANGED KEYS ================
 
