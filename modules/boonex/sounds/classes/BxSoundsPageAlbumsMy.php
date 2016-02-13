@@ -390,7 +390,6 @@ class BxSoundsPageAlbumsMy extends BxDolPageView
         $this->oSearch->aCurrent['restriction']['activeStatus']['value'] = 'approved';
         $this->oSearch->aCurrent['restriction']['ownerId']['value'] = $this->iOwnerId;
         $this->oSearch->aCurrent['paginate']['perPage'] = $this->oConfig->getGlParam('number_all');
-        $this->oSearch->aCurrent['view'] = 'full';
 
         $sCode = $this->oSearch->displayResultBlock();
         if(strlen($sCode) > 0) {
