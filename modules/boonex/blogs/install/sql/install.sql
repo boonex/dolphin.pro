@@ -129,8 +129,8 @@ INSERT INTO `sys_page_compose` (`ID`, `Page`, `PageWidth`, `Desc`, `Caption`, `C
 -- page compose pages 2
 SET @iPCPOrder = (SELECT `Order` FROM `sys_page_compose_pages` ORDER BY `Order` DESC LIMIT 1);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES
-('bx_blogs', 'Blog Post View', @iPCPOrder+1),
-('bx_blogs_home', 'Blog Home', @iPCPOrder+2);
+('bx_blogs', 'Blogs View Post', @iPCPOrder+1),
+('bx_blogs_home', 'Blogs Home', @iPCPOrder+2);
 
 INSERT INTO `sys_page_compose` (`ID`, `Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
 (NULL, 'bx_blogs', '1140px', '', '_Title', 2, 0, 'PostView', '', 0, 71.9, 'non,memb', 0),

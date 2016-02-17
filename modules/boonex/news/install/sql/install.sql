@@ -159,7 +159,7 @@ INSERT INTO `sys_objects_views`(`name`, `table_track`, `period`, `trigger_table`
 
 
 SET @iPCPOrder = (SELECT MAX(`Order`) FROM `sys_page_compose_pages`);
-INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES ('news_single', 'Single News', @iPCPOrder+1);
+INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES ('news_single', 'News View Article', @iPCPOrder+1);
 
 SET @iPCPOrder = (SELECT MAX(`Order`) FROM `sys_page_compose_pages`);
 INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES ('news_home', 'News Home', @iPCPOrder+1);

@@ -1,7 +1,7 @@
 
 -- page compose pages
 SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose_pages` ORDER BY `Order` DESC LIMIT 1);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_gsearch', 'Google Search', @iMaxOrder);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_gsearch', 'Search Google', @iMaxOrder);
 
 -- page compose blocks
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 

@@ -148,10 +148,10 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 -- page compose
 SET @iPCPOrder := (SELECT MAX(`Order`) FROM `sys_page_compose_pages`);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES 
-('bx_sites_main', 'Main Sites Page', @iPCPOrder + 1),
-('bx_sites_profile', 'Profile Sites Page', @iPCPOrder + 2),
-('bx_sites_view', 'Site View Page', @iPCPOrder + 3),
-('bx_sites_hon', 'Site HoN Page', @iPCPOrder + 4);
+('bx_sites_main', 'Sites Home', @iPCPOrder + 1),
+('bx_sites_profile', 'Sites User', @iPCPOrder + 2),
+('bx_sites_view', 'Sites View Page', @iPCPOrder + 3),
+('bx_sites_hon', 'Sites Rate', @iPCPOrder + 4);
 
 -- index page
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES

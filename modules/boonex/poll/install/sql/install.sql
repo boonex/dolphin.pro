@@ -377,8 +377,8 @@
     -- Dumping data for table `sys_page_compose_pages`
     --
 
-    INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES('show_poll_info', 'View poll', 32);
-    INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES('poll_home', 'Polls home', 33);
+    INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES('show_poll_info', 'Polls View Poll', 32);
+    INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES('poll_home', 'Polls Home', 33);
 
     --
     -- Table structure for table `poll_rating`
