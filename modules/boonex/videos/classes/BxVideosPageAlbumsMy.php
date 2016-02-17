@@ -509,6 +509,7 @@ class BxVideosPageAlbumsMy extends BxDolPageView
         $this->oSearch->clearFilters(array('activeStatus', 'allow_view', 'album_status'), array('albumsObjects', 'albums'));
         $this->oSearch->bAdminMode = $bAdminMode;
 
+        $this->oSearch->aCurrent['paginate']['perPage'] = (int)$this->oConfig->getGlParam('number_all');
         $this->oSearch->aCurrent['sorting'] = 'album_order';
         $this->oSearch->aCurrent['view'] = 'full';
 
