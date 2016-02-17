@@ -15,4 +15,5 @@
         '_bx_facebook_profile_error_api_keys'  => 'Пожалуйста, настройте модуль в административной панели (невозможно определить ключи facebook api)',
         '_bx_facebook_chart'                   => 'Facebook профили',
     	'_bx_facebook_auth_title'              => 'Facebook-соединение',
+        '_bx_facebook_error_unlicensed_site'   => 'Мобильное приложение не может работать с нелицензионным сайтом',
     );

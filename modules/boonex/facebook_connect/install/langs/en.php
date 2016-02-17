@@ -15,4 +15,5 @@
         '_bx_facebook_profile_error_api_keys'  => 'Please configure the module in admin panel (can\'t define facebook api keys)',
         '_bx_facebook_chart'                   => 'Facebook Profiles',
     	'_bx_facebook_auth_title'              => 'Facebook Connect',
+        '_bx_facebook_error_unlicensed_site'   => 'Mobile app can\'t work with unlicensed site',
     );

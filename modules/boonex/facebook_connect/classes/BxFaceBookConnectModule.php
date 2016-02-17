@@ -179,6 +179,9 @@
 
         function serviceLogin ($aFacebookProfileInfo, $sToken = '')
         {
+            if (getParam('enable_dolphin_footer') == 'on')
+                return array ('error' => _t('_bx_facebook_error_unlicensed_site'));
+
             if ($sError = $this->_setAccessToken($sToken))
                 return array ('error' => $sError);
 
