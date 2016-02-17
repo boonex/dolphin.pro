@@ -27,7 +27,21 @@ INSERT INTO  `sys_permalinks` SET `standard` = 'modules/?r=chat_plus/', `permali
 
 SET @iOrder := (SELECT MAX(`Order`) FROM `sys_menu_top` WHERE `Parent` = '0');
 INSERT INTO `sys_menu_top` (`Parent`, `Name`, `Caption`, `Link`, `Order`, `Visible`, `Target`, `Onclick`, `Check`, `Editable`, `Deletable`, `Active`, `Type`, `Picture`, `BQuickLink`, `Statistics`) VALUES
-(0, 'Chat+', '_bx_chat_plus_chat', 'modules/?r=chat_plus/redirect/', @iOrder+1, 'non,memb', '_blank', '', '', 1, 1, 1, 'top', 'commenting', 0, '');
+(0, 'Chat+', '_bx_chat_plus_chat', 'modules/?r=chat_plus/view/', @iOrder+1, 'non,memb', '', '', '', 1, 1, 1, 'top', 'commenting', 0, '');
+
+-- Page
+
+SET @iMaxOrder = (SELECT `Order` FROM `sys_page_compose_pages` ORDER BY `Order` DESC LIMIT 1);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_chat_plus', 'Chat+', @iMaxOrder+1);
+
+INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 
+('bx_chat_plus', '1140px', 'Chat+', '_bx_chat_plus_chat', '2', '0', 'PHP', 'return BxDolService::call(''chat_plus'', ''chat_block'', array());', 1, 100, 'non,memb', 0);
+
+-- Mobile App
+
+SET @iMaxOrderHomepage = (SELECT MAX(`order`)+1 FROM `sys_menu_mobile` WHERE `page` = 'homepage');
+INSERT INTO `sys_menu_mobile` (`type`, `page`, `title`, `icon`, `action`, `action_data`, `eval_bubble`, `eval_hidden`, `order`, `active`) VALUES
+('bx_chat_plus', 'homepage', '_bx_chat_plus_chat', '{site_url}modules/boonex/chat_plus/templates/base/images/icons/mobile_icon.png', 101, '{xmlrpc_url}r.php?url=modules%3Fr%3Dchat_plus%2Fredirect&user={member_username}&pwd={member_password}', '', '', @iMaxOrderHomepage, 1);
 
 -- Injections
 

@@ -18,9 +18,19 @@ class BxChatPlusModule extends BxDolConnectModule
         parent::_actionAdministration('bx_chat_plus_url', '_bx_chat_plus_setting', '_bx_chat_plus_information', '_bx_chat_plus_information_block');
     }
 
+    function actionView ()
+    {
+        $this->_oTemplate->pageStart();
+
+        bx_import ('Page', $this->_aModule);
+        $oPage = new BxChatPlusPage ('bx_chat_plus');
+        echo $oPage->getCode();
+
+        $this->_oTemplate->pageCode(_t('_bx_chat_plus_chat'), false, false);
+    }
+
     function actionRedirect ()
     {
-        // check CSRF token
         if (!getParam('bx_chat_plus_url')) {
             $this->_oTemplate->displayMsg(_t('_bx_chat_plus_not_configured'));
             return;
@@ -38,6 +48,23 @@ class BxChatPlusModule extends BxDolConnectModule
         }
 
         header("Location:" . $sLogoUrl);
+    }
+
+    function serviceChatBlock ()
+    {
+        if (!getParam('bx_chat_plus_url'))
+           return array(MsgBox(_t('_bx_chat_plus_not_configured')));
+       
+        $this->_oTemplate->addCss('main.css');
+        $s = $this->_oTemplate->parseHtmlByName('chat_block.html', array('chat_url' => getParam('bx_chat_plus_url')));
+       
+        return array($s, array (
+            _t('_bx_chat_plus_open_in_separate_window') => array (
+                'href' => getParam('bx_chat_plus_url'),
+                'target' => '_blank',
+                'active' => true,
+            ),
+        ), false, false, 'getChatBlockMenu');
     }
 
     function serviceHelpdeskCode ()

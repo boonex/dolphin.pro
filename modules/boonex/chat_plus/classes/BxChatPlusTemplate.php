@@ -4,12 +4,17 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolModuleTemplate');
+bx_import('BxDolTwigTemplate');
 
-class BxChatPlusTemplate extends BxDolModuleTemplate
+class BxChatPlusTemplate extends BxDolTwigTemplate
 {
     function BxChatPlusTemplate(&$oConfig, &$oDb)
     {
         parent::BxDolModuleTemplate($oConfig, $oDb);
+    }
+
+    function pageCodeAdminStart()
+    {
+        $this->pageStart();
     }
 }
