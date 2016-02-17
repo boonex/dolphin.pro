@@ -32,10 +32,10 @@ INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES
 ('bx_mbp_join', 'Membership Join', @iPCPOrder + 2);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('bx_mbp_join', '1140px', 'Select Level', '_membership_bcaption_purchase_level', 2, 1, 'Select', '', 1, 100, 'non', 0),
+('bx_mbp_join', '1140px', 'Select Level', '_membership_bcaption_purchase_level', 1, 1, 'Select', '', 1, 100, 'non', 0),
 
-('bx_mbp_my_membership', '1140px', 'My Level', '_membership_bcaption_my_status', 2, 0, 'Current', '', 1, 28.1, 'memb', 0),
-('bx_mbp_my_membership', '1140px', 'Available Levels', '_membership_bcaption_select_level', 3, 0, 'Available', '', 1, 71.9, 'memb', 0);
+('bx_mbp_my_membership', '1140px', 'My Level', '_membership_bcaption_my_status', 1, 0, 'Current', '', 1, 28.1, 'memb', 0),
+('bx_mbp_my_membership', '1140px', 'Available Levels', '_membership_bcaption_select_level', 2, 0, 'Available', '', 1, 71.9, 'memb', 0);
 
 
 -- cron

@@ -93,56 +93,56 @@ INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES
 ('[db_prefix]_albums_owner', 'Videos Profile Albums', @iPCPOrder+5);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Content`, `Column`, `Order`, `DesignBox`, `ColWidth`, `MinWidth`, `Visible`, `Caption`, `Func`) VALUES
-('[db_prefix]_album_view', '1140px', '', '', 2, 0, 0, 71.9, 0, 'non,memb', '', 'Objects'),
-('[db_prefix]_album_view', '1140px', '', '', 2, 1, 1, 71.9, 0, 'non,memb', '_[db_prefix]_comments', 'Comments'),
-('[db_prefix]_album_view', '1140px', '', '', 3, 0, 1, 28.1, 0, 'non,memb', '_[db_prefix]_author', 'Author'),
-('[db_prefix]_album_view', '1140px', '', '', 3, 1, 1, 28.1, 0, 'non,memb', '_[db_prefix]_info_album', 'Info'),
-('[db_prefix]_album_view', '1140px', '', '', 3, 2, 1, 28.1, 0, 'memb', '_[db_prefix]_actions', 'Actions');
+('[db_prefix]_album_view', '1140px', '', '', 1, 0, 0, 71.9, 0, 'non,memb', '', 'Objects'),
+('[db_prefix]_album_view', '1140px', '', '', 1, 1, 1, 71.9, 0, 'non,memb', '_[db_prefix]_comments', 'Comments'),
+('[db_prefix]_album_view', '1140px', '', '', 2, 0, 1, 28.1, 0, 'non,memb', '_[db_prefix]_author', 'Author'),
+('[db_prefix]_album_view', '1140px', '', '', 2, 1, 1, 28.1, 0, 'non,memb', '_[db_prefix]_info_album', 'Info'),
+('[db_prefix]_album_view', '1140px', '', '', 2, 2, 1, 28.1, 0, 'memb', '_[db_prefix]_actions', 'Actions');
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_view', 2, 1, 'ViewFile', '', 1, 71.9, 'non,memb', 380),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_comments', 2, 2, 'ViewComments', '', 1, 71.9, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_author', 3, 1, 'FileAuthor', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_info_main', 3, 2, 'MainFileInfo', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_actions', 3, 3, 'ActionList', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_sys_block_title_social_sharing', 3, 4, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_album_videos_rest', 3, 5, 'ViewAlbum', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_view', 1, 1, 'ViewFile', '', 1, 71.9, 'non,memb', 380),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_comments', 1, 2, 'ViewComments', '', 1, 71.9, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_author', 2, 1, 'FileAuthor', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_info_main', 2, 2, 'MainFileInfo', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_actions', 2, 3, 'ActionList', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_sys_block_title_social_sharing', 2, 4, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_album_videos_rest', 2, 5, 'ViewAlbum', '', 1, 28.1, 'non,memb', 0),
 ('[db_prefix]_view', '1140px', '', '_[db_prefix]_related', 0, 0, 'RelatedFiles', '', 1, 28.1, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_home', '1140px', '', '_[db_prefix]_albums', 3, 1, 'Albums', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_home', '1140px', '', '_[db_prefix]_albums', 1, 1, 'Albums', '', 1, 28.1, 'non,memb', 0),
 ('[db_prefix]_home', '1140px', '', '_[db_prefix]_special', 0, 0, 'Special', '', 1, 71.9, 'non,memb', 0),
-('[db_prefix]_home', '1140px', '', '_[db_prefix]_latest_file', 2, 0, 'LatestFile', '', 1, 71.9, 'non,memb', 0),
-('[db_prefix]_home', '1140px', '', '_[db_prefix]_public', 2, 2, 'All', '', 1, 71.9, 'non,memb', 380);
+('[db_prefix]_home', '1140px', '', '_[db_prefix]_latest_file', 1, 0, 'LatestFile', '', 1, 71.9, 'non,memb', 0),
+('[db_prefix]_home', '1140px', '', '_[db_prefix]_public', 1, 2, 'All', '', 1, 71.9, 'non,memb', 380);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Content`, `Column`, `Order`, `DesignBox`, `ColWidth`, `MinWidth`, `Visible`, `Caption`, `Func`) VALUES
-('[db_prefix]_home', '1140px', '', '', 3, 0, 1, 28.1, 0, 'non,memb', '_[db_prefix]_top_menu_calendar', 'Calendar'),
-('[db_prefix]_home', '1140px', '', '', 3, 2, 1, 28.1, 0, 'non,memb', '_[db_prefix]_top_menu_tags', 'Tags');
+('[db_prefix]_home', '1140px', '', '', 2, 0, 1, 28.1, 0, 'non,memb', '_[db_prefix]_top_menu_calendar', 'Calendar'),
+('[db_prefix]_home', '1140px', '', '', 2, 2, 1, 28.1, 0, 'non,memb', '_[db_prefix]_top_menu_tags', 'Tags');
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 2, 1, 'adminShort', '', 1, 100, 'memb', 380),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_add', 2, 0, 'add', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 2, 3, 'adminFull', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_disapproved', 2, 5, 'adminFullDisapproved', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_edit', 2, 6, 'edit', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_delete', 2, 7, 'delete', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_organize', 2, 8, 'organize', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_add_objects', 2, 9, 'addObjects', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects', 2, 10, 'manageObjects', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_disapproved', 2, 11, 'manageObjectsDisapproved', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_not_processed', 2, 12, 'manageObjectsNotProcessed', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_failed', 2, 13, 'manageObjectsFailed', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_main_objects', 2, 14, 'adminAlbumShort', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_objects', 2, 20, 'albumObjects', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_my', 2, 30, 'my', '', 1, 100, 'memb', 0);
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 1, 1, 'adminShort', '', 1, 100, 'memb', 380),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_add', 1, 0, 'add', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 1, 3, 'adminFull', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_disapproved', 1, 5, 'adminFullDisapproved', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_edit', 1, 6, 'edit', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_delete', 1, 7, 'delete', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_organize', 1, 8, 'organize', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_add_objects', 1, 9, 'addObjects', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects', 1, 10, 'manageObjects', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_disapproved', 1, 11, 'manageObjectsDisapproved', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_not_processed', 1, 12, 'manageObjectsNotProcessed', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_failed', 1, 13, 'manageObjectsFailed', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_main_objects', 1, 14, 'adminAlbumShort', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_objects', 1, 20, 'albumObjects', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_my', 1, 30, 'my', '', 1, 100, 'memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_albums_owner', 2, 1, 'Browse', '', 1, 71.9, 'non,memb', 0),
-('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_favorited', 3, 1, 'Favorited', '', 1, 28.1, 'non,memb', 0);
+('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_albums_owner', 1, 1, 'Browse', '', 1, 71.9, 'non,memb', 0),
+('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_favorited', 2, 1, 'Favorited', '', 1, 28.1, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_rate', '1140px', '', '_[db_prefix]_previous_rated', 2, 0, 'RatedSet', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_rate', '1140px', '', '_[db_prefix]_rate_header', 3, 0, 'RateObject', '', 1, 71.9, 'non,memb', 0);
+('[db_prefix]_rate', '1140px', '', '_[db_prefix]_previous_rated', 1, 0, 'RatedSet', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_rate', '1140px', '', '_[db_prefix]_rate_header', 2, 0, 'RateObject', '', 1, 71.9, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
 ('index', '1140px', 'Public Videos', '_[db_prefix]_public', 0, 0, 'PHP', 'require_once(BX_DIRECTORY_PATH_MODULES . ''boonex/videos/classes/BxVideosSearch.php'');\r\n $oMedia = new BxVideosSearch();\r\n $aVisible[] = BX_DOL_PG_ALL;\r\n if ($this->iMemberID > 0)\r\n $aVisible[] = BX_DOL_PG_MEMBERS;\r\n $aCode = $oMedia->getBrowseBlock(array(''allow_view''=>$aVisible), array(''menu_top''=>true, ''sorting'' => getParam(''[db_prefix]_mode_index''), ''per_page''=>(int)getParam(''[db_prefix]_number_index'')));\r\n return array($aCode[''code''], $aCode[''menu_top''], $aCode[''menu_bottom''], $aCode[''wrapper'']);', 1, 71.9, 'non,memb', 0),

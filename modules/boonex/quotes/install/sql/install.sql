@@ -17,9 +17,9 @@ INSERT INTO `sys_menu_admin` (`id`, `parent_id`, `name`, `title`, `url`, `descri
 (NULL, 2, 'Quotes', '_bx_Quotes', '{siteUrl}modules/?r=quotes/administration/', 'Quotes administration', 'italic', '', '', @iExtOrd+1);
 
 -- page blocks
-SET @iPageColumnOrder := (SELECT `Order` + 1 FROM `sys_page_compose` WHERE `Page` = 'index' AND `Column` = 3 ORDER BY `Order` DESC LIMIT 1);
+SET @iPageColumnOrder := (SELECT `Order` + 1 FROM `sys_page_compose` WHERE `Page` = 'index' AND `Column` = 2 ORDER BY `Order` DESC LIMIT 1);
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('index', '1140px', 'Daily Quotes', '_bx_quotes_bcaption_quotes', 3, IFNULL(@iPageColumnOrder, 0), 'PHP', 'return BxDolService::call(''quotes'', ''get_quote_unit'');', 1, 28.1, 'non,memb', 0);
+('index', '1140px', 'Daily Quotes', '_bx_quotes_bcaption_quotes', 2, IFNULL(@iPageColumnOrder, 0), 'PHP', 'return BxDolService::call(''quotes'', ''get_quote_unit'');', 1, 28.1, 'non,memb', 0);
 
 -- site stats
 SET @iStatSiteOrder := (SELECT `StatOrder` + 1 FROM `sys_stat_site` WHERE 1 ORDER BY `StatOrder` DESC LIMIT 1);

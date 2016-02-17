@@ -12,12 +12,12 @@ INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_avat
 
 -- page compose blocks
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 
-    ('bx_avatar_main', '1140px', 'Tight block', '_bx_ava_block_tight', '3', '0', 'Tight', '', '1', '28.1', 'non,memb', '0'),
-    ('bx_avatar_main', '1140px', 'Wide block', '_bx_ava_block_wide', '2', '0', 'Wide', '', '1', '71.9', 'non,memb', '0');
+    ('bx_avatar_main', '1140px', 'Tight block', '_bx_ava_block_tight', '2', '0', 'Tight', '', '1', '28.1', 'non,memb', '0'),
+    ('bx_avatar_main', '1140px', 'Wide block', '_bx_ava_block_wide', '1', '0', 'Wide', '', '1', '71.9', 'non,memb', '0');
 
-SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose` WHERE `Page` = 'pedit' AND `Column` = 3 ORDER BY `Order` DESC LIMIT 1);
+SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose` WHERE `Page` = 'pedit' AND `Column` = 2 ORDER BY `Order` DESC LIMIT 1);
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-    ('pedit', '1140px', 'Manage Avatars', '_bx_ava_manage_avatars', 3, IFNULL(@iMaxOrder, 0), 'PHP', 'return BxDolService::call(''avatar'', ''manage_avatars'', array ((int)$_REQUEST[''ID'']));', 1, 28.1, 'memb', 0);
+    ('pedit', '1140px', 'Manage Avatars', '_bx_ava_manage_avatars', 2, IFNULL(@iMaxOrder, 0), 'PHP', 'return BxDolService::call(''avatar'', ''manage_avatars'', array ((int)$_REQUEST[''ID'']));', 1, 28.1, 'memb', 0);
 
 -- permalinkU
 INSERT INTO `sys_permalinks` VALUES (NULL, 'modules/?r=avatar/', 'm/avatar/', 'bx_avatar_permalinks');

@@ -133,18 +133,18 @@ INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES
 ('bx_blogs_home', 'Blog Home', @iPCPOrder+2);
 
 INSERT INTO `sys_page_compose` (`ID`, `Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-(NULL, 'bx_blogs', '1140px', '', '_Title', 2, 0, 'PostView', '', 0, 71.9, 'non,memb', 0),
-(NULL, 'bx_blogs', '1140px', '', '_Comments', 2, 1, 'PostComments', '', 1, 71.9, 'non,memb', 0),
-(NULL, 'bx_blogs', '1140px', '', '_bx_blog_post_info', 3, 0, 'PostOverview', '', 1, 28.1, 'non,memb', 0),
-(NULL, 'bx_blogs', '1140px', '', '_Rate', 3, 1, 'PostRate', '', 1, 28.1, 'non,memb', 0),
-(NULL, 'bx_blogs', '1140px', '', '_Actions', 3, 2, 'PostActions', '', 1, 28.1, 'non,memb', 0),
-(NULL, 'bx_blogs', '1140px', '', '_sys_block_title_social_sharing', 3, 3, 'PostSocialSharing', '', 1, 28.1, 'non,memb', 0),
-(NULL, 'bx_blogs', '1140px', '', '_bx_blog_Categories', 3, 4, 'PostCategories', '', 0, 28.1, 'non,memb', 0),
-(NULL, 'bx_blogs', '1140px', '', '_Tags', 3, 5, 'PostTags', '', 1, 28.1, 'non,memb', 0),
+(NULL, 'bx_blogs', '1140px', '', '_Title', 1, 0, 'PostView', '', 0, 71.9, 'non,memb', 0),
+(NULL, 'bx_blogs', '1140px', '', '_Comments', 1, 1, 'PostComments', '', 1, 71.9, 'non,memb', 0),
+(NULL, 'bx_blogs', '1140px', '', '_bx_blog_post_info', 2, 0, 'PostOverview', '', 1, 28.1, 'non,memb', 0),
+(NULL, 'bx_blogs', '1140px', '', '_Rate', 2, 1, 'PostRate', '', 1, 28.1, 'non,memb', 0),
+(NULL, 'bx_blogs', '1140px', '', '_Actions', 2, 2, 'PostActions', '', 1, 28.1, 'non,memb', 0),
+(NULL, 'bx_blogs', '1140px', '', '_sys_block_title_social_sharing', 2, 3, 'PostSocialSharing', '', 1, 28.1, 'non,memb', 0),
+(NULL, 'bx_blogs', '1140px', '', '_bx_blog_Categories', 2, 4, 'PostCategories', '', 0, 28.1, 'non,memb', 0),
+(NULL, 'bx_blogs', '1140px', '', '_Tags', 2, 5, 'PostTags', '', 1, 28.1, 'non,memb', 0),
 (NULL, 'bx_blogs', '1140px', '', '_bx_blog_Featured_Posts', 0, 0, 'PostFeature', '', 1, 28.1, 'non,memb', 0),
-(NULL, 'bx_blogs_home', '1140px', '', '_bx_blog_Latest_posts', 2, 1, 'Latest', '', 1, 71.9, 'non,memb', 0),
-(NULL, 'bx_blogs_home', '1140px', '', '_bx_blog_Top_blog', 3, 2, 'Top', '', 1, 28.1, 'non,memb', 0),
-(NULL, 'bx_blogs_home', '1140px', '', '_bx_blog_Calendar', 3, 1, 'Calendar', '', 0, 28.1, 'non,memb', 0);
+(NULL, 'bx_blogs_home', '1140px', '', '_bx_blog_Latest_posts', 1, 1, 'Latest', '', 1, 71.9, 'non,memb', 0),
+(NULL, 'bx_blogs_home', '1140px', '', '_bx_blog_Top_blog', 2, 2, 'Top', '', 1, 28.1, 'non,memb', 0),
+(NULL, 'bx_blogs_home', '1140px', '', '_bx_blog_Calendar', 2, 1, 'Calendar', '', 0, 28.1, 'non,memb', 0);
 
 -- PQ statistics
 INSERT INTO `sys_stat_member` (`Type`, `SQL`) VALUES

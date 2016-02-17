@@ -155,14 +155,14 @@ INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`
 SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose_pages` ORDER BY `Order` DESC LIMIT 1);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('forums_index', 'Forums Index', @iMaxOrder);
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('forums_index', '1140px', 'Full Index', '_bx_forums_index', 2, 0, 'FullIndex', '', 0, 100, 'non,memb', 0);
+('forums_index', '1140px', 'Full Index', '_bx_forums_index', 1, 0, 'FullIndex', '', 0, 100, 'non,memb', 0);
 
 SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose_pages` ORDER BY `Order` DESC LIMIT 1);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('forums_home', 'Forums Home', @iMaxOrder);
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('forums_home', '1140px', 'Quick Search', '_bx_forums_quick_search', 3, 0, 'Search', '', 1, 28.1, 'non,memb', 0),
-('forums_home', '1140px', 'Short Index', '_bx_forums_index', 3, 1, 'ShortIndex', '', 1, 28.1, 'non,memb', 0),
-('forums_home', '1140px', 'Recent Topics', '_bx_forums_recent_topics', 2, 0, 'RecentTopics', '', 0, 71.9, 'non,memb', 0);
+('forums_home', '1140px', 'Quick Search', '_bx_forums_quick_search', 2, 0, 'Search', '', 1, 28.1, 'non,memb', 0),
+('forums_home', '1140px', 'Short Index', '_bx_forums_index', 2, 1, 'ShortIndex', '', 1, 28.1, 'non,memb', 0),
+('forums_home', '1140px', 'Recent Topics', '_bx_forums_recent_topics', 1, 0, 'RecentTopics', '', 0, 71.9, 'non,memb', 0);
 
 -- actions
 INSERT INTO `sys_objects_actions` (`Caption`, `Icon`, `Url`, `Script`, `Eval`, `Order`, `Type`) VALUES 

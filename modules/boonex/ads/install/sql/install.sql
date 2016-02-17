@@ -186,29 +186,29 @@ INSERT INTO `sys_page_compose` (`ID`, `Page`, `PageWidth`, `Desc`, `Caption`, `C
 (NULL, 'member', '1140px', 'Classifieds', '_bx_ads_Ads', 0, 0, 'PHP', 'return BxDolService::call(''ads'', ''ads_profile_page'', array($this->iMember));', 1, 28.1, 'non,memb', 0),
 (NULL, 'profile', '1140px', 'Classifieds', '_bx_ads_Ads', 0, 0, 'PHP', 'return BxDolService::call(''ads'', ''ads_profile_page'', array($this->oProfileGen->_iProfileID));', 1, 28.1, 'non,memb', 0),
 
-(NULL, 'ads', '1140px', '', '_Description', 2, 0, 'AdDescription', '', 1, 71.9, 'non,memb', 0),
-(NULL, 'ads', '1140px', '', '_bx_ads_Ad_photos', 2, 1, 'AdPhotos', '', 1, 71.9, 'non,memb', 0),
-(NULL, 'ads', '1140px', '', '_Comments', 2, 2, 'ViewComments', '', 1, 71.9, 'non,memb', 0),
-(NULL, 'ads', '1140px', '', '_Info', 3, 0, 'AdInfo', '', 1, 28.1, 'non,memb', 0),
-(NULL, 'ads', '1140px', '', '_bx_ads_Custom_Values', 3, 1, 'AdCustomInfo', '', 1, 28.1, 'non,memb', 0),
-(NULL, 'ads', '1140px', '', '_Actions', 3, 2, 'ActionList', '', 1, 28.1, 'non,memb', 0),
-(NULL, 'ads', '1140px', '', '_sys_block_title_social_sharing', 3, 3, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
-(NULL, 'ads', '1140px', '', '_Rate', 3, 4, 'Rate', '', 1, 28.1, 'non,memb', 0),
-(NULL, 'ads', '1140px', '', '_bx_ads_Users_other_listing', 3, 5, 'UserOtherAds', '', 1, 28.1, 'non,memb', 0);
+(NULL, 'ads', '1140px', '', '_Description', 1, 0, 'AdDescription', '', 1, 71.9, 'non,memb', 0),
+(NULL, 'ads', '1140px', '', '_bx_ads_Ad_photos', 1, 1, 'AdPhotos', '', 1, 71.9, 'non,memb', 0),
+(NULL, 'ads', '1140px', '', '_Comments', 1, 2, 'ViewComments', '', 1, 71.9, 'non,memb', 0),
+(NULL, 'ads', '1140px', '', '_Info', 2, 0, 'AdInfo', '', 1, 28.1, 'non,memb', 0),
+(NULL, 'ads', '1140px', '', '_bx_ads_Custom_Values', 2, 1, 'AdCustomInfo', '', 1, 28.1, 'non,memb', 0),
+(NULL, 'ads', '1140px', '', '_Actions', 2, 2, 'ActionList', '', 1, 28.1, 'non,memb', 0),
+(NULL, 'ads', '1140px', '', '_sys_block_title_social_sharing', 2, 3, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
+(NULL, 'ads', '1140px', '', '_Rate', 2, 4, 'Rate', '', 1, 28.1, 'non,memb', 0),
+(NULL, 'ads', '1140px', '', '_bx_ads_Users_other_listing', 2, 5, 'UserOtherAds', '', 1, 28.1, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Content`, `Column`, `Order`, `DesignBox`, `ColWidth`, `MinWidth`, `Visible`, `Caption`, `Func`) VALUES
-('ads_home', '1140px', '', '', 3, 0, 0, 28.1, 0, 'non,memb', '_bx_ads_last_ads', 'last'),
-('ads_home', '1140px', '', '', 2, 0, 1, 71.9, 0, 'non,memb', '_bx_ads_last_featured', 'featured'),
-('ads_home', '1140px', '', '', 2, 1, 0, 71.9, 0, 'non,memb', '_bx_ads_Categories', 'categories');
+('ads_home', '1140px', '', '', 2, 0, 0, 28.1, 0, 'non,memb', '_bx_ads_last_ads', 'last'),
+('ads_home', '1140px', '', '', 1, 0, 1, 71.9, 0, 'non,memb', '_bx_ads_last_featured', 'featured'),
+('ads_home', '1140px', '', '', 1, 1, 0, 71.9, 0, 'non,memb', '_bx_ads_Categories', 'categories');
 
 
-SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose` WHERE `Page` = 'ads' AND `Column` = 3 ORDER BY `Order` DESC LIMIT 1);
+SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose` WHERE `Page` = 'ads' AND `Column` = 2 ORDER BY `Order` DESC LIMIT 1);
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('ads', '1140px', 'Ad''s Location', '_Location', 3, IFNULL(@iMaxOrder, 0), 'PHP', 'return BxDolService::call(''wmap'', ''location_block'', array(''ads'', $this->oAds->oCmtsView->getId()));', 1, 28.1, 'non,memb', 0);
+('ads', '1140px', 'Ad''s Location', '_Location', 2, IFNULL(@iMaxOrder, 0), 'PHP', 'return BxDolService::call(''wmap'', ''location_block'', array(''ads'', $this->oAds->oCmtsView->getId()));', 1, 28.1, 'non,memb', 0);
 
-SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose` WHERE `Page` = 'ads_home' AND `Column` = 2 ORDER BY `Order` DESC LIMIT 1);
+SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose` WHERE `Page` = 'ads_home' AND `Column` = 1 ORDER BY `Order` DESC LIMIT 1);
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 
-('ads_home', '1140px', 'Map', '_Map', 2, IFNULL(@iMaxOrder, 0), 'PHP', 'return BxDolService::call(''wmap'', ''homepage_part_block'', array (''ads''));', 1, 71.9, 'non,memb', 0);
+('ads_home', '1140px', 'Map', '_Map', 1, IFNULL(@iMaxOrder, 0), 'PHP', 'return BxDolService::call(''wmap'', ''homepage_part_block'', array (''ads''));', 1, 71.9, 'non,memb', 0);
 
 
 -- PQ statistics

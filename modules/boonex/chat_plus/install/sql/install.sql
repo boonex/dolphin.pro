@@ -35,7 +35,7 @@ SET @iMaxOrder = (SELECT `Order` FROM `sys_page_compose_pages` ORDER BY `Order` 
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_chat_plus', 'Chat+', @iMaxOrder+1);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 
-('bx_chat_plus', '1140px', 'Chat+', '_bx_chat_plus_chat', '2', '0', 'PHP', 'return BxDolService::call(''chat_plus'', ''chat_block'', array());', 1, 100, 'non,memb', 0);
+('bx_chat_plus', '1140px', 'Chat+', '_bx_chat_plus_chat', '1', '0', 'PHP', 'return BxDolService::call(''chat_plus'', ''chat_block'', array());', 1, 100, 'non,memb', 0);
 
 -- Mobile App
 

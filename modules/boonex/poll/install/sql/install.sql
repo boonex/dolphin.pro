@@ -364,14 +364,14 @@
     -- Dumping data for table `sys_page_compose`
     --
     INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-    ('poll_home', '1140px', 'Latest polls', '_bx_poll_latest_public', 2, 1, 'LatestHome', '', 1, 71.9, 'non,memb', 0),
-    ('poll_home', '1140px', 'Featured polls', '_bx_poll_featured', 3, 1, 'FeaturedHome', '', 1, 28.1, 'non,memb', 0),
-    ('show_poll_info', '1140px', 'View', '_bx_poll', 2, 1, 'PoolBlock', '', 1, 71.9, 'non,memb', 0),
-    ('show_poll_info', '1140px', 'Comments', '_bx_poll_comments', 2, 2, 'CommentsBlock', '', 1, 71.9, 'non,memb', 0),
-    ('show_poll_info', '1140px', 'Action', '_bx_poll_actions', 3, 1, 'ActionsBlock', '', 1, 28.1, 'non,memb', 0),
-    ('show_poll_info', '1140px', 'Owner information', '_bx_poll_owner', 3, 2, 'OwnerBlock', '', 1, 28.1, 'non,memb', 0),
-    ('show_poll_info', '1140px', 'Votes', '_bx_poll_votings', 3, 3, 'VotingsBlock', '', 1, 28.1, 'non,memb', 0),
-    ('show_poll_info', '1140px', 'Social sharing', '_sys_block_title_social_sharing', 3, 4, 'SocialSharing', '', 1, 28.1, 'non,memb', 0);
+    ('poll_home', '1140px', 'Latest polls', '_bx_poll_latest_public', 1, 1, 'LatestHome', '', 1, 71.9, 'non,memb', 0),
+    ('poll_home', '1140px', 'Featured polls', '_bx_poll_featured', 2, 1, 'FeaturedHome', '', 1, 28.1, 'non,memb', 0),
+    ('show_poll_info', '1140px', 'View', '_bx_poll', 1, 1, 'PoolBlock', '', 1, 71.9, 'non,memb', 0),
+    ('show_poll_info', '1140px', 'Comments', '_bx_poll_comments', 1, 2, 'CommentsBlock', '', 1, 71.9, 'non,memb', 0),
+    ('show_poll_info', '1140px', 'Action', '_bx_poll_actions', 2, 1, 'ActionsBlock', '', 1, 28.1, 'non,memb', 0),
+    ('show_poll_info', '1140px', 'Owner information', '_bx_poll_owner', 2, 2, 'OwnerBlock', '', 1, 28.1, 'non,memb', 0),
+    ('show_poll_info', '1140px', 'Votes', '_bx_poll_votings', 2, 3, 'VotingsBlock', '', 1, 28.1, 'non,memb', 0),
+    ('show_poll_info', '1140px', 'Social sharing', '_sys_block_title_social_sharing', 2, 4, 'SocialSharing', '', 1, 28.1, 'non,memb', 0);
 
     --
     -- Dumping data for table `sys_page_compose_pages`

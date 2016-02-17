@@ -5,8 +5,8 @@ INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_gsea
 
 -- page compose blocks
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 
-    ('bx_gsearch', '1140px', 'Search Form', '_bx_gsearch_box_title_search_form', '2', '0', 'SearchForm', '', '1', '28.1', 'non,memb', '0'),
-    ('bx_gsearch', '1140px', 'Search Results', '_bx_gsearch_box_title_search_results', '3', '0', 'SearchResults', '', '1', '71.9', 'non,memb', '0'),
+    ('bx_gsearch', '1140px', 'Search Form', '_bx_gsearch_box_title_search_form', '1', '0', 'SearchForm', '', '1', '28.1', 'non,memb', '0'),
+    ('bx_gsearch', '1140px', 'Search Results', '_bx_gsearch_box_title_search_results', '2', '0', 'SearchResults', '', '1', '71.9', 'non,memb', '0'),
     ('search_home', '1140px', 'Google Search', '_bx_gsearch_box_title', 0, 0, 'PHP', 'return BxDolService::call(''google_search'', ''get_search_control'', array());', 1, 71.9, 'non,memb', 0);
 
 -- permalinks

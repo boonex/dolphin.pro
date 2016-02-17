@@ -122,11 +122,11 @@ INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES
 ('bx_pmt_details', 'Payment Settings', @iPCPOrder+4);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('bx_pmt_cart', '1140px', 'Site Cart', '_payment_bcpt_cart_featured', 2, 0, 'Featured', '', 1, 50, 'memb', 0),
-('bx_pmt_cart', '1140px', 'Members Cart', '_payment_bcpt_cart_common', 3, 0, 'Common', '', 1, 50, 'memb', 0),
-('bx_pmt_history', '1140px', 'History', '_payment_bcpt_cart_history', 2, 0, 'History', '', 1, 100, 'memb', 0),
-('bx_pmt_orders', '1140px', 'Orders', '_payment_bcpt_processed_orders', 2, 0, 'Orders', '', 1, 100, 'memb', 0),
-('bx_pmt_details', '1140px', 'Payment Details', '_payment_bcpt_details', 2, 0, 'Details', '', 1, 100, 'memb', 0);
+('bx_pmt_cart', '1140px', 'Site Cart', '_payment_bcpt_cart_featured', 1, 0, 'Featured', '', 1, 50, 'memb', 0),
+('bx_pmt_cart', '1140px', 'Members Cart', '_payment_bcpt_cart_common', 2, 0, 'Common', '', 1, 50, 'memb', 0),
+('bx_pmt_history', '1140px', 'History', '_payment_bcpt_cart_history', 1, 0, 'History', '', 1, 100, 'memb', 0),
+('bx_pmt_orders', '1140px', 'Orders', '_payment_bcpt_processed_orders', 1, 0, 'Orders', '', 1, 100, 'memb', 0),
+('bx_pmt_details', '1140px', 'Payment Details', '_payment_bcpt_details', 1, 0, 'Details', '', 1, 100, 'memb', 0);
 
 
 SET @iOrder = (SELECT MAX(`order`) FROM `sys_menu_admin` WHERE `parent_id`='2');
