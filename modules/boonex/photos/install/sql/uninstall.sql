@@ -52,7 +52,7 @@ DELETE FROM `sys_stat_site` WHERE `Name` = 'phs';
 
 DELETE FROM `sys_account_custom_stat_elements` WHERE `Label` = '_bx_photos';
 
-DELETE FROM `sys_objects_actions` WHERE `Type` IN ('bx_photos', 'bx_photos_title');
+DELETE FROM `sys_objects_actions` WHERE `Type` IN ('bx_photos', 'bx_photos_title', 'bx_photos_album');
 
 DELETE `sys_acl_actions`, `sys_acl_matrix` FROM `sys_acl_actions`, `sys_acl_matrix` WHERE `sys_acl_matrix`.`IDAction` = `sys_acl_actions`.`ID` AND `sys_acl_actions`.`Name` LIKE 'photos%';
 DELETE FROM `sys_acl_actions` WHERE `Name` LIKE 'photos%';
