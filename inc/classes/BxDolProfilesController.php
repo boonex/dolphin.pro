@@ -118,6 +118,11 @@ class BxDolProfilesController
         // set default language
         $aNewProfile['LangID'] = getLangIdByName(getCurrentLangName());
 
+        // set default privacy
+        bx_import('BxDolPrivacyQuery');
+        $oPrivacy = new BxDolPrivacyQuery();
+        $aNewProfile['allow_view_to'] = $oPrivacy->getDefaultValueModule('profile', 'view_block');
+
         $sSet = $this -> collectSetString( $aNewProfile );
         $sQuery = "INSERT INTO `Profiles` SET \n$sSet";
 

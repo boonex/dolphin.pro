@@ -163,6 +163,9 @@ class BxDolConnectModule extends BxDolModule
         }
 
         if (BxDolRequest::serviceExists('photos', 'perform_photo_upload', 'Uploader')) {
+            bx_import('BxDolPrivacyQuery');
+            $oPrivacy = new BxDolPrivacyQuery();
+
             $sTmpFile = tempnam($GLOBALS['dir']['tmp'], 'bxoauth');
             if (false !== file_put_contents($sTmpFile, bx_file_get_contents($sAvatarUrl))) {
                 $aFileInfo = array (
@@ -171,7 +174,7 @@ class BxDolConnectModule extends BxDolModule
                     'medTags' => _t('_ProfilePhotos'),
                     'Categories' => array(_t('_ProfilePhotos')),
                     'album' => str_replace('{nickname}', getUsername($iProfileId), getParam('bx_photos_profile_album_name')),
-                    'albumPrivacy' => BX_DOL_PG_ALL,
+                    'albumPrivacy' => $oPrivacy->getDefaultValueModule('photos', 'album_view'),
                 );
                 BxDolService::call('photos', 'perform_photo_upload', array($sTmpFile, $aFileInfo, false), 'Uploader');
                 @unlink($sTmpFile);
@@ -287,6 +290,11 @@ class BxDolConnectModule extends BxDolModule
         $aProfileFields['Role'] 	  = BX_DOL_ROLE_MEMBER;
         $aProfileFields['DateReg'] 	  = date( 'Y-m-d H:i:s' ); // set current date;
         $aProfileFields['Salt'] 	  = $sPasswordSalt;
+
+        // set default privacy
+        bx_import('BxDolPrivacyQuery');
+        $oPrivacy = new BxDolPrivacyQuery();
+        $aProfileFields['allow_view_to'] = $oPrivacy->getDefaultValueModule('profile', 'view_block');
 
         // check if user with the same email already exists
         $iExistingProfileId = $this->_oDb->isEmailExisting($aProfileFields['Email']);

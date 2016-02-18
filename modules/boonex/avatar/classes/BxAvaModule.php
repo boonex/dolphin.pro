@@ -847,13 +847,16 @@ class BxAvaModule extends BxDolModule
         if (move_uploaded_file($_FILES['image']['tmp_name'], $sImagePath)) {
             if ($_POST['copy_to_profile_photos']) {
                 if (BxDolRequest::serviceExists('photos', 'perform_photo_upload', 'Uploader')) {
+                    bx_import('BxDolPrivacyQuery');
+                    $oPrivacy = new BxDolPrivacyQuery();
+
                     $aFileInfo = array (
                         'medTitle' => _t('_bx_ava_avatar'),
                         'medDesc' => _t('_bx_ava_avatar'),
                         'medTags' => _t('_ProfilePhotos'),
                         'Categories' => array(_t('_ProfilePhotos')),
                         'album' => str_replace('{nickname}', getUsername($iProfileId), getParam('bx_photos_profile_album_name')),
-                        'albumPrivacy' => BX_DOL_PG_ALL
+                        'albumPrivacy' => $oPrivacy->getDefaultValueModule('photos', 'album_view'),
                     );
 
                     $_POST[BX_DOL_UPLOADER_EP_PREFIX . 'album'] = uriFilter($aFileInfo['album']);

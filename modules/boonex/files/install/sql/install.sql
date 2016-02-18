@@ -333,6 +333,7 @@ INSERT INTO `sys_acl_actions` (`Name`) VALUES
 ('files delete'), ('files approve'), ('files edit');
 
 INSERT INTO `sys_privacy_actions` (`module_uri`, `name`, `title`, `default_group`) VALUES
+('files', 'album_view', '_[db_prefix]_album_view', '3'),
 ('files', 'download', '_[db_prefix]_download', '3');
 
 SET @iMax = (SELECT MAX(`order`) FROM `sys_menu_admin` WHERE `parent_id` = '2');

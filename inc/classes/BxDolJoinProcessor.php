@@ -267,13 +267,16 @@ class BxDolJoinProcessor
                 BxDolService::call('avatar', 'set_image_for_cropping', array ($iId1, $GLOBALS['dir']['tmp'] . $aProfile1['ProfilePhoto']));
             }
             elseif (BxDolRequest::serviceExists('photos', 'perform_photo_upload', 'Uploader')) {
+                bx_import('BxDolPrivacyQuery');
+                $oPrivacy = new BxDolPrivacyQuery();
+
                 $aFileInfo = array (
                     'medTitle' => _t('_sys_member_thumb_avatar'),
                     'medDesc' => _t('_sys_member_thumb_avatar'),
                     'medTags' => _t('_ProfilePhotos'),
                     'Categories' => array(_t('_ProfilePhotos')),
                     'album' => str_replace('{nickname}', getUsername($iId1), getParam('bx_photos_profile_album_name')),
-                    'albumPrivacy' => BX_DOL_PG_ALL
+                    'albumPrivacy' => $oPrivacy->getDefaultValueModule('photos', 'album_view'),
                 );
                 BxDolService::call('photos', 'perform_photo_upload', array($GLOBALS['dir']['tmp'] . $aProfile1['ProfilePhoto'], $aFileInfo, false), 'Uploader');
             }

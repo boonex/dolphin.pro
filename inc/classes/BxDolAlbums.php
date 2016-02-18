@@ -99,12 +99,21 @@ class BxDolAlbums extends BxDolMistake
                 return $iCheck;
         }
         $iOwner = (int)$aData['owner'];
-        if (isset($aData['AllowAlbumView']))
+
+        if (isset($aData['AllowAlbumView'])) {
             $iAllowAlbumView = (int)$aData['AllowAlbumView'];
-        elseif (strpos($aData['caption'], getUsername($iOwner)) !== false)
-            $iAllowAlbumView = BX_DOL_PG_ALL;
-        else
+        }
+        elseif (strpos($aData['caption'], getUsername($iOwner)) !== false) {
+            bx_import('BxDolPrivacyQuery');
+            $oPrivacy = new BxDolPrivacyQuery();
+            $iAllowAlbumView = $oPrivacy->getDefaultValueModule(str_replace('bx_', '', $this->sType), 'album_view');
+            if (!$iAllowAlbumView)
+                $iAllowAlbumView = BX_DOL_PG_ALL;
+        } 
+        else {
             $iAllowAlbumView = BX_DOL_PG_NOBODY;
+        }
+
         $aFields = array(
             'Caption' => $aData['caption'],
             'Uri' => $this->getCorrectUri($aData['caption'], $iOwner, $bCheck),
