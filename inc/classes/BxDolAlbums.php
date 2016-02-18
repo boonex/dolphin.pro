@@ -42,11 +42,11 @@ class BxDolAlbums extends BxDolMistake
     }
 
     // inner methods
-    function _getSqlPart ($aFields = array(), $sBound = ', ')
+    function _getSqlPart ($aFields = array(), $sBound = ', ', $bUseEmptyValues = false)
     {
         $sqlBody = "";
-        foreach ($aFields as $sKey => $sValue) {
-            if (in_array($sKey, $this->aAlbumFields) && strlen($sValue) > 0) {
+        foreach ($aFields as $sKey => $sValue) {    
+            if (in_array($sKey, $this->aAlbumFields) && ($bUseEmptyValues || strlen($sValue))) {
             	switch($sKey) {
             		case 'description':
             		case 'Description':
@@ -153,20 +153,20 @@ class BxDolAlbums extends BxDolMistake
     function updateAlbum ($mixedIdent, $aData)
     {
         $sqlWhere = "`Uri` = '" . process_db_input($mixedIdent, BX_TAGS_STRIP) . "'";
-        $sqlBody = $this->_getSqlPart($aData);
+        $sqlBody = $this->_getSqlPart($aData, ', ', true);
         $sValue = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
         $sqlWhereAdd = " AND `Owner` = '$sValue'";
         $sqlQuery = "UPDATE `{$this->sAlbumTable}` SET $sqlBody WHERE $sqlWhere $sqlWhereAdd LIMIT 1";
-        return $GLOBALS['MySQL']->query($sqlQuery);
+        return $GLOBALS['MySQL']->res($sqlQuery);
     }
     function updateAlbumById ($iId, $aData)
     {
         $sqlWhere = "`ID` = '" . (int)$iId . "'";
-        $sqlBody = $this->_getSqlPart($aData);
+        $sqlBody = $this->_getSqlPart($aData, ', ', true);
         $sValue = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
         $sqlWhereAdd = " AND `Owner` = '$sValue'";
         $sqlQuery = "UPDATE `{$this->sAlbumTable}` SET $sqlBody WHERE $sqlWhere $sqlWhereAdd LIMIT 1";
-        return $GLOBALS['MySQL']->query($sqlQuery);
+        return $GLOBALS['MySQL']->res($sqlQuery);
     }
     function removeAlbum ($iAlbumId)
     {

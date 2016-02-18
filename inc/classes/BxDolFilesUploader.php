@@ -798,7 +798,6 @@ class BxDolFilesUploader extends BxDolTemplate
 
             $aData = array(
                 'caption' => $sAlbumUri,
-                'location' => _t('_' . $oAlbums->sType . '_undefined'),
                 'owner' => $iAuthorId,
                 'AllowAlbumView' => $iPrivacy
             );

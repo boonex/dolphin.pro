@@ -471,7 +471,6 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
         if(empty($aAlbumInfo) && $this->oModule->_iProfileId == (int)$aParams['PID']) {
             $aData = array(
                 'caption' => $sCaption,
-                'location' => _t('_bx_photos_undefined'),
                 'owner' => $this->oModule->_iProfileId,
                 'AllowAlbumView' => $this->oModule->oAlbumPrivacy->_oDb->getDefaultValueModule('photos', 'album_view'),
             );
