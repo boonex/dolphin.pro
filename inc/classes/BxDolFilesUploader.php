@@ -791,10 +791,20 @@ class BxDolFilesUploader extends BxDolTemplate
         $aAlbumInfo = $oAlbums->getAlbumInfo(array('fileUri'=>uriFilter($sAlbumUri), 'owner'=>$iAuthorId), array('ID'));
         if (is_array($aAlbumInfo) && count($aAlbumInfo) > 0) {
             $iAlbumID = (int)$aAlbumInfo['ID'];
-        } else {
-            $iPrivacy = $sAlbumUri == $oAlbums->getAlbumDefaultName() ? BX_DOL_PG_HIDDEN : BX_DOL_PG_NOBODY;
-            if(isset($aAlbumParams['privacy']))
+        } else {            
+            if (isset($aAlbumParams['privacy'])) {
                 $iPrivacy = (int)$aAlbumParams['privacy'];
+            } 
+            elseif ($sAlbumUri == $oAlbums->getAlbumDefaultName()) {
+                $iPrivacy = BX_DOL_PG_HIDDEN;
+            } 
+            else {
+                bx_import('BxDolPrivacyQuery');
+                $oPrivacy = new BxDolPrivacyQuery();
+                $iPrivacy = $oPrivacy->getDefaultValueModule($this->oModule->_oConfig->getUri(), 'album_view');
+                if (!$iPrivacy)
+                    $iPrivacy = BX_DOL_PG_NOBODY;
+            }
 
             $aData = array(
                 'caption' => $sAlbumUri,
