@@ -282,8 +282,8 @@ function getMemberJoinFormCode($sParams = '')
 	if(getParam('reg_by_inv_only') == 'on' && getID($_COOKIE['idFriend']) == 0)
 		return MsgBox(_t('_registration by invitation only'));
 
-	$sCodeBefore = '';
-    $sCodeAfter = $GLOBALS['oSysTemplate']->parseHtmlByName('join_form_code_after.html', array());
+    $sCodeBefore = $GLOBALS['oSysTemplate']->parseHtmlByName('login_join_close.html', array());
+    $sCodeAfter = '';
 
 	bx_import("BxDolJoinProcessor");
     $oJoin = new BxDolJoinProcessor();
@@ -359,7 +359,7 @@ function getMemberLoginFormCode($sID = 'member_login_form', $sParams = '')
 				'tr_attrs' => array(
 					'class' => 'bx-form-element-forgot'
 				),
-				'content' => '<a href="' . BX_DOL_URL_ROOT . 'forgot.php">' . _t('_forgot_your_password') . '?</a> ' . _t('_or') . ' <a href="javascript:void(0)" onclick="javascript:hidePopupLoginForm()">' . _t('_Close') . '</a>',
+                'content' => '<a href="' . BX_DOL_URL_ROOT . 'forgot.php">' . _t('_forgot_your_password') . '?</a>',
 			)
         ),
     );
@@ -367,7 +367,7 @@ function getMemberLoginFormCode($sID = 'member_login_form', $sParams = '')
     $oForm = new BxTemplFormView($aForm);
 
     bx_import('BxDolAlerts');
-    $sCustomHtmlBefore = '';
+    $sCustomHtmlBefore = (strpos($sParams, 'add_close_link') === false) ? '' : $GLOBALS['oSysTemplate']->parseHtmlByName('login_join_close.html', array());
     $sCustomHtmlAfter = '';
     $oAlert = new BxDolAlerts('profile', 'show_login_form', 0, 0, array('oForm' => $oForm, 'sParams' => &$sParams, 'sCustomHtmlBefore' => &$sCustomHtmlBefore, 'sCustomHtmlAfter' => &$sCustomHtmlAfter));
     $oAlert->alert();

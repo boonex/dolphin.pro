@@ -22,7 +22,7 @@ function login_form($text = "", $member = 0, $bAjaxMode = false, $sLoginFormPara
     }
 
     if ($bAjaxMode)
-        $sLoginFormParams .= ' no_join_text';
+        $sLoginFormParams .= ' no_join_text add_close_link';
 
     $sLoginFormContent = getMemberLoginFormCode('login_box_form', $sLoginFormParams);
 
