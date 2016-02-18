@@ -111,7 +111,7 @@ class BxVideosPageAlbumsMy extends BxDolPageView
         $this->oSearch->clearFilters(array('activeStatus', 'allow_view', 'album_status'), array('albumsObjects', 'albums'));
         $this->oSearch->bAdminMode = false;
         $this->oSearch->aCurrent['view'] = 'full';
-        $iPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : (int)$this->oConfig->getGlParam('number_albums_home');
+        $iPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : (int)$this->oConfig->getGlParam('number_albums_browse');
         $iPage = isset($_GET['page']) ? (int)$_GET['page'] : $this->oSearch->aCurrent['paginate']['page'];
         $sCode = $this->oSearch->getAlbumList($iPage, $iPerPage, array('owner'=>$this->iOwnerId, 'show_empty' => true, 'hide_default' => true));
         $iCount = $this->oSearch->aCurrent['paginate']['totalAlbumNum'];
@@ -393,7 +393,6 @@ class BxVideosPageAlbumsMy extends BxDolPageView
         $this->oSearch->aCurrent['restriction']['activeStatus']['value'] = 'approved';
         $this->oSearch->aCurrent['restriction']['ownerId']['value'] = $this->iOwnerId;
         $this->oSearch->aCurrent['paginate']['perPage'] = $this->oConfig->getGlParam('number_all');
-        $this->oSearch->aCurrent['view'] = 'full';
 
         $sCode = $this->oSearch->displayResultBlock();
         if (strlen($sCode) > 0) {
@@ -454,7 +453,7 @@ class BxVideosPageAlbumsMy extends BxDolPageView
     function getAdminPart ($aCondition = array(), $aCustom = array())
     {
         $this->oSearch->bAdminMode = true;
-        $iPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : (int)$this->oConfig->getGlParam('number_albums_home');
+        $iPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : (int)$this->oConfig->getGlParam('number_albums_browse');
         $iPage = isset($_GET['page']) ? (int)$_GET['page'] : $this->oSearch->aCurrent['paginate']['page'];
         $aCondition['show_empty'] = true;
         $aCondition['hide_default'] = true;
@@ -510,6 +509,7 @@ class BxVideosPageAlbumsMy extends BxDolPageView
         $this->oSearch->clearFilters(array('activeStatus', 'allow_view', 'album_status'), array('albumsObjects', 'albums'));
         $this->oSearch->bAdminMode = $bAdminMode;
 
+        $this->oSearch->aCurrent['paginate']['perPage'] = (int)$this->oConfig->getGlParam('number_all');
         $this->oSearch->aCurrent['sorting'] = 'album_order';
         $this->oSearch->aCurrent['view'] = 'full';
 

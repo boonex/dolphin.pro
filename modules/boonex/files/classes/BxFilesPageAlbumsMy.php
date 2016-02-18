@@ -109,7 +109,7 @@ class BxFilesPageAlbumsMy extends BxDolPageView
         $this->oSearch->aCurrent['view'] = 'full';
 
         $this->oSearch->aCurrent['restriction']['activeStatus']['value'] = 'approved';
-        $iPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : (int)$this->oConfig->getGlParam('number_albums_home');
+        $iPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : (int)$this->oConfig->getGlParam('number_albums_browse');
         $iPage = isset($_GET['page']) ? (int)$_GET['page'] : $this->oSearch->aCurrent['paginate']['page'];
         $sCode = $this->oSearch->getAlbumList($iPage, $iPerPage, array('owner'=>$this->iOwnerId, 'show_empty' => true, 'hide_default' => true));
         if ($this->oSearch->aCurrent['paginate']['totalAlbumNum'] > 0) {
@@ -444,7 +444,7 @@ class BxFilesPageAlbumsMy extends BxDolPageView
     function getAdminPart ($aCondition = array(), $aCustom = array())
     {
         $this->oSearch->bAdminMode = true;
-        $iPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : (int)$this->oConfig->getGlParam('number_albums_home');
+        $iPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : (int)$this->oConfig->getGlParam('number_albums_browse');
         $iPage = isset($_GET['page']) ? (int)$_GET['page'] : $this->oSearch->aCurrent['paginate']['page'];
         $aCondition['show_empty'] = true;
         $aCondition['hide_default'] = true;
@@ -496,6 +496,7 @@ class BxFilesPageAlbumsMy extends BxDolPageView
         $this->oSearch->clearFilters(array('activeStatus', 'allow_view', 'album_status'), array('albumsObjects', 'albums', 'icon'));
         $this->oSearch->bAdminMode = true;
 
+        $this->oSearch->aCurrent['paginate']['perPage'] = (int)$this->oConfig->getGlParam('number_all');
         $this->oSearch->aCurrent['sorting'] = 'album_order';
         $this->oSearch->aCurrent['view'] = 'full';
 
