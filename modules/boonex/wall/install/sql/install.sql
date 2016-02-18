@@ -119,18 +119,18 @@ INSERT INTO `[db_prefix]handlers`(`alert_unit`, `alert_action`, `module_uri`, `m
 SELECT @iPCPOrder:=MAX(`Order`) FROM `sys_page_compose_pages`;
 INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES ('wall', 'Wall', @iPCPOrder+1);
 
-SET @iPCOrderIndex = (SELECT MAX(`Order`)+1 FROM `sys_page_compose` WHERE `Page`='index' AND `Column`='2');
+SET @iPCOrderIndex = (SELECT MAX(`Order`)+1 FROM `sys_page_compose` WHERE `Page`='index' AND `Column`='1');
 SET @iPCOrderProfile = (SELECT MAX(`Order`)+1 FROM `sys_page_compose` WHERE `Page`='profile' AND `Column`='3');
-SET @iPCOrderMember = (SELECT MAX(`Order`)+1 FROM `sys_page_compose` WHERE `Page`='member' AND `Column`='2');
+SET @iPCOrderMember = (SELECT MAX(`Order`)+1 FROM `sys_page_compose` WHERE `Page`='member' AND `Column`='1');
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('index', '1140px', 'Events Outline', '_wall_pc_view_index_ol', 2, IFNULL(@iPCOrderIndex, 0), 'PHP', 'return BxDolService::call(\'wall\', \'view_block_index_outline\');', 1, 71.9, 'non,memb', 0),
-('index', '1140px', 'Home Timeline: Post', '_wall_pc_post_index_tl', 2, IFNULL(@iPCOrderIndex, 0)+1, 'PHP', 'return BxDolService::call(\'wall\', \'post_block_index_timeline\');', 1, 71.9, 'memb', 0),
-('index', '1140px', 'Home Timeline: View', '_wall_pc_view_index_tl', 2, IFNULL(@iPCOrderIndex, 0)+2, 'PHP', 'return BxDolService::call(\'wall\', \'view_block_index_timeline\');', 1, 71.9, 'non,memb', 0),
+('index', '1140px', 'Events Outline', '_wall_pc_view_index_ol', 1, IFNULL(@iPCOrderIndex, 0), 'PHP', 'return BxDolService::call(\'wall\', \'view_block_index_outline\');', 1, 71.9, 'non,memb', 0),
+('index', '1140px', 'Home Timeline: Post', '_wall_pc_post_index_tl', 1, IFNULL(@iPCOrderIndex, 0)+1, 'PHP', 'return BxDolService::call(\'wall\', \'post_block_index_timeline\');', 1, 71.9, 'memb', 0),
+('index', '1140px', 'Home Timeline: View', '_wall_pc_view_index_tl', 1, IFNULL(@iPCOrderIndex, 0)+2, 'PHP', 'return BxDolService::call(\'wall\', \'view_block_index_timeline\');', 1, 71.9, 'non,memb', 0),
 ('profile', '1140px', 'Profile Timeline: Post', '_wall_pc_post_profile_tl', 3, IFNULL(@iPCOrderProfile, 0), 'PHP', 'return BxDolService::call(\'wall\', \'post_block_profile_timeline\', array($this->oProfileGen->_iProfileID));', 1, 71.9, 'memb', 0),
 ('profile', '1140px', 'Profile Timeline: View', '_wall_pc_view_profile_tl', 3, IFNULL(@iPCOrderProfile, 0)+1, 'PHP', 'return BxDolService::call(\'wall\', \'view_block_profile_timeline\', array($this->oProfileGen->_iProfileID));', 1, 71.9, 'non,memb', 0),
-('member', '1140px', 'Friends Timeline: View', '_wall_pc_view_account_tl', 2, IFNULL(@iPCOrderMember, 0), 'PHP', 'return BxDolService::call(\'wall\', \'view_block_account_timeline\', array($this->iMember));', 1, 71.9, 'memb', 0),
-('wall', '1140px', 'Post event to a Timeline', '_wall_pc_post', 2, 0, 'Post', '', 1, 100, 'memb', 0),
-('wall', '1140px', 'View events on a Timeline', '_wall_pc_view', 2, 1, 'View', '', 1, 100, 'non,memb', 0);
+('member', '1140px', 'Friends Timeline: View', '_wall_pc_view_account_tl', 1, IFNULL(@iPCOrderMember, 0), 'PHP', 'return BxDolService::call(\'wall\', \'view_block_account_timeline\', array($this->iMember));', 1, 71.9, 'memb', 0),
+('wall', '1140px', 'Post event to a Timeline', '_wall_pc_post', 1, 0, 'Post', '', 1, 100, 'memb', 0),
+('wall', '1140px', 'View events on a Timeline', '_wall_pc_view', 1, 1, 'View', '', 1, 100, 'non,memb', 0);
 
 
 SELECT @iTMOrderOwner:=MAX(`Order`) FROM `sys_menu_top` WHERE `Parent`='4';

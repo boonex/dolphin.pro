@@ -56,9 +56,9 @@
     --
     -- Dumping data for table `sys_page_compose`
     --
-	SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose` WHERE `Page` = 'pedit' AND `Column` = 3 ORDER BY `Order` DESC LIMIT 1);
+	SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose` WHERE `Page` = 'pedit' AND `Column` = 2 ORDER BY `Order` DESC LIMIT 1);
 	INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-	('pedit', '1140px', 'Messenger Settings', '_simple_messenger_bcaption_settings', 3, IFNULL(@iMaxOrder, 0), 'PHP', 'return BxDolService::call(''simple_messenger'', ''get_settings'');', 1, 28.1, 'memb', 0);
+	('pedit', '1140px', 'Messenger Settings', '_simple_messenger_bcaption_settings', 2, IFNULL(@iMaxOrder, 0), 'PHP', 'return BxDolService::call(''simple_messenger'', ''get_settings'');', 1, 28.1, 'memb', 0);
 
 
 	--
