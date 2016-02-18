@@ -324,7 +324,10 @@ div.sys-form-login-join .sys-flj-content a.bx-btn:visited {
 }
 
 div.sys-form-login-join .sys-flj-close {
-	text-align: center;
+	text-align: right;
+}
+div.sys-form-login-join .login-box-form .sys-flj-close {
+	margin-bottom: 0;
 }
 
 /*--- Login Join Auth Section ---*/

@@ -884,9 +884,6 @@ function showPopupLoginFormOld() {
 function showPopupJoinForm() {
 	showPopupLoginForm(1);
 }
-function hidePopupJoinForm() {
-	hidePopupLoginForm();
-}
 
 function showPopupLoginForm(iActiveTab) {
 	var sPopupId = 'login_div';
@@ -924,7 +921,8 @@ function showPopupLoginForm(iActiveTab) {
         );
     }
 }
-function hidePopupLoginForm() {
+
+function hidePopupLoginJoinForm() {
 	$('#login_div').dolPopup({});
 }
 
