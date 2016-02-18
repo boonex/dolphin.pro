@@ -28,7 +28,7 @@ INSERT INTO `sys_menu_admin`(`parent_id`, `name`, `title`, `url`, `description`,
 -- pages and blocks
 SET @iPCPOrder = (SELECT MAX(`Order`) FROM `sys_page_compose_pages`);
 INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES 
-('bx_mbp_my_membership', 'My Membership', @iPCPOrder + 1),
+('bx_mbp_my_membership', 'Membership My', @iPCPOrder + 1),
 ('bx_mbp_join', 'Membership Join', @iPCPOrder + 2);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES

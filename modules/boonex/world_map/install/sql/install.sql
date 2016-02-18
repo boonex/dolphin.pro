@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]locations` (
 
 -- page compose 
 SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_page_compose_pages` ORDER BY `Order` DESC LIMIT 1);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_wmap', 'Map', @iMaxOrder);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_wmap_edit', 'Map Edit', @iMaxOrder + 1);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_wmap', 'World Map', @iMaxOrder);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_wmap_edit', 'World Map Edit', @iMaxOrder + 1);
 
 SET @iMaxOrderProfile = (SELECT `Order` + 1 FROM `sys_page_compose` WHERE `Page` = 'profile' AND `Column` = 2 ORDER BY `Order` DESC LIMIT 1);
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 

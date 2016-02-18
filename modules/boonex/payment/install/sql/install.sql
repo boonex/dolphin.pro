@@ -116,9 +116,9 @@ INSERT INTO `sys_permalinks`(`standard`, `permalink`, `check`) VALUES('modules/?
 
 SET @iPCPOrder = (SELECT MAX(`Order`) FROM `sys_page_compose_pages`);
 INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES 
-('bx_pmt_cart', 'Shopping Cart', @iPCPOrder+1),
-('bx_pmt_history', 'Cart History', @iPCPOrder+2),
-('bx_pmt_orders', 'Order Administration', @iPCPOrder+3),
+('bx_pmt_cart', 'Payment Shopping Cart', @iPCPOrder+1),
+('bx_pmt_history', 'Payment Cart History', @iPCPOrder+2),
+('bx_pmt_orders', 'Payment Order Administration', @iPCPOrder+3),
 ('bx_pmt_details', 'Payment Settings', @iPCPOrder+4);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES

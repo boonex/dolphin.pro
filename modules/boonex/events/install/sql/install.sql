@@ -285,10 +285,10 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]forum_signatures` (
 
 -- page compose pages
 SET @iMaxOrder = (SELECT `Order` FROM `sys_page_compose_pages` ORDER BY `Order` DESC LIMIT 1);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_view', 'Event View', @iMaxOrder+1);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_view', 'Events View Event', @iMaxOrder+1);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_celendar', 'Events Calendar', @iMaxOrder+2);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_main', 'Main Events Page', @iMaxOrder+3);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_my', 'My Events Page', @iMaxOrder+4);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_main', 'Events Home', @iMaxOrder+3);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_my', 'Events User', @iMaxOrder+4);
 
 -- page compose blocks
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 

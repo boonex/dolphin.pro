@@ -252,10 +252,10 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]forum_signatures` (
 
 -- page compose pages
 SET @iMaxOrder = (SELECT `Order` FROM `sys_page_compose_pages` ORDER BY `Order` DESC LIMIT 1);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_view', 'Store Product View', @iMaxOrder+1);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_view', 'Store View Product', @iMaxOrder+1);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_celendar', 'Store Calendar', @iMaxOrder+2);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_main', 'Store Home', @iMaxOrder+3);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_my', 'Store My', @iMaxOrder+4);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_my', 'Store User', @iMaxOrder+4);
 
 -- page compose blocks
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 
