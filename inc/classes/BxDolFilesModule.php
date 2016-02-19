@@ -956,18 +956,18 @@ class BxDolFilesModule extends BxDolModule
         return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
     
-    function isAllowedApprove($aFile, $isPerformAction = FALSE)
+    function isAllowedApprove($aFile, $isPerformAction = false)
     {
-        if ($this->isAdmin($this->_iProfileId))
-            return TRUE;
-        if ($aFile['medProfId'] == $this->_iProfileId)
-            return FALSE;
-        else
-        {
-            $this->_defineActions();
-            $aCheck = checkAction($this->_iProfileId, $this->_defineActionName('approve'), $isPerformAction);
-            return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
-        }
+        if (in_array($aFile['Approved'], array('pending','processing','failed')))
+            return false;
+        elseif ($this->isAdmin($this->_iProfileId))
+            return true;
+        elseif ($aFile['medProfId'] == $this->_iProfileId)
+            return false;
+
+        $this->_defineActions();
+        $aCheck = checkAction($this->_iProfileId, $this->_defineActionName('approve'), $isPerformAction);
+        return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
 
     function isAllowedEdit (&$aFile, $isPerformAction = false)
