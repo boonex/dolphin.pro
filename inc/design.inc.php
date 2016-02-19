@@ -282,7 +282,7 @@ function getMemberJoinFormCode($sParams = '')
 	if(getParam('reg_by_inv_only') == 'on' && getID($_COOKIE['idFriend']) == 0)
 		return MsgBox(_t('_registration by invitation only'));
 
-    $sCodeBefore = $GLOBALS['oSysTemplate']->parseHtmlByName('login_join_close.html', array());
+    $sCodeBefore = '';
     $sCodeAfter = '';
 
 	bx_import("BxDolJoinProcessor");
@@ -367,7 +367,7 @@ function getMemberLoginFormCode($sID = 'member_login_form', $sParams = '')
     $oForm = new BxTemplFormView($aForm);
 
     bx_import('BxDolAlerts');
-    $sCustomHtmlBefore = (strpos($sParams, 'add_close_link') === false) ? '' : $GLOBALS['oSysTemplate']->parseHtmlByName('login_join_close.html', array());
+    $sCustomHtmlBefore = '';
     $sCustomHtmlAfter = '';
     $oAlert = new BxDolAlerts('profile', 'show_login_form', 0, 0, array('oForm' => $oForm, 'sParams' => &$sParams, 'sCustomHtmlBefore' => &$sCustomHtmlBefore, 'sCustomHtmlAfter' => &$sCustomHtmlAfter));
     $oAlert->alert();

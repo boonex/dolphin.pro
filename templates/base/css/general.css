@@ -286,6 +286,11 @@ div.sys-form-login-join ul.sys-flj-navigation li.ui-tabs-active a {
 	text-align: center;
 }
 
+div#tabs-login .dbTopMenu,
+div#tabs-join .dbTopMenu {
+    text-align: right;
+}
+
 div.login_ajax_wrap div.sys-form-login-join .form_advanced_wrapper {
 	overflow: visible;
 }
@@ -321,13 +326,6 @@ div.sys-form-login-join .sys-flj-content a.bx-btn:active,
 div.sys-form-login-join .sys-flj-content a.bx-btn:visited {
 	text-decoration: none;
 	color: #333333;
-}
-
-div.sys-form-login-join .sys-flj-close {
-	text-align: right;
-}
-div.sys-form-login-join .login-box-form .sys-flj-close {
-	margin-bottom: 0;
 }
 
 /*--- Login Join Auth Section ---*/

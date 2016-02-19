@@ -922,10 +922,6 @@ function showPopupLoginForm(iActiveTab) {
     }
 }
 
-function hidePopupLoginJoinForm() {
-	$('#login_div').dolPopup({});
-}
-
 function showPopupAnyHtml(sUrl, oCustomOptions) {
     var oPopupOptions = {};
 

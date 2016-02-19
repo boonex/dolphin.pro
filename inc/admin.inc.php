@@ -22,25 +22,26 @@ function login_form($text = "", $member = 0, $bAjaxMode = false, $sLoginFormPara
     }
 
     if ($bAjaxMode)
-        $sLoginFormParams .= ' no_join_text add_close_link';
+        $sLoginFormParams .= ' no_join_text';
 
     $sLoginFormContent = getMemberLoginFormCode('login_box_form', $sLoginFormParams);
 
     if($bAjaxMode) {
-    	$iDesignBox = 1;
-    	$sContent = $sLoginFormContent;
+        $iDesignBox = 1;
+        $sContent = $sLoginFormContent;
+        $sCaptionItems = '<div class="dbTopMenu"><i class="bx-popup-element-close sys-icon times"></i></div>';
 
-    	$sJoinFormContent = getMemberJoinFormCode();
-    	if(!empty($sJoinFormContent)) {
-    		$iDesignBox = 3;
-			$sContent = $GLOBALS['oSysTemplate']->parseHtmlByName('login_join_popup.html', array(
-				'login_form' => $sLoginFormContent,
-				'join_form' => $sJoinFormContent
-			));
-    	}
+        $sJoinFormContent = getMemberJoinFormCode();
+        if(!empty($sJoinFormContent)) {
+            $iDesignBox = 3;
+            $sContent = $GLOBALS['oSysTemplate']->parseHtmlByName('login_join_popup.html', array(
+                'login_form' => $sLoginFormContent,
+                'join_form' => $sJoinFormContent,
+                'top_menu' => $sCaptionItems,
+            ));
+        }
 
-		$sCaption = _t('_Login');
-    	$sCaptionItems = '<div class="dbTopMenu"><i class="bx-popup-element-close sys-icon times"></i></div>';
+        $sCaption = _t('_Login');
         $sMemberLoginFormAjx = $GLOBALS['oFunctions']->transBox(
             DesignBoxContent($sCaption, $sContent, $iDesignBox, $sCaptionItems), true
         );
