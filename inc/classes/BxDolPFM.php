@@ -19,10 +19,10 @@ class BxDolPFM
             3  => array( 'Page' => 'Edit',   'Order' => 'EditAdmOrder',      'Block' => 'EditAdmBlock',      'ShowSysItems' => 'Featured,Status,Membership' ),
             4  => array( 'Page' => 'Edit',   'Order' => 'EditModOrder',      'Block' => 'EditModBlock',      'ShowSysItems' => 'Featured,Status,Membership' ),
 
-            5  => array( 'Page' => 'View',   'Order' => 'ViewAdmOrder',      'Block' => 'ViewAdmBlock',      'ShowSysItems' => 'ID,DateReg,DateLastEdit,DateLastLogin,Status,Age' ),
-            6  => array( 'Page' => 'View',   'Order' => 'ViewMembOrder',     'Block' => 'ViewMembBlock',     'ShowSysItems' => 'ID,DateReg,DateLastEdit,DateLastLogin,Status,Age' ),
-            7  => array( 'Page' => 'View',   'Order' => 'ViewModOrder',      'Block' => 'ViewModBlock',      'ShowSysItems' => 'ID,DateReg,DateLastEdit,DateLastLogin,Status,Age' ),
-            8  => array( 'Page' => 'View',   'Order' => 'ViewVisOrder',      'Block' => 'ViewVisBlock',      'ShowSysItems' => 'ID,DateReg,DateLastEdit,DateLastLogin,Status,Age' ),
+            5  => array( 'Page' => 'View',   'Order' => 'ViewAdmOrder',      'Block' => 'ViewAdmBlock',      'ShowSysItems' => 'ID,DateReg,DateLastEdit,DateLastLogin,DateLastNav,Status,Age' ),
+            6  => array( 'Page' => 'View',   'Order' => 'ViewMembOrder',     'Block' => 'ViewMembBlock',     'ShowSysItems' => 'ID,DateReg,DateLastEdit,DateLastLogin,DateLastNav,Status,Age' ),
+            7  => array( 'Page' => 'View',   'Order' => 'ViewModOrder',      'Block' => 'ViewModBlock',      'ShowSysItems' => 'ID,DateReg,DateLastEdit,DateLastLogin,DateLastNav,Status,Age' ),
+            8  => array( 'Page' => 'View',   'Order' => 'ViewVisOrder',      'Block' => 'ViewVisBlock',      'ShowSysItems' => 'ID,DateReg,DateLastEdit,DateLastLogin,DateLastNav,Status,Age' ),
 
             9  => array( 'Page' => 'Search', 'Order' => 'SearchSimpleOrder', 'Block' => 'SearchSimpleBlock', 'EditAdd' => array( 'SearchParams' ), 'ShowSysItems' => 'ID,Keyword,Location,Couple' ),
             10 => array( 'Page' => 'Search', 'Order' => 'SearchQuickOrder',  'Block' => 'SearchQuickBlock',  'EditAdd' => array( 'SearchParams' ), 'ShowSysItems' => 'ID,Keyword,Location,Couple' ),
