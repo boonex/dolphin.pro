@@ -27,11 +27,11 @@ function login_form($text = "", $member = 0, $bAjaxMode = false, $sLoginFormPara
     $sLoginFormContent = getMemberLoginFormCode('login_box_form', $sLoginFormParams);
 
     if($bAjaxMode) {
-        $iDesignBox = 1;
+        $iDesignBox = 11;
         $sContent = $sLoginFormContent;
         $sCaptionItems = '<div class="dbTopMenu"><i class="bx-popup-element-close sys-icon times"></i></div>';
 
-        $sJoinFormContent = getMemberJoinFormCode();
+        $sJoinFormContent = empty($_REQUEST['add_join_form']) ? '' : getMemberJoinFormCode();
         if(!empty($sJoinFormContent)) {
             $iDesignBox = 3;
             $sContent = $GLOBALS['oSysTemplate']->parseHtmlByName('login_join_popup.html', array(

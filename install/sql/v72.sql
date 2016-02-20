@@ -182,6 +182,7 @@ CREATE TABLE `sys_menu_service` (
 INSERT INTO `sys_menu_service` (`Name`, `Caption`, `Icon`, `Link`, `Script`, `Target`, `Order`, `Visible`, `Active`, `Movable`, `Clonable`, `Editable`, `Deletable`) VALUES
 ('Join', '_sys_sm_join', 'user', '', 'showPopupJoinForm(); return false;', '', 1, 'non', 1, 3, 1, 1, 1),
 ('Login', '_sys_sm_login', 'sign-in', '', 'showPopupLoginForm(); return false;', '', 0, 'non', 0, 3, 1, 1, 1),
+('LoginOnly', '_sys_sm_login', 'sign-in', '', 'showPopupLoginOnlyForm(); return false;', '', 0, 'non', 0, 3, 1, 1, 1),
 ('Profile', '_sys_sm_profile', '', '{memberLink}|{memberNick}|change_status.php', '', '', 0, 'memb', 0, 3, 1, 1, 1),
 ('Account', '_sys_sm_account', 'tachometer', 'member.php', '', '', 1, 'memb', 1, 3, 1, 1, 1),
 ('ProfileSettings', '_sys_sm_profile_settings', 'cog', 'pedit.php?ID={memberID}', '', '', 2, 'memb', 1, 3, 1, 1, 1),
