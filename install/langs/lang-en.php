@@ -276,6 +276,7 @@ If this fails, you can request a password that will be sent to the email address
   '_FieldCaption_Couple_Search' => 'Profile type',
   '_FieldCaption_DateLastEdit_View' => 'Last profile edition date',
   '_FieldCaption_DateLastLogin_View' => 'Last Login Date',
+  '_FieldCaption_DateLastNav_View' => 'Last Navigation Date',
   '_FieldCaption_DateOfBirth_Edit' => 'Birthday',
   '_FieldCaption_DateOfBirth_Join' => 'Birthday',
   '_FieldCaption_DateOfBirth_Search' => 'Age',

@@ -276,6 +276,7 @@ $LANG= array(
   '_FieldCaption_Couple_Search' => 'Тип профиля',
   '_FieldCaption_DateLastEdit_View' => 'Радактировал',
   '_FieldCaption_DateLastLogin_View' => 'Заходил',
+  '_FieldCaption_DateLastNav_View' => 'Пользовался сайтом',
   '_FieldCaption_DateOfBirth_Edit' => 'Дата рождения',
   '_FieldCaption_DateOfBirth_Join' => 'Дата рождения',
   '_FieldCaption_DateOfBirth_Search' => 'Возраст',

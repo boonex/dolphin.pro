@@ -727,6 +727,7 @@ class BxDolProfileFields extends Thing
                     case 'DateReg':
                     case 'DateLastEdit':
                     case 'DateLastLogin':
+                    case 'DateLastNav':
                         return $this -> getViewableDate($sValue, BX_DOL_LOCALE_DATE);
 
                     case 'Status':
@@ -1592,6 +1593,7 @@ EOF;
                     case 'DateReg':
                     case 'DateLastEdit':
                     case 'DateLastLogin':
+                    case 'DateLastNav':
                         //non editable
                         return false;
                     break;
