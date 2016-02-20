@@ -394,6 +394,9 @@ class BxDolFilesTemplate extends BxDolModuleTemplate
 	            ),
         	)
         );
+        $aForm['inputs'] = array_filter($aForm['inputs'], function($aInput) {
+            return !!$aInput['value'];
+        });
         $oForm = new BxTemplFormView($aForm);
         return array($oForm->getCode(), array(), array(), false);
     }
