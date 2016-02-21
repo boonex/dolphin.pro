@@ -1097,7 +1097,7 @@ class BxDolFilesModule extends BxDolModule
             $this->oAlbums->addAlbum(array(
                 'caption' => $sAlbum,
                 'owner' => $iProfileId,
-                'AllowAlbumView' => $this->oAlbumPrivacy->_oDb->getDefaultValueModule($sUri, 'album_view'),
+                'AllowAlbumView' => ($sAlbum == getParam('sys_album_default_name')) ? BX_DOL_PG_HIDDEN : $this->oAlbumPrivacy->_oDb->getDefaultValueModule($sUri, 'album_view'),
             ), false);
 		}
     }
