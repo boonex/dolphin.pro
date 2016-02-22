@@ -371,7 +371,7 @@ class BxWallTemplate extends BxDolModuleTemplate
     	$sModule = $sType . 's';
 
     	$aUploaders = BxDolService::call($sModule, 'get_uploaders_list', array(), 'Uploader');
-    	$bUploaders = !empty($aUploaders) && is_array($aUploaders);
+    	$bUploaders = !empty($aUploaders) && is_array($aUploaders) && count($aUploaders) > 1;
 
     	$aTmplVarsItems = array();
     	if($bUploaders)
