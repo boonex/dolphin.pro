@@ -714,10 +714,14 @@ BxDolCmts.prototype._disableButton = function(eButton, bDisable) {
 };
 
 BxDolCmts.prototype._loading = function(e, bShow) {
-    if(bShow && !$(e).parent().find('b').length)
-        $(e).parent().append(' <b>' + aDolLang['_sys_txt_cmt_loading'] + '</b>');
-    else if (!bShow && $(e).parent().find('b').length)
-    	$(e).parent().find('b').remove();
+	if(!$(e).parent().find('.cmt-loading').length)
+		$(e).parent().append(' <b class="cmt-loading">' + aDolLang['_sys_txt_cmt_loading'] + '</b>');
+
+	var oLoading = $(e).parent().find('.cmt-loading');
+    if(bShow)
+    	oLoading.show();
+    else
+    	oLoading.hide();
 };
 
 BxDolCmts.prototype._err = function(e, bShow, s) {
