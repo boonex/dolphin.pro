@@ -399,6 +399,9 @@ div.wall-event div.wall-comments a.wall-repost-do-repost {
     text-transform: capitalize;
 	text-decoration: none;
 }
+div.wall-event div.wall-comments a.cmt-replies-hide {
+	display: none;
+}
 div.wall-event div.wall-comments span.cmt-comments-count,
 div.wall-event div.wall-comments b.wall-voting-count {
 	padding-left: 3px;
