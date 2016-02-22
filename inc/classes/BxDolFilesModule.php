@@ -1617,6 +1617,7 @@ class BxDolFilesModule extends BxDolModule
         		'cpt_item_url' => $aItem['url'],
         		'cnt_comment_text' => $aComment['cmt_text'],
         		'snippet' => $this->_oTemplate->parseHtmlByName($sTmplNameSnippet, array(
+        			'mod_prefix' => 'bx_' . $sUri,
 		            'cnt_item_page' => $aItem['url'],
         			'cnt_item_width' => $aItem['width'],
 					'cnt_item_height' => $aItem['height'],

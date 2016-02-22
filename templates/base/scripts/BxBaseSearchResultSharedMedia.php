@@ -760,6 +760,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         		'cpt_item_url' => $aItem['url'],
         		'cnt_comment_text' => $aComment['cmt_text'],
         		'snippet' => $this->oModule->_oTemplate->parseHtmlByName($sTmplNameSnippet, array(
+        			'mod_prefix' => 'bx_' . $sUri,
 		            'cnt_item_page' => $aItem['url'],
 		            'cnt_item_icon' => $aItem['file'],
 		            'cnt_item_title' => $aItem['title'],
