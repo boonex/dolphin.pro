@@ -113,7 +113,7 @@ INSERT INTO `[db_prefix]handlers`(`alert_unit`, `alert_action`, `module_uri`, `m
 ('profile', 'commentPost', '', '', '', 0, '', 1, 0),
 ('profile', 'delete', '', '', '', 0, '', 1, 0),
 ('friend', 'accept', '', '', '', 0, '', 1, 0),
-('comment', 'add', '', '', '', 0, '', 1, 0);
+('comment', 'add', '', '', '', 0, '', 0, 0);
 
 
 SELECT @iPCPOrder:=MAX(`Order`) FROM `sys_page_compose_pages`;

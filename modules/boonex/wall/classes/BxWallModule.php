@@ -704,7 +704,7 @@ class BxWallModule extends BxDolModule
             if(empty($aModule))
                 $aModule['title'] = _t('_wall_alert_module_' . $aHandler['alert_unit']);
 
-            $aResults[$aHandler['id']] = $aModule['title'] . ' (' . _t('_wall_alert_action_' . $aHandler['alert_action']) . ')';
+            $aResults[$aHandler['id']] = _t('_wall_alert_action_' . $aHandler['alert_action'], $aModule['title']);
         }
 
         asort($aResults);
