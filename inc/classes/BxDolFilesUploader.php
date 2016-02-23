@@ -143,6 +143,12 @@ class BxDolFilesUploader extends BxDolTemplate
         $sMode = isset($_GET['mode']) ? strip_tags($_GET['mode']) : $this->_aExtras['mode'];
         unset($this->_aExtras['mode']);
 
+        $aTxt = array();
+        if(!empty($this->_aExtras['txt'])) {
+        	$aTxt = $this->_aExtras['txt'];
+        	unset($this->_aExtras['txt']);
+        }
+
         $aUplMethods = $this->oModule->_oConfig->getUploadersMethods();
 
         if (empty($aUploaders))
@@ -188,7 +194,8 @@ class BxDolFilesUploader extends BxDolTemplate
             'box_upl_succ' => MsgBox(_t('_bx_'.$this->sUploadTypeLC.'s_upl_succ')),
             'box_upl_file_err' => MsgBox(_t('_sys_txt_upload_failed')),
             'box_upl_err' => MsgBox(_t('_bx_'.$this->sUploadTypeLC.'s_upl_err')),
-            'box_emb_err' => MsgBox(_t('_bx_'.$this->sUploadTypeLC.'s_emb_err'))
+            'box_emb_err' => MsgBox(_t('_bx_'.$this->sUploadTypeLC.'s_emb_err')),
+        	'txt_select_files' => _t(!empty($aTxt['select_files']) ? $aTxt['select_files'] : '_sys_txt_select_files')
         );
         $this->addCss('upload_media_comm.css');
         $this->addJsTranslation('_bx_' . $this->sUploadTypeLC . 's_emb_err');

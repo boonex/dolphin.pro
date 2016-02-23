@@ -400,8 +400,11 @@ class BxWallTemplate extends BxDolModuleTemplate
     			'album'=>_t('_wall_' . $sType . '_album', getNickName(getLoggedId())), 
     			'albumPrivacy' => BX_DOL_PG_ALL, 
     			'from_wall' => 1, 
-    			'owner_id' => $iOwnerId)
-    		), 'Uploader')
+    			'owner_id' => $iOwnerId,
+    			'txt' => array(
+    				'select_files' => _t('_wall_select_file')
+    			)
+    		)), 'Uploader')
     	));
     }
 

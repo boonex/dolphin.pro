@@ -40,6 +40,7 @@ $aLangContent = array(
     '_wall_add_video' => 'Video',
     '_wall_add_sound' => 'Audio',
     '_wall_post' => 'Submit',
+	'_wall_select_file' => 'Select File',
     '_wall_link_url' => 'URL',
     '_wall_show_n_comments' => 'Show {0} comments',
     '_wall_hide_n_comments' => 'Hide {0} comments',
