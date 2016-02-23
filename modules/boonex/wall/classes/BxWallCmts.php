@@ -21,6 +21,12 @@ class BxWallCmts extends BxTemplCmtsView
         $this->iAutoHideRootPostForm = 1;
     }
 
+	function init ($iId)
+    {
+        if(empty($this->iId) && $iId)
+            $this->setId($iId);
+    }
+
     function actionCmtPost ()
     {
         $mixedResult = parent::actionCmtPost();
@@ -90,7 +96,7 @@ class BxWallCmts extends BxTemplCmtsView
 
         //--- Reply
         $aReply = array();
-        $bReply = $this->isPostReplyAllowed();
+        $bReply = $this->isEnabled() && $this->isPostReplyAllowed();
         if($bReply)
 			$aReply = array(
 				'js_object' => $this->_sJsObjName,
@@ -99,7 +105,7 @@ class BxWallCmts extends BxTemplCmtsView
 
 		//--- Replies
 		$aReplies = array();
-		$bReplies = (int)$aParams['cmt_replies'] > 0;
+		$bReplies = $this->isEnabled() && (int)$aParams['cmt_replies'] > 0;
 		if($bReplies)
 			$aReplies = array(
 				'js_object' => $this->_sJsObjName,
@@ -113,7 +119,7 @@ class BxWallCmts extends BxTemplCmtsView
 		//--- Vote
 		$aVote = array();
         $oVote = $this->_oModule->_getObjectVoting($aEvent);
-        $bVote = $oVote->isVotingAllowed();
+        $bVote = $oVote->isEnabled() && $oVote->isVotingAllowed();
         if($bVote)
         	$aVote = array(
 				'content' => $oVote->getVotingTimeline()
