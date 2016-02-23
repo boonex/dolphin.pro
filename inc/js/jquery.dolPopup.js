@@ -325,14 +325,18 @@
     		oCPopup.find('.popup_confirm_text').html(options.message);
 
     	oCPopup.find('.popup_confirm_yes').bind('click', function() {
+            event.stopPropagation();
+
 			if(options.onClickYes && typeof(options.onClickYes) == 'function')
 				options.onClickYes(oCPopup);
 
 			oCPopup.dolPopupHide();
 		});
 
-		oCPopup.find('.popup_confirm_no').bind('click', function() {
-			if(options.onClickNo && typeof(options.onClickNo) == 'function')
+		oCPopup.find('.popup_confirm_no').bind('click', function(event) {
+            event.stopPropagation();
+
+			if (options.onClickNo && typeof(options.onClickNo) == 'function')
 				options.onClickNo(oCPopup);
 
 			oCPopup.dolPopupHide();
