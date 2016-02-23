@@ -5,9 +5,11 @@ function BxWallPost(oOptions) {
     this._iGlobAllowHtml = 0;
     this._sAnimationEffect = oOptions.sAnimationEffect == undefined ? 'slide' : oOptions.sAnimationEffect;
     this._iAnimationSpeed = oOptions.iAnimationSpeed == undefined ? 'slow' : oOptions.iAnimationSpeed;
+    this._aHtmlIds = oOptions.aHtmlIds == undefined ? {} : oOptions.aHtmlIds;
+    this._oRequestParams = oOptions.oRequestParams == undefined ? {} : oOptions.oRequestParams;
 }
 
-BxWallPost.prototype.changePostType = function(oElement) {    
+BxWallPost.prototype.changePostType = function(oElement) {
     var $this = this;
     var sId = $(oElement).attr('id');
     var sType = sId.substr(sId.lastIndexOf('-') + 1, sId.length);
@@ -16,9 +18,7 @@ BxWallPost.prototype.changePostType = function(oElement) {
     if($(oElement).is('select'))
     	sSubType = $(oElement).val();
 
-    var oLoading = $('#bx-wall-post-loading');
-    if(oLoading)
-    	oLoading.bx_loading();
+    this.loading();
 
     //--- Change Control ---//
     if($(oElement).is('a'))
@@ -34,10 +34,9 @@ BxWallPost.prototype.changePostType = function(oElement) {
             	if($.trim(sResult).length) {
             		var oContent = oContents.filter('.wall_' + sType);
             		if(oContent.is(':visible')) {
-	            		oContent.bxwallanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
+	            		oContent.bxwallanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
 	            			$(this).html(sResult).addWebForms().bxwallanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
-	            				if(oLoading)
-	            	            	oLoading.bx_loading();
+	            				$this.loading(false);
 	            			});
 	            		});
 
@@ -54,24 +53,15 @@ BxWallPost.prototype.changePostType = function(oElement) {
         this._animContent(oElement, sType);
 };
 
-BxWallPost.prototype._animContent = function(oElement, sType) {
-    var $this = this;
-    var oLoading = $('#bx-wall-post-loading');
-
-    $(oElement).parents('.disignBoxFirst').find('.wall-ptype-cnt:visible').bxwallanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
-        $(this).siblings('.wall-ptype-cnt').filter('.wall_' + sType).bxwallanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
-        	if(oLoading)
-            	oLoading.bx_loading();
-        });
-    });
-};
 
 BxWallPost.prototype.postSubmit = function(oForm) {
-	var oLoading = $('#bx-wall-post-loading');
-	if(oLoading)
-    	oLoading.bx_loading();
+	this.loading();
 
     return true;
+};
+
+BxWallPost.prototype.loading = function(bShow) {
+	$('#' + this._aHtmlIds['loading']).bx_loading(bShow);
 };
 
 BxWallPost.prototype._getPost = function(oElement, iPostId) {
@@ -79,10 +69,8 @@ BxWallPost.prototype._getPost = function(oElement, iPostId) {
     var oData = this._getDefaultData();
     oData['WallPostId'] = iPostId;
 
-    // Hide Loading in Post block. 
-    var oLoading = $('#bx-wall-post-loading');
-    if(oLoading)
-    	oLoading.bx_loading(false);
+    // Hide Loading in Post block.
+    this.loading(false);
 
     // Show Loading in View block. 
     var oLoading = $('#bx-wall-view-loading');
@@ -116,6 +104,17 @@ BxWallPost.prototype._getPost = function(oElement, iPostId) {
 
 BxWallPost.prototype._getDefaultData = function () {
     return {WallOwnerId: this._iOwnerId};
+};
+
+BxWallPost.prototype._animContent = function(oElement, sType) {
+    var $this = this;
+    this.loading();
+
+    $(oElement).parents('.disignBoxFirst').find('.wall-ptype-cnt:visible').bxwallanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
+        $(this).siblings('.wall-ptype-cnt').filter('.wall_' + sType).bxwallanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+        	$this.loading(false);
+        });
+    });
 };
 
 BxWallPost.prototype._err = function (oElement, bShow, sMessage) {    

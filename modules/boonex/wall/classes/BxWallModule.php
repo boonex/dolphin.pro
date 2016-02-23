@@ -103,7 +103,7 @@ class BxWallModule extends BxDolModule
     {
     	$sJsObject = $this->_oConfig->getJsObject('post');
 
-        $sResult = "parent." . $sJsObject . "._loading(null, false);\n";
+        $sResult = "parent." . $sJsObject . ".loading(false);\n";
 
         $this->_iOwnerId = (int)$_POST['WallOwnerId'];
         if (!$this->_isCommentPostAllowed(true))

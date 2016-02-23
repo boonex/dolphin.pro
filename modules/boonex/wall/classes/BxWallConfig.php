@@ -90,6 +90,9 @@ class BxWallConfig extends BxDolConfig
 
         $sHtmlPrefix = str_replace('_', '-', $sName);
         $this->_aHtmlIds = array(
+        	'post' => array(
+        		'loading' => $sHtmlPrefix . '-post-loading',
+        	),
         	'repost' => array(
 				'main' => $sHtmlPrefix . '-repost-',
 				'counter' => $sHtmlPrefix . '-repost-counter-',
