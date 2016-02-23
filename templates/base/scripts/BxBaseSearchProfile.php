@@ -88,6 +88,13 @@ class BxBaseSearchProfile extends BxBaseSearchResultText
         $isShowMatchPercent = $bExtMode && $iVisitorID && ( $iVisitorID != $aProfileInfo['ID'] ) && getParam('view_match_percent') && getParam('enable_match');
 
         $bPublic = $bExtMode ? bx_check_profile_visibility ($aProfileInfo['ID'], $iVisitorID, true) : true;
+        if ($bPublic && $iVisitorID != $aProfileInfo['ID'] && !isAdmin()) {
+            $oPrivacy = new BxDolPrivacy('sys_page_compose_privacy', 'id', 'user_id');
+
+            $iBlockID = $GLOBALS['MySQL']->getOne("SELECT `ID` FROM `sys_page_compose` WHERE `Page` = 'profile' AND `Func` = 'Description' AND `Column` != 0");
+            $iPrivacyId = (int)$GLOBALS['MySQL']->getOne("SELECT `id` FROM `sys_page_compose_privacy` WHERE `user_id`='{$aProfileInfo['ID']}' AND `block_id`='{$iBlockID}' LIMIT 1");
+            $bPublic = !$iBlockID || !$iPrivacyId || $oPrivacy->check('view_block', $iPrivacyId, $iVisitorID);
+        }
 
         $sProfileThumb = get_member_thumbnail( $aProfileInfo['ID'], 'none', ! $bExtMode, 'visitor' );
         $sProfileMatch = $isShowMatchPercent ? $GLOBALS['oFunctions']->getProfileMatch( $iVisitorID, $aProfileInfo['ID'] ) : '';
