@@ -129,13 +129,12 @@ class BxWallTemplate extends BxDolModuleTemplate
 		if(empty($aResult) || empty($aResult['content']))
 			return '';
 
-        $oComments = new BxWallCmts($this->_oConfig->getCommentSystemName(), $aEvent['id']);
         return $this->parseHtmlByTemplateName('balloon', array(
             'post_type' => bx_ltrim_str($aEvent['type'], $sPrefix, ''),
             'post_id' => $aEvent['id'],
             'post_owner_icon' => get_member_thumbnail((int)$aEvent['object_id'], 'none'),
             'post_content' => $aResult['content'],
-        	'comments_content' => $oComments->getCommentsFirst('comment')
+        	'comments_content' => $aResult['comments']
         ));
     }
 
@@ -173,7 +172,8 @@ class BxWallTemplate extends BxDolModuleTemplate
         $aTmplVars = array();
 
         $aResult = array(
-        	'content' => ''
+        	'content' => '',
+        	'comments' => '' 
         );
         switch($sEventType) {
         	case BX_WALL_PARSE_TYPE_TEXT:
@@ -194,7 +194,15 @@ class BxWallTemplate extends BxDolModuleTemplate
         	case BX_WALL_PARSE_TYPE_SOUNDS:
         	case BX_WALL_PARSE_TYPE_VIDEOS:
         		$aContent = unserialize($aEvent['content']);
-        		$aResult = array_merge($aResult, $this->_getCommonMedia($aContent['type'], (int)$aContent['id']));
+        		$iContent = (int)$aContent['id'];
+
+        		$aResult = array_merge($aResult, $this->_getCommonMedia($aContent['type'], $iContent));
+
+        		$oComments = new BxWallCmts($this->_oConfig->getCommonName($aContent['type']), $iContent);
+                if($oComments->isEnabled())
+                    $aResult['comments'] = $oComments->getCommentsFirstSystem('comment', $iContent);
+                else
+                    $aResult['comments'] = $this->getDefaultComments($aEvent['id']);
 
 				$sTmplName = 'common';
         		$aTmplVars['cpt_added_new'] = _t('_wall_added_' . $sEventType);
@@ -230,6 +238,9 @@ class BxWallTemplate extends BxDolModuleTemplate
         	),
         	'content' => $aResult['content'],
 		), $aTmplVars));
+
+		if(empty($aResult['comments']))
+			$aResult['comments'] = $this->getDefaultComments($aEvent['id']);
 
         return $aResult;
     }

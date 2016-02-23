@@ -308,4 +308,14 @@ class BxWallConfig extends BxDolConfig
 
         return strpos($mixedObjectId, BX_WALL_DIVIDER_OBJECT_ID) !== false;
     }
+
+    function getCommonType($sName)
+    {
+    	return strtolower(str_replace('bx_', '', $sName));
+    }
+
+    function getCommonName($sType)
+    {
+    	return 'bx_' . $sType;
+    }
 }

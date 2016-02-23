@@ -33,16 +33,16 @@ class BxWallResponse extends BxDolAlertsResponse
 
         if($bFromWall) {
             $this->_oModule->_iOwnerId = (int)$oAlert->aExtras['owner_id'];
-            $sMedia = strtolower(str_replace('bx_', '', $oAlert->sUnit));
-            $aMediaInfo = $this->_oModule->_oTemplate->_getCommonMedia($sMedia, $oAlert->iObject);
+            $sMedia = $this->_oModule->_oConfig->getCommonType($oAlert->sUnit);
+            $aMedia = $this->_oModule->_oTemplate->_getCommonMedia($sMedia, $oAlert->iObject);
 
             $iOwnerId = $this->_oModule->_iOwnerId;
             $iObjectId = $this->_oModule->_getAuthorId();
             $sType = $this->_oModule->_oConfig->getCommonPostPrefix() . $sMedia;
             $sAction = '';
             $sContent = serialize(array('type' => $sMedia, 'id' => $oAlert->iObject));
-            $sTitle = $aMediaInfo['title'];
-            $sDescription = $aMediaInfo['description'];
+            $sTitle = $aMedia['title'];
+            $sDescription = $aMedia['description'];
         } 
         else if($this->_oModule->_oConfig->isSystemComment($oAlert->sUnit, $oAlert->sAction)) {
             $sType = $oAlert->aExtras['object_system'];
