@@ -324,7 +324,7 @@
     	if(options.message)
     		oCPopup.find('.popup_confirm_text').html(options.message);
 
-    	oCPopup.find('.popup_confirm_yes').bind('click', function() {
+    	oCPopup.find('.popup_confirm_yes').bind('click', function(event) {
             event.stopPropagation();
 
 			if(options.onClickYes && typeof(options.onClickYes) == 'function')

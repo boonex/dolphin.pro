@@ -1588,6 +1588,9 @@ class BxDolFilesModule extends BxDolModule
         if(empty($aItem) || !is_array($aItem))
         	return array('perform_delete' => true);
 
+		if(!$this->oAlbumPrivacy->check('album_view', (int)$aItem['album_id'], $this->_iProfileId))
+        	return '';
+
         bx_import('BxTemplCmtsView');
         $oCmts = new BxTemplCmtsView($this->_oConfig->getMainPrefix(), $iItem);
         if(!$oCmts->isEnabled())

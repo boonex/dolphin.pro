@@ -730,6 +730,9 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         if(empty($aContent) || !isset($aContent['comment_id']))
             return '';
 
+		if(!$this->oPrivacy->check('album_view', (int)$aItem['album_id'], $this->oModule->_iProfileId))
+        	return '';
+
         bx_import('BxTemplCmtsView');
         $oCmts = new BxTemplCmtsView($this->oModule->_oConfig->getMainPrefix(), $iId);
         if(!$oCmts->isEnabled())
