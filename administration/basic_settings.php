@@ -5,11 +5,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-define('BX_SECURITY_EXCEPTIONS', true);
-$aBxSecurityExceptions = array(
-    'POST.content_text',
-    'REQUEST.content_text',
-);
+define('BX_RETINA_PREFIX', 'retina_');
 
 require_once( '../inc/header.inc.php' );
 
@@ -289,7 +285,7 @@ function isLogoUploaded()
 
 function setLogo(&$aData, &$aFile)
 {
-    global $dir;
+    global $dir;    
 
     $aFileInfo = getimagesize($aFile['new_file']['tmp_name']);
     if(empty($aFileInfo))
@@ -305,9 +301,16 @@ function setLogo(&$aData, &$aFile)
         return '_adm_txt_settings_file_wrong_format';
 
     $sFileName = mktime() . '.' . $sExt;
+    $sFileName2x = BX_RETINA_PREFIX . mktime() . '.' . $sExt;
     $sFilePath = $dir['mediaImages'] . $sFileName;
+    $sFilePath2x = $dir['mediaImages'] . $sFileName2x;
     if(!move_uploaded_file($aFile['new_file']['tmp_name'], $sFilePath))
         return '_adm_txt_settings_file_cannot_move';
+
+    $o = BxDolImageResize::instance();
+    $o->removeCropOptions ();
+    $o->setJpegOutput (false);
+    $o->setSquareResize (false);
 
     if(!empty($aData['resize'])) {
         $iWidth = (int)$aData['new_width'];
@@ -315,12 +318,23 @@ function setLogo(&$aData, &$aFile)
         if($iWidth <= 0 || $iHeight <= 0)
             return '_adm_txt_settings_logo_wrong_size';
 
-        if(imageResize($sFilePath, $sFilePath, $iWidth, $iHeight) != IMAGE_ERROR_SUCCESS)
+        $o->setSize ($iWidth*2, $iHeight*2);
+        if($o->resize($sFilePath, $sFilePath2x) != IMAGE_ERROR_SUCCESS)
+            return '_adm_txt_settings_image_cannot_resize';
+
+        $o->setSize ($iWidth, $iHeight);
+        if($o->resize($sFilePath, $sFilePath) != IMAGE_ERROR_SUCCESS)
             return '_adm_txt_settings_image_cannot_resize';
     }
 
     @unlink($dir['mediaImages'] . getParam('sys_main_logo'));
+    @unlink($dir['mediaImages'] . BX_RETINA_PREFIX . getParam('sys_main_logo'));
     setParam('sys_main_logo', $sFileName);
+
+    bx_import('BxDolImageResize');
+    $aFileNewSize = BxDolImageResize::getImageSize($sFilePath);
+    setParam('sys_main_logo_w', $aFileNewSize['w']);
+    setParam('sys_main_logo_h', $aFileNewSize['h']);
 
     return true;
 }
@@ -330,5 +344,8 @@ function deleteLogo()
     global $dir;
 
     @unlink($dir['mediaImages'] . getParam('sys_main_logo'));
+    @unlink($dir['mediaImages'] . BX_RETINA_PREFIX . getParam('sys_main_logo'));
     setParam('sys_main_logo', '');
+    setParam('sys_main_logo_w', '');
+    setParam('sys_main_logo_h', '');
 }

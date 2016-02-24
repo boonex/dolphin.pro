@@ -1297,7 +1297,9 @@ INSERT INTO `sys_options` VALUES
 ('sys_show_admin_help', 'on', @iCatHidden, 'Show help in admin dashboard', 'checkbox', '', '', 53, ''),
 
 ('sys_main_logo', '', @iCatHidden, 'Main logo file name', 'text', '', '', 60, ''),
-('main_div_width', '1140px', @iCatHidden, 'Width of the main container of the site', 'digit', '', '', 61, ''),
+('sys_main_logo_w', '', @iCatHidden, 'Main logo width', 'digit', '', '', 61, ''),
+('sys_main_logo_h', '', @iCatHidden, 'Main logo height', 'digit', '', '', 62, ''),
+('main_div_width', '1140px', @iCatHidden, 'Width of the main container of the site', 'digit', '', '', 65, ''),
 
 ('sys_template_cache_image_enable', '', @iCatHidden, 'Enable cache for images (do not work for IE7)', 'checkbox', '', '', 70, ''),
 ('sys_template_cache_image_max_size', '5', @iCatHidden, 'Max image size to be cached(in kb)', 'digit', '', '', 71, ''),
