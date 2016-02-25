@@ -678,6 +678,12 @@ div.paginate_page a:hover  {
 	background-color: #ffffff;
 }
 
+div.paginate_sorting .input_wrapper_select {
+	display: inline-block;
+	vertical-align: middle;
+	width: auto;
+}
+
 div.paginate_per_page span,
 div.paginate_per_page .input_wrapper {
 	position: relative;

@@ -322,6 +322,47 @@ img.wall-pm-thumbnail {
     background-position: center;
 }
 
+/*--- Post Actions Styles ---*/
+div.wall-event-actions .bx-btn {
+	position: relative;
+	display: inline-block;
+	float: none;
+
+	vertical-align: top;
+
+	height: 24px;
+	padding-left: 10px;
+	padding-right: 10px;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	box-shadow: none;
+
+	background-color: transparent;
+	border-color: #cccccc;
+    border-width: 1px;
+	border-style: solid;
+
+	line-height: 20px;
+
+	color: #666666;
+}
+div.wall-event-actions .bx-btn:hover {
+	background-color: #ffffff;
+}
+div.wall-event-actions .bx-btn.bx-btn-disabled:hover {
+	background-color: transparent;
+}
+div.wall-event-actions .bx-btn,
+div.wall-event-actions .bx-btn .sys-icon {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+div.wall-event-actions .wall-repost-button-small .wall-repost-element-holder {
+	line-height: 24px;
+	line-height: 1.5rem;
+}
 
 /*--- Comment Styles ---*/
 div.wall-comments {
@@ -381,16 +422,13 @@ div.wall-event div.wall-comments div.cmts {
 	margin: 0px;
     padding: 0px;
 }
-div.wall-event div.wall-comments div.cmts ul.cmts li.cmt:first-child {
+div.wall-event div.wall-comments div.cmts ul.cmts li.cmt:first-child,
+div.wall-event div.wall-comments div.cmts ul.cmts li.cmt-no:first-child {
 	margin-top: 10px;
 }
 div.wall-event div.wall-comments span.wall-date,
 div.wall-event div.wall-comments a.cmt-replies-show,
-div.wall-event div.wall-comments a.cmt-replies-hide,
-div.wall-event div.wall-comments a.cmt-reply-toggle,
-div.wall-event div.wall-comments a.wall-delete,
-div.wall-event div.wall-comments a.wall-voting-do-vote,
-div.wall-event div.wall-comments a.wall-repost-do-repost {
+div.wall-event div.wall-comments a.cmt-replies-hide {
 	display: inline-block;
 
     margin: 0px;
@@ -414,7 +452,9 @@ div.wall-event div.wall-comments li.cmt div.cmt-replies,
 div.wall-event div.wall-comments li.cmt div.cmt-post-reply-to {
 	margin: 0px 0px 0px 5px;
 }
-
+.cmt-comments-count i {
+	font-style: normal;
+}
 
 /*--- Profile Edit item styles ---*/
 div.wall-content div.wall-caption.p-edit-wall-caption {

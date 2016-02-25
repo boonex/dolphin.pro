@@ -161,11 +161,23 @@ BxDolCmts.prototype.reloadComment = function(iCmtId) {
     );
     
 };
-BxDolCmts.prototype.toggleReply = function(e, iCmtParentId) {
+BxDolCmts.prototype.toggleReply = function(oElement, iCmtParentId) {
+	var $this = this;
+
     //--- Get form for posting comment in Root ---//
     if(iCmtParentId == 0) {
-        if($('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' .cmt-reply').children().length) {
-            $('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' .cmt-reply').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
+    	var sCmtsBox = 'cmts-box-' + this._sSystem + '-' + this._iObjId;
+
+    	//--- Remove all similar reply boxes ---//
+    	$('.' + sCmtsBox).find('.cmt-reply:not(:empty)').hide(function(){
+    		$this.removeReply($(this));
+    	});
+
+    	var oParent = $(oElement).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('.cmt-reply');
+        if(oParent.children().length) {
+        	oParent.bxdolcmtanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
+        		$this.removeReply($(this));
+        	});
         }
         else {
             var $this = this;
@@ -174,24 +186,27 @@ BxDolCmts.prototype.toggleReply = function(e, iCmtParentId) {
             oData['CmtType'] = 'comment';
             oData['CmtParent'] = iCmtParentId;
             
-            $this._loading (e, true);
+            $this._loading (oElement, true);
     
             jQuery.post (
                 this._sActionsUrl,
                 oData,
                 function (s) {                	            
-                	$this._loading(e, false);
+                	$this._loading(oElement, false);
 
-                	$('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' .cmt-reply').append($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).children('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
+                	oParent.append($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).children('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
                 }
             );
             
         }
     }
+
     //--- Get form for posting a reply ---//
-	else {	    
-		if ($('#cmt' + iCmtParentId).children('.cmt-post-reply').length)
-			$('#cmt' + iCmtParentId).children('.cmt-post-reply').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
+	else {
+		var oParent = $(oElement).parents('#cmt' + iCmtParentId + ':first');
+
+		if (oParent.children('.cmt-post-reply').length)
+			oParent.children('.cmt-post-reply').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
 		else {
 		    var $this = this;
 		    var oData = this._getDefaultActions();		    
@@ -199,20 +214,28 @@ BxDolCmts.prototype.toggleReply = function(e, iCmtParentId) {
             oData['CmtType'] = 'reply';
             oData['CmtParent'] = iCmtParentId;
             
-            $this._loading (e, true);
+            $this._loading (oElement, true);
     
             jQuery.post (
                 this._sActionsUrl,
                 oData,
                 function (s) {                	            
-                	$this._loading(e, false);
+                	$this._loading(oElement, false);
 
-                	$('#cmt' + iCmtParentId).children('.cmt-cont').after($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).next('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
+                	oParent.children('.cmt-cont').after($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).next('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
                 }
             );					
 		}
 	}
 };
+
+BxDolCmts.prototype.removeReply = function(oReply) {
+	if(this._iGlobAllowHtml == 1)
+		this.editorDestroy(oReply.find("textarea.cmt-text-post[name='CmtText']"));
+	
+	$(oReply).empty().show();
+};
+
 BxDolCmts.prototype.toggleType = function(oLink) {
     var aSwitcher = {'cmt-post-reply-text': 'cmt-post-reply-video', 'cmt-post-reply-video': 'cmt-post-reply-text'};
     var sKey = $(oLink).hasClass('cmt-post-reply-text') ? 'cmt-post-reply-text' : 'cmt-post-reply-video';
@@ -426,11 +449,11 @@ BxDolCmts.prototype._getCmt = function (oForm, iCmtParentId, iCmtId)
         	if (iCmtParentId == 0) {
         		var oProcessResults = function () {
 	        	    var oParent = oBox.find('div.cmts > ul');
-	        	    var iRepliesCount = parseInt(oBox.find('.cmt-comments:first .cmt-comments-count').html());
+	        	    var iRepliesCount = parseInt(oBox.find('.cmt-comments:first .cmt-comments-count i').html());
 
 	        		//--- Some number of comments already loaded ---//
 	        		if(oParent.children('li.cmt:last').length) {
-	        			oBox.find('.cmt-comments .cmt-comments-count').html(iRepliesCount + 1);
+	        			oBox.find('.cmt-comments .cmt-comments-count i').html(iRepliesCount + 1);
 
 	        			if(oParent.is(':visible'))
 	        				oParent.append($(s).hide()).find('li.cmt:hidden').bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
@@ -444,7 +467,7 @@ BxDolCmts.prototype._getCmt = function (oForm, iCmtParentId, iCmtId)
 	                //--- Some number of comments exists but NOT loaded ---//
 	            	else if(iRepliesCount > 0) {
 	            	    $this._getCmts(oForm, 0, function(){
-	            	    	oBox.find('.cmt-comments').toggle().find('.cmt-comments-count').html(iRepliesCount + 1);
+	            	    	oBox.find('.cmt-comments').toggle().find('.cmt-comments-count i').html(iRepliesCount + 1);
 	            	    });
 	            	}
 	            	//-- There is no comments at all ---//
@@ -456,6 +479,8 @@ BxDolCmts.prototype._getCmt = function (oForm, iCmtParentId, iCmtId)
 
         		if($this._bAutoHideRootPostForm)
         			oBox.find('.cmt-reply').bxdolcmtanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+        				$this.removeReply($(this));
+
         				oProcessResults();
 					});
         		else

@@ -18,7 +18,7 @@ class BxWallTemplate extends BxDolModuleTemplate
     {
         parent::BxDolModuleTemplate($oConfig, $oDb);
 
-        $this->_aTemplates = array('divider', 'balloon', 'repost', 'common', 'common_media', 'comments', 'comments_actions');
+        $this->_aTemplates = array('divider', 'balloon', 'repost', 'common', 'common_media', 'comments', 'actions');
     }
 
     function init(&$oModule)
@@ -644,6 +644,9 @@ class BxWallTemplate extends BxDolModuleTemplate
         $bShowDoRepostLabel = isset($aParams['show_do_repost_label']) && $aParams['show_do_repost_label'] == true;
         $bShowCounter = isset($aParams['show_counter']) && $aParams['show_counter'] === true;
 
+        $sTmplMain = !empty($aParams['template_main']) ? $aParams['template_main'] : 'repost_element_block.html';
+        $sTmplDoRepost = !empty($aParams['template_do_repost']) ? $aParams['template_do_repost'] : 'repost_link.html';
+
         //--- Do repost link ---//
 		$sClass = $sStylePrefixRepost . 'do-repost';
 		if($bShowDoRepostAsButton)
@@ -671,12 +674,12 @@ class BxWallTemplate extends BxDolModuleTemplate
 		if(!empty($sOnClick))
 			$aOnClickAttrs[] = array('key' => 'onclick', 'value' => $sOnClick);
 
-        return $this->parseHtmlByName('repost_element_block.html', array(
+        return $this->parseHtmlByName($sTmplMain, array(
             'style_prefix' => $sStylePrefix,
             'html_id' => $this->_oConfig->getHtmlIds('repost', 'main') . $aReposted['id'],
             'class' => ($bShowDoRepostAsButton ? $sStylePrefixRepost . 'button' : '') . ($bShowDoRepostAsButtonSmall ? $sStylePrefixRepost . 'button-small' : ''),
             'count' => $aReposted['reposts'],
-            'do_repost' => $this->parseHtmlByName('repost_link.html', array(
+            'do_repost' => $this->parseHtmlByName($sTmplDoRepost, array(
 	            'href' => 'javascript:void(0)',
 	            'title' => _t('_wall_txt_do_repost'),
 	            'bx_repeat:attrs' => $aOnClickAttrs,
@@ -699,27 +702,32 @@ class BxWallTemplate extends BxDolModuleTemplate
         				'condition' => (int)$aReposted['reposts'] == 0,
         				'content' => array()
         			),
-                    'counter' => $this->getRepostCounter($aReposted)
+                    'counter' => $this->getRepostCounter($aReposted, $aParams)
                 )
             ),
             'script' => $this->getRepostJsScript()
         ));
     }
 
-    function getRepostCounter($aEvent)
+    function getRepostCounter($aEvent, $aParams = array())
     {
         $sStylePrefix = $this->_oConfig->getPrefix('style');
         $sJsObject = $this->_oConfig->getJsObject('repost');
 
-        return $this->parseHtmlByName('repost_counter.html', array(
+        $sTmplCounter = !empty($aParams['template_counter']) ? $aParams['template_counter'] : 'repost_counter.html';
+
+        $sTxtCounter = !empty($aParams['text_counter']) ? $aParams['text_counter'] : '_wall_n_reposts';
+        $sTxtCounterEmpty = !empty($aParams['text_counter_empty']) ? $aParams['text_counter_empty'] : '_wall_no_reposts';
+
+        return $this->parseHtmlByName($sTmplCounter, array(
             'href' => 'javascript:void(0)',
-            'title' => _t('_wall_txt_reposted_by'),
+            'title' => bx_html_attribute(_t('_wall_txt_reposted_by')),
             'bx_repeat:attrs' => array(
                 array('key' => 'id', 'value' => $this->_oConfig->getHtmlIds('repost', 'counter') . $aEvent['id']),
-                array('key' => 'class', 'value' => $sStylePrefix . '-counter'),
+                array('key' => 'class', 'value' => $sStylePrefix . '-repost-counter'),
                 array('key' => 'onclick', 'value' => 'javascript:' . $sJsObject . '.toggleByPopup(this, ' . $aEvent['id'] . ')')
             ),
-            'content' => !empty($aEvent['reposts']) && (int)$aEvent['reposts'] > 0 ? $aEvent['reposts'] : ''
+            'content' => !empty($aEvent['reposts']) && (int)$aEvent['reposts'] > 0 ? _t($sTxtCounter, $aEvent['reposts']) : _t($sTxtCounterEmpty, $aEvent['reposts'])
         ));
     }
 

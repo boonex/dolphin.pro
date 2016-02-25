@@ -17,6 +17,9 @@
         margin-left: 38px;
     	margin-bottom: 10px;
     }
+    ul.cmts li.cmt-no {
+		margin-bottom: 10px;
+    }
     li.cmt-just-posted {
     }
     li.cmt-err {
@@ -265,6 +268,10 @@
 	div.cmt-pages select {
 	   margin: 0px;
 	}
+	div.cmt-order div.paginate_sorting {
+		display: inline-block;
+		vertical-align: middle;
+    }
 
     /*--- Show More(Paginate) Styles ---*/
     div.cmt-show-more .paginate {

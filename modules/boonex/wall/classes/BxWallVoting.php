@@ -18,11 +18,17 @@ class BxWallVoting extends BxTemplVotingView
         $this->_oModule = BxDolModule::getInstance('BxWallModule');
     }
 
-    function getVotingTimeline($bCount = true)
+    function getVotingTimeline($bCount = false)
     {
     	return $this->_getVotingElement(array(
+    		'template_do_vote' => 'timeline_voting_do_vote.html',
     		'show_count' => $bCount
     	));
+    }
+
+	function getVotingTimelineCounter()
+    {
+    	return _t('_wall_n_votes_long', $this->getVoteCount());
     }
 
 	function getVotingOutline($bCount = true)
@@ -70,7 +76,7 @@ class BxWallVoting extends BxTemplVotingView
 				'bx_if:show_count' => array(
 	    			'condition' => $bCount,
 	    			'content' => array(
-	    				'count' => $this->getVoteCount()
+	    				'count' => _t('_wall_n_votes', $this->getVoteCount())
 	    			)
 	    		)
 			))

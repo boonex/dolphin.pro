@@ -34,7 +34,11 @@ BxWallRepost.prototype.repostItem = function(oLink, iOwnerId, sType, sAction, iI
 
         	if(oData && oData.counter != undefined) {
         		var sCounter = $(oData.counter).attr('id');
+        		/*
+        		 * Full replace (with link)
         		$('#' + sCounter).replaceWith(oData.counter);
+        		*/
+        		$('#' + sCounter + ' i').html(oData.count);
         		$('#' + sCounter).parents('.wall-repost-counter-holder:first').bx_anim(oData.count > 0 ? 'show' : 'hide');
         	}
 
