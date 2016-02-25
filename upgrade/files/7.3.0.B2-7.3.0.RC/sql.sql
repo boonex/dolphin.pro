@@ -7,6 +7,17 @@ DELETE FROM `sys_menu_service` WHERE `Name` = 'LoginOnly';
 INSERT INTO `sys_menu_service` (`Name`, `Caption`, `Icon`, `Link`, `Script`, `Target`, `Order`, `Visible`, `Active`, `Movable`, `Clonable`, `Editable`, `Deletable`) VALUES
 ('LoginOnly', '_sys_sm_login', 'sign-in', '', 'showPopupLoginOnlyForm(); return false;', '', 0, 'non', 0, 3, 1, 1, 1);
 
+UPDATE `sys_menu_service` SET `Active` = 1, `Order` = 2 WHERE `Name` = 'Login' AND `Active` = 0 AND `Order` = 0;
+
+
+
+SET @iCatHidden = 0;
+INSERT IGNORE INTO `sys_options` VALUES
+('sys_main_logo_w', '', @iCatHidden, 'Main logo width', 'digit', '', '', 61, ''),
+('sys_main_logo_h', '', @iCatHidden, 'Main logo height', 'digit', '', '', 62, '');
+
+UPDATE `sys_options` SET `order_in_kateg` = 65 WHERE `Name` = 'main_div_width';
+
 
 
 UPDATE `sys_page_compose_pages` SET `Title` = 'Mail Messages' WHERE `Name` = 'mail_page';
