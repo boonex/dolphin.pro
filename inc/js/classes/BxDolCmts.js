@@ -109,7 +109,7 @@ BxDolCmts.prototype.changeOrder = function(oSelectDom) {
     var oSelect = $(oSelectDom);
     
     this._sOrder = oSelect.val();
-    this._getCmts(oSelect.siblings(':last'), 0, function(){});
+    this._getCmts(oSelect, 0, function(){});
 };
 BxDolCmts.prototype.expandAll = function(oCheckbox) {
     var $this = this;
@@ -119,17 +119,20 @@ BxDolCmts.prototype.expandAll = function(oCheckbox) {
     });
 };
 BxDolCmts.prototype.changePerPage = function(oDropDown) {
-    var oLoading = $('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' > .cmt-browse > .cmt-order > :last').get();
-    
+	var $this = this;
+
     var iPerPage = parseInt(oDropDown.value);
-    this._getCmts(oLoading, 0, function(){}, 0, iPerPage);
-    this._getPaginate(oLoading,0, iPerPage);
+    this._getCmts(oDropDown, 0, function(){
+    	$this._getPaginate(oDropDown,0, iPerPage);
+    }, 0, iPerPage);
+    
 };
-BxDolCmts.prototype.changePage = function(iStart, iPerPage) {
-    var oLoading = $('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' > .cmt-browse > .cmt-order > :last').get();
-        
-    this._getCmts(oLoading, 0, function(){}, iStart, iPerPage);
-    this._getPaginate(oLoading, iStart, iPerPage);
+BxDolCmts.prototype.changePage = function(oElement, iStart, iPerPage) {
+	var $this = this;
+
+    this._getCmts(oElement, 0, function() {
+    	$this._getPaginate(oElement, iStart, iPerPage);
+    }, iStart, iPerPage);
 };
 BxDolCmts.prototype.showReplacement = function(iCmtId) {
     $('#cmt' + iCmtId + '-hidden').bxdolcmtanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function(){
@@ -168,7 +171,7 @@ BxDolCmts.prototype.toggleReply = function(oElement, iCmtParentId) {
     if(iCmtParentId == 0) {
     	var sCmtsBox = 'cmts-box-' + this._sSystem + '-' + this._iObjId;
 
-    	var oParent = $(oElement).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('.cmt-reply');
+    	var oParent = $(oElement).parents('#' + sCmtsBox + ':first').find('.cmt-reply');
         if(oParent.children().length) {
         	oParent.bxdolcmtanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
         		$this.removeReply($(this));
@@ -193,6 +196,9 @@ BxDolCmts.prototype.toggleReply = function(oElement, iCmtParentId) {
                 	$this.removeReply($('.' + sCmtsBox).find('.cmt-reply:not(:empty)').not(oParent));               	
 
                 	oParent.append($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).children('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
+
+                	//--- Move page scroll to post box ---//
+                	$('html, body').animate({scrollTop:$(oElement).offset().top}, 500);
                 }
             );
             
@@ -259,33 +265,26 @@ BxDolCmts.prototype.toggleType = function(oLink) {
 BxDolCmts.prototype.toggleCmts = function(e, iCmtParentId) {
     //--- Load Root Comments ---//
     if(iCmtParentId == 0) {
-    	$(e).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('.cmt-comments').toggle();
+    	var sCmtsBox = 'cmts-box-' + this._sSystem + '-' + this._iObjId + ':first';
+    	$(e).parents('#' + sCmtsBox).find('.cmt-comments').toggle();
 
-        if(!$(e).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('div.cmts > ul > li').length)
+        if(!$(e).parents('#' + sCmtsBox).find('div.cmts > ul > li').length)
             this._getCmts(e, iCmtParentId, function() {});
         else
-        	$(e).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('div.cmts').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
+        	$(e).parents('#' + sCmtsBox).find('div.cmts').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
     }
     //--- Load Replies ---//
     else {
         var sId = '#cmt' + iCmtParentId;    
         if ($(sId + ' > ul').length) {
             if ($(sId + ' > ul').is(':visible'))        
-            	$( sId + ' > ul').bxdolcmtanim(
-            	   'hide', 
-            	   this._sAnimationEffect, 
-            	   this._iAnimationSpeed, 
-            	   function(){        	       
-                        $(sId + '  > .cmt-cont .cmt-replies-hide').hide().siblings('.cmt-replies-show').show();
-                    });        
+            	$( sId + ' > ul').bxdolcmtanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
+            		$(sId + '  > .cmt-cont .cmt-replies-hide').hide().siblings('.cmt-replies-show').show();
+            	});        
             else        
-                $(sId + ' > ul').bxdolcmtanim(
-                    'show', 
-                    this._sAnimationEffect, 
-                    this._iAnimationSpeed, 
-                    function(){
-                        $(sId + '  > .cmt-cont .cmt-replies-show').hide().siblings('.cmt-replies-hide').show();
-                    });            
+                $(sId + ' > ul').bxdolcmtanim('show', this._sAnimationEffect, this._iAnimationSpeed, function() {
+                	$(sId + '  > .cmt-cont .cmt-replies-show').hide().siblings('.cmt-replies-hide').show();
+                });            
         }
         else
             this._getCmts(e, iCmtParentId, function (){ 
@@ -737,14 +736,7 @@ BxDolCmts.prototype._disableButton = function(eButton, bDisable) {
 };
 
 BxDolCmts.prototype._loading = function(e, bShow) {
-	if(!$(e).parent().find('.cmt-loading').length)
-		$(e).parent().append(' <b class="cmt-loading">' + aDolLang['_sys_txt_cmt_loading'] + '</b>');
-
-	var oLoading = $(e).parent().find('.cmt-loading');
-    if(bShow)
-    	oLoading.show();
-    else
-    	oLoading.hide();
+	$(e).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').bx_loading(bShow);
 };
 
 BxDolCmts.prototype._err = function(e, bShow, s) {

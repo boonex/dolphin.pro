@@ -30,7 +30,7 @@ class BxBaseCmtsView extends BxDolCmts
             'sorting' => $this->_sOrder,
             'per_page_step' => 2,
             'per_page_interval' => 3,
-            'on_change_page' => $this->_sJsObjName . '.changePage({start}, {per_page})',
+            'on_change_page' => $this->_sJsObjName . '.changePage(this, {start}, {per_page})',
             'on_change_per_page' => $this->_sJsObjName . '.changePerPage(this)',
             'on_change_sorting' => $this->_sJsObjName . '.changeOrder(this)',
             'info' => false,
