@@ -373,7 +373,7 @@ class BxSoundsPageAlbumsMy extends BxDolPageView
                 'add_params' => $this->aAddParams[2] . '/' . $this->aAddParams[3]
             ));
             $this->oTemplate->addCss('organize.css');
-            $this->oTemplate->addJs(array('jquery.ui.core.min.js', 'jquery.ui.widget.min.js', 'jquery.ui.mouse.min.js', 'jquery.ui.sortable.min.js'));
+            $this->oTemplate->addJs(array('jquery.ui.core.min.js', 'jquery.ui.widget.min.js', 'jquery.ui.mouse.min.js', 'jquery.ui.sortable.min.js', 'jquery.ui.touch-punch.min.js'));
             $sCode = $sJsCode . $this->oTemplate->parseHtmlByName('manage_form.html', $aUnit);
         } else
             $sCode = MsgBox(_t('_Empty'));

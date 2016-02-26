@@ -111,13 +111,14 @@ class BxVideosUploader extends BxDolFilesUploader
         if(empty($sVideoId)) return $sErrorReturn;
        
         $aSiteInfo = getSiteInfo('https://www.youtube.com/watch?v=' . $sVideoId, array(
+            'name' => array(),
             'duration' => array(),
             'thumbnailUrl' => array('tag' => 'link', 'content_attr' => 'href'),
         ));
 
         $aSiteInfo['duration'] = bx_parse_time_duration($aSiteInfo['duration']);
 
-        $sTitle = $aSiteInfo['title'];
+        $sTitle = $aSiteInfo['name'];
         $sDesc = $aSiteInfo['description'];
         $sTags = $aSiteInfo['keywords'];
         $sImage = $aSiteInfo['thumbnailUrl'];
