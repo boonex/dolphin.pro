@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]events` (
   `title` varchar(255) collate utf8_unicode_ci NOT NULL,
   `description` text collate utf8_unicode_ci NOT NULL,
   `reposts` int(11) unsigned NOT NULL default '0',
-  `date` int(8) NOT NULL default '0',
+  `date` int(11) unsigned NOT NULL default '0',
   `active` tinyint(4) NOT NULL default '1',
   `hidden` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),

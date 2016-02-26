@@ -125,12 +125,15 @@ class BxWallCmts extends BxTemplCmtsView
 				'content' => $oVote->getVotingTimeline()
         	);
 
+		$sVotes = '';
 		$aVotes = array();
 		$bVotes = $oVote->isEnabled();
-		if($bVotes)
+		if($bVotes) {
+			$sVotes = $oVote->getHtmlId();
         	$aVotes = array(
 				'content' => $oVote->getVotingTimelineCounter()
         	);
+		}
 
         //--- Repost & Reposts
         $sRepost = $sReposts = '';
@@ -153,6 +156,7 @@ class BxWallCmts extends BxTemplCmtsView
         }
 
         return $this->_oModule->_oTemplate->parseHtmlByTemplateName('actions', array(
+        	'html_id_voting' => $sVotes,
             'date' => $aEvent['ago'],
             'bx_if:show_delete' => array(
                 'condition' => $this->_oModule->_isCommentDeleteAllowed($aEvent),

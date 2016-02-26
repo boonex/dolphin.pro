@@ -379,7 +379,7 @@ class BxBaseCmtsView extends BxDolCmts
     	$iCmtParentId = !empty($aCmt['parent_id']) ? (int)$aCmt['parent_id'] : 0;
     	$sCmtText = !empty($aCmt['text']) ? $this->_prepareTextForEdit($aCmt['text']) : '';
 
-    	$sTextareaId = "cmt" . bx_gen_method_name($this->_sSystem . "_" . $sType) . "TextArea";
+    	$sTextareaId = $this->_sSystem . "_cmt_" . $sType . "_textarea_" . $this->_iId . "_";
     	switch($sType) {
     		case 'post':
     			$sFunction = "submitComment(this)";

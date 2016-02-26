@@ -323,15 +323,15 @@ img.wall-pm-thumbnail {
 }
 
 /*--- Post Actions Styles ---*/
-div.wall-event-actions div.wall-ea-action {
-	display: inline-block;
-	vertical-align: top;
-}
 div.wall-event-actions .bx-btn {
 	position: relative;
+	display: inline-block;
 	float: none;
 
+	vertical-align: top;
+
 	height: 24px;
+	margin-left: 5px;
 	padding-left: 10px;
 	padding-right: 10px;
 
@@ -349,20 +349,28 @@ div.wall-event-actions .bx-btn {
 
 	color: #666666;
 }
+div.wall-event-actions .bx-btn:first-child {
+	margin-left: 0px;
+}
 div.wall-event-actions .bx-btn:hover {
 	background-color: #ffffff;
 }
 div.wall-event-actions .bx-btn.bx-btn-disabled:hover {
 	background-color: transparent;
 }
-div.wall-event-actions .bx-btn,
 div.wall-event-actions .bx-btn .sys-icon {
 	margin-left: 0px;
 	margin-right: 0px;
 }
+div.wall-event-actions .wall-repost {
+	display: inline-block;
+	vertical-align: top;
+
+	margin-left: 5px;
+}
 div.wall-event-actions .wall-repost-button-small .wall-repost-element-holder {
-	line-height: 24px;
-	line-height: 1.5rem;
+	line-height: 20px;
+	line-height: 1.25rem;
 }
 
 /*--- Comment Styles ---*/

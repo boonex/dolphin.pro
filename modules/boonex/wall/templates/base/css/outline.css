@@ -179,3 +179,15 @@ div.wall-oii-actions .wall-repost-counter-holder {
 
 	line-height: 24px;
 }
+div.wall-oii-actions .wall-repost-counter-holder {
+	font-size: 14px;
+	font-size: 0.875rem;
+}
+div.wall-oii-actions .wall-comment-counter-holder i,
+div.wall-oii-actions .wall-voting-counter-holder i {
+	font-style: normal;
+}
+div.wall-oii-actions .wall-repost-element-holder {
+	line-height: 20px;
+	line-height: 1.25rem;
+}

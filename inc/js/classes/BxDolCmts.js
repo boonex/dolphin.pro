@@ -189,7 +189,7 @@ BxDolCmts.prototype.toggleReply = function(oElement, iCmtParentId) {
             jQuery.post (
                 this._sActionsUrl,
                 oData,
-                function (s) {                	            
+                function (s) {
                 	$this._loading(oElement, false);
 
                 	//--- Remove all similar reply boxes ---//
@@ -198,7 +198,11 @@ BxDolCmts.prototype.toggleReply = function(oElement, iCmtParentId) {
                 	oParent.append($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).children('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
 
                 	//--- Move page scroll to post box ---//
-                	$('html, body').animate({scrollTop:$(oElement).offset().top}, 500);
+                	var iScrollPos = $(oElement).offset().top;
+                	if($('.sys_sub_menu.sys_sm_fixed').is(':visible'))
+                		iScrollPos -= ($('.sys_sub_menu.sys_sm_fixed').height() + 5);
+
+                	$('html, body').animate({scrollTop:iScrollPos}, 500);
                 }
             );
             
@@ -471,6 +475,8 @@ BxDolCmts.prototype._getCmt = function (oForm, iCmtParentId, iCmtId)
 	            	else {
 	            	    oParent.find('.cmt-no').remove();
 	            		oParent.html(s).find('a.bx-link').dolEmbedly();
+	            		
+	            		oBox.find('.cmt-comments').toggle().find('.cmt-comments-count i').html(iRepliesCount + 1);
 	            	}
         		};
 

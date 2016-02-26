@@ -91,7 +91,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 				//--- Votes
 				$sVote = '';
 				$oVote = $this->_oModule->_getObjectVoting($aEvent);
-        		if($oVote->isVotingAllowed())
+        		if($oVote->isEnabled() && $oVote->isVotingAllowed())
         			$sVote = $oVote->getVotingOutline();
 
 				//--- Repost
@@ -200,7 +200,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 
         		$oComments = new BxWallCmts($this->_oConfig->getCommonName($aContent['type']), $iContent);
                 if($oComments->isEnabled())
-                    $aResult['comments'] = $oComments->getCommentsFirstSystem('comment', $iContent);
+                    $aResult['comments'] = $oComments->getCommentsFirstSystem('comment', $aEvent['id']);
                 else
                     $aResult['comments'] = $this->getDefaultComments($aEvent['id']);
 
