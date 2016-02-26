@@ -26,6 +26,11 @@ body {
 
     color: #999999;
 }
+.sys-bullet-narrow:before {
+    content: "\00b7";
+
+    color: #999999;
+}
 
 blockquote {
     border-left: 2px solid #ccc;

@@ -323,12 +323,13 @@ img.wall-pm-thumbnail {
 }
 
 /*--- Post Actions Styles ---*/
+div.wall-event-actions div.wall-ea-action {
+	display: inline-block;
+	vertical-align: top;
+}
 div.wall-event-actions .bx-btn {
 	position: relative;
-	display: inline-block;
 	float: none;
-
-	vertical-align: top;
 
 	height: 24px;
 	padding-left: 10px;
@@ -370,10 +371,6 @@ div.wall-comments {
 	margin-left: 20px;
 	margin-right: 20px;
 }
-div.wall-comments div.wall-repost {
-	display: inline-block;
-	vertical-align: top;
-}
 div.wall-comments-view-ctl,
 div.wall-comments-post-ctl {    
     position: relative;
@@ -397,10 +394,6 @@ div.wall-comments-post-cnt {
 
 
 /*--- Voting Styles ---*/
-div.wall-voting {
-	display: inline-block;
-	vertical-align: top;
-}
 div.wall-voting-slider {
 	display: none;
 }
@@ -426,23 +419,8 @@ div.wall-event div.wall-comments div.cmts ul.cmts li.cmt:first-child,
 div.wall-event div.wall-comments div.cmts ul.cmts li.cmt-no:first-child {
 	margin-top: 10px;
 }
-div.wall-event div.wall-comments span.wall-date,
-div.wall-event div.wall-comments a.cmt-replies-show,
-div.wall-event div.wall-comments a.cmt-replies-hide {
-	display: inline-block;
-
-    margin: 0px;
-	padding: 0px;
-
-    text-transform: capitalize;
-	text-decoration: none;
-}
 div.wall-event div.wall-comments a.cmt-replies-hide {
 	display: none;
-}
-div.wall-event div.wall-comments span.cmt-comments-count,
-div.wall-event div.wall-comments b.wall-voting-count {
-	padding-left: 3px;
 }
 div.wall-event div.wall-comments div.thumbnail_block {
     left: -38px;

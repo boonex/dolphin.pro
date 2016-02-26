@@ -168,11 +168,6 @@ BxDolCmts.prototype.toggleReply = function(oElement, iCmtParentId) {
     if(iCmtParentId == 0) {
     	var sCmtsBox = 'cmts-box-' + this._sSystem + '-' + this._iObjId;
 
-    	//--- Remove all similar reply boxes ---//
-    	$('.' + sCmtsBox).find('.cmt-reply:not(:empty)').hide(function(){
-    		$this.removeReply($(this));
-    	});
-
     	var oParent = $(oElement).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('.cmt-reply');
         if(oParent.children().length) {
         	oParent.bxdolcmtanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
@@ -185,14 +180,17 @@ BxDolCmts.prototype.toggleReply = function(oElement, iCmtParentId) {
             oData['action'] = 'FormGet';
             oData['CmtType'] = 'comment';
             oData['CmtParent'] = iCmtParentId;
-            
+
             $this._loading (oElement, true);
-    
+
             jQuery.post (
                 this._sActionsUrl,
                 oData,
                 function (s) {                	            
                 	$this._loading(oElement, false);
+
+                	//--- Remove all similar reply boxes ---//
+                	$this.removeReply($('.' + sCmtsBox).find('.cmt-reply:not(:empty)').not(oParent));               	
 
                 	oParent.append($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).children('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
                 }
