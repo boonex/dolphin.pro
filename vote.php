@@ -16,7 +16,6 @@ $sSys = bx_get('sys');
 $iId = (int)bx_get('id');
 
 bx_import ('BxDolVoting');
-$aSystems = BxDolVoting::getSystems();
 
 if($sSys && $iId && ($oVoting = BxDolVoting::getObjectInstance($sSys, $iId))) {
     header('Content-Type: text/html; charset=utf-8');
