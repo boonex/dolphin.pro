@@ -2068,6 +2068,7 @@ You can do this by:
   '_uknown' => 'unknown',
   '_undefined' => 'undefined',
   '_votes' => 'votes',
+  '_n_votes' => '<i>{0}</i> votes',
   '_week_fri' => 'Friday',
   '_week_mon' => 'Monday',
   '_week_sat' => 'Saturday',

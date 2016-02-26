@@ -769,19 +769,23 @@ div.paginate_per_page .input_wrapper_select {
 	height:12px; 
 }
 
-.votes_big b, .votes_small b {
+.votes_big .votes_count, 
+.votes_small .votes_count {
 	color:#333333;
 	font-weight:bold;
 	display:block;
 	float:left;
 }
-.votes_big b {
+.votes_big .votes_count {
 	font-size:12px;
 	line-height:18px;
 }
-.votes_small b {
+.votes_small .votes_count {
 	font-size:13px;
 	line-height:11px;
+}
+.votes_count i {
+	font-style: normal;
 }
 .actionsBlock .votes_small {
 

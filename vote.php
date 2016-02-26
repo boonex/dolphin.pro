@@ -12,17 +12,13 @@ require_once( BX_DIRECTORY_PATH_INC . 'utils.inc.php' );
 
 check_logged();
 
-bx_import("BxDolVoting");
-$aSystems =& BxDolVoting::getSystems ();
-$sSys = isset($_GET['sys']) ? $_GET['sys'] : false;
-if ($sSys && isset($aSystems[$sSys])) {
+$sSys = bx_get('sys');
+$iId = (int)bx_get('id');
 
-    if ($aSystems[$sSys]['override_class_name']) {
-        require_once (BX_DIRECTORY_PATH_ROOT . $aSystems[$sSys]['override_class_file']);
-        $sClassName = $aSystems[$sSys]['override_class_name'];
-        new $sClassName($_GET['sys'], (int)$_GET['id']);
-    } else {
-        new BxDolVoting($_GET['sys'], (int)$_GET['id']);
-    }
+bx_import ('BxDolVoting');
+$aSystems = BxDolVoting::getSystems();
 
+if($sSys && $iId && ($oVoting = BxDolVoting::getObjectInstance($sSys, $iId))) {
+    header('Content-Type: text/html; charset=utf-8');
+    echo $oVoting->actionVote();
 }

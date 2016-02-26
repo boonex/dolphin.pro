@@ -115,18 +115,29 @@ class BxDolVoting extends BxDolMistake
 
         if ($iInit)
             $this->init($iId);
+    }
 
-        if (!$this->isEnabled()) return;
+	/**
+     * get voting object instanse
+     * @param $sSys voting object name 
+     * @param $iId associated content id
+     * @param $iInit perform initialization
+     * @return null on error, or ready to use class instance
+     */ 
+    static function getObjectInstance($sSys, $iId, $iInit = true) 
+    {
+        $aSystems = self::getSystems ();
+        if (!isset($aSystems[$sSys]))
+            return null;
 
-        $iVoteResult = $this->_getVoteResult ();
-        if ($iVoteResult) {
-            if (!$this->makeVote ($iVoteResult)) {
-                exit;
-            }
-            $this->initVotes ();
-            echo $this->getVoteRate() . ',' . $this->getVoteCount();
-            exit;
-        }
+        bx_import('BxTemplVotingView');
+        $sClassName = 'BxTemplVotingView';
+        if ($aSystems[$sSys]['override_class_name']) {
+            require_once (BX_DIRECTORY_PATH_ROOT . $aSystems[$sSys]['override_class_file']);
+            $sClassName = $aSystems[$sSys]['override_class_name'];  
+        } 
+
+        return new $sClassName($sSys, $iId, $iInit);
     }
 
     function & getSystems ()
@@ -182,47 +193,47 @@ class BxDolVoting extends BxDolMistake
 
     function init ($iId)
     {
-        if (!$iId)
-            $iId = $this->_iId;
+        if(!$iId)
+			$iId = $this->_iId;
 
-        if (!$this->isEnabled()) return;
+        if(!$this->isEnabled())
+        	return;
 
-        if (!$this->_iId && $iId) {
+        if (!$this->_iId && $iId)
             $this->setId($iId);
-        }
-
     }
 
     function initVotes ()
     {
-        if (!$this->isEnabled()) return;
-        if (!$this->_oQuery) return;
+        if(!$this->isEnabled() || !$this->_oQuery)
+			return;
 
-        $a = $this->_oQuery->getVote ($this->getId());
-        if (!$a) return;
-        $this->_iCount = $a['count'];
-        $this->_fRate = $a['rate'];
+        $aVote = $this->_oQuery->getVote ($this->getId());
+        if(empty($aVote) || !is_array($aVote))
+        	return;
+
+        $this->_iCount = $aVote['count'];
+        $this->_fRate = $aVote['rate'];
     }
 
     function makeVote ($iVote)
     {
-        if (!$this->isEnabled()) return false;
-        if ($this->isDublicateVote()) return false;
-        if (!$this->checkAction()) return false;
+        if(!$this->isEnabled() || $this->isDublicateVote() || !$this->checkAction())
+        	return false;
 
-        if ($this->_sSystem == 'profile' && $this->getId() == getLoggedId())
+        if($this->_sSystem == 'profile' && $this->getId() == getLoggedId())
             return false;
 
-        if ($this->_oQuery->putVote ($this->getId(), getVisitorIP(), $iVote)) {
-        	$this->checkAction(true);
-            $this->_triggerVote();
+        if(!$this->_oQuery->putVote ($this->getId(), getVisitorIP(), $iVote)) 
+        	return false;
 
-            $oZ = new BxDolAlerts($this->_sSystem, 'rate', $this->getId(), getLoggedId(), array ('rate' => $iVote));
-            $oZ->alert();
+		$this->checkAction(true);
+		$this->_triggerVote();
 
-            return true;
-        }
-        return false;
+		$oZ = new BxDolAlerts($this->_sSystem, 'rate', $this->getId(), getLoggedId(), array ('rate' => $iVote));
+		$oZ->alert();
+
+		return true;
     }
 
     function checkAction ($bPerformAction = false)
@@ -327,25 +338,41 @@ class BxDolVoting extends BxDolMistake
         return $iDeletedRecords;
     }
 
-    /** private functions
-    *********************************************/
-
-    function _getVoteResult ()
+    public function actionVote()
     {
-        if (empty($_GET[$this->_aSystem['post_name']]) || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
-            return 0;
-        $iVote = (int)$_GET[$this->_aSystem['post_name']];
-        if (!$iVote)
-            return 0;
+    	if(!$this->isEnabled())
+			return '{}';
 
-        if ($iVote > $this->getMaxVote())
-            $iVote = $this->getMaxVote();
-        if ($iVote < 1)
-            $iVote = 1;
+        $iResult = $this->_getVoteResult();
+        if($iResult === false) 
+        	return '{}';
+        
+		if(!$this->makeVote($iResult))
+        	return '{}';
+
+		$this->initVotes();
+        echo json_encode(array('rate' => $this->getVoteRate(), 'count' => $this->getVoteCount()));
+    }
+
+    protected function _getVoteResult ()
+    {
+        if(strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') != 0 || bx_get($this->_aSystem['post_name']) === false)
+			return false;
+
+        $iVote = (int)bx_get($this->_aSystem['post_name']);
+        if(!$iVote)
+			return false;
+
+        if($iVote > $this->getMaxVote())
+			$iVote = $this->getMaxVote();
+
+        if($iVote < 1)
+			$iVote = 1;
+
         return $iVote;
     }
 
-    function _triggerVote()
+    protected function _triggerVote()
     {
         if (!$this->_aSystem['trigger_table'])
             return false;
