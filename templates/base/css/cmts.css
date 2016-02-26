@@ -181,12 +181,6 @@
 
         margin: 0px 0px 5px 5px;
     }
-	a.cmt-comments-show,
-	a.cmt-comments-hide,
-	a.cmt-replies-show,
-	a.cmt-replies-hide {
-        text-decoration: none;
-    }
     a.cmt-comments-hide,
     a.cmt-replies-hide {
     	display: none;
