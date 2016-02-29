@@ -84,26 +84,8 @@ function BxDolCmts (options) {
     	$('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' .cmt-post-reply form')[0].reset();
     	$('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' .cmt-post-reply form > [name=CmtParent]').val(0);    
     }
-
-    // clicks handler for ratings
-    var $this = this; 
-    $('#cmts-box-' + this._sSystem + '-' + this._iObjId).click(function(event) {
-    	var iRate = 0;
-    	var oLink = $(event.target).parent();
-    	if(oLink.hasClass('cmt-pos')) {
-    		iRate = 1;
-    		event.preventDefault();
-    	}
-    	else if(oLink.hasClass('cmt-neg')) {
-    		iRate = -1;
-    		event.preventDefault();
-    	}
-    	if (iRate != 0 && !$(event.target).parents('.cmt-rate').hasClass('cmt-rate-disabled')) {    		            		
-			var e = $(event.target).parents('.cmt-buttons').siblings('.cmt-points').children('span').get();
-			$this._rateComment(e, parseInt(oLink.attr('id').substr(8)), iRate);
-    	}
-    });
 }
+
 /*--- Browsing and Pagination ---*/
 BxDolCmts.prototype.changeOrder = function(oSelectDom) {
     var oSelect = $(oSelectDom);
@@ -295,6 +277,47 @@ BxDolCmts.prototype.toggleCmts = function(e, iCmtParentId) {
                 $(sId + ' > .cmt-cont .cmt-replies-show').hide().siblings('.cmt-replies-hide').show(); 
             });
     }
+};
+
+BxDolCmts.prototype.cmtRate = function(oLink) {
+	var $this = this;
+
+	oLink = $(oLink);
+
+	var iRate = 0;
+	if(oLink.hasClass('cmt-pos'))
+		iRate = 1;
+	else if(oLink.hasClass('cmt-neg'))
+		iRate = -1;
+
+	if(iRate == 0 || oLink.parents('.cmt-rate:first').hasClass('cmt-rate-disabled'))
+		return;
+
+	var oCounter = oLink.parents('.cmt-buttons').siblings('.cmt-points').children('span');
+	var oData = this._getDefaultActions();
+    oData['action'] = 'CmtRate';
+    oData['Cmt'] = parseInt(oLink.attr('id').substr(8));
+    oData['Rate'] = iRate;
+
+    this._loading(oCounter, true);
+
+    jQuery.post (
+		this._sActionsUrl,
+		oData,
+        function (s) {
+        	$this._loading (oCounter, false);
+
+			if(jQuery.trim(s).length) {
+        		alert(s);
+        		return;
+			}
+
+			if(iRate == 1)
+				oCounter.html(parseInt(oCounter.html()) + iRate).parents('.cmt-rate:first').addClass('cmt-rate-disabled');
+			else if(iRate == -1)
+                $this.reloadComment(oData['Cmt']);
+		}
+	);
 };
 
 BxDolCmts.prototype.cmtRemove = function(e, iCmtId) {
@@ -637,34 +660,6 @@ BxDolCmts.prototype.updateComment = function (f, iCmtId)
 // toggle hidden comment
 BxDolCmts.prototype._toggleHidden = function(e, iCmtId) {
 	$('#cmt'+iCmtId+' > .cmt-cont').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
-};
-
-// rate comment 
-BxDolCmts.prototype._rateComment = function(e, iCmtId, iRate) {
-	var $this = this;
-    var oData = this._getDefaultActions();
-    oData['action'] = 'CmtRate';
-    oData['Cmt'] = iCmtId;
-    oData['Rate'] = iRate;
-
-    this._loading (e, true);
-
-    jQuery.post (
-		this._sActionsUrl,
-		oData,
-        function (s) {
-        	$this._loading (e, false);
-			if(jQuery.trim(s).length)
-        		alert(s);        			
-			else if(iRate == 1) {
-				$(e).html(parseInt($(e).html()) + iRate);
-				$(e).parent().parent().addClass('cmt-rate-disabled');
-			}
-			else if(iRate == -1) {
-                $this.reloadComment(iCmtId);
-			}
-		}
-	);    		
 };
 
 // check and get post new comment form elements

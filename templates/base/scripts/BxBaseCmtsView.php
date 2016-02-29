@@ -282,7 +282,7 @@ class BxBaseCmtsView extends BxDolCmts
         return '
             <div class="cmt-rate'.$sClass.'">
                 <div class="cmt-points">'._t( (1 == $a['cmt_rate'] || -1 == $a['cmt_rate'])  ? '_N point' : '_N points', $a['cmt_rate']).'</div>
-                <div class="cmt-buttons"><a title="'._t('_Thumb Up').'" href="javascript:void(0)" id="cmt-pos-'.$a['cmt_id'].'" class="cmt-pos"><i class="sys-icon plus-circle"></i></a><a title="'._t('_Thumb Down').'" href="javascript:void(0)" id="cmt-neg-'.$a['cmt_id'].'" class="cmt-neg"><i class="sys-icon minus-circle"></i></a></div>
+                <div class="cmt-buttons"><a title="'._t('_Thumb Up').'" href="javascript:void(0)" onclick="' . $this->_sJsObjName . '.cmtRate(this);" id="cmt-pos-'.$a['cmt_id'].'" class="cmt-pos"><i class="sys-icon plus-circle"></i></a><a title="'._t('_Thumb Down').'" href="javascript:void(0)" onclick="' . $this->_sJsObjName . '.cmtRate(this);" id="cmt-neg-'.$a['cmt_id'].'" class="cmt-neg"><i class="sys-icon minus-circle"></i></a></div>
                 <div class="clear_both">&nbsp;</div>
             </div>';
     }
