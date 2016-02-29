@@ -74,6 +74,16 @@
                         'caption' => $bLoginOnly ? $aItems[0]['caption'] : _t('_sys_sm_join_or_login'),
                         'icon' => $bLoginOnly ? $aItems[0]['icon'] : 'user',
                         'script' => $aItems[0]['script'],
+
+                        'bx_if:show_fu_thumb_image' => array(
+                            'condition' => false,
+                            'content' => array()
+                        ),
+                        'bx_if:show_fu_thumb_icon' => array(
+                            'condition' => false,
+                            'content' => array()
+                        ),
+                        'title' => ''
                     );
                 }
             }
