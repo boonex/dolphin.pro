@@ -91,7 +91,7 @@ $aLangContent = array(
 	'_wall_spy_rate' => '<a href="{profile_link}">{profile_nick}</a> оценил сообщение на <a href="{recipient_p_link}">{recipient_p_nick}</a> линейке',
     '_wall_spy_post_comment' => '<a href="{profile_link}">{profile_nick}</a> прокомментировал сообщение на <a href="{recipient_p_link}">{recipient_p_nick}</a> линейке',
     '_wall_do_vote' => 'Нравиться',
-	'_wall_n_votes' => '<i>{0}</i> голосов',
+	'_wall_n_votes_long' => '<i>{0}</i> голосов',
 	'_wall_n_votes' => '<i>{0}</i>',
     '_bx_wall_chart' => 'События линейки',
     '_wall_alert_module_profile' => 'Профиль',
