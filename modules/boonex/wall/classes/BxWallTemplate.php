@@ -125,9 +125,28 @@ class BxWallTemplate extends BxDolModuleTemplate
         if(strpos($aEvent['type'], $sPrefix) !== 0)
             return '';
 
+		$sEventType = bx_ltrim_str($aEvent['type'], $sPrefix, '');
+
 		$aResult = $this->_getCommonData($aEvent);
 		if(empty($aResult) || empty($aResult['content']))
 			return '';
+
+		switch($sEventType) {
+			case BX_WALL_PARSE_TYPE_PHOTOS:
+        	case BX_WALL_PARSE_TYPE_SOUNDS:
+        	case BX_WALL_PARSE_TYPE_VIDEOS:
+        		$aContent = unserialize($aEvent['content']);
+
+        		$oComments = new BxWallCmts($this->_oConfig->getCommonName($aContent['type']), $aContent['id']);
+				if($oComments->isEnabled())
+					$aResult['comments'] = $oComments->getCommentsFirstSystem('comment', $aEvent['id']);
+				else
+					$aResult['comments'] = $this->getDefaultComments($aEvent['id']);
+        		break;
+
+        	default:
+				$aResult['comments'] = $this->getDefaultComments($aEvent['id']);
+		}
 
         return $this->parseHtmlByTemplateName('balloon', array(
             'post_type' => bx_ltrim_str($aEvent['type'], $sPrefix, ''),
@@ -198,12 +217,6 @@ class BxWallTemplate extends BxDolModuleTemplate
 
         		$aResult = array_merge($aResult, $this->_getCommonMedia($aContent['type'], $iContent));
 
-        		$oComments = new BxWallCmts($this->_oConfig->getCommonName($aContent['type']), $iContent);
-                if($oComments->isEnabled())
-                    $aResult['comments'] = $oComments->getCommentsFirstSystem('comment', $aEvent['id']);
-                else
-                    $aResult['comments'] = $this->getDefaultComments($aEvent['id']);
-
 				$sTmplName = 'common';
         		$aTmplVars['cpt_added_new'] = _t('_wall_added_' . $sEventType);
         		break;
@@ -237,10 +250,7 @@ class BxWallTemplate extends BxDolModuleTemplate
         		)
         	),
         	'content' => $aResult['content'],
-		), $aTmplVars));
-
-		if(empty($aResult['comments']))
-			$aResult['comments'] = $this->getDefaultComments($aEvent['id']);
+		), $aTmplVars));		
 
         return $aResult;
     }
