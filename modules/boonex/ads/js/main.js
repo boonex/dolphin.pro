@@ -79,10 +79,10 @@ function AjaxyAskForSubcatsWithInfo(sSubSelectID, iCatID, sCustomElementID) {
 				sCustomValues = '';
 
 				if (custFieldName1 != '' && typeof(custFieldName1) != 'undefined') {
-					sCustomValues += '<span><span id="CustomFieldCaption1">' + custFieldName1 + ' ' + sUnitValue + '</span><span><input type="text" value="" name="CustomFieldValue1" /></span></span>';
+					sCustomValues += '<div class="ordered_block_select bx-def-margin-sec-right"><span id="CustomFieldCaption1">' + custFieldName1 + ' ' + sUnitValue + '</span><div class="input_wrapper input_wrapper_text bx-def-margin-sec-left clearfix"><input class="form_input_text bx-def-font-inputs" type="text" value="" name="CustomFieldValue1" /></div></div>';
 				}
 				if (custFieldName2 != '' && typeof(custFieldName2) != 'undefined') {
-					sCustomValues += '<span><span id="CustomFieldCaption2">' + custFieldName2 + ' ' + sUnit2Value + '</span><span><input type="text" value="" name="CustomFieldValue2" /></span></span>';
+					sCustomValues += '<div class="ordered_block_select bx-def-margin-sec-right"><span id="CustomFieldCaption2">' + custFieldName2 + ' ' + sUnit2Value + '</span><div class="input_wrapper input_wrapper_text bx-def-margin-sec-left clearfix"><input class="form_input_text bx-def-font-inputs" type="text" value="" name="CustomFieldValue2" /></div></div>';
 				}
 		
 				if (oCustomElement) {

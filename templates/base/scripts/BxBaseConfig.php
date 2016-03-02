@@ -39,7 +39,7 @@ class BxBaseConfig
     var $sPaginateButtonInactiveTmpl = '<div class="paginate_btn bx-def-border bx-def-round-corners"><span><i class="sys-icon __icon__"></i></span></div>';
     var $sPaginateLinkActiveTmpl = '<div class="paginate_page not_active bx-def-border bx-def-round-corners"><a href="__lnk_url__" title="__lnk_title__" __lnk_on_click__>__lnk_content__</a></div>';
     var $sPaginateLinkInactiveTmpl = '<div class="paginate_page active bx-def-border bx-def-round-corners"><span>__lnk_content__</span></div>';
-    var $sPaginateSortingTmpl = '<div class="paginate_sorting">__title__&nbsp;<div class="input_wrapper input_wrapper_select clearfix"><select class="form_input_select bx-def-font-inputs" __on_click__>__content__</select></div></div>';
+    var $sPaginateSortingTmpl = '<div class="ordered_block_select paginate_sorting"><span>__title__</span>&nbsp;<div class="input_wrapper input_wrapper_select bx-def-margin-sec-left clearfix"><select class="form_input_select bx-def-font-inputs" __on_click__>__content__</select></div></div>';
 
     var $bForceSortCountries = true;
 

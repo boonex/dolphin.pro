@@ -250,22 +250,6 @@
     div.cmt-browse-cnt-in {
        border-top: 1px solid #ffffff;
     }
-	div.cmt-order,
-	div.cmt-pages {
-	   float: left;
-	   text-align: left;
-	}	
-    div.cmt-pages {
-        float: right;
-    }
-	div.cmt-order select,
-	div.cmt-pages select {
-	   margin: 0px;
-	}
-	div.cmt-order div.paginate_sorting {
-		display: inline-block;
-		vertical-align: middle;
-    }
 
     /*--- Show More(Paginate) Styles ---*/
     div.cmt-show-more .paginate {

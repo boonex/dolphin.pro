@@ -57,10 +57,12 @@ class BxProfileCustomizeTemplate extends BxDolModuleTemplate
 
         // content for box
         if ($sPage != 'themes') {
-            $sTopControls = $this->parseHtmlByName('content_box_top_controls.html', array(
-                'name_box' => _t('_bx_profile_customize_select_target'),
-                'name_targets_box' => 'background_box',
-                'bx_repeat:targets' => $aTargets
+            $sTopControls = $this->parsePageByName('designbox_top_controls.html', array(
+            	'top_controls' => $this->parseHtmlByName('content_box_top_controls.html', array(
+	                'name_box' => _t('_bx_profile_customize_select_target'),
+	                'name_targets_box' => 'background_box',
+	                'bx_repeat:targets' => $aTargets
+	            ))
             ));
 
             $sBoxContent = $this->parseHtmlByName('content_box.html', array(
@@ -135,10 +137,12 @@ class BxProfileCustomizeTemplate extends BxDolModuleTemplate
                 'btn_action' => "oCustomizer.resetAll('{$sBaseUrl}resetall');"
             );
 
-            $sTopControls = $this->parseHtmlByName('content_box_top_controls.html', array(
-                'name_box' => _t('_bx_profile_customize_select_target'),
-                'name_targets_box' => 'background_box',
-                'bx_repeat:targets' => $aTargets
+            $sTopControls = $this->parsePageByName('designbox_top_controls.html', array(
+            	'top_controls' => $this->parseHtmlByName('content_box_top_controls.html', array(
+	                'name_box' => _t('_bx_profile_customize_select_target'),
+	                'name_targets_box' => 'background_box',
+	                'bx_repeat:targets' => $aTargets
+            	))
             ));
 
             $sBoxContent = $this->parseHtmlByName('content_box.html', array(

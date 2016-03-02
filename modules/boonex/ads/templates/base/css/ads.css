@@ -114,16 +114,6 @@ input.cur_pnt
     margin-top: 5px;
 }
 
-#CustomFieldCaption1, #CustomFieldCaption2 {
-	margin-right:5px;
-}
-
-#custom_values input {
-	margin-right:5px;
-}
-
-
-
 select#FilterCountry, input#FilterKeywords {
 	width:150px;
 }

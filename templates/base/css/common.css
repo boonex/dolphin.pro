@@ -549,17 +549,49 @@ div.top_settings_block {
     color: #666666;
     overflow: hidden;
 }
-div.top_settings_block div.ordered_block  {
-    float:left;
-}
 div.tsb_cnt_out {
     border-top: 1px solid #cccccc;
 }
 div.tsb_cnt_in {
    border-top: 1px solid #ffffff;
 }
+
+
+div.top_settings_block div.ordered_block  {
+    float:left;
+}
 div.top_settings_block div.per_page_block  {
     float: right;
+}
+
+div.top_settings_block div.ordered_block_select span,
+div.top_settings_block div.ordered_block_select .input_wrapper,
+div.top_settings_block div.per_page_block_select span,
+div.top_settings_block div.per_page_block_select .input_wrapper {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+div.top_settings_block div.ordered_block_select span,
+div.top_settings_block div.per_page_block_select span {
+	line-height: 38px;
+}
+
+div.top_settings_block div.ordered_block_select .input_wrapper,
+div.top_settings_block div.per_page_block_select .input_wrapper {
+	width: auto;
+}
+
+div.top_settings_block div.ordered_block select,
+div.top_settings_block div.per_page_block select {
+   margin: 0px;
+}
+div.top_settings_block div.ordered_block div.ordered_block_select,
+div.top_settings_block div.ordered_block input,
+div.top_settings_block div.ordered_block label {
+	display: inline-block;
+	vertical-align: middle;
 }
 /* * * *  * * * */
 
@@ -681,25 +713,6 @@ div.paginate_btn a:hover,
 div.paginate_page a:hover  {
     color: #3399bb;
 	background-color: #ffffff;
-}
-
-div.paginate_sorting .input_wrapper_select {
-	display: inline-block;
-	vertical-align: middle;
-	width: auto;
-}
-
-div.paginate_per_page span,
-div.paginate_per_page .input_wrapper {
-	position: relative;
-	display: inline-block;
-	vertical-align: middle;
-}
-div.paginate_per_page span {
-	line-height: 38px;
-}
-div.paginate_per_page .input_wrapper_select {
-	width: auto;
 }
 /* * * *  * * * */
 
