@@ -73,12 +73,14 @@ class BxDolXMLRPCUtil
 
         BxDolXMLRPCUtil::setLanguage ($sLang);
 
+        $oProfileFields = new BxDolProfileFields(0);
+        $aCountriesList = $oProfileFields->convertValues4Input('#!Country');
+
         $aCountries = array ();
-        $r = db_res ("SELECT `ISO2`, `Country` FROM `sys_countries` ORDER BY `Country` ASC");
-        while ($aRow = mysql_fetch_array ($r)) {
+        foreach ($aCountriesList as $sCode => &$sName) {
             $a = array (
-                'Name' => new xmlrpcval(_t('__'.$aRow['Country'])),
-                'Code' => new xmlrpcval($aRow['ISO2']),
+                'Name' => new xmlrpcval($sName),
+                'Code' => new xmlrpcval($sCode),
             );
             $aCountries[] = new xmlrpcval($a, 'struct');
         }

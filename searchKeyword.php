@@ -96,14 +96,12 @@ function getSearchForm ()
 
     $sButtons = '<div id="buttonArea" class="bx-btn-area clearfix">';
     foreach ($aList as $sKey => $aValue) {
-        $sButtons .= '<button class="bx-btn bx-btn-centered" type="button" id="' . $sKey . '" onclick="toggleState(\'' . $sKey . '\');">' . _t($aValue['title']) . '</button>';
+        $sClassAdd = '';
+        if (isset($_GET['type']))
+            $sClassAdd = $_GET['type'] == $sKey ? '' : 'bx-btn-disabled';
+        $sButtons .= '<button class="bx-btn bx-btn-centered ' . $sClassAdd . '" type="button" id="' . $sKey . '" onclick="toggleState(\'' . $sKey . '\');">' . _t($aValue['title']) . '</button>';
     }
     $sButtons .= '</div>';    
-
-    if (isset($_GET['type'])) {
-        $aValue = strip_tags($_GET['type']);
-    } else
-        $aValue = array_keys($aValues);
 
     $aForm = array(
         'form_attrs' => array(

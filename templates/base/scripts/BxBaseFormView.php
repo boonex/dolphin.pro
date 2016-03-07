@@ -106,7 +106,7 @@ class BxBaseFormView extends BxDolForm
         return $this->_sCodeAdd . $GLOBALS['oSysTemplate']->parseHtmlByName('form_content.html', array(
         	'wrapper_id' => $this->id,
         	'table_attrs' => $this->convertArray2Attrs($this->aTableAttrs),
-        	'content' => $sTableContent,
+        	'content' => $this->getOpenTbody() . $sTableContent . $this->getCloseTbody(),
         ));
     }
 
@@ -133,7 +133,7 @@ class BxBaseFormView extends BxDolForm
 
             case 'hidden':
                 // do not generate row for hidden inputs
-                            $sRow = '';
+                $sRow = '';
                 $this->_sCodeAdd .= $this->genInput($aInput);
             break;
 

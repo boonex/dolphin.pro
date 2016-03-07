@@ -285,38 +285,38 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]forum_signatures` (
 
 -- page compose pages
 SET @iMaxOrder = (SELECT `Order` FROM `sys_page_compose_pages` ORDER BY `Order` DESC LIMIT 1);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_view', 'Event View', @iMaxOrder+1);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_view', 'Events View Event', @iMaxOrder+1);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_celendar', 'Events Calendar', @iMaxOrder+2);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_main', 'Main Events Page', @iMaxOrder+3);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_my', 'My Events Page', @iMaxOrder+4);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_main', 'Events Home', @iMaxOrder+3);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_events_my', 'Events User', @iMaxOrder+4);
 
 -- page compose blocks
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 
-    ('bx_events_view', '1140px', 'Event''s info block', '_bx_events_block_info', '3', '0', 'Info', '', '1', '28.1', 'non,memb', '0'),    
-    ('bx_events_view', '1140px', 'Event''s actions block', '_bx_events_block_actions', '3', '1', 'Actions', '', '1', '28.1', 'non,memb', '0'),    
-    ('bx_events_view', '1140px', 'Event''s rate block', '_bx_events_block_rate', '3', '2', 'Rate', '', '1', '28.1', 'non,memb', '0'),    
-    ('bx_events_view', '1140px', 'Event''s social sharing block', '_sys_block_title_social_sharing', '3', '3', 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
-    ('bx_events_view', '1140px', 'Event''s files block', '_bx_events_block_files', '3', '4', 'Files', '', '1', '28.1', 'non,memb', '0'),
-    ('bx_events_view', '1140px', 'Event''s participants block', '_bx_events_block_participants', '3', '5', 'Participants', '', '1', '28.1', 'non,memb', '0'),
-    ('bx_events_view', '1140px', 'Event''s unconfirmed participants block', '_bx_events_block_participants_unconfirmed', '3', '6', 'ParticipantsUnconfirmed', '', '1', '28.1', 'non,memb', '0'),
-    ('bx_events_view', '1140px', 'Event''s Location', '_Location', '3', '7', 'PHP', 'return BxDolService::call(''wmap'', ''location_block'', array(''events'', $this->aDataEntry[$this->_oDb->_sFieldId]));', 1, 28.1, 'non,memb', 0),
-    ('bx_events_view', '1140px', 'Event''s Chat', '_Chat', '3', '8', 'PHP', 'return BxDolService::call(''shoutbox'', ''get_shoutbox'', array(''bx_events'', $this->aDataEntry[$this->_oDb->_sFieldId]));', 11, 28.1, 'non,memb', 0),
-    ('bx_events_view', '1140px', 'Event''s description block', '_bx_events_block_desc', '2', '0', 'Desc', '', '1', '71.9', 'non,memb', '0'),
-    ('bx_events_view', '1140px', 'Event''s photos block', '_bx_events_block_photos', '2', '1', 'Photos', '', '1', '71.9', 'non,memb', '0'),
-    ('bx_events_view', '1140px', 'Event''s videos block', '_bx_events_block_videos', '2', '2', 'Videos', '', '1', '71.9', 'non,memb', '0'),
-    ('bx_events_view', '1140px', 'Event''s sounds block', '_bx_events_block_sounds', '2', '3', 'Sounds', '', '1', '71.9', 'non,memb', '0'),
-    ('bx_events_view', '1140px', 'Event''s comments block', '_bx_events_block_comments', '2', '4', 'Comments', '', '1', '71.9', 'non,memb', '0'),    
-    ('bx_events_view', '1140px', 'Event''s forum feed', '_sys_block_title_forum_feed', '2', '5', 'ForumFeed', '', '1', 71.9, 'non,memb', '0'),
+    ('bx_events_view', '1140px', 'Event''s info block', '_bx_events_block_info', '2', '0', 'Info', '', '1', '28.1', 'non,memb', '0'),    
+    ('bx_events_view', '1140px', 'Event''s actions block', '_bx_events_block_actions', '2', '1', 'Actions', '', '1', '28.1', 'non,memb', '0'),    
+    ('bx_events_view', '1140px', 'Event''s rate block', '_bx_events_block_rate', '2', '2', 'Rate', '', '1', '28.1', 'non,memb', '0'),    
+    ('bx_events_view', '1140px', 'Event''s social sharing block', '_sys_block_title_social_sharing', '2', '3', 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
+    ('bx_events_view', '1140px', 'Event''s files block', '_bx_events_block_files', '2', '4', 'Files', '', '1', '28.1', 'non,memb', '0'),
+    ('bx_events_view', '1140px', 'Event''s participants block', '_bx_events_block_participants', '2', '5', 'Participants', '', '1', '28.1', 'non,memb', '0'),
+    ('bx_events_view', '1140px', 'Event''s unconfirmed participants block', '_bx_events_block_participants_unconfirmed', '2', '6', 'ParticipantsUnconfirmed', '', '1', '28.1', 'non,memb', '0'),
+    ('bx_events_view', '1140px', 'Event''s Location', '_Location', '2', '7', 'PHP', 'return BxDolService::call(''wmap'', ''location_block'', array(''events'', $this->aDataEntry[$this->_oDb->_sFieldId]));', 1, 28.1, 'non,memb', 0),
+    ('bx_events_view', '1140px', 'Event''s Chat', '_Chat', '2', '8', 'PHP', 'return BxDolService::call(''shoutbox'', ''get_shoutbox'', array(''bx_events'', $this->aDataEntry[$this->_oDb->_sFieldId]));', 11, 28.1, 'non,memb', 0),
+    ('bx_events_view', '1140px', 'Event''s description block', '_bx_events_block_desc', '1', '0', 'Desc', '', '1', '71.9', 'non,memb', '0'),
+    ('bx_events_view', '1140px', 'Event''s photos block', '_bx_events_block_photos', '1', '1', 'Photos', '', '1', '71.9', 'non,memb', '0'),
+    ('bx_events_view', '1140px', 'Event''s videos block', '_bx_events_block_videos', '1', '2', 'Videos', '', '1', '71.9', 'non,memb', '0'),
+    ('bx_events_view', '1140px', 'Event''s sounds block', '_bx_events_block_sounds', '1', '3', 'Sounds', '', '1', '71.9', 'non,memb', '0'),
+    ('bx_events_view', '1140px', 'Event''s comments block', '_bx_events_block_comments', '1', '4', 'Comments', '', '1', '71.9', 'non,memb', '0'),    
+    ('bx_events_view', '1140px', 'Event''s forum feed', '_sys_block_title_forum_feed', '1', '5', 'ForumFeed', '', '1', 71.9, 'non,memb', '0'),
 
-    ('bx_events_main', '1140px', 'Upcoming Events Photo', '_bx_events_block_upcoming_photo', '2', '0', 'UpcomingPhoto', '', '1', '71.9', 'non,memb', '0'),
-    ('bx_events_main', '1140px', 'Upcoming Events List', '_bx_events_block_upcoming_list', '2', '1', 'UpcomingList', '', '1', '71.9', 'non,memb', '0'),
-    ('bx_events_main', '1140px', 'Map', '_Map', '2', '2', 'PHP', 'return BxDolService::call(''wmap'', ''homepage_part_block'', array (''events''));', 1, 71.9, 'non,memb', 0),
-    ('bx_events_main', '1140px', 'Calendar', '_bx_events_block_calendar', '3', '0', 'Calendar', '', '1', '28.1', 'non,memb', '0'),
+    ('bx_events_main', '1140px', 'Upcoming Events Photo', '_bx_events_block_upcoming_photo', '1', '0', 'UpcomingPhoto', '', '1', '71.9', 'non,memb', '0'),
+    ('bx_events_main', '1140px', 'Upcoming Events List', '_bx_events_block_upcoming_list', '1', '1', 'UpcomingList', '', '1', '71.9', 'non,memb', '0'),
+    ('bx_events_main', '1140px', 'Map', '_Map', '1', '2', 'PHP', 'return BxDolService::call(''wmap'', ''homepage_part_block'', array (''events''));', 1, 71.9, 'non,memb', 0),
+    ('bx_events_main', '1140px', 'Calendar', '_bx_events_block_calendar', '2', '0', 'Calendar', '', '1', '28.1', 'non,memb', '0'),
     ('bx_events_main', '1140px', 'Past Events', '_bx_events_block_past_list', '0', '0', 'PastList', '', '1', '71.9', 'non,memb', '0'),
     ('bx_events_main', '1140px', 'Recently Added Events', '_bx_events_block_recently_added_list', '0', '0', 'RecentlyAddedList', '', '1', '71.9', 'non,memb', '0'),
 
-    ('bx_events_my', '1140px', 'Administration', '_bx_events_block_administration', '2', '0', 'Owner', '', '1', '100', 'non,memb', '0'),
-    ('bx_events_my', '1140px', 'User''s events', '_bx_events_block_user_events', '2', '1', 'Browse', '', '0', '100', 'non,memb', '0'),
+    ('bx_events_my', '1140px', 'Administration', '_bx_events_block_administration', '1', '0', 'Owner', '', '1', '100', 'non,memb', '0'),
+    ('bx_events_my', '1140px', 'User''s events', '_bx_events_block_user_events', '1', '1', 'Browse', '', '0', '100', 'non,memb', '0'),
 
     ('index', '1140px', 'Events', '_bx_events_block_home', 0, 0, 'PHP', 'bx_import(''BxDolService''); return BxDolService::call(''events'', ''homepage_block'');', 1, 71.9, 'non,memb', 0),
     ('profile', '1140px', 'User Events', '_bx_events_block_my_events', 0, 0, 'PHP', 'bx_import(''BxDolService''); return BxDolService::call(''events'', ''profile_block'', array($this->oProfileGen->_iProfileID));', 1, 71.9, 'non,memb', 0),

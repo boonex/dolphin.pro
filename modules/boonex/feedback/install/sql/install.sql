@@ -119,11 +119,11 @@ INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES ('feedback
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
 ('index', '1140px', 'Feedback from your customers', '_feedback_bcaption_index', 0, 0, 'PHP', 'return BxDolService::call(\'feedback\', \'archive_block_index\', array(0, 0, false));', 1, 71.9, 'non,memb', 0),
-('feedback', '1140px', 'Feedback main content', '_feedback_bcaption_view_main', 2, 0, 'Content', '', 1, 71.9, 'non,memb', 0),
-('feedback', '1140px', 'Feedback comments', '_feedback_bcaption_view_comment', 2, 1, 'Comment', '', 1, 71.9, 'non,memb', 0),
-('feedback', '1140px', 'Feedback actions', '_feedback_bcaption_view_action', 3, 0, 'Action', '', 1, 28.1, 'non,memb', 0),
-('feedback', '1140px', 'Feedback rating', '_feedback_bcaption_view_vote', 3, 1, 'Vote', '', 1, 28.1, 'non,memb', 0),
-('feedback', '1140px', 'Social sharing', '_sys_block_title_social_sharing', 3, 2, 'SocialSharing', '', 1, 28.1, 'non,memb', 0);
+('feedback', '1140px', 'Feedback main content', '_feedback_bcaption_view_main', 1, 0, 'Content', '', 1, 71.9, 'non,memb', 0),
+('feedback', '1140px', 'Feedback comments', '_feedback_bcaption_view_comment', 1, 1, 'Comment', '', 1, 71.9, 'non,memb', 0),
+('feedback', '1140px', 'Feedback actions', '_feedback_bcaption_view_action', 2, 0, 'Action', '', 1, 28.1, 'non,memb', 0),
+('feedback', '1140px', 'Feedback rating', '_feedback_bcaption_view_vote', 2, 1, 'Vote', '', 1, 28.1, 'non,memb', 0),
+('feedback', '1140px', 'Social sharing', '_sys_block_title_social_sharing', 2, 2, 'SocialSharing', '', 1, 28.1, 'non,memb', 0);
 
 INSERT INTO `sys_privacy_actions`(`module_uri`, `name`, `title`, `default_group`) VALUES 
 ('feedback', 'comment', '_feedback_psaction_comment', '3'),

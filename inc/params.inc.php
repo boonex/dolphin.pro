@@ -69,7 +69,8 @@ $oSysTemplate->addJsSystem(array(
 $oSysTemplate->addJsTranslation(array(
     '_Counter',
     '_PROFILE_ERR',
-    '_sys_txt_btn_loading'
+    '_sys_txt_btn_loading',
+    '_Errors in join form',
 ));
 
 $oSysTemplate->addJsOption(array(

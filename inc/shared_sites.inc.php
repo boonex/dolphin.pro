@@ -9,11 +9,24 @@ require_once(BX_DIRECTORY_PATH_INC . 'db.inc.php');
 
 define('SHARED_SITES_TABLE', 'sys_shared_sites');
 
+function bx_pre_rawurlencode($sURL) {
+    $sEncoded = '';
+    $iLength = mb_strlen($sURL);
+    for ($i = 0 ; $i < $iLength ; $i++) {
+        $c = mb_substr($sURL, $i, 1);
+        if (ord($c[0]) >= 0 && ord($c[0]) <= 127)
+            $sEncoded .= $c;
+        else
+            $sEncoded .= rawurlencode(mb_substr($sURL, $i, 1));
+    }
+    return $sEncoded;
+}
+
 function getSitesArray ($sLink)
 {
     $aSites = $GLOBALS['MySQL']->fromCache ('sys_shared_sites', 'getAllWithKey', "SELECT `ID` as `id`, `URL` as `url`, `Icon` as `icon`, `Name` FROM `" . SHARED_SITES_TABLE . "`", 'Name');
 
-    $sLink = rawurlencode($sLink);
+    $sLink = rawurlencode(bx_pre_rawurlencode($sLink));
 
     foreach ($aSites as $sKey => $aValue)
         $aSites[$sKey]['url'] .= $sLink;

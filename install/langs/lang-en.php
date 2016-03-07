@@ -5,7 +5,7 @@ $LANG_INFO = array(
 );
 
 $LANG= array(
-  '_ABOUT_US' => 'This site is powered by <a href="http://www.boonex.com/dolphin" target="_blank">BoonEx Dolphin</a>. The rest is a mystery.',
+  '_ABOUT_US' => 'This site is powered by <a href="https://www.boonex.com/features" target="_blank">BoonEx Dolphin</a>. The rest is a mystery.',
   '_ABOUT_US_H' => 'About Us',
   '_ACTION_EVERY_PERIOD' => ' every {4} hours',
   '_ACTION_LIMIT_REACHED' => 'Limit reached. Your current membership (<b>{2}</b>) allows you to {1} no more than {3} times',
@@ -276,6 +276,7 @@ If this fails, you can request a password that will be sent to the email address
   '_FieldCaption_Couple_Search' => 'Profile type',
   '_FieldCaption_DateLastEdit_View' => 'Last profile edition date',
   '_FieldCaption_DateLastLogin_View' => 'Last Login Date',
+  '_FieldCaption_DateLastNav_View' => 'Last Navigation Date',
   '_FieldCaption_DateOfBirth_Edit' => 'Birthday',
   '_FieldCaption_DateOfBirth_Join' => 'Birthday',
   '_FieldCaption_DateOfBirth_Search' => 'Age',
@@ -910,7 +911,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_admtools_Non_Writable' => 'Non-Writable',
   '_adm_admtools_Not_Exists' => 'Does Not Exists',
   '_adm_admtools_Only_bad_files' => 'Show only files and directories with inappropriate permissions',
-  '_adm_admtools_Perm_description' => 'Dolphin needs special access for certain files and directories. Please, change permissions as specified in the chart below. Helpful info about permissions is <a href="http://www.boonex.com/trac/dolphin/wiki/DetailedInstall#Permissions" target="_blank">available here</a>.',
+  '_adm_admtools_Perm_description' => 'Dolphin needs special access for certain files and directories. Please, change permissions as specified in the chart below. Helpful info about permissions is <a href="https://www.boonex.com/trac/dolphin/wiki/DetailedInstall#InstallScript-Step1-Permissions" target="_blank">available here</a>.',
   '_adm_admtools_Permissions' => 'Permissions',
   '_adm_admtools_Writable' => 'Writable',
   '_adm_admtools_cache_engines' => 'Cache Engines',
@@ -947,6 +948,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_box_cpt_help' => 'Initiall Steps',
   '_adm_box_cpt_fapps' => 'Flash Apps',
   '_adm_box_cpt_featured_modules' => 'Featured Modules',
+  '_adm_box_cpt_injections' => 'Injections',
   '_adm_box_cpt_installed_modules' => 'Installed Modules',
   '_adm_box_cpt_lang_available' => 'Languages',
   '_adm_box_cpt_lang_edit_language' => 'Edit Language',
@@ -1048,6 +1050,8 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_dblinks_mass_mailer' => 'Email All Members',
   '_adm_dblinks_settings' => 'Change Site Settings',
   '_adm_dsc_settings_splash_editor' => 'HTML Editor may break some code',
+  '_adm_dsc_settings_injection_head' => 'Code to insert before closing HEAD tag',
+  '_adm_dsc_settings_injection_body' => 'Code to insert before closing BODY tag',
   '_adm_fields_admin' => 'Admin',
   '_adm_fields_advanced' => 'Advanced',
   '_adm_fields_advanced_search' => 'Advanced Search',
@@ -1098,7 +1102,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_fields_multiple_selector_control' => 'Multiple selector control',
   '_adm_fields_multiple_selector_control_desc' => 'The type of form input (HTML-element).',
   '_adm_fields_mutual_couple_fields' => 'Mutual couple fields',
-  '_adm_fields_mutual_couple_fields_desc' => 'Select fields which will be used as mutual for both persons in a couple. Use Ctrl key to select few fields.<br /><b>Note:</b> NickName, Password and Email are mandatory mutual.',
+  '_adm_fields_mutual_couple_fields_desc' => 'Select fields which will be used as mutual for both persons in a couple. Use Ctrl key to select few fields.<br /><b>Note:</b> NickName, Password, Email, Country, City, Zip and EmailNotify are mandatory mutual.',
   '_adm_fields_name_desc' => 'System name used for database. It must begin with a latin letter and contain only latin letters, numbers or underscores.',
   '_adm_fields_non_unique_error_message' => 'Non-unique error message',
   '_adm_fields_non_unique_error_message_desc' => 'Error message returned if user entered non-unique value. Translated to default language (for other languages - use key: _FieldError_{0}_Unique). Non-mandatory if Unique is not set.',
@@ -1130,13 +1134,13 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_ipbl_Type0_desc' => 'IP List Type is 0 : disabled',
   '_adm_ipbl_Type1_desc' => 'IP List Type is 1 : All IPs allowed except listed',
   '_adm_ipbl_Type2_desc' => 'IP List Type is 2 : All IPs blocked except listed',
-  '_adm_license_trial_copy_login_text' => 'This is a trial copy of Dolphin software. <a href="http://www.boonex.com/start" target="_blank">Get a license from BoonEx.</a>',
+  '_adm_license_trial_copy_login_text' => 'This is a trial copy of Dolphin software. <a href="https://www.boonex.com/start" target="_blank">Get a license from BoonEx.</a>',
   '_adm_license_note_permanent' => 'Commercial License',
-  '_adm_license_note_unregistered' => '<a href="http://www.boonex.com/start"><b>Buy a license</b></a> to remove BoonEx links and trial alerts.',
+  '_adm_license_note_unregistered' => '<a href="https://www.boonex.com/start"><b>Buy a license</b></a> to remove BoonEx links and trial alerts.',
   '_adm_license_continue' => 'or <a href="{0}">continue trial</a>',
   '_adm_license_popup_continue' => 'continue trial',
   '_adm_license_popup_license' => 'License:',
-  '_adm_license_popup_note' => 'Trial copy! <b><a href="http://www.boonex.com/start">Get a license</a></b> and register it:',
+  '_adm_license_popup_note' => 'Trial copy! <b><a href="https://www.boonex.com/start">Get a license</a></b> and register it:',
   '_adm_license_popup_or' => 'or',
   '_adm_license_popup_register' => 'Register',
   '_adm_license_register' => 'Register',
@@ -1321,7 +1325,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
     <li>
         Change the site logo to your own
         <a href="{0}basic_settings.php">here</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#point2"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#Logo"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         <a target="_blank" href="http://www.google.com/recaptcha">Generate your own Captcha keys</a> and fill them in
@@ -1330,17 +1334,17 @@ For any further information please <a href="{1}contact.php">contact us</a>
     <li>
         Write your own copyright notice text
         <a href="{0}lang_file.php">here</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#point5"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#Copyright"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         Change \'about\' and other information pages text
         <a href="{0}lang_file.php">here</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#point12"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#PersonalizingText"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         Install modules of your choice
         <a href="{0}modules.php">here</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/DolphinAdminModules"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/DolphinAdminModules"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         If using Facebook Connect, Generate your own Facebook keys and fill them in
@@ -1349,16 +1353,16 @@ For any further information please <a href="{1}contact.php">contact us</a>
     <li>
         Build your site homepage blocks
         <a href="{0}pageBuilder.php?Page=index">here</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/DolphinAdminPagesBlocks"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/DolphinAdminPagesBlocks"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         Setup site permissions settings
         <a href="{0}memb_levels.php">here</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/DolphinAdminMembershipLevels"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/DolphinAdminMembershipLevels"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         When ready to buy a full license, order it
-        <a target="_blank" href="http://www.boonex.com/start">here</a>
+        <a target="_blank" href="https://www.boonex.com/start">here</a>
     </li>
     <li>
         Register your license <a href="{0}license.php">here</a>
@@ -1545,7 +1549,9 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_txt_mp_couple' => 'couple',
   '_adm_txt_mp_featured' => 'featured',
   '_adm_txt_mp_female' => 'female',
+  '_adm_txt_mp_intersex' => 'intersex',
   '_adm_txt_mp_male' => 'male',
+  '_adm_txt_mp_other' => 'other',
   '_adm_txt_mp_promotion' => 'Promotion',
   '_adm_txt_mp_rejected' => 'rejected',
   '_adm_txt_mp_single' => 'single',
@@ -1582,6 +1588,8 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_txt_settings_file_not_image' => 'The uploaded file is not an image',
   '_adm_txt_settings_file_wrong_format' => 'The uploaded file is not a JPEG, GIF or PNG file',
   '_adm_txt_settings_image_cannot_resize' => 'Resize failed',
+  '_adm_txt_settings_injection_head' => '&lt;HEAD&gt; injection',
+  '_adm_txt_settings_injection_body' => '&lt;BODY&gt; injection',
   '_adm_txt_settings_logo_header' => 'Upload',
   '_adm_txt_settings_logo_upload' => 'Browse',
   '_adm_txt_settings_logo_wrong_size' => 'You\'ve entered incorrect sizes',
@@ -1717,7 +1725,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_please_fill_next_fields_first' => 'please fill in these fields first',
   '_popular_tags' => 'Popular Tags',
   '_post_successfully_deleted' => 'post successfully deleted',
-  '_powered_by_Dolphin' => 'Our website is powered by <a href="http://www.boonex.com/dolphin">BoonEx Dolphin</a>. Anyone can create their own niche social network using BoonEx software.',
+  '_powered_by_Dolphin' => 'Our website is powered by <a href="https://www.boonex.com/features">BoonEx Dolphin</a>. Anyone can create their own niche social network using BoonEx software.',
   '_prof_status' => '{0} is {1} now',
   '_profile_comments' => 'Profile Comments',
   '_profile_info' => 'Info',
@@ -2060,6 +2068,7 @@ You can do this by:
   '_uknown' => 'unknown',
   '_undefined' => 'undefined',
   '_votes' => 'votes',
+  '_n_votes' => '<i>{0}</i> votes',
   '_week_fri' => 'Friday',
   '_week_mon' => 'Monday',
   '_week_sat' => 'Saturday',

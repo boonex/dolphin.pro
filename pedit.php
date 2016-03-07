@@ -456,7 +456,6 @@ $_page['header']      = _t( '_Edit Profile' );
 $_page['header_text'] = _t( '_Edit Profile' );
 $_ni = $_page['name_index'];
 
-$GLOBALS['oSysTemplate']->addJsTranslation('_Errors in join form');
 $oEditProc = new BxDolPEditProcessor();
 $_page_cont[$_ni]['page_main_code'] = $oEditProc->getCode();
 PageCode();

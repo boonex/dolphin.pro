@@ -84,32 +84,14 @@ function BxDolCmts (options) {
     	$('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' .cmt-post-reply form')[0].reset();
     	$('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' .cmt-post-reply form > [name=CmtParent]').val(0);    
     }
-
-    // clicks handler for ratings
-    var $this = this; 
-    $('#cmts-box-' + this._sSystem + '-' + this._iObjId).click(function(event) {
-    	var iRate = 0;
-    	var oLink = $(event.target).parent();
-    	if(oLink.hasClass('cmt-pos')) {
-    		iRate = 1;
-    		event.preventDefault();
-    	}
-    	else if(oLink.hasClass('cmt-neg')) {
-    		iRate = -1;
-    		event.preventDefault();
-    	}
-    	if (iRate != 0 && !$(event.target).parents('.cmt-rate').hasClass('cmt-rate-disabled')) {    		            		
-			var e = $(event.target).parents('.cmt-buttons').siblings('.cmt-points').children('span').get();
-			$this._rateComment(e, parseInt(oLink.attr('id').substr(8)), iRate);
-    	}
-    });
 }
+
 /*--- Browsing and Pagination ---*/
 BxDolCmts.prototype.changeOrder = function(oSelectDom) {
     var oSelect = $(oSelectDom);
     
     this._sOrder = oSelect.val();
-    this._getCmts(oSelect.siblings(':last'), 0, function(){});
+    this._getCmts(oSelect, 0, function(){});
 };
 BxDolCmts.prototype.expandAll = function(oCheckbox) {
     var $this = this;
@@ -119,17 +101,20 @@ BxDolCmts.prototype.expandAll = function(oCheckbox) {
     });
 };
 BxDolCmts.prototype.changePerPage = function(oDropDown) {
-    var oLoading = $('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' > .cmt-browse > .cmt-order > :last').get();
-    
+	var $this = this;
+
     var iPerPage = parseInt(oDropDown.value);
-    this._getCmts(oLoading, 0, function(){}, 0, iPerPage);
-    this._getPaginate(oLoading,0, iPerPage);
+    this._getCmts(oDropDown, 0, function(){
+    	$this._getPaginate(oDropDown,0, iPerPage);
+    }, 0, iPerPage);
+    
 };
-BxDolCmts.prototype.changePage = function(iStart, iPerPage) {
-    var oLoading = $('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' > .cmt-browse > .cmt-order > :last').get();
-        
-    this._getCmts(oLoading, 0, function(){}, iStart, iPerPage);
-    this._getPaginate(oLoading, iStart, iPerPage);
+BxDolCmts.prototype.changePage = function(oElement, iStart, iPerPage) {
+	var $this = this;
+
+    this._getCmts(oElement, 0, function() {
+    	$this._getPaginate(oElement, iStart, iPerPage);
+    }, iStart, iPerPage);
 };
 BxDolCmts.prototype.showReplacement = function(iCmtId) {
     $('#cmt' + iCmtId + '-hidden').bxdolcmtanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function(){
@@ -161,11 +146,18 @@ BxDolCmts.prototype.reloadComment = function(iCmtId) {
     );
     
 };
-BxDolCmts.prototype.toggleReply = function(e, iCmtParentId) {
+BxDolCmts.prototype.toggleReply = function(oElement, iCmtParentId) {
+	var $this = this;
+
     //--- Get form for posting comment in Root ---//
     if(iCmtParentId == 0) {
-        if($('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' .cmt-reply').children().length) {
-            $('#cmts-box-' + this._sSystem + '-' + this._iObjId + ' .cmt-reply').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
+    	var sCmtsBox = 'cmts-box-' + this._sSystem + '-' + this._iObjId;
+
+    	var oParent = $(oElement).parents('#' + sCmtsBox + ':first').find('.cmt-reply');
+        if(oParent.children().length) {
+        	oParent.bxdolcmtanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
+        		$this.removeReply($(this));
+        	});
         }
         else {
             var $this = this;
@@ -173,25 +165,38 @@ BxDolCmts.prototype.toggleReply = function(e, iCmtParentId) {
             oData['action'] = 'FormGet';
             oData['CmtType'] = 'comment';
             oData['CmtParent'] = iCmtParentId;
-            
-            $this._loading (e, true);
-    
+
+            $this._loading (oElement, true);
+
             jQuery.post (
                 this._sActionsUrl,
                 oData,
-                function (s) {                	            
-                	$this._loading(e, false);
+                function (s) {
+                	$this._loading(oElement, false);
 
-                	$('#cmts-box-' + $this._sSystem + '-' + $this._iObjId + ' .cmt-reply').append($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).children('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
+                	//--- Remove all similar reply boxes ---//
+                	$this.removeReply($('.' + sCmtsBox).find('.cmt-reply:not(:empty)').not(oParent));               	
+
+                	oParent.append($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).children('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
+
+                	//--- Move page scroll to post box ---//
+                	var iScrollPos = $(oElement).offset().top;
+                	if($('.sys_sub_menu.sys_sm_fixed').is(':visible'))
+                		iScrollPos -= ($('.sys_sub_menu.sys_sm_fixed').height() + 5);
+
+                	$('html, body').animate({scrollTop:iScrollPos}, 500);
                 }
             );
             
         }
     }
+
     //--- Get form for posting a reply ---//
-	else {	    
-		if ($('#cmt' + iCmtParentId).children('.cmt-post-reply').length)
-			$('#cmt' + iCmtParentId).children('.cmt-post-reply').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
+	else {
+		var oParent = $(oElement).parents('#cmt' + iCmtParentId + ':first');
+
+		if (oParent.children('.cmt-post-reply').length)
+			oParent.children('.cmt-post-reply').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
 		else {
 		    var $this = this;
 		    var oData = this._getDefaultActions();		    
@@ -199,20 +204,28 @@ BxDolCmts.prototype.toggleReply = function(e, iCmtParentId) {
             oData['CmtType'] = 'reply';
             oData['CmtParent'] = iCmtParentId;
             
-            $this._loading (e, true);
+            $this._loading (oElement, true);
     
             jQuery.post (
                 this._sActionsUrl,
                 oData,
                 function (s) {                	            
-                	$this._loading(e, false);
+                	$this._loading(oElement, false);
 
-                	$('#cmt' + iCmtParentId).children('.cmt-cont').after($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).next('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
+                	oParent.children('.cmt-cont').after($(s).addClass('cmt-post-reply-expanded').css('display', 'none')).next('.cmt-post-reply').bxdolcmtanim('toggle', $this._sAnimationEffect, $this._iAnimationSpeed);
                 }
             );					
 		}
 	}
 };
+
+BxDolCmts.prototype.removeReply = function(oReply) {
+	if(this._iGlobAllowHtml == 1)
+		this.editorDestroy(oReply.find("textarea.cmt-text-post[name='CmtText']"));
+	
+	$(oReply).empty().show();
+};
+
 BxDolCmts.prototype.toggleType = function(oLink) {
     var aSwitcher = {'cmt-post-reply-text': 'cmt-post-reply-video', 'cmt-post-reply-video': 'cmt-post-reply-text'};
     var sKey = $(oLink).hasClass('cmt-post-reply-text') ? 'cmt-post-reply-text' : 'cmt-post-reply-video';
@@ -238,39 +251,73 @@ BxDolCmts.prototype.toggleType = function(oLink) {
 BxDolCmts.prototype.toggleCmts = function(e, iCmtParentId) {
     //--- Load Root Comments ---//
     if(iCmtParentId == 0) {
-    	$(e).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('.cmt-comments').toggle();
+    	var sCmtsBox = 'cmts-box-' + this._sSystem + '-' + this._iObjId + ':first';
+    	$(e).parents('#' + sCmtsBox).find('.cmt-comments').toggle();
 
-        if(!$(e).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('div.cmts > ul > li').length)
+        if(!$(e).parents('#' + sCmtsBox).find('div.cmts > ul > li').length)
             this._getCmts(e, iCmtParentId, function() {});
         else
-        	$(e).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').find('div.cmts').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
+        	$(e).parents('#' + sCmtsBox).find('div.cmts').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
     }
     //--- Load Replies ---//
     else {
         var sId = '#cmt' + iCmtParentId;    
         if ($(sId + ' > ul').length) {
             if ($(sId + ' > ul').is(':visible'))        
-            	$( sId + ' > ul').bxdolcmtanim(
-            	   'hide', 
-            	   this._sAnimationEffect, 
-            	   this._iAnimationSpeed, 
-            	   function(){        	       
-                        $(sId + '  > .cmt-cont .cmt-replies-hide').hide().siblings('.cmt-replies-show').show();
-                    });        
+            	$( sId + ' > ul').bxdolcmtanim('hide', this._sAnimationEffect, this._iAnimationSpeed, function() {
+            		$(sId + '  > .cmt-cont .cmt-replies-hide').hide().siblings('.cmt-replies-show').show();
+            	});        
             else        
-                $(sId + ' > ul').bxdolcmtanim(
-                    'show', 
-                    this._sAnimationEffect, 
-                    this._iAnimationSpeed, 
-                    function(){
-                        $(sId + '  > .cmt-cont .cmt-replies-show').hide().siblings('.cmt-replies-hide').show();
-                    });            
+                $(sId + ' > ul').bxdolcmtanim('show', this._sAnimationEffect, this._iAnimationSpeed, function() {
+                	$(sId + '  > .cmt-cont .cmt-replies-show').hide().siblings('.cmt-replies-hide').show();
+                });            
         }
         else
             this._getCmts(e, iCmtParentId, function (){ 
                 $(sId + ' > .cmt-cont .cmt-replies-show').hide().siblings('.cmt-replies-hide').show(); 
             });
     }
+};
+
+BxDolCmts.prototype.cmtRate = function(oLink) {
+	var $this = this;
+
+	oLink = $(oLink);
+
+	var iRate = 0;
+	if(oLink.hasClass('cmt-pos'))
+		iRate = 1;
+	else if(oLink.hasClass('cmt-neg'))
+		iRate = -1;
+
+	if(iRate == 0 || oLink.parents('.cmt-rate:first').hasClass('cmt-rate-disabled'))
+		return;
+
+	var oCounter = oLink.parents('.cmt-buttons').siblings('.cmt-points').children('span');
+	var oData = this._getDefaultActions();
+    oData['action'] = 'CmtRate';
+    oData['Cmt'] = parseInt(oLink.attr('id').substr(8));
+    oData['Rate'] = iRate;
+
+    this._loading(oCounter, true);
+
+    jQuery.post (
+		this._sActionsUrl,
+		oData,
+        function (s) {
+        	$this._loading (oCounter, false);
+
+			if(jQuery.trim(s).length) {
+        		alert(s);
+        		return;
+			}
+
+			if(iRate == 1)
+				oCounter.html(parseInt(oCounter.html()) + iRate).parents('.cmt-rate:first').addClass('cmt-rate-disabled');
+			else if(iRate == -1)
+                $this.reloadComment(oData['Cmt']);
+		}
+	);
 };
 
 BxDolCmts.prototype.cmtRemove = function(e, iCmtId) {
@@ -426,11 +473,11 @@ BxDolCmts.prototype._getCmt = function (oForm, iCmtParentId, iCmtId)
         	if (iCmtParentId == 0) {
         		var oProcessResults = function () {
 	        	    var oParent = oBox.find('div.cmts > ul');
-	        	    var iRepliesCount = parseInt(oBox.find('.cmt-comments:first .cmt-comments-count').html());
+	        	    var iRepliesCount = parseInt(oBox.find('.cmt-comments:first .cmt-comments-count i').html());
 
 	        		//--- Some number of comments already loaded ---//
 	        		if(oParent.children('li.cmt:last').length) {
-	        			oBox.find('.cmt-comments .cmt-comments-count').html(iRepliesCount + 1);
+	        			oBox.find('.cmt-comments .cmt-comments-count i').html(iRepliesCount + 1);
 
 	        			if(oParent.is(':visible'))
 	        				oParent.append($(s).hide()).find('li.cmt:hidden').bxdolcmtanim('show', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
@@ -444,18 +491,22 @@ BxDolCmts.prototype._getCmt = function (oForm, iCmtParentId, iCmtId)
 	                //--- Some number of comments exists but NOT loaded ---//
 	            	else if(iRepliesCount > 0) {
 	            	    $this._getCmts(oForm, 0, function(){
-	            	    	oBox.find('.cmt-comments').toggle().find('.cmt-comments-count').html(iRepliesCount + 1);
+	            	    	oBox.find('.cmt-comments').toggle().find('.cmt-comments-count i').html(iRepliesCount + 1);
 	            	    });
 	            	}
 	            	//-- There is no comments at all ---//
 	            	else {
 	            	    oParent.find('.cmt-no').remove();
 	            		oParent.html(s).find('a.bx-link').dolEmbedly();
+	            		
+	            		oBox.find('.cmt-comments').toggle().find('.cmt-comments-count i').html(iRepliesCount + 1);
 	            	}
         		};
 
         		if($this._bAutoHideRootPostForm)
         			oBox.find('.cmt-reply').bxdolcmtanim('hide', $this._sAnimationEffect, $this._iAnimationSpeed, function() {
+        				$this.removeReply($(this));
+
         				oProcessResults();
 					});
         		else
@@ -611,34 +662,6 @@ BxDolCmts.prototype._toggleHidden = function(e, iCmtId) {
 	$('#cmt'+iCmtId+' > .cmt-cont').bxdolcmtanim('toggle', this._sAnimationEffect, this._iAnimationSpeed);
 };
 
-// rate comment 
-BxDolCmts.prototype._rateComment = function(e, iCmtId, iRate) {
-	var $this = this;
-    var oData = this._getDefaultActions();
-    oData['action'] = 'CmtRate';
-    oData['Cmt'] = iCmtId;
-    oData['Rate'] = iRate;
-
-    this._loading (e, true);
-
-    jQuery.post (
-		this._sActionsUrl,
-		oData,
-        function (s) {
-        	$this._loading (e, false);
-			if(jQuery.trim(s).length)
-        		alert(s);        			
-			else if(iRate == 1) {
-				$(e).html(parseInt($(e).html()) + iRate);
-				$(e).parent().parent().addClass('cmt-rate-disabled');
-			}
-			else if(iRate == -1) {
-                $this.reloadComment(iCmtId);
-			}
-		}
-	);    		
-};
-
 // check and get post new comment form elements
 BxDolCmts.prototype._getCheckElements = function(f, oData) {
 	var $this = this;
@@ -714,10 +737,7 @@ BxDolCmts.prototype._disableButton = function(eButton, bDisable) {
 };
 
 BxDolCmts.prototype._loading = function(e, bShow) {
-    if(bShow && !$(e).parent().find('b').length)
-        $(e).parent().append(' <b>' + aDolLang['_sys_txt_cmt_loading'] + '</b>');
-    else if (!bShow && $(e).parent().find('b').length)
-    	$(e).parent().find('b').remove();
+	$(e).parents('#cmts-box-' + this._sSystem + '-' + this._iObjId + ':first').bx_loading(bShow);
 };
 
 BxDolCmts.prototype._err = function(e, bShow, s) {

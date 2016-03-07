@@ -36,6 +36,6 @@ SET @iCategId = (SELECT LAST_INSERT_ID());
 INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `err_text`, `order_in_kateg`, `AvailableValues`) VALUES
 ('bx_zip_permalinks', 'on', 26, 'Enable friendly permalinks in ZIP Code Search', 'checkbox', '', '', '10', ''),
 ('bx_zip_enabled', '', @iCategId, 'Enable ZIP code search', 'checkbox', '', '', '12', ''),
-('bx_zip_mode', 'Geonames', @iCategId, 'Geocoding (select Google if BoonEx ''Profiles Map'' module is installed)', 'select', '', '', '14', 'Google,Geonames'),
+('bx_zip_mode', 'Geonames', @iCategId, 'Geocoding (select Google if BoonEx ''World Map'' module is installed)', 'select', '', '', '14', 'Google,Geonames'),
 ('bx_zip_geonames_username', '', @iCategId, 'Geonames username', 'digit', '', '', '16', '');
 

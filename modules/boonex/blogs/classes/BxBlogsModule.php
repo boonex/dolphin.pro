@@ -2437,10 +2437,6 @@ EOF;
                     ),
                 ),
                 'inputs' => array(
-                    'header1' => array(
-                        'type' => 'block_header',
-                        'caption' => $sPleaseCreateBlogC,
-                    ),
                     'Description' => array(
                         'type' => 'textarea',
                         'html' => 0,

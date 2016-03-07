@@ -160,7 +160,7 @@ INSERT INTO `sys_objects_views`(`name`, `table_track`, `period`, `trigger_table`
 
 
 SET @iPCPOrder = (SELECT MAX(`Order`) FROM `sys_page_compose_pages`);
-INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES ('articles_single', 'Single Article', @iPCPOrder+1);
+INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES ('articles_single', 'Articles View Article', @iPCPOrder+1);
 
 SET @iPCPOrder = (SELECT MAX(`Order`) FROM `sys_page_compose_pages`);
 INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES ('articles_home', 'Articles Home', @iPCPOrder+1);
@@ -170,16 +170,16 @@ INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`
 ('index', '1140px', 'Show list of latest articles', '_articles_bcaption_latest', 0, 0, 'PHP', 'return BxDolService::call(\'articles\', \'archive_block_index\', array(0, 0, false));', 1, 71.9, 'non,memb', 0),
 ('member', '1140px', 'Show list of featured articles', '_articles_bcaption_featured', 0, 0, 'PHP', 'return BxDolService::call(\'articles\', \'featured_block_member\', array(0, 0, false));', 1, 71.9, 'memb', 0),
 ('member', '1140px', 'Show list of latest articles', '_articles_bcaption_latest', 0, 0, 'PHP', 'return BxDolService::call(\'articles\', \'archive_block_member\', array(0, 0, false));', 1, 71.9, 'memb', 0),
-('articles_single', '1140px', 'Articles main content', '_articles_bcaption_view_main', 2, 0, 'Content', '', 1, 71.9, 'non,memb', 0),
-('articles_single', '1140px', 'Articles comments', '_articles_bcaption_view_comment', 2, 1, 'Comment', '', 1, 71.9, 'non,memb', 0),
-('articles_single', '1140px', 'Articles actions', '_articles_bcaption_view_action', 3, 0, 'Action', '', 1, 28.1, 'non,memb', 0),
-('articles_single', '1140px', 'Articles rating', '_articles_bcaption_view_vote', 3, 1, 'Vote', '', 1, 28.1, 'non,memb', 0),
-('articles_single', '1140px', 'Social sharing', '_sys_block_title_social_sharing', 3, 2, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
+('articles_single', '1140px', 'Articles main content', '_articles_bcaption_view_main', 1, 0, 'Content', '', 1, 71.9, 'non,memb', 0),
+('articles_single', '1140px', 'Articles comments', '_articles_bcaption_view_comment', 1, 1, 'Comment', '', 1, 71.9, 'non,memb', 0),
+('articles_single', '1140px', 'Articles actions', '_articles_bcaption_view_action', 2, 0, 'Action', '', 1, 28.1, 'non,memb', 0),
+('articles_single', '1140px', 'Articles rating', '_articles_bcaption_view_vote', 2, 1, 'Vote', '', 1, 28.1, 'non,memb', 0),
+('articles_single', '1140px', 'Social sharing', '_sys_block_title_social_sharing', 2, 2, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
 ('articles_home', '1140px', 'Articles featured', '_articles_bcaption_featured', 0, 0, 'Featured', '', 1, 71.9, 'non,memb', 0),
-('articles_home', '1140px', 'Articles latest', '_articles_bcaption_latest', 2, 1, 'Latest', '', 1, 71.9, 'non,memb', 0),
+('articles_home', '1140px', 'Articles latest', '_articles_bcaption_latest', 1, 1, 'Latest', '', 1, 71.9, 'non,memb', 0),
 ('articles_home', '1140px', 'Articles calendar', '_articles_bcaption_calendar', 0, 0, 'Calendar', '', 1, 28.1, 'non,memb', 0),
-('articles_home', '1140px', 'Articles categories', '_articles_bcaption_categories', 3, 1, 'Categories', '', 1, 28.1, 'non,memb', 0),
-('articles_home', '1140px', 'Articles tags', '_articles_bcaption_tags', 3, 2, 'Tags', '', 1, 28.1, 'non,memb', 0);
+('articles_home', '1140px', 'Articles categories', '_articles_bcaption_categories', 2, 1, 'Categories', '', 1, 28.1, 'non,memb', 0),
+('articles_home', '1140px', 'Articles tags', '_articles_bcaption_tags', 2, 2, 'Tags', '', 1, 28.1, 'non,memb', 0);
 
 INSERT INTO `sys_objects_actions`(`Caption`, `Icon`, `Url`, `Script`, `Eval`, `Order`, `Type`, `bDisplayInSubMenuHeader`) VALUES
 ('{sbs_articles_title}', 'paperclip', '', '{sbs_articles_script}', '', 1, 'bx_articles', 0),

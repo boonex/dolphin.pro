@@ -1,0 +1,28 @@
+<div id="__html_id_voting__" class="wall-voting">
+	<div class="wall-event-actions">
+		<bx_if:show_vote>__content__</bx_if:show_vote>
+		<bx_if:show_reply>
+			<a class="bx-btn bx-btn-small cmt-reply-toggle" href="javascript:void(0)" onclick="__js_object__.toggleReply(this, '__id__'); return false;" title="<bx_text_attribute:_wall_comment />"><i class="sys-icon comment"></i></a>
+		</bx_if:show_reply>
+		<bx_if:show_repost>__content__</bx_if:show_repost>
+		<bx_if:show_delete>
+			<a class="bx-btn bx-btn-small wall-delete" href="javascript:void(0)" onclick="javascript:__js_view_object__.deletePost(__id__);" title="<bx_text_attribute:_wall_post_delete />"><i class="sys-icon times"></i></a>
+		</bx_if:show_delete>
+	</div>
+	<div class="wall-event-stats bx-def-margin-thd-top">
+		<span class="wall-date bx-def-font-grayed">__date__</span>
+		<bx_if:show_votes>
+		    <span class="sys-bullet-narrow"></span>
+		    __content__
+		</bx_if:show_votes>
+		<bx_if:show_replies>
+			<span class="sys-bullet-narrow"></span>
+			<a class="cmt-comments cmt-comments-show" href="javascript:void(0)" onclick="__js_object__.toggleCmts(this, '__id__'); return false;" title="<bx_text_attribute:_wall_show_comments />"><span class="cmt-comments-count">__show__</span></a>
+			<a class="cmt-comments cmt-comments-hide" href="javascript:void(0)" onclick="__js_object__.toggleCmts(this, '__id__'); return false;" title="<bx_text_attribute:_wall_hide_comments />"><span class="cmt-comments-count">__hide__</span></a>
+		</bx_if:show_replies>
+		<bx_if:show_reposts>
+		    <span class="sys-bullet-narrow"></span>
+		    __content__
+		</bx_if:show_reposts>
+	</div>
+</div>

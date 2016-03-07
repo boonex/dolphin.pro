@@ -25,17 +25,7 @@ class BxFilesConfig extends BxDolFilesConfig
             'auto_activation' => 'bx_files_activation',
             'mode_top_index' => 'bx_files_mode_index',
             'category_auto_approve' => 'category_auto_activation_bx_files',
-            'number_all' => 'bx_files_number_all',
-            'number_index' => 'bx_files_number_index',
-            'number_user' => 'bx_files_number_user',
-            'number_related' => 'bx_files_number_related',
-            'number_top' => 'bx_files_number_top',
-            'number_browse' => 'bx_files_number_browse',
-            'number_albums_browse' => 'bx_files_number_albums_browse',
-            'number_albums_home' => 'bx_files_number_albums_home',
             'browse_width' => 'bx_files_thumb_width',
-            'allowed_exts' => 'bx_files_allowed_exts',
-            'profile_album_name' => 'bx_files_profile_album_name',
         );
 
         $this->_aMimeTypes = array();

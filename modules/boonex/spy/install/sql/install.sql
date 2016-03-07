@@ -112,7 +112,7 @@
     INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
     ('index', '1140px', 'Spy General', '_bx_spy', 0, 0, 'PHP', 'return BxDolService::call(''spy'', ''get_spy_block'');', 1, 28.1, 'non,memb', 0),
     ('member', '1140px', 'Spy Personal', '_bx_spy_notifications', 0, 0, 'PHP', 'return BxDolService::call(''spy'', ''get_spy_block'', array(''member.php'', $this->iMember));', 1, 28.1, 'memb', 0),
-    ('friends', '1140px', 'Spy Friends', '_bx_spy_friends', 3, 2, 'PHP', 'return BxDolService::call(''spy'', ''get_spy_block_friends'', array($this->iProfileID));', 1, 28.1, 'non,memb', 0);
+    ('friends', '1140px', 'Spy Friends', '_bx_spy_friends', 2, 2, 'PHP', 'return BxDolService::call(''spy'', ''get_spy_block_friends'', array($this->iProfileID));', 1, 28.1, 'non,memb', 0);
 
     --
     -- Dumping data for table `sys_cron_jobs`

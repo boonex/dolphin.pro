@@ -1,23 +1,30 @@
 <form action="__sCurrBrowsedFile__" method="get" name="filter_form" onsubmit="PerformCollectFilterCustomActions(); return true;">
 	<div class="ordered_block">
-		<bx_text:_Country />:
-		<select name="FilterCountry" id="FilterCountry" onchange="document.forms.filter_form.submit();">
-			<option value="-1"><bx_text:_Any /></option>
-			__sCountryOptions__
-		</select>
-
+		<div class="ordered_block_select bx-def-margin-sec-right">
+			<span><bx_text:_Country />:</span>
+			<div class="input_wrapper input_wrapper_select bx-def-margin-sec-left clearfix">
+				<select class="form_input_select bx-def-font-inputs" name="FilterCountry" id="FilterCountry" onchange="document.forms.filter_form.submit();">
+					<option value="-1"><bx_text:_Any /></option>__sCountryOptions__
+				</select>
+			</div>
+		</div>
 		__sCateg__
 		__sSubCateg__
-
-		<span id="custom_values" style="display:none;"></span>
+		<div class="ordered_block bx-def-margin-sec-top" id="custom_values" style="display:none;"></div>
 	</div>
 	<div class="per_page_block">
-		<bx_text:_bx_ads_Keywords />: <input type="text" value="__sKeywordsStr__" id="FilterKeywords" name="FilterKeywords"/>
-
-		<input type="hidden" value="" id="CustomFieldCaption_1" name="CustomFieldCaption1" />
-		<input type="hidden" value="" id="CustomFieldCaption_2" name="CustomFieldCaption2" />
-		<input type="hidden" name="action" value="3" />
-		<input type="submit" class="cur_pnt" value="<bx_text:_bx_ads_Apply />" name="butAction" />
+		<div class="per_page_block_select">
+			<span><bx_text:_bx_ads_Keywords />:</span>
+			<div class="input_wrapper input_wrapper_text bx-def-margin-sec-left clearfix">
+				<input class="form_input_text bx-def-font-inputs" type="text" value="__sKeywordsStr__" id="FilterKeywords" name="FilterKeywords"/>
+			</div>
+			<div class="input_wrapper input_wrapper_submit bx-def-margin-sec-left clearfix">
+				<input class="form_input_submit bx-btn bx-btn-small" type="submit" class="cur_pnt" value="<bx_text:_bx_ads_Apply />" name="butAction" />
+			</div>
+			<input type="hidden" value="" id="CustomFieldCaption_1" name="CustomFieldCaption1" />
+			<input type="hidden" value="" id="CustomFieldCaption_2" name="CustomFieldCaption2" />
+			<input type="hidden" name="action" value="3" />
+		</div>
 	</div>
     <div class="clear_both"></div>
 </form>

@@ -11,6 +11,7 @@ bx_import('BxTemplVotingView');
 
 class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
 {
+	var $bDynamic = false;
     var $bAdminMode = false;
 
     var $sTemplUnit;
@@ -122,6 +123,8 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         bx_import('Privacy', $this->oModule->_aModule);
         $this->oPrivacy = new $sClassName('sys_albums', 'ID', 'Owner');
         $this->sTemplUnit = 'browse_unit';
+
+        $this->bDynamic = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
     }
 
     function getCurrentUrl ($sType, $iId = 0, $sUri = '')
@@ -469,12 +472,12 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
 
     function addAlbumJsCss($bDynamic = false)
     {
-    	$sResult = '';
-    	$sResult .= $this->oTemplate->addJs(array(
+    	$sResult = $this->oTemplate->addJs(array(
     		'modernizr.js', 
     		'BxDolAlbums.js'
     	), $bDynamic);
-    	return $sResult;
+
+    	return $bDynamic ? $sResult : '';
     }
 
     function getAlbumList ($iPage = 1, $iPerPage = 10, $aCond = array())
@@ -496,7 +499,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         } else
             $sCode = MsgBox(_t('_Empty'));
 
-		$this->addAlbumJsCss();
+		$sCode .= $this->addAlbumJsCss($this->bDynamic);
         return $this->oTemplate->parseHtmlByName('album_units.html', array('content' => $sCode));
     }
 
@@ -606,7 +609,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
 
 		$sResult = $this->oTemplate->parseHtmlByName('album_unit.html', $aUnit, array('{','}'));
 		if(!empty($aData['show_as_list'])) {
-			$this->addAlbumJsCss();
+			$sResult .= $this->addAlbumJsCss($this->bDynamic);
 	        $sResult = $this->oTemplate->parseHtmlByName('album_units.html', array('content' => $sResult));
 
 	        if(!empty($aData['enable_center']))
@@ -662,7 +665,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         $sNickName    = getUsername($iProfileId);
         $sSimpleUrl   = BX_DOL_URL_ROOT . $this->oModule->_oConfig->getBaseUri() . 'albums/browse/owner/' . $sNickName;
         $sPaginateUrl = mb_strlen($sSpecUrl) > 0 ? strip_tags($sSpecUrl) : getProfileLink($iProfileId);
-        return $this->getAlbumsBlock(array(), array('owner' => $iProfileId, 'hide_default' => TRUE), array('enable_center' => false, 'paginate_url' => $sPaginateUrl, 'simple_paginate_url' => $sSimpleUrl));
+        return $this->getAlbumsBlock(array(), array('owner' => $iProfileId, 'hide_default' => TRUE), array('enable_center' => true, 'paginate_url' => $sPaginateUrl, 'simple_paginate_url' => $sSimpleUrl));
     }
 
     function serviceGetProfileAlbumFiles ($iProfileId)
@@ -727,6 +730,9 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         if(empty($aContent) || !isset($aContent['comment_id']))
             return '';
 
+		if(!$this->oPrivacy->check('album_view', (int)$aItem['album_id'], $this->oModule->_iProfileId))
+        	return '';
+
         bx_import('BxTemplCmtsView');
         $oCmts = new BxTemplCmtsView($this->oModule->_oConfig->getMainPrefix(), $iId);
         if(!$oCmts->isEnabled())
@@ -757,6 +763,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         		'cpt_item_url' => $aItem['url'],
         		'cnt_comment_text' => $aComment['cmt_text'],
         		'snippet' => $this->oModule->_oTemplate->parseHtmlByName($sTmplNameSnippet, array(
+        			'mod_prefix' => 'bx_' . $sUri,
 		            'cnt_item_page' => $aItem['url'],
 		            'cnt_item_icon' => $aItem['file'],
 		            'cnt_item_title' => $aItem['title'],

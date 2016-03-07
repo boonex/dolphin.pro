@@ -5,7 +5,7 @@ $LANG_INFO = array(
 );
 
 $LANG= array(
-    '_ABOUT_US' => 'Этот сайт создан с помощью <a href="http://www.boonex.com/dolphin" target="_blank">BoonEx Dolphin</a>. Остальное - тайна, покрытая мраком.',
+    '_ABOUT_US' => 'Этот сайт создан с помощью <a href="https://www.boonex.com/features" target="_blank">BoonEx Dolphin</a>. Остальное - тайна, покрытая мраком.',
     '_ABOUT_US_H' => 'О сайте',
     '_ACTION_EVERY_PERIOD' => ' каждые {4} часа',
     '_ACTION_LIMIT_REACHED' => 'Достигнуто ограничение. Ваше текущее членство (<b>{2}</b>) позволяет {1} не более {3} раз',
@@ -276,6 +276,7 @@ $LANG= array(
   '_FieldCaption_Couple_Search' => 'Тип профиля',
   '_FieldCaption_DateLastEdit_View' => 'Радактировал',
   '_FieldCaption_DateLastLogin_View' => 'Заходил',
+  '_FieldCaption_DateLastNav_View' => 'Пользовался сайтом',
   '_FieldCaption_DateOfBirth_Edit' => 'Дата рождения',
   '_FieldCaption_DateOfBirth_Join' => 'Дата рождения',
   '_FieldCaption_DateOfBirth_Search' => 'Возраст',
@@ -910,7 +911,7 @@ $LANG= array(
   '_adm_admtools_Non_Writable' => 'Неизменяемый',
   '_adm_admtools_Not_Exists' => 'Не существует',
   '_adm_admtools_Only_bad_files' => 'Показать только файлы и директории с неправильными разрешениями',
-  '_adm_admtools_Perm_description' => 'Дельфину нужен особый доступ к определённым файлам и директориям. Пожалуйста, измените разрешения так, как указано в таблице ниже. Полезная информация о разрешениях находится <a href="http://www.boonex.com/trac/dolphin/wiki/DetailedInstall#Permissions" target="_blank">здесь</a>.',
+  '_adm_admtools_Perm_description' => 'Дельфину нужен особый доступ к определённым файлам и директориям. Пожалуйста, измените разрешения так, как указано в таблице ниже. Полезная информация о разрешениях находится <a href="https://www.boonex.com/trac/dolphin/wiki/DetailedInstall#InstallScript-Step1-Permissions" target="_blank">здесь</a>.',
   '_adm_admtools_Permissions' => 'Разрешения',
   '_adm_admtools_Writable' => 'Изменяемый',
   '_adm_admtools_cache_engines' => 'Кэш-инструменты',
@@ -947,6 +948,7 @@ $LANG= array(
   '_adm_box_cpt_help' => 'Начальные шаги',
   '_adm_box_cpt_fapps' => 'Flash приложения',
   '_adm_box_cpt_featured_modules' => 'Популярные модули',
+  '_adm_box_cpt_injections' => 'Инъекции',
   '_adm_box_cpt_installed_modules' => 'Установленные модули',
   '_adm_box_cpt_lang_available' => 'Языки',
   '_adm_box_cpt_lang_edit_language' => 'Изменить языки',
@@ -967,7 +969,7 @@ $LANG= array(
   '_adm_box_cpt_pvalues_manage' => 'Предопределённые значения',
   '_adm_box_cpt_settings_advanced' => 'Расширенные настройки',
   '_adm_box_cpt_settings_main' => 'Основные настройки',
-  '_adm_box_cpt_splash' => 'Разбить',
+  '_adm_box_cpt_splash' => 'Заставка',
   '_adm_box_cpt_upload' => 'Загрузить',
   '_adm_btn_Column' => 'Столбец',
   '_adm_btn_Create_page' => 'Создать страницу',
@@ -1048,6 +1050,8 @@ $LANG= array(
   '_adm_dblinks_mass_mailer' => 'Рассылка',
   '_adm_dblinks_settings' => 'Настройки',
   '_adm_dsc_settings_splash_editor' => 'Редактор HTML, возможно, сломал некий код',
+  '_adm_dsc_settings_injection_head' => 'Код для вставки перед закрывающим HEAD тагом',
+  '_adm_dsc_settings_injection_body' => 'Код для вставки перед закрывающим BODY тагом',
   '_adm_fields_admin' => 'Администратор',
   '_adm_fields_advanced' => 'Расширенные',
   '_adm_fields_advanced_search' => 'Расширенный поиск',
@@ -1098,7 +1102,7 @@ $LANG= array(
   '_adm_fields_multiple_selector_control' => 'Элемент управления "множественный выбор"',
   '_adm_fields_multiple_selector_control_desc' => 'Соответствующий тип элемента HTML-формы.',
   '_adm_fields_mutual_couple_fields' => 'Общие поля для парного профиля',
-  '_adm_fields_mutual_couple_fields_desc' => 'Укажите поля, которые будут общими для обоих лиц в парном профиле. Воспользуйтесь клавишей Ctrl для выбора нескольких полей.<br /><b>Замечание:</b> Имя пользователя, Пароль и Электронный адрес являются общими в обязательном порядке.',
+  '_adm_fields_mutual_couple_fields_desc' => 'Укажите поля, которые будут общими для обоих лиц в парном профиле. Воспользуйтесь клавишей Ctrl для выбора нескольких полей.<br /><b>Замечание:</b> Имя Пользователя, Пароль, Электронный Адрес, Страна, Город, Почтовый Индекс и Получать Уведомления Сайта являются общими в обязательном порядке.',
   '_adm_fields_name_desc' => 'Системное имя, используемое базой данных. Оно должно начинаться с латинской буквы и состоять только из латинских букв, цифр или знака подчёркивания.',
   '_adm_fields_non_unique_error_message' => 'Сообщение об ошибке неуникальности ввода',
   '_adm_fields_non_unique_error_message_desc' => 'Сообщение об ошибке возникает, если пользователь ввёл неуникальное значение. Переведено на язык по умолчанию (для других языков используйте ключ: _FieldError_{0}_Unique). Сообщение необязятельно, если уникальность поля не отмечена.',
@@ -1130,13 +1134,13 @@ $LANG= array(
   '_adm_ipbl_Type0_desc' => 'Тип списка IP 0 : отключено',
   '_adm_ipbl_Type1_desc' => 'Тип списка IP 1 : Все IP разрешены, кроме тех, что в списке',
   '_adm_ipbl_Type2_desc' => 'Тип списка IP 2 : Все IP заблокированы, кроме тех, что в списке',
-  '_adm_license_trial_copy_login_text' => 'Это пробная копия Дельфина. <a href="http://www.boonex.com/start" target="_blank">Получить лицензию у BoonEx.</a>',
+  '_adm_license_trial_copy_login_text' => 'Это пробная копия Дельфина. <a href="https://www.boonex.com/start" target="_blank">Получить лицензию у BoonEx.</a>',
   '_adm_license_note_permanent' => 'Коммерческая лицензия',
-  '_adm_license_note_unregistered' => '<a href="http://www.boonex.com/start"><b>Приобрести лицензию</b></a> для удаления ссылок от BoonEx и предупреждений для пробной версии.',
+  '_adm_license_note_unregistered' => '<a href="https://www.boonex.com/start"><b>Приобрести лицензию</b></a> для удаления ссылок от BoonEx и предупреждений для пробной версии.',
   '_adm_license_continue' => 'или <a href="{0}">продолжить использование пробной версии</a>',
   '_adm_license_popup_continue' => 'продолжить использование пробной версии',
   '_adm_license_popup_license' => 'Лицензия:',
-  '_adm_license_popup_note' => 'Пробная копия! <b><a href="http://www.boonex.com/start">Получить лицензию</a></b> и зарегистрировать:',
+  '_adm_license_popup_note' => 'Пробная копия! <b><a href="https://www.boonex.com/start">Получить лицензию</a></b> и зарегистрировать:',
   '_adm_license_popup_or' => 'или',
   '_adm_license_popup_register' => 'Отправить',
   '_adm_license_register' => 'Отправить',
@@ -1321,7 +1325,7 @@ $LANG= array(
     <li>
         Как изменить логотип сайта на собственный
         <a href="{0}basic_settings.php">здесь</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#point2"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#Logo"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         <a target="_blank" href="http://www.google.com/recaptcha">Как сгенерировать собственные коды для капчи</a> and fill them in
@@ -1330,17 +1334,17 @@ $LANG= array(
     <li>
         Как написать свой текст для копирайта
         <a href="{0}lang_file.php">здесь</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#point5"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#Copyright"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         Как изменить \'о нас\' и другой информационный текст
         <a href="{0}lang_file.php">здесь</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#point12"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/TutorialHowToPersonalizeYourDolphinSite#PersonalizingText"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         Как установить модули на выбор
         <a href="{0}modules.php">здесь</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/DolphinAdminModules"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/DolphinAdminModules"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         Как при использовании Facebook Connect сгенерировать свои Facebook ключи и ввести их
@@ -1349,16 +1353,16 @@ $LANG= array(
     <li>
         Как создать блоки для домашней страницы сайта
         <a href="{0}pageBuilder.php?Page=index">здесь</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/DolphinAdminPagesBlocks"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/DolphinAdminPagesBlocks"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         Как настроить доступ к функциям сайта
         <a href="{0}memb_levels.php">здесь</a>
-        <a target="_blank" href="http://www.boonex.com/trac/dolphin/wiki/DolphinAdminMembershipLevels"><i class="sys-icon question-sign"></i></a>
+        <a target="_blank" href="https://www.boonex.com/trac/dolphin/wiki/DolphinAdminMembershipLevels"><i class="sys-icon question-sign"></i></a>
     </li>
     <li>
         Приобрести полноценную лицензию можно
-        <a target="_blank" href="http://www.boonex.com/start">здесь</a>
+        <a target="_blank" href="https://www.boonex.com/start">здесь</a>
     </li>
     <li>
         Зарегистрируйте свою лицензию <a href="{0}license.php">здесь</a>
@@ -1544,8 +1548,10 @@ $LANG= array(
   '_adm_txt_mp_couple' => 'парных',
   '_adm_txt_mp_featured' => 'популярных',
   '_adm_txt_mp_female' => 'женщина',
+  '_adm_txt_mp_intersex' => 'интерсекс',
   '_adm_txt_mp_male' => 'мужчина',
-  '_adm_txt_mp_promotion' => 'Тест',
+  '_adm_txt_mp_other' => 'другие',
+  '_adm_txt_mp_promotion' => 'промоушен',
   '_adm_txt_mp_rejected' => 'отклоненных',
   '_adm_txt_mp_single' => 'одиноких',
   '_adm_txt_mp_suspended' => 'спрятанных',
@@ -1581,6 +1587,8 @@ $LANG= array(
   '_adm_txt_settings_file_not_image' => 'Загруженный файл не является изображением',
   '_adm_txt_settings_file_wrong_format' => 'Загруженный файл не является JPEG, GIF или PNG-изображением',
   '_adm_txt_settings_image_cannot_resize' => 'Не удалось изменить размер',
+  '_adm_txt_settings_injection_head' => '&lt;HEAD&gt; инъекция',
+  '_adm_txt_settings_injection_body' => '&lt;BODY&gt; инъекция',
   '_adm_txt_settings_logo_header' => 'Загрузка',
   '_adm_txt_settings_logo_upload' => 'Обзор',
   '_adm_txt_settings_logo_wrong_size' => 'Вы ввели неправильные размеры',
@@ -1716,7 +1724,7 @@ $LANG= array(
   '_please_fill_next_fields_first' => 'сначала, заполните эти поля',
   '_popular_tags' => 'Популярные теги',
   '_post_successfully_deleted' => 'пост удачно удалён',
-  '_powered_by_Dolphin' => 'Наш вебсайт построен на <a href="http://www.boonex.com/dolphin">BoonEx Dolphin</a>. Любой желающий может создать свою собственную социальную сеть на основе программного обеспечения от BoonEx.',
+  '_powered_by_Dolphin' => 'Наш вебсайт построен на <a href="https://www.boonex.com/features">BoonEx Dolphin</a>. Любой желающий может создать свою собственную социальную сеть на основе программного обеспечения от BoonEx.',
   '_prof_status' => '{0} теперь {1}',
   '_profile_comments' => 'Комментарии к профилю',
   '_profile_info' => 'Инфо',
@@ -2059,6 +2067,7 @@ $LANG= array(
   '_uknown' => 'неизвестно',
   '_undefined' => 'не определено',
   '_votes' => 'голоса',
+  '_n_votes' => '<i>{0}</i> голоса',
   '_week_fri' => 'Пятница',
   '_week_mon' => 'Понедельник',
   '_week_sat' => 'Суббота',

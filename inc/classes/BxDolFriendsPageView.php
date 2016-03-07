@@ -155,13 +155,12 @@ class BxDolFriendsPageView extends BxDolPageView
 
         $sPerPageBlock = $oPaginate -> getPages( $iPerPage );
 
-        // fill array with sorting params ;
-
-        $aSortingParam = array (
-            'activity' 	=> _t( '_Latest activity' ),
-            'date_reg' 	=> _t( '_FieldCaption_DateReg_View' ),
-            'rate' 		=> _t( '_Rate' ),
+        // fill array with sorting params
+        $aSortingParam = array(
+            'activity' => _t('_Latest activity'),
+            'date_reg' => _t('_FieldCaption_DateReg_View'),
         );
+        if (getParam('votes')) $aSortingParam['rate'] = _t('_Rate');
 
         // gen sorting block ( type of : drop down ) ;
 

@@ -66,18 +66,18 @@ class TagsCalendar extends BxTemplCalendar
 
     function display()
     {
-        $aVars = array (
+        $sTopControls = $GLOBALS['oSysTemplate']->parseHtmlByName('calendar_top_controls.html', array(
+            'month_prev_url' => $this->getBaseUri () . "&year={$this->iPrevYear}&month={$this->iPrevMonth}",
+            'month_next_url' => $this->getBaseUri () . "&year={$this->iNextYear}&month={$this->iNextMonth}",
+            'month_current' => $this->getTitle(),
+        ));
+
+        $sHtml = $GLOBALS['oSysTemplate']->parseHtmlByName('calendar.html', array (
+        	'top_controls' => $sTopControls,
             'bx_repeat:week_names' => $this->_getWeekNames (),
             'bx_repeat:calendar_row' => $this->_getCalendar (),
-            'month_prev_url' => $this->getBaseUri () . "&year={$this->iPrevYear}&month={$this->iPrevMonth}",
-            'month_prev_name' => _t('_month_prev'),
-            'month_prev_icon' => getTemplateIcon('sys_back.png'),
-            'month_next_url' => $this->getBaseUri () . "&year={$this->iNextYear}&month={$this->iNextMonth}",
-            'month_next_name' => _t('_month_next'),
-            'month_next_icon' => getTemplateIcon('sys_next.png'),
-            'month_current' => $this->getTitle(),
-        );
-        $sHtml = $GLOBALS['oSysTemplate']->parseHtmlByName('calendar.html', $aVars);
+        	'bottom_controls' => $sTopControls,
+        ));
         $sHtml = preg_replace ('#<bx_repeat:events>.*?</bx_repeat:events>#s', '', $sHtml);
         $GLOBALS['oSysTemplate']->addCss('calendar.css');
         return $sHtml;

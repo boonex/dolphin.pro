@@ -881,14 +881,15 @@ function showPopupLoginFormOld() {
     }
 }
 
+function showPopupLoginOnlyForm() {
+    showPopupLoginForm(0, false);
+}
+
 function showPopupJoinForm() {
 	showPopupLoginForm(1);
 }
-function hidePopupJoinForm() {
-	hidePopupLoginForm();
-}
 
-function showPopupLoginForm(iActiveTab) {
+function showPopupLoginForm(iActiveTab, bJoinForm) {
 	var sPopupId = 'login_div';
 	var oPopupOptions = {
 		closeOnOuterClick: false
@@ -898,6 +899,9 @@ function showPopupLoginForm(iActiveTab) {
 
 	if(!iActiveTab)
 		iActiveTab = 0;
+
+    if (bJoinForm !== false)
+        bJoinForm = true;
 
     if ($('#' + sPopupId).length) {
     	$("#" + sContentId).tabs({active: iActiveTab});
@@ -909,7 +913,8 @@ function showPopupLoginForm(iActiveTab) {
             site_url + 'member.php',
             {
                 action: 'show_login_form',
-                relocate: String(window.location)
+                relocate: String(window.location),
+                add_join_form: bJoinForm ? 1 : 0
             },
             function() {
             	var sHref = location.href.replace(location.hash, '');
@@ -923,9 +928,6 @@ function showPopupLoginForm(iActiveTab) {
             }
         );
     }
-}
-function hidePopupLoginForm() {
-	$('#login_div').dolPopup({});
 }
 
 function showPopupAnyHtml(sUrl, oCustomOptions) {

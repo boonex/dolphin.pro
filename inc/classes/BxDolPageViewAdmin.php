@@ -175,6 +175,10 @@ class BxDolPageViewAdmin
         if(!db_affected_rows()) 
         	return array('code' => '1', 'message' => 'Failed database insert');
 
+        $iPageId = db_last_id();
+        $oZ = new BxDolAlerts('page_builder', 'page_add', $iPageId, 0, array('uri' => $sUri));
+        $oZ->alert();        
+
         return array('code' => '0', 'message' => 'OK', 'uri' => $sUri);
     }
 

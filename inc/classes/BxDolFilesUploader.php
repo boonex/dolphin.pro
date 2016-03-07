@@ -143,6 +143,12 @@ class BxDolFilesUploader extends BxDolTemplate
         $sMode = isset($_GET['mode']) ? strip_tags($_GET['mode']) : $this->_aExtras['mode'];
         unset($this->_aExtras['mode']);
 
+        $aTxt = array();
+        if(!empty($this->_aExtras['txt'])) {
+        	$aTxt = $this->_aExtras['txt'];
+        	unset($this->_aExtras['txt']);
+        }
+
         $aUplMethods = $this->oModule->_oConfig->getUploadersMethods();
 
         if (empty($aUploaders))
@@ -170,7 +176,7 @@ class BxDolFilesUploader extends BxDolTemplate
                 });
             </script>
               __form__
-            <div id="accepted_files_block" class="bx-def-margin-top" style="background-color:#ffdada;"></div>
+            <div id="__upload_type___accepted_files_block" class="bx-def-margin-top" style="background-color:#ffdada;"></div>
 
             <div id="__upload_type___success_message" style="display:none;">__box_upl_succ__</div>
             <div id="__upload_type___failed_file_message" style="display:none;">__box_upl_file_err__</div>
@@ -188,7 +194,8 @@ class BxDolFilesUploader extends BxDolTemplate
             'box_upl_succ' => MsgBox(_t('_bx_'.$this->sUploadTypeLC.'s_upl_succ')),
             'box_upl_file_err' => MsgBox(_t('_sys_txt_upload_failed')),
             'box_upl_err' => MsgBox(_t('_bx_'.$this->sUploadTypeLC.'s_upl_err')),
-            'box_emb_err' => MsgBox(_t('_bx_'.$this->sUploadTypeLC.'s_emb_err'))
+            'box_emb_err' => MsgBox(_t('_bx_'.$this->sUploadTypeLC.'s_emb_err')),
+        	'txt_select_files' => _t(!empty($aTxt['select_files']) ? $aTxt['select_files'] : '_sys_txt_select_files')
         );
         $this->addCss('upload_media_comm.css');
         $this->addJsTranslation('_bx_' . $this->sUploadTypeLC . 's_emb_err');
@@ -418,6 +425,7 @@ class BxDolFilesUploader extends BxDolTemplate
             $aCustomFormData[BX_DOL_UPLOADER_EP_PREFIX . $sKey] = $mixedValue;        
 
         $aVars = array(
+        	'upload_type' => $this->sUploadTypeLC,
             'form' => $this->getUploadFormHtml5Files(),
             'static_path' => parse_url(BX_DOL_URL_PLUGINS, PHP_URL_PATH),
             'plugins_url' => BX_DOL_URL_PLUGINS,
@@ -790,14 +798,23 @@ class BxDolFilesUploader extends BxDolTemplate
         $aAlbumInfo = $oAlbums->getAlbumInfo(array('fileUri'=>uriFilter($sAlbumUri), 'owner'=>$iAuthorId), array('ID'));
         if (is_array($aAlbumInfo) && count($aAlbumInfo) > 0) {
             $iAlbumID = (int)$aAlbumInfo['ID'];
-        } else {
-            $iPrivacy = $sAlbumUri == $oAlbums->getAlbumDefaultName() ? BX_DOL_PG_HIDDEN : BX_DOL_PG_NOBODY;
-            if(isset($aAlbumParams['privacy']))
+        } else {            
+            if (isset($aAlbumParams['privacy'])) {
                 $iPrivacy = (int)$aAlbumParams['privacy'];
+            } 
+            elseif ($sAlbumUri == $oAlbums->getAlbumDefaultName()) {
+                $iPrivacy = BX_DOL_PG_HIDDEN;
+            } 
+            else {
+                bx_import('BxDolPrivacyQuery');
+                $oPrivacy = new BxDolPrivacyQuery();
+                $iPrivacy = $oPrivacy->getDefaultValueModule($this->oModule->_oConfig->getUri(), 'album_view');
+                if (!$iPrivacy)
+                    $iPrivacy = BX_DOL_PG_NOBODY;
+            }
 
             $aData = array(
                 'caption' => $sAlbumUri,
-                'location' => _t('_' . $oAlbums->sType . '_undefined'),
                 'owner' => $iAuthorId,
                 'AllowAlbumView' => $iPrivacy
             );

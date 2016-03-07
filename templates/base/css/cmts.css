@@ -17,6 +17,9 @@
         margin-left: 38px;
     	margin-bottom: 10px;
     }
+    ul.cmts li.cmt-no {
+		margin-bottom: 10px;
+    }
     li.cmt-just-posted {
     }
     li.cmt-err {
@@ -43,6 +46,10 @@
 	li.cmt-replacement div.cmt-rate {
 	   top: 5px;
 	   right: 0px;
+	}
+
+	.cmt-loading {
+		display: none;
 	}
 
     /*--- Comment/Reply Box Styles ---*/          
@@ -174,12 +181,6 @@
 
         margin: 0px 0px 5px 5px;
     }
-	a.cmt-comments-show,
-	a.cmt-comments-hide,
-	a.cmt-replies-show,
-	a.cmt-replies-hide {
-        text-decoration: none;
-    }
     a.cmt-comments-hide,
     a.cmt-replies-hide {
     	display: none;
@@ -249,18 +250,6 @@
     div.cmt-browse-cnt-in {
        border-top: 1px solid #ffffff;
     }
-	div.cmt-order,
-	div.cmt-pages {
-	   float: left;
-	   text-align: left;
-	}	
-    div.cmt-pages {
-        float: right;
-    }
-	div.cmt-order select,
-	div.cmt-pages select {
-	   margin: 0px;
-	}
 
     /*--- Show More(Paginate) Styles ---*/
     div.cmt-show-more .paginate {

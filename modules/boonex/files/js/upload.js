@@ -14,7 +14,7 @@ function BxFileUpload(oOptions) {
 BxFileUpload.prototype.genSendFileInfoForm = function(iMID, sForm) {
 	sAcceptingIframe = '<iframe name="upload_file_info_frame_' + iMID + '" style="display: none;"></iframe>';
 	sFormInfo = '<div style="padding:5px;" id="send_file_info_'+iMID+'">' + sForm + sAcceptingIframe + '</div>';
-	$(sFormInfo).appendTo('#accepted_files_block').addWebForms();
+	$(sFormInfo).appendTo('#file_accepted_files_block').addWebForms();
 	this.changeContinueButtonStatus();
 }
 
@@ -27,7 +27,7 @@ BxFileUpload.prototype.changeContinueButtonStatus = function () {
 		case 'upload':
 			var sFileVal = $('#file_upload_form .file_upload_form_wrapper .form_input_file').val();
 			var sAgreeVal = $('#file_upload_form #file_upload_form_input_agree').is(':checked');
-			var sAcceptedFilesBlockVal = $('#accepted_files_block').text();
+			var sAcceptedFilesBlockVal = $('#file_accepted_files_block').text();
 			shFileEnableSubmit(sFileVal != null && sFileVal != '' && sAgreeVal == true && sAcceptedFilesBlockVal == '');
 			break;
 		default:
@@ -66,8 +66,8 @@ BxFileUpload.prototype.cancelSendFileInfoResult = function(iMID) {
 	$('#send_file_info_'+iMID).remove();
 	this.changeContinueButtonStatus();
 
-    $('#accepted_files_block script').remove();
-    if ($('#accepted_files_block').text() == '')
+    $('#file_accepted_files_block script').remove();
+    if ($('#file_accepted_files_block').text() == '')
         window.location.href = window.location.href;
 }
 
@@ -83,8 +83,8 @@ BxFileUpload.prototype.onSuccessSendingFileInfo = function(iMID) {
 
 	this.changeContinueButtonStatus();
 
-    $('#accepted_files_block script').remove();
-    if ($('#accepted_files_block').text() == '')
+    $('#file_accepted_files_block script').remove();
+    if ($('#file_accepted_files_block').text() == '')
         window.location.href = window.location.href;
 	
 	switch(this.getType()) {

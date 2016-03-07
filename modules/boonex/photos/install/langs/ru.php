@@ -103,6 +103,7 @@ $aLangContent = array(
     '_bx_photos_home' => 'Главная',
     '_bx_photos_i_have_the_right_to_distribute' => 'У меня есть право выкладывать это фото',
     '_bx_photos_info_main' => 'Информация о фото',
+	'_bx_photos_info_album' => 'Информация об альбоме',
     '_bx_photos_latest' => 'Последние фото от этого пользователя',
     '_bx_photos_latest_file' => 'Последние избранные фото',
     '_bx_photos_main' => 'Главная',

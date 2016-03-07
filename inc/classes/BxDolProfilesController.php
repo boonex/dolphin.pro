@@ -118,6 +118,11 @@ class BxDolProfilesController
         // set default language
         $aNewProfile['LangID'] = getLangIdByName(getCurrentLangName());
 
+        // set default privacy
+        bx_import('BxDolPrivacyQuery');
+        $oPrivacy = new BxDolPrivacyQuery();
+        $aNewProfile['allow_view_to'] = $oPrivacy->getDefaultValueModule('profile', 'view_block');
+
         $sSet = $this -> collectSetString( $aNewProfile );
         $sQuery = "INSERT INTO `Profiles` SET \n$sSet";
 
@@ -216,6 +221,20 @@ class BxDolProfilesController
         $aTemplate = $oEmailTemplates->getTemplate('t_UserJoined');
 
         return sendMail($GLOBALS['site']['email'], $aTemplate['Subject'], $aTemplate['Body'], $iMemID);
+    }
+
+    function sendUnregisterUserNotify( $aMember )
+    {
+        if(empty($aMember) || !is_array($aMember))
+			return false;
+
+        $oEmailTemplates = new BxDolEmailTemplates();
+        $aTemplate = $oEmailTemplates->parseTemplate('t_UserUnregistered', array(
+			'NickName'	=> $aMember['NickName'],
+        	'Email'	=> $aMember['Email'],
+        ));
+
+        return sendMail($GLOBALS['site']['email'], $aTemplate['Subject'], $aTemplate['Body']);
     }
 
     function updateProfile( $iMemberID, $aData )

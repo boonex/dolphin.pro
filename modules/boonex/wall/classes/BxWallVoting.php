@@ -18,10 +18,27 @@ class BxWallVoting extends BxTemplVotingView
         $this->_oModule = BxDolModule::getInstance('BxWallModule');
     }
 
-    function getVotingTimeline($bCount = true)
+    function getHtmlId($iObjectId = 0)
+    {
+    	if(empty($iObjectId))
+    		$iObjectId = $this->getId();
+
+    	return $this->_sSystem . '_voting_like_' . $iObjectId;
+    }
+
+    function getVotingTimeline($bCount = false)
     {
     	return $this->_getVotingElement(array(
+    		'template_main' => 'timeline_voting.html',
+    		'template_do_vote' => 'timeline_voting_do_vote.html',
     		'show_count' => $bCount
+    	));
+    }
+
+	function getVotingTimelineCounter()
+    {
+    	return $this->_oModule->_oTemplate->parseHtmlByName('timeline_voting_counter.html', array(
+    		'counter' => _t('_wall_n_votes_long', $this->getVoteCount())
     	));
     }
 
@@ -47,21 +64,18 @@ class BxWallVoting extends BxTemplVotingView
     	$sTmplDoVote = !empty($aParams['template_do_vote']) ? $aParams['template_do_vote'] : 'voting_do_vote.html';
     	$bCount = isset($aParams['show_count']) ? (bool)$aParams['show_count'] : true;
 
-    	$sName = $this->getSystemName();
-    	$iObjId = $this->getId();
+    	$iObjectId = $this->getId();
 
-		$sHtmlId = $sName . '_like' . $iObjId;
-		$sHtmlIdSlider = $sHtmlId . '_slider' . $iObjId;
+		$sHtmlId = $this->getHtmlId($iObjectId);
 		$sJsObject = $this->_oModule->_oConfig->getJsObject('voting') . $this->_toName($sHtmlId);
 
 		$iMax = $this->getMaxVote();
 		return $this->_oModule->_oTemplate->parseHtmlByName($sTmplMain, array(
     		'html_id' => $sHtmlId,
-    		'html_id_slider' => $sHtmlIdSlider,
     		'js_object' => $sJsObject,
 			'class' => 'wall-voting',
-    		'name' => $sName,
-    		'object_id' => $iObjId,
+    		'system' => $this->_sSystem,
+    		'object_id' => $iObjectId,
     		'size_x' => $this->_iSizeStarSmallX,
     		'max' => $iMax,
 			'do_vote' => $this->_oModule->_oTemplate->parseHtmlByName($sTmplDoVote, array(
@@ -70,7 +84,7 @@ class BxWallVoting extends BxTemplVotingView
 				'bx_if:show_count' => array(
 	    			'condition' => $bCount,
 	    			'content' => array(
-	    				'count' => $this->getVoteCount()
+	    				'count' => _t('_wall_n_votes', $this->getVoteCount())
 	    			)
 	    		)
 			))

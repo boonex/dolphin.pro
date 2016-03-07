@@ -5,7 +5,7 @@ function rayMusicReady(bMode, sExtra) {
 	bMusicRecorded = bMode;
 	shMusicEnableSubmit(bMode);
 	if(!bMusicRecorded)
-		$('#accepted_files_block').text("");
+		$('#sound_accepted_files_block').text("");
 }
 
 function shMusicEnableSubmit(bMode) {
@@ -32,7 +32,7 @@ BxSoundUpload.prototype.genSendFileInfoForm = function(iMID, sForm) {
     if (iMID > 0 && sForm != '') {
     	sAcceptingIframe = '<iframe name="upload_file_info_frame_' + iMID + '" style="display: none;"></iframe>';
     	sFormInfo = '<div style="padding:5px;" id="send_file_info_'+iMID+'">' + sForm + sAcceptingIframe + '</div>';
-    	$(sFormInfo).appendTo('#accepted_files_block').addWebForms();
+    	$(sFormInfo).appendTo('#sound_accepted_files_block').addWebForms();
     	this.changeContinueButtonStatus();
     }
 }
@@ -46,7 +46,7 @@ BxSoundUpload.prototype.changeContinueButtonStatus = function () {
 		case 'upload':
 			var sFileVal = $('#sound_upload_form .sound_upload_form_wrapper .form_input_file').val();
 			var sAgreeVal = $('#sound_upload_form #sound_upload_form_input_agree').is(':checked');
-			var sAcceptedFilesBlockVal = $('#accepted_files_block').text();
+			var sAcceptedFilesBlockVal = $('#sound_accepted_files_block').text();
 			shMusicEnableSubmit(sFileVal != null && sFileVal != '' && sAgreeVal == true && sAcceptedFilesBlockVal == '');
 
             bPossibleToReload = true;
@@ -59,7 +59,7 @@ BxSoundUpload.prototype.changeContinueButtonStatus = function () {
 			break;
 		
 		case 'record':
-			shMusicEnableSubmit(bMusicRecorded && $('#accepted_files_block').text() == "");
+			shMusicEnableSubmit(bMusicRecorded && $('#sound_accepted_files_block').text() == "");
 
             bPossibleToReload = true;
 			break;
@@ -100,8 +100,8 @@ BxSoundUpload.prototype.cancelSendFileInfoResult = function(iMID) {
 	$('#send_file_info_'+iMID).remove();
 	this.changeContinueButtonStatus();
 
-    $('#accepted_files_block script').remove();
-    if (bPossibleToReload && $('#accepted_files_block').text() == '')
+    $('#sound_accepted_files_block script').remove();
+    if (bPossibleToReload && $('#sound_accepted_files_block').text() == '')
         window.location.href = window.location.href;
 }
 
@@ -117,8 +117,8 @@ BxSoundUpload.prototype.onSuccessSendingFileInfo = function(iMID) {
 
 	this.changeContinueButtonStatus();
 
-    $('#accepted_files_block script').remove();
-    if (bPossibleToReload && $('#accepted_files_block').text() == '')
+    $('#sound_accepted_files_block script').remove();
+    if (bPossibleToReload && $('#sound_accepted_files_block').text() == '')
         window.location.href = window.location.href;
 	
 	switch(this.getType()) {
@@ -190,7 +190,7 @@ BxSoundUpload.prototype.checkEmbed = function (bAlert) {
 	var tText = $('#sound_upload_form [name="embed"]');
 	var sText = tText.attr("value").split(" ").join("");
 
-	var bResult = /^https?:\/\/(www.)?youtube.com\/watch\?v=([0-9A-Za-z_]{11})$/.test(sText) && $('#accepted_files_block').text() == "";
+	var bResult = /^https?:\/\/(www.)?youtube.com\/watch\?v=([0-9A-Za-z_]{11})$/.test(sText) && $('#sound_accepted_files_block').text() == "";
 	if (bAlert && !bResult)
         alert(_t('_bx_sounds_emb_err'));
 	return bResult;

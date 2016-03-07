@@ -105,7 +105,8 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
     	$sResult .= $this->oTemplate->addCss(array(
     		'album.css'
     	), $bDynamic);
-    	return $sResult;
+
+    	return $bDynamic ? $sResult : '';
     }
 
     function getAlbumCovers ($iAlbumId, $aParams = array())
@@ -363,9 +364,10 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
 
         $sOwner = getUsername($aParams['PID']);
         $sCaption = str_replace('{nickname}', $sOwner, $this->oModule->_oConfig->getGlParam('profile_album_name'));
-        $sLink = $this->getCurrentUrl('manageProfilePhoto', 0, uriFilter($sCaption)) . '/owner/' . $sOwner;
 
-        $aParams['LinkUnitTo'] = $sLink;
+        if((int)$aParams['PID'] == getLoggedId())
+        	$aParams['LinkUnitTo'] = $this->getCurrentUrl('manageProfilePhoto', 0, uriFilter($sCaption)) . '/owner/' . $sOwner;
+
         $aParams['DisplayRate'] = 0;
         $aParams['DisplayPagination'] = 0;
         $aParams['DisplayLink'] = 0;
@@ -469,7 +471,6 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
         if(empty($aAlbumInfo) && $this->oModule->_iProfileId == (int)$aParams['PID']) {
             $aData = array(
                 'caption' => $sCaption,
-                'location' => _t('_bx_photos_undefined'),
                 'owner' => $this->oModule->_iProfileId,
                 'AllowAlbumView' => $this->oModule->oAlbumPrivacy->_oDb->getDefaultValueModule('photos', 'album_view'),
             );
@@ -517,7 +518,11 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
             $sKeywordPost = $_POST['keyword'];
             unset($_POST['keyword']);
         }
-        
+
+        $aSavePaginate = array();
+        if(isset($_GET['page'], $_GET['per_page']))
+        	$aSavePaginate = array($_GET['page'], $_GET['per_page']);
+
         unset($_GET['page']);
         unset($_GET['per_page']);
 
@@ -530,6 +535,9 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
         );
 
         $aFilesList = $this->getSearchData();
+
+        if(!empty($aSavePaginate))
+        	list($_GET['page'], $_GET['per_page']) = $aSavePaginate;
 
         if (!is_null($sKeywordGet))
             $_GET['keyword'] = clear_xss($sKeywordGet);

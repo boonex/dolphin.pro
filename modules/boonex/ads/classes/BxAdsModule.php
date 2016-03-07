@@ -2327,16 +2327,22 @@ EOF;
 
             $sCateg = <<<EOF
 <br />
-{$sCategoriesC}:
-<select name="FilterCat" id="FilterCat" {$sOnChange} style="width:250px;">
-    <option value="-1">{$sViewAllC}</option>
-    {$sClassifiedsOptions}
+<div class="ordered_block_select bx-def-margin-sec-top bx-def-margin-sec-right">
+<span>{$sCategoriesC}:</span>
+<div class="input_wrapper input_wrapper_select bx-def-margin-sec-left clearfix">
+<select class="form_input_select bx-def-font-inputs" name="FilterCat" id="FilterCat" {$sOnChange} style="width:250px;">
+    <option value="-1">{$sViewAllC}</option>{$sClassifiedsOptions}
 </select>
+</div>
+</div>
 EOF;
 
             $sSubCateg = <<<EOF
-<select name="FilterSubCat" id="FilterSubCat" style="display:{$sSubDspStyle};">
-</select>
+<div class="ordered_block_select bx-def-margin-sec-top bx-def-margin-sec-right">
+<div class="input_wrapper input_wrapper_select clearfix">
+<select class="form_input_select bx-def-font-inputs" name="FilterSubCat" id="FilterSubCat" style="display:{$sSubDspStyle};"></select>
+</div>
+</div>
 <input id="unit" type="text" value="" size="3" maxlength="8" style="display:none;" />
 <br />
 EOF;

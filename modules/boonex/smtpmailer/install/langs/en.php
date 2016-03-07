@@ -46,7 +46,7 @@ $aLangContent = array(
             <li>Make sure that "Override default sender email address" is valid and exists</li>
             <li>Try to change default email templates, it maybe that standard ones can be in spam filters, since they are used on a lot of sites by default</li>
             <li>Ask your members to add your site email to their contacts - when email is in user\'s contact list it always goes to inbox</li>
-            <li><a href="http://www.boonex.com/trac/dolphin/wiki/TutorialTweakingSpamFilters" target="_blank">This is great tutorial</a> on how to whitelist your server in many popular webmail services, including yahoo</li>
+            <li><a href="https://www.boonex.com/trac/dolphin/wiki/TutorialTweakingSpamFilters" target="_blank">This is great tutorial</a> on how to whitelist your server in many popular webmail services, including yahoo</li>
         </ul>
 ',
 

@@ -617,13 +617,11 @@ function echoDbgLog($mWhat, $sDesc = '', $sFileName = 'debug.log')
 
 function clear_xss($val)
 {
-    if ($GLOBALS['logged']['admin'])
-        return $val;
-
     // HTML Purifier plugin
-    global $oHtmlPurifier;
-    require_once( BX_DIRECTORY_PATH_PLUGINS . 'htmlpurifier/HTMLPurifier.standalone.php' );
-    if (!isset($oHtmlPurifier)) {
+    global $oHtmlPurifier;    
+    if (!isset($oHtmlPurifier) && !$GLOBALS['logged']['admin']) {
+
+        require_once( BX_DIRECTORY_PATH_PLUGINS . 'htmlpurifier/HTMLPurifier.standalone.php' );
 
         HTMLPurifier_Bootstrap::registerAutoload();
 
@@ -655,7 +653,13 @@ function clear_xss($val)
         $oHtmlPurifier = new HTMLPurifier($oConfig);
     }
 
-    return $oHtmlPurifier->purify($val);
+    if (!$GLOBALS['logged']['admin'])
+        $val = $oHtmlPurifier->purify($val);
+
+    $oZ = new BxDolAlerts('system', 'clear_xss', 0, 0, array('oHtmlPurifier' => $oHtmlPurifier, 'return_data' => &$val));
+    $oZ->alert();
+
+    return $val;
 }
 
 function _format_when ($iSec, $bShort = false)
@@ -1594,12 +1598,20 @@ function bx_linkify($text, $sAttrs = '', $bHtmlSpecialChars = false)
 
     $matches = $matches[0];
 
-    $i = count($matches);
+    if ($i = count($matches))
+        $bAddNofollow = getParam('sys_antispam_add_nofollow') == 'on';
+
     while ($i--)
     {
         $url = $matches[$i][0];
         if (!preg_match('@^https?://@', $url))
             $url = 'http://'.$url;
+
+        if (strncmp(BX_DOL_URL_ROOT, $url, strlen(BX_DOL_URL_ROOT)) != 0) {
+            $sAttrs .= ' target="_blank" ';
+            if ($bAddNofollow)
+                $sAttrs .= ' rel="nofollow" ';
+        }
 
         $text = substr_replace($text, '<a ' . $sAttrs . ' href="'.$url.'">'.$matches[$i][0].'</a>', $matches[$i][1], strlen($matches[$i][0]));
     }

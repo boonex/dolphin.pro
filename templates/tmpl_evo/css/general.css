@@ -165,7 +165,7 @@ div.sys-service-menu a.sys-sm-item:visited {
 div.sys-service-menu div.sys-sm-item.sys-smi-join a.sys-sm-item,
 div.sys-service-menu div.sys-sm-item.sys-smi-search a.sys-sm-item,
 div.sys-service-menu div.sys-sm-item.sys-smi-profile span.sys-sm-item {
-	width: 50px;
+	width: 40px;
 }
 
 div.sys-service-menu a.sys-sm-item:hover,
@@ -221,7 +221,10 @@ div.sys-service-menu div.sys-sm-profile i.sys-icon {
 	text-align: center;
 }
 div.sys-service-menu div.sys-sm-profile span.sys-smp-title {
+    width:89px;
+    overflow:hidden;
 	font-weight: bold;
+    text-overflow:ellipsis;
 }
 
 div.sys-sm-item-submenu div.sys-service-menu-profile {

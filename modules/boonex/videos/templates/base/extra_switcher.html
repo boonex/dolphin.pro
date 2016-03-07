@@ -1,11 +1,13 @@
 <div class="ordered_block">
-	__head_key__ 
-    <select onchange="loadDynamicBlock(__block_id__, this.value + '&amode=ajax');">
-        <bx_repeat:options>
-            <option value="__href__" __selected__>
-                __name__
-            </option>
-        </bx_repeat:options>
-    </select>
+	<div class="ordered_block_select">
+		<span>__head_key__</span>
+		<div class="input_wrapper input_wrapper_select bx-def-margin-sec-left clearfix"> 
+		    <select class="form_input_select bx-def-font-inputs" onchange="loadDynamicBlock(__block_id__, this.value + '&amode=ajax');">
+		        <bx_repeat:options>
+		            <option value="__href__" __selected__>__name__</option>
+		        </bx_repeat:options>
+		    </select>
+		</div>
+	</div>
 </div>
 <div class="clear_both"></div>

@@ -44,6 +44,9 @@ div.wall-repost div.wall-repost-counter-holder {
 	color: #cccccc;
 	cursor: default;
 }
+.wall-repost-counter i {
+	font-style: normal;
+}
 
 /*--- Reposted By popup ---*/
 div.wall-reposted-by-list {

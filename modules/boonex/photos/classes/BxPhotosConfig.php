@@ -28,7 +28,6 @@ class BxPhotosConfig extends BxDolFilesConfig
                 'auto_activation' => 'bx_photos_activation',
                 'mode_top_index' => 'bx_photos_mode_index',
                 'category_auto_approve' => 'category_auto_activation_bx_photos',
-                'number_previous_rated' => 'bx_photos_number_previous_rated',
         );
 
         $this->aDefaultAlbums[] = 'profile_cover_album_name';

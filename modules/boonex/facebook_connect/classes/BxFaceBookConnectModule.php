@@ -177,9 +177,12 @@
             return 1;
         }
 
-        function serviceLogin ($aFacebookProfileInfo)
+        function serviceLogin ($aFacebookProfileInfo, $sToken = '')
         {
-            if ($sError = $this->_setAccessToken())
+            if (getParam('enable_dolphin_footer') == 'on')
+                return array ('error' => _t('_bx_facebook_error_unlicensed_site'));
+
+            if ($sError = $this->_setAccessToken($sToken))
                 return array ('error' => $sError);
 
             // try define user id
@@ -191,17 +194,13 @@
             try {
                 $oResponse = $this -> oFacebook -> get('/' . $aFacebookProfileInfo['id'] .'?fields=' . $this -> _oConfig -> sFaceBookFields);
                 $aFacebookProfileInfoCheck = $oResponse -> getDecodedBody();
-                $aFacebookProfileInfoCheck['nick_name'] = $aFacebookProfileInfoCheck['name'];
             } catch (Facebook\Exceptions\FacebookResponseException $e) {
                 return array ('error' => $e->getMessage());
             } catch (Facebook\Exceptions\FacebookSDKException $e) {
                 return array ('error' => $e->getMessage());
             }
 
-            if (!isset($aFacebookProfileInfoCheck['id']) 
-                || $aFacebookProfileInfoCheck['id'] != $aFacebookProfileInfo['id'] 
-                || $aFacebookProfileInfoCheck['username'] != $aFacebookProfileInfo['username']
-                || $aFacebookProfileInfoCheck['email'] != $aFacebookProfileInfo['email'])
+            if (!isset($aFacebookProfileInfoCheck['id']) || $aFacebookProfileInfoCheck['id'] != $aFacebookProfileInfo['id'])
                 return array ('error' => _t('_bx_facebook_profile_error_info'));
 
             if ($iProfileId) { 
@@ -222,8 +221,7 @@
                 $sAlternativeNickName = '';
 
                 //process profile's nickname
-                $aFacebookProfileInfo['nick_name'] = $this
-                    -> _proccesNickName($aFacebookProfileInfo['username']);
+                $aFacebookProfileInfo['nick_name'] = $this->_proccesNickName($aFacebookProfileInfo['name']);
 
                 //-- profile nickname already used by other person --//
                 if( getID($aFacebookProfileInfo['nick_name']) ) {
@@ -233,11 +231,11 @@
                 //--
 
                 //try to get profile's image
-                if ($oFacebookProfileImageResponse = $this -> oFacebook -> get('/' . $aFacebookProfileInfo['id'] . '?fields=picture&type=large')) {
+                if ($oFacebookProfileImageResponse = $this -> oFacebook -> get('/' . $aFacebookProfileInfo['id'] . '/picture?type=large&redirect=false')) {
 
                     $aFacebookProfileImage = $oFacebookProfileImageResponse -> getDecodedBody();
-                    $aFacebookProfileInfo['picture'] = isset($aFacebookProfileImage['data']['url']) && $aFacebookProfileImage['data']['is_silhouette'] 
-                        ? $aFacebookProfileImage['data']['url'] // 'https://graph.facebook.com/' . $aFacebookProfileInfo['id'] . '/picture?type=large&redirect=false'
+                    $aFacebookProfileInfo['picture'] = isset($aFacebookProfileImage['data']['url']) && !$aFacebookProfileImage['data']['is_silhouette'] 
+                        ? $aFacebookProfileImage['data']['url']
                         : ''; 
                 }
 
@@ -400,8 +398,13 @@
             return $sProfileName;
         }
 
-        function _setAccessToken()
+        function _setAccessToken($sToken = '')
         {
+            if ($sToken) {
+                $this -> oFacebook -> setDefaultAccessToken($sToken);
+                return '';
+            }
+
             $oFacebookRedirectLoginHelper = $this -> oFacebook -> getRedirectLoginHelper();
 
             try {

@@ -564,9 +564,6 @@ EOJ;
 
     function cleanCache ($sName)
     {
-        if (!getParam('sys_db_cache_enable'))
-            return true;
-
         $oCache = $this->getDbCacheObject ();
 
         $sKey = $this->genDbCacheKey($sName);

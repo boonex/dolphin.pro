@@ -47,7 +47,7 @@ class BxDolXMLRPCUser
 
         $iRet = BxDolService::call('wmap', 'update_location_manually', array ('profiles', $iId, (float)$sLat, (float)$sLng, (int)$sZoom, $sMapType)) ? '1' : '0';
 
-        return new xmlrpcresp(new xmlrpcval(true === $iRet ? true : false));
+        return new xmlrpcresp(new xmlrpcval(false === $iRet || 404 == $iRet || 403 == $iRet ? false : true));
     }
 
     function getUserLocation ($sUser, $sPwd, $sNick)
@@ -97,7 +97,7 @@ class BxDolXMLRPCUser
 
         $aMarkersReplace = array (
             'member_id' => $iId,
-            'member_username' => $sUser,
+            'member_username' => rawurlencode($sUser),
             'member_password' => $sPwd,
         );
         $aRet['menu'] = new xmlrpcval(BxDolXMLRPCUtil::getMenu('homepage', $aMarkersReplace), 'array');
@@ -125,7 +125,7 @@ class BxDolXMLRPCUser
 
         $aMarkersReplace = array (
             'member_id' => $iId,
-            'member_username' => $sUser,
+            'member_username' => rawurlencode($sUser),
             'member_password' => $sPwd,
             'profile_id' => $iIdProfile,
             'profile_username' => $sNick,

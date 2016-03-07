@@ -149,7 +149,7 @@ class BxDolXMLRPCSearch
 
         $aMarkersReplace = array (
             'member_id' => $iId,
-            'member_username' => $sUser,
+            'member_username' => rawurlencode($sUser),
             'member_password' => $sPwd,
         );
         $aRet['menu'] = new xmlrpcval(BxDolXMLRPCUtil::getMenu('search', $aMarkersReplace), 'array');

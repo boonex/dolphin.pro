@@ -252,31 +252,31 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]forum_signatures` (
 
 -- page compose pages
 SET @iMaxOrder = (SELECT `Order` FROM `sys_page_compose_pages` ORDER BY `Order` DESC LIMIT 1);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_view', 'Store Product View', @iMaxOrder+1);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_view', 'Store View Product', @iMaxOrder+1);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_celendar', 'Store Calendar', @iMaxOrder+2);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_main', 'Store Home', @iMaxOrder+3);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_my', 'Store My', @iMaxOrder+4);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_store_my', 'Store User', @iMaxOrder+4);
 
 -- page compose blocks
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 
-    ('bx_store_view', '1140px', 'Product''s info block', '_bx_store_block_info', 3, 0, 'Info', '', '1', 28.1, 'non,memb', '0'),
-    ('bx_store_view', '1140px', 'Product''s actions block', '_bx_store_block_actions', 3, 1, 'Actions', '', '1', 28.1, 'non,memb', '0'),    
-    ('bx_store_view', '1140px', 'Product''s items block', '_bx_store_block_items', 3, 2, 'Files', '', '1', 28.1, 'non,memb', '0'),    
-    ('bx_store_view', '1140px', 'Product''s rate block', '_bx_store_block_rate', 3, 3, 'Rate', '', '1', 28.1, 'non,memb', '0'),    
-    ('bx_store_view', '1140px', 'Product''s social sharing block', '_sys_block_title_social_sharing', 3, 4, 'SocialSharing', '', '1', 28.1, 'non,memb', '0'),
-    ('bx_store_view', '1140px', 'Product''s description block', '_bx_store_block_desc', 2, 0, 'Desc', '', '1', 71.9, 'non,memb', '0'),
-    ('bx_store_view', '1140px', 'Product''s photo block', '_bx_store_block_photo', 2, 1, 'Photo', '', '1', 71.9, 'non,memb', '0'),
-    ('bx_store_view', '1140px', 'Product''s videos block', '_bx_store_block_video', 2, 2, 'Video', '', '1', 71.9, 'non,memb', '0'),    
-    ('bx_store_view', '1140px', 'Product''s comments block', '_bx_store_block_comments', 2, 3, 'Comments', '', '1', 71.9, 'non,memb', '0'),
-    ('bx_store_view', '1140px', 'Product''s forum feed', '_sys_block_title_forum_feed', 2, 4, 'ForumFeed', '', '1', 71.9, 'non,memb', '0'),
+    ('bx_store_view', '1140px', 'Product''s info block', '_bx_store_block_info', 2, 0, 'Info', '', '1', 28.1, 'non,memb', '0'),
+    ('bx_store_view', '1140px', 'Product''s actions block', '_bx_store_block_actions', 2, 1, 'Actions', '', '1', 28.1, 'non,memb', '0'),    
+    ('bx_store_view', '1140px', 'Product''s items block', '_bx_store_block_items', 2, 2, 'Files', '', '1', 28.1, 'non,memb', '0'),    
+    ('bx_store_view', '1140px', 'Product''s rate block', '_bx_store_block_rate', 2, 3, 'Rate', '', '1', 28.1, 'non,memb', '0'),    
+    ('bx_store_view', '1140px', 'Product''s social sharing block', '_sys_block_title_social_sharing', 2, 4, 'SocialSharing', '', '1', 28.1, 'non,memb', '0'),
+    ('bx_store_view', '1140px', 'Product''s description block', '_bx_store_block_desc', 1, 0, 'Desc', '', '1', 71.9, 'non,memb', '0'),
+    ('bx_store_view', '1140px', 'Product''s photo block', '_bx_store_block_photo', 1, 1, 'Photo', '', '1', 71.9, 'non,memb', '0'),
+    ('bx_store_view', '1140px', 'Product''s videos block', '_bx_store_block_video', 1, 2, 'Video', '', '1', 71.9, 'non,memb', '0'),    
+    ('bx_store_view', '1140px', 'Product''s comments block', '_bx_store_block_comments', 1, 3, 'Comments', '', '1', 71.9, 'non,memb', '0'),
+    ('bx_store_view', '1140px', 'Product''s forum feed', '_sys_block_title_forum_feed', 1, 4, 'ForumFeed', '', '1', 71.9, 'non,memb', '0'),
 
-    ('bx_store_main', '1140px', 'Latest Featured Product', '_bx_store_block_latest_featured_product', 2, 0, 'LatestFeaturedProduct', '', '1', 71.9, 'non,memb', '0'),
-    ('bx_store_main', '1140px', 'Recent products', '_bx_store_block_recent', 2, 1, 'Recent', '', '1', 71.9, 'non,memb', '0'),
-    ('bx_store_main', '1140px', 'Product Categories', '_bx_store_block_categories', 3, 0, 'Categories', '', '1', 28.1, 'non,memb', '0'),
-    ('bx_store_main', '1140px', 'Product Tags', '_bx_store_block_tags', 3, 1, 'Tags', '', '1', 28.1, 'non,memb', '0'),
+    ('bx_store_main', '1140px', 'Latest Featured Product', '_bx_store_block_latest_featured_product', 1, 0, 'LatestFeaturedProduct', '', '1', 71.9, 'non,memb', '0'),
+    ('bx_store_main', '1140px', 'Recent products', '_bx_store_block_recent', 1, 1, 'Recent', '', '1', 71.9, 'non,memb', '0'),
+    ('bx_store_main', '1140px', 'Product Categories', '_bx_store_block_categories', 2, 0, 'Categories', '', '1', 28.1, 'non,memb', '0'),
+    ('bx_store_main', '1140px', 'Product Tags', '_bx_store_block_tags', 2, 1, 'Tags', '', '1', 28.1, 'non,memb', '0'),
 
-    ('bx_store_my', '1140px', 'Administration Owner', '_bx_store_block_administration_owner', '2', '0', 'Owner', '', '1', '100', 'non,memb', '0'),
-    ('bx_store_my', '1140px', 'User''s products', '_bx_store_block_users_products', '2', '1', 'Browse', '', '0', '100', 'non,memb', '0'),
+    ('bx_store_my', '1140px', 'Administration Owner', '_bx_store_block_administration_owner', '1', '0', 'Owner', '', '1', '100', 'non,memb', '0'),
+    ('bx_store_my', '1140px', 'User''s products', '_bx_store_block_users_products', '1', '1', 'Browse', '', '0', '100', 'non,memb', '0'),
 
     ('index', '1140px', 'Store', '_bx_store_block_homepage', 0, 0, 'PHP', 'bx_import(''BxDolService''); return BxDolService::call(''store'', ''homepage_block'');', 1, 66, 'non,memb', 0),
     ('profile', '1140px', 'User Store', '_bx_store_block_my_products', 0, 0, 'PHP', 'bx_import(''BxDolService''); return BxDolService::call(''store'', ''profile_block'', array($this->oProfileGen->_iProfileID));', 1, 34, 'non,memb', 0);

@@ -10,6 +10,7 @@ $aLangContent = array (
     '_bx_chat_plus_chat' => 'Чат',
     '_bx_chat_plus_setting' => 'Настройки Чата',
     '_bx_chat_plus_not_configured' => 'Чат не сконфигурирован',
+    '_bx_chat_plus_open_in_separate_window' => 'Полно-экранный режим',
     '_bx_chat_plus_information' => 'Информация',
     '_bx_chat_plus_information_block' => 'Чат сервер должен быть сконфигурирован, чтобы этот модуль заработал. <br />
 

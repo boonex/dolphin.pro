@@ -18,7 +18,7 @@ class BxWallTemplate extends BxDolModuleTemplate
     {
         parent::__construct($oConfig, $oDb);
 
-        $this->_aTemplates = array('divider', 'balloon', 'repost', 'common', 'common_media', 'comments', 'comments_actions');
+        $this->_aTemplates = array('divider', 'balloon', 'repost', 'common', 'common_media', 'comments', 'actions');
     }
 
     function init(&$oModule)
@@ -91,7 +91,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 				//--- Votes
 				$sVote = '';
 				$oVote = $this->_oModule->_getObjectVoting($aEvent);
-        		if($oVote->isVotingAllowed())
+        		if($oVote->isEnabled() && $oVote->isVotingAllowed())
         			$sVote = $oVote->getVotingOutline();
 
 				//--- Repost
@@ -125,17 +125,35 @@ class BxWallTemplate extends BxDolModuleTemplate
         if(strpos($aEvent['type'], $sPrefix) !== 0)
             return '';
 
+		$sEventType = bx_ltrim_str($aEvent['type'], $sPrefix, '');
+
 		$aResult = $this->_getCommonData($aEvent);
 		if(empty($aResult) || empty($aResult['content']))
 			return '';
 
-        $oComments = new BxWallCmts($this->_oConfig->getCommentSystemName(), $aEvent['id']);
+		switch($sEventType) {
+			case BX_WALL_PARSE_TYPE_PHOTOS:
+        	case BX_WALL_PARSE_TYPE_SOUNDS:
+        	case BX_WALL_PARSE_TYPE_VIDEOS:
+        		$aContent = unserialize($aEvent['content']);
+
+        		$oComments = new BxWallCmts($this->_oConfig->getCommonName($aContent['type']), $aContent['id']);
+				if($oComments->isEnabled())
+					$aResult['comments'] = $oComments->getCommentsFirstSystem('comment', $aEvent['id']);
+				else
+					$aResult['comments'] = $this->getDefaultComments($aEvent['id']);
+        		break;
+
+        	default:
+				$aResult['comments'] = $this->getDefaultComments($aEvent['id']);
+		}
+
         return $this->parseHtmlByTemplateName('balloon', array(
             'post_type' => bx_ltrim_str($aEvent['type'], $sPrefix, ''),
             'post_id' => $aEvent['id'],
             'post_owner_icon' => get_member_thumbnail((int)$aEvent['object_id'], 'none'),
             'post_content' => $aResult['content'],
-        	'comments_content' => $oComments->getCommentsFirst('comment')
+        	'comments_content' => $aResult['comments']
         ));
     }
 
@@ -173,7 +191,8 @@ class BxWallTemplate extends BxDolModuleTemplate
         $aTmplVars = array();
 
         $aResult = array(
-        	'content' => ''
+        	'content' => '',
+        	'comments' => '' 
         );
         switch($sEventType) {
         	case BX_WALL_PARSE_TYPE_TEXT:
@@ -194,7 +213,9 @@ class BxWallTemplate extends BxDolModuleTemplate
         	case BX_WALL_PARSE_TYPE_SOUNDS:
         	case BX_WALL_PARSE_TYPE_VIDEOS:
         		$aContent = unserialize($aEvent['content']);
-        		$aResult = array_merge($aResult, $this->_getCommonMedia($aContent['type'], (int)$aContent['id']));
+        		$iContent = (int)$aContent['id'];
+
+        		$aResult = array_merge($aResult, $this->_getCommonMedia($aContent['type'], $iContent));
 
 				$sTmplName = 'common';
         		$aTmplVars['cpt_added_new'] = _t('_wall_added_' . $sEventType);
@@ -229,7 +250,7 @@ class BxWallTemplate extends BxDolModuleTemplate
         		)
         	),
         	'content' => $aResult['content'],
-		), $aTmplVars));
+		), $aTmplVars));		
 
         return $aResult;
     }
@@ -371,7 +392,7 @@ class BxWallTemplate extends BxDolModuleTemplate
     	$sModule = $sType . 's';
 
     	$aUploaders = BxDolService::call($sModule, 'get_uploaders_list', array(), 'Uploader');
-    	$bUploaders = !empty($aUploaders) && is_array($aUploaders);
+    	$bUploaders = !empty($aUploaders) && is_array($aUploaders) && count($aUploaders) > 1;
 
     	$aTmplVarsItems = array();
     	if($bUploaders)
@@ -398,10 +419,12 @@ class BxWallTemplate extends BxDolModuleTemplate
     			'mode' => $sSubType, 
     			'category' => 'wall', 
     			'album'=>_t('_wall_' . $sType . '_album', getNickName(getLoggedId())), 
-    			'albumPrivacy' => BX_DOL_PG_ALL, 
     			'from_wall' => 1, 
-    			'owner_id' => $iOwnerId)
-    		), 'Uploader')
+    			'owner_id' => $iOwnerId,
+    			'txt' => array(
+    				'select_files' => _t('_wall_select_file')
+    			)
+    		)), 'Uploader')
     	));
     }
 
@@ -630,6 +653,9 @@ class BxWallTemplate extends BxDolModuleTemplate
         $bShowDoRepostLabel = isset($aParams['show_do_repost_label']) && $aParams['show_do_repost_label'] == true;
         $bShowCounter = isset($aParams['show_counter']) && $aParams['show_counter'] === true;
 
+        $sTmplMain = !empty($aParams['template_main']) ? $aParams['template_main'] : 'repost_element_block.html';
+        $sTmplDoRepost = !empty($aParams['template_do_repost']) ? $aParams['template_do_repost'] : 'repost_link.html';
+
         //--- Do repost link ---//
 		$sClass = $sStylePrefixRepost . 'do-repost';
 		if($bShowDoRepostAsButton)
@@ -657,12 +683,12 @@ class BxWallTemplate extends BxDolModuleTemplate
 		if(!empty($sOnClick))
 			$aOnClickAttrs[] = array('key' => 'onclick', 'value' => $sOnClick);
 
-        return $this->parseHtmlByName('repost_element_block.html', array(
+        return $this->parseHtmlByName($sTmplMain, array(
             'style_prefix' => $sStylePrefix,
             'html_id' => $this->_oConfig->getHtmlIds('repost', 'main') . $aReposted['id'],
             'class' => ($bShowDoRepostAsButton ? $sStylePrefixRepost . 'button' : '') . ($bShowDoRepostAsButtonSmall ? $sStylePrefixRepost . 'button-small' : ''),
             'count' => $aReposted['reposts'],
-            'do_repost' => $this->parseHtmlByName('repost_link.html', array(
+            'do_repost' => $this->parseHtmlByName($sTmplDoRepost, array(
 	            'href' => 'javascript:void(0)',
 	            'title' => _t('_wall_txt_do_repost'),
 	            'bx_repeat:attrs' => $aOnClickAttrs,
@@ -685,27 +711,32 @@ class BxWallTemplate extends BxDolModuleTemplate
         				'condition' => (int)$aReposted['reposts'] == 0,
         				'content' => array()
         			),
-                    'counter' => $this->getRepostCounter($aReposted)
+                    'counter' => $this->getRepostCounter($aReposted, $aParams)
                 )
             ),
             'script' => $this->getRepostJsScript()
         ));
     }
 
-    function getRepostCounter($aEvent)
+    function getRepostCounter($aEvent, $aParams = array())
     {
         $sStylePrefix = $this->_oConfig->getPrefix('style');
         $sJsObject = $this->_oConfig->getJsObject('repost');
 
-        return $this->parseHtmlByName('repost_counter.html', array(
+        $sTmplCounter = !empty($aParams['template_counter']) ? $aParams['template_counter'] : 'repost_counter.html';
+
+        $sTxtCounter = !empty($aParams['text_counter']) ? $aParams['text_counter'] : '_wall_n_reposts';
+        $sTxtCounterEmpty = !empty($aParams['text_counter_empty']) ? $aParams['text_counter_empty'] : '_wall_no_reposts';
+
+        return $this->parseHtmlByName($sTmplCounter, array(
             'href' => 'javascript:void(0)',
-            'title' => _t('_wall_txt_reposted_by'),
+            'title' => bx_html_attribute(_t('_wall_txt_reposted_by')),
             'bx_repeat:attrs' => array(
                 array('key' => 'id', 'value' => $this->_oConfig->getHtmlIds('repost', 'counter') . $aEvent['id']),
-                array('key' => 'class', 'value' => $sStylePrefix . '-counter'),
+                array('key' => 'class', 'value' => $sStylePrefix . '-repost-counter'),
                 array('key' => 'onclick', 'value' => 'javascript:' . $sJsObject . '.toggleByPopup(this, ' . $aEvent['id'] . ')')
             ),
-            'content' => !empty($aEvent['reposts']) && (int)$aEvent['reposts'] > 0 ? $aEvent['reposts'] : ''
+            'content' => !empty($aEvent['reposts']) && (int)$aEvent['reposts'] > 0 ? _t($sTxtCounter, $aEvent['reposts']) : _t($sTxtCounterEmpty, $aEvent['reposts'])
         ));
     }
 

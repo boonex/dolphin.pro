@@ -103,7 +103,7 @@ class BxWallModule extends BxDolModule
     {
     	$sJsObject = $this->_oConfig->getJsObject('post');
 
-        $sResult = "parent." . $sJsObject . "._loading(null, false);\n";
+        $sResult = "parent." . $sJsObject . ".loading(false);\n";
 
         $this->_iOwnerId = (int)$_POST['WallOwnerId'];
         if (!$this->_isCommentPostAllowed(true))
@@ -704,7 +704,7 @@ class BxWallModule extends BxDolModule
             if(empty($aModule))
                 $aModule['title'] = _t('_wall_alert_module_' . $aHandler['alert_unit']);
 
-            $aResults[$aHandler['id']] = $aModule['title'] . ' (' . _t('_wall_alert_action_' . $aHandler['alert_action']) . ')';
+            $aResults[$aHandler['id']] = _t('_wall_alert_action_' . $aHandler['alert_action'], $aModule['title']);
         }
 
         asort($aResults);
@@ -845,11 +845,11 @@ class BxWallModule extends BxDolModule
         return $this->_oTemplate->getRepostElement($iOwnerId, $sType, $sAction, $iObjectId, $aParams);
     }
 
-    function serviceGetRepostCounter($sType, $sAction, $iObjectId)
+    function serviceGetRepostCounter($sType, $sAction, $iObjectId, $aParams = array())
     {
-		$aReposted = $this->_oDb->getRepost($sType, $sAction, $iObjectId);
+		$aReposted = $this->_oDb->getReposted($sType, $sAction, $iObjectId);
 
-        return $this->_oTemplate->getRepostCounter($aReposted);
+        return $this->_oTemplate->getRepostCounter($aReposted, $aParams);
     }
 
     function serviceGetRepostJsScript()
@@ -1263,7 +1263,7 @@ class BxWallModule extends BxDolModule
     }
 	function _getObjectVoting($aEvent)
     {
-    	if(in_array($aEvent['type'], array('profile', 'friend')) || $aEvent['action'] == 'commentPost')
+    	if(in_array($aEvent['type'], array('profile', 'friend')) || in_array($aEvent['action'], array('commentPost', 'comment_add')))
     		return $this->_getObjectVotingDefault($aEvent['id']);
 
 		$sType = $aEvent['type'];

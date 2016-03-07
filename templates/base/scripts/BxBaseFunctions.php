@@ -684,14 +684,22 @@ class BxBaseFunctions
         if (!$sLogoUrl)
             return '<a class="mainLogoText" href="' . BX_DOL_URL_ROOT . 'index.php' . '">' . getParam('site_title') . '</a>';
 
-        return '<a href="' . BX_DOL_URL_ROOT . '"><img src="' . $sLogoUrl . '" class="mainLogo" alt="' . bx_html_attribute(getParam('site_title')) . '" /></a>';
+        $sLogoUrl2x = $this->getLogoUrl(true);
+        $sLogoW = getParam('sys_main_logo_w');
+        $sLogoH = getParam('sys_main_logo_h');
+
+        $sStyle = $sLogoW && $sLogoW ? " style=\"width:{$sLogoW}px; height:{$sLogoH}px;\" " : '';
+        $sLogoAttr2x = $sLogoUrl2x ? " src-2x=\"$sLogoUrl2x\" " : '';
+        $sClass = 'mainLogo' . ($sLogoAttr2x ? ' bx-img-retina' : '');
+        
+        return '<a href="' . BX_DOL_URL_ROOT . '"><img ' . $sStyle . ' src="' . $sLogoUrl . '" ' . $sLogoAttr2x . ' class="' . $sClass . '" alt="' . bx_html_attribute(getParam('site_title')) . '" /></a>';
     }
 
-    function getLogoUrl() 
+    function getLogoUrl($bRetina = false) 
     {
         global $dir, $site;
 
-        $sFileName = getParam('sys_main_logo');
+        $sFileName = ($bRetina ? 'retina_' : '') . getParam('sys_main_logo');
         if (!$sFileName || !file_exists($dir['mediaImages'] . $sFileName))
             return '';
 

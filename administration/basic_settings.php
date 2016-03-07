@@ -5,11 +5,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-define('BX_SECURITY_EXCEPTIONS', true);
-$aBxSecurityExceptions = array(
-    'POST.content_text',
-    'REQUEST.content_text',
-);
+define('BX_RETINA_PREFIX', 'retina_');
 
 require_once( '../inc/header.inc.php' );
 
@@ -56,10 +52,60 @@ $_page = array(
 $_page_cont[$iNameIndex] = array(
     'page_code_settings' => DesignBoxAdmin(_t('_adm_box_cpt_settings_main'), $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html', array('content' => $oSettings->getForm()))),
     'page_code_logo' => PageCodeLogo($mixedResultLogo),
-    'page_code_promo' => PageCodePromo($mixedResultPromo)
+    'page_code_promo' => PageCodePromo($mixedResultPromo),
+    'page_code_injectins' => PageCodeInjections(),
 );
 
 PageCodeAdmin();
+
+function PageCodeInjections()
+{
+    $aForm = array(
+        'form_attrs' => array(
+            'id' => 'adm-settings-injections',
+            'name' => 'adm-settings-injections',
+            'action' => $GLOBALS['site']['url_admin'] . 'basic_settings.php',
+            'method' => 'post',
+        ),
+        'params' => array(
+            'db' => array('submit_name' => 'save_injections'),
+        ),
+        'inputs' => array(
+            'head' => array(
+                'type' => 'textarea',
+                'name' => 'head',
+                'caption' => _t('_adm_txt_settings_injection_head'),
+                'info' => _t('_adm_dsc_settings_injection_head'),
+            ),
+            'body' => array(
+                'type' => 'textarea',
+                'name' => 'body',
+                'caption' => _t('_adm_txt_settings_injection_body'),
+                'info' => _t('_adm_dsc_settings_injection_body'),
+            ),
+            'save_injections' => array(
+                'type' => 'submit',
+                'name' => 'save_injections',
+                'value' => _t("_adm_btn_settings_save"),
+            )
+        )
+    );
+    $oForm = new BxTemplFormView($aForm);
+
+    $sResult = '';
+    if ($oForm->isSubmittedAndValid ()) {
+        $b = $GLOBALS['MySQL']->res("UPDATE `sys_injections` SET `data` = '" . process_db_input($_POST['head']) . "' WHERE `name` = 'sys_head'");
+        $b |= $GLOBALS['MySQL']->res("UPDATE `sys_injections` SET `data` = '" . process_db_input($_POST['body']) . "' WHERE `name` = 'sys_body'");
+        if ($b)
+            $GLOBALS['MySQL']->cleanCache('sys_injections.inc');
+        $sResult = MsgBox(_t($b ? '_Success' : '_Error'));
+    }
+
+    $oForm->aInputs['head']['value'] = $GLOBALS['MySQL']->getOne("SELECT `data` FROM `sys_injections` WHERE `name` = 'sys_head'");
+    $oForm->aInputs['body']['value'] = $GLOBALS['MySQL']->getOne("SELECT `data` FROM `sys_injections` WHERE `name` = 'sys_body'");
+
+    return DesignBoxAdmin(_t('_adm_box_cpt_injections'), $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html', array('content' => $sResult . $oForm->getCode())));
+}
 
 function PageCodePromo($mixedResultPromo)
 {
@@ -239,7 +285,7 @@ function isLogoUploaded()
 
 function setLogo(&$aData, &$aFile)
 {
-    global $dir;
+    global $dir;    
 
     $aFileInfo = getimagesize($aFile['new_file']['tmp_name']);
     if(empty($aFileInfo))
@@ -255,9 +301,16 @@ function setLogo(&$aData, &$aFile)
         return '_adm_txt_settings_file_wrong_format';
 
     $sFileName = mktime() . '.' . $sExt;
+    $sFileName2x = BX_RETINA_PREFIX . mktime() . '.' . $sExt;
     $sFilePath = $dir['mediaImages'] . $sFileName;
+    $sFilePath2x = $dir['mediaImages'] . $sFileName2x;
     if(!move_uploaded_file($aFile['new_file']['tmp_name'], $sFilePath))
         return '_adm_txt_settings_file_cannot_move';
+
+    $o = BxDolImageResize::instance();
+    $o->removeCropOptions ();
+    $o->setJpegOutput (false);
+    $o->setSquareResize (false);
 
     if(!empty($aData['resize'])) {
         $iWidth = (int)$aData['new_width'];
@@ -265,12 +318,23 @@ function setLogo(&$aData, &$aFile)
         if($iWidth <= 0 || $iHeight <= 0)
             return '_adm_txt_settings_logo_wrong_size';
 
-        if(imageResize($sFilePath, $sFilePath, $iWidth, $iHeight) != IMAGE_ERROR_SUCCESS)
+        $o->setSize ($iWidth*2, $iHeight*2);
+        if($o->resize($sFilePath, $sFilePath2x) != IMAGE_ERROR_SUCCESS)
+            return '_adm_txt_settings_image_cannot_resize';
+
+        $o->setSize ($iWidth, $iHeight);
+        if($o->resize($sFilePath, $sFilePath) != IMAGE_ERROR_SUCCESS)
             return '_adm_txt_settings_image_cannot_resize';
     }
 
     @unlink($dir['mediaImages'] . getParam('sys_main_logo'));
+    @unlink($dir['mediaImages'] . BX_RETINA_PREFIX . getParam('sys_main_logo'));
     setParam('sys_main_logo', $sFileName);
+
+    bx_import('BxDolImageResize');
+    $aFileNewSize = BxDolImageResize::getImageSize($sFilePath);
+    setParam('sys_main_logo_w', $aFileNewSize['w']);
+    setParam('sys_main_logo_h', $aFileNewSize['h']);
 
     return true;
 }
@@ -280,5 +344,8 @@ function deleteLogo()
     global $dir;
 
     @unlink($dir['mediaImages'] . getParam('sys_main_logo'));
+    @unlink($dir['mediaImages'] . BX_RETINA_PREFIX . getParam('sys_main_logo'));
     setParam('sys_main_logo', '');
+    setParam('sys_main_logo_w', '');
+    setParam('sys_main_logo_h', '');
 }

@@ -159,7 +159,7 @@ INSERT INTO `sys_objects_views`(`name`, `table_track`, `period`, `trigger_table`
 
 
 SET @iPCPOrder = (SELECT MAX(`Order`) FROM `sys_page_compose_pages`);
-INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES ('news_single', 'Single News', @iPCPOrder+1);
+INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES ('news_single', 'News View Article', @iPCPOrder+1);
 
 SET @iPCPOrder = (SELECT MAX(`Order`) FROM `sys_page_compose_pages`);
 INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES ('news_home', 'News Home', @iPCPOrder+1);
@@ -169,16 +169,16 @@ INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`
 ('index', '1140px', 'Show list of latest news', '_news_bcaption_latest', 0, 0, 'PHP', 'return BxDolService::call(\'news\', \'archive_block_index\', array(0, 0, false));', 1, 71.9, 'non,memb', 0),
 ('member', '1140px', 'Show list of featured news', '_news_bcaption_featured', 0, 0, 'PHP', 'return BxDolService::call(\'news\', \'featured_block_member\', array(0, 0, false));', 1, 71.9, 'memb', 0),
 ('member', '1140px', 'Show list of latest news', '_news_bcaption_latest', 0, 0, 'PHP', 'return BxDolService::call(\'news\', \'archive_block_member\', array(0, 0, false));', 1, 71.9, 'memb', 0),
-('news_single', '1140px', 'News main content', '_news_bcaption_view_main', 2, 0, 'Content', '', 1, 71.9, 'non,memb', 0),
-('news_single', '1140px', 'News comments', '_news_bcaption_view_comment', 2, 1, 'Comment', '', 1, 71.9, 'non,memb', 0),
-('news_single', '1140px', 'News actions', '_news_bcaption_view_action', 3, 0, 'Action', '', 1, 28.1, 'non,memb', 0),
-('news_single', '1140px', 'News rating', '_news_bcaption_view_vote', 3, 1, 'Vote', '', 1, 28.1, 'non,memb', 0),
-('news_single', '1140px', 'Social sharing', '_sys_block_title_social_sharing', 3, 2, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
-('news_home', '1140px', 'News latest', '_news_bcaption_latest', 2, 1, 'Latest', '', 1, 71.9, 'non,memb', 0),
+('news_single', '1140px', 'News main content', '_news_bcaption_view_main', 1, 0, 'Content', '', 1, 71.9, 'non,memb', 0),
+('news_single', '1140px', 'News comments', '_news_bcaption_view_comment', 1, 1, 'Comment', '', 1, 71.9, 'non,memb', 0),
+('news_single', '1140px', 'News actions', '_news_bcaption_view_action', 2, 0, 'Action', '', 1, 28.1, 'non,memb', 0),
+('news_single', '1140px', 'News rating', '_news_bcaption_view_vote', 2, 1, 'Vote', '', 1, 28.1, 'non,memb', 0),
+('news_single', '1140px', 'Social sharing', '_sys_block_title_social_sharing', 2, 2, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
+('news_home', '1140px', 'News latest', '_news_bcaption_latest', 1, 1, 'Latest', '', 1, 71.9, 'non,memb', 0),
 ('news_home', '1140px', 'News categories', '_news_bcaption_categories', 0, 0, 'Categories', '', 1, 28.1, 'non,memb', 0),
 ('news_home', '1140px', 'News tags', '_news_bcaption_tags', 0, 0, 'Tags', '', 1, 28.1, 'non,memb', 0),
-('news_home', '1140px', 'News calendar', '_news_bcaption_calendar', 3, 1, 'Calendar', '', 1, 28.1, 'non,memb', 0),
-('news_home', '1140px', 'News featured', '_news_bcaption_featured', 3, 2, 'Featured', '', 1, 28.1, 'non,memb', 0);
+('news_home', '1140px', 'News calendar', '_news_bcaption_calendar', 2, 1, 'Calendar', '', 1, 28.1, 'non,memb', 0),
+('news_home', '1140px', 'News featured', '_news_bcaption_featured', 2, 2, 'Featured', '', 1, 28.1, 'non,memb', 0);
 
 INSERT INTO `sys_objects_actions`(`Caption`, `Icon`, `Url`, `Script`, `Eval`, `Order`, `Type`, `bDisplayInSubMenuHeader`) VALUES
 ('{sbs_news_title}', 'paperclip', '', '{sbs_news_script}', '', 1, 'bx_news', 0),

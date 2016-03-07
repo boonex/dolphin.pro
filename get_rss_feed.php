@@ -9,12 +9,12 @@ require_once( './inc/db.inc.php' );
 require_once( './inc/profiles.inc.php' );
 
 $aPredefinedRssFeeds = array (
-    'boonex_news' => 'http://www.boonex.com/notes/featured_posts/?rss=1',
+    'boonex_news' => 'https://www.boonex.com/notes/featured_posts/?rss=1',
     'boonex_version' => 'http://rss.boonex.com/',
-    'boonex_unity_market' => 'http://www.boonex.com/market/latest/?rss=1',
-    'boonex_unity_lang_files' => 'http://www.boonex.com/market/tag/translations&rss=1',
-    'boonex_unity_market_templates' => 'http://www.boonex.com/market/tag/templates&rss=1',
-    'boonex_unity_market_featured' => 'http://www.boonex.com/market/featured_posts?rss=1',
+    'boonex_unity_market' => 'https://www.boonex.com/market/latest/?rss=1',
+    'boonex_unity_lang_files' => 'https://www.boonex.com/market/tag/translations&rss=1',
+    'boonex_unity_market_templates' => 'https://www.boonex.com/market/tag/templates&rss=1',
+    'boonex_unity_market_featured' => 'https://www.boonex.com/market/featured_posts?rss=1',
 );
 
 if (isset($aPredefinedRssFeeds[$_GET['ID']])) {

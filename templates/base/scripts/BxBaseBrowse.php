@@ -794,14 +794,12 @@ class BxBaseBrowse extends BxDolBrowse
         $sRequest = str_replace('{per_page}', $iPerPage, $sRequest);
         $sRequest = str_replace('{sorting}', $this -> aDisplaySettings['sort'], $sRequest);
 
-        // fill array with sorting params ;
-
-        $aSortingParam = array
-        (
-            'activity'     => _t( '_Latest activity' ),
-            'date_reg'     => _t( '_FieldCaption_DateReg_View' ),
-            'rate'         => _t( '_Rate' ),
+        // fill array with sorting params
+        $aSortingParam = array(
+            'activity' => _t('_Latest activity'),
+            'date_reg' => _t('_FieldCaption_DateReg_View'),
         );
+        if (getParam('votes')) $aSortingParam['rate'] = _t('_Rate');
 
         // gen sorting block ( type of : drop down ) ;
 

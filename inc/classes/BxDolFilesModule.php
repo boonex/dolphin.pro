@@ -956,18 +956,18 @@ class BxDolFilesModule extends BxDolModule
         return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
     
-    function isAllowedApprove($aFile, $isPerformAction = FALSE)
+    function isAllowedApprove($aFile, $isPerformAction = false)
     {
-        if ($this->isAdmin($this->_iProfileId))
-            return TRUE;
-        if ($aFile['medProfId'] == $this->_iProfileId)
-            return FALSE;
-        else
-        {
-            $this->_defineActions();
-            $aCheck = checkAction($this->_iProfileId, $this->_defineActionName('approve'), $isPerformAction);
-            return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
-        }
+        if (in_array($aFile['Approved'], array('pending','processing','failed')))
+            return false;
+        elseif ($this->isAdmin($this->_iProfileId))
+            return true;
+        elseif ($aFile['medProfId'] == $this->_iProfileId)
+            return false;
+
+        $this->_defineActions();
+        $aCheck = checkAction($this->_iProfileId, $this->_defineActionName('approve'), $isPerformAction);
+        return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
 
     function isAllowedEdit (&$aFile, $isPerformAction = false)
@@ -1096,9 +1096,8 @@ class BxDolFilesModule extends BxDolModule
 
             $this->oAlbums->addAlbum(array(
                 'caption' => $sAlbum,
-                'location' => _t('_bx_' . $sUri . '_undefined'),
                 'owner' => $iProfileId,
-                'AllowAlbumView' => $this->oAlbumPrivacy->_oDb->getDefaultValueModule($sUri, 'album_view'),
+                'AllowAlbumView' => ($sAlbum == getParam('sys_album_default_name')) ? BX_DOL_PG_HIDDEN : $this->oAlbumPrivacy->_oDb->getDefaultValueModule($sUri, 'album_view'),
             ), false);
 		}
     }
@@ -1589,6 +1588,9 @@ class BxDolFilesModule extends BxDolModule
         if(empty($aItem) || !is_array($aItem))
         	return array('perform_delete' => true);
 
+		if(!$this->oAlbumPrivacy->check('album_view', (int)$aItem['album_id'], $this->_iProfileId))
+        	return '';
+
         bx_import('BxTemplCmtsView');
         $oCmts = new BxTemplCmtsView($this->_oConfig->getMainPrefix(), $iItem);
         if(!$oCmts->isEnabled())
@@ -1618,6 +1620,7 @@ class BxDolFilesModule extends BxDolModule
         		'cpt_item_url' => $aItem['url'],
         		'cnt_comment_text' => $aComment['cmt_text'],
         		'snippet' => $this->_oTemplate->parseHtmlByName($sTmplNameSnippet, array(
+        			'mod_prefix' => 'bx_' . $sUri,
 		            'cnt_item_page' => $aItem['url'],
         			'cnt_item_width' => $aItem['width'],
 					'cnt_item_height' => $aItem['height'],

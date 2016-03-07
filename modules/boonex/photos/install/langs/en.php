@@ -103,6 +103,7 @@ $aLangContent = array(
     '_bx_photos_home' => 'Photos home',
     '_bx_photos_i_have_the_right_to_distribute' => 'I have the right to distribute these photos',
     '_bx_photos_info_main' => 'Photo info',
+	'_bx_photos_info_album' => 'Album info',
     '_bx_photos_latest' => 'Latest photos from this user',
     '_bx_photos_latest_file' => 'Latest featured photo',
     '_bx_photos_main' => 'Main',

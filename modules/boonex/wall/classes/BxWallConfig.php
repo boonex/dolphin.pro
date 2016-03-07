@@ -90,6 +90,9 @@ class BxWallConfig extends BxDolConfig
 
         $sHtmlPrefix = str_replace('_', '-', $sName);
         $this->_aHtmlIds = array(
+        	'post' => array(
+        		'loading' => $sHtmlPrefix . '-post-loading',
+        	),
         	'repost' => array(
 				'main' => $sHtmlPrefix . '-repost-',
 				'counter' => $sHtmlPrefix . '-repost-counter-',
@@ -304,5 +307,15 @@ class BxWallConfig extends BxDolConfig
 			return false;
 
         return strpos($mixedObjectId, BX_WALL_DIVIDER_OBJECT_ID) !== false;
+    }
+
+    function getCommonType($sName)
+    {
+    	return strtolower(str_replace('bx_', '', $sName));
+    }
+
+    function getCommonName($sType)
+    {
+    	return 'bx_' . $sType;
     }
 }

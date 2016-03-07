@@ -95,22 +95,22 @@ INSERT INTO `sys_options_cats` SET `name` = 'Photos';
 SET @iKatID = LAST_INSERT_ID();
 
 INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `err_text`, `order_in_kateg`, `AvailableValues`)  VALUES
-('[db_prefix]_activation', 'on', @iKatID, 'Enable auto-activation for files', 'checkbox', '', '', 1, ''),
-('category_auto_app_[db_prefix]', 'on', @iKatID, 'Autoapprove categories of files', 'checkbox', '', '', 2, ''),
+('[db_prefix]_activation', 'on', @iKatID, 'Enable auto-activation for photos', 'checkbox', '', '', 1, ''),
+('category_auto_app_[db_prefix]', 'on', @iKatID, 'Autoapprove categories of photos', 'checkbox', '', '', 2, ''),
 ('[db_prefix]_allowed_exts', 'jpg jpeg png gif', @iKatID, 'Allowed extensions', 'digit', '', '', 3, ''),
 ('[db_prefix]_profile_album_name', '{nickname}''s photos', @iKatID, 'Default profile album name', 'digit', '', '', 4, ''),
 ('[db_prefix]_profile_cover_album_name', '{nickname}''s cover photos', @iKatID, 'Default profile cover album name', 'digit', '', '', 5, ''),
-('[db_prefix]_mode_index', 'last', @iKatID, 'Show files on index page<br /> (if enabled in the template)', 'select', '', '', 10, 'last,top'),
-('[db_prefix]_number_all', '12', @iKatID, 'How many files show on browse page', 'digit', '', '', 20, ''),
-('[db_prefix]_number_index', '9', @iKatID, 'How many files show on index page', 'digit', '', '', 21, ''),
-('[db_prefix]_number_top', '6', @iKatID, 'How many files show on featured, top and similar sections', 'digit', '', '', 22, ''),
-('[db_prefix]_number_user', '3', @iKatID, 'Number of latest files by user', 'digit', '', '', 23, ''),
-('[db_prefix]_number_related', '3', @iKatID, 'Number of related files by user', 'digit', '', '', 24, ''),
-('[db_prefix]_number_previous_rated', '3', @iKatID, 'Number of previous rated files', 'digit', '', '', 25, ''),
-('[db_prefix]_number_browse', '9', @iKatID, 'How many files show on home page', 'digit', '', '', 26, ''),
-('[db_prefix]_number_albums_browse', '9', @iKatID, 'How many albums show on browse album page', 'digit', '', '', 27, ''),
-('[db_prefix]_number_albums_home', '3', @iKatID, 'How many albums show on home page', 'digit', '', '', 28, ''),
-('[db_prefix]_number_albums_public_objects', '4', @iKatID, 'Minimum number of photos required to display album in Public Albums block', 'digit', '', '', 29, ''),
+('[db_prefix]_mode_index', 'last', @iKatID, 'Default sort on main index page<br /> (if enabled in the template)', 'select', '', '', 10, 'last,top'),
+('[db_prefix]_number_index', '9', @iKatID, 'How many photos show on main index page', 'digit', '', '', 12, ''),
+('[db_prefix]_number_home', '12', @iKatID, 'How many photos show on photos home page', 'digit', '', '', 14, ''),
+('[db_prefix]_number_all', '12', @iKatID, 'How many photos show on browse photos page', 'digit', '', '', 16, ''),
+('[db_prefix]_number_top', '6', @iKatID, 'How many photos show in featured, top, and similar sections', 'digit', '', '', 18, ''),
+('[db_prefix]_number_related', '3', @iKatID, 'Number of related photos by user', 'digit', '', '', 20, ''),
+('[db_prefix]_number_previous_rated', '3', @iKatID, 'Number of previous rated photos', 'digit', '', '', 22, ''),
+('[db_prefix]_number_albums_home', '3', @iKatID, 'How many albums show on photos home page', 'digit', '', '', 24, ''),
+('[db_prefix]_number_albums_browse', '9', @iKatID, 'How many albums show on browse albums page', 'digit', '', '', 26, ''),
+('[db_prefix]_number_albums_public_objects', '4', @iKatID, 'Minimum number of photos required to display album in Public Albums block', 'digit', '', '', 28, ''),
+('[db_prefix]_number_view_album', '6', @iKatID, 'How many photos show on view album page', 'digit', '', '', 30, ''),
 ('[db_prefix]_file_width', '750', @iKatID, 'Width of main photo unit (in pixels)', 'digit', '', '', 34, ''),
 ('[db_prefix]_file_height', '750', @iKatID, 'Height of main photo unit (in pixels)', 'digit', '', '', 35, ''),
 ('[db_prefix]_client_width', '2048', @iKatID, 'Width for photo resizing in browser (in pixels)', 'digit', '', '', 38, ''),
@@ -133,13 +133,13 @@ INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES
 ('[db_prefix]_crop', 'Photos Crop Photo', @iPCPOrder+6);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_view', 2, 1, 'ViewFile', '', 1, 71.9, 'non,memb', 380),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_comments', 2, 2, 'ViewComments', '', 1, 71.9, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_author', 3, 1, 'FileAuthor', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_info_main', 3, 2, 'MainFileInfo', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_actions', 3, 3, 'ActionList', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_sys_block_title_social_sharing', 3, 4, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_album_photos_rest', 3, 5, 'ViewAlbum', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_view', 1, 1, 'ViewFile', '', 1, 71.9, 'non,memb', 380),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_comments', 1, 2, 'ViewComments', '', 1, 71.9, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_author', 2, 1, 'FileAuthor', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_info_main', 2, 2, 'MainFileInfo', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_actions', 2, 3, 'ActionList', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_sys_block_title_social_sharing', 2, 4, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_album_photos_rest', 2, 5, 'ViewAlbum', '', 1, 28.1, 'non,memb', 0),
 ('[db_prefix]_view', '1140px', '', '_[db_prefix]_related', 0, 0, 'RelatedFiles', '', 1, 28.1, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
@@ -154,41 +154,42 @@ INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Content`, `Column`
 ('[db_prefix]_home', '1140px', '', '', 3, 2, 1, 28.1, 0, 'non,memb', '_[db_prefix]_top_menu_tags', 'Tags');
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Content`, `Column`, `Order`, `DesignBox`, `ColWidth`, `MinWidth`, `Visible`, `Caption`, `Func`) VALUES
-('[db_prefix]_album_view', '1140px', '', '', 2, 0, 0, 71.9, 0, 'non,memb', '', 'Objects'),
-('[db_prefix]_album_view', '1140px', '', '', 2, 1, 1, 71.9, 0, 'non,memb', '_[db_prefix]_comments', 'Comments'),
-('[db_prefix]_album_view', '1140px', '', '', 3, 0, 1, 28.1, 0, 'non,memb', '_[db_prefix]_author', 'Author'),
-('[db_prefix]_album_view', '1140px', '', '', 3, 1, 1, 28.1, 0, 'memb', '_[db_prefix]_actions', 'Actions');
+('[db_prefix]_album_view', '1140px', '', '', 1, 0, 0, 71.9, 0, 'non,memb', '', 'Objects'),
+('[db_prefix]_album_view', '1140px', '', '', 1, 1, 1, 71.9, 0, 'non,memb', '_[db_prefix]_comments', 'Comments'),
+('[db_prefix]_album_view', '1140px', '', '', 2, 0, 1, 28.1, 0, 'non,memb', '_[db_prefix]_author', 'Author'),
+('[db_prefix]_album_view', '1140px', '', '', 2, 1, 1, 28.1, 0, 'non,memb', '_[db_prefix]_info_album', 'Info'),
+('[db_prefix]_album_view', '1140px', '', '', 2, 2, 1, 28.1, 0, 'memb', '_[db_prefix]_actions', 'Actions');
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 2, 1, 'adminShort', '', 1, 100, 'memb', 380),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_add', 2, 0, 'add', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 2, 3, 'adminFull', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_disapproved', 2, 5, 'adminFullDisapproved', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_edit', 2, 6, 'edit', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_delete', 2, 7, 'delete', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_organize', 2, 8, 'organize', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_add_objects', 2, 9, 'addObjects', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects', 2, 10, 'manageObjects', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_disapproved', 2, 11, 'manageObjectsDisapproved', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_pending', 2, 12, 'manageObjectsPending', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_main_objects', 2, 15, 'adminAlbumShort', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_objects', 2, 20, 'albumObjects', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_my', 2, 34, 'my', '', 1, 100, 'memb', 0);
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 1, 1, 'adminShort', '', 1, 100, 'memb', 380),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_add', 1, 0, 'add', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 1, 3, 'adminFull', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_disapproved', 1, 5, 'adminFullDisapproved', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_edit', 1, 6, 'edit', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_delete', 1, 7, 'delete', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_organize', 1, 8, 'organize', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_add_objects', 1, 9, 'addObjects', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects', 1, 10, 'manageObjects', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_disapproved', 1, 11, 'manageObjectsDisapproved', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_pending', 1, 12, 'manageObjectsPending', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_main_objects', 1, 15, 'adminAlbumShort', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_objects', 1, 20, 'albumObjects', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_my', 1, 34, 'my', '', 1, 100, 'memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_photo_album_block', 2, 1, 'ProfilePhotos', '', 1, 71.9, 'non,memb', 0),
-('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_albums_owner', 2, 2, 'Browse', '', 1, 71.9, 'non,memb', 0),
-('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_favorited', 3, 1, 'Favorited', '', 1, 28.1, 'non,memb', 0);
+('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_photo_album_block', 1, 1, 'ProfilePhotos', '', 1, 71.9, 'non,memb', 0),
+('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_albums_owner', 1, 2, 'Browse', '', 1, 71.9, 'non,memb', 0),
+('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_favorited', 2, 1, 'Favorited', '', 1, 28.1, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_rate', '1140px', '', '_[db_prefix]_previous_rated', 2, 0, 'RatedSet', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_rate', '1140px', '', '_[db_prefix]_rate_header', 3, 0, 'RateObject', '', 1, 71.9, 'non,memb', 0);
+('[db_prefix]_rate', '1140px', '', '_[db_prefix]_previous_rated', 1, 0, 'RatedSet', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_rate', '1140px', '', '_[db_prefix]_rate_header', 2, 0, 'RateObject', '', 1, 71.9, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_crop', '1140px', '', '_[db_prefix]_crop', 2, 0, 'Crop', '', 1, 100, 'non,memb', 0);
+('[db_prefix]_crop', '1140px', '', '_[db_prefix]_crop', 1, 0, 'Crop', '', 1, 100, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('index', '1140px', 'Public Photos', '_[db_prefix]_public', 2, 10, 'PHP', 'require_once(BX_DIRECTORY_PATH_MODULES . ''boonex/photos/classes/BxPhotosSearch.php'');\r\n $oMedia = new BxPhotosSearch();\r\n $aVisible[] = BX_DOL_PG_ALL;\r\n if ($this->iMemberID > 0)\r\n $aVisible[] = BX_DOL_PG_MEMBERS;\r\n $aCode = $oMedia->getBrowseBlock(array(''allow_view''=>$aVisible), array(''menu_top''=>true, ''sorting'' => getParam(''[db_prefix]_mode_index''), ''per_page''=>(int)getParam(''[db_prefix]_number_index'')));\r\n return array($aCode[''code''], $aCode[''menu_top''], $aCode[''menu_bottom''], $aCode[''wrapper'']);', 1, 71.9, 'non,memb', 0),
+('index', '1140px', 'Public Photos', '_[db_prefix]_public', 1, 10, 'PHP', 'require_once(BX_DIRECTORY_PATH_MODULES . ''boonex/photos/classes/BxPhotosSearch.php'');\r\n $oMedia = new BxPhotosSearch();\r\n $aVisible[] = BX_DOL_PG_ALL;\r\n if ($this->iMemberID > 0)\r\n $aVisible[] = BX_DOL_PG_MEMBERS;\r\n $aCode = $oMedia->getBrowseBlock(array(''allow_view''=>$aVisible), array(''menu_top''=>true, ''sorting'' => getParam(''[db_prefix]_mode_index''), ''per_page''=>(int)getParam(''[db_prefix]_number_index'')));\r\n return array($aCode[''code''], $aCode[''menu_top''], $aCode[''menu_bottom''], $aCode[''wrapper'']);', 1, 71.9, 'non,memb', 0),
 ('profile', '1140px', 'Profile Photo Block', '_[db_prefix]_photo_block', 0, 0, 'PHP', 'return BxDolService::call(''photos'', ''profile_photo_block'', array(array(''PID'' => $this->oProfileGen->_iProfileID)), ''Search'');', 1, 28.1, 'non,memb', 263),
 ('profile', '1140px', 'Profile Photo Album Block', '_[db_prefix]_photo_album_block', 2, 1, 'PHP', 'return BxDolService::call(''photos'', ''get_profile_album_block'', array($this->oProfileGen->_iProfileID), ''Search'');', 1, 28.1, 'non,memb', 0),
 ('profile', '1140px', 'Photo Albums', '_[db_prefix]_albums', 0, 0, 'PHP', 'return BxDolService::call(''photos'', ''get_profile_albums_block'', array($this->oProfileGen->_iProfileID), ''Search'');', 1, 28.1, 'non,memb', 0),

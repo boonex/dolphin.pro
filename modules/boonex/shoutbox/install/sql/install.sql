@@ -42,7 +42,7 @@
         `sys_page_compose` 
     (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`)
         VALUES
-    ('index', '960px', 'Shoutbox', '_bx_shoutbox', 3, 5, 'PHP', 'BxDolService::call(''shoutbox'', ''get_shoutbox'');', 11, 50, 'non,memb', 0);
+    ('index', '960px', 'Shoutbox', '_bx_shoutbox', 2, 5, 'PHP', 'BxDolService::call(''shoutbox'', ''get_shoutbox'');', 11, 50, 'non,memb', 0);
 
     --
     -- Dumping data for table `sys_acl_actions`

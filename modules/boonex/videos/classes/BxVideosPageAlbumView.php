@@ -47,7 +47,7 @@ class BxVideosPageAlbumView extends BxDolPageView
             $aParams = array('album' => $this->aInfo['Uri'], 'owner' => $this->aInfo['Owner']);
             $aCustom = array(
                 'enable_center' => false,
-                'per_page' => $this->oConfig->getGlParam('number_top'),
+                'per_page' => $this->oConfig->getGlParam('number_view_album'),
             );
             $aHtml = $oSearch->getBrowseBlock($aParams, $aCustom);
             $sPaginate = '';
@@ -79,6 +79,11 @@ class BxVideosPageAlbumView extends BxDolPageView
     {
         $aOwner = array('medProfId' => $this->aInfo['Owner'], 'NickName' => getNickName($this->aInfo['Owner']));
         return $this->oTemplate->getFileAuthor($aOwner);
+    }
+
+	function getBlockCode_Info()
+    {
+        return $this->oTemplate->getAlbumInfo($this->aInfo);
     }
 
     function getBlockCode_Comments()

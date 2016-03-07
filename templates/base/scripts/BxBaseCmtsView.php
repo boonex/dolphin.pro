@@ -30,7 +30,7 @@ class BxBaseCmtsView extends BxDolCmts
             'sorting' => $this->_sOrder,
             'per_page_step' => 2,
             'per_page_interval' => 3,
-            'on_change_page' => $this->_sJsObjName . '.changePage({start}, {per_page})',
+            'on_change_page' => $this->_sJsObjName . '.changePage(this, {start}, {per_page})',
             'on_change_per_page' => $this->_sJsObjName . '.changePerPage(this)',
             'on_change_sorting' => $this->_sJsObjName . '.changeOrder(this)',
             'info' => false,
@@ -282,7 +282,7 @@ class BxBaseCmtsView extends BxDolCmts
         return '
             <div class="cmt-rate'.$sClass.'">
                 <div class="cmt-points">'._t( (1 == $a['cmt_rate'] || -1 == $a['cmt_rate'])  ? '_N point' : '_N points', $a['cmt_rate']).'</div>
-                <div class="cmt-buttons"><a title="'._t('_Thumb Up').'" href="javascript:void(0)" id="cmt-pos-'.$a['cmt_id'].'" class="cmt-pos"><i class="sys-icon plus-circle"></i></a><a title="'._t('_Thumb Down').'" href="javascript:void(0)" id="cmt-neg-'.$a['cmt_id'].'" class="cmt-neg"><i class="sys-icon minus-circle"></i></a></div>
+                <div class="cmt-buttons"><a title="'._t('_Thumb Up').'" href="javascript:void(0)" onclick="' . $this->_sJsObjName . '.cmtRate(this);" id="cmt-pos-'.$a['cmt_id'].'" class="cmt-pos"><i class="sys-icon plus-circle"></i></a><a title="'._t('_Thumb Down').'" href="javascript:void(0)" onclick="' . $this->_sJsObjName . '.cmtRate(this);" id="cmt-neg-'.$a['cmt_id'].'" class="cmt-neg"><i class="sys-icon minus-circle"></i></a></div>
                 <div class="clear_both">&nbsp;</div>
             </div>';
     }
@@ -379,7 +379,7 @@ class BxBaseCmtsView extends BxDolCmts
     	$iCmtParentId = !empty($aCmt['parent_id']) ? (int)$aCmt['parent_id'] : 0;
     	$sCmtText = !empty($aCmt['text']) ? $this->_prepareTextForEdit($aCmt['text']) : '';
 
-    	$sTextareaId = "cmt" . bx_gen_method_name($this->_sSystem . "_" . $sType) . "TextArea";
+    	$sTextareaId = $this->_sSystem . "_cmt_" . $sType . "_textarea_" . $this->_iId . "_";
     	switch($sType) {
     		case 'post':
     			$sFunction = "submitComment(this)";

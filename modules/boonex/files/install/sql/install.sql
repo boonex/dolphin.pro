@@ -144,22 +144,23 @@ INSERT INTO `sys_options_cats` SET `name` = 'Files';
 SET @iKatID = LAST_INSERT_ID();
 
 INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `err_text`, `order_in_kateg`, `AvailableValues`)  VALUES
-('[db_prefix]_mode_index', 'last', @iKatID, 'Show files on index page<br /> (if enabled in the template)', 'select', '', '', 10, 'last,popular'),
-('[db_prefix]_number_all', '10', @iKatID, 'How many files show on browse page', 'digit', '', '', 1, ''),
-('[db_prefix]_number_albums_browse', '10', @iKatID, 'How many folders show on browse folder page', 'digit', '', '', 27, ''),
-('[db_prefix]_number_albums_home', '4', @iKatID, 'How many folders show on home page', 'digit', '', '', 28, ''),
-('[db_prefix]_number_index', '2', @iKatID, 'How many files show on index page', 'digit', '', '', 2, ''),
-('[db_prefix]_number_featured', '4', @iKatID, 'How many files show on featured section', 'digit', '', '', 3, ''),
-('[db_prefix]_number_top', '4', @iKatID, 'How many files show on top section', 'digit', '', '', 4, ''),
-('[db_prefix]_number_user', '4', @iKatID, 'Number of latest files by user', 'digit', '', '', 5, ''),
-('[db_prefix]_number_related', '4', @iKatID, 'Number of related files by user', 'digit', '', '', 6, ''),
-('[db_prefix]_thumb_width', '64', @iKatID, 'Thumbnail width of file', 'digit', '', '', 7, ''),
-('[db_prefix]_activation', 'on', @iKatID, 'Enable auto-activation for files', 'checkbox', '', '', 8, ''),
-('[db_prefix]_max_file_size', '32', @iKatID, 'Maximum size of one file (in Megabytes)', 'digit', '', '', 8, ''),
-('category_auto_app_[db_prefix]', 'on', @iKatID, 'Autoapprove categories of files', 'checkbox', '', '', 9, ''),
-('[db_prefix]_allowed_exts', '', @iKatID, 'Allowed extensions (leave blank to have all types)', 'digit', '', '', 10, ''),
-('[db_prefix]_profile_album_name', '{nickname}''s files', @iKatID, 'Default profile folder name', 'digit', '', '', 11, ''),
-('[db_prefix]_uploader_switcher', 'html5', @iKatID, 'Available uploaders', 'list', '', '', 12, 'html5,regular');
+('[db_prefix]_activation', 'on', @iKatID, 'Enable auto-activation for files', 'checkbox', '', '', 1, ''),
+('category_auto_app_[db_prefix]', 'on', @iKatID, 'Autoapprove categories of files', 'checkbox', '', '', 2, ''),
+('[db_prefix]_allowed_exts', '', @iKatID, 'Allowed extensions (leave blank to have all types)', 'digit', '', '', 3, ''),
+('[db_prefix]_max_file_size', '32', @iKatID, 'Maximum size of one file (in Megabytes)', 'digit', '', '', 4, ''),
+('[db_prefix]_profile_album_name', '{nickname}''s files', @iKatID, 'Default profile folder name', 'digit', '', '', 5, ''),
+('[db_prefix]_mode_index', 'last', @iKatID, 'Default sort on main index page<br /> (if enabled in the template)', 'select', '', '', 10, 'last,popular'),
+('[db_prefix]_number_index', '2', @iKatID, 'How many files show on main index page', 'digit', '', '', 12, ''),
+('[db_prefix]_number_home', '10', @iKatID, 'How many files show on files home page', 'digit', '', '', 14, ''),
+('[db_prefix]_number_all', '10', @iKatID, 'How many files show on browse files page', 'digit', '', '', 16, ''),
+('[db_prefix]_number_featured', '4', @iKatID, 'How many files show in featured section', 'digit', '', '', 18, ''),
+('[db_prefix]_number_top', '4', @iKatID, 'How many files show in top section', 'digit', '', '', 19, ''),
+('[db_prefix]_number_related', '4', @iKatID, 'Number of related files by user', 'digit', '', '', 20, ''),
+('[db_prefix]_number_albums_home', '4', @iKatID, 'How many folders show on files home page', 'digit', '', '', 22, ''),
+('[db_prefix]_number_albums_browse', '10', @iKatID, 'How many folders show on browse folders page', 'digit', '', '', 24, ''),
+('[db_prefix]_number_view_album', '4', @iKatID, 'How many files show on view folder page', 'digit', '', '', 26, ''),
+('[db_prefix]_thumb_width', '64', @iKatID, 'Thumbnail width of file', 'digit', '', '', 30, ''),
+('[db_prefix]_uploader_switcher', 'html5', @iKatID, 'Available uploaders', 'list', '', '', 40, 'html5,regular');
 
 SET @iPCPOrder = (SELECT MAX(`Order`) FROM `sys_page_compose_pages`);
 INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES 
@@ -169,47 +170,48 @@ INSERT INTO `sys_page_compose_pages`(`Name`, `Title`, `Order`) VALUES
 ('[db_prefix]_albums_owner', 'Files Profile Folders', @iPCPOrder+4);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Content`, `Column`, `Order`, `DesignBox`, `ColWidth`, `MinWidth`, `Visible`, `Caption`, `Func`) VALUES
-('[db_prefix]_album_view', '1140px', '', '', 2, 0, 0, 71.9, 0, 'non,memb', '', 'Objects'),
-('[db_prefix]_album_view', '1140px', '', '', 2, 1, 1, 71.9, 0, 'non,memb', '_[db_prefix]_comments', 'Comments'),
-('[db_prefix]_album_view', '1140px', '', '', 3, 0, 1, 28.1, 0, 'non,memb', '_[db_prefix]_author', 'Author'),
-('[db_prefix]_album_view', '1140px', '', '', 3, 1, 1, 28.1, 0, 'memb', '_[db_prefix]_actions', 'Actions');
+('[db_prefix]_album_view', '1140px', '', '', 1, 0, 0, 71.9, 0, 'non,memb', '', 'Objects'),
+('[db_prefix]_album_view', '1140px', '', '', 1, 1, 1, 71.9, 0, 'non,memb', '_[db_prefix]_comments', 'Comments'),
+('[db_prefix]_album_view', '1140px', '', '', 2, 0, 1, 28.1, 0, 'non,memb', '_[db_prefix]_author', 'Author'),
+('[db_prefix]_album_view', '1140px', '', '', 2, 1, 1, 28.1, 0, 'non,memb', '_[db_prefix]_info_album', 'Info'),
+('[db_prefix]_album_view', '1140px', '', '', 2, 2, 1, 28.1, 0, 'memb', '_[db_prefix]_actions', 'Actions');
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_view', 2, 0, 'ViewFile', '', 1, 71.9, 'non,memb', 380),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_comments', 2, 1, 'ViewComments', '', 1, 71.9, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_info', 3, 0, 'FileInfo', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_info_main', 3, 1, 'MainFileInfo', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_actions', 3, 2, 'ActionList', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_sys_block_title_social_sharing', 3, 3, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_albums_latest', 3, 4, 'LastAlbums', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_view', '1140px', '', '_[db_prefix]_related', 3, 5, 'RelatedFiles', '', 1, 28.1, 'non,memb', 0);
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_view', 1, 0, 'ViewFile', '', 1, 71.9, 'non,memb', 380),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_comments', 1, 1, 'ViewComments', '', 1, 71.9, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_info', 2, 0, 'FileInfo', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_info_main', 2, 1, 'MainFileInfo', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_actions', 2, 2, 'ActionList', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_sys_block_title_social_sharing', 2, 3, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_albums_latest', 2, 4, 'LastAlbums', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_view', '1140px', '', '_[db_prefix]_related', 2, 5, 'RelatedFiles', '', 1, 28.1, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_home', '1140px', '', '_[db_prefix]_featured', 2, 0, 'Featured', '', 1, 71.9, 'non,memb', 0),
-('[db_prefix]_home', '1140px', '', '_[db_prefix]_public', 2, 1, 'All', '', 1, 71.9, 'non,memb', 0),
-('[db_prefix]_home', '1140px', '', '_Tags', 3, 0, 'Tags', '', 1, 28.1, 'non,memb', 0),
-('[db_prefix]_home', '1140px', '', '_[db_prefix]_albums', 3, 1, 'Albums', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_home', '1140px', '', '_[db_prefix]_featured', 1, 0, 'Featured', '', 1, 71.9, 'non,memb', 0),
+('[db_prefix]_home', '1140px', '', '_[db_prefix]_public', 1, 1, 'All', '', 1, 71.9, 'non,memb', 0),
+('[db_prefix]_home', '1140px', '', '_Tags', 2, 0, 'Tags', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_home', '1140px', '', '_[db_prefix]_albums', 2, 1, 'Albums', '', 1, 28.1, 'non,memb', 0),
 ('[db_prefix]_home', '1140px', '', '_[db_prefix]_top', 0, 0, 'Top', '', 1, 28.1, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 2, 1, 'adminShort', '', 1, 100, 'memb', 380),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_add', 2, 0, 'add', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 2, 3, 'adminFull', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_disapproved', 2, 5, 'adminFullDisapproved', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_edit', 2, 6, 'edit', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_delete', 2, 7, 'delete', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_organize', 2, 8, 'organize', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_add_objects', 2, 9, 'addObjects', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects', 2, 10, 'manageObjects', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_disapproved', 2, 11, 'manageObjectsDisapproved', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_pending', 2, 12, 'manageObjectsPending', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_main_objects', 2, 15, 'adminAlbumShort', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_objects', 2, 20, 'albumObjects', '', 1, 100, 'memb', 0),
-('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_my', 2, 28.1, 'my', '', 1, 100, 'memb', 0);
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 1, 1, 'adminShort', '', 1, 100, 'memb', 380),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_add', 1, 0, 'add', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_admin', 1, 3, 'adminFull', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_disapproved', 1, 5, 'adminFullDisapproved', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_edit', 1, 6, 'edit', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_delete', 1, 7, 'delete', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_organize', 1, 8, 'organize', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_add_objects', 1, 9, 'addObjects', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects', 1, 10, 'manageObjects', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_disapproved', 1, 11, 'manageObjectsDisapproved', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_manage_objects_pending', 1, 12, 'manageObjectsPending', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_main_objects', 1, 15, 'adminAlbumShort', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_album_objects', 1, 20, 'albumObjects', '', 1, 100, 'memb', 0),
+('[db_prefix]_albums_my', '1140px', '', '_[db_prefix]_albums_my', 1, 30, 'my', '', 1, 100, 'memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_albums_owner', 2, 1, 'Browse', '', 1, 71.9, 'non,memb', 0),
-('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_favorited', 3, 1, 'Favorited', '', 1, 28.1, 'non,memb', 0);
+('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_albums_owner', 1, 1, 'Browse', '', 1, 71.9, 'non,memb', 0),
+('[db_prefix]_albums_owner', '1140px', '', '_[db_prefix]_favorited', 2, 1, 'Favorited', '', 1, 28.1, 'non,memb', 0);
 
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
@@ -331,6 +333,7 @@ INSERT INTO `sys_acl_actions` (`Name`) VALUES
 ('files delete'), ('files approve'), ('files edit');
 
 INSERT INTO `sys_privacy_actions` (`module_uri`, `name`, `title`, `default_group`) VALUES
+('files', 'album_view', '_[db_prefix]_album_view', '3'),
 ('files', 'download', '_[db_prefix]_download', '3');
 
 SET @iMax = (SELECT MAX(`order`) FROM `sys_menu_admin` WHERE `parent_id` = '2');

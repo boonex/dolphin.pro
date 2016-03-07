@@ -659,11 +659,16 @@ class BxDolProfileFields extends Thing
     {
         $aAllItems = $this -> aCache[100][0]['Items'];
 
-        $this -> aCoupleMutual = array( 'NickName', 'Password', 'Email' );
+        $this -> aCoupleMutual = array( 'NickName', 'Password', 'Email', 'Country', 'City', 'zip', 'EmailNotify' );
 
         foreach( $aAllItems as $aItem ) {
-            if( $aItem['Name'] == 'Couple' )
-                $this -> aCoupleMutual = array_merge( $this -> aCoupleMutual, explode( "\n", $aItem['Extra'] ) ); // add specified values
+            if( $aItem['Name'] == 'Couple' ) {
+                $a = explode("\n", $aItem['Extra']);
+                array_walk($a, function (&$sItem, $iKey) {
+                    $sItem = trim($sItem);
+                });
+                $this -> aCoupleMutual = array_merge( $this -> aCoupleMutual, $a ); // add specified values
+            }
 
             if( $aItem['Type'] == 'system' && 'Age' != $aItem['Name'])
                 $this -> aCoupleMutual[] = $aItem['Name'];
@@ -671,8 +676,6 @@ class BxDolProfileFields extends Thing
             if( $aItem['Type'] == 'pass' )
                 $this -> aCoupleMutual[] = $aItem['Name'] . '_confirm';
         }
-
-        //echoDbg( $this -> aCoupleMutual );
     }
 
     //external function
@@ -724,6 +727,7 @@ class BxDolProfileFields extends Thing
                     case 'DateReg':
                     case 'DateLastEdit':
                     case 'DateLastLogin':
+                    case 'DateLastNav':
                         return $this -> getViewableDate($sValue, BX_DOL_LOCALE_DATE);
 
                     case 'Status':
@@ -1034,6 +1038,8 @@ class BxDolProfileFields extends Thing
 
     function getFormsSearch($aParams)
     {
+        $aShowModes = array('featured', 'birthdays', 'top_rated', 'popular', 'moderators');
+
         // original member profile, used for setting default search params
         $aDefaultParams = $aParams['default_params'];
 
@@ -1056,6 +1062,13 @@ class BxDolProfileFields extends Thing
                 'type'  => 'hidden',
                 'name'  => 'search_mode',
                 'value' => $sSearchModeName,
+            );
+
+            // create show parameter as hidden input 
+            $aInputs[] = array(
+                'type'  => 'hidden',
+                'name'  => 'show',
+                'value' => isset($_REQUEST['show']) && in_array($_REQUEST['show'], $aShowModes) ? $_REQUEST['show'] : '',
             );
 
             // generate block input
@@ -1580,6 +1593,7 @@ EOF;
                     case 'DateReg':
                     case 'DateLastEdit':
                     case 'DateLastLogin':
+                    case 'DateLastNav':
                         //non editable
                         return false;
                     break;

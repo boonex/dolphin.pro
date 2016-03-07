@@ -40,12 +40,22 @@ class BxDolAlbums
     }
 
     // inner methods
-    function _getSqlPart ($aFields = array(), $sBound = ', ')
+    function _getSqlPart ($aFields = array(), $sBound = ', ', $bUseEmptyValues = false)
     {
         $sqlBody = "";
-        foreach ($aFields as $sKey => $sValue) {
-            if (in_array($sKey, $this->aAlbumFields) && strlen($sValue) > 0) {
-                $sValue = process_db_input($sValue, BX_TAGS_STRIP);
+        foreach ($aFields as $sKey => $sValue) {    
+            if (in_array($sKey, $this->aAlbumFields) && ($bUseEmptyValues || strlen($sValue))) {
+            	switch($sKey) {
+            		case 'description':
+            		case 'Description':
+            			$sValue = process_db_input($sValue, BX_TAGS_STRIP_AND_NL2BR);
+            			break;
+
+            		default:
+            			$sValue = process_db_input($sValue, BX_TAGS_STRIP);
+            			break;
+            	}
+
                 $sqlBody .= "`{$this->sAlbumTable}`.`{$sKey}` = '$sValue'" . $sBound;
             }
         }
@@ -87,12 +97,21 @@ class BxDolAlbums
                 return $iCheck;
         }
         $iOwner = (int)$aData['owner'];
-        if (isset($aData['AllowAlbumView']))
+
+        if (isset($aData['AllowAlbumView'])) {
             $iAllowAlbumView = (int)$aData['AllowAlbumView'];
-        elseif (strpos($aData['caption'], getUsername($iOwner)) !== false)
-            $iAllowAlbumView = BX_DOL_PG_ALL;
-        else
+        }
+        elseif (strpos($aData['caption'], getUsername($iOwner)) !== false) {
+            bx_import('BxDolPrivacyQuery');
+            $oPrivacy = new BxDolPrivacyQuery();
+            $iAllowAlbumView = $oPrivacy->getDefaultValueModule(str_replace('bx_', '', $this->sType), 'album_view');
+            if (!$iAllowAlbumView)
+                $iAllowAlbumView = BX_DOL_PG_ALL;
+        } 
+        else {
             $iAllowAlbumView = BX_DOL_PG_NOBODY;
+        }
+
         $aFields = array(
             'Caption' => $aData['caption'],
             'Uri' => $this->getCorrectUri($aData['caption'], $iOwner, $bCheck),
@@ -141,20 +160,20 @@ class BxDolAlbums
     function updateAlbum ($mixedIdent, $aData)
     {
         $sqlWhere = "`Uri` = '" . process_db_input($mixedIdent, BX_TAGS_STRIP) . "'";
-        $sqlBody = $this->_getSqlPart($aData);
+        $sqlBody = $this->_getSqlPart($aData, ', ', true);
         $sValue = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
         $sqlWhereAdd = " AND `Owner` = '$sValue'";
         $sqlQuery = "UPDATE `{$this->sAlbumTable}` SET $sqlBody WHERE $sqlWhere $sqlWhereAdd LIMIT 1";
-        return $GLOBALS['MySQL']->query($sqlQuery);
+        return $GLOBALS['MySQL']->res($sqlQuery);
     }
     function updateAlbumById ($iId, $aData)
     {
         $sqlWhere = "`ID` = '" . (int)$iId . "'";
-        $sqlBody = $this->_getSqlPart($aData);
+        $sqlBody = $this->_getSqlPart($aData, ', ', true);
         $sValue = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
         $sqlWhereAdd = " AND `Owner` = '$sValue'";
         $sqlQuery = "UPDATE `{$this->sAlbumTable}` SET $sqlBody WHERE $sqlWhere $sqlWhereAdd LIMIT 1";
-        return $GLOBALS['MySQL']->query($sqlQuery);
+        return $GLOBALS['MySQL']->res($sqlQuery);
     }
     function removeAlbum ($iAlbumId)
     {

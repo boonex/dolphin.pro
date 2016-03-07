@@ -148,10 +148,10 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 -- page compose
 SET @iPCPOrder := (SELECT MAX(`Order`) FROM `sys_page_compose_pages`);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES 
-('bx_sites_main', 'Main Sites Page', @iPCPOrder + 1),
-('bx_sites_profile', 'Profile Sites Page', @iPCPOrder + 2),
-('bx_sites_view', 'Site View Page', @iPCPOrder + 3),
-('bx_sites_hon', 'Site HoN Page', @iPCPOrder + 4);
+('bx_sites_main', 'Sites Home', @iPCPOrder + 1),
+('bx_sites_profile', 'Sites User', @iPCPOrder + 2),
+('bx_sites_view', 'Sites View Page', @iPCPOrder + 3),
+('bx_sites_hon', 'Sites Rate', @iPCPOrder + 4);
 
 -- index page
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
@@ -162,24 +162,24 @@ INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`
 ('profile', '1140px', 'Show list profile sites', '_bx_sites', 0, 0, 'PHP', 'return BxDolService::call(\'sites\', \'profile_block\', array($this->oProfileGen->_aProfile[\'NickName\']));', 1, 71.9, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('bx_sites_main', '1140px', 'View public feature', '_bx_sites_caption_public_feature', 3, 0, 'ViewFeature', '', 1, 28.1, 'non,memb', 0),
-('bx_sites_main', '1140px', 'View site categories', '_bx_sites_caption_categories', 3, 1, 'Categories', '', 1, 28.1, 'non,memb', 0),
-('bx_sites_main', '1140px', 'View site tags', '_bx_sites_caption_tags', 3, 2, 'Tags', '', 1, 28.1, 'non,memb', 0),
-('bx_sites_main', '1140px', 'View recently public site', '_bx_sites_caption_public_last_featured', 2, 0, 'ViewRecent', '', 1, 71.9, 'non,memb', 0),
-('bx_sites_main', '1140px', 'View latest public sites', '_bx_sites_caption_public_latest', 2, 1, 'ViewAll', '', 1, 71.9, 'non,memb', 0),
+('bx_sites_main', '1140px', 'View public feature', '_bx_sites_caption_public_feature', 2, 0, 'ViewFeature', '', 1, 28.1, 'non,memb', 0),
+('bx_sites_main', '1140px', 'View site categories', '_bx_sites_caption_categories', 2, 1, 'Categories', '', 1, 28.1, 'non,memb', 0),
+('bx_sites_main', '1140px', 'View site tags', '_bx_sites_caption_tags', 2, 2, 'Tags', '', 1, 28.1, 'non,memb', 0),
+('bx_sites_main', '1140px', 'View recently public site', '_bx_sites_caption_public_last_featured', 1, 0, 'ViewRecent', '', 1, 71.9, 'non,memb', 0),
+('bx_sites_main', '1140px', 'View latest public sites', '_bx_sites_caption_public_latest', 1, 1, 'ViewAll', '', 1, 71.9, 'non,memb', 0),
 
-('bx_sites_profile', '1140px', 'Administration', '_bx_sites_bcaption_administration', 2, 0, 'Administration', '', 1, 100, 'non,memb', 0),
-('bx_sites_profile', '1140px', 'Owner Sites', '_bx_sites_bcaption_owner_sites', 2, 1, 'Owner', '', 1, 100, 'non,memb', 0),
+('bx_sites_profile', '1140px', 'Administration', '_bx_sites_bcaption_administration', 1, 0, 'Administration', '', 1, 100, 'non,memb', 0),
+('bx_sites_profile', '1140px', 'Owner Sites', '_bx_sites_bcaption_owner_sites', 1, 1, 'Owner', '', 1, 100, 'non,memb', 0),
 
-('bx_sites_view', '1140px', 'Information on Site', '_bx_sites_bcaption_information', 3, 0, 'ViewInformation', '', 1, 28.1, 'non,memb', 0),
-('bx_sites_view', '1140px', 'Actions for Site', '_bx_sites_bcaption_actions', 3, 1, 'ViewActions', '', 1, 28.1, 'non,memb', 0),
-('bx_sites_view', '1140px', 'Site Social Sharing', '_sys_block_title_social_sharing', 3, 2, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
-('bx_sites_view', '1140px', 'Image Site', '_bx_sites_bcaption_image', 2, 0, 'ViewImage', '', 1, 71.9, 'non,memb', 0),
-('bx_sites_view', '1140px', 'Description Site', '_bx_sites_bcaption_description', 2, 1, 'ViewDescription', '', 1, 71.9, 'non,memb', 0),
-('bx_sites_view', '1140px', 'Comments for Site', '_bx_sites_bcaption_comments', 2, 2, 'ViewComments', '', 1, 71.9, 'non,memb', 0),
+('bx_sites_view', '1140px', 'Information on Site', '_bx_sites_bcaption_information', 2, 0, 'ViewInformation', '', 1, 28.1, 'non,memb', 0),
+('bx_sites_view', '1140px', 'Actions for Site', '_bx_sites_bcaption_actions', 2, 1, 'ViewActions', '', 1, 28.1, 'non,memb', 0),
+('bx_sites_view', '1140px', 'Site Social Sharing', '_sys_block_title_social_sharing', 2, 2, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
+('bx_sites_view', '1140px', 'Image Site', '_bx_sites_bcaption_image', 1, 0, 'ViewImage', '', 1, 71.9, 'non,memb', 0),
+('bx_sites_view', '1140px', 'Description Site', '_bx_sites_bcaption_description', 1, 1, 'ViewDescription', '', 1, 71.9, 'non,memb', 0),
+('bx_sites_view', '1140px', 'Comments for Site', '_bx_sites_bcaption_comments', 1, 2, 'ViewComments', '', 1, 71.9, 'non,memb', 0),
 
-('bx_sites_hon', '1140px', 'Previously Rated', '_bx_sites_bcaption_previously', 3, 0, 'ViewPreviously', '', 1, 28.1, 'non,memb', 0),
-('bx_sites_hon', '1140px', 'Rate Site', '_bx_sites_bcaption_rate', 2, 0, 'ViewRate', '', 1, 71.9, 'non,memb', 0);
+('bx_sites_hon', '1140px', 'Previously Rated', '_bx_sites_bcaption_previously', 2, 0, 'ViewPreviously', '', 1, 28.1, 'non,memb', 0),
+('bx_sites_hon', '1140px', 'Rate Site', '_bx_sites_bcaption_rate', 1, 0, 'ViewRate', '', 1, 71.9, 'non,memb', 0);
 
 -- vote objects
 INSERT INTO `sys_objects_vote` VALUES (NULL, 'bx_sites', 'bx_sites_rating', 'bx_sites_rating_track', 'sites_', '5', 'vote_send_result', 'BX_PERIOD_PER_VOTE', '1', '', '', 'bx_sites_main', 'rate', 'rateCount', 'id', 'BxSitesVoting', 'modules/boonex/sites/classes/BxSitesVoting.php');

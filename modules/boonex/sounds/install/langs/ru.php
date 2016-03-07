@@ -102,6 +102,7 @@ $aLangContent = array(
     '_bx_sounds_i_have_the_right_to_distribute' => 'У меня есть право на публикацию этого аудио',
     '_bx_sounds_info' => 'Информация о файле',
     '_bx_sounds_info_main' => 'Информация об аудио',
+	'_bx_sounds_info_album' => 'Информация об альбоме',
     '_bx_sounds_latest' => 'Последнее аудио от этого пользователя',
     '_bx_sounds_latest_file' => 'Последнее избранное аудио',
     '_bx_sounds_main' => 'Главная',

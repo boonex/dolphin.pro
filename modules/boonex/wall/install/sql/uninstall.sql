@@ -1,7 +1,10 @@
 DROP TABLE IF EXISTS `[db_prefix]events`;
-DROP TABLE IF EXISTS `[db_prefix]handlers`;
 DROP TABLE IF EXISTS `[db_prefix]comments`;
 DROP TABLE IF EXISTS `[db_prefix]comments_track`;
+DROP TABLE IF EXISTS `[db_prefix]repost_track`;
+DROP TABLE IF EXISTS `[db_prefix]voting`;
+DROP TABLE IF EXISTS `[db_prefix]voting_track`;
+DROP TABLE IF EXISTS `[db_prefix]handlers`;
 
 DELETE FROM `sys_page_compose_pages` WHERE `Name`='wall';
 DELETE FROM `sys_page_compose` WHERE `Caption` IN ('_wall_pc_view_index_ol', '_wall_pc_post_index_tl', '_wall_pc_view_index_tl', '_wall_pc_post_profile_tl', '_wall_pc_view_profile_tl', '_wall_pc_view_account_tl') OR `Page` = 'wall';

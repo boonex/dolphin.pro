@@ -149,8 +149,8 @@ CREATE TABLE `sys_menu_admin_top` (
 
 INSERT INTO `sys_menu_admin_top`(`name`, `caption`, `url`, `target`, `icon`, `order`) VALUES
 ('home', '_adm_tmi_home', '{site_url}index.php', '_blank', 'external-link-square', 1),
-('extensions', '_adm_tmi_extensions', 'http://www.boonex.com/market', '', 'puzzle-piece', 2),
-('info', '_adm_tmi_info', 'http://www.boonex.com/trac/dolphin/wiki/Dolphin7Docs', '', 'question-circle', 3),
+('extensions', '_adm_tmi_extensions', 'https://www.boonex.com/market', '', 'puzzle-piece', 2),
+('info', '_adm_tmi_info', 'https://www.boonex.com/trac/dolphin/wiki', '', 'question-circle', 3),
 ('logout', '_adm_tmi_logout', '{site_url}logout.php', '', 'sign-out', 4);
 
 -- --------------------------------------------------------
@@ -181,7 +181,8 @@ CREATE TABLE `sys_menu_service` (
 --
 INSERT INTO `sys_menu_service` (`Name`, `Caption`, `Icon`, `Link`, `Script`, `Target`, `Order`, `Visible`, `Active`, `Movable`, `Clonable`, `Editable`, `Deletable`) VALUES
 ('Join', '_sys_sm_join', 'user', '', 'showPopupJoinForm(); return false;', '', 1, 'non', 1, 3, 1, 1, 1),
-('Login', '_sys_sm_login', 'sign-in', '', 'showPopupLoginForm(); return false;', '', 0, 'non', 0, 3, 1, 1, 1),
+('Login', '_sys_sm_login', 'sign-in', '', 'showPopupLoginForm(); return false;', '', 2, 'non', 1, 3, 1, 1, 1),
+('LoginOnly', '_sys_sm_login', 'sign-in', '', 'showPopupLoginOnlyForm(); return false;', '', 0, 'non', 0, 3, 1, 1, 1),
 ('Profile', '_sys_sm_profile', '', '{memberLink}|{memberNick}|change_status.php', '', '', 0, 'memb', 0, 3, 1, 1, 1),
 ('Account', '_sys_sm_account', 'tachometer', 'member.php', '', '', 1, 'memb', 1, 3, 1, 1, 1),
 ('ProfileSettings', '_sys_sm_profile_settings', 'cog', 'pedit.php?ID={memberID}', '', '', 2, 'memb', 1, 3, 1, 1, 1),
@@ -950,6 +951,8 @@ INSERT INTO `sys_email_templates` (`Name`, `Subject`, `Body`, `Desc`, `LangID`) 
 ('t_Message', 'You''ve Got A New Message', '<bx_include_auto:_email_header.html />\r\n\r\n<p><b>Dear <RealName></b>,</p>\r\n\r\n<p><a href="<ProfileUrl>"><ProfileReference></a> sent you a message: </p>\r\n\r\n<hr>\r\n<p><MessageText></p>\r\n<hr>\r\n\r\n<p>Go to your account to reply: <a href="<Domain>member.php"><Domain>member.php</a></p>\r\n\r\n<bx_include_auto:_email_footer.html />', 'New message notification with message text', 0),
 ('t_UserJoined', 'New Member Joined', '<bx_include_auto:_email_header.html />\r\n\r\n<p>New user: <RealName></p> \r\n<p>Email: <Email></p> \r\n\r\n<bx_include_auto:_email_footer.html />', 'Admin notification about new member', 0),
 ('t_UserConfirmed', 'User Confirmed Email', '<bx_include_auto:_email_header.html />\r\n\r\n<p>User: <RealName></p> \r\n<p>Email: <Email></p> \r\n\r\n<bx_include_auto:_email_footer.html />', 'Admin notification - user confirmed email', 0),
+('t_UserMemChanged', 'Member Membership Changed', '<bx_include_auto:_email_header.html />\r\n\r\n<p><RealName>''s membership level was changed to: <b><MembershipLevel></b></p>\r\n\r\n\r\n<bx_include_auto:_email_footer.html />', 'Admin notification about membership change', 0),
+('t_UserUnregistered', 'Member Unregistered', '<bx_include_auto:_email_header.html />\r\n\r\n<p>User: <NickName></p> \r\n<p>Email: <Email></p> \r\n<p>was unregistered.</p> \r\n\r\n<bx_include_auto:_email_footer.html />', 'Admin notification about unregistered member', 0),
 ('t_SpamReport', 'Profile Spam Report', '<bx_include_auto:_email_header.html />\r\n\r\n<p><a href="<Domain>profile.php?ID=<reporterID>"><reporterNick></a> reported Profile SPAM:  <a href="<Domain>profile.php?ID=<spamerID>"><b><spamerNick></b></a></p>\r\n\r\n<bx_include_auto:_email_footer.html />', 'Profile Spam Report', 0),
 ('t_TellFriend', 'Check This Out!', '<bx_include_auto:_email_header.html />\r\n\r\n\r\n<p>I thought you''d be interested: <a href="<Link>"><Link></a><br />\r\n</p>\r\n\r\n<bx_include_auto:_email_footer.html />', 'Friend Invitation', 0),
 ('t_TellFriendProfile', 'Look At This Profile', '<bx_include_auto:_email_header.html />\r\n\r\n\r\n\r\n<p>Check out this profile: <a href="<Link>"><Link></a></p>\r\n\r\n<bx_include_auto:_email_footer.html />', 'Email profile to a friend', 0),
@@ -1115,7 +1118,8 @@ INSERT INTO `sys_options` VALUES
 ('autoApproval_ifProfile', 'on', @iCatModeration, 'Preserve profile status after profile info editing', 'checkbox', '', '', 20, ''),
 ('autoApproval_ifNoConfEmail', '', @iCatModeration, 'Auto-confirm profile without confirmation email', 'checkbox', '', '', 30, ''),
 ('newusernotify', 'on', @iCatModeration, 'Enable notification about new members', 'checkbox', '', '', 40, ''),
-('ban_duration', '10', @iCatModeration, 'Profile ban duration (in days)', 'digit', '', '', 50, '');
+('unregisterusernotify', 'on', @iCatModeration, 'Enable notification about unregistered members', 'checkbox', '', '', 50, ''),
+('ban_duration', '10', @iCatModeration, 'Profile ban duration (in days)', 'digit', '', '', 60, '');
 
 
 -- CAT: Site 
@@ -1276,7 +1280,7 @@ INSERT INTO `sys_options` VALUES
 SET @iCatHidden = 0;
 INSERT INTO `sys_options` VALUES
 
-('sys_tmp_version', '7.3.0.B1', @iCatHidden, 'Dolphin version ', 'digit', '', '', 10, ''),
+('sys_tmp_version', '7.3.0', @iCatHidden, 'Dolphin version ', 'digit', '', '', 10, ''),
 ('license_code', '', @iCatHidden, 'Dolphin License Code', 'digit', '', '', 11, ''),
 ('license_expiration', '', @iCatHidden, 'Dolphin License Expiration', 'digit', '', '', 12, ''),
 ('license_checksum', '', @iCatHidden, 'Dolphin License Checksum', 'digit', '', '', 13, ''),
@@ -1293,7 +1297,9 @@ INSERT INTO `sys_options` VALUES
 ('sys_show_admin_help', 'on', @iCatHidden, 'Show help in admin dashboard', 'checkbox', '', '', 53, ''),
 
 ('sys_main_logo', '', @iCatHidden, 'Main logo file name', 'text', '', '', 60, ''),
-('main_div_width', '1140px', @iCatHidden, 'Width of the main container of the site', 'digit', '', '', 61, ''),
+('sys_main_logo_w', '', @iCatHidden, 'Main logo width', 'digit', '', '', 61, ''),
+('sys_main_logo_h', '', @iCatHidden, 'Main logo height', 'digit', '', '', 62, ''),
+('main_div_width', '1140px', @iCatHidden, 'Width of the main container of the site', 'digit', '', '', 65, ''),
 
 ('sys_template_cache_image_enable', '', @iCatHidden, 'Enable cache for images (do not work for IE7)', 'checkbox', '', '', 70, ''),
 ('sys_template_cache_image_max_size', '5', @iCatHidden, 'Max image size to be cached(in kb)', 'digit', '', '', 71, ''),
@@ -1670,9 +1676,9 @@ INSERT INTO `sys_page_compose_pages` VALUES('pedit', 'Profile Edit', 8, 1);
 INSERT INTO `sys_page_compose_pages` VALUES('profile_info', 'Profile Info', 14, 1);
 INSERT INTO `sys_page_compose_pages` VALUES('profile_private', 'Profile Private', 15, 1);
 INSERT INTO `sys_page_compose_pages` VALUES('browse_page', 'All Members', 17, 1);
-INSERT INTO `sys_page_compose_pages` VALUES('mail_page', 'Mail messages', 18, 1);
-INSERT INTO `sys_page_compose_pages` VALUES('mail_page_view', 'Mail view message', 19, 1);
-INSERT INTO `sys_page_compose_pages` VALUES('mail_page_compose', 'Mail compose message', 20, 1);
+INSERT INTO `sys_page_compose_pages` VALUES('mail_page', 'Mail Messages', 18, 1);
+INSERT INTO `sys_page_compose_pages` VALUES('mail_page_view', 'Mail View Message', 19, 1);
+INSERT INTO `sys_page_compose_pages` VALUES('mail_page_compose', 'Mail Compose Message', 20, 1);
 INSERT INTO `sys_page_compose_pages` VALUES('search', 'Search Profiles', 21, 1);
 INSERT INTO `sys_page_compose_pages` VALUES('join', 'Join Page', 22, 1);
 INSERT INTO `sys_page_compose_pages` VALUES('friends', 'Friends', 23, 1);
@@ -1720,21 +1726,21 @@ INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`
 ('', '1140px', 'Simple HTML Block', '_HTML Block', 0, 0, 'Sample', 'Echo', 11, 0, 'non,memb', 0, 0),
 ('', '1140px', 'Simple Text Block', '_Text Block', 0, 0, 'Sample', 'Text', 11, 0, 'non,memb', 0, 0),
 
-('index', '1140px', 'Shows statistic information about your site content', '_Site Stats', 3, 2, 'SiteStats', '', 1, 28.1, 'non,memb', 0, 3600),
-('index', '1140px', 'Display form to subscribe to newsletters', '_Subscribe_block_caption', 3, 1, 'Subscribe', '', 1, 28.1, 'non,memb', 0, 0),
+('index', '1140px', 'Shows statistic information about your site content', '_Site Stats', 2, 2, 'SiteStats', '', 1, 28.1, 'non,memb', 0, 3600),
+('index', '1140px', 'Display form to subscribe to newsletters', '_Subscribe_block_caption', 2, 1, 'Subscribe', '', 1, 28.1, 'non,memb', 0, 0),
 ('index', '1140px', 'Quick search form', '_Quick Search', 0, 0, 'QuickSearch', '', 1, 28.1, 'non,memb', 0, 0),
 ('index', '1140px', 'List of featured profiles', '_featured members', 0, 0, 'Featured', '', 1, 71.9, 'non,memb', 0, 0),
 ('index', '1140px', 'Site Tags', '_Tags', 0, 0, 'Tags', '', 1, 71.9, 'non,memb', 0, 0),
 ('index', '1140px', 'Site Categories', '_Categories', 0, 0, 'Categories', '', 1, 71.9, 'non,memb', 0, 0),
-('index', '1140px', 'List of profiles', '_Members', 3, 0, 'Members', '', 1, 28.1, 'non,memb', 0, 0),
+('index', '1140px', 'List of profiles', '_Members', 2, 0, 'Members', '', 1, 28.1, 'non,memb', 0, 0),
 ('index', '1140px', 'Shows Login Form', '_Member_Login', 0, 0, 'LoginSection', '', 11, 28.1, 'non', 0, 86400),
-('index', '1140px', '', '_BoonEx News', 2, 0, 'RSS', 'http://www.boonex.com/notes/featured_posts/?rss=1#4', 1, 71.9, 'non,memb', 0, 86400),
+('index', '1140px', '', '_BoonEx News', 1, 0, 'RSS', 'https://www.boonex.com/notes/featured_posts/?rss=1#4', 1, 71.9, 'non,memb', 0, 86400),
 ('index', '1140px', 'Download', '_sys_box_title_download', 0, 0, 'Download', '', 1, 28.1, 'non,memb', 0, 86400),
 
-('member', '1140px', 'Quick Links', '_Quick Links', 2, 0, 'QuickLinks', '', 1, 71.9, 'memb', 0, 0),
-('member', '1140px', 'Friend Requests', '_sys_bcpt_member_friend_requests', 3, 1, 'FriendRequests', '', 1, 28.1, 'memb', 0, 0),
-('member', '1140px', 'New Messages', '_sys_bcpt_member_new_messages', 3, 2, 'NewMessages', '', 1, 28.1, 'memb', 0, 0),
-('member', '1140px', 'Account Control', '_sys_bcpt_member_account_control', 3, 3, 'AccountControl', '', 1, 28.1, 'memb', 0, 0),
+('member', '1140px', 'Quick Links', '_Quick Links', 1, 0, 'QuickLinks', '', 1, 71.9, 'memb', 0, 0),
+('member', '1140px', 'Friend Requests', '_sys_bcpt_member_friend_requests', 2, 1, 'FriendRequests', '', 1, 28.1, 'memb', 0, 0),
+('member', '1140px', 'New Messages', '_sys_bcpt_member_new_messages', 2, 2, 'NewMessages', '', 1, 28.1, 'memb', 0, 0),
+('member', '1140px', 'Account Control', '_sys_bcpt_member_account_control', 2, 3, 'AccountControl', '', 1, 28.1, 'memb', 0, 0),
 ('member', '1140px', 'Member Friends', '_My Friends', 0, 0, 'Friends', '', 1, 28.1, 'memb', 0, 0),
 
 ('profile', '1140px', 'Profile cover', '_sys_bcpt_profile_cover', 1, 1, 'Cover', '', 0, 100, 'non,memb', 0, 0),
@@ -1749,57 +1755,57 @@ INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`
 ('profile', '1140px', 'Comments on member profile', '_profile_comments', 0, 0, 'Cmts', '', 1, 71.9, 'non,memb', 0, 0),
 ('profile', '1140px', 'Profile Fields Block', '_FieldCaption_Misc_View', 0, 0, 'PFBlock', '20', 1, 71.9, 'non,memb', 0, 0),
 
-('profile_info', '1140px', '', '_FieldCaption_General Info_View', 2, 0, 'GeneralInfo', '', 1, 100, 'non,memb', 0, 0),
-('profile_info', '1140px', '', '_Additional information', 2, 2, 'AdditionalInfo', '', 1, 100, 'non,memb', 0, 0),
-('profile_info', '1140px', 'Profile''s description', '_Description', 2, 1, 'Description', '', 1, 100, 'non,memb', 0, 0),
+('profile_info', '1140px', '', '_FieldCaption_General Info_View', 1, 0, 'GeneralInfo', '', 1, 100, 'non,memb', 0, 0),
+('profile_info', '1140px', '', '_Additional information', 1, 2, 'AdditionalInfo', '', 1, 100, 'non,memb', 0, 0),
+('profile_info', '1140px', 'Profile''s description', '_Description', 1, 1, 'Description', '', 1, 100, 'non,memb', 0, 0),
 
-('friends', '1140px', '', '_Member Friends', 2, 1, 'Friends', '', 1, 71.9, 'non,memb', 0, 0),
-('friends', '1140px', '', '_Member Friends Requests', 3, 1, 'FriendsRequests', '', 1, 28.1, 'memb', 0, 0),
-('friends', '1140px', '', '_Member Friends Mutual', 3, 2, 'FriendsMutual', '', 1, 28.1, 'memb', 0, 0),
+('friends', '1140px', '', '_Member Friends', 1, 1, 'Friends', '', 1, 71.9, 'non,memb', 0, 0),
+('friends', '1140px', '', '_Member Friends Requests', 2, 1, 'FriendsRequests', '', 1, 28.1, 'memb', 0, 0),
+('friends', '1140px', '', '_Member Friends Mutual', 2, 2, 'FriendsMutual', '', 1, 28.1, 'memb', 0, 0),
 
-('browse_page', '1140px', '', '_Browse', 3, 0, 'SettingsBlock', '', 0, 28.1, 'non,memb', 0, 0),
-('browse_page', '1140px', '', '_People', 2, 0, 'SearchedMembersBlock', '', 1, 71.9, 'non,memb', 0, 0),
+('browse_page', '1140px', '', '_Browse', 2, 0, 'SettingsBlock', '', 0, 28.1, 'non,memb', 0, 0),
+('browse_page', '1140px', '', '_People', 1, 0, 'SearchedMembersBlock', '', 1, 71.9, 'non,memb', 0, 0),
 
-('mail_page', '1140px', '', '_Mail box', 2, 0, 'MailBox', '', 1, 71.9, 'non,memb', 0, 0),
-('mail_page', '1140px', '', '_My contacts', 3, 0, 'Contacts', '', 1, 28.1, 'non,memb', 0, 0),
-('mail_page_view', '1140px', '', '_Mail box', 2, 0, 'ViewMessage', '', 1, 71.9, 'non,memb', 0, 0),
-('mail_page_view', '1140px', '', '_Archive', 3, 0, 'Archives', '', 1, 28.1, 'non,memb', 0, 0),
-('mail_page_compose', '1140px', '', '_COMPOSE_H', 2, 0, 'ComposeMessage', '', 1, 71.9, 'non,memb', 0, 0),
-('mail_page_compose', '1140px', '', '_My contacts', 3, 0, 'Contacts', '', 1, 28.1, 'non,memb', 0, 0),
+('mail_page', '1140px', '', '_Mail box', 1, 0, 'MailBox', '', 1, 71.9, 'non,memb', 0, 0),
+('mail_page', '1140px', '', '_My contacts', 2, 0, 'Contacts', '', 1, 28.1, 'non,memb', 0, 0),
+('mail_page_view', '1140px', '', '_Mail box', 1, 0, 'ViewMessage', '', 1, 71.9, 'non,memb', 0, 0),
+('mail_page_view', '1140px', '', '_Archive', 2, 0, 'Archives', '', 1, 28.1, 'non,memb', 0, 0),
+('mail_page_compose', '1140px', '', '_COMPOSE_H', 1, 0, 'ComposeMessage', '', 1, 71.9, 'non,memb', 0, 0),
+('mail_page_compose', '1140px', '', '_My contacts', 2, 0, 'Contacts', '', 1, 28.1, 'non,memb', 0, 0),
 
-('search', '1140px', 'Search Results', '_Search result', 2, 0, 'Results', '', 1, 71.9, 'non,memb', 0, 0),
-('search', '1140px', 'Search Form', '_Search profiles', 3, 0, 'SearchForm', '', 1, 28.1, 'non,memb', 0, 0),
-('search_home', '1140px', 'Keyword Search', '_sys_box_title_search_keyword', 2, 0, 'Keyword', '', 1, 71.9, 'non,memb', 0, 86400),
-('search_home', '1140px', 'People Search', '_sys_box_title_search_people', 3, 0, 'People', '', 1, 28.1, 'non,memb', 0, 0),
+('search', '1140px', 'Search Results', '_Search result', 1, 0, 'Results', '', 1, 71.9, 'non,memb', 0, 0),
+('search', '1140px', 'Search Form', '_Search profiles', 2, 0, 'SearchForm', '', 1, 28.1, 'non,memb', 0, 0),
+('search_home', '1140px', 'Keyword Search', '_sys_box_title_search_keyword', 1, 0, 'Keyword', '', 1, 71.9, 'non,memb', 0, 86400),
+('search_home', '1140px', 'People Search', '_sys_box_title_search_people', 2, 0, 'People', '', 1, 28.1, 'non,memb', 0, 0),
 
-('join', '1140px', 'Join Form Block', '_Join_now', 2, 0, 'JoinForm', '', 1, 100, 'non', 413, 0),
+('join', '1140px', 'Join Form Block', '_Join_now', 1, 0, 'JoinForm', '', 1, 100, 'non', 413, 0),
 ('join', '1140px', 'Login Form Block', '_Login', 0, 0, 'LoginSection', 'no_join_text', 11, 100, 'non', 250, 86400),
 
-('communicator_page', '1140px', '', '_sys_cnts_bcpt_connections', 2, 1, 'Connections', '', 1, 71.9, 'memb', 0, 0),
-('communicator_page', '1140px', '', '_sys_cnts_bcpt_friend_requests', 3, 1, 'FriendRequests', '', 1, 28.1, 'memb', 0, 0),
+('communicator_page', '1140px', '', '_sys_cnts_bcpt_connections', 1, 1, 'Connections', '', 1, 71.9, 'memb', 0, 0),
+('communicator_page', '1140px', '', '_sys_cnts_bcpt_friend_requests', 2, 1, 'FriendRequests', '', 1, 28.1, 'memb', 0, 0),
 
-('tags_home', '1140px', 'Recent Tags', '_tags_recent', 2, 0, 'Recent', '', 1, 28.1, 'non,memb', 0, 0),
-('tags_home', '1140px', 'Popular Tags', '_popular_tags', 3, 0, 'Popular', '', 1, 71.9, 'non,memb', 0, 0),
-('tags_calendar', '1140px', 'Calendar', '_tags_calendar', 2, 0, 'Calendar', '', 1, 100, 'non,memb', 0, 0),
-('tags_calendar', '1140px', 'Date Tags', '_Tags', 2, 1, 'TagsDate', '', 1, 100, 'non,memb', 0, 0),
-('tags_search', '1140px', 'Search Form', '_tags_search_form', 2, 0, 'Form', '', 1, 100, 'non,memb', 0, 86400),
-('tags_search', '1140px', 'Founded Tags', '_tags_founded_tags', 2, 1, 'Founded', '', 1, 100, 'non,memb', 0, 0),
-('tags_module', '1140px', 'Recent Tags', '_tags_recent', 2, 0, 'Recent', '', 1, 28.1, 'non,memb', 0, 0),
-('tags_module', '1140px', 'All Tags', '_all_tags', 3, 0, 'All', '', 1, 71.9, 'non,memb', 0, 0),
+('tags_home', '1140px', 'Recent Tags', '_tags_recent', 1, 0, 'Recent', '', 1, 28.1, 'non,memb', 0, 0),
+('tags_home', '1140px', 'Popular Tags', '_popular_tags', 2, 0, 'Popular', '', 1, 71.9, 'non,memb', 0, 0),
+('tags_calendar', '1140px', 'Calendar', '_tags_calendar', 1, 0, 'Calendar', '', 1, 100, 'non,memb', 0, 0),
+('tags_calendar', '1140px', 'Date Tags', '_Tags', 1, 1, 'TagsDate', '', 1, 100, 'non,memb', 0, 0),
+('tags_search', '1140px', 'Search Form', '_tags_search_form', 1, 0, 'Form', '', 1, 100, 'non,memb', 0, 86400),
+('tags_search', '1140px', 'Founded Tags', '_tags_founded_tags', 1, 1, 'Founded', '', 1, 100, 'non,memb', 0, 0),
+('tags_module', '1140px', 'Recent Tags', '_tags_recent', 1, 0, 'Recent', '', 1, 28.1, 'non,memb', 0, 0),
+('tags_module', '1140px', 'All Tags', '_all_tags', 2, 0, 'All', '', 1, 71.9, 'non,memb', 0, 0),
 
-('categ_calendar', '1140px', 'Calendar', '_categ_caption_calendar', 2, 0, 'Calendar', '', 1, 100, 'non,memb', 0, 0),
-('categ_calendar', '1140px', 'Categories By Day', '_categ_caption_day', 2, 1, 'CategoriesDate', '', 1, 100, 'non,memb', 0, 0),
-('categ_search', '1140px', 'Search Form', '_categ_caption_search_form', 2, 0, 'Form', '', 1, 100, 'non,memb', 0, 86400),
-('categ_search', '1140px', 'Founded Categories', '_categ_caption_founded', 2, 1, 'Founded', '', 1, 100, 'non,memb', 0, 0),
-('categ_module', '1140px', 'Common Categories', '_categ_caption_common', 2, 0, 'Common', '', 1, 28.1, 'non,memb', 0, 0),
-('categ_module', '1140px', 'All Categories', '_categ_caption_all', 3, 0, 'All', '', 1, 71.9, 'non,memb', 0, 0),
+('categ_calendar', '1140px', 'Calendar', '_categ_caption_calendar', 1, 0, 'Calendar', '', 1, 100, 'non,memb', 0, 0),
+('categ_calendar', '1140px', 'Categories By Day', '_categ_caption_day', 1, 1, 'CategoriesDate', '', 1, 100, 'non,memb', 0, 0),
+('categ_search', '1140px', 'Search Form', '_categ_caption_search_form', 1, 0, 'Form', '', 1, 100, 'non,memb', 0, 86400),
+('categ_search', '1140px', 'Founded Categories', '_categ_caption_founded', 1, 1, 'Founded', '', 1, 100, 'non,memb', 0, 0),
+('categ_module', '1140px', 'Common Categories', '_categ_caption_common', 1, 0, 'Common', '', 1, 28.1, 'non,memb', 0, 0),
+('categ_module', '1140px', 'All Categories', '_categ_caption_all', 2, 0, 'All', '', 1, 71.9, 'non,memb', 0, 0),
 
-('pedit', '1140px', 'Profile fields', '_edit_profile_info', 2, 1, 'Info', '', 1, 71.9, 'memb', 0, 0),
-('pedit', '1140px', 'Profile privacy', '_edit_profile_privacy', 3, 1, 'Privacy', '', 1, 28.1, 'memb', 0, 0),
-('pedit', '1140px', 'Profile membership', '_edit_profile_membership', 3, 2, 'Membership', '', 1, 28.1, 'memb', 0, 0),
+('pedit', '1140px', 'Profile fields', '_edit_profile_info', 1, 1, 'Info', '', 1, 71.9, 'memb', 0, 0),
+('pedit', '1140px', 'Profile privacy', '_edit_profile_privacy', 2, 1, 'Privacy', '', 1, 28.1, 'memb', 0, 0),
+('pedit', '1140px', 'Profile membership', '_edit_profile_membership', 2, 2, 'Membership', '', 1, 28.1, 'memb', 0, 0),
 
-('profile_private', '1140px', 'Actions that other members can do', '_Actions', 2, 0, 'ActionsMenu', '', 1, 28.1, 'non,memb', 0, 0),
-('profile_private', '1140px', 'Some text to explain why this profile can not be viewed. Translation for this block is stored in ''_sys_profile_private_text'' language key.', '_sys_profile_private_text_title', 3, 0, 'PrivacyExplain', '', 1, 71.9, 'non,memb', 0, 0);
+('profile_private', '1140px', 'Actions that other members can do', '_Actions', 1, 0, 'ActionsMenu', '', 1, 28.1, 'non,memb', 0, 0),
+('profile_private', '1140px', 'Some text to explain why this profile can not be viewed. Translation for this block is stored in ''_sys_profile_private_text'' language key.', '_sys_profile_private_text_title', 2, 0, 'PrivacyExplain', '', 1, 71.9, 'non,memb', 0, 0);
 
 
 -- --------------------------------------------------------
@@ -2313,7 +2319,7 @@ INSERT INTO `sys_profile_fields` VALUES(9, 'Featured', 'system', NULL, '', NULL,
 INSERT INTO `sys_profile_fields` VALUES(10, 'Sex', 'select_one', 'select', '', NULL, NULL, '#!Sex', 'LKey', '', 0, '', 1, 0, 0, 20, 2, 17, 6, 17, 5, 17, 3, 17, 4, 17, 7, 17, 4, 17, 5, '', 20, 2, 20, 2, 17, 2, 11, 30);
 INSERT INTO `sys_profile_fields` VALUES(11, 'LookingFor', 'select_set', 'checkbox', '', NULL, NULL, '#!Sex', 'LKey2', '', 0, '', 0, 0, 0, 0, NULL, 20, 1, 20, 1, 17, 7, 17, 8, 17, 11, 17, 5, 17, 7, '', 20, 1, 20, 1, 0, NULL, 10, 30);
 INSERT INTO `sys_profile_fields` VALUES(12, 'DescriptionMe', 'area', NULL, '', 20, NULL, '', 'LKey', '', 0, '', 1, 0, 0, 20, 4, 20, 4, 20, 4, 20, 2, 0, NULL, 0, NULL, 22, 2, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
-INSERT INTO `sys_profile_fields` VALUES(13, 'DateOfBirth', 'date', NULL, '', 18, 75, '', 'LKey', '', 0, '', 1, 1, 0, 20, 3, 20, 2, 20, 2, 17, 4, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 20, 3, 20, 3, 17, 3, 13, 0);
+INSERT INTO `sys_profile_fields` VALUES(13, 'DateOfBirth', 'date', NULL, '', 18, 75, '', 'LKey', '', 0, '', 1, 0, 0, 20, 3, 20, 2, 20, 2, 17, 4, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 20, 3, 20, 3, 17, 3, 13, 0);
 INSERT INTO `sys_profile_fields` VALUES(15, 'Country', 'select_one', 'select', '', NULL, NULL, '#!Country', 'LKey', '', 0, '', 1, 0, 0, 0, NULL, 20, 5, 20, 5, 17, 5, 17, 6, 17, 9, 20, 2, 17, 4, '', 20, 4, 20, 4, 20, 1, 15, 25);
 INSERT INTO `sys_profile_fields` VALUES(16, 'City', 'text', NULL, '', 2, 64, '', 'LKey', '', 0, '', 1, 0, 0, 0, NULL, 20, 6, 20, 6, 17, 6, 17, 7, 17, 10, 20, 3, 17, 6, '', 0, NULL, 0, NULL, 20, 2, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(17, 'General Info', 'block', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 1, 0, 0, 1, 0, 1, 0, 2, 0, 2, 0, 1, 0, 1, 0, 1, 0, 1, '', 0, 1, 0, 1, 0, 1, 0, 0);
@@ -2321,7 +2327,7 @@ INSERT INTO `sys_profile_fields` VALUES(18, 'Location', 'system', NULL, '', NULL
 INSERT INTO `sys_profile_fields` VALUES(19, 'Keyword', 'system', NULL, 'DescriptionMe\nHeadline', NULL, NULL, '', 'LKey', '', 0, '', 0, 0, 0, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 20, 3, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(20, 'Misc Info', 'block', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 1, 1, 0, 2, 0, 2, 0, 3, 0, 3, 0, 2, 0, 2, 0, 2, 0, 2, '', 0, 2, 0, 2, 0, 2, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(21, 'Admin Controls', 'block', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 0, 1, 0, 0, NULL, 0, NULL, 0, 1, 0, 1, 0, NULL, 0, 3, 0, 4, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
-INSERT INTO `sys_profile_fields` VALUES(23, 'Couple', 'system', NULL, 'Country\nCity', NULL, NULL, '', 'LKey', '', 0, '', 1, 0, 0, 17, 1, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 17, 1, 0, 0);
+INSERT INTO `sys_profile_fields` VALUES(23, 'Couple', 'system', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 1, 0, 0, 17, 1, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 17, 1, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(24, 'Captcha', 'system', NULL, '', NULL, NULL, '', 'LKey', '', 0, '', 1, 0, 0, 20, 6, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(41, 'EmailNotify', 'bool', 'checkbox', '', NULL, NULL, '', 'LKey', '', 0, '1', 0, 0, 0, 0, NULL, 17, 5, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
 INSERT INTO `sys_profile_fields` VALUES(39, 'zip', 'text', NULL, '', 1, 32, '', 'LKey', '', 0, '', 1, 0, 0, 0, NULL, 20, 7, 20, 7, 20, 3, 0, NULL, 0, NULL, 0, NULL, 0, NULL, '', 0, NULL, 0, NULL, 0, NULL, 0, 0);
@@ -3032,12 +3038,8 @@ CREATE TABLE `sys_shared_sites` (
 INSERT INTO `sys_shared_sites` (`Name`, `URL`, `Icon`) VALUES
 ('digg', 'http://digg.com/submit?phase=2&url=', 'digg.png'),
 ('delicious', 'http://del.icio.us/post?url=', 'delicious.png'),
-('blinklist', 'http://www.blinklist.com/index.php?Action=Blink/addblink.php&amp;Url=', 'blinklist.png'),
 ('newsvine', 'http://www.newsvine.com/_tools/seed&save?u=', 'newsvine.png'),
 ('reddit', 'http://reddit.com/submit?url=', 'reddit.png'),
-('slashdot', 'http://slashdot.org/bookmark.pl?url=', 'slashdot.png'),
-('stumbleupon', 'http://www.stumbleupon.com/url/http', 'stumbleupon.png'),
-('technorati', 'http://technorati.com/faves?add=', 'technorati.png'),
 ('facebook', 'http://www.facebook.com/sharer/sharer.php?u=', 'facebook.png'),
 ('twitter', 'https://twitter.com/share?url=', 'twitter.png');
 
@@ -3345,7 +3347,10 @@ INSERT INTO `sys_injections` (`name`, `page_index`, `key`, `type`, `data`, `repl
 ('banner_top', 0, 'banner_top', 'php', 'return banner_put_nv(1);', 0, 1),
 ('banner_left', 0, 'banner_left', 'php', 'return banner_put_nv(2);', 0, 1),
 ('sys_confirm_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxConfirm.html'', array());', '0', '1'),
-('sys_prompt_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxPrompt.html'', array());', '0', '1');
+('sys_prompt_popup', '0', 'injection_footer', 'php', 'return $GLOBALS[''oSysTemplate'']->parseHtmlByName(''transBoxPrompt.html'', array());', '0', '1'),
+('sys_head', 0, 'injection_head', 'text', '', 0, 1),
+('sys_body', 0, 'injection_footer', 'text', '', 0, 1);
+
 
 --
 -- Table structure for table `sys_injections_admin`
@@ -3430,6 +3435,7 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('profile', 'login', 2),
 ('profile', 'logout', 2),
 ('profile', 'edit', 2),
+('profile', 'delete', 2),
 ('profile', 'join', 3),
 ('profile', 'edit', 3),
 ('profile', 'delete', 3),

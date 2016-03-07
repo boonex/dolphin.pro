@@ -816,7 +816,7 @@ function mouseCoord( evt )
 		}
 	}
 
-	var oParentPosition = $(evt.target).parents('.items_wrapper').position();
+	var oParentPosition = $(evt.target).parents('.items_wrapper').offset();
 
 	pos_X -= oParentPosition.left;
 	pos_Y -= oParentPosition.top;

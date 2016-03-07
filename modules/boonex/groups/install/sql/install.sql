@@ -281,36 +281,36 @@ CREATE TABLE IF NOT EXISTS `[db_prefix]forum_signatures` (
 
 -- page compose pages
 SET @iMaxOrder = (SELECT `Order` FROM `sys_page_compose_pages` ORDER BY `Order` DESC LIMIT 1);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_groups_view', 'Group View', @iMaxOrder+1);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_groups_view', 'Groups View Group', @iMaxOrder+1);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_groups_celendar', 'Groups Calendar', @iMaxOrder+2);
 INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_groups_main', 'Groups Home', @iMaxOrder+3);
-INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_groups_my', 'Groups My', @iMaxOrder+4);
+INSERT INTO `sys_page_compose_pages` (`Name`, `Title`, `Order`) VALUES ('bx_groups_my', 'Groups User', @iMaxOrder+4);
 
 -- page compose blocks
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES 
-    ('bx_groups_view', '1140px', 'Group''s info block', '_bx_groups_block_info', 3, 0, 'Info', '', '1', 28.1, 'non,memb', '0'),
-    ('bx_groups_view', '1140px', 'Group''s actions block', '_bx_groups_block_actions', 3, 1, 'Actions', '', '1', 28.1, 'non,memb', '0'),    
-    ('bx_groups_view', '1140px', 'Group''s rate block', '_bx_groups_block_rate', 3, 2, 'Rate', '', '1', 28.1, 'non,memb', '0'),    
-    ('bx_groups_view', '1140px', 'Group''s social sharing block', '_sys_block_title_social_sharing', 3, 3, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
-    ('bx_groups_view', '1140px', 'Group''s fans block', '_bx_groups_block_fans', 3, 4, 'Fans', '', '1', 28.1, 'non,memb', '0'),    
-    ('bx_groups_view', '1140px', 'Group''s unconfirmed fans block', '_bx_groups_block_fans_unconfirmed', 3, 5, 'FansUnconfirmed', '', '1', 28.1, 'memb', '0'),
-    ('bx_groups_view', '1140px', 'Group''s Location', '_Location', 3, 6, 'PHP', 'return BxDolService::call(''wmap'', ''location_block'', array(''groups'', $this->aDataEntry[$this->_oDb->_sFieldId]));', 1, 28.1, 'non,memb', 0),
-    ('bx_groups_view', '1140px', 'Group''s chat', '_Chat', 3, 7, 'PHP', 'return BxDolService::call(''shoutbox'', ''get_shoutbox'', array(''bx_groups'', $this->aDataEntry[$this->_oDb->_sFieldId]));', 11, 28.1, 'non,memb', 0),
-    ('bx_groups_view', '1140px', 'Group''s description block', '_bx_groups_block_desc', 2, 0, 'Desc', '', '1', 71.9, 'non,memb', '0'),
-    ('bx_groups_view', '1140px', 'Group''s photo block', '_bx_groups_block_photo', 2, 1, 'Photo', '', '1', 71.9, 'non,memb', '0'),
-    ('bx_groups_view', '1140px', 'Group''s videos block', '_bx_groups_block_video', 2, 2, 'Video', '', '1', 71.9, 'non,memb', '0'),    
-    ('bx_groups_view', '1140px', 'Group''s sounds block', '_bx_groups_block_sound', 2, 3, 'Sound', '', '1', 71.9, 'non,memb', '0'),    
-    ('bx_groups_view', '1140px', 'Group''s files block', '_bx_groups_block_files', 2, 4, 'Files', '', '1', 71.9, 'non,memb', '0'),    
-    ('bx_groups_view', '1140px', 'Group''s comments block', '_bx_groups_block_comments', 2, 5, 'Comments', '', '1', 71.9, 'non,memb', '0'),
-    ('bx_groups_view', '1140px', 'Group''s forum feed', '_sys_block_title_forum_feed', 2, 6, 'ForumFeed', '', '1', 71.9, 'non,memb', '0'),
+    ('bx_groups_view', '1140px', 'Group''s info block', '_bx_groups_block_info', 2, 0, 'Info', '', '1', 28.1, 'non,memb', '0'),
+    ('bx_groups_view', '1140px', 'Group''s actions block', '_bx_groups_block_actions', 2, 1, 'Actions', '', '1', 28.1, 'non,memb', '0'),    
+    ('bx_groups_view', '1140px', 'Group''s rate block', '_bx_groups_block_rate', 2, 2, 'Rate', '', '1', 28.1, 'non,memb', '0'),    
+    ('bx_groups_view', '1140px', 'Group''s social sharing block', '_sys_block_title_social_sharing', 2, 3, 'SocialSharing', '', 1, 28.1, 'non,memb', 0),
+    ('bx_groups_view', '1140px', 'Group''s fans block', '_bx_groups_block_fans', 2, 4, 'Fans', '', '1', 28.1, 'non,memb', '0'),    
+    ('bx_groups_view', '1140px', 'Group''s unconfirmed fans block', '_bx_groups_block_fans_unconfirmed', 2, 5, 'FansUnconfirmed', '', '1', 28.1, 'memb', '0'),
+    ('bx_groups_view', '1140px', 'Group''s Location', '_Location', 2, 6, 'PHP', 'return BxDolService::call(''wmap'', ''location_block'', array(''groups'', $this->aDataEntry[$this->_oDb->_sFieldId]));', 1, 28.1, 'non,memb', 0),
+    ('bx_groups_view', '1140px', 'Group''s chat', '_Chat', 2, 7, 'PHP', 'return BxDolService::call(''shoutbox'', ''get_shoutbox'', array(''bx_groups'', $this->aDataEntry[$this->_oDb->_sFieldId]));', 11, 28.1, 'non,memb', 0),
+    ('bx_groups_view', '1140px', 'Group''s description block', '_bx_groups_block_desc', 1, 0, 'Desc', '', '1', 71.9, 'non,memb', '0'),
+    ('bx_groups_view', '1140px', 'Group''s photo block', '_bx_groups_block_photo', 1, 1, 'Photo', '', '1', 71.9, 'non,memb', '0'),
+    ('bx_groups_view', '1140px', 'Group''s videos block', '_bx_groups_block_video', 1, 2, 'Video', '', '1', 71.9, 'non,memb', '0'),    
+    ('bx_groups_view', '1140px', 'Group''s sounds block', '_bx_groups_block_sound', 1, 3, 'Sound', '', '1', 71.9, 'non,memb', '0'),    
+    ('bx_groups_view', '1140px', 'Group''s files block', '_bx_groups_block_files', 1, 4, 'Files', '', '1', 71.9, 'non,memb', '0'),    
+    ('bx_groups_view', '1140px', 'Group''s comments block', '_bx_groups_block_comments', 1, 5, 'Comments', '', '1', 71.9, 'non,memb', '0'),
+    ('bx_groups_view', '1140px', 'Group''s forum feed', '_sys_block_title_forum_feed', 1, 6, 'ForumFeed', '', '1', 71.9, 'non,memb', '0'),
 
-    ('bx_groups_main', '1140px', 'Latest Featured Group', '_bx_groups_block_latest_featured_group', '2', '0', 'LatestFeaturedGroup', '', '1', '71.9', 'non,memb', '0'),
-    ('bx_groups_main', '1140px', 'Recent Groups', '_bx_groups_block_recent', '2', '1', 'Recent', '', '1', '71.9', 'non,memb', '0'),
-    ('bx_groups_main', '1140px', 'Map', '_Map', '2', '2', 'PHP', 'return BxDolService::call(''wmap'', ''homepage_part_block'', array (''groups''));', 1, 71.9, 'non,memb', 0),
-    ('bx_groups_main', '1140px', 'Groups Categories', '_bx_groups_block_categories', '3', '0', 'Categories', '', '1', '28.1', 'non,memb', '0'),
+    ('bx_groups_main', '1140px', 'Latest Featured Group', '_bx_groups_block_latest_featured_group', '1', '0', 'LatestFeaturedGroup', '', '1', '71.9', 'non,memb', '0'),
+    ('bx_groups_main', '1140px', 'Recent Groups', '_bx_groups_block_recent', '1', '1', 'Recent', '', '1', '71.9', 'non,memb', '0'),
+    ('bx_groups_main', '1140px', 'Map', '_Map', '1', '2', 'PHP', 'return BxDolService::call(''wmap'', ''homepage_part_block'', array (''groups''));', 1, 71.9, 'non,memb', 0),
+    ('bx_groups_main', '1140px', 'Groups Categories', '_bx_groups_block_categories', '2', '0', 'Categories', '', '1', '28.1', 'non,memb', '0'),
 
-    ('bx_groups_my', '1140px', 'Administration Owner', '_bx_groups_block_administration_owner', '2', '0', 'Owner', '', '1', '100', 'non,memb', '0'),
-    ('bx_groups_my', '1140px', 'User''s groups', '_bx_groups_block_users_groups', '2', '1', 'Browse', '', '0', '100', 'non,memb', '0'),
+    ('bx_groups_my', '1140px', 'Administration Owner', '_bx_groups_block_administration_owner', '1', '0', 'Owner', '', '1', '100', 'non,memb', '0'),
+    ('bx_groups_my', '1140px', 'User''s groups', '_bx_groups_block_users_groups', '1', '1', 'Browse', '', '0', '100', 'non,memb', '0'),
 
     ('index', '1140px', 'Groups', '_bx_groups_block_homepage', 0, 0, 'PHP', 'bx_import(''BxDolService''); return BxDolService::call(''groups'', ''homepage_block'');', 1, 71.9, 'non,memb', 0),
 	('profile', '1140px', 'Joined Groups', '_bx_groups_block_my_groups_joined', 0, 0, 'PHP', 'bx_import(''BxDolService''); return BxDolService::call(''groups'', ''profile_block_joined'', array($this->oProfileGen->_iProfileID));', 1, 71.9, 'non,memb', 0),
