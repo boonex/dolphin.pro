@@ -48,8 +48,8 @@ class BxDolCacheUtilities
         $sFuncCacheObject = ('clear' == $sMode ? '_clearCacheObject' : '_getSizeCacheObject');
         $sFuncCacheFile = ('clear' == $sMode ? '_clearCache' : '_getSizeCache');
 
+        $mixedResult = null;
         switch ($sCache) {
-
             case 'member_menu':
                 $mixedResult = $this->$sFuncCacheObject ($this->oCacheMemberMenu, $this->oMemberMenu->sMenuMemberKeysCache);
                 break;

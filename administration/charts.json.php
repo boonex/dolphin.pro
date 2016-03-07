@@ -53,7 +53,7 @@ function bx_charts_get_json($sObject, $sFrom, $sTo)
 
 function bx_charts_get_ts($s, $isNowIfError = false)
 {
-    $a = split('-', $s); // YYYY-MM-DD
+    $a = explode('-', $s); // YYYY-MM-DD
     if (!$a || empty($a[0]) || empty($a[1]) || empty($a[2]) || !(int)$a[0] || !(int)$a[1] || !(int)$a[2])
         return $isNowIfError ? time() : false;
     return mktime(0, 0, 0, $a[1], $a[2], $a[0]);

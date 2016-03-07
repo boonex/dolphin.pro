@@ -111,7 +111,6 @@ class BxAdsSearchUnit extends BxTemplSearchResultText
         parent::__construct();
 
         $this->sSelectedUnit = 'unit_ads';
-        $this->iPostViewType = $iPostViewType;
     }
 
     function getAdsMain()
@@ -181,6 +180,7 @@ class BxAdsSearchUnit extends BxTemplSearchResultText
 
     function displayResultBlock ($bWrap = true)
     {
+        $sCode = null;
         $aData = $this->getSearchData();
         if (count($aData) > 0) {
             $sCode .= $this->addCustomParts();
@@ -333,7 +333,7 @@ EOF;
          return array( $aDBTopMenu, $aDBBottomMenu );
     }
 
-    function getTopMenu ()
+    function getTopMenu ($aExclude = array())
     {
         $aDBTopMenu = array();
         foreach( array('last') as $sMyMode ) {

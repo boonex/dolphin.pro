@@ -1180,21 +1180,38 @@ class BxDolTemplate
 
         $sContent = str_replace(array("\n\r", "\r\n", "\r"), "\n", $sContent);
         if($bExternal) {
-            $sContent = preg_replace(
-                array(
-                    "'@import\s+url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/_-]+)\s*[\'|\"]*\s*\)\s*;'e",
-                    "'url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/\?\#_=-]+)\s*[\'|\"]*\s*\)'e"
-                ),
-                array(
-                    "",
-                    "'url(' . \$sPath . '\\1)'"
-                ),
+            $sContent = preg_replace_callback(
+                "'@import\s+url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/_-]+)\s*[\'|\"]*\s*\)\s*;'",
+                function($matches) { return ''; },
                 $sContent
             );
+
+            $sContent = preg_replace_callback(
+                "'url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/\?\#_=-]+)\s*[\'|\"]*\s*\)'",
+                function($matches) use ($sPath) { return "url({$sPath}{$matches[1]});"; },
+                $sContent
+            );
+
+            dd($sContent);
+
+//            $sContent = preg_replace(
+//                array(
+//                    "'@import\s+url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/_-]+)\s*[\'|\"]*\s*\)\s*;'e",
+//                    "'url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/\?\#_=-]+)\s*[\'|\"]*\s*\)'e"
+//                ),
+//                array(
+//                    "",
+//                    "'url(' . \$sPath . '\\1)'"
+//                ),
+//                $sContent
+//            );
+
+//            function($matches) { return ''; },
+//            function($matches) use ($sPath) { return url($sPath, $matches[1]); },
         } else {
-            $sContent = preg_replace(
-                "'@import\s+url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/_-]+)\s*[\'|\"]*\s*\)\s*;'e",
-                "\$this->_compileCss(realpath(\$sPath . dirname('\\1')) . DIRECTORY_SEPARATOR . basename('\\1'), \$aIncluded)",
+            $sContent = preg_replace_callback(
+                "'@import\s+url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/_-]+)\s*[\'|\"]*\s*\)\s*;'",
+                function($matches) use ($sPath) { return $this->_compileCss(realpath($sPath . dirname($matches[1])) . DIRECTORY_SEPARATOR . basename($matches[1]), $aIncluded); },
                 $sContent
             );
 
@@ -1226,7 +1243,7 @@ class BxDolTemplate
      * @param  array  $aMatches matched parts of image's URL.
      * @return string converted image's URL.
      */
-    function _callbackParseUrl($sPath, $aMatches)
+    public static function _callbackParseUrl($sPath, $aMatches)
     {
         $sFile = basename($aMatches[1]);
         $sDirectory = dirname($aMatches[1]);
@@ -1607,36 +1624,67 @@ class BxDolTemplate
         }
 
         $aKeys = array_merge($aKeys, array(
-            "'<bx_include_auto:([^\s]+) \/>'se",
-            "'<bx_include_base:([^\s]+) \/>'se",
-            "'<bx_include_tmpl:([^\s]+) \/>'se",
+            "'<bx_include_auto:([^\s]+) \/>'s",
+            "'<bx_include_base:([^\s]+) \/>'s",
+            "'<bx_include_tmpl:([^\s]+) \/>'s",
             "'<bx_injection:([^\s]+) />'s",
-            "'<bx_image_url:([^\s]+) \/>'se",
-            "'<bx_icon_url:([^\s]+) \/>'se",
-            "'<bx_text:([_\{\}\w\d\s]+[^\s]{1}) \/>'se",
-        	"'<bx_text_js:([^\s]+) \/>'se",
-			"'<bx_text_attribute:([^\s]+) \/>'se",
+            "'<bx_image_url:([^\s]+) \/>'s",
+            "'<bx_icon_url:([^\s]+) \/>'s",
+            "'<bx_text:([_\{\}\w\d\s]+[^\s]{1}) \/>'s",
+        	"'<bx_text_js:([^\s]+) \/>'s",
+			"'<bx_text_attribute:([^\s]+) \/>'s",
             "'<bx_url_root />'",
             "'<bx_url_admin />'"
         ));
+
         $aValues = array_merge($aValues, array(
-            "\$this->getCached('\\1', \$aVarValues, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH, false)",
-            "\$this->getCached('\\1', \$aVarValues, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BASE, false)",
-            "\$this->getCached('\\1', \$aVarValues, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_TMPL, false)",
-            "<?=\$this->processInjection(\$GLOBALS['_page']['name_index'], '\\1'); ?".">",
-            "\$this->getImageUrl('\\1')",
-            "\$this->getIconUrl('\\1')",
-            "_t('\\1')",
-        	"bx_js_string(_t('\\1'))",
-        	"bx_html_attribute(_t('\\1'))",
+            function($matches) use ($aVarValues, $mixedKeyWrapperHtml) { return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH, false); },
+            function($matches) use ($aVarValues, $mixedKeyWrapperHtml) { return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BASE, false); },
+            function($matches) use ($aVarValues, $mixedKeyWrapperHtml) { return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_TMPL, false); },
+            function($matches) { return $this->processInjection($GLOBALS['_page']['name_index'], $matches[1]); },
+            function($matches) { return $this->getImageUrl($matches[1]); },
+            function($matches) { return $this->getIconUrl($matches[1]); },
+            function($matches) { return _t($matches[1]); },
+            function($matches) { return bx_js_string(_t($matches[1])); },
+            function($matches) { return bx_html_attribute(_t($matches[1])); },
             BX_DOL_URL_ROOT,
             BX_DOL_URL_ADMIN
         ));
+//        $aValues = array_merge($aValues, array(
+//            "\$this->getCached('\\1', \$aVarValues, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH, false)",
+//            "\$this->getCached('\\1', \$aVarValues, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BASE, false)",
+//            "\$this->getCached('\\1', \$aVarValues, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_TMPL, false)",
+//            "<?=\$this->processInjection(\$GLOBALS['_page']['name_index'], '\\1'); ?".">",
+//            "\$this->getImageUrl('\\1')",
+//            "\$this->getIconUrl('\\1')",
+//            "_t('\\1')",
+//        	"bx_js_string(_t('\\1'))",
+//        	"bx_html_attribute(_t('\\1'))",
+//            BX_DOL_URL_ROOT,
+//            BX_DOL_URL_ADMIN
+//        ));
 
         //--- Parse Predefined Keys ---//
-        $sContent = preg_replace($aKeys, $aValues, $sContent);
+        //$sContent = preg_replace($aKeys, $aValues, $sContent);
+        $aCombined = array_combine($aKeys, $aValues);
+        foreach($aCombined as $sPattern => $sValue) {
+            if(is_object($sValue) && ($sValue instanceof Closure)) {
+                $sContent = preg_replace_callback($sPattern, $sValue, $sContent);
+                continue;
+            }
+
+            $sContent = preg_replace_callback($sPattern, function($matches) use ($sValue) {
+                return $sValue;
+            }, $sContent);
+        }
+
         //--- Parse System Keys ---//
-        $sContent = preg_replace( "'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'", "<?=\$this->parseSystemKey('\\1', \$mixedKeyWrapperHtml);?".">", $sContent);
+        //$sContent = preg_replace( "'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'", "<?=\$this->parseSystemKey('\\1', \$mixedKeyWrapperHtml);?".">", $sContent);
+        $sContent = preg_replace_callback("'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'",
+            function($matches) use ($mixedKeyWrapperHtml) {
+
+                return $this->parseSystemKey($matches[1], $mixedKeyWrapperHtml);
+            }, $sContent);
 
         return $sContent;
     }

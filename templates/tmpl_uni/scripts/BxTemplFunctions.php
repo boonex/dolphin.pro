@@ -63,7 +63,7 @@
 						'title' => getNickName($oMenu->aMenuInfo['memberID'])
 	    			);
 
-	        	$sMenuPopupId = 'sys-service-menu-' . mktime();
+	        	$sMenuPopupId = 'sys-service-menu-' . time();
 	    		$sMenuPopupContent = $this->transBox($oMenu->getCode());
 	    	}
 

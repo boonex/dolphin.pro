@@ -40,7 +40,7 @@ function actionAllCategories()
 
         if(is_array($aPathes) && !empty($aPathes))
             foreach($_POST['pathes'] as $sValue) {
-                list($sCategory, $sId, $sType) = split('%%', process_db_input($sValue, BX_TAGS_STRIP));
+                list($sCategory, $sId, $sType) = explode('%%', process_db_input($sValue, BX_TAGS_STRIP));
                 if (bx_get('action_disable') !== false)
                     $oDb->query("UPDATE `sys_categories` SET `Status` = 'passive' WHERE
                         `Category` = '$sCategory' AND `ID` = " . (int)$sId . " AND `Type` = '$sType'");
@@ -93,7 +93,7 @@ function actionAllCategories()
         'action_delete' => _t('_categ_btn_delete')
     ), 'pathes');
 
-    $sContent .= $GLOBALS['oAdmTemplate']->parseHtmlByName('categories_list.html', array(
+    $sContent = $GLOBALS['oAdmTemplate']->parseHtmlByName('categories_list.html', array(
         'top_controls' => $sTopControls,
         'form_name' => $sFormName,
         'bx_repeat:items' => $mixedTmplItems,
@@ -111,7 +111,7 @@ function actionPending()
 
     if(is_array($_POST['pathes']) && !empty($_POST['pathes'])) {
         foreach($_POST['pathes'] as $sValue) {
-            list($sCategory, $sId, $sType) = split('%%', process_db_input($sValue, BX_TAGS_STRIP));
+            list($sCategory, $sId, $sType) = explode('%%', process_db_input($sValue, BX_TAGS_STRIP));
             $oDb->query("UPDATE `sys_categories` SET `Status` = 'active' WHERE
                 `Category` = '$sCategory' AND `ID` = '$sId' AND `Type` = '$sType'");
         }

@@ -469,7 +469,7 @@ class BxDolPageView
         $sCode = "";
         if(!$bStatic && $sDynamicType == 'popup')
             $sCode = '<div class="dbTopMenu"><i class="login_ajx_close sys-icon times"></i></div>';
-        else if( is_array($aBlockCode[1]))
+        else if(isset($aBlockCode[1]) && is_array($aBlockCode[1]))
             $sCode = $this -> $sCaptionMenuFunc($iBlockID, $aBlockCode[1]);
 
         return $sCode;

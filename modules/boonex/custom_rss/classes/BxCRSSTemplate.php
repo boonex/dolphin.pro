@@ -24,7 +24,7 @@ class BxCRSSTemplate extends BxDolModuleTemplate
         parent::loadTemplates();
     }
 
-    function parseHtmlByTemplateName($sName, $aVariables)
+    function parseHtmlByTemplateName($sName, $aVariables, $mixedKeyWrapperHtml = null)
     {
         return $this->parseHtmlByContent($this->_aTemplates[$sName], $aVariables);
     }

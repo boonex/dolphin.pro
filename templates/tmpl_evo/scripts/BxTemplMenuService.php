@@ -24,7 +24,7 @@ class BxTemplMenuService extends BxBaseMenuService
 	{
 		$sContent = parent::getItems();
 
-		return $GLOBALS[oSysTemplate]->parseHtmlByContent($sContent, array(
+		return $GLOBALS['oSysTemplate']->parseHtmlByContent($sContent, array(
 			'bx_if:show_profile_link' => array(
 				'condition' => $this->aMenuInfo['memberID'] != 0,
 				'content' => array(
