@@ -1624,7 +1624,7 @@ class BxDolTemplate
             function($matches) use ($aVarValues, $mixedKeyWrapperHtml) { return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH, false); },
             function($matches) use ($aVarValues, $mixedKeyWrapperHtml) { return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BASE, false); },
             function($matches) use ($aVarValues, $mixedKeyWrapperHtml) { return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_TMPL, false); },
-            function($matches) { return $this->processInjection($GLOBALS['_page']['name_index'], $matches[1]); },
+            function($matches) { return '<?=$this->processInjection($GLOBALS[\'_page\'][\'name_index\'], "'.$matches[1].'")?>'; },
             function($matches) { return $this->getImageUrl($matches[1]); },
             function($matches) { return $this->getIconUrl($matches[1]); },
             function($matches) { return _t($matches[1]); },
@@ -1633,22 +1633,8 @@ class BxDolTemplate
             BX_DOL_URL_ROOT,
             BX_DOL_URL_ADMIN
         ));
-//        $aValues = array_merge($aValues, array(
-//            "\$this->getCached('\\1', \$aVarValues, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH, false)",
-//            "\$this->getCached('\\1', \$aVarValues, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BASE, false)",
-//            "\$this->getCached('\\1', \$aVarValues, \$mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_TMPL, false)",
-//            "<?=\$this->processInjection(\$GLOBALS['_page']['name_index'], '\\1'); ?".">",
-//            "\$this->getImageUrl('\\1')",
-//            "\$this->getIconUrl('\\1')",
-//            "_t('\\1')",
-//        	"bx_js_string(_t('\\1'))",
-//        	"bx_html_attribute(_t('\\1'))",
-//            BX_DOL_URL_ROOT,
-//            BX_DOL_URL_ADMIN
-//        ));
 
         //--- Parse Predefined Keys ---//
-        //$sContent = preg_replace($aKeys, $aValues, $sContent);
         $aCombined = array_combine($aKeys, $aValues);
         foreach($aCombined as $sPattern => $sValue) {
             if(is_object($sValue) && ($sValue instanceof Closure)) {
@@ -1662,12 +1648,7 @@ class BxDolTemplate
         }
 
         //--- Parse System Keys ---//
-        //$sContent = preg_replace( "'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'", "<?=\$this->parseSystemKey('\\1', \$mixedKeyWrapperHtml);?".">", $sContent);
-        $sContent = preg_replace_callback("'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'",
-            function($matches) use ($mixedKeyWrapperHtml) {
-
-                return $this->parseSystemKey($matches[1], $mixedKeyWrapperHtml);
-            }, $sContent);
+        $sContent = preg_replace( "'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'", "<?=\$this->parseSystemKey('\\1', \$mixedKeyWrapperHtml);?".">", $sContent);
 
         return $sContent;
     }

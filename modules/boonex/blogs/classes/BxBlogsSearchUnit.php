@@ -9,8 +9,12 @@ require_once(BX_DIRECTORY_PATH_INC . 'header.inc.php' );
 bx_import('BxTemplCmtsView');
 bx_import('BxTemplSearchResultText');
 
-define('BX_BLOGS_IMAGES_PATH', BX_DIRECTORY_PATH_ROOT . "media/images/blog/");
-define('BX_BLOGS_IMAGES_URL', BX_DOL_URL_ROOT . "media/images/blog/");
+if (!defined('BX_BLOGS_IMAGES_PATH')) {
+    define('BX_BLOGS_IMAGES_PATH', BX_DIRECTORY_PATH_ROOT . "media/images/blog/");
+}
+if (!defined('BX_BLOGS_IMAGES_URL')) {
+    define('BX_BLOGS_IMAGES_URL', BX_DOL_URL_ROOT . "media/images/blog/");
+}
 
 class BxBlogsSearchUnit extends BxTemplSearchResultText
 {
