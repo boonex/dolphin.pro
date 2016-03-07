@@ -7,7 +7,5 @@
 trait Logger
 {
     // TODO: Implement maybe?
-    public function log($logThis) {
-        dd($logThis);
-    }
+    public function log($logThis) {}
 }
