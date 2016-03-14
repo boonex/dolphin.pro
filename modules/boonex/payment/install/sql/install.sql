@@ -168,10 +168,9 @@ INSERT INTO `[db_prefix]providers_options`(`provider_id`, `name`, `type`, `capti
 (@iProviderId, 'pp_mode', 'select', '_payment_pp_mode_cpt', '_payment_pp_mode_dsc', '1|_payment_pp_mode_live,2|_payment_pp_mode_test', '', '', '', 2),
 (@iProviderId, 'pp_business', 'text', '_payment_pp_business_cpt', '_payment_pp_business_dsc', '', '', '', '', 3),
 (@iProviderId, 'pp_prc_type', 'select', '_payment_pp_prc_type_cpt', '_payment_pp_prc_type_dsc', '1|_payment_pp_prc_type_direct,2|_payment_pp_prc_type_pdt,3|_payment_pp_prc_type_ipn', '', '', '', 4),
-(@iProviderId, 'pp_cnt_type', 'select', '_payment_pp_cnt_type_cpt', '_payment_pp_cnt_type_dsc', '1|_payment_pp_cnt_type_ssl,2|_payment_pp_cnt_type_http', '', '', '', 5),
-(@iProviderId, 'pp_token', 'text', '_payment_pp_token_cpt', '_payment_pp_token_dsc', '', '', '', '', 6),
-(@iProviderId, 'pp_sandbox', 'text', '_payment_pp_sandbox_cpt', '_payment_pp_sandbox_dsc', '', '', '', '', 7),
-(@iProviderId, 'pp_return_url', 'value', '_payment_details_return_url', '', '', '', '', '', 8);
+(@iProviderId, 'pp_token', 'text', '_payment_pp_token_cpt', '_payment_pp_token_dsc', '', '', '', '', 5),
+(@iProviderId, 'pp_sandbox', 'text', '_payment_pp_sandbox_cpt', '_payment_pp_sandbox_dsc', '', '', '', '', 6),
+(@iProviderId, 'pp_return_url', 'value', '_payment_details_return_url', '', '', '', '', '', 7);
 
 
 --
