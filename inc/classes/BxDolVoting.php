@@ -223,7 +223,8 @@ class BxDolVoting
         if($this->_sSystem == 'profile' && $this->getId() == getLoggedId())
             return false;
 
-        if(!$this->_oQuery->putVote ($this->getId(), getVisitorIP(), $iVote)) 
+        $sVoterIdentification = isLogged() ? getLoggedId() : getVisitorIP();
+        if(!$this->_oQuery->putVote ($this->getId(), $sVoterIdentification, $iVote))
         	return false;
 
 		$this->checkAction(true);
@@ -248,7 +249,9 @@ class BxDolVoting
     function isDublicateVote ()
     {
         if (!$this->isEnabled()) return false;
-        return $this->_oQuery->isDublicateVote ($this->getId(), getVisitorIP());
+
+        $sVoterIdentification = isLogged() ? getLoggedId() : getVisitorIP();
+        return $this->_oQuery->isDublicateVote ($this->getId(), $sVoterIdentification);
     }
 
     function getId ()
