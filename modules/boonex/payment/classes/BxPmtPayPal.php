@@ -13,9 +13,6 @@ define('PP_PRC_TYPE_DIRECT', 1);
 define('PP_PRC_TYPE_PDT', 2);
 define('PP_PRC_TYPE_IPN', 3);
 
-define('PP_CNT_TYPE_SSL', 1);
-define('PP_CNT_TYPE_HTML', 2);
-
 class BxPmtPayPal extends BxPmtProvider
 {
     var $_sDataReturnUrl;
@@ -225,11 +222,8 @@ class BxPmtPayPal extends BxPmtProvider
 
         $iErrCode = 0;
         $sErrMessage = "";
-        if($this->getOption('cnt_type') == PP_CNT_TYPE_SSL)
-            $rSocket = fsockopen("ssl://" . $sConnectionUrl, 443, $iErrCode, $sErrMessage, 60);
-        else
-            $rSocket = fsockopen("tcp://" . $sConnectionUrl, 80, $iErrCode, $sErrMessage, 60);
 
+		$rSocket = fsockopen("ssl://" . $sConnectionUrl, 443, $iErrCode, $sErrMessage, 60);
         if(!$rSocket)
             return array('code' => 2, 'message' => 'Can\'t connect to remote host for validation (' . $sErrMessage . ')');
 
