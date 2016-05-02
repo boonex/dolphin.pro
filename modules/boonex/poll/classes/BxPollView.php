@@ -41,9 +41,9 @@ class BxPollView extends BxDolPageView
      * @param : $oPollModule (object)  - created poll's module object;
      * @param : $iPollId     (integer) - poll's Id;
      */
-    function BxPollView($sPageName, &$aModule, &$oPollModule, $iPollId)
+    function __construct($sPageName, &$aModule, &$oPollModule, $iPollId)
     {
-        parent::BxDolPageView($sPageName);
+        parent::__construct($sPageName);
 
         // define member's Id;
         $aProfileInfo = getProfileInfo();

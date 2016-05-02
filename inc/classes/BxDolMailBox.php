@@ -67,7 +67,7 @@
          *                          [] contacts_page (integer) - number of current contact's page ;
          *                          [] messageID      (integer) - number of needed message ;
          */
-         function BxDolMailBox( $sPageName, &$aMailBoxSettings )
+         function __construct( $sPageName, &$aMailBoxSettings )
          {
              $sPageName = process_db_input($sPageName);
 
@@ -87,7 +87,7 @@
                 $aMailBoxSettings['messages_types'] = process_db_input($aMailBoxSettings['messages_types'],BX_TAGS_STRIP);
             }
 
-            parent::BxDolPageView($sPageName);
+            parent::__construct($sPageName);
 
             $this -> aMailBoxSettings = $aMailBoxSettings;
 
@@ -121,7 +121,7 @@
                     $rResult = db_res($sQuery);
 
                     $aMatches = array();
-                    while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+                    while( true == ($aRow = $rResult->fetch()) ) {
                          preg_match_all("/\'([^\']*)\'/", $aRow['Type'], $aMatches);
                          if ( is_array($aMatches[1]) and !empty($aMatches[1]) ) {
                               foreach($aMatches[1] AS $sKey ) {
@@ -263,7 +263,7 @@
                          ";
 
                          $rResult = db_res($sQuery);
-                         while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+                         while( true == ($aRow = $rResult->fetch()) ) {
                               $aMessages[] = $aRow;
                          }
                     }
@@ -302,7 +302,7 @@
                     {$sSqlLimit}
                 ";
                $rResult = db_res($sQuery);
-               while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+               while( true == ($aRow = $rResult->fetch()) ) {
                     $aFriendsList[] = $aRow;
                }
                return $aFriendsList;
@@ -359,7 +359,7 @@
                ";
 
                $rResult = db_res($sQuery);
-               while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+               while( true == ($aRow = $rResult->fetch()) ) {
                     $aFavesList[] = $aRow;
                }
 
@@ -417,7 +417,7 @@
                ";
 
                $rResult = db_res($sQuery);
-               while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+               while( true == ($aRow = $rResult->fetch()) ) {
                     $aContactedList[] = $aRow;
                }
 
@@ -575,7 +575,7 @@
                          $rResult = db_res($sQuery);
 
                          // generate array with messages ;
-                         while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+                         while( true == ($aRow = $rResult->fetch()) ) {
                           $aMessages[] = $aRow;
                          }
 
@@ -629,7 +629,7 @@
                $sQuery = "SELECT `Sender`, `Recipient`, `{$sField}` FROM `sys_messages` WHERE `ID` = {$iMessageID}";
                $rResult = db_res($sQuery);
 
-               while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+               while( true == ($aRow = $rResult->fetch()) ) {
                     $sTrashValue = $sFieldName = ( $aRow['Sender'] == $this -> aMailBoxSettings['member_id'] )
                          ? 'Sender'
                          : 'Recipient' ;
@@ -674,7 +674,7 @@
                $sQuery = "SELECT `Sender`, `Recipient`, `Trash`     FROM `sys_messages` WHERE `ID` = {$iMessageID}";
                $rResult = db_res($sQuery);
 
-               while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+               while( true == ($aRow = $rResult->fetch()) ) {
                     if ( $aRow['Recipient'] == $aRow['Sender']  ) {
                          $sTrashMode      = null;
                          $iMessageOwner  = (int) $aRow['Sender'];

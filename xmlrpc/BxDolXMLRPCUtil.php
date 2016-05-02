@@ -19,35 +19,35 @@ class BxDolXMLRPCUtil
         $r = db_res ("SELECT `p`.`ID` FROM `Profiles` AS `p`
             INNER JOIN `sys_fave_list` AS `h` ON (`h`.`Profile` = `p`.`ID`)
             WHERE `h`.`ID` = $iId");
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aAll[$aRow['ID']] = $aRow;
 
         // mail contacts received
         $r = db_res ("SELECT `p`.`ID` FROM `Profiles` AS `p`
             INNER JOIN `sys_messages` AS `m` ON (`m`.`Sender` = `p`.`ID`)
             WHERE `p`.`ID` != $iId AND `m`.`Recipient` = $iId");
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aAll[$aRow['ID']] = $aRow;
 
         // mail contacts sent
         $r = db_res ("SELECT `p`.`ID` FROM `Profiles` AS `p`
             INNER JOIN `sys_messages` AS `m` ON (`m`.`Recipient` = `p`.`ID`)
             WHERE `p`.`ID` != $iId AND `m`.`Sender` = $iId");
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aAll[$aRow['ID']] = $aRow;
 
         // friends 1
         $r = db_res ("SELECT `p`.`ID` FROM `sys_friend_list` AS `fr`
             LEFT JOIN `Profiles` AS `p` ON (`p`.`ID` = `fr`.`Profile`)
             WHERE `fr`.`ID` = '$iId' AND `fr`.`Profile` != $iId AND `fr`.`Check` = '1'");
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aAll[$aRow['ID']] = $aRow;
 
         // friends 2
         $r = db_res ("SELECT `p`.`ID` FROM `sys_friend_list` AS `fr`
             LEFT JOIN `Profiles` AS `p` ON (`p`.`ID` = `fr`.`ID`)
             WHERE `fr`.`Profile` = '$iId' AND `fr`.`ID` != $iId AND `fr`.`Check` = '1'");
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aAll[$aRow['ID']] = $aRow;
 
         bx_import('BxDolAlerts');
@@ -87,7 +87,7 @@ class BxDolXMLRPCUtil
         return new xmlrpcval ($aCountries, "array");
     }
 
-    function getThumbLink ($iId, $sType = 'thumb')
+    public static function getThumbLink ($iId, $sType = 'thumb')
     {
         $sType = $sType == 'thumb' ? 'medium' : 'small';
         return $GLOBALS['oFunctions']->getMemberAvatar ((int)$iId, $sType);
@@ -103,7 +103,7 @@ class BxDolXMLRPCUtil
             return '';
     }
 
-    function getUserInfo($iId, $iIdViewer = 0, $isCountData = true)
+    public static function getUserInfo($iId, $iIdViewer = 0, $isCountData = true)
     {
         if (!$iIdViewer)
             $iIdViewer = (int)$_COOKIE['memberID'];
@@ -124,9 +124,10 @@ class BxDolXMLRPCUtil
 
         if ($isCountData) {
             $aRet['countFriends'] = new xmlrpcval(getFriendNumber($iId));
-            $aRet['countPhotos'] = new xmlrpcval(BxDolXMLRPCMedia::_getMediaCount('photo', $iId, $iIdViewer));
-            $aRet['countVideos'] = new xmlrpcval(BxDolXMLRPCMedia::_getMediaCount('video', $iId, $iIdViewer));
-            $aRet['countSounds'] = new xmlrpcval(BxDolXMLRPCMedia::_getMediaCount('music', $iId, $iIdViewer));
+            $oBxDolXMLRPCMedia = new BxDolXMLRPCMedia;
+            $aRet['countPhotos'] = new xmlrpcval($oBxDolXMLRPCMedia->_getMediaCount('photo', $iId, $iIdViewer));
+            $aRet['countVideos'] = new xmlrpcval($oBxDolXMLRPCMedia->_getMediaCount('video', $iId, $iIdViewer));
+            $aRet['countSounds'] = new xmlrpcval($oBxDolXMLRPCMedia->_getMediaCount('music', $iId, $iIdViewer));
         }
 
         bx_import('BxDolAlerts');
@@ -136,7 +137,7 @@ class BxDolXMLRPCUtil
         return $aRet;
     }
 
-    function fillProfileArray ($a, $sImage = 'icon', $iIdViewer = 0)
+    public static function fillProfileArray ($a, $sImage = 'icon', $iIdViewer = 0)
     {
         if (!$iIdViewer)
             $iIdViewer = (int)$_COOKIE['memberID'];
@@ -145,6 +146,8 @@ class BxDolXMLRPCUtil
         $sImage = BxDolXMLRPCUtil::getThumbLink($a['ID'], $sImage);
 
         bx_import('BxDolAlbums');
+
+        $oBxDolXMLRPCMedia = new BxDolXMLRPCMedia();
 
         $aRet = array (
                'user_title' => new xmlrpcval($GLOBALS['oFunctions']->getUserTitle($a['ID'])),
@@ -158,9 +161,9 @@ class BxDolXMLRPCUtil
                'Age' => new xmlrpcval(age($a['DateOfBirth'])),
                'Country' => new xmlrpcval(_t($GLOBALS['aPreValues']['Country'][$a['Country']]['LKey'])),
                'City' => new xmlrpcval($a['City']),
-               'CountPhotos' => new xmlrpcval(BxDolXMLRPCMedia::_getMediaCount('photo', $iId, $iIdViewer)),
-               'CountVideos' => new xmlrpcval(BxDolXMLRPCMedia::_getMediaCount('video', $iId, $iIdViewer)),
-               'CountSounds' => new xmlrpcval(BxDolXMLRPCMedia::_getMediaCount('music', $iId, $iIdViewer)),
+               'CountPhotos' => new xmlrpcval($oBxDolXMLRPCMedia->_getMediaCount('photo', $iId, $iIdViewer)),
+               'CountVideos' => new xmlrpcval($oBxDolXMLRPCMedia->_getMediaCount('video', $iId, $iIdViewer)),
+               'CountSounds' => new xmlrpcval($oBxDolXMLRPCMedia->_getMediaCount('music', $iId, $iIdViewer)),
                'CountFriends' => new xmlrpcval(getFriendNumber($a['ID'])),
                $sImageKey => new xmlrpcval($sImage),
             );
@@ -172,7 +175,7 @@ class BxDolXMLRPCUtil
         return $aRet;
     }
 
-    function getMenu ($sMenu, $aMarkersReplace = array ())
+    public static function getMenu ($sMenu, $aMarkersReplace = array ())
     {
         $aDefaultMarkers = array (
             'site_url' => BX_DOL_URL_ROOT,
@@ -185,7 +188,7 @@ class BxDolXMLRPCUtil
             $aKeys[$k] = '{' . $v . '}';
 
         $aMenu = array ();
-        $aRecords = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_menu_mobile` WHERE `page` = '$sMenu' AND `active` = 1 ORDER BY `order`");
+        $aRecords = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_menu_mobile` WHERE `page` = ? AND `active` = 1 ORDER BY `order`", [$sMenu]);
 
         bx_import('BxDolAlerts');
         $oZ = new BxDolAlerts('mobile', 'menu', 0, 0, array('menu' => $sMenu, 'data' => &$aRecords, 'markers_replace' => &$aMarkersReplace));
@@ -226,13 +229,13 @@ class BxDolXMLRPCUtil
         return $aMenu;
     }
 
-    function getIdByNickname ($sUser)
+    public static function getIdByNickname ($sUser)
     {
         $sUser = process_db_input($sUser, BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION);
         return (int)db_value("SELECT `ID` FROM `Profiles` WHERE `NickName` = '$sUser' LIMIT 1");
     }
 
-    function checkLogin ($sUser, $sPwd)
+    public static function checkLogin ($sUser, $sPwd)
     {
         $iId = (int)BxDolXMLRPCUtil::getIdByNickname ($sUser);
         $aProfile = getProfileInfo((int)$iId);
@@ -249,7 +252,7 @@ class BxDolXMLRPCUtil
         return $iRet;
     }
 
-    function setLanguage ($sLang)
+    public static function setLanguage ($sLang)
     {
         if ('English' == $sLang || !preg_match('/^[a-zA-Z]+$/', $sLang))
             $sLang = 'en';

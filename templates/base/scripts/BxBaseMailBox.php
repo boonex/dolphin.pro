@@ -42,10 +42,10 @@
          *                     [] contacts_page (integer)  - number of current contact's page ;
          *                     [] message_id     (integer) - number of needed message ;
          */
-        function BxBaseMailBox( $sPageName, &$aMailBoxSettings )
+        function __construct( $sPageName, &$aMailBoxSettings )
         {
             // call the parent constructor ;
-            parent::BxDolMailBox($sPageName, $aMailBoxSettings);
+            parent::__construct($sPageName, $aMailBoxSettings);
 
             // fill array with used template name ;
             $this -> aUsedTemplates = array (
@@ -244,7 +244,7 @@
             ";
 
             $rResult = db_res($sQuery);
-            while(true == ($aRow = mysql_fetch_assoc($rResult))) {
+            while(true == ($aRow = $rResult->fetch())) {
                 $iMessageOwner = ( $aRow['Sender'] == $this -> aMailBoxSettings['member_id'] )
                     ? $aRow['Recipient']
                     : $aRow['Sender'];
@@ -377,7 +377,7 @@
             ";
 
             $rResult = db_res($sQuery);
-            while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+            while( true == ($aRow = $rResult->fetch()) ) {
                 // ** generate member's information ;
 
                 $sMemberIcon  = get_member_thumbnail($aRow['Sender'], 'none');
@@ -618,7 +618,7 @@
             }
 
             // if message nothing found ;
-            if ( !mysql_num_rows($rResult) )
+            if ( !$rResult->rowCount() )
                 $sOutputHtml = MsgBox(_t( '_Empty' ) );
 
             return array($sOutputHtml, $aTopToggleEllements, array(), true);
@@ -1631,7 +1631,7 @@
             $sQuery  = "SELECT `ID`, `NickName` FROM `Profiles` WHERE $sWhere LIMIT {$iLimit}";
             $rResult = db_res($sQuery);
             $aOutput = array();
-            while( true == ($aRow = mysql_fetch_assoc($rResult)) )
+            while( true == ($aRow = $rResult->fetch()) )
                 $aOutput[] = array('id' => $aRow['ID'], 'value' => getNickName($aRow['ID']));
 
             return json_encode($aOutput);
@@ -1646,7 +1646,7 @@
                 [count]     - (integer) number of new messages;
                 [message]   - (string) text message ( if will have a new messages );
          */
-        function get_member_menu_bubble_new_messages($iMemberId, $iOldCount = 0)
+        public static function get_member_menu_bubble_new_messages($iMemberId, $iOldCount = 0)
         {
             global $oSysTemplate, $oFunctions, $site;
 
@@ -1678,7 +1678,7 @@
 
                 $rResult = db_res($sQuery);
                 $aMessages = array();
-                while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+                while( true == ($aRow = $rResult->fetch()) ) {
                     $aMessages[] = array($aRow['ID'], $aRow['Sender'], $aRow['Type']);
                 }
 
@@ -1773,7 +1773,7 @@
                 ";
 
                 $rResult = db_res($sQuery);
-                while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+                while( true == ($aRow = $rResult->fetch()) ) {
                     $aMemberInfo = getProfileInfo($aRow['Sender']);
                     $sThumb = $oFunctions -> getMemberIcon($aMemberInfo['ID'], 'none');
 

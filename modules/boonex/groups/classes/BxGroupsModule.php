@@ -153,9 +153,9 @@ class BxGroupsModule extends BxDolTwigModule
     var $_oPrivacy;
     var $_aQuickCache = array ();
 
-    function BxGroupsModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolTwigModule($aModule);
+        parent::__construct($aModule);
         $this->_sFilterName = 'bx_groups_filter';
         $this->_sPrefix = 'bx_groups';
 
@@ -851,7 +851,7 @@ class BxGroupsModule extends BxDolTwigModule
         defineMembershipActions(array('groups view group', 'groups browse', 'groups search', 'groups add group', 'groups comments delete and edit', 'groups edit any group', 'groups delete any group', 'groups mark as featured', 'groups approve groups', 'groups broadcast message'));
     }
 
-    function _browseMy (&$aProfile)
+    function _browseMy (&$aProfile, $sTitle = null)
     {
         parent::_browseMy ($aProfile, _t('_bx_groups_page_title_my_groups'));
     }

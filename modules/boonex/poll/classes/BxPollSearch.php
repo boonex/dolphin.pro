@@ -16,10 +16,10 @@ class BxPollSearch extends BxTemplSearchResultText
     /**
      * Class constructor ;
      */
-    function BxPollSearch($oPollObject = null)
+    function __construct($oPollObject = null)
     {
         // call the parent constructor ;
-        parent::BxTemplSearchResultText();
+        parent::__construct();
 
         if(!$oPollObject) {
             $this -> oPollObject = BxDolModule::getInstance('BxPollModule');

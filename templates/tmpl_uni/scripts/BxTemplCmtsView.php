@@ -7,8 +7,8 @@ require_once( BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseCmtsView.php' );
  */
 class BxTemplCmtsView extends BxBaseCmtsView
 {
-    function BxTemplCmtsView( $sSystem, $iId, $iInit = 1 )
+    function __construct( $sSystem, $iId, $iInit = 1 )
     {
-        BxBaseCmtsView::BxBaseCmtsView( $sSystem, $iId, $iInit );
+        parent::__construct( $sSystem, $iId, $iInit );
     }
 }

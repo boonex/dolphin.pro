@@ -51,7 +51,7 @@ class Login extends ThingPage
     /**
      * constructor
      */
-    function Login ()
+    function __construct ()
     {
 
     }

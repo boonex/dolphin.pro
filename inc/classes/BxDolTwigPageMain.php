@@ -19,7 +19,7 @@ class BxDolTwigPageMain extends BxDolPageView
     var $sSearchResultClassName;
     var $sFilterName;
 
-    function BxDolTwigPageMain($sName, &$oMain)
+    function __construct($sName, &$oMain)
     {
         $this->oMain = &$oMain;
         $this->oTemplate = $oMain->_oTemplate;
@@ -27,7 +27,7 @@ class BxDolTwigPageMain extends BxDolPageView
         $this->oDb = $oMain->_oDb;
         $this->sUrlStart = BX_DOL_URL_ROOT . $this->oMain->_oConfig->getBaseUri();
         $this->sUrlStart .= (false === strpos($this->sUrlStart, '?') ? '?' : '&');
-        parent::BxDolPageView($sName);
+        parent::__construct($sName);
     }
 
     function ajaxBrowse($sMode, $iPerPage, $aMenu = array(), $sValue = '', $isDisableRss = false, $isPublicOnly = true)

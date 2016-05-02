@@ -9,8 +9,8 @@
 
     class BxTemplJoinPageView extends BxBaseJoinPageView
     {
-        function BxTemplJoinPageView()
+        function __construct()
         {
-            parent::BxBaseJoinPageView();
+            parent::__construct();
         }
     }

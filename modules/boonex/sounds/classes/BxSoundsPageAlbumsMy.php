@@ -69,9 +69,9 @@ class BxSoundsPageAlbumsMy extends BxDolPageView
         ),
     );
 
-    function BxSoundsPageAlbumsMy (&$oShared, $iOwnerId, $aParams = array())
+    function __construct (&$oShared, $iOwnerId, $aParams = array())
     {
-        parent::BxDolPageView('bx_sounds_albums_my');
+        parent::__construct('bx_sounds_albums_my');
         $this->oTemplate = $oShared->_oTemplate;
         $this->oConfig = $oShared->_oConfig;
         $this->oDb = $oShared->_oDb;

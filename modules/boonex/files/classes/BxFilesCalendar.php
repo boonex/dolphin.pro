@@ -8,8 +8,8 @@ bx_import('BxDolFilesCalendar');
 
 class BxFilesCalendar extends BxDolFilesCalendar
 {
-    function BxFilesCalendar ($iYear, $iMonth, &$oDb, &$oTemplate, &$oConfig)
+    function __construct ($iYear, $iMonth, &$oDb, &$oTemplate, &$oConfig)
     {
-        parent::BxDolFilesCalendar($iYear, $iMonth, $oDb, $oTemplate, $oConfig);
+        parent::__construct($iYear, $iMonth, $oDb, $oTemplate, $oConfig);
     }
 }

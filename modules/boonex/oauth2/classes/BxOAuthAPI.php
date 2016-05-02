@@ -17,7 +17,7 @@ class BxOAuthAPI extends Thing
         'service' => 'basic', // service
     );
 
-    function BxOAuthAPI($oModule)
+    function __construct($oModule)
     {
         $this->_oModule = $oModule;
         $this->_oDb = $oModule->_oDb;

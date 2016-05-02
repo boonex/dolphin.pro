@@ -49,7 +49,7 @@ class BxStoreSearchResult extends BxDolTwigSearchResult
         'ident' => 'id'
     );
 
-    function BxStoreSearchResult($sMode = '', $sValue = '', $sValue2 = '', $sValue3 = '')
+    function __construct($sMode = '', $sValue = '', $sValue2 = '', $sValue3 = '')
     {
         switch ($sMode) {
 
@@ -215,7 +215,7 @@ class BxStoreSearchResult extends BxDolTwigSearchResult
 
         $this->sFilterName = 'bx_store_filter';
 
-        parent::BxDolTwigSearchResult();
+        parent::__construct();
     }
 
     function getAlterOrder()

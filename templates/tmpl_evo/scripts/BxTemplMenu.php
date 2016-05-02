@@ -17,9 +17,9 @@ class BxTemplMenu extends BxBaseMenu
     /**
     * Class constructor;
     */
-    function BxTemplMenu()
+    function __construct()
     {
-        parent::BxBaseMenu();
+        parent::__construct();
     }
     function setCustomSubActions(&$aKeys, $sActionsType, $bSubMenuMode = true)
     {

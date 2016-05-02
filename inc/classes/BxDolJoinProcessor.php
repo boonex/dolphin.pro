@@ -24,7 +24,7 @@ class BxDolJoinProcessor
     var $bCoupleEnabled;
     var $bCouple;
 
-    function BxDolJoinProcessor($aParams = array())
+    function __construct($aParams = array())
     {
         $this -> aErrors = array( 0 => array(), 1 => array() );
 

@@ -49,8 +49,8 @@ class BxDolCronVideoComments extends BxDolCron
 
         getResult("UPDATE `" . $sDbPrefix . "Files` SET `Date`='" . $iCurrentTime . "', `Status`='" . VC_STATUS_FAILED . "' WHERE `Status`='" . VC_STATUS_PROCESSING . "' AND `Date`<'" . ($iCurrentTime - $iFailedTimeout) . "'");
         $rResult = getResult("SELECT * FROM `" . $sDbPrefix . "Files` WHERE `Status`='" . VC_STATUS_PENDING . "' ORDER BY `ID` LIMIT " . $iFilesCount);
-        for($i=0; $i<mysql_num_rows($rResult); $i++) {
-            $aFile = mysql_fetch_assoc($rResult);
+        for($i=0; $i<$rResult->rowCount(); $i++) {
+            $aFile = $rResult->fetch();
             if(!_convert($aFile['ID']))
                 getResult("UPDATE `" . $sDbPrefix . "Files` SET `Status`='" . VC_STATUS_FAILED . "' WHERE `ID`='" . $aFile['ID'] . "'");
         }

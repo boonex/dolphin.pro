@@ -8,9 +8,10 @@
 require_once(BX_DIRECTORY_PATH_INC . 'db.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'profiles.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'utils.inc.php');
-bx_import('BxDolMistake');
+
 define('BX_DOL_TAGS_DIVIDER', ';,');
-class BxDolTags extends BxDolMistake
+
+class BxDolTags
 {
     var $oDb;
 
@@ -28,7 +29,7 @@ class BxDolTags extends BxDolMistake
     var $sTagsDivider = BX_DOL_TAGS_DIVIDER;
     var $bToLower = true;
 
-    function BxDolTags ()
+    function __construct()
     {
         $this->oDb = new BxDolDb();
         $this->iViewer = getLoggedId();

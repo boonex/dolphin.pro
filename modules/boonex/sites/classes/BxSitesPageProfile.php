@@ -15,9 +15,9 @@ class BxSitesPageProfile extends BxDolPageView
     var $_sSubMenu;
     var $_aProfile;
 
-    function BxSitesPageProfile(&$oSites, $aProfile, $sSubMenu)
+    function __construct(&$oSites, $aProfile, $sSubMenu)
     {
-        parent::BxDolPageView('bx_sites_profile');
+        parent::__construct('bx_sites_profile');
 
         $GLOBALS['oTopMenu']->setCurrentProfileNickName($aProfile['NickName']);
         $this->_oSites = &$oSites;

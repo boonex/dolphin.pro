@@ -154,11 +154,11 @@ class BxAdsModule extends BxDolModule
     var $_iVisitorID;
 
     // Constructor
-    function BxAdsModule($aModule)
+    function __construct($aModule)
     {
         global $site;
 
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
 
         $this->sHomeUrl = $this->_oConfig->getHomeUrl();
         $this->sHomePath = $this->_oConfig->getHomePath();
@@ -264,7 +264,7 @@ class BxAdsModule extends BxDolModule
             if ($sCategory>0) {
                 $aSubCats = array();
                 $vSubCats = $this->_oDb->getAllSubCatsInfo($sCategory);
-                while( $aSubCat = mysql_fetch_assoc($vSubCats) ) {
+                while( $aSubCat = $vSubCats->fetch() ) {
                     $aSubCats[] = (int)$aSubCat['ID'];
                 }
                 sort($aSubCats);
@@ -423,9 +423,6 @@ EOF;
 
                     $sMsgMain = '_bx_ads_caption_browse_by_day';
                     $sMsgAdd = getLocaleDate(strtotime("{$iValue1}-{$iValue2}-{$iValue3}"), BX_DOL_LOCALE_DATE_SHORT);
-                    break;
-                case 'show_featured':
-                    $sMsgMain = '_bx_ads_Featured';
                     break;
                 case 'my_page':
                     switch (bx_get('mode')) {
@@ -836,7 +833,7 @@ EOF;
 
             $sSubsRows = '';
             $vSubs = $this->_oDb->getSubsNameIDCountAdsByAdID($iCategoryID);
-            while( $aSub = mysql_fetch_assoc($vSubs) ) {
+            while( $aSub = $vSubs->fetch() ) {
                 $iSubID = (int)$aSub['ID'];
                 $iSubName = $aSub['Name'];
                 $sSubsRows .= '<option value="'.$iSubID.'">'.$iSubName.'</option>';
@@ -857,7 +854,7 @@ EOF;
         if (db_affected_rows()==-1)
             return _t('_Error Occured');
         $sCatOptions = '';
-        while( $aSqlResStr = mysql_fetch_assoc($vSqlRes) ) {
+        while( $aSqlResStr = $vSqlRes->fetch() ) {
             $sCatOptions .= "<option value=\"{$aSqlResStr['ID']}\">{$aSqlResStr['Name']}</option>\n";
         }
 
@@ -1262,7 +1259,7 @@ EOF;
     {
         if ($this->bAdminMode==true) {
             $vDelSQL = $this->_oDb->getMemberAds((int)$iProfileID);
-            while( $aAdv = mysql_fetch_assoc($vDelSQL) ) {
+            while( $aAdv = $vDelSQL->fetch() ) {
                 $this->ActionDeleteAdvertisement($aAdv['ID']);
             }
         }
@@ -2149,11 +2146,11 @@ EOF;
         $iColumnWidth = (100 / $iColumnsCnt);
 
         $vSqlRes = $this->_oDb->getAllCatsInfo();
-        $iCategoriesCnt = mysql_num_rows($vSqlRes);
+        $iCategoriesCnt = $vSqlRes->rowCount();
         $iCategPerColumn = ceil($iCategoriesCnt / $iColumnsCnt);
 
         $iCounter = 0;
-        while ($aSqlResStr = mysql_fetch_assoc($vSqlRes)) {
+        while ($aSqlResStr = $vSqlRes->fetch()) {
             $iID = $aSqlResStr['ID'];
             $sCatName = htmlspecialchars($aSqlResStr['Name']);
             $sCatUri = $aSqlResStr['CEntryUri'];
@@ -2165,7 +2162,7 @@ EOF;
                 return _t('_Error Occured');
             }
             $sSubsHtml = '';
-            while ($aSqlResSubsStr = mysql_fetch_assoc($sqlResSubs)) {
+            while ($aSqlResSubsStr = $sqlResSubs->fetch()) {
                 $iSubID = (int)$aSqlResSubsStr['ID'];
 
                 $iAdsCnt = $this->_oDb->getCountOfAdsInSubCat($iSubID);
@@ -2307,7 +2304,7 @@ EOF;
         if (db_affected_rows()==-1)
             return _t('_Error Occured');
 
-        while( $aSqlResStr = mysql_fetch_assoc($vSqlRes) ) {
+        while( $aSqlResStr = $vSqlRes->fetch() ) {
             $sClassifiedsOptions .= "<option value=\"{$aSqlResStr['ID']}\"".(($aSqlResStr['ID']==$iClassifiedID)?" selected":'').">{$aSqlResStr['Name']}</option>\n";
         }
 
@@ -2551,7 +2548,7 @@ EOF;
 
         $aParentCategories = array();
         $vParentValues = $this->_oDb->getAllCatsInfo();
-        while ($aCategInfo = mysql_fetch_assoc($vParentValues)) {
+        while ($aCategInfo = $vParentValues->fetch()) {
             $iID = $aCategInfo['ID'];
             $sName = $aCategInfo['Name'];
             $aParentCategories[$iID] = $sName;
@@ -2677,7 +2674,6 @@ EOF;
             require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
             $oJson = new Services_JSON();
             return $oJson->encode($sResult);
-            exit;
         }
 
         $sResult = $this->_oTemplate->parseHtmlByName('default_margin.html', array('content' => $sResult));
@@ -2704,7 +2700,7 @@ EOF;
                     }
 
                     $vSubCats = $this->_oDb->getAllSubCatsInfo($sCategory);
-                    while( $aSubCat = mysql_fetch_assoc($vSubCats) ) {
+                    while( $aSubCat = $vSubCats->fetch() ) {
                         $iSubcat = (int)$aSubCat['ID'];
                         $this->_oDb->deleteSubCat($iSubcat);
                     }
@@ -2731,7 +2727,7 @@ EOF;
             return _t('_Error Occured');
         }
         $sTreeRows = '';
-        while( $aSqlResCls = mysql_fetch_assoc($vSqlRes) ) {
+        while( $aSqlResCls = $vSqlRes->fetch() ) {
             $iID = (int)$aSqlResCls['ID'];
             $sName = $aSqlResCls['Name'];
             $sCUri = $aSqlResCls['CEntryUri'];
@@ -2741,7 +2737,7 @@ EOF;
 
             $vSubs = $this->_oDb->getSubsNameIDCountAdsByAdID($iID);
             $sSubsRows = '';
-            while( $aSub = mysql_fetch_assoc($vSubs) ) {
+            while( $aSub = $vSubs->fetch() ) {
                 $iSubID = (int)$aSub['ID'];
                 $iSubName = $aSub['Name'];
                 $sSUri = $aSub['SEntryUri'];

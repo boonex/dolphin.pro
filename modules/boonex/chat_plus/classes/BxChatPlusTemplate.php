@@ -8,9 +8,9 @@ bx_import('BxDolTwigTemplate');
 
 class BxChatPlusTemplate extends BxDolTwigTemplate
 {
-    function BxChatPlusTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
     }
 
     function pageCodeAdminStart()

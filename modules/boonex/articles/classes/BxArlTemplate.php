@@ -9,9 +9,9 @@ bx_import('BxDolTextTemplate');
 
 class BxArlTemplate extends BxDolTextTemplate
 {
-    function BxArlTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolTextTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
 
         $this->sCssPrefix = 'arl';
     }

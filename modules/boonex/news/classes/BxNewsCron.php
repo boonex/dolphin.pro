@@ -8,9 +8,9 @@ bx_import('BxDolTextCron');
 
 class BxNewsCron extends BxDolTextCron
 {
-    function BxNewsCron()
+    function __construct()
     {
-        parent::BxDolTextCron();
+        parent::__construct();
 
         $this->_oModule = BxDolModule::getInstance('BxNewsModule');
     }

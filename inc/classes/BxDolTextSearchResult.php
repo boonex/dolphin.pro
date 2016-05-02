@@ -29,9 +29,9 @@ class BxDolTextSearchResult extends BxTemplSearchResultText
 
     var $_oModule;
 
-    function BxDolTextSearchResult(&$oModule)
+    function __construct(&$oModule)
     {
-        parent::BxTemplSearchResultText();
+        parent::__construct();
 
         $this->_oModule = $oModule;
 

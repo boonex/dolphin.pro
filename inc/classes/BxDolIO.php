@@ -7,7 +7,7 @@
 class BxDolIO
 {
     // constructor
-    function BxDolIO() {}
+    function __construct() {}
 
     function isExecutable($sFile)
     {

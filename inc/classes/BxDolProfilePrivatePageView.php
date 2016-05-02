@@ -8,12 +8,12 @@ bx_import('BxTemplProfileView');
 
 class BxDolProfilePrivatePageView extends BxTemplProfileView
 {
-    function BxDolProfilePrivatePageView(&$oPr, &$aSite, &$aDir)
+    function __construct(&$oPr, &$aSite, &$aDir)
     {
         $this->oProfileGen = &$oPr;
         $this->aConfSite = $aSite;
         $this->aConfDir  = $aDir;
-        parent::BxDolPageView('profile_private');
+        parent::__construct('profile_private');
     }
 
     function getBlockCode_PrivacyExplain()

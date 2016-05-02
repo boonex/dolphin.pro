@@ -12,9 +12,9 @@ bx_import ('BxDolCalendar');
  */
 class BxBaseCalendar extends BxDolCalendar
 {
-    function BxBaseCalendar ($iYear, $iMonth)
+    function __construct ($iYear, $iMonth)
     {
-        parent::BxDolCalendar($iYear, $iMonth);
+        parent::__construct($iYear, $iMonth);
     }
 
     function display($isMiniMode = false)

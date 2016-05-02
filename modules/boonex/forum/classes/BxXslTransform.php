@@ -28,7 +28,7 @@ class BxXslTransform
      *	@param $xsl		xsl for transformation
      *	@param $mode	xml/xsl transformation mode (BXXSLTRANSFORM_FF|BXXSLTRANSFORM_FS|BXXSLTRANSFORM_SF|BXXSLTRANSFORM_SS)
      */
-    function BxXslTransform ($xml, $xsl, $mode)
+    function __construct ($xml, $xsl, $mode)
     {
         $this->_mode = $mode;
         $this->_xml = $xml;

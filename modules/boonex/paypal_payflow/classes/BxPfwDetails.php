@@ -12,8 +12,8 @@ class BxPfwDetails extends BxPmtDetails
     /*
      * Constructor.
      */
-    function BxPfwDetails(&$oDb, &$oConfig)
+    function __construct(&$oDb, &$oConfig)
     {
-    	parent::BxPmtDetails($oDb, $oConfig);
+    	parent::__construct($oDb, $oConfig);
     }
 }

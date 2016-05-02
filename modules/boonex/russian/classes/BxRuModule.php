@@ -8,9 +8,9 @@ bx_import('BxDolModule');
 
 class BxRuModule extends BxDolModule
 {
-    function BxRuModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
     }
 
 }

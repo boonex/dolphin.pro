@@ -8,9 +8,9 @@ bx_import('BxDolConnectTemplate');
 
 class BxFaceBookConnectTemplate extends BxDolConnectTemplate
 {
-    function BxFaceBookConnectTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolConnectTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
         $this->_sPageIcon = 'facebook';
     }
 }

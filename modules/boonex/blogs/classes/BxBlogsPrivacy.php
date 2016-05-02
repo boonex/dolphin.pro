@@ -12,9 +12,9 @@ class BxBlogsPrivacy extends BxDolPrivacy
     /**
     * Constructor
     */
-    function BxBlogsPrivacy(&$oModule)
+    function __construct(&$oModule)
     {
-        parent::BxDolPrivacy('bx_blogs_posts', 'PostID', 'OwnerID');
+        parent::__construct('bx_blogs_posts', 'PostID', 'OwnerID');
     }
 
     /**

@@ -12,9 +12,9 @@ class BxPmtCartPage extends BxDolPageView
 {
     var $_oPayments;
 
-    function BxPmtCartPage(&$oPayments)
+    function __construct(&$oPayments)
     {
-        parent::BxDolPageView('bx_pmt_cart');
+        parent::__construct('bx_pmt_cart');
 
         $this->_oPayments = &$oPayments;
 

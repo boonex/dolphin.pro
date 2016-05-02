@@ -7,9 +7,9 @@ define('BX_H5AV_FALLBACK', true);
 class BxH5avModule extends BxDolModule
 {
 
-    function BxH5avModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
     }
 
     /**
@@ -23,7 +23,7 @@ class BxH5avModule extends BxDolModule
         if (!($iFileId = (int)$oAlert->iObject))
             return false;
 
-        if (!($aFile = $this->_oDb->getRow("SELECT * FROM `RayVideoFiles` WHERE `ID` = $iFileId")))
+        if (!($aFile = $this->_oDb->getRow("SELECT * FROM `RayVideoFiles` WHERE `ID` = ?", [$iFileId])))
             return false;
 
         global $sIncPath;
@@ -169,7 +169,7 @@ class BxH5avModule extends BxDolModule
         if (!($iFileId = (int)$oAlert->iObject))
             return false;
 
-        if (!($aFile = $this->_oDb->getRow("SELECT * FROM `RayMp3Files` WHERE `ID` = $iFileId")))
+        if (!($aFile = $this->_oDb->getRow("SELECT * FROM `RayMp3Files` WHERE `ID` = ?", [$iFileId])))
             return false;
 
         global $sIncPath;
@@ -305,7 +305,7 @@ class BxH5avModule extends BxDolModule
         if (!($iFileId = (int)$oAlert->iObject))
             return false;
 
-        if (!($aFile = $this->_oDb->getRow("SELECT * FROM `RayVideo_commentsFiles` WHERE `ID` = $iFileId")))
+        if (!($aFile = $this->_oDb->getRow("SELECT * FROM `RayVideo_commentsFiles` WHERE `ID` = ?", [$iFileId])))
             return false;
 
         global $sIncPath;

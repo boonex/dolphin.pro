@@ -243,7 +243,7 @@ function isProfileActive($iId = 0)
 }
 function getProfileInfoDirect ($iProfileID)
 {
-    return $GLOBALS['MySQL']->getRow("SELECT * FROM `Profiles` WHERE `ID`='" . $iProfileID . "' LIMIT 1");
+    return $GLOBALS['MySQL']->getRow("SELECT * FROM `Profiles` WHERE `ID`= ? LIMIT 1", [$iProfileID]);
 }
 
 function getProfileInfo($iProfileID = 0, $checkActiveStatus = false, $forceCache = false)
@@ -430,7 +430,7 @@ function getMyFriendsEx($iID, $sWhereParam = '', $sSortParam = '', $sqlLimit = '
     $aFriends = array();
 
     $vProfiles = db_res($sqlQuery);
-    while ($aProfiles = mysql_fetch_assoc($vProfiles)) {
+    while ($aProfiles = $vProfiles->fetch()) {
         $aFriends[$aProfiles['ID']] = array($aProfiles['ID'], $aProfiles['TS_DateLastLogin'], $aProfiles['TS_DateReg'], $aProfiles['Rate'], $aProfiles['DateLastNav'], $aProfiles['is_online']);
     }
 

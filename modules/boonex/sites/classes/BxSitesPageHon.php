@@ -12,9 +12,9 @@ class BxSitesPageHon extends BxDolPageView
     var $_oTemplate;
     var $_oDb;
 
-    function BxSitesPageHon(&$oSites)
+    function __construct(&$oSites)
     {
-        parent::BxDolPageView('bx_sites_hon');
+        parent::__construct('bx_sites_hon');
 
         $this->_oSites = &$oSites;
         $this->_oTemplate = $oSites->_oTemplate;

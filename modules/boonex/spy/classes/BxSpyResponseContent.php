@@ -16,9 +16,9 @@
          * Constructor
          * @param  BxWallModule $oModule - an instance of current module
          */
-        function BxSpyResponseContent($oModule)
+        function __construct($oModule)
         {
-            parent::BxDolAlertsResponse();
+            parent::__construct();
 
             $this->_oModule = $oModule;
             $aInternalHandlers = $this->_oModule->_oDb->getInternalHandlers();

@@ -8,9 +8,9 @@ bx_import('BxDolConnectTemplate');
 
 class BxDolphConTemplate extends BxDolConnectTemplate
 {
-    function BxDolphConTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolConnectTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
         $this->_sPageIcon = 'sign-in';
     }
 }

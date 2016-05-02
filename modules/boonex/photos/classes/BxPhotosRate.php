@@ -10,10 +10,10 @@ require_once('BxPhotosSearch.php');
 
 class BxPhotosRate extends BxDolFilesRate
 {
-    function BxPhotosRate()
+    function __construct()
     {
         $oMedia = new BxPhotosSearch();
-        parent::BxDolFilesRate('bx_photos', $oMedia);
+        parent::__construct('bx_photos', $oMedia);
     }
 
     function getRateFile(&$aData)

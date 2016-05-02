@@ -9,9 +9,9 @@ require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolModule.php');
 class BxQuotesModule extends BxDolModule
 {
     // constructor
-    function BxQuotesModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
     }
 
     function serviceGetQuoteUnit()

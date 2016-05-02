@@ -15,12 +15,12 @@ class BxDolCmtsQuery extends BxDolDb
     var $_sTable;
     var $_sTableTrack;
 
-    function BxDolCmtsQuery(&$aSystem)
+    function __construct(&$aSystem)
     {
         $this->_aSystem = &$aSystem;
         $this->_sTable = $this->_aSystem['table_cmts'];
         $this->_sTableTrack = $this->_aSystem['table_track'];
-        parent::BxDolDb();
+        parent::__construct();
     }
 
     function getTableName ()
@@ -55,8 +55,13 @@ class BxDolCmtsQuery extends BxDolDb
             FROM {$this->_sTable} AS `c`
             LEFT JOIN `Profiles` AS `p` ON (`p`.`ID` = `c`.`cmt_author_id`)
             $sJoin
-            WHERE `c`.`cmt_object_id` = '$iId' AND `c`.`cmt_parent_id` = '$iCmtParentId'
-            ORDER BY `c`.`cmt_time` " . (strtoupper($sCmtOrder) == 'ASC' ? 'ASC' : 'DESC') . ($iCount != -1 ? ' LIMIT ' . $iStart . ', ' . $iCount : ''));
+            WHERE `c`.`cmt_object_id` = ? AND `c`.`cmt_parent_id` = ?
+            ORDER BY `c`.`cmt_time` " . (strtoupper($sCmtOrder) == 'ASC' ? 'ASC' : 'DESC') . ($iCount != -1 ? ' LIMIT ' . $iStart . ', ' . $iCount : ''),
+            [
+                $iId,
+                $iCmtParentId
+            ]
+        );
 
         //LEFT JOIN `media` AS `m` ON (`m`.`med_id` = `p`.`Avatar` AND `m`.`med_status` = 'active')
 
@@ -96,8 +101,8 @@ class BxDolCmtsQuery extends BxDolDb
             FROM {$this->_sTable} AS `c`
             LEFT JOIN `Profiles` AS `p` ON (`p`.`ID` = `c`.`cmt_author_id`)
             $sJoin
-            WHERE `c`.`cmt_object_id` = '$iId' AND `c`.`cmt_id` = '$iCmtId'
-            LIMIT 1");
+            WHERE `c`.`cmt_object_id` = ? AND `c`.`cmt_id` = ?
+            LIMIT 1", [$iId, $iCmtId]);
 
         $aComment['cmt_text'] = str_replace("[ray_url]", $sHomeUrl, $aComment['cmt_text']);
         $aComment['cmt_ago'] = defineTimeInterval($aComment['cmt_time_ts']);
@@ -112,8 +117,8 @@ class BxDolCmtsQuery extends BxDolDb
             SELECT
                 *, ($iTimestamp - UNIX_TIMESTAMP(`c`.`cmt_time`)) AS `cmt_secs_ago`
             FROM {$this->_sTable} AS `c`
-            WHERE `cmt_object_id` = '$iId' AND `cmt_id` = '$iCmtId'
-            LIMIT 1");
+            WHERE `cmt_object_id` = ? AND `cmt_id` = ?
+            LIMIT 1", [$iId, $iCmtId]);
     }
 
     function addComment ($iId, $iCmtParentId, $iAuthorId, $sText, $iMood)
@@ -174,7 +179,7 @@ class BxDolCmtsQuery extends BxDolDb
     {
         $aObjectsIds = array();
         $isDelOccured = 0;
-        $a = $this->getAll ("SELECT `cmt_id`, `cmt_parent_id`, `cmt_object_id` FROM {$this->_sTable} WHERE `cmt_author_id` = '$iAuthorId' AND `cmt_replies` = 0");
+        $a = $this->getAll ("SELECT `cmt_id`, `cmt_parent_id`, `cmt_object_id` FROM {$this->_sTable} WHERE `cmt_author_id` = ? AND `cmt_replies` = 0", [$iAuthorId]);
         for ( reset($a) ; list (, $r) = each ($a) ; ) {
             $this->query ("DELETE FROM {$this->_sTable} WHERE `cmt_id` = '{$r['cmt_id']}'");
             $this->query ("UPDATE {$this->_sTable} SET `cmt_replies` = `cmt_replies` - 1 WHERE `cmt_id` = '{$r['cmt_parent_id']}'");

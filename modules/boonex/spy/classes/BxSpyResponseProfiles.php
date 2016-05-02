@@ -11,9 +11,9 @@
     {
         var $_oModule;
 
-        function BxSpyResponseProfiles($oModule)
+        function __construct($oModule)
         {
-            parent::BxDolAlertsResponse();
+            parent::__construct();
 
             $this->_oModule = $oModule;
         }

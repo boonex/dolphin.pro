@@ -132,7 +132,6 @@ $aLangContent = array(
     '_bx_files_related' => 'Related files',
     '_bx_files_save_success' => 'File info was saved',
     '_bx_files_sbs_comments' => 'New File Comments',
-    '_bx_files_single' => 'file',
     '_bx_files_size' => 'Size',
     '_bx_files_size_unit' => 'Kb',
     '_bx_files_special' => 'Featured files',

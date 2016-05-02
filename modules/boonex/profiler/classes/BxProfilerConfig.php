@@ -11,8 +11,8 @@ class BxProfilerConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxProfilerConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 }

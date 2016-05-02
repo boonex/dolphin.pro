@@ -8,9 +8,9 @@ bx_groups_import ('FormEdit');
 
 class BxGroupsFormUploadMedia extends BxGroupsFormEdit
 {
-    function BxGroupsFormUploadMedia ($oMain, $iProfileId, $iEntryId, &$aDataEntry, $sMedia, $aMediaFields)
+    function __construct ($oMain, $iProfileId, $iEntryId, &$aDataEntry, $sMedia, $aMediaFields)
     {
-        parent::BxGroupsFormEdit ($oMain, $iProfileId, $iEntryId, $aDataEntry);
+        parent::__construct ($oMain, $iProfileId, $iEntryId, $aDataEntry);
 
         foreach ($this->_aMedia as $k => $a) {
             if ($k == $sMedia)

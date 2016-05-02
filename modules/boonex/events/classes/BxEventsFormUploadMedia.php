@@ -8,9 +8,9 @@ bx_events_import ('FormEdit');
 
 class BxEventsFormUploadMedia extends BxEventsFormEdit
 {
-    function BxEventsFormUploadMedia ($oMain, $iProfileId, $iEntryId, &$aDataEntry, $sMedia, $aMediaFields)
+    function __construct ($oMain, $iProfileId, $iEntryId, &$aDataEntry, $sMedia, $aMediaFields)
     {
-        parent::BxEventsFormEdit ($oMain, $iProfileId, $iEntryId, $aDataEntry);
+        parent::__construct ($oMain, $iProfileId, $iEntryId, $aDataEntry);
 
         foreach ($this->_aMedia as $k => $a) {
             if ($k == $sMedia)

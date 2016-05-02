@@ -43,9 +43,9 @@ class BxDolInstaller extends BxDolInstallerUtils
     var $_aActions;
     var $_aNonHashable;
 
-    function BxDolInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstallerUtils();
+        parent::__construct();
 
         $this->_aConfig = $aConfig;
         $this->_sBasePath = BX_DIRECTORY_PATH_MODULES;
@@ -269,7 +269,7 @@ class BxDolInstaller extends BxDolInstallerUtils
             }
             closedir($rSource);
         } else
-            $aFiles[] = $this->_info($sPath, $sFile);
+            $aFiles[] = $this->_info($sPath);
     }
     function _info($sPath)
     {
@@ -505,7 +505,7 @@ class BxDolInstaller extends BxDolInstallerUtils
     {
         $aLanguages = array();
         $rLanguages = db_res("SELECT `ID` AS `id`, `Name` AS `name`, `Title` AS `title` FROM `sys_localization_languages`");
-        while($aLanguage = mysql_fetch_assoc($rLanguages))
+        while($aLanguage = $rLanguages->fetch())
            $aLanguages[] = $aLanguage;
 
         //--- Process Language Category ---//
@@ -772,7 +772,7 @@ class BxDolInstaller extends BxDolInstallerUtils
     {
         $oDb = new BxDolModuleDb();
 
-        $aLanguage = $GLOBALS['MySQL']->getRow("SELECT `ID` AS `id`, `Name` AS `name`, `Title` AS `title` FROM `sys_localization_languages` WHERE `ID` = $iLangId");
+        $aLanguage = $GLOBALS['MySQL']->getRow("SELECT `ID` AS `id`, `Name` AS `name`, `Title` AS `title` FROM `sys_localization_languages` WHERE `ID` = ?", [$iLangId]);
         if (!$aLanguage)
             return false;
 

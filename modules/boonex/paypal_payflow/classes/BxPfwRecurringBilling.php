@@ -8,9 +8,9 @@ require_once("BxPfwExpressCheckout.php");
 
 class BxPfwRecurringBilling extends BxPfwExpressCheckout
 {
-	function BxPfwRecurringBilling($oDb, $oConfig, $aConfig)
+	function __construct($oDb, $oConfig, $aConfig)
 	{
-		parent::BxPfwExpressCheckout($oDb, $oConfig, $aConfig);
+		parent::__construct($oDb, $oConfig, $aConfig);
 
 		$this->_aCallParameters['TRXTYPE'] = 'R';
 	}

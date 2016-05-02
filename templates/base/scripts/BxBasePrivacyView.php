@@ -13,9 +13,9 @@ class BxBasePrivacyView extends BxDolPrivacyView
     /**
      * constructor
      */
-    function BxBasePrivacyView($iOwnerId)
+    function __construct($iOwnerId)
     {
-        parent::BxDolPrivacyView($iOwnerId);
+        parent::__construct($iOwnerId);
     }
     function getBlockCode_GetMembers($iGroupId)
     {

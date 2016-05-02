@@ -22,9 +22,9 @@ class BxPmtBitPay extends BxPmtProvider
     /**
      * Constructor
      */
-    function BxPmtBitPay($oDb, $oConfig, $aConfig)
+    function __construct($oDb, $oConfig, $aConfig)
     {
-        parent::BxPmtProvider($oDb, $oConfig, $aConfig);
+        parent::__construct($oDb, $oConfig, $aConfig);
         $this->_bRedirectOnResult = false;
 
         $this->_initializeOptions();

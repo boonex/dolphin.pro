@@ -42,7 +42,7 @@ class BxDolViews
     /**
      * Constructor
      */
-    function BxDolViews($sSystem, $iId, $isMakeView = true)
+    function __construct($sSystem, $iId, $isMakeView = true)
     {
         $aSystems = $this->getAllSystems ();
         if (!isset($aSystems[$sSystem]))

@@ -70,9 +70,9 @@ class BxPhotosPageAlbumsMy extends BxDolPageView
         ),
     );
 
-    function BxPhotosPageAlbumsMy (&$oShared, $iOwnerId, $aParams = array())
+    function __construct (&$oShared, $iOwnerId, $aParams = array())
     {
-        parent::BxDolPageView('bx_photos_albums_my');
+        parent::__construct('bx_photos_albums_my');
 
         $this->oTemplate = $oShared->_oTemplate;
         $this->oConfig = $oShared->_oConfig;

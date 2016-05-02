@@ -83,6 +83,7 @@ ini_set('magic_quotes_sybase', 0);
 \$site['base']              = "{\$site['url']}templates/base/";
 
 \$site['bugReportMail']     = "%bug_report_email%";
+\$site['fullError']         = false;
 
 \$dir['root']               = "%dir_root%";
 \$dir['inc']                = "{\$dir['root']}inc/";
@@ -112,6 +113,9 @@ define('BX_DOL_URL_ADMIN', \$site['url_admin']);
 define('BX_DOL_URL_PLUGINS', \$site['plugins']);
 define('BX_DOL_URL_MODULES', \$site['url'] . 'modules/' );
 define('BX_DOL_URL_CACHE_PUBLIC', \$site['url'] . 'cache_public/');
+
+define('BX_DOL_FULL_ERROR', \$site['fullError']);
+define('BX_DOL_REPORT_EMAIL', \$site['bugReportMail']);
 
 define('BX_DIRECTORY_PATH_INC', \$dir['inc']);
 define('BX_DIRECTORY_PATH_ROOT', \$dir['root']);

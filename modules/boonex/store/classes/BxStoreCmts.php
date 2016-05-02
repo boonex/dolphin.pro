@@ -11,16 +11,16 @@ class BxStoreCmts extends BxTemplCmtsView
     /**
      * Constructor
      */
-    function BxStoreCmts($sSystem, $iId)
+    function __construct($sSystem, $iId)
     {
-        parent::BxTemplCmtsView($sSystem, $iId);
+        parent::__construct($sSystem, $iId);
     }
 
     function getMain()
     {
         $aPathInfo = pathinfo(__FILE__);
         require_once ($aPathInfo['dirname'] . '/BxStoreSearchResult.php');
-        return BxStoreSearchResult::getMain();
+        return (new BxStoreSearchResult())->getMain();
     }
 
     function getBaseUrl()

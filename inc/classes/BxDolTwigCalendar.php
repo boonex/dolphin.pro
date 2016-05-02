@@ -13,9 +13,9 @@ class BxDolTwigCalendar extends BxTemplCalendar
 {
     var $oDb, $oConfig;
 
-    function BxDolTwigCalendar ($iYear, $iMonth, &$oDb, &$oConfig)
+    function __construct ($iYear, $iMonth, &$oDb, &$oConfig)
     {
-        parent::BxTemplCalendar($iYear, $iMonth);
+        parent::__construct($iYear, $iMonth);
         $this->oDb = &$oDb;
         $this->oConfig = &$oConfig;
     }

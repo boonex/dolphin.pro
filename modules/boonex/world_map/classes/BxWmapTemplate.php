@@ -11,9 +11,9 @@ class BxWmapTemplate extends BxDolTwigTemplate
     /**
      * Constructor
      */
-    function BxWmapTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolTwigTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
     }
 
 }

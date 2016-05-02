@@ -65,8 +65,8 @@ class BxDolCronCmd extends BxDolCron
         if ( $db_clean_profiles > 0) {
             $res = db_res("SELECT `ID` FROM `Profiles` WHERE (`DateLastNav` < NOW() - INTERVAL $db_clean_profiles DAY) AND (`Couple` > `ID` OR `Couple` = 0)");
             if ( $res ) {
-                $db_clean_profiles_num = mysql_num_rows($res);
-                while ( $arr = mysql_fetch_array($res) ) {
+                $db_clean_profiles_num = $res->rowCount();
+                while ( $arr = $res->fetch() ) {
                     profile_delete($arr['ID']);
                 }
                 db_res("OPTIMIZE TABLE `Profiles`");

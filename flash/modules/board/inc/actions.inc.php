@@ -90,7 +90,7 @@ switch ($sAction) {
             getResult("DELETE FROM `" . MODULE_DB_PREFIX . "Users` WHERE `User`='" . $sId . "'");
 
             $rFiles = getResult("SELECT `ID` FROM `" . MODULE_DB_PREFIX . "Boards` WHERE `OwnerID`='" . $sId . "'");
-            while($aFile = mysql_fetch_assoc($rFiles)) @unlink($sFilesPath . $aFile['ID'] . $sFileExtension);
+            while($aFile = $rFiles->fetch()) @unlink($sFilesPath . $aFile['ID'] . $sFileExtension);
             getResult("DELETE FROM `" . MODULE_DB_PREFIX . "Boards`, `" . MODULE_DB_PREFIX . "Users` USING `" . MODULE_DB_PREFIX . "Boards` LEFT JOIN `" . MODULE_DB_PREFIX . "Users` ON `" . MODULE_DB_PREFIX . "Boards`.`ID`=`" . MODULE_DB_PREFIX . "Users`.`Board` WHERE `" . MODULE_DB_PREFIX . "Boards`.`OwnerID`='" . $sId . "'");
 
             $sContents = parseXml($aXmlTemplates['result'], "", SUCCESS_VAL);
@@ -155,7 +155,7 @@ switch ($sAction) {
     case 'getOnlineUsers':
         //--- Check RayChatMessages table and drop autoincrement if it is possible. ---//
         $rResult = getResult("SELECT `ID` FROM `" . MODULE_DB_PREFIX . "CurrentUsers`");
-        if(mysql_num_rows($rResult) == 0) getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "CurrentUsers`");
+        if($rResult->rowCount() == 0) getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "CurrentUsers`");
         //--- Update user's info and return info about all online users. ---//
         $sContents = refreshUsersInfo($sId);
         break;

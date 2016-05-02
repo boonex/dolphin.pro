@@ -28,9 +28,9 @@ class BxAdsConfig extends BxDolConfig
     /*
     * Constructor.
     */
-    function BxAdsConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
 
         $this->_iAnimationSpeed = 'normal';
 

@@ -11,9 +11,9 @@ class BxPageACDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxPageACDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb($oConfig);
+        parent::__construct($oConfig);
 
         $this->_oConfig = &$oConfig;
     }
@@ -59,23 +59,23 @@ class BxPageACDb extends BxDolModuleDb
         $aSystemItems = array();
 
         $rTopItems = $this->res("SELECT `ID`, `Name` FROM `sys_menu_top` WHERE `Active`=1 AND `Type`='top' ORDER BY `Order`");
-        while( $aTopItem = mysql_fetch_assoc( $rTopItems ) ) {
+        while( $aTopItem =  $rTopItems ->fetch() ) {
             $aTopItems[$aTopItem['ID']] = $aTopItem['Name'];
             $aCustomItems[$aTopItem['ID']] = array();
 
             $rCustomItems = $this->res("SELECT `ID`, `Name` FROM `sys_menu_top` WHERE `Active`=1 AND `Type`='custom' AND `Parent`={$aTopItem['ID']} ORDER BY `Order`");
-            while( $aCustomItem = mysql_fetch_assoc( $rCustomItems ) ) {
+            while( $aCustomItem =  $rCustomItems ->fetch() ) {
                 $aCustomItems[$aTopItem['ID']][$aCustomItem['ID']] = $aCustomItem['Name'];
             }
         }
 
         $rSysItems = $this->res("SELECT `ID`, `Name` FROM `sys_menu_top` WHERE `Active`=1 AND `Type`='system' ORDER BY `Order`");
-        while( $aSystemItem = mysql_fetch_assoc( $rSysItems ) ) {
+        while( $aSystemItem =  $rSysItems ->fetch() ) {
             $aSystemItems[$aSystemItem['ID']] = $aSystemItem['Name'];
             $aCustomItems[$aSystemItem['ID']] = array();
 
             $rCustomItems = $this->res( "SELECT `ID`, `Name` FROM `sys_menu_top` WHERE `Active`=1 AND `Type`='custom' AND `Parent`={$aSystemItem['ID']} ORDER BY `Order`" );
-            while( $aCustomItem = mysql_fetch_assoc( $rCustomItems ) ) {
+            while( $aCustomItem =  $rCustomItems ->fetch() ) {
                 $aCustomItems[$aSystemItem['ID']][$aCustomItem['ID']] = $aCustomItem['Name'];
             }
         }
@@ -90,7 +90,7 @@ class BxPageACDb extends BxDolModuleDb
         $rTopItems = $this->res("SELECT `ID`, `Name` FROM `sys_menu_member` WHERE `Active`='1' AND `Type` <> 'linked_item' ORDER BY `Position`, `Order`");
 
         $aTopItems = array();
-        while( $aTopItem = mysql_fetch_assoc( $rTopItems ) ) {
+        while( $aTopItem =  $rTopItems ->fetch() ) {
             $aTopItems[$aTopItem['ID']] = $aTopItem['Name'];
         }
         return $aTopItems;
@@ -127,7 +127,7 @@ class BxPageACDb extends BxDolModuleDb
         $aColumns = array();
         $sPage = process_db_input($sPage);
         $rColumns = $this->res("SELECT DISTINCT `Column` FROM `sys_page_compose` WHERE `Page` = '{$sPage}' AND `Column` != 0 ORDER BY `Column`");
-        while( $aColumn = mysql_fetch_assoc( $rColumns ) ) {
+        while( $aColumn =  $rColumns ->fetch() ) {
             $aColumns[$aColumn['Column']] = $this->getAll("SELECT `ID`, `Caption` FROM `sys_page_compose` WHERE `Page` = '{$sPage}' AND `Column` = {$aColumn['Column']} ORDER BY `Order`");
         }
         return $aColumns;

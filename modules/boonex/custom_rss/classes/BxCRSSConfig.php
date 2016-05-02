@@ -14,9 +14,9 @@ class BxCRSSConfig extends BxDolConfig
     /*
     * Constructor.
     */
-    function BxCRSSConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
 
         $this->_iAnimationSpeed = 'normal';
     }

@@ -4,7 +4,6 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
 bx_import('BxDolSubscriptionQuery');
 
 define('BX_DOL_SBS_TYPE_VISITOR', 0);
@@ -44,7 +43,7 @@ define('BX_DOL_SBS_TYPE_MEMBER', 1);
  * no alerts available
  *
  */
-class BxDolSubscription extends BxDolMistake
+class BxDolSubscription
 {
     var $_oDb;
     var $_bDataAdded;
@@ -55,10 +54,8 @@ class BxDolSubscription extends BxDolMistake
     /**
      * constructor
      */
-    function BxDolSubscription()
+    function __construct()
     {
-        parent::BxDolMistake();
-
         $this->_oDb = new BxDolSubscriptionQuery($this);
         $this->_bDataAdded = false;
         $this->_sJsObject = 'oBxDolSubscription';

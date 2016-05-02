@@ -16,7 +16,7 @@ bx_import('BxDolAdminDashboard');
 define('BX_DOL_ADMIN_INDEX', 1);
 
 $bLogged = isLogged();
-$bNeedCheck = $bLogged && isAdmin() && $_POST['relocate'] && strncasecmp($_POST['relocate'], BX_DOL_URL_ADMIN . 'license.php', strlen(BX_DOL_URL_ADMIN . 'license.php')) == 0;
+$bNeedCheck = $bLogged && isAdmin() && isset($_POST['relocate']) && $_POST['relocate'] && strncasecmp($_POST['relocate'], BX_DOL_URL_ADMIN . 'license.php', strlen(BX_DOL_URL_ADMIN . 'license.php')) == 0;
 
 if($bNeedCheck || (isset($_POST['ID']) && isset($_POST['Password']))) {
     $iId = getID($_POST['ID']);
@@ -109,7 +109,8 @@ function PageCategoryCode($sCategoryName)
 {
     global $oAdmTemplate, $MySQL;
 
-    $aItems = $MySQL->getAll("SELECT `tma1`.`title` AS `title`, `tma1`.`url` AS `url`, `tma1`.`description` AS `description`, `tma1`.`icon` AS `icon`, `tma1`.`check` AS `check` FROM `sys_menu_admin` AS `tma1` LEFT JOIN `sys_menu_admin` AS `tma2` ON `tma1`.`parent_id`=`tma2`.`id` WHERE `tma2`.`name`='" . $sCategoryName . "' ORDER BY `tma1`.`Order`");
+    $aItems = $MySQL->getAll("SELECT `tma1`.`title` AS `title`, `tma1`.`url` AS `url`, `tma1`.`description` AS `description`, `tma1`.`icon` AS `icon`, `tma1`.`check` AS `check` 
+              FROM `sys_menu_admin` AS `tma1` LEFT JOIN `sys_menu_admin` AS `tma2` ON `tma1`.`parent_id`=`tma2`.`id` WHERE `tma2`.`name`= ? ORDER BY `tma1`.`Order`", [$sCategoryName]);
 
     foreach($aItems as $aItem) {
         if(strlen($aItem['check']) > 0) {

@@ -5,7 +5,6 @@
  */
 
 require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolCmtsQuery.php' );
-require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolMistake.php' );
 require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 
 define('BX_OLD_CMT_VOTES', 365*86400); // comment votes older than this number of seconds will be deleted automatically
@@ -96,9 +95,8 @@ define('BX_OLD_CMT_VOTES', 365*86400); // comment votes older than this number o
  *      $aExtra['rate'] - comment rate 1 or -1
  *
  */
-class BxDolCmts extends BxDolMistake
+class BxDolCmts
 {
-
     var $_iId = 0;  // obect id to be commented
     var $iGlobAllowHtml;
     var $iAutoHideRootPostForm = 0;
@@ -120,7 +118,7 @@ class BxDolCmts extends BxDolMistake
      * $sSystem - comments system name
      * $iId - obect id to be commented
      */
-    function BxDolCmts( $sSystem, $iId, $iInit = 1)
+    function __construct( $sSystem, $iId, $iInit = 1)
     {
         $this->_aCmtElements = array (
             'CmtParent'	=> array ( 'reg' => '^[0-9]+$', 'msg' => str_replace('"', '\\"', trim(_t('_bad comment parent id'))) ),
@@ -170,7 +168,7 @@ class BxDolCmts extends BxDolMistake
         return $oCmts;
     }
 
-    function & getSystems ()
+    public static function & getSystems ()
     {
         if (!isset($GLOBALS['bx_dol_cmts_systems'])) {
             $GLOBALS['bx_dol_cmts_systems'] = $GLOBALS['MySQL']->fromCache('sys_objects_cmts', 'getAllWithKey', '
@@ -197,6 +195,7 @@ class BxDolCmts extends BxDolMistake
                     `ClassFile` AS `class_file`
                 FROM `sys_objects_cmts`', 'name');
         }
+
         return $GLOBALS['bx_dol_cmts_systems'];
     }
 

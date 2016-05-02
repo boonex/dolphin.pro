@@ -23,9 +23,9 @@ require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolPageView.php');
 
 class BxDolOrcaForumsTemplate extends BxDolTemplate
 {
-    function BxDolOrcaForumsTemplate($sRootPath = BX_DIRECTORY_PATH_ROOT, $sRootUrl = BX_DOL_URL_ROOT)
+    function __construct($sRootPath = BX_DIRECTORY_PATH_ROOT, $sRootUrl = BX_DOL_URL_ROOT)
     {
-        parent::BxDolTemplate($sRootPath, $sRootUrl);
+        parent::__construct($sRootPath, $sRootUrl);
         $this->addLocation('BxDolOrcaForums', $GLOBALS['gConf']['dir']['base'], $GLOBALS['gConf']['url']['base']);
     }
 }
@@ -34,9 +34,9 @@ class BxDolOrcaForumsIndex extends BxDolPageView
 {
     var $sMarker = '-=++=-';
 
-    function BxDolOrcaForumsIndex()
+    function __construct()
     {
-        parent::BxDolPageView('forums_index');
+        parent::__construct('forums_index');
     }
 
     function getBlockCode_FullIndex()
@@ -49,9 +49,9 @@ class BxDolOrcaForumsHome extends BxDolPageView
 {
     var $sMarker = '-=++=-';
 
-    function BxDolOrcaForumsHome()
+    function __construct()
     {
-        parent::BxDolPageView('forums_home');
+        parent::__construct('forums_home');
     }
 
     function getBlockCode_Search()

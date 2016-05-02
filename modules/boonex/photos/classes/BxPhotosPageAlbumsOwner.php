@@ -8,9 +8,9 @@ require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolFilesPageAlbumsOwner.php');
 
 class BxPhotosPageAlbumsOwner extends BxDolFilesPageAlbumsOwner
 {
-    function BxPhotosPageAlbumsOwner(&$oShared, $aParams = array())
+    function __construct(&$oShared, $aParams = array())
     {
-        parent::BxDolFilesPageAlbumsOwner('bx_photos_albums_owner', $oShared, $aParams);
+        parent::__construct('bx_photos_albums_owner', $oShared, $aParams);
     }
 
     function getBlockCode_ProfilePhotos()

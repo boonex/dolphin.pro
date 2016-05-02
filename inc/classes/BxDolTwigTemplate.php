@@ -14,9 +14,9 @@ class BxDolTwigTemplate extends BxDolModuleTemplate
     var $_iPageIndex = 13;
     var $_oMain = null;
 
-    function BxDolTwigTemplate(&$oConfig, &$oDb, $sRootPath = BX_DIRECTORY_PATH_ROOT, $sRootUrl = BX_DOL_URL_ROOT)
+    function __construct(&$oConfig, &$oDb, $sRootPath = BX_DIRECTORY_PATH_ROOT, $sRootUrl = BX_DOL_URL_ROOT)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb, $sRootPath, $sRootUrl);
+        parent::__construct($oConfig, $oDb, $sRootPath, $sRootUrl);
 
         if (isset($GLOBALS['oAdmTemplate']))
             $GLOBALS['oAdmTemplate']->addDynamicLocation($this->_oConfig->getHomePath(), $this->_oConfig->getHomeUrl());
@@ -38,9 +38,9 @@ class BxDolTwigTemplate extends BxDolModuleTemplate
         $GLOBALS['oAdmTemplate']->addJs ($sName);
     }
 
-    function parseHtmlByName ($sName, $aVars)
+    function parseHtmlByName ($sName, $aVariables, $mixedKeyWrapperHtml = null, $sCheckIn = BX_DOL_TEMPLATE_CHECK_IN_BOTH)
     {
-        return parent::parseHtmlByName ($sName . (strlen($sName) < 6 || substr_compare($sName, '.html', -5, 5) !== 0 ? '.html' : ''), $aVars);
+        return parent::parseHtmlByName ($sName . (strlen($sName) < 6 || substr_compare($sName, '.html', -5, 5) !== 0 ? '.html' : ''), $aVariables);
     }
 
     // ======================= page generation functions

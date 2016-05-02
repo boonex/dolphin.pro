@@ -9,8 +9,8 @@
 
     class BxTemplCommunicator extends BxBaseCommunicator
     {
-         function BxTemplCommunicator($aCommunicatorSettings)
+         function __construct($aCommunicatorSettings)
          {
-            parent::BxBaseCommunicator($aCommunicatorSettings);
+            parent::__construct($aCommunicatorSettings);
          }
     }

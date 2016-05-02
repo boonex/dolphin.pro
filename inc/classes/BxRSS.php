@@ -34,7 +34,7 @@ class BxRSS
     //array with items
     var $items;
 
-    function BxRSS( $url )
+    function __construct( $url )
     {
         $this -> items = array();
 

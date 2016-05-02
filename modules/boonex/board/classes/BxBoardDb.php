@@ -13,9 +13,9 @@ class BxBoardDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxBoardDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
     }

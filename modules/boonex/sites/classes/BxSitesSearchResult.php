@@ -48,7 +48,7 @@ class BxSitesSearchResult extends BxTemplSearchResult
         'ident' => 'id'
     );
 
-    function BxSitesSearchResult($sMode = '', $sValue = '', $sValue2 = '', $sValue3 = '')
+    function __construct($sMode = '', $sValue = '', $sValue2 = '', $sValue3 = '')
     {
         $this->_oMain = $this->getSitesMain();
         $this->isError = false;
@@ -329,7 +329,7 @@ class BxSitesSearchResult extends BxTemplSearchResult
             }
         }
 
-        parent::BxTemplSearchResult();
+        parent::__construct();
     }
 
     function displayResultBlock ($bPagination = false, $isAjax = false)

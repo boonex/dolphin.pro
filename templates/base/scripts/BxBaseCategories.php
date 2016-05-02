@@ -13,9 +13,9 @@ class BxBaseCategories extends BxDolCategories
     var $_sCategTmplContent;
     var $_aOrderValues;
 
-    function BxBaseCategories ()
+    function __construct ()
     {
-        parent::BxDolCategories();
+        parent::__construct();
 
         $this->_sCategTmplName = 'view_categ.html';
         $this->_sCategTmplContent = '';

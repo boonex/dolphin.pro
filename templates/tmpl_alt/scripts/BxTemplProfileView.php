@@ -4,8 +4,8 @@ require_once( BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseProfileView.php' );
 
 class BxTemplProfileView extends BxBaseProfileView
 {
-    function BxTemplProfileView(&$oPr, &$aSite, &$aDir)
+    function __construct(&$oPr, &$aSite, &$aDir)
     {
-        BxBaseProfileView::BxBaseProfileView($oPr, $aSite, $aDir);
+        BxBaseProfileView::__construct($oPr, $aSite, $aDir);
     }
 }

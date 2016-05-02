@@ -110,7 +110,7 @@ class BxDolPageView
 
     var $oCacher = null;
 
-    function BxDolPageView( $sPageName )
+    function __construct( $sPageName )
     {
         $this -> sCacheFile = 'sys_page_compose.inc';
         $this -> sPageName = $sPageName;
@@ -335,13 +335,14 @@ class BxDolPageView
         $iColumnsCount = count($this -> aPage['Columns']);
 
         $bColumnFull = ($fColumnWidth == 100);
-        $bLastColumnWasFull = ($this -> aPage['Columns'][$iColumn - 1]['Width'] == 100);
-        $bNextColumnIsFull = ($this -> aPage['Columns'][$iColumn + 1]['Width'] == 100);
+
+        $bLastColumnWasFull = (isset($this->aPage['Columns'][$iColumn - 1]) && ($this->aPage['Columns'][$iColumn - 1]['Width'] == 100));
+        $bNextColumnIsFull = (isset($this->aPage['Columns'][$iColumn + 1]) && ($this->aPage['Columns'][$iColumn + 1]['Width'] == 100));
 
         $sAddClass = ' page_column_';
         if($bColumnFull)
             $sAddClass .= 'full';
-        else if(($iColumn == 1) || ($bLastColumnWasFull))
+        else if(($iColumn == 1) || $bLastColumnWasFull)
             $sAddClass .= 'first';
         else if($iColumn == $iColumnsCount || ($bNextColumnIsFull))
             $sAddClass .= 'last';
@@ -353,8 +354,7 @@ class BxDolPageView
 
             $fColumnWidth = (int)round($iPageContentWidth * $fColumnWidth / 100);
             $sColumnWidth = $fColumnWidth . 'px';
-        }
-        else {
+        } else {
             $sColumnWidth = $fColumnWidth . '%';
         }
 
@@ -469,7 +469,7 @@ class BxDolPageView
         $sCode = "";
         if(!$bStatic && $sDynamicType == 'popup')
             $sCode = '<div class="dbTopMenu"><i class="login_ajx_close sys-icon times"></i></div>';
-        else if( is_array($aBlockCode[1]))
+        else if(isset($aBlockCode[1]) && is_array($aBlockCode[1]))
             $sCode = $this -> $sCaptionMenuFunc($iBlockID, $aBlockCode[1]);
 
         return $sCode;
@@ -494,7 +494,7 @@ class BxDolPageView
             return true;
     }
 
-    function getBlockCaptionItemCode( $iBlockID, $aLinks )
+    public static function getBlockCaptionItemCode( $iBlockID, $aLinks )
     {
     	if(empty($aLinks))
     		return '';
@@ -507,7 +507,7 @@ class BxDolPageView
             if($bActive)
             	$sActive = $sTitle;
 
-            $isTextIcon = false === strpos($aLink['icon'], '.');
+            $isTextIcon = (isset($aLink['icon']) && false === strpos($aLink['icon'], '.'));
 
             $sClass = !empty($aLink['class']) ? $aLink['class'] : 'top_members_menu';
             $sClass .= isset($aLink['icon']) && !$isTextIcon ? ' with_icon' : '';
@@ -577,7 +577,8 @@ class BxDolPageView
         	)))
         ));
     }
-    function getBlockCaptionMenu( $iBlockID, $aLinks )
+
+    public static function getBlockCaptionMenu( $iBlockID, $aLinks )
     {
 		if(empty($aLinks))
     		return '';
@@ -729,8 +730,11 @@ EOF;
 
     function getBlockCode_RSS( $iBlockID, $sContent )
     {
-        list( $sUrl, $iNum ) = explode( '#', $sContent );
-        $iNum = (int)$iNum;
+        $iNum = 0;
+        if($sContent) {
+            list( $sUrl, $iNum ) = explode( '#', $sContent );
+            $iNum = (int)$iNum;
+        }
 
         $iAddID = 0;
         if (isset( $this -> oProfileGen -> _iProfileID))

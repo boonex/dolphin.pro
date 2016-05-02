@@ -146,7 +146,7 @@ function getLangNameById($sLangId)
 function getProfileLangName($iProfile = false)
 {
     if (!$iProfile)
-        $iProfile = (int)$_COOKIE['memberID'];
+        $iProfile = isset($_COOKIE['memberID']) ? (int)$_COOKIE['memberID'] : 0;
     if (!$iProfile)
         return false;
     return $GLOBALS['MySQL']->fromMemory('profile_lang_' . $iProfile, 'getOne', 'SELECT `l`.`Name` FROM `sys_localization_languages` AS `l` INNER JOIN `Profiles` AS `p` ON (`p`.`LangID` = `l`.`ID`) WHERE `p`.`ID` = ' . $iProfile);
@@ -155,7 +155,7 @@ function getProfileLangName($iProfile = false)
 function getLangsArr( $bAddFlag = false, $bRetIDs = false )
 {
     $aLangsFull = getLangsArrFull($bRetIDs);
-    
+
     $aLangs = array();
     foreach ($aLangsFull as $sKey => $aLang) {
         $sFlag = $bAddFlag ? ($aLang['Flag'] ? $aLang['Flag'] : 'xx') : '';
@@ -181,15 +181,16 @@ function deleteLanguage($langID = 0)
             FROM	`sys_localization_languages`
             WHERE	`ID` = '.$langID);
 
-    if(mysql_num_rows($resLangs) <= 0) return false;
+    if($resLangs->rowCount() <= 0) return false;
 
-    $arrLang = mysql_fetch_assoc($resLangs);
+    $arrLang = $resLangs->fetch();
 
     $numStrings = db_res('
         SELECT COUNT(`IDKey`)
         FROM `sys_localization_strings`
-        WHERE `IDLanguage` = '.$langID);
-    $numStrings = mysql_fetch_row($numStrings);
+        WHERE `IDLanguage` = ?', [$langID]);
+
+    $numStrings = $numStrings->fetch(PDO::FETCH_NUM);
     $numStrings = $numStrings[0];
 
     db_res('DELETE FROM `sys_localization_strings` WHERE `IDLanguage` = '.$langID);
@@ -215,7 +216,7 @@ function getLocalizationKeys()
 
     $arrKeys = array();
 
-    while($arr = mysql_fetch_assoc($resKeys)) {
+    while($arr = $resKeys->fetch()) {
         $ID = $arr['ID'];
         unset($arr['ID']);
         $arrKeys[$ID] = $arr;
@@ -230,26 +231,26 @@ function getLocalizationKeysBy($aParams)
 
 	$aMethod = array('name' => 'getAll', 'params' => array(0 => 'query'));
 	$sSelectClause = $sJoinClause = $sWhereClause = $sGroupClause = $sOrderClause = $sLimitClause = "";
-	
+
 	$sSelectClause = "`tk`.`ID` AS `id`, `tk`.`IDCategory` AS `category_id`, `tk`.`Key` AS `key`";
-	
+
 	if(!isset($aParams['order']) || empty($aParams['order']))
 		$sOrderClause = " `tk`.`Key` ASC ";
-	
+
 	switch($aParams['type']) {
 		case 'by_language_name_key_key':
 			$aMethod['name'] = 'getAllWithKey';
 			$aMethod['params'][1] = 'key';
-			
+
 			$sSelectClause .= ", `ts`.`String` AS `string` ";
 			$sJoinClause = " LEFT JOIN `sys_localization_strings` AS `ts` ON `tk`.`ID`=`ts`.`IDKey` LEFT JOIN `sys_localization_languages` AS `tl` ON `ts`.`IDLanguage`=`tl`.`ID` ";
 			$sWhereClause = " AND `tl`.`Name`='" . $aParams['value'] . "' ";
 			break;
-	
+
 		case 'by_language_id_key_key':
 			$aMethod['name'] = 'getAllWithKey';
 			$aMethod['params'][1] = 'key';
-			
+
 			$sSelectClause .= ", `ts`.`String` AS `string` ";
 			$sJoinClause = " LEFT JOIN `sys_localization_strings` AS `ts` ON `tk`.`ID`=`ts`.`IDKey` ";
 			$sWhereClause = " AND `ts`.`IDLanguage`='" . (int)$aParams['value'] . "' ";
@@ -262,7 +263,7 @@ function getLocalizationKeysBy($aParams)
 		ORDER BY" . $sOrderClause . $sLimitClause;
 	return call_user_func_array(array($MySQL, $aMethod['name']), $aMethod['params']);
 }
-    
+
 function getLocalizationStringParams($keyID)
 {
     $keyID = (int)$keyID;
@@ -277,7 +278,7 @@ function getLocalizationStringParams($keyID)
 
     $arrParams = array();
 
-    while ($arr = mysql_fetch_assoc($resParams)) {
+    while ($arr = $resParams->fetch()) {
         $arrParams[(int)$arr['IDParam']] = $arr['Description'];
     }
 
@@ -290,7 +291,7 @@ function getLocalizationCategories()
 
     $arrCategories = array();
 
-    while ($arr = mysql_fetch_assoc($resCategories)) {
+    while ($arr = $resCategories->fetch()) {
         $arrCategories[$arr['ID']] = $arr['Name'];
     }
 
@@ -313,10 +314,10 @@ function compileLanguage($langID = 0)
         );
     }
 
-    if ( mysql_num_rows($resLangs) <= 0 )
+    if ( $resLangs->rowCount() <= 0 )
         return false;
 
-    while($arrLanguage = mysql_fetch_assoc($resLangs)) {
+    while($arrLanguage = $resLangs->fetch()) {
     	$aKeys = getLocalizationKeysBy(array('type' => 'by_language_id_key_key', 'value' => $arrLanguage['ID']));
     	if($arrLanguage['Name'] != BX_DOL_LANGUAGE_DEFAULT && getParam('lang_subst_from_en') == 'on') {
 			$aKeysAll = getLocalizationKeysBy(array('type' => 'by_language_name_key_key', 'value' => BX_DOL_LANGUAGE_DEFAULT));
@@ -324,7 +325,7 @@ function compileLanguage($langID = 0)
     	}
 
     	$handle = fopen( BX_DIRECTORY_PATH_ROOT . "langs/lang-{$arrLanguage['Name']}.php", 'w');
-        if($handle === false) 
+        if($handle === false)
         	return false;
 
         $fileContent = "<"."?PHP{$newLine}\$LANG_INFO=" . var_export($arrLanguage, true) . ";{$newLine}\$LANG = array(";
@@ -376,7 +377,7 @@ function addStringToLanguage($langKey, $langString, $langID = -1, $categoryID = 
 
     $keyID = db_last_id();
 
-    while($arrLanguage = mysql_fetch_assoc($resLangs)) {
+    while($arrLanguage = $resLangs->fetch()) {
         $resInsertString = db_res( "
             INSERT INTO	`sys_localization_strings`
             SET			`IDKey` = $keyID,
@@ -418,7 +419,7 @@ function updateStringInLanguage($langKey, $langString, $langID = -1)
 
     $keyID = $arrKey['ID'];
 
-    while($arrLanguage = mysql_fetch_assoc($resLangs)) {
+    while($arrLanguage = $resLangs->fetch()) {
         $resUpdateString = db_res( "
             UPDATE	`sys_localization_strings`
             SET			`String` = '$langString'
@@ -458,7 +459,7 @@ function deleteStringFromLanguage($langKey, $langID = -1)
 
     $keyID = $arrKey['ID'];
 
-    while($arrLanguage = mysql_fetch_assoc($resLangs)) {
+    while($arrLanguage = $resLangs->fetch()) {
         $resDeleteString = db_res( "
             DELETE	FROM `sys_localization_strings`
             WHERE		`IDKey` = $keyID
@@ -547,7 +548,13 @@ function bx_lang_name()
     return $GLOBALS['sCurrentLanguage'];
 }
 
+// TODO: What does this do?
 function bx_lang_info()
 {
-    return $GLOBALS['LANG_INFO'];
+    $LANG_INFO = array(
+        'Name' => 'en', 'Flag' => 'us', 'Title' => 'English', 'LanguageCountry' => 'US', 'Direction' => 'left-to-right'
+    );
+
+    return $LANG_INFO;
+    //return $GLOBALS['LANG_INFO'];
 }

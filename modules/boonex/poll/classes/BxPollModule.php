@@ -163,11 +163,11 @@
          *                  [ page ]         - (integer)  current page ;
          *                  [ action ]       - (string)  contain some specific actions for pools ;
          */
-        function BxPollModule($aModule, $aPollSettings = array() )
+        function __construct($aModule, $aPollSettings = array() )
         {
             global $logged;
 
-            parent::BxDolModule($aModule);
+            parent::__construct($aModule);
             $this -> sHomeUrl = $this ->_oConfig -> _sHomeUrl;
 
             $this -> aPollSettings = $aPollSettings;

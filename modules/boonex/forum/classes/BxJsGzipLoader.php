@@ -12,7 +12,7 @@ class BxJsGzipLoader
      * @param $sJsUrl       js base url
      * @param $sCacheDir    cache dir
      */
-    function BxJsGzipLoader ($sType, $p, $sJsDir = '', $sCacheDir = '')
+    function __construct ($sType, $p, $sJsDir = '', $sCacheDir = '')
     {
         $this->_sType = $sType;
         $this->_p = $p;

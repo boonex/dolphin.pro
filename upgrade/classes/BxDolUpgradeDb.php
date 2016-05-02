@@ -27,7 +27,7 @@ class BxDolUpgradeDb
         $this->dbname = DATABASE_NAME;
         $this->user = DATABASE_USER;
         $this->password = DATABASE_PASS;
-        $this->current_arr_type = MYSQL_ASSOC;
+        $this->current_arr_type = PDO::FETCH_ASSOC;
 
         $this->connect();
     }
@@ -68,15 +68,15 @@ class BxDolUpgradeDb
     /**
      * execute sql query and return one row result
      */
-    function getRow($query, $arr_type = MYSQL_ASSOC)
+    function getRow($query, $arr_type = PDO::FETCH_ASSOC)
     {
         if(!$query)
             return array();
-        if($arr_type != MYSQL_ASSOC && $arr_type != MYSQL_NUM && $arr_type != MYSQL_BOTH)
-            $arr_type = MYSQL_ASSOC;
+        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH)
+            $arr_type = PDO::FETCH_ASSOC;
         $res = $this->res ($query);
         $arr_res = array();
-        if($res && mysql_num_rows($res)) {
+        if($res && $res->rowCount()) {
             $arr_res = mysql_fetch_array($res, $arr_type);
             mysql_free_result($res);
         }
@@ -94,7 +94,7 @@ class BxDolUpgradeDb
 
         $aResult = array();
         if($rResult) {
-            while($aRow = mysql_fetch_array($rResult, MYSQL_NUM))
+            while($aRow = mysql_fetch_array($rResult, PDO::FETCH_NUM))
                 $aResult[] = $aRow[0];
             mysql_free_result($rResult);
         }
@@ -110,7 +110,7 @@ class BxDolUpgradeDb
             return false;
         $res = $this->res ($query);
         $arr_res = array();
-        if($res && mysql_num_rows($res))
+        if($res && $res->rowCount())
             $arr_res = mysql_fetch_array($res);
         if(count($arr_res))
             return $arr_res[$index];
@@ -122,17 +122,17 @@ class BxDolUpgradeDb
      * execute sql query and return the first row of result
      * and keep $array type and poiter to all data
      */
-    function getFirstRow($query, $arr_type = MYSQL_ASSOC)
+    function getFirstRow($query, $arr_type = PDO::FETCH_ASSOC)
     {
         if(!$query)
             return array();
-        if($arr_type != MYSQL_ASSOC && $arr_type != MYSQL_NUM)
-            $this->current_arr_type = MYSQL_ASSOC;
+        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM)
+            $this->current_arr_type = PDO::FETCH_ASSOC;
         else
             $this->current_arr_type = $arr_type;
         $this->current_res = $this->res ($query);
         $arr_res = array();
-        if($this->current_res && mysql_num_rows($this->current_res))
+        if($this->current_res && $this->current_res->rowCount())
             $arr_res = mysql_fetch_array($this->current_res, $this->current_arr_type);
         return $arr_res;
     }
@@ -147,7 +147,7 @@ class BxDolUpgradeDb
             return $arr_res;
         else {
             mysql_free_result($this->current_res);
-            $this->current_arr_type = MYSQL_ASSOC;
+            $this->current_arr_type = PDO::FETCH_ASSOC;
             return array();
         }
     }
@@ -158,9 +158,9 @@ class BxDolUpgradeDb
     function getNumRows($res = false)
     {
         if ($res)
-            return (int)@mysql_num_rows($res);
+            return (int)@$res->rowCount();
         elseif (!$this->current_res)
-            return (int)@mysql_num_rows($this->current_res);
+            return (int)@$this->current_res->rowCount();
         else
             return 0;
     }
@@ -202,13 +202,13 @@ class BxDolUpgradeDb
     /**
      * execute sql query and return table of records as result
      */
-    function getAll($query, $arr_type = MYSQL_ASSOC)
+    function getAll($query, $arr_type = PDO::FETCH_ASSOC)
     {
         if(!$query)
             return array();
 
-        if($arr_type != MYSQL_ASSOC && $arr_type != MYSQL_NUM && $arr_type != MYSQL_BOTH)
-            $arr_type = MYSQL_ASSOC;
+        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH)
+            $arr_type = PDO::FETCH_ASSOC;
 
         $res = $this->res ($query);
         $arr_res = array();
@@ -223,13 +223,13 @@ class BxDolUpgradeDb
     /**
      * execute sql query and return table of records as result
      */
-    function fillArray($res, $arr_type = MYSQL_ASSOC)
+    function fillArray($res, $arr_type = PDO::FETCH_ASSOC)
     {
         if(!$res)
             return array();
 
-        if($arr_type != MYSQL_ASSOC && $arr_type != MYSQL_NUM && $arr_type != MYSQL_BOTH)
-            $arr_type = MYSQL_ASSOC;
+        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH)
+            $arr_type = PDO::FETCH_ASSOC;
 
         $arr_res = array();
         while($row = mysql_fetch_array($res, $arr_type))
@@ -250,7 +250,7 @@ class BxDolUpgradeDb
         $res = $this->res ($query);
         $arr_res = array();
         if($res) {
-            while($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
+            while($row = mysql_fetch_array($res, PDO::FETCH_ASSOC)) {
                 $arr_res[$row[$sFieldKey]] = $row;
             }
             mysql_free_result($res);
@@ -261,7 +261,7 @@ class BxDolUpgradeDb
     /**
      * execute sql query and return table of records as result
      */
-    function getPairs($query, $sFieldKey, $sFieldValue, $arr_type = MYSQL_ASSOC)
+    function getPairs($query, $sFieldKey, $sFieldValue, $arr_type = PDO::FETCH_ASSOC)
     {
         if(!$query)
             return array();
@@ -269,7 +269,7 @@ class BxDolUpgradeDb
         $res = $this->res ($query);
         $arr_res = array();
         if($res) {
-            while($row = mysql_fetch_array($res, MYSQL_ASSOC)) {
+            while($row = mysql_fetch_array($res, PDO::FETCH_ASSOC)) {
                 $arr_res[$row[$sFieldKey]] = $row[$sFieldValue];
             }
             mysql_free_result($res);

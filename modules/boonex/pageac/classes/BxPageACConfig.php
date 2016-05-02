@@ -14,9 +14,9 @@ class BxPageACConfig extends BxDolConfig
      * Constructor
      */
     var $_aMemberships;
-    function BxPageACConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
         $this->_aMemberships = getMemberships();
     }
 }

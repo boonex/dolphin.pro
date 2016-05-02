@@ -13,9 +13,9 @@ class BxZIPModule extends BxDolModule
     var $_maxRows = 500; // max number of zip codes to return
     var $_error = '';
 
-    function BxZIPModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
     }
 
     function serviceGetSqlParts ($mixedCountry, $sZip, $sMetric, $iDistance, &$sJoin, &$aWhere)
@@ -77,7 +77,7 @@ class BxZIPModule extends BxDolModule
                 $iDistance = 30;
 
             do {
-                $s = $this->_readFromUrl($this->_server . "/findNearbyPostalCodes?postalcode={$sZip}&country={$sCountry}&radius={$iDistance}&style={$this->_style}&maxRows={$this->_maxRows}&username=" . trim(getParam('bx_zip_geonames_username')), 'r');
+                $s = $this->_readFromUrl($this->_server . "/findNearbyPostalCodes?postalcode={$sZip}&country={$sCountry}&radius={$iDistance}&style={$this->_style}&maxRows={$this->_maxRows}&username=" . trim(getParam('bx_zip_geonames_username')));
                 if (!$s) {
                     $this->_setError (_t('_Server is too busy'));
                     break;

@@ -11,9 +11,9 @@ class BxSoundsDb extends BxDolFilesDb
     /*
      * Constructor.
      */
-    function BxSoundsDb (&$oConfig)
+    function __construct (&$oConfig)
     {
-        parent::BxDolFilesDb($oConfig);
+        parent::__construct($oConfig);
         $this->aFileFields['medViews'] = 'Listens';
         $this->sFileTable = 'RayMp3Files';
         $this->sFavoriteTable = 'bx_sounds_favorites';

@@ -14,7 +14,7 @@ class BxBaseFunctions
 {
     var	$aSpecialKeys;
 
-    function BxBaseFunctions()
+    function __construct()
     {
         $this -> aSpecialKeys = array('rate' => '', 'rate_cnt' => '');
     }
@@ -22,7 +22,7 @@ class BxBaseFunctions
     function getProfileMatch( $memberID, $profileID )
     {
         $match_n = getProfilesMatch($memberID, $profileID); // impl
-        return DesignProgressPos ( _t("_XX match", $match_n), $GLOBALS['oTemplConfig']->iProfileViewProgressBar, 100, $match_n );;
+        return DesignProgressPos ( _t("_XX match", $match_n), $GLOBALS['oTemplConfig']->iProfileViewProgressBar, 100, $match_n );
     }
 
     function getProfileZodiac( $profileDate )
@@ -254,7 +254,7 @@ class BxBaseFunctions
 
     function msgBox($sText, $iTimer = 0, $sOnTimer = "")
     {
-        $iId = mktime() . mt_rand(1, 1000);
+        $iId = time() . mt_rand(1, 1000);
 
         return $GLOBALS['oSysTemplate']->parseHtmlByName('messageBox.html', array(
             'id' => $iId,
@@ -567,7 +567,7 @@ class BxBaseFunctions
             ";
 
             $rResult = db_res($sQuery);
-            while ( $aRow = mysql_fetch_assoc($rResult) ) {
+            while ( $aRow = $rResult->fetch() ) {
                 $aActions[$sActionsType][] = $aRow;
             }
 

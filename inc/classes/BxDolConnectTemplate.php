@@ -10,9 +10,9 @@ class BxDolConnectTemplate extends BxDolModuleTemplate
 {
     protected $_sPageIcon;
 
-    function BxDolConnectTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
     }
 
     /**

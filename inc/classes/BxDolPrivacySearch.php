@@ -27,9 +27,9 @@ class BxDolPrivacySearch extends BxTemplSearchResultText
         )
     );
 
-    function BxDolPrivacySearch($iOwnerId, $sValue)
+    function __construct($iOwnerId, $sValue)
     {
-        parent::BxTemplSearchResultText();
+        parent::__construct();
 
         global $oSysTemplate;
 

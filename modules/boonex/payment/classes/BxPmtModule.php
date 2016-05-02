@@ -93,9 +93,9 @@ class BxPmtModule extends BxDolModule
     /**
      * Constructor
      */
-    function BxPmtModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
 
         $this->_oConfig->init($this->_oDb);
 

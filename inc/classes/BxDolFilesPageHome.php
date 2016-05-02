@@ -18,9 +18,9 @@ class BxDolFilesPageHome extends BxDolPageView
 
     var $aVisible = array();
 
-    function BxDolFilesPageHome (&$oShared)
+    function __construct (&$oShared)
     {
-        parent::BxDolPageView($oShared->_oConfig->getMainPrefix() . '_home');
+        parent::__construct($oShared->_oConfig->getMainPrefix() . '_home');
         $this->oModule = $oShared;
         $this->oDb = $oShared->_oDb;
         $this->oConfig = $oShared->_oConfig;

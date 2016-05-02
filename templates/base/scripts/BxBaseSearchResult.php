@@ -14,9 +14,9 @@ class BxBaseSearchResult extends BxDolSearchResult
     var $aPermalinks;
     var $aConstants;
 
-    function BxBaseSearchResult()
+    function __construct()
     {
-        parent::BxDolSearchResult();
+        parent::__construct();
     }
 
     function isPermalinkEnabled()
@@ -78,7 +78,7 @@ class BxBaseSearchResult extends BxDolSearchResult
         return $sTempl;
     }
 
-    function showAdminActionsPanel($sWrapperId, $aButtons, $sCheckboxName = 'entry', $bSelectAll = true, $bSelectAllChecked = false, $sCustomHtml = '')
+    public static function showAdminActionsPanel($sWrapperId, $aButtons, $sCheckboxName = 'entry', $bSelectAll = true, $bSelectAllChecked = false, $sCustomHtml = '')
     {
         $aBtns = array();
         foreach ($aButtons as $k => $v) {
@@ -93,6 +93,7 @@ class BxBaseSearchResult extends BxDolSearchResult
                 'onclick' => '',
             );
         }
+
         $aUnit = array(
             'bx_if:selectAll' => array(
                 'condition' => $bSelectAll,
@@ -116,10 +117,11 @@ class BxBaseSearchResult extends BxDolSearchResult
                 )
             )
         );
+
         return $GLOBALS['oSysTemplate']->parseHtmlByName('adminActionsPanel.html', $aUnit, array('{','}'));
     }
 
-    function showAdminFilterPanel($sFilterValue, $sInputId = 'filter_input_id', $sCheckboxId = 'filter_checkbox_id', $sFilterName = 'filter', $sOnApply = '')
+    public static function showAdminFilterPanel($sFilterValue, $sInputId = 'filter_input_id', $sCheckboxId = 'filter_checkbox_id', $sFilterName = 'filter', $sOnApply = '')
     {
         $sFilter = _t('_sys_admin_filter');
         $sApply = _t('_sys_admin_apply');

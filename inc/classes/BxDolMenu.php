@@ -23,7 +23,7 @@ class BxDolMenu
     var $oPermalinks;
     var $aCustomBreadcrumbs = array ();
 
-    function BxDolMenu()
+    function __construct()
     {
         global $oTemplConfig;
 
@@ -165,7 +165,7 @@ class BxDolMenu
                 break;
 
             // if profile ID isn't defined, then profile menu submenus can't be currently selected
-            if( !$this->aMenuInfo['profileID'] && BX_PROFILE_MENU_ID == $aItem['Parent'] ) 
+            if((!isset($this->aMenuInfo['profileID']) || !$this->aMenuInfo['profileID']) && BX_PROFILE_MENU_ID == $aItem['Parent'] )
                 continue;
 
             $this->aMenuInfo['currentTopLink'] = $aItem['Link'];
@@ -327,7 +327,7 @@ class BxDolMenu
         ";
 
         $rMenu = db_res( $sQuery );
-        while( $aMenuItem = mysql_fetch_assoc( $rMenu ) ) {
+        while( $aMenuItem =  $rMenu ->fetch() ) {
             $sEval .= "  " . str_pad( $aMenuItem['ID'], 2 ) . " => array(\n";
 
             foreach( $aFields as $sKey => $sField ) {
@@ -364,7 +364,7 @@ class BxDolMenu
             ";
 
             $rCMenu = db_res( $sQuery );
-            while( $aMenuItem = mysql_fetch_assoc( $rCMenu ) ) {
+            while( $aMenuItem =  $rCMenu ->fetch() ) {
                 $sEval .= "  " . str_pad( $aMenuItem['ID'], 2 ) . " => array(\n";
 
                 foreach( $aFields as $sKey => $sField ) {

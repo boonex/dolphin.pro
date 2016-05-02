@@ -11,7 +11,7 @@ bx_import('BxDolProfileFields');
  */
 class BxDolTwigFormInviter extends BxTemplFormView
 {
-    function BxDolTwigFormInviter ($oMain, $sMsgNoUsers)
+    function __construct ($oMain, $sMsgNoUsers)
     {
         $aVisitorsPreapare = $oMain->_oDb->getPotentialVisitors ($oMain->_iProfileId);
         $aVisitors = array ();
@@ -82,6 +82,6 @@ class BxDolTwigFormInviter extends BxTemplFormView
             ),
         );
 
-        parent::BxTemplFormView ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 }

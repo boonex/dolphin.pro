@@ -11,16 +11,16 @@ class BxBlogsCmts extends BxTemplCmtsView
     /**
      * Constructor
      */
-    function BxBlogsCmts($sSystem, $iId)
+    function __construct($sSystem, $iId)
     {
-        parent::BxTemplCmtsView($sSystem, $iId);
+        parent::__construct($sSystem, $iId);
     }
 
     function getMain()
     {
         $aPathInfo = pathinfo(__FILE__);
         require_once ($aPathInfo['dirname'] . '/BxBlogsSearchUnit.php');
-        return BxBlogsSearchUnit::getBlogsMain();
+        return (new BxBlogsSearchUnit())->getBlogsMain();
     }
 
     function getBaseUrl()

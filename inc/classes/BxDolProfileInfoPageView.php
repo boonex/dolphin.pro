@@ -17,14 +17,14 @@ class BxDolProfileInfoPageView extends BxTemplProfileView
     /**
      * Class constructor ;
      */
-    function BxDolProfileInfoPageView( $sPageName, &$aMemberInfo )
+    function __construct( $sPageName, &$aMemberInfo )
     {
         global $site, $dir;
 
         $this->oProfileGen = new BxBaseProfileGenerator( $aMemberInfo['ID'] );
         $this->aConfSite = $site;
         $this->aConfDir  = $dir;
-        parent::BxDolPageView($sPageName);
+        parent::__construct($sPageName);
 
         $this->iMemberID  = getLoggedId();
         $this->aMemberInfo = &$aMemberInfo;

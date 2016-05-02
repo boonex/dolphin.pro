@@ -14,9 +14,9 @@ class BxEventsTemplate extends BxDolTwigTemplate
     /**
      * Constructor
      */
-    function BxEventsTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolTwigTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
         $this->_iPageIndex = 300;
     }
 

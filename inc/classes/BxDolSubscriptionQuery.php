@@ -15,9 +15,9 @@ class BxDolSubscriptionQuery extends BxDolDb
     /**
      * constructor
      */
-    function BxDolSubscriptionQuery(&$oSubscription)
+    function __construct(&$oSubscription)
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $this->_oSubscription = &$oSubscription;
         $this->_sPrefix = 'sys_sbs_';
@@ -54,9 +54,9 @@ class BxDolSubscriptionQuery extends BxDolDb
                `template` AS `template`,
                `params` AS `params`
             FROM `" . $this->_sPrefix . "types`
-            WHERE `unit`='" . $sUnit . "' AND `action`='" . $sAction . "'
+            WHERE `unit`= ? AND `action`= ?
             LIMIT 1";
-        return $this->getRow($sSql);
+        return $this->getRow($sSql, [$sUnit, $sAction]);
     }
     function getSubscriptions($sUnit, $sAction = '')
     {
@@ -67,8 +67,8 @@ class BxDolSubscriptionQuery extends BxDolDb
                `template` AS `template`,
                `params` AS `params`
             FROM `" . $this->_sPrefix . "types`
-            WHERE `unit`='" . $sUnit . "'" . (!empty($sAction) ? " AND `action`='" . $sAction . "'" : "");
-        return $this->getAll($sSql);
+            WHERE `unit`= ? " . (!empty($sAction) ? " AND `action`='" . $sAction . "'" : "");
+        return $this->getAll($sSql, [$sUnit]);
     }
     function getSubscriptionsByUser($iUserId)
     {
@@ -86,9 +86,9 @@ class BxDolSubscriptionQuery extends BxDolDb
                `te`.`object_id` AS `object_id`
             FROM `" . $this->_sPrefix . "entries` AS `te`
             LEFT JOIN `" . $this->_sPrefix . "types` AS `tt` ON `te`.`subscription_id`=`tt`.`id`
-            WHERE `tt`.`action`='' AND `te`.`subscriber_id`='" . $iUserId . "' AND `te`.`subscriber_type`='" . BX_DOL_SBS_TYPE_MEMBER . "'
+            WHERE `tt`.`action`='' AND `te`.`subscriber_id`= ? AND `te`.`subscriber_type`='" . BX_DOL_SBS_TYPE_MEMBER . "'
             ORDER BY `tt`.`unit`, `te`.`object_id`";
-        return $this->getAll($sSql);
+        return $this->getAll($sSql, [$iUserId]);
     }
     function addSubscription($aParams)
     {
@@ -207,7 +207,7 @@ class BxDolSubscriptionQuery extends BxDolDb
                 foreach ($aIds as $k => $v)
                     $aIds[$k] = (int)$v;
 
-                list($iUserId, $iUserType) = $this->getRow("SELECT `subscriber_id`, `subscriber_type` FROM `" . $this->_sPrefix . "entries` WHERE `id`='" . (int)$aIds[0] . "' LIMIT 1", MYSQL_NUM);
+                list($iUserId, $iUserType) = $this->getRow("SELECT `subscriber_id`, `subscriber_type` FROM `" . $this->_sPrefix . "entries` WHERE `id`= ? LIMIT 1", [$aIds[0]], PDO::FETCH_NUM);
                 
                 $iResult = (int)$this->query("DELETE FROM `" . $this->_sPrefix . "entries` WHERE `id` IN ('" . implode("','", $aIds) . "')");
             }
@@ -243,13 +243,13 @@ class BxDolSubscriptionQuery extends BxDolDb
         foreach($aSubscribers as $aSubscriber) {
             switch($aSubscriber['type']) {
                 case BX_DOL_SBS_TYPE_VISITOR:
-                    $sSql = "SELECT '0' AS `id`, `name`, `email` FROM `" . $this->_sPrefix . "users` WHERE `id`='" . $aSubscriber['id'] . "' LIMIT 1";
+                    $sSql = "SELECT '0' AS `id`, `name`, `email` FROM `" . $this->_sPrefix . "users` WHERE `id`= ? LIMIT 1";
                     break;
                 case BX_DOL_SBS_TYPE_MEMBER:
-                    $sSql = "SELECT `ID` AS `id`, `NickName` AS `name`, `Email` AS `email` FROM `Profiles` WHERE `ID`='" . $aSubscriber['id'] . "' LIMIT 1";
+                    $sSql = "SELECT `ID` AS `id`, `NickName` AS `name`, `Email` AS `email` FROM `Profiles` WHERE `ID`= ? LIMIT 1";
                     break;
             }
-            $aUser = $this->getRow($sSql);
+            $aUser = $this->getRow($sSql, [$aSubscriber['id']]);
 
             //--- Parse message ---//
             $sSql = "SELECT

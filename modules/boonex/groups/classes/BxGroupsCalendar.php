@@ -8,9 +8,9 @@ bx_import ('BxDolTwigCalendar');
 
 class BxGroupsCalendar extends BxDolTwigCalendar
 {
-    function BxGroupsCalendar ($iYear, $iMonth, &$oDb, &$oConfig, &$oTemplate)
+    function __construct ($iYear, $iMonth, &$oDb, &$oConfig, &$oTemplate)
     {
-        parent::BxDolTwigCalendar($iYear, $iMonth, $oDb, $oConfig);
+        parent::__construct($iYear, $iMonth, $oDb, $oConfig);
     }
 
     function getEntriesNames ()

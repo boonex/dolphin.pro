@@ -8,8 +8,8 @@ bx_import('BxDolTextPageMain');
 
 class BxArlPageMain extends BxDolTextPageMain
 {
-    function BxArlPageMain(&$oObject)
+    function __construct(&$oObject)
     {
-        parent::BxDolTextPageMain('articles_home', $oObject);
+        parent::__construct('articles_home', $oObject);
     }
 }

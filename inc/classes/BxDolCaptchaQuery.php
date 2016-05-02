@@ -23,8 +23,8 @@ class BxDolCaptchaQuery extends BxDolDb
     static public function getCaptchaObject ($sObject)
     {
         $oDb = $GLOBALS['MySQL'];
-        $sQuery = "SELECT * FROM `sys_objects_captcha` WHERE `object` = '" . $oDb->escape($sObject) . "'";
-        $aObject = $oDb->getRow($sQuery);
+        $sQuery = "SELECT * FROM `sys_objects_captcha` WHERE `object` = ?";
+        $aObject = $oDb->getRow($sQuery, [$sObject]);
         if (!$aObject || !is_array($aObject))
             return false;
 

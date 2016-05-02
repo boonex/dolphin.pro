@@ -8,9 +8,9 @@ bx_import('BxDolTwigPageView');
 
 class BxStorePageView extends BxDolTwigPageView
 {
-    function BxStorePageView(&$oMain, &$aDataEntry)
+    function __construct(&$oMain, &$aDataEntry)
     {
-        parent::BxDolTwigPageView('bx_store_view', $oMain, $aDataEntry);
+        parent::__construct('bx_store_view', $oMain, $aDataEntry);
     }
 
     function getBlockCode_Info()

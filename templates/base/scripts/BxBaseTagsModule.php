@@ -14,13 +14,13 @@ class BxBaseTagsModule extends BxDolPageView
     var $_sUrl;
     var $_aParam;
 
-    function BxBaseTagsModule($aParam, $sTitle, $sUrl)
+    function __construct($aParam, $sTitle, $sUrl)
     {
         $this->_sPage = 'tags_module';
         $this->_sTitle = $sTitle ? $sTitle : _t('_all_tags');
         $this->_sUrl = $sUrl;
         $this->_aParam = $aParam;
-        parent::BxDolPageView($this->_sPage);
+        parent::__construct($this->_sPage);
     }
 
     function getBlockCode_Recent($iBlockId)

@@ -13,9 +13,9 @@ class BxPollCmts extends BxTemplCmtsView
     /**
      * Constructor
      */
-    function BxPollCmts($sSystem, $iId)
+    function __construct($sSystem, $iId)
     {
-        parent::BxTemplCmtsView($sSystem, $iId);
+        parent::__construct($sSystem, $iId);
 
         $this->_oModule = BxDolModule::getInstance('BxPollModule');
     }

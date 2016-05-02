@@ -13,9 +13,9 @@ class BxPmtOrdersPage extends BxDolPageView
     var $_oPayments;
     var $_sType;
 
-    function BxPmtOrdersPage($sType, &$oPayments)
+    function __construct($sType, &$oPayments)
     {
-        parent::BxDolPageView('bx_pmt_orders');
+        parent::__construct('bx_pmt_orders');
 
         $this->_sType = $sType;
         $this->_oPayments = &$oPayments;

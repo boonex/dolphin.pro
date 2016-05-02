@@ -15,9 +15,9 @@ bx_import ('BxDolPageView');
 
 class BxDolPageSearchMain extends BxDolPageView
 {
-    function BxDolPageSearchMain()
+    function __construct()
     {
-        parent::BxDolPageView('search_home');
+        parent::__construct('search_home');
     }
 
     function getBlockCode_Keyword()

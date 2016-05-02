@@ -9,9 +9,9 @@ bx_import('BxDolPageView');
 class BxAdsPageHome extends BxDolPageView
 {
     var $oModule;
-    function BxAdsPageHome($oModule)
+    function __construct($oModule)
     {
-        parent::BxDolPageView('ads_home');
+        parent::__construct('ads_home');
         $this->oModule = $oModule;
     }
 

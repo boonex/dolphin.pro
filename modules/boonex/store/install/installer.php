@@ -9,9 +9,9 @@ bx_import('BxDolInstaller');
 
 class BxStoreInstaller extends BxDolInstaller
 {
-    function BxStoreInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
     }
 
     function install($aParams)

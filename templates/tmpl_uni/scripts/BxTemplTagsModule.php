@@ -4,8 +4,8 @@ bx_import('BxBaseTagsModule');
 
 class BxTemplTagsModule extends BxBaseTagsModule
 {
-    function BxTemplTagsModule($aParam, $sTitle, $sUrl)
+    function __construct($aParam, $sTitle, $sUrl)
     {
-        parent::BxBaseTagsModule($aParam, $sTitle, $sUrl);
+        parent::__construct($aParam, $sTitle, $sUrl);
     }
 }

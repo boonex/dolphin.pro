@@ -23,7 +23,7 @@ class BxPmtDetails
     /*
      * Constructor.
      */
-    function BxPmtDetails(&$oDb, &$oConfig)
+    function __construct(&$oDb, &$oConfig)
     {
         $this->_oDb = &$oDb;
         $this->_oConfig = &$oConfig;

@@ -6,12 +6,6 @@
 
  class BxDolUpdateMembersCache extends BxDolAlertsResponse
  {
-
-    // class constructor
-    function BxDolUpdateMembersCache()
-    {
-    }
-
     // system event
     function response($o)
     {

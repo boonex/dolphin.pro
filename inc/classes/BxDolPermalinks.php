@@ -28,45 +28,50 @@ bx_import('BxDolDb');
  * no alerts available
  *
  */
-class BxDolPermalinks extends BxDolDb
+class BxDolPermalinks
 {
     var $sCacheFile;
     var $aLinks;
+    protected $oDb;
 
-    function BxDolPermalinks()
+    function __construct()
     {
-        parent::BxDolDb();
-
-        $oCache = $GLOBALS['MySQL']->getDbCacheObject();
-        $this->aLinks = $oCache->getData($GLOBALS['MySQL']->genDbCacheKey('sys_permalinks'));
-        if (null === $this->aLinks)
-            if(!$this->cache())
-               $this->aLinks = array();
+        $this->oDb    = BxDolDb::getInstance();
+        $oCache       = $this->oDb->getDbCacheObject();
+        $this->aLinks = $oCache->getData($this->oDb->genDbCacheKey('sys_permalinks'));
+        if (null === $this->aLinks) {
+            if (!$this->cache()) {
+                $this->aLinks = array();
+            }
+        }
     }
 
     function getInstance()
     {
-        if(!isset($GLOBALS['bxDolClasses']['BxDolPermalinks']))
+        if (!isset($GLOBALS['bxDolClasses']['BxDolPermalinks'])) {
             $GLOBALS['bxDolClasses']['BxDolPermalinks'] = new BxDolPermalinks();
+        }
 
         return $GLOBALS['bxDolClasses']['BxDolPermalinks'];
     }
 
     function cache()
     {
-        $aLinks = $this->getAll("SELECT * FROM `sys_permalinks`");
+        $aLinks = $this->oDb->getAll("SELECT * FROM `sys_permalinks`");
 
         $aResult = array();
-        foreach($aLinks as $aLink)
-           $aResult[$aLink['standard']] = array(
+        foreach ($aLinks as $aLink) {
+            $aResult[$aLink['standard']] = array(
                 'permalink' => $aLink['permalink'],
-                'check' => $aLink['check'],
-                'enabled' => $this->getParam($aLink['check']) == 'on'
+                'check'     => $aLink['check'],
+                'enabled'   => $this->getParam($aLink['check']) == 'on'
             );
+        }
 
-        $oCache = $GLOBALS['MySQL']->getDbCacheObject();
-        if ($oCache->setData ($GLOBALS['MySQL']->genDbCacheKey('sys_permalinks'), $aResult)) {
+        $oCache = $this->oDb->getDbCacheObject();
+        if ($oCache->setData($this->oDb->genDbCacheKey('sys_permalinks'), $aResult)) {
             $this->aLinks = $aResult;
+
             return true;
         }
 
@@ -77,19 +82,23 @@ class BxDolPermalinks extends BxDolDb
     {
         if (strpos($sLink, 'modules/?r=') === false && strpos($sLink, 'modules/index.php?r=') === false) {
             // check for exact match
-            if ($this->_isEnabled($sLink))
+            if ($this->_isEnabled($sLink)) {
                 return $this->aLinks[$sLink]['permalink'];
+            }
 
             // check permalinks with numeric id or parameter at the end
             $aMatch = array();
             preg_match('/([\d]+)$/', $sLink, $aMatch);
-            if (!isset($aMatch[1])) 
+            if (!isset($aMatch[1])) {
                 preg_match('/(\{[a-zA-Z0-9_]+\})$/', $sLink, $aMatch);
-            if (!isset($aMatch[1])) 
-                return $sLink; // no id at the end and no exact match, return unmodified link
+            }
+            if (!isset($aMatch[1])) {
+                return $sLink;
+            } // no id at the end and no exact match, return unmodified link
 
             // process links with id or parameter at the end
             $sLink = substr($sLink, 0, -strlen($aMatch[1]));
+
             return $this->_isEnabled($sLink) ? $this->aLinks[$sLink]['permalink'] . $aMatch[1] : $sLink . $aMatch[1];
         }
 
@@ -98,15 +107,19 @@ class BxDolPermalinks extends BxDolDb
         $aMatch = array();
         preg_match('/^.*(modules\/(index.php)?\?r=[A-Za-z0-9_-]+\/).*$/', $sLink, $aMatch);
 
-        if (!isset($aMatch[1]))
-           return $this->_isEnabled($sLink) ? $this->aLinks[$sLink]['permalink'] : $sLink;
+        if (!isset($aMatch[1])) {
+            return $this->_isEnabled($sLink) ? $this->aLinks[$sLink]['permalink'] : $sLink;
+        }
 
         $sBase = $aMatch[1];
-        if ($this->_isEnabled($sBase))
+        if ($this->_isEnabled($sBase)) {
             return str_replace($sBase, $this->aLinks[$sBase]['permalink'], $sLink);
+        }
 
         $sBaseShort = str_replace('index.php', '', $sBase);
-        return $this->_isEnabled($sBaseShort) ? str_replace($sBase, $this->aLinks[$sBaseShort]['permalink'], $sLink) : $sLink;
+
+        return $this->_isEnabled($sBaseShort) ? str_replace($sBase, $this->aLinks[$sBaseShort]['permalink'],
+            $sLink) : $sLink;
     }
 
     function _isEnabled($sLink)
@@ -118,21 +131,23 @@ class BxDolPermalinks extends BxDolDb
      * redirect to the correct url after switching skin ot language
      * only correct modules urls are supported
      */
-    function redirectIfNecessary ($aSkip = array())
+    function redirectIfNecessary($aSkip = array())
     {
         $sCurrentUrl = $_SERVER['PHP_SELF'] . '?' . bx_encode_url_params($_GET, $aSkip);
 
-        if (!preg_match('/modules\/index.php\?r=(\w+)(.*)/', $sCurrentUrl, $m))
+        if (!preg_match('/modules\/index.php\?r=(\w+)(.*)/', $sCurrentUrl, $m)) {
             return false;
+        }
 
         $sStandardLink = 'modules/?r=' . $m[1] . '/';
-        $sPermalink = $this->permalink ($sStandardLink);
+        $sPermalink    = $this->permalink($sStandardLink);
 
-        if (false !== strpos($sCurrentUrl, $sPermalink))
+        if (false !== strpos($sCurrentUrl, $sPermalink)) {
             return false;
+        }
 
         header("HTTP/1.1 301 Moved Permanently");
-        header ('Location:' . BX_DOL_URL_ROOT . $sPermalink . rtrim(trim(urldecode($m[2]), '/'), '&'));
+        header('Location:' . BX_DOL_URL_ROOT . $sPermalink . rtrim(trim(urldecode($m[2]), '/'), '&'));
         send_headers_page_changed();
 
         return true;

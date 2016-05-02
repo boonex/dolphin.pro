@@ -11,11 +11,11 @@ class BxGSearchPageMain extends BxDolPageView
     var $_oTemplate;
     var $_oConfig;
 
-    function BxGSearchPageMain(&$oModule)
+    function __construct(&$oModule)
     {
         $this->_oTemplate = $oModule->_oTemplate;
         $this->_oConfig = $oModule->_oConfig;
-        parent::BxDolPageView('bx_gsearch');
+        parent::__construct('bx_gsearch');
     }
 
     function getBlockCode_SearchForm()

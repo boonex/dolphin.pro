@@ -14,14 +14,14 @@ class BxGroupsPageMy extends BxDolPageView
     var $_oConfig;
     var $_aProfile;
 
-    function BxGroupsPageMy(&$oMain, &$aProfile)
+    function __construct(&$oMain, &$aProfile)
     {
         $this->_oMain = &$oMain;
         $this->_oTemplate = $oMain->_oTemplate;
         $this->_oDb = $oMain->_oDb;
         $this->_oConfig = $oMain->_oConfig;
         $this->_aProfile = $aProfile;
-        parent::BxDolPageView('bx_groups_my');
+        parent::__construct('bx_groups_my');
     }
 
     function getBlockCode_Owner()

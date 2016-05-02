@@ -13,9 +13,9 @@ class BxPageACModule extends BxDolModule
     /**
      * Constructor
      */
-    function BxPageACModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
     }
     //--- Pages (tabs) ---//
     function actionGetPageRules()

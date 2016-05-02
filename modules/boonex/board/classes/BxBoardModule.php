@@ -11,9 +11,9 @@ class BxBoardModule extends BxDolModule
     /**
      * Constructor
      */
-    function BxBoardModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
 
         //--- Define Membership Actions ---//
         $aActions = $this->_oDb->getMembershipActions();

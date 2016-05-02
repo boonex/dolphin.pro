@@ -314,43 +314,45 @@ function getMembers($aParams)
     $sDateFormat = getLocaleFormat(BX_DOL_LOCALE_DATE, BX_DOL_LOCALE_DB);
 
     $sSelectClause = $sJoinClause = $sWhereClause = $sGroupClause = '';
-    switch($aParams['ctl_type']) {
-        case 'qlinks':
-            switch($aParams['ctl_params']['by']) {
-                case 'status':
-                    $sWhereClause .= " AND `tp`.`Status`='" . ucfirst($aParams['ctl_params']['value']) . "'";
-                    break;
-                case 'featured':
-                    $sWhereClause .= " AND `tp`.`Featured`='1'";
-                    break;
-                case 'banned':
-                    $sWhereClause .= " AND (`tbl`.`Time`='0' OR (`tbl`.`Time`<>'0' AND DATE_ADD(`tbl`.`DateTime`, INTERVAL `tbl`.`Time` HOUR)>NOW()))";
-                    break;
-                case 'type':
-                    $sWhereClause .= $aParams['ctl_params']['value'] == 'single' ? " AND `tp`.`Couple`='0'" : " AND `tp`.`Couple`<>'0' AND `tp`.`Couple`>`tp`.`ID`";
-                    break;
-                case 'role':
-                    $iRole = BX_DOL_ROLE_MEMBER;
-                    if($aParams['ctl_params']['value'] == 'admins')
-                        $iRole = BX_DOL_ROLE_ADMIN;
+    if(isset($aParams['ctl_type'])) {
+        switch ($aParams['ctl_type']) {
+            case 'qlinks':
+                switch ($aParams['ctl_params']['by']) {
+                    case 'status':
+                        $sWhereClause .= " AND `tp`.`Status`='" . ucfirst($aParams['ctl_params']['value']) . "'";
+                        break;
+                    case 'featured':
+                        $sWhereClause .= " AND `tp`.`Featured`='1'";
+                        break;
+                    case 'banned':
+                        $sWhereClause .= " AND (`tbl`.`Time`='0' OR (`tbl`.`Time`<>'0' AND DATE_ADD(`tbl`.`DateTime`, INTERVAL `tbl`.`Time` HOUR)>NOW()))";
+                        break;
+                    case 'type':
+                        $sWhereClause .= $aParams['ctl_params']['value'] == 'single' ? " AND `tp`.`Couple`='0'" : " AND `tp`.`Couple`<>'0' AND `tp`.`Couple`>`tp`.`ID`";
+                        break;
+                    case 'role':
+                        $iRole = BX_DOL_ROLE_MEMBER;
+                        if ($aParams['ctl_params']['value'] == 'admins') {
+                            $iRole = BX_DOL_ROLE_ADMIN;
+                        }
 
-                    $sWhereClause .= " AND `tp`.`Role` & " . $iRole . "";
-                    break;
-                case 'sex':
-                    $sWhereClause .= " AND LOWER(`tp`.`Sex`)='" . strtolower($aParams['ctl_params']['value']) . "' AND `tp`.`Couple` = 0 ";
-                    break;
-                case 'membership':
-                    $sWhereClause .= " AND LOWER(`tl`.`Name`)='" . strtolower($aParams['ctl_params']['value']) . "'";
-                    break;
-            }
-            break;
+                        $sWhereClause .= " AND `tp`.`Role` & " . $iRole . "";
+                        break;
+                    case 'sex':
+                        $sWhereClause .= " AND LOWER(`tp`.`Sex`)='" . strtolower($aParams['ctl_params']['value']) . "' AND `tp`.`Couple` = 0 ";
+                        break;
+                    case 'membership':
+                        $sWhereClause .= " AND LOWER(`tl`.`Name`)='" . strtolower($aParams['ctl_params']['value']) . "'";
+                        break;
+                }
+                break;
 
-        case 'tags':
-            $sWhereClause .= " AND `tp`.`Tags` LIKE '%" . $aParams['ctl_params']['value'] . "%'";
-            break;
+            case 'tags':
+                $sWhereClause .= " AND `tp`.`Tags` LIKE '%" . $aParams['ctl_params']['value'] . "%'";
+                break;
 
-        case 'search':
-            $sWhereClause .= " AND (
+            case 'search':
+                $sWhereClause .= " AND (
                 `tp`.`ID` LIKE '%" . $aParams['ctl_params']['value'] . "%' OR
                 `tp`.`NickName` LIKE '%" . $aParams['ctl_params']['value'] . "%' OR
                 `tp`.`Email` LIKE '%" . $aParams['ctl_params']['value'] . "%' OR
@@ -359,7 +361,8 @@ function getMembers($aParams)
                 `tp`.`DateReg` LIKE '%" . $aParams['ctl_params']['value'] . "%' OR
                 `tp`.`DateLastLogin` LIKE '%" . $aParams['ctl_params']['value'] . "%'
             )";
-            break;
+                break;
+        }
     }
 
     //--- Get Paginate ---//

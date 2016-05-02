@@ -20,12 +20,12 @@ class BxBaseProfileView extends BxDolPageView
     var $aConfSite;
     var $aConfDir;
 
-    function BxBaseProfileView(&$oPr, &$aSite, &$aDir)
+    function __construct(&$oPr, &$aSite, &$aDir)
     {
         $this->oProfileGen = &$oPr;
         $this->aConfSite = $aSite;
         $this->aConfDir  = $aDir;
-        parent::BxDolPageView('profile');
+        parent::__construct('profile');
 
         bx_import('BxDolMemberInfo');
         $o = BxDolMemberInfo::getObjectInstance(getParam('sys_member_info_thumb'));
@@ -153,7 +153,7 @@ class BxBaseProfileGenerator extends BxDolProfile
 
         $this->aMutualFriends = array();
 
-        BxDolProfile::BxDolProfile( $ID, 0 );
+        parent::__construct( $ID, 0 );
 
         $this->oVotingView = new BxTemplVotingView ('profile', (int)$ID);
         $this->oCmtsView = new BxDolCmtsProfile ('profile', (int)$ID);
@@ -228,7 +228,7 @@ class BxBaseProfileGenerator extends BxDolProfile
 
         $sAddSQL = ($sOldStyle == true) ? " AND `Func`='PFBlock' " : '';
         $rBlocks = db_res( "SELECT * FROM `sys_page_compose` WHERE `Page` = 'profile' AND `Column`=$column AND FIND_IN_SET( '$sVisible', `Visible` ) {$sAddSQL} ORDER BY `Order`" );
-        while( $aBlock = mysql_fetch_assoc( $rBlocks ) ) {
+        while( $aBlock =  $rBlocks ->fetch() ) {
             $func = 'showBlock' . $aBlock['Func'];
             $this->$func( $aBlock['Caption'], $aBlock['Content'] );
         }
@@ -728,7 +728,7 @@ class BxBaseProfileGenerator extends BxDolProfile
             ";
 
             $vResult = db_res( $sQuery );
-            while( $aRow = mysql_fetch_assoc( $vResult ) )
+            while( $aRow =  $vResult ->fetch() )
                 $this->aMutualFriends[ $aRow['friendID'] ] = $aRow['NickName'];
         }
     }
@@ -951,7 +951,7 @@ class BxBaseProfileGenerator extends BxDolProfile
             $aProfiles = array();
             $aProfileStatuses = array();
             $rProfiles = db_res($sQuery);
-            while ($aProfile = mysql_fetch_assoc($rProfiles)) {
+            while ($aProfile = $rProfiles->fetch()) {
                 $aProfiles[] = $aProfile['ID'];
                 $aProfileStatuses[$aProfile['ID']] = $aProfile['is_online'];
             }

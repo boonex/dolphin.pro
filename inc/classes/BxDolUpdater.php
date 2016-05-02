@@ -8,9 +8,9 @@ bx_import('BxDolInstaller');
 
 class BxDolUpdater extends BxDolInstaller
 {
-    function BxDolUpdater($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
         $this->_sModulePath = $this->_sBasePath . $aConfig['module_dir'];
 
         $this->_aActions = array_merge($this->_aActions, array(
@@ -37,7 +37,7 @@ class BxDolUpdater extends BxDolInstaller
         );
 
         //--- Check for module to update ---//
-        $aModuleInfo = $MySQL->getRow("SELECT `id`, `version` FROM `sys_modules` WHERE `path`='" . $this->_aConfig['module_dir'] . "' AND `uri`='" . $this->_aConfig['module_uri'] . "' LIMIT 1");
+        $aModuleInfo = $MySQL->getRow("SELECT `id`, `version` FROM `sys_modules` WHERE `path`= ? AND `uri`= ? LIMIT 1", [$this->_aConfig['module_dir'], $this->_aConfig['module_uri']]);
         if(!$aModuleInfo)
             return array_merge($aResult, array(
                 'message' => $this->_displayResult('check_module_exists', false, '_adm_txt_modules_module_not_found'),

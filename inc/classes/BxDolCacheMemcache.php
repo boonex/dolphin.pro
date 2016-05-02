@@ -15,9 +15,10 @@ class BxDolCacheMemcache extends BxDolCache
     /**
      * constructor
      */
-    function BxDolCacheMemcache()
+    function __construct()
     {
-        parent::BxDolCache();
+        parent::__construct();
+
         if (class_exists('Memcache')) {
             $this->oMemcache = new Memcache();
             if (!$this->oMemcache->connect (getParam('sys_cache_memcache_host'), getParam('sys_cache_memcache_port')))

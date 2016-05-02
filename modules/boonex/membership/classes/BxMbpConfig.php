@@ -24,9 +24,9 @@ class BxMbpConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxMbpConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
 
         $this->_oDb = null;
         $this->_bDisableFreeJoin = false;

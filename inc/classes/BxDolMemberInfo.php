@@ -15,7 +15,7 @@ bx_import('BxDolMemberInfoQuery');
 /**
  * Member info objects.
  */
-class BxDolMemberInfo extends BxDolMistake
+class BxDolMemberInfo
 {
     protected $_sObject;
     protected $_aObject;
@@ -26,8 +26,6 @@ class BxDolMemberInfo extends BxDolMistake
      */
     public function __construct($aObject)
     {
-        parent::__construct();
-
         $this->_sObject = $aObject['object'];
         $this->_aObject = $aObject;
     }

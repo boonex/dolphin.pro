@@ -15,9 +15,9 @@
         /**
          * Constructor.
          */
-        function BxSpyDb(&$oConfig)
+        function __construct(&$oConfig)
         {
-            parent::BxDolModuleDb();
+            parent::__construct();
 
             $this -> _oConfig = $oConfig;
             $this -> sTablePrefix = $oConfig -> getDbPrefix();

@@ -22,6 +22,26 @@ if (!file_exists("inc/header.inc.php")) {
 }
 
 require_once( 'inc/header.inc.php' );
+require_once( BX_DIRECTORY_PATH_INC . 'utils.inc.php' );
+require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolDb.php' );
+
+//$instance = BxDolDb::getInstance();
+//dd($instance->getAll('SELECT * FOM Profiles'));
+//echo '<pre>';
+//var_dump($instance->getAll('SELECT * FOM Profiles'));
+//echo '</pre>';
+//sleep(20);
+//dd($instance->getAll('SELECT * FROM Profiles'));
+//
+//$query = $instance->getFirstRow("SELECT * FROM `sys_options`");
+//echo '<pre>';
+//var_dump($query);
+//var_dump($instance->getNumRows());
+//var_dump($instance->getNextRow());
+//var_dump($instance->getNextRow());
+//echo '</pre>';
+//exit;
+
 require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'admin.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'db.inc.php' );

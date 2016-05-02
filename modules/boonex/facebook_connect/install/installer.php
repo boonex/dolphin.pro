@@ -9,9 +9,9 @@
 
     class BxFaceBookConnectInstaller extends BxDolInstaller
     {
-        function BxFaceBookConnectInstaller(&$aConfig)
+        function __construct(&$aConfig)
         {
-            parent::BxDolInstaller($aConfig);
+            parent::__construct($aConfig);
         }
 
         function actionCheckRequirements()

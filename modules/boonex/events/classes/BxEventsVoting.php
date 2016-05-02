@@ -11,16 +11,16 @@ class BxEventsVoting extends BxTemplVotingView
     /**
      * Constructor
      */
-    function BxEventsVoting($sSystem, $iId)
+    function __construct($sSystem, $iId)
     {
-        parent::BxTemplVotingView($sSystem, $iId);
+        parent::__construct($sSystem, $iId);
     }
 
     function getMain()
     {
         $aPathInfo = pathinfo(__FILE__);
         require_once ($aPathInfo['dirname'] . '/BxEventsSearchResult.php');
-        return BxEventsSearchResult::getMain();
+        return (new BxEventsSearchResult())->getMain();
     }
 
     function checkAction ()

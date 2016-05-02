@@ -17,7 +17,7 @@ class BxPmtCart
     /*
      * Constructor.
      */
-    function BxPmtCart(&$oDb, &$oConfig, &$oTemplate)
+    function __construct(&$oDb, &$oConfig, &$oTemplate)
     {
         $this->_oDb = &$oDb;
         $this->_oConfig = &$oConfig;
@@ -215,7 +215,7 @@ class BxPmtCart
      * @param  string/array $mixed - string with cart items divided with (:) or an array of cart items.
      * @return array        with items.
      */
-    function items2array($mixed)
+    public static function items2array($mixed)
     {
         $aResult = array();
 

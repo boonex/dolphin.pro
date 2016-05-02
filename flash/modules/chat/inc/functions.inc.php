@@ -11,9 +11,9 @@ function rzGetMembershipValues($sMembership, $sName = "")
 {
     $rResult = getResult("SELECT `keys`.`ID` AS `ID`, `keys`.`Default` AS `Default`, `values`.`Value` AS `Value` FROM `" . MODULE_DB_PREFIX . "MembershipsSettings` AS `keys` LEFT JOIN `" . MODULE_DB_PREFIX . "Memberships` AS `values` ON `keys`.`ID`=`values`.`Setting` AND `values`.`Membership`='" . $sMembership . "'");
     $sContents = '<membership id="' . $sMembership . '" ';
-	$iCount = mysql_num_rows($rResult);
+	$iCount = $rResult->rowCount();
     for($i=0; $i<$iCount; $i++) {
-        $aSetting = mysql_fetch_assoc($rResult);
+        $aSetting = $rResult->fetch();
         $sValue = !isset($aSetting['Value']) || $aSetting['Value'] == "" ? $aSetting['Default'] : $aSetting['Value'];
         $sContents .= 'v' . $aSetting['ID'] . '="' . $sValue . '" ';
     }
@@ -31,9 +31,9 @@ function rzGetMembershipSettings($bAdmin = false)
 
     $rResult = getResult("SELECT * FROM `" . MODULE_DB_PREFIX . "MembershipsSettings`");
     $sSettings = "";
-	$iCount = mysql_num_rows($rResult);
+	$iCount = $rResult->rowCount();
     for($i=0; $i<$iCount; $i++) {
-        $aSetting = mysql_fetch_assoc($rResult);
+        $aSetting = $rResult->fetch();
         if($bAdmin) $sSettings .= parseXml($aSettingTmpls, $aSetting['ID'], $aSetting['Name'], $aSetting['Type'], $aSetting['Default'], $aSetting['Range'], $aSetting['Caption']);
         else $sSettings .= parseXml($aSettingTmpls, $aSetting['ID'], $aSetting['Name'], $aSetting['Error']);
     }
@@ -55,7 +55,7 @@ function initUser($aUser)
         getResult("DELETE FROM `" . MODULE_DB_PREFIX . "RoomsUsers` WHERE `User`='" . $aUser['id'] . "'");
     }
     $rFiles = getResult("SELECT `ID` FROM `" . MODULE_DB_PREFIX . "Messages` WHERE `Recipient`='" . $aUser['id'] . "' AND `Type`='file'");
-    while($aFile = mysql_fetch_assoc($rFiles)) removeFile($aFile['ID']);
+    while($aFile = $rFiles->fetch()) removeFile($aFile['ID']);
     return $aUser;
 }
 
@@ -104,7 +104,7 @@ function getRooms($sMode = 'new', $sId = "")
     switch ($sMode) {
         case 'update': //--- Return new and deleted rooms.
             $rResult = getResult("SELECT * FROM `" . MODULE_DB_PREFIX . "Rooms` WHERE IF('" . $sId . "'='0', 1, `OwnerID`<>'" . $sId . "') AND (`When` >= (" . ($iCurrentTime - $iUpdateInterval) . ") OR (`Status`='" . ROOM_STATUS_DELETE . "' AND `When` >= " . ($iCurrentTime - $iDeleteTime) . ")) ORDER BY `When`");
-            while($aRoom = mysql_fetch_assoc($rResult))
+            while($aRoom = $rResult->fetch())
                 switch($aRoom['Status']) {
                     case ROOM_STATUS_DELETE:
                         $sRooms .= parseXml($aXmlTemplates['room'], $aRoom['ID'], ROOM_STATUS_DELETE);
@@ -119,7 +119,7 @@ function getRooms($sMode = 'new', $sId = "")
         case 'updateUsers':
             $sSql = "SELECT `r`.`ID` AS `RoomID`, GROUP_CONCAT(DISTINCT IF(`ru`.`Status`='" . ROOM_STATUS_NORMAL . "',`ru`.`User`,'') SEPARATOR ',') AS `In`, GROUP_CONCAT(DISTINCT IF(`ru`.`Status`='" . ROOM_STATUS_DELETE . "',`ru`.`User`,'') SEPARATOR ',') AS `Out` FROM `" . MODULE_DB_PREFIX . "Rooms` AS `r` INNER JOIN `" . MODULE_DB_PREFIX . "RoomsUsers` AS `ru` WHERE `r`.`ID`=`ru`.`Room` AND `r`.`Status`='" . ROOM_STATUS_NORMAL . "' AND `ru`.`When`>=" . ($iCurrentTime - $iUpdateInterval) . " GROUP BY `r`.`ID`";
             $rResult = getResult($sSql);
-            while($aRoom = mysql_fetch_assoc($rResult))
+            while($aRoom = $rResult->fetch())
                 $sRooms .= parseXml($aXmlTemplates['room'], $aRoom['RoomID'], $aRoom['In'], $aRoom['Out']);
             break;
 
@@ -127,7 +127,7 @@ function getRooms($sMode = 'new', $sId = "")
             $iRunTime = isset($_REQUEST['_t']) ? floor($_REQUEST['_t']/1000) : 0;
             $iCurrentTime -= $iRunTime;
             $rResult = getResult("SELECT `ID` FROM `" . MODULE_DB_PREFIX . "RoomsUsers`");
-            if(mysql_num_rows($rResult) == 0) getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "RoomsUsers`");
+            if($rResult->rowCount() == 0) getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "RoomsUsers`");
             $iRoomsCount = getValue("SELECT COUNT(`ID`) FROM `" . MODULE_DB_PREFIX . "Rooms` WHERE `Status`='" . ROOM_STATUS_NORMAL . "'");
 
             if(empty($iRoomsCount))
@@ -135,7 +135,7 @@ function getRooms($sMode = 'new', $sId = "")
 
             $sSql = "SELECT `r`.`ID` AS `RoomID`, `r`.*, GROUP_CONCAT(DISTINCT IF(`ru`.`Status`='" . ROOM_STATUS_NORMAL . "' AND `ru`.`User`<>'" . $sId . "',`ru`.`User`,'') SEPARATOR ',') AS `In`, GROUP_CONCAT(DISTINCT IF(`ru`.`Status`='" . ROOM_STATUS_NORMAL . "' AND `ru`.`User`<>'" . $sId . "',(" . $iCurrentTime . "-`ru`.`When`),'') SEPARATOR ',') AS `InTime` FROM `" . MODULE_DB_PREFIX . "Rooms` AS `r` LEFT JOIN `" . MODULE_DB_PREFIX . "RoomsUsers` AS `ru` ON `r`.`ID`=`ru`.`Room` GROUP BY `r`.`ID` ORDER BY `r`.`ID` LIMIT " . getSettingValue($sModule, "maxRoomsNumber");
             $rResult = getResult($sSql);
-            while($aRoom = mysql_fetch_assoc($rResult))
+            while($aRoom = $rResult->fetch())
                 $sRooms .= parseXml($aXmlTemplates['room'], $aRoom['RoomID'], $aRoom['OwnerID'], empty($aRoom['Password']) ? FALSE_VAL : TRUE_VAL, stripslashes($aRoom['Name']), stripslashes($aRoom['Desc']), $aRoom['In'], $aRoom['InTime']);
             break;
     }
@@ -210,7 +210,7 @@ function refreshUsersInfo($sId = "", $sMode = 'all')
     getResult("DELETE FROM `" . MODULE_DB_PREFIX . "RoomsUsers` WHERE `Status`='" . ROOM_STATUS_DELETE . "' AND `When`<=(" . ($iCurrentTime - $iDeleteTime) . ")");
 
     $rFiles = getResult("SELECT `files`.`ID` AS `FileID` FROM `" . MODULE_DB_PREFIX . "Messages` AS `files` INNER JOIN `" . MODULE_DB_PREFIX . "CurrentUsers` AS `users` WHERE `files`.`Recipient`=`users`.`ID` AND `files`.`Type`='file' AND `users`.`Status`='" . USER_STATUS_IDLE . "' AND `users`.`When`<=" . ($iCurrentTime - $iDeleteTime));
-    while($aFile = mysql_fetch_assoc($rFiles)) removeFile($aFile['FileID']);
+    while($aFile = $rFiles->fetch()) removeFile($aFile['FileID']);
 
     //--- delete idle users, whose track was not refreshed more than delete time ---//
     getResult("DELETE FROM `" . MODULE_DB_PREFIX . "CurrentUsers`, `" . MODULE_DB_PREFIX . "RoomsUsers` USING `" . MODULE_DB_PREFIX . "CurrentUsers`, `" . MODULE_DB_PREFIX . "RoomsUsers` WHERE `" . MODULE_DB_PREFIX . "CurrentUsers`.`ID`=`" . MODULE_DB_PREFIX . "RoomsUsers`.`User` AND `" . MODULE_DB_PREFIX . "CurrentUsers`.`Status`='" . USER_STATUS_IDLE . "' AND `" . MODULE_DB_PREFIX . "CurrentUsers`.`When`<=" . ($iCurrentTime - $iDeleteTime));
@@ -223,9 +223,9 @@ function refreshUsersInfo($sId = "", $sMode = 'all')
         $sIds = count($aIds)>0 ? " AND `OwnerID` NOT IN (" . implode(',', $aIds) . ")" : "";
         $rResult = getResult("SELECT DISTINCT(`Room`) FROM `" . MODULE_DB_PREFIX . "RoomsUsers`");
         $aFullRooms = array();
-		$iCount = mysql_num_rows($rResult);
+		$iCount = $rResult->rowCount();
         for($i=0; $i<$iCount; $i++) {
-            $aFullRoom = mysql_fetch_assoc($rResult);
+            $aFullRoom = $rResult->fetch();
             $aFullRooms[] = $aFullRoom['Room'];
         }
         $sFullRooms = count($aFullRooms)>0 ? "`ID` NOT IN(" . implode(',', $aFullRooms) . ") AND " : "";
@@ -238,7 +238,7 @@ function refreshUsersInfo($sId = "", $sMode = 'all')
     switch($sMode) {
         case 'update':
             $rRes = getResult("SELECT ccu.`ID` AS `ID`, ccu.`Nick` AS `Nick`, ccu.`Sex` AS `Sex`, ccu.`Age` AS `Age`, ccu.`Desc` AS `Desc`, ccu.`Photo` AS `Photo`, ccu.`Profile` AS `Profile`, ccu.`Status` AS `Status`, ccu.`Online` AS `Online`, rp.`Type` AS `Type` FROM `" . MODULE_DB_PREFIX . "Profiles` AS rp, `" . MODULE_DB_PREFIX . "CurrentUsers` AS ccu WHERE rp.`ID`=ccu.`ID` ORDER BY ccu.`When`");
-            while($aUser = mysql_fetch_assoc($rRes)) {
+            while($aUser = $rRes->fetch()) {
                 if($aUser['ID'] == $sId && !($aUser['Status'] == USER_STATUS_KICK || $aUser['Status'] == USER_STATUS_TYPE)) continue;
                 switch($aUser['Status']) {
                     case USER_STATUS_NEW:
@@ -262,7 +262,7 @@ function refreshUsersInfo($sId = "", $sMode = 'all')
             $iRunTime = isset($_REQUEST['_t']) ? floor($_REQUEST['_t']/1000) : 0;
             $iCurrentTime -= $iRunTime;
             $rRes = getResult("SELECT ccu.`ID` AS `ID`, ccu.`Nick` AS `Nick`, ccu.`Sex` AS `Sex`, ccu.`Age` AS `Age`, ccu.`Desc` AS `Desc`, ccu.`Photo` AS `Photo`, ccu.`Profile` AS `Profile`, ccu.`Online` AS `Online`, rp.`Type` AS `Type`, (" . $iCurrentTime . "-`ccu`.`Start`) AS `Time` FROM `" . MODULE_DB_PREFIX . "Profiles` AS rp, `" . MODULE_DB_PREFIX . "CurrentUsers` AS ccu WHERE rp.`ID`=ccu.`ID` AND ccu.`Status` NOT IN ('" . USER_STATUS_IDLE . "', '" . USER_STATUS_KICK . "') AND rp.`Banned`='" . FALSE_VAL . "' ORDER BY ccu.`When`");
-            while($aUser = mysql_fetch_assoc($rRes))
+            while($aUser = $rRes->fetch())
                 $sContent .= parseXml($aXmlTemplates['user'], $aUser['ID'], USER_STATUS_NEW, $aUser['Nick'], $aUser['Sex'], $aUser['Age'], stripslashes($aUser['Desc']), $aUser['Photo'], $aUser['Profile'], $aUser['Type'], $aUser['Online'], $aUser['Time']);
             break;
     }

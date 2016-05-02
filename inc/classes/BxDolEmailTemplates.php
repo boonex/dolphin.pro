@@ -14,7 +14,7 @@ class BxDolEmailTemplates
     /**
      * Class constructor.
      */
-    function BxDolEmailTemplates()
+    function __construct()
     {
         $sLang = getParam('lang_default');
         if(empty($sLang))
@@ -87,8 +87,8 @@ class BxDolEmailTemplates
             $iUseLang = $this->iDefaultLangId;
         }
 
-        $sSql = "SELECT `Subject`, `Body` FROM `sys_email_templates` WHERE `Name`='" . process_db_input($sTemplateName) . "' AND (`LangID` = '" . (int) $iUseLang . "' OR `LangID` = '0') ORDER BY `LangID` DESC LIMIT 1";
-        return $GLOBALS['MySQL']->getRow($sSql);
+        $sSql = "SELECT `Subject`, `Body` FROM `sys_email_templates` WHERE `Name`= ? AND (`LangID` = ? OR `LangID` = ?) ORDER BY `LangID` DESC LIMIT 1";
+        return $GLOBALS['MySQL']->getRow($sSql, [$sTemplateName, $iUseLang, 0]);
     }
 
     function parseTemplate($sTemplateName, $aTemplateKeys, $iMemberId = 0)

@@ -10,10 +10,10 @@ require_once('BxSoundsSearch.php');
 
 class BxSoundsRate extends BxDolFilesRate
 {
-    function BxSoundsRate()
+    function __construct()
     {
         $oMedia = new BxSoundsSearch();
-        parent::BxDolFilesRate('bx_sounds', $oMedia);
+        parent::__construct('bx_sounds', $oMedia);
     }
 
     function getRateFile(&$aData)

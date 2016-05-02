@@ -8,11 +8,11 @@ bx_import('BxDolTwigPageMain');
 
 class BxStorePageMain extends BxDolTwigPageMain
 {
-    function BxStorePageMain(&$oMain)
+    function __construct(&$oMain)
     {
         $this->sSearchResultClassName = 'BxStoreSearchResult';
         $this->sFilterName = 'bx_store_filter';
-        parent::BxDolTwigPageMain('bx_store_main', $oMain);
+        parent::__construct('bx_store_main', $oMain);
     }
 
     function getBlockCode_LatestFeaturedProduct()

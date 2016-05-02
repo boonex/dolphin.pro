@@ -11,9 +11,9 @@ define('PROFILE_PHOTO_CATEGORY', 'Profile photos');
 class BxPhotosModule extends BxDolFilesModule
 {
     var $iHeaderCacheTime = 0;
-    function BxPhotosModule (&$aModule)
+    function __construct (&$aModule)
     {
-        parent::BxDolFilesModule($aModule);
+        parent::__construct($aModule);
         $this->aSectionsAdmin['pending'] = array(
             'exclude_btns' => array('featured', 'unfeatured')
         );

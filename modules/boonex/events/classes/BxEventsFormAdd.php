@@ -11,7 +11,7 @@ class BxEventsFormAdd extends BxDolFormMedia
 {
     var $_oMain, $_oDb;
 
-    function BxEventsFormAdd ($oMain, $iProfileId, $iEntryId = 0, $iThumb = 0)
+    function __construct ($oMain, $iProfileId, $iEntryId = 0, $iThumb = 0)
     {
         $this->_oMain = $oMain;
         $this->_oDb = $oMain->_oDb;
@@ -525,7 +525,7 @@ class BxEventsFormAdd extends BxDolFormMedia
 
         $this->processMembershipChecksForMediaUploads ($aCustomForm['inputs']);
 
-        parent::BxDolFormMedia ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 
 }

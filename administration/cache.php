@@ -117,7 +117,7 @@ foreach ($aPages as $k => $r)
     );
 
 $_page['css_name'] = 'cache.css';
-$_page_cont[$iNameIndex]['page_main_code'] = call_user_func($aPages[$sMode]['func'], $aPages[$sMode]['func_params'][0], $aPages[$sMode]['func_params'][1]);
+$_page_cont[$iNameIndex]['page_main_code'] = call_user_func_array($aPages[$sMode]['func'], $aPages[$sMode]['func_params']);
 
 PageCodeAdmin();
 

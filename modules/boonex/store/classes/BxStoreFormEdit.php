@@ -8,9 +8,9 @@ bx_store_import ('FormAdd');
 
 class BxStoreFormEdit extends BxStoreFormAdd
 {
-    function BxStoreFormEdit ($oMain, $iProfileId, $iEntryId, &$aDataEntry)
+    function __construct ($oMain, $iProfileId, $iEntryId, &$aDataEntry)
     {
-        parent::BxStoreFormAdd ($oMain, $iProfileId, false, $iEntryId, $aDataEntry['thumb']);
+        parent::__construct ($oMain, $iProfileId, false, $iEntryId, $aDataEntry['thumb']);
 
         $aFormInputsId = array (
             'id' => array (

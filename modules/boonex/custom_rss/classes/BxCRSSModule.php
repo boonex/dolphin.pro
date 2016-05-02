@@ -56,9 +56,9 @@ class BxCRSSModule extends BxDolModule
     var $_iProfileID;
 
     // Constructor
-    function BxCRSSModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
     }
 
     /**

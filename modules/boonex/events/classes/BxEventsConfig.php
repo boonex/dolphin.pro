@@ -11,8 +11,8 @@ class BxEventsConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxEventsConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 }

@@ -24,9 +24,9 @@ require_once($sModulesPath . $sModule . '/inc/functions.inc.php');
 class BxPhotosUploader extends BxDolFilesUploader
 {
     // constructor
-    function BxPhotosUploader()
+    function __construct()
     {
-        parent::BxDolFilesUploader('Photo');
+        parent::__construct('Photo');
 
         $this->oModule = BxDolModule::getInstance('BxPhotosModule');
         $this->sWorkingFile = BX_DOL_URL_ROOT . $this->oModule->_oConfig->getBaseUri() . 'albums/my/add_objects';

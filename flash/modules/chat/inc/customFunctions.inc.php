@@ -20,9 +20,9 @@ function rzGetMemberships()
 {
     $aMemberships = array();
     $rResult = getResult("SELECT * FROM `sys_acl_levels`");
-	$iCount = mysql_num_rows($rResult);
+	$iCount = $rResult->rowCount();
     for($i=0; $i<$iCount; $i++) {
-        $aMembership = mysql_fetch_assoc($rResult);
+        $aMembership = $rResult->fetch();
         $aMemberships[$aMembership["ID"]] = $aMembership["Name"];
     }
     return $aMemberships;
@@ -32,9 +32,9 @@ function getAdminIds()
 {
     $rResult = getResult("SELECT `ID` FROM `Profiles` WHERE (`Role` & 2)");
     $aIds = array();
-	$iCount = mysql_num_rows($rResult);
+	$iCount = $rResult->rowCount();
     for($i=0; $i<$iCount; $i++) {
-        $aId = mysql_fetch_assoc($rResult);
+        $aId = $rResult->fetch();
         $aIds[] = (int)$aId['ID'];
     }
     return $aIds;
@@ -94,9 +94,9 @@ function getBlockingList($sId, $bBlocking)
     $rResult = getResult("SELECT `blocked`.`" . $sSelectField . "` AS `Member` FROM `sys_block_list` AS `blocked` LEFT JOIN `" . MODULE_DB_PREFIX . "Profiles` AS `profiles` ON `blocked`.`" . $sSelectField . "`=`profiles`.`ID` WHERE `blocked`.`" . $sWhereField . "`='" . $sId . "'" . $sTypes);
 
     $aUsers = array();
-	$iCount = mysql_num_rows($rResult);
+	$iCount = $rResult->rowCount();
     for($i=0; $i<$iCount; $i++) {
-        $aBlocked = mysql_fetch_assoc($rResult);
+        $aBlocked = $rResult->fetch();
         $aUsers[] = $aBlocked["Member"];
     }
     return $aUsers;

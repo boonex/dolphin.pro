@@ -53,9 +53,9 @@ function showCategories($aParam = array(), $iBoxId = 1, $sAction = '', $isBox = 
 
 class CategoriesCalendar extends BxTemplCalendar
 {
-    function CategoriesCalendar($iYear, $iMonth)
+    function __construct($iYear, $iMonth)
     {
-        parent::BxTemplCalendar($iYear, $iMonth);
+        parent::__construct($iYear, $iMonth);
     }
 
     function display()
@@ -83,9 +83,14 @@ class CategoriesCalendar extends BxTemplCalendar
 
         return $oDb->getAll("SELECT *, DAYOFMONTH(`Date`) AS `Day`
             FROM `sys_categories`
-            WHERE `Date` >= TIMESTAMP('{$this->iYear}-{$this->iMonth}-1')
-            AND `Date` < TIMESTAMP('{$this->iNextYear}-{$this->iNextMonth}-1')
-            AND `Owner` <> 0 AND `Status` = 'active'");
+            WHERE `Date` >= TIMESTAMP(?)
+            AND `Date` < TIMESTAMP(?)
+            AND `Owner` <> 0 AND `Status` = 'active'",
+            [
+                "{$this->iYear}-{$this->iMonth}-1",
+                "{$this->iNextYear}-{$this->iNextMonth}-1",
+            ]
+        );
     }
 
     function getBaseUri()
@@ -164,10 +169,10 @@ class CategoriesCalendarPage extends BxDolPageView
 {
     var $sPage;
 
-    function CategoriesCalendarPage()
+    function __construct()
     {
         $this->sPage = 'categ_calendar';
-        parent::BxDolPageView($this->sPage);
+        parent::__construct($this->sPage);
     }
 
     function getBlockCode_Calendar($iBlockId)
@@ -203,10 +208,10 @@ class CategoriesSearchPage extends BxDolPageView
     var $oForm;
     var $sPage;
 
-    function CategoriesSearchPage()
+    function __construct()
     {
         $this->sPage = 'categ_search';
-        parent::BxDolPageView($this->sPage);
+        parent::__construct($this->sPage);
 
         bx_import('BxTemplFormView');
         $this->aSearchForm = array(

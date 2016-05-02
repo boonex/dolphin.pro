@@ -10,9 +10,9 @@ class BxPfwPageDetails extends BxDolPageView
 {
 	protected $_oMain;
 
-    function BxPfwPageDetails(&$oMain)
+    function __construct(&$oMain)
     {
-        parent::BxDolPageView('bx_pfw_details');
+        parent::__construct('bx_pfw_details');
 
         $this->_oMain = $oMain;
 

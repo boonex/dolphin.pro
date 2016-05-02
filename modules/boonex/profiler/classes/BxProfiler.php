@@ -42,7 +42,7 @@ class BxProfiler
     /**
      * constructor
      */
-    function BxProfiler($iTimeStart)
+    function __construct($iTimeStart)
     {
         $this->oConfig = new BxProfilerConfig ($GLOBALS['bx_profiler_module']);
         $this->oTemplate = new BxProfilerTemplate ($this->oConfig);
@@ -595,7 +595,7 @@ class BxProfiler
     }
 }
 
-if (BX_PROFILER) {
+if (defined('BX_PROFILER') && BX_PROFILER) {
     $GLOBALS['bx_profiler'] = new BxProfiler($GLOBALS['bx_profiler_start']);
     if (!$GLOBALS['bx_profiler']->_isProfilerDisabled())
         register_shutdown_function (array ($GLOBALS['bx_profiler'], 'output'));

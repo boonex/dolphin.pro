@@ -19,9 +19,9 @@ class BxFaceBookConnectConfig extends BxDolConnectConfig
 
     public $sDefaultCountryCode = 'US';
 
-    function BxFaceBookConnectConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConnectConfig($aModule);
+        parent::__construct($aModule);
 
         $this -> mApiID		  = getParam('bx_facebook_connect_api_key');
         $this -> mApiSecret   = getParam('bx_facebook_connect_secret');

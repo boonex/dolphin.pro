@@ -120,7 +120,7 @@ if(bx_get('action') !== false) {
     }
 
     // return script's response and recompile the menu cache ;
-    $oMemeberMenu -> createMemberMenuCache( $sMenuSection );
+    $oMemeberMenu -> createMemberMenuCache();
     echo $sResponce;
     exit;
 }
@@ -160,7 +160,7 @@ $sComposerInit = "
 ";
 
 $iIndex = 0;
-while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
+while(($aTopItem = $rTopItems->fetch()) !== false) {
     $sComposerInit .= "
 
         aTopItems[$iIndex] = [{$aTopItem['ID']}, '" . bx_js_string( $aTopItem['Name'], BX_ESCAPE_STR_APOS ) . "', {$aTopItem['Movable']}];
@@ -170,7 +170,7 @@ while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
 }
 
 $sComposerInit .= "\n";
-while(($aAllItem = mysql_fetch_assoc($rAllItems)) !== false) {
+while(($aAllItem = $rAllItems->fetch()) !== false) {
     $sComposerInit .= "
         aAllItems['{$aAllItem['ID']} '] = '" . bx_js_string( $aAllItem['Name'], BX_ESCAPE_STR_APOS ) . "';";
 }
@@ -369,7 +369,7 @@ function saveItem( $id, $aItem, $sMenuSection )
     db_res( $sQuery );
 
     // return script's response and recompile the menu cache ;
-    $oMemeberMenu -> createMemberMenuCache( $sMenuSection );
+    $oMemeberMenu -> createMemberMenuCache();
 
     return array('code' => 0, 'message' => _t('_Saved'), 'timer' => 3);
 }

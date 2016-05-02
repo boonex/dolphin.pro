@@ -16,7 +16,7 @@
         /**
          * Class constructor;
          */
-        function BxShoutBoxCron()
+        function __construct()
         {
             $this -> oModule     = BxDolModule::getInstance('BxShoutBoxModule');
             $this -> iLifeTime   = $this -> oModule -> _oConfig -> iLifeTime;

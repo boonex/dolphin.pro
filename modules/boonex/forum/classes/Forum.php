@@ -26,7 +26,7 @@ class Forum extends ThingPage
     /**
      * constructor
      */
-    function Forum ()
+    function __construct ()
     {
         $this->fdb = new DbForum ();
     }

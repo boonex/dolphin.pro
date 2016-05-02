@@ -28,7 +28,7 @@ switch (bx_get('action')) {
 
             $aSubCats = array();
             $vData = db_res($sSQL);
-            while ($aUnit = mysql_fetch_assoc($vData)) {
+            while ($aUnit = $vData->fetch()) {
                 if ($sCustName1 == '') {
                     $sCustName1 = htmlspecialchars($aUnit['CustomFieldName1']);
                 }

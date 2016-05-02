@@ -4,17 +4,12 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolMistake.php');
-
-class BxDolCache extends BxDolMistake
+class BxDolCache
 {
-    /**
-     * constructor
-     */
-    function BxDolCache()
+    public function __construct()
     {
-        parent::BxDolMistake();
     }
+
     /**
      * Is cache engine available?
      * @return boolean

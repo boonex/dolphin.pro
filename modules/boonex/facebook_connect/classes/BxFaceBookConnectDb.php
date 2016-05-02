@@ -11,9 +11,9 @@ class BxFaceBookConnectDb extends BxDolConnectDb
     /**
      * Constructor.
      */
-    function BxFaceBookConnectDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolConnectDb($oConfig);
+        parent::__construct($oConfig);
     }
 
     /**

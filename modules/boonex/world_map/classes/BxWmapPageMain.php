@@ -13,13 +13,13 @@ class BxWmapPageMain extends BxDolPageView
     var $_oConfig;
     var $_oDb;
 
-    function BxWmapPageMain(&$oModule)
+    function __construct(&$oModule)
     {
         $this->_oMain = &$oModule;
         $this->_oTemplate = $oModule->_oTemplate;
         $this->_oConfig = $oModule->_oConfig;
         $this->_oDb = $oModule->_oDb;
-        parent::BxDolPageView('bx_wmap');
+        parent::__construct('bx_wmap');
     }
 
     function getBlockCode_Map()

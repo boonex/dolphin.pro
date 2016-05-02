@@ -10,9 +10,9 @@ class BxZIPDb extends BxDolModuleDb
 {
     var $_oConfig;
 
-    function BxZIPDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
         $this->_oConfig = $oConfig;
     }
 

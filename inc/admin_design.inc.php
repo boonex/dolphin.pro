@@ -129,7 +129,7 @@ function lfa()
     global $oAdmTemplate;
 
     $bFooter = getParam('enable_dolphin_footer') == 'on';
-    if(!isAdmin() || !$bFooter || mktime()%20 != 0)
+    if(!isAdmin() || !$bFooter || time()%20 != 0)
         return "";
 
     $oAdmTemplate->addCss(array('login.css'));

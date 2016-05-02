@@ -120,9 +120,9 @@ class BxStoreModule extends BxDolTwigModule
 
     var $_aQuickCache = array ();
 
-    function BxStoreModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolTwigModule($aModule);
+        parent::__construct($aModule);
         $this->_sFilterName = 'bx_store_filter';
         $this->_sPrefix = 'bx_store';
 
@@ -734,7 +734,7 @@ class BxStoreModule extends BxDolTwigModule
         }
     }
 
-    function _browseMy (&$aProfile)
+    function _browseMy (&$aProfile, $sTitle = null)
     {
         parent::_browseMy ($aProfile, _t('_bx_store_page_title_my_store'));
     }

@@ -14,13 +14,13 @@ class BxBaseCategoriesModule extends BxDolPageView
     var $_sUrl;
     var $_aParam;
 
-    function BxBaseCategoriesModule($aParam, $sTitle, $sUrl)
+    function __construct($aParam, $sTitle, $sUrl)
     {
         $this->_sPage = 'categ_module';
         $this->_sTitle = $sTitle ? $sTitle : _t('_categ_users');
         $this->_sUrl = $sUrl;
         $this->_aParam = $aParam;
-        parent::BxDolPageView($this->_sPage);
+        parent::__construct($this->_sPage);
     }
 
     function getBlockCode_Common($iBlockId, $isDisableOrderPanel = false)

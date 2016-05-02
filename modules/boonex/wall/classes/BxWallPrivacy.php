@@ -8,8 +8,8 @@ bx_import('BxDolPrivacy');
 
 class BxWallPrivacy extends BxDolPrivacy
 {
-    function BxWallPrivacy(&$oModule)
+    function __construct(&$oModule)
     {
-        parent::BxDolPrivacy('Profiles', 'ID', 'ID');
+        parent::__construct('Profiles', 'ID', 'ID');
     }
 }

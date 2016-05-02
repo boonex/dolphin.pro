@@ -12,9 +12,9 @@
         /**
          * Constructor
          */
-        function BxPollTemplate(&$oConfig, &$oDb)
+        function __construct(&$oConfig, &$oDb)
         {
-            parent::BxDolModuleTemplate($oConfig, $oDb);
+            parent::__construct($oConfig, $oDb);
         }
 
         // function of output

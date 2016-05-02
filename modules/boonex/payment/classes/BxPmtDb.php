@@ -13,9 +13,9 @@ class BxPmtDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxPmtDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb($oConfig);
+        parent::__construct($oConfig);
 
         $this->_oConfig = &$oConfig;
     }
@@ -124,9 +124,9 @@ class BxPmtDb extends BxDolModuleDb
                '" . $sCurrencyCode . "' AS `currency_code`,
                '" . $sCurrencySign . "' AS `currency_sign`
             FROM `Profiles` AS `tp`
-            WHERE `tp`.`ID`='" . $iId . "'
+            WHERE `tp`.`ID`= ?
             LIMIT 1";
-        $aVendor = $this->getRow($sSql);
+        $aVendor = $this->getRow($sSql, [$iId]);
 
         if(!empty($aVendor)) {
             $aVendor['profile_name'] = getNickName($aVendor['id']);
@@ -181,8 +181,11 @@ class BxPmtDb extends BxDolModuleDb
     function getProviders($sName = '')
     {
         $sWhereClause = "1";
-        if(!empty($sName))
-            $sWhereClause = "`tp`.`name`='" . $sName . "'";
+        $aBindings = [];
+        if (!empty($sName)) {
+            $sWhereClause = "`tp`.`name`= ?";
+            $aBindings = [$sName];
+        }
 
         $sSql = "SELECT
                 `tp`.`id` AS `id`,
@@ -195,7 +198,7 @@ class BxPmtDb extends BxDolModuleDb
                 `tp`.`class_file` AS `class_file`
             FROM `" . $this->_sPrefix . "providers` AS `tp`
             WHERE " . $sWhereClause;
-        return !empty($sName) ? $this->getRow($sSql) : $this->getAll($sSql);
+        return !empty($sName) ? $this->getRow($sSql, $aBindings) : $this->getAll($sSql, $aBindings);
     }
     function getOptions($iUserId = BX_PMT_EMPTY_ID, $iProviderId = 0)
     {

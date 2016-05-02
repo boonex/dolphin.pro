@@ -10,13 +10,13 @@ require_once('BxVideosSearch.php');
 
 class BxVideosRate extends BxDolFilesRate
 {
-    function BxVideosRate()
+    function __construct()
     {
         $oMedia = new BxVideosSearch();
         $oMedia->aCurrent['ownFields'][] = 'Video';
         $oMedia->aCurrent['ownFields'][] = 'Source';
 
-        parent::BxDolFilesRate('bx_videos', $oMedia);
+        parent::__construct('bx_videos', $oMedia);
     }
 
     function getRateFile(&$aData)

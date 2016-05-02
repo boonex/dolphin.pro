@@ -8,9 +8,9 @@ bx_import ('BxDolTwigPageMain');
 
 class BxEventsPageMain extends BxDolTwigPageMain
 {
-    function BxEventsPageMain(&$oEventsMain)
+    function __construct(&$oEventsMain)
     {
-        parent::BxDolTwigPageMain('bx_events_main', $oEventsMain);
+        parent::__construct('bx_events_main', $oEventsMain);
         $this->sSearchResultClassName = 'BxEventsSearchResult';
         $this->sFilterName = 'bx_events_filter';
     }

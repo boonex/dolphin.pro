@@ -8,9 +8,9 @@ bx_import('BxDolAlerts');
 
 class BxDolAlertsResponseSystem extends BxDolAlertsResponse
 {
-    function BxDolAlertsResponseSystem()
+    function __construct()
     {
-        parent::BxDolAlertsResponse();
+        parent::__construct();
     }
 
     function response($oAlert)

@@ -12,9 +12,9 @@
         /**
          * Constructor
          */
-        function BxSimpleMessengerPrivacy(&$oModule)
+        function __construct(&$oModule)
         {
-            parent::BxDolPrivacy($oModule -> _oDb -> sTablePrefix . 'privacy', 'author_id', 'author_id');
+            parent::__construct($oModule -> _oDb -> sTablePrefix . 'privacy', 'author_id', 'author_id');
         }
 
            /**

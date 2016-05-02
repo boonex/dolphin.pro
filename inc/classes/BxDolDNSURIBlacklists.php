@@ -8,7 +8,7 @@
 /**
  * Spam detection based on URIs in the message
  */
-class BxDolDNSURIBlacklists extends BxDolMistake
+class BxDolDNSURIBlacklists
 {
     var $aZonesUrls = array (
         2 => "http://www.surbl.org/tld/two-level-tlds",

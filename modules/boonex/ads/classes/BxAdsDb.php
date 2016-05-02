@@ -14,9 +14,9 @@ class BxAdsDb extends BxDolDb
     /*
     * Constructor.
     */
-    function BxAdsDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
     }
@@ -39,10 +39,10 @@ class BxAdsDb extends BxDolDb
             SELECT `{$this->_oConfig->sSQLCatTable}`.`Name` , `{$this->_oConfig->sSQLSubcatTable}`.`NameSub`
             FROM `{$this->_oConfig->sSQLCatTable}`
             INNER JOIN `{$this->_oConfig->sSQLSubcatTable}` ON ( `{$this->_oConfig->sSQLCatTable}`.`ID` = `{$this->_oConfig->sSQLSubcatTable}`.`IDClassified` )
-            WHERE `{$this->_oConfig->sSQLSubcatTable}`.`ID` = '{$iID}'
+            WHERE `{$this->_oConfig->sSQLSubcatTable}`.`ID` = ?
             LIMIT 1
         ";
-        return $this->getRow($sNamesSQL);
+        return $this->getRow($sNamesSQL, [$iID]);
     }
     function getCatSubCatNameBySubCatUri($sUri)
     {
@@ -51,10 +51,10 @@ class BxAdsDb extends BxDolDb
             SELECT `{$this->_oConfig->sSQLCatTable}`.`Name` , `{$this->_oConfig->sSQLSubcatTable}`.`NameSub`
             FROM `{$this->_oConfig->sSQLCatTable}`
             INNER JOIN `{$this->_oConfig->sSQLSubcatTable}` ON ( `{$this->_oConfig->sSQLCatTable}`.`ID` = `{$this->_oConfig->sSQLSubcatTable}`.`IDClassified` )
-            WHERE `{$this->_oConfig->sSQLSubcatTable}`.`SEntryUri` = '{$sSafeUri}'
+            WHERE `{$this->_oConfig->sSQLSubcatTable}`.`SEntryUri` = ?
             LIMIT 1
         ";
-        return $this->getRow($sNamesSQL);
+        return $this->getRow($sNamesSQL, [$sSafeUri]);
     }
 
     function getMemberAds($iMemberID)
@@ -135,8 +135,8 @@ class BxAdsDb extends BxDolDb
 
     function getMediaInfo($iMedId)
     {
-        $sMediaSQL = "SELECT * FROM `{$this->_oConfig->sSQLPostsMediaTable}` WHERE `MediaID` = '{$iMedId}'";
-        return $this->getRow($sMediaSQL);
+        $sMediaSQL = "SELECT * FROM `{$this->_oConfig->sSQLPostsMediaTable}` WHERE `MediaID` = ?";
+        return $this->getRow($sMediaSQL, [$iMedId]);
     }
 
     function getCatAndSubInfoBySubID($iSubCatID)
@@ -147,10 +147,10 @@ class BxAdsDb extends BxDolDb
                 `{$this->_oConfig->sSQLSubcatTable}`.`NameSub` , `{$this->_oConfig->sSQLSubcatTable}`.`Description`
             FROM `{$this->_oConfig->sSQLCatTable}`
             INNER JOIN `{$this->_oConfig->sSQLSubcatTable}` ON `{$this->_oConfig->sSQLCatTable}`.`ID` = `{$this->_oConfig->sSQLSubcatTable}`.`IDClassified`
-            WHERE `{$this->_oConfig->sSQLSubcatTable}`.`ID` = '{$iSubCatID}'
+            WHERE `{$this->_oConfig->sSQLSubcatTable}`.`ID` = ?
             LIMIT 1
         ";
-        return $this->getRow($sSQL);
+        return $this->getRow($sSQL, [$iSubCatID]);
     }
 
     /**
@@ -249,10 +249,10 @@ class BxAdsDb extends BxDolDb
             FROM `{$this->_oConfig->sSQLPostsTable}`
             INNER JOIN `{$this->_oConfig->sSQLSubcatTable}` ON `{$this->_oConfig->sSQLPostsTable}`.`IDClassifiedsSubs`=`{$this->_oConfig->sSQLSubcatTable}`.`ID`
             INNER JOIN `{$this->_oConfig->sSQLCatTable}` ON `{$this->_oConfig->sSQLCatTable}`.`ID`=`{$this->_oConfig->sSQLSubcatTable}`.`IDClassified`
-            WHERE `{$this->_oConfig->sSQLPostsTable}`.`ID`='{$iID}'
+            WHERE `{$this->_oConfig->sSQLPostsTable}`.`ID`= ?
         ";
 
-        return $this->getRow($sAdInfoSQL);
+        return $this->getRow($sAdInfoSQL, [$iID]);
     }
 
     /**

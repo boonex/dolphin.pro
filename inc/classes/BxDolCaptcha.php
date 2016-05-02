@@ -50,7 +50,7 @@ bx_import('BxDolCaptchaQuery');
  *      echo 'captcha is incorrect'; //
  * @endcode
  */
-class BxDolCaptcha extends BxDolMistake
+class BxDolCaptcha
 {
     protected $_sObject;
     protected $_aObject;
@@ -61,8 +61,6 @@ class BxDolCaptcha extends BxDolMistake
      */
     public function __construct($aObject)
     {
-        parent::__construct();
-
         $this->_sObject = $aObject['object'];
         $this->_aObject = $aObject;
     }

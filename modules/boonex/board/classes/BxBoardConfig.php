@@ -11,8 +11,8 @@ class BxBoardConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxBoardConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 }

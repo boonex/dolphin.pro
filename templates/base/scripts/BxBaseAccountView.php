@@ -14,7 +14,7 @@ class BxBaseAccountView extends BxDolPageView
     var $aConfSite;
     var $aConfDir;
 
-    function BxBaseAccountView($iMember, &$aSite, &$aDir)
+    function __construct($iMember, &$aSite, &$aDir)
     {
         $this->iMember = (int)$iMember;
         $this->aMemberInfo = getProfileInfo($this->iMember);
@@ -22,7 +22,7 @@ class BxBaseAccountView extends BxDolPageView
         $this->aConfSite = $aSite;
         $this->aConfDir  = $aDir;
 
-        parent::BxDolPageView('member');
+        parent::__construct('member');
     }
 
     function getBlockCode_FriendRequests()

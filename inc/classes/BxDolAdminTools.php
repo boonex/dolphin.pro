@@ -18,9 +18,9 @@ class BxDolAdminTools extends BxDolIO
     var $aPostInstallPermFiles;
 
     //constructor
-    function BxDolAdminTools()
+    function __construct()
     {
-        parent::BxDolIO();
+        parent::__construct();
 
         $this->sTroubledElements = '';
 
@@ -664,7 +664,8 @@ EOF;
     </li>
     <li><b>MySQL</b>:
         <?php
-            $sMysqlVer = mysql_get_server_info($GLOBALS['bx_db_link']);
+            $oDb = BxDolDb::getInstance();
+            $sMysqlVer = $oDb->res('select version()')->fetchColumn();
             echo $sMysqlVer . ' - ';
             if (preg_match ('/^(\d+)\.(\d+)\.(\d+)/', $sMysqlVer, $m)) {
                 $sMysqlVer = "{$m[1]}.{$m[2]}.{$m[3]}";
@@ -782,7 +783,7 @@ EOF;
         <ul>
             <?php
                 foreach ($aMysqlSettings as $sName => $r) {
-                    $a = $this->checkMysqlSetting($sName, $r, $l);
+                    $a = $this->checkMysqlSetting($sName, $r);
                     echo "<li><b>$sName</b> = " . $this->format_output($a['real_val'], $r) ." - " . ($a['res'] ? '<b class="ok">OK</b>' : "<b class='fail'>FAIL</b> (must be {$r['op']} " . $this->format_output($r['val'], $r) . ")") . "</li>\n";
                 }
             ?>
@@ -887,7 +888,7 @@ EOF;
         return array ('res' => $bResult, 'real_val' => $mixedVal);
     }
 
-    function checkMysqlSetting($sName, $a, $l)
+    function checkMysqlSetting($sName, $a, $l = false)
     {
         $mixedVal = $this->mysqlGetOption($sName, $l);
         $mixedVal = $this->format_input ($mixedVal, $a);
@@ -911,7 +912,7 @@ EOF;
 
     function format_output ($mixedVal, $a)
     {
-        switch ($a['type']) {
+        switch (isset($a['type'])) {
             case 'bool':
                 return $mixedVal ? 'On' : 'Off';
             default:
@@ -921,7 +922,7 @@ EOF;
 
     function format_input ($mixedVal, $a)
     {
-        switch ($a['type']) {
+        switch (isset($a['type'])) {
             case 'bytes':
                 return $this->format_bytes ($mixedVal);
             default:

@@ -67,9 +67,9 @@ class BxProfileCustomizeModule extends BxDolModule
     /**
      * Constructor
      */
-    function BxProfileCustomizeModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
         $this->iUserId = getLoggedId();
         $this->_oConfig->init($this->_oDb);
         $this->_oTemplate->init($this, $this->_oDb);

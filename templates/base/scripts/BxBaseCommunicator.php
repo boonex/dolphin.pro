@@ -26,9 +26,9 @@
         * 					[ per_page ] (integer) - contain per page number for current page ;
         * 					[ alert_page ] (integer) - contain number of current alert's page
         */
-        function BxBaseCommunicator($aCommunicatorSettings)
+        function __construct($aCommunicatorSettings)
         {
-            parent::BxDolCommunicator($aCommunicatorSettings);
+            parent::__construct($aCommunicatorSettings);
 
             //fill array with tamplates name;
             $this -> aUsedTemplates = array (

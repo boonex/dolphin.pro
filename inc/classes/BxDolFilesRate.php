@@ -11,9 +11,9 @@ class BxDolFilesRate extends BxDolRate
     var $oMedia;
     var $oConfig;
 
-    function BxDolFilesRate($sType, &$oMedia)
+    function __construct($sType, &$oMedia)
     {
-        parent::BxDolRate($sType);
+        parent::__construct($sType);
 
         $this->oMedia = $oMedia;
         $this->oMedia->aCurrent['restriction']['allow_view']['value'] = $this->oMedia->oModule->_checkVisible();

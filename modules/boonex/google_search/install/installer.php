@@ -9,8 +9,8 @@ bx_import("BxDolInstaller");
 
 class BxGSearchInstaller extends BxDolInstaller
 {
-    function BxGSearchInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
     }
 }

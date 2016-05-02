@@ -8,9 +8,9 @@ bx_import('BxDolModule');
 
 class BxDolConnectModule extends BxDolModule
 {
-    function BxDolConnectModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
     }
 
     /**

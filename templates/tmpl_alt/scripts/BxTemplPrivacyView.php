@@ -8,8 +8,8 @@ bx_import('BxBasePrivacyView');
 
 class BxTemplPrivacyView extends BxBasePrivacyView
 {
-    function BxTemplPrivacyView($iOwnerId)
+    function __construct($iOwnerId)
     {
-        parent::BxBasePrivacyView($iOwnerId);
+        parent::__construct($iOwnerId);
     }
 }

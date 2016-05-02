@@ -41,7 +41,7 @@ class BxBaseBrowse extends BxDolBrowse
      *                     : mode (mode) - switch mode to extended and simple,
      * @param : $sPageName (string) - page name (need for page builder);
      */
-    function BxBaseBrowse( &$aFilteredSettings, &$aDisplaySettings, $sPageName )
+    function __construct( &$aFilteredSettings, &$aDisplaySettings, $sPageName )
     {
         if ( isset($aFilteredSettings['sex']) and $aFilteredSettings['sex'] == 'all' )
             $aFilteredSettings['sex'] = null;
@@ -78,7 +78,7 @@ class BxBaseBrowse extends BxDolBrowse
 
         $this -> sKeyName = preg_replace("|\|$|", '', $this -> sKeyName);
 
-        parent::BxDolBrowse();
+        parent::__construct($sPageName);
 
         // fill global array with the needed parameters ;
 
@@ -94,7 +94,7 @@ class BxBaseBrowse extends BxDolBrowse
         $this -> oSearchProfileTmpl = new BxTemplSearchProfile();
 
         // return all page's blocks from DB ;
-        $this -> BxDolPageView($sPageName);
+        //(new BxDolPageView($sPageName));
     }
 
     /**
@@ -727,7 +727,7 @@ class BxBaseBrowse extends BxDolBrowse
         $aExtendedCss = array(
             'ext_css_class' => $this->aDisplaySettings['mode'] == 'extended' ? 'search_filled_block' : ''
         );
-        while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+        while( true == ($aRow = $rResult->fetch()) ) {
             // generate the `couple` thumbnail ;
             if ( $aRow['Couple']) {
                 $aCoupleInfo = getProfileInfo( $aRow['Couple'] );

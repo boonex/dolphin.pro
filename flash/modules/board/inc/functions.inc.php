@@ -29,13 +29,13 @@ function getBoards($sMode = 'new', $sId = "")
 
             //--- delete old boards ---//
             $rFiles = getResult("SELECT `ID` FROM `" . MODULE_DB_PREFIX . "Boards` WHERE `Status`='" . BOARD_STATUS_DELETE . "' AND `When`<=(" . ($iCurrentTime - $iDeleteTime) . ")");
-            while($aFile = mysql_fetch_assoc($rFiles)) @unlink($sFilesPath . $aFile['ID'] . $sFileExtension);
+            while($aFile = $rFiles->fetch()) @unlink($sFilesPath . $aFile['ID'] . $sFileExtension);
             getResult("DELETE FROM `" . MODULE_DB_PREFIX . "Boards`, `" . MODULE_DB_PREFIX . "Users` USING `" . MODULE_DB_PREFIX . "Boards` LEFT JOIN `" . MODULE_DB_PREFIX . "Users` ON `" . MODULE_DB_PREFIX . "Boards`.`ID`=`" . MODULE_DB_PREFIX . "Users`.`Board` WHERE `" . MODULE_DB_PREFIX . "Boards`.`Status`='" . BOARD_STATUS_DELETE . "' AND `" . MODULE_DB_PREFIX . "Boards`.`When`<=(" . ($iCurrentTime - $iDeleteTime) . ")");
 
             getResult("UPDATE `" . MODULE_DB_PREFIX . "Boards` SET `Status`='" . BOARD_STATUS_DELETE . "' WHERE `When`<'" . ($iCurrentTime - $iIdleTime) . "' AND `Status`<>'" . BOARD_STATUS_DELETE . "'");
 
             $rResult = getResult("SELECT * FROM `" . MODULE_DB_PREFIX . "Boards` WHERE `OwnerID`<>'" . $sId . "' AND `Status`<>'" . BOARD_STATUS_NORMAL . "'");
-            while($aBoard = mysql_fetch_assoc($rResult))
+            while($aBoard = $rResult->fetch())
                 switch($aBoard['Status']) {
                     case BOARD_STATUS_DELETE:
                         $sBoards .= parseXml($aXmlTemplates['board'], $aBoard['ID'], BOARD_STATUS_DELETE);
@@ -46,7 +46,7 @@ function getBoards($sMode = 'new', $sId = "")
                 }
 
             $rResult = getResult("SELECT `boards`.`ID` FROM `" . MODULE_DB_PREFIX . "Boards` AS `boards` INNER JOIN `" . MODULE_DB_PREFIX . "Users` AS `users` ON `boards`.`ID`=`users`.`Board` WHERE `boards`.`OwnerID`<>'" . $sId . "'");
-            while($aBoard = mysql_fetch_assoc($rResult)) {
+            while($aBoard = $rResult->fetch()) {
                 $sFile = $sFilesPath . $aBoard['ID'] . $sFileExtension;
                 if(!file_exists($sFile)) continue;
                 $iModifiedTime = filemtime($sFile);
@@ -58,7 +58,7 @@ function getBoards($sMode = 'new', $sId = "")
         case 'updateUsers':
             $sSql = "SELECT `r`.`ID` AS `BoardID`, GROUP_CONCAT(DISTINCT IF(`ru`.`Status`<>'" . BOARD_STATUS_DELETE . "',`ru`.`User`,'') SEPARATOR ',') AS `In`, GROUP_CONCAT(DISTINCT IF(`ru`.`Status`='" . BOARD_STATUS_DELETE . "',`ru`.`User`,'') SEPARATOR ',') AS `Out` FROM `" . MODULE_DB_PREFIX . "Boards` AS `r` INNER JOIN `" . MODULE_DB_PREFIX . "Users` AS `ru` WHERE `r`.`ID`=`ru`.`Board` AND `r`.`Status`='" . BOARD_STATUS_NORMAL . "' AND `ru`.`When`>=" . ($iCurrentTime - $iUpdateInterval) . " GROUP BY `r`.`ID`";
             $rResult = getResult($sSql);
-            while($aBoard = mysql_fetch_assoc($rResult))
+            while($aBoard = $rResult->fetch())
                 $sBoards .= parseXml($aXmlTemplates['board'], $aBoard['BoardID'], $aBoard['In'], $aBoard['Out']);
             break;
 
@@ -66,15 +66,15 @@ function getBoards($sMode = 'new', $sId = "")
             $iRunTime = isset($_REQUEST['_t']) ? floor($_REQUEST['_t']/1000) : 0;
             $iCurrentTime -= $iRunTime;
             $rResult = getResult("SELECT `ID` FROM `" . MODULE_DB_PREFIX . "Users`");
-            if(mysql_num_rows($rResult) == 0) getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "Users`");
+            if($rResult->rowCount() == 0) getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "Users`");
             $iBoardsCount = getValue("SELECT COUNT(`ID`) FROM `" . MODULE_DB_PREFIX . "Boards`");
 
             $sSql = "SELECT `r`.`ID` AS `BoardID`, `r`.*, GROUP_CONCAT(DISTINCT IF(`ru`.`Status`='" . BOARD_STATUS_NORMAL . "' AND `ru`.`User`<>'" . $sId . "',`ru`.`User`,'') SEPARATOR ',') AS `In`, GROUP_CONCAT(DISTINCT IF(`ru`.`Status`='" . BOARD_STATUS_DELETE . "' AND `ru`.`User`<>'" . $sId . "',`ru`.`User`,'') SEPARATOR ',') AS `Out` FROM `" . MODULE_DB_PREFIX . "Boards` AS `r` LEFT JOIN `" . MODULE_DB_PREFIX . "Users` AS `ru` ON `r`.`ID`=`ru`.`Board` GROUP BY `r`.`ID` ORDER BY `r`.`ID`";
             $rResult = getResult($sSql);
-            while($aBoard = mysql_fetch_assoc($rResult)) {
+            while($aBoard = $rResult->fetch()) {
                 $sBoards .= parseXml($aXmlTemplates['board'], $aBoard['BoardID'], BOARD_STATUS_NORMAL, $aBoard['OwnerID'], empty($aBoard['Password']) ? FALSE_VAL : TRUE_VAL, $aBoard['In'], stripslashes($aBoard['Name']));
             }
-            if(mysql_num_rows($rResult) === 0) {
+            if($rResult->rowCount() === 0) {
                 getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "Boards`");
                 getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "Users`");
             }
@@ -150,7 +150,7 @@ function refreshUsersInfo($sId = "", $sMode = 'all')
     switch($sMode) {
         case 'update':
             $rRes = getResult("SELECT * FROM `" . MODULE_DB_PREFIX . "CurrentUsers` ORDER BY `When`");
-            while($aUser = mysql_fetch_assoc($rRes)) {
+            while($aUser = $rRes->fetch()) {
                 switch($aUser['Status']) {
                     case USER_STATUS_NEW:
                         $sContent .= parseXml($aXmlTemplates['user'], $aUser['ID'], $aUser['Status'], $aUser['Nick'], $aUser['Sex'], $aUser['Age'], $aUser['Photo'], $aUser['Profile'], $aUser['Desc']);
@@ -166,7 +166,7 @@ function refreshUsersInfo($sId = "", $sMode = 'all')
             $iRunTime = isset($_REQUEST['_t']) ? floor($_REQUEST['_t']/1000) : 0;
             $iCurrentTime -= $iRunTime;
             $rRes = getResult("SELECT * FROM `" . MODULE_DB_PREFIX . "CurrentUsers` WHERE `Status`<>'" . USER_STATUS_IDLE . "' ORDER BY `When`");
-            while($aUser = mysql_fetch_assoc($rRes))
+            while($aUser = $rRes->fetch())
                 $sContent .= parseXml($aXmlTemplates['user'], $aUser['ID'], USER_STATUS_NEW, $aUser['Nick'], $aUser['Sex'], $aUser['Age'], $aUser['Photo'], $aUser['Profile'], $aUser['Desc']);
             break;
     }

@@ -13,9 +13,9 @@ bx_import('BxTemplCategories');
 
 class BxBaseIndexPageView extends BxDolPageView
 {
-    function BxBaseIndexPageView()
+    function __construct()
     {
-        BxDolPageView::BxDolPageView( 'index' );
+        BxDolPageView::__construct( 'index' );
     }
 
     /**
@@ -213,9 +213,9 @@ class BxBaseIndexPageView extends BxDolPageView
 
             $sqlQuery = "SELECT " . $sqlMainFields . " FROM `Profiles` $sqlCondition $sqlOrder $sqlLimit";
             $rData = db_res($sqlQuery);
-            $iCurrCount = mysql_num_rows($rData);
+            $iCurrCount = $rData->rowCount();
             $aOnline = $aTmplVars = array();
-            while ($aData = mysql_fetch_assoc($rData)) {
+            while ($aData = $rData->fetch()) {
                 $aOnline['is_online'] = $aData['is_online'];
                 $aTmplVars[] = array(
                     'thumbnail' => get_member_thumbnail($aData['ID'], 'none', true, 'visitor', $aOnline)

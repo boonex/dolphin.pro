@@ -17,9 +17,9 @@ class BxOAuthModule extends BxDolModule
     protected $_oServer;
     protected $_oAPI;
 
-    function BxOAuthModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
 
         $aConfig = array (
             'client_table' => 'bx_oauth_clients',

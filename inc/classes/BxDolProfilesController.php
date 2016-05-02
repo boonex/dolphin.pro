@@ -13,7 +13,7 @@ class BxDolProfilesController
     var $aItems;
     var $oEmailTemplate;
 
-    function BxDolProfilesController()
+    function __construct()
     {
         $this -> oEmailTemplate = new BxDolEmailTemplates();
     }

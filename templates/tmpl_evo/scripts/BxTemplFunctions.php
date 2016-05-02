@@ -6,9 +6,9 @@
         /**
          * class constructor
         */
-        function BxTemplFunctions()
+        function __construct()
         {
-            parent::BxBaseFunctions();
+            parent::__construct();
         }
 
         function genSiteSearch($sText = '')
@@ -62,7 +62,7 @@
                     'title' => getNickName($oMenu->aMenuInfo['memberID'])
                 );
 
-                $sMenuPopupId = 'sys-service-menu-' . mktime();
+                $sMenuPopupId = 'sys-service-menu-' . time();
                 $sMenuPopupContent = $this->transBox($oMenu->getCode());
             }
             else {

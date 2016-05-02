@@ -46,7 +46,6 @@ $GLOBALS['L'] = array (
     'New group' => 'New group',
     'Cancel' => 'Cancel',
     'Submit' => 'Submit',
-    'Submit' => 'Submit',
     'New forum' => 'New forum',
     'Forum title:' => 'Forum title:',
     'Forum description:' => 'Forum description:',

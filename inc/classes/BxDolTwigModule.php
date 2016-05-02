@@ -15,9 +15,9 @@ class BxDolTwigModule extends BxDolModule
     var $_sPrefix;
     var $_sFilterName;
 
-    function BxDolTwigModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
         $this->_iProfileId = isLogged() ? getLoggedId() : 0;
     }
 
@@ -1478,7 +1478,7 @@ class BxDolTwigModule extends BxDolModule
 
     function _actionAdministrationManage ($isAdminEntries, $sKeyBtnDelete, $sKeyBtnActivate, $sUrl = false)
     {
-        if ($_POST['action_activate'] && is_array($_POST['entry'])) {
+        if (getPostFieldIfSet('action_activate') && (isset($_POST['entry']) && is_array($_POST['entry']))) {
 
             foreach ($_POST['entry'] as $iId) {
                 if ($this->_oDb->activateEntry($iId)) {
@@ -1486,7 +1486,7 @@ class BxDolTwigModule extends BxDolModule
                 }
             }
 
-        } elseif ($_POST['action_delete'] && is_array($_POST['entry'])) {
+        } elseif (getPostFieldIfSet('action_delete') && (isset($_POST['entry']) && is_array($_POST['entry']))) {
 
             foreach ($_POST['entry'] as $iId) {
 
@@ -1920,7 +1920,7 @@ class BxDolTwigModule extends BxDolModule
         return sendMail($aProfile['Email'], $aTemplate['Subject'], $aTemplate['Body'], $aProfile['ID'], $aTemplateVars);
     }
 
-    function _browseMy (&$aProfile, $sTitle)
+    function _browseMy (&$aProfile, $sTitle = null)
     {
         // check access
         if (!$this->_iProfileId) {
