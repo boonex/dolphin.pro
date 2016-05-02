@@ -157,7 +157,7 @@ class BxDolVoting
             $rResult = db_res($sQuery);
 
             $GLOBALS['bx_dol_voting_systems'] = array();
-            while( $aRow = mysql_fetch_assoc($rResult ) ) {
+            while( $aRow = $rResult ->fetch() ) {
                 $GLOBALS['bx_dol_voting_systems'][$aRow['ObjectName']] = array
                 (
                     'table_rating'	=> $aRow['TableRating'],

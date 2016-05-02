@@ -19,8 +19,6 @@ function getPreKeys ()
 
 function getPreValues ($sKey, $aFields = array(), $iTagsFilter = BX_TAGS_NO_ACTION)
 {
-    $sKeyDb = process_db_input($sKey, $iTagsFilter);
-    $sKey   = process_pass_data($sKey);
     $sqlFields = "*";
     if (is_array($aFields) && !empty($aFields)) {
         foreach ($aFields as $sValue)
@@ -28,9 +26,9 @@ function getPreValues ($sKey, $aFields = array(), $iTagsFilter = BX_TAGS_NO_ACTI
         $sqlFields = trim($sqlFields, ', ');
     }
     $sqlQuery = "SELECT $sqlFields FROM `" . BX_SYS_PRE_VALUES_TABLE ."`
-                WHERE `Key` = '$sKeyDb'
+                WHERE `Key` = ?
                 ORDER BY `Order` ASC";
-    return $GLOBALS['MySQL']->getAllWithKey($sqlQuery, 'Value');
+    return $GLOBALS['MySQL']->getAllWithKey($sqlQuery, 'Value', [$sKey]);
 }
 
 function getPreValuesCount ($sKey, $aFields = array(), $iTagsFilter = BX_TAGS_NO_ACTION)

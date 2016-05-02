@@ -332,9 +332,9 @@ switch ($sAction) {
     case 'getOnlineUsers':
         //--- Check RayChatMessages table and drop autoincrement if it is possible. ---//
         $rResult = getResult("SELECT `ID` FROM `" . MODULE_DB_PREFIX . "CurrentUsers`");
-        if(mysql_num_rows($rResult) == 0) getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "CurrentUsers`");
+        if($rResult->rowCount() == 0) getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "CurrentUsers`");
         $rResult = getResult("SELECT `ID` FROM `" . MODULE_DB_PREFIX . "Messages`");
-        if(mysql_num_rows($rResult) == 0) getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "Messages`");
+        if($rResult->rowCount() == 0) getResult("TRUNCATE TABLE `" . MODULE_DB_PREFIX . "Messages`");
         //--- Update user's info and return info about all online users. ---//
         $sContents = refreshUsersInfo($sId);
         break;
@@ -353,7 +353,7 @@ switch ($sAction) {
     case 'update':
         $sFiles = "";
         $res = getResult("SELECT * FROM `" . MODULE_DB_PREFIX . "Messages` WHERE `Type`='file' AND `Recipient`='" . $sId . "'");
-        while($aFile = mysql_fetch_assoc($res)) {
+        while($aFile = $res->fetch()) {
             $sFileName = $aFile['ID'] . ".file";
             if(!file_exists($sFilesPath . $sFileName)) continue;
             $sFiles .= parseXml($aXmlTemplates['file'], $aFile['Sender'], $sFileName, $aFile['Message']);
@@ -374,7 +374,7 @@ switch ($sAction) {
         if(empty($sRooms)) $sRooms = "''";
         $sSql = "SELECT * FROM `" . MODULE_DB_PREFIX . "Messages` WHERE `Type`='text' AND `Sender`<>'" . $sId . "' AND ((`Room` IN (" . $sRooms . ") AND `Whisper`='" . FALSE_VAL . "') OR `Recipient`='" . $sId . "') AND `When`>='" . (time() - $iUpdateInterval) . "' ORDER BY `ID`";
         $res = getResult($sSql);
-        while($aMsg = mysql_fetch_assoc($res)) {
+        while($aMsg = $res->fetch()) {
             $aStyle = unserialize($aMsg['Style']);
             $sMsgs .= parseXml($aXmlTemplates['message'], $aMsg['ID'], stripslashes($aMsg['Message']), $aMsg['Room'], $aMsg['Sender'], $aMsg['Recipient'], $aMsg['Whisper'], $aStyle['color'], $aStyle['bold'], $aStyle['underline'], $aStyle['italic'], $aStyle['size'], $aStyle['font'], $aStyle['smileset'], $aMsg['When']);
         }
@@ -415,17 +415,17 @@ switch ($sAction) {
 		$aMessages = array();
 		$aUsers = array();
 		$rRes = getResult("SELECT * FROM `" . MODULE_DB_PREFIX . "History` WHERE `When`>=" . $iStartDate . " AND `When`<" . $iEndDate . " ORDER BY `Room`, `Sender`, `Recipient` ASC");
-		if(mysql_num_rows($rRes) == 0)
+		if($rRes->rowCount() == 0)
 		{
 			$sContents = makeGroup("", "users") . makeGroup("", "rooms") . makeGroup("", "privates");
 			break;
 		}
 		
 		//users
-		$iUsersCount = mysql_num_rows($rRes);
+		$iUsersCount = $rRes->rowCount();
 		for($i=0; $i<$iUsersCount; $i++)
 		{
-			$aMsg = mysql_fetch_assoc($rRes);
+			$aMsg = $rRes->fetch();
 			$aMessages[] = $aMsg;
 			if(!empty($aMsg['Sender']))
 				$aUsers[] = $aMsg['Sender'];
@@ -448,10 +448,10 @@ switch ($sAction) {
 		$iRoom = 0;
 		$iCount = 0;
 		$sRoom = "";
-		$iRoomsCount = mysql_num_rows($rResRooms);
+		$iRoomsCount = $rResRooms->rowCount();
 		for($i=0; $i<$iRoomsCount; $i++)
 		{
-			$aMsg = mysql_fetch_assoc($rResRooms);
+			$aMsg = $rResRooms->fetch();
 			if($aMsg['Room'] != $iRoom)
 			{
 				if(!empty($sRoom) && !empty($sMsgs))
@@ -476,10 +476,10 @@ switch ($sAction) {
 		$sMsgs = "";
 		$sSndRcp = "";
 		$iCount = 0;
-		$iMsgsCount = mysql_num_rows($rResMsgs);
+		$iMsgsCount = $rResMsgs->rowCount();
 		for($i=0; $i<$iMsgsCount; $i++)
 		{
-			$aMsg = mysql_fetch_assoc($rResMsgs);
+			$aMsg = $rResMsgs->fetch();
 			if($aMsg['SndRcp'] != $sSndRcp)
 			{
 				if(!empty($sMsgs))

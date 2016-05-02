@@ -75,7 +75,7 @@ function actionAllCategories()
         'location_href' => BX_DOL_URL_ADMIN . 'categories.php?action=all&module='
     ));
 
-    $aCategories = $oDb->getAll("SELECT * FROM `sys_categories` WHERE `Status` = 'active' AND `Owner` = 0 AND `Type` = '$sModule'");
+    $aCategories = $oDb->getAll("SELECT * FROM `sys_categories` WHERE `Status` = 'active' AND `Owner` = 0 AND `Type` = ?", [$sModule]);
     if(!empty($aCategories)) {
         $mixedTmplItems = array();
         foreach($aCategories as $aCategory)

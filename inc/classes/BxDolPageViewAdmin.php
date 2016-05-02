@@ -438,7 +438,7 @@ class BxDolPageViewAdmin
         $sPagesQuery = "SELECT `Name`, `Title` FROM `{$this -> sDBTable}_pages` ORDER BY `Order`";
 
         $rPages = db_res( $sPagesQuery );
-        while( $aPage = mysql_fetch_assoc($rPages) ) {
+        while( $aPage = $rPages->fetch() ) {
             $this -> aPages[] = $aPage['Name'];
             $this -> aTitles[$aPage['Name']] = $aPage['Title'];
         }
@@ -752,12 +752,12 @@ class BxDolPVAPage
                 `ColWidth`
             FROM `{$this -> oParent -> sDBTable}`
             WHERE
-                `Page` = '{$this -> sName_db}' AND
+                `Page` = ? AND
                 `Column` != 0
             GROUP BY `Column`
             ORDER BY `Column`";
 
-        $aColumns = $MySQL->getAllWithKey($sQuery, 'Column');
+        $aColumns = $MySQL->getAllWithKey($sQuery, 'Column', [$this -> sName_db]);
         
 		ksort($aColumns);
 
@@ -773,11 +773,11 @@ class BxDolPVAPage
                     `Caption`
                 FROM `{$this -> oParent -> sDBTable}`
                 WHERE
-                    `Page` = '{$this -> sName_db}' AND
-                    `Column` = $iColumn
+                    `Page` = ? AND
+                    `Column` = ?
                 ORDER BY `Order`";
 
-            $aBlocks = $MySQL->getAll($sQueryActive);
+            $aBlocks = $MySQL->getAll($sQueryActive, [$this -> sName_db, $iColumn]);
             foreach($aBlocks as $aBlock) {
                 $this->aBlocks[$iColumn][$aBlock['ID']] = _t($aBlock['Caption']);
                 $this->aBlocksOrder[$iColumn][] = $aBlock['ID'];
@@ -785,8 +785,8 @@ class BxDolPVAPage
         }
 
         // load minimal widths
-        $sQuery = "SELECT `ID`, `MinWidth` FROM `{$this -> oParent -> sDBTable}` WHERE `MinWidth` > 0 AND `Page`= '{$this -> sName_db}'";
-        $aBlocks = $MySQL->getAll($sQuery);
+        $sQuery = "SELECT `ID`, `MinWidth` FROM `{$this -> oParent -> sDBTable}` WHERE `MinWidth` > 0 AND `Page`= ?";
+        $aBlocks = $MySQL->getAll($sQuery, [$this -> sName_db]);
         foreach($aBlocks as $aBlock)
             $this->aMinWidths[(int)$aBlock['ID']] = (int)$aBlock['MinWidth'];
 
@@ -818,10 +818,10 @@ class BxDolPVAPage
         $rInactive = db_res( $sQueryInactive );
         $rSamples  = db_res( $sQuerySamples );
 
-        while( $aBlock = mysql_fetch_assoc( $rInactive ) )
+        while( $aBlock =  $rInactive ->fetch() )
             $this -> aBlocksInactive[ (string)$aBlock['ID'] . ' '] = _t( $aBlock['Caption'] );
 
-        while( $aBlock = mysql_fetch_assoc( $rSamples ) )
+        while( $aBlock =  $rSamples ->fetch() )
             $this -> aBlocksSamples[ (int)$aBlock['ID'] ] = _t( $aBlock['Caption'] );
 
         asort($this -> aBlocksInactive, SORT_STRING | SORT_FLAG_CASE);
@@ -883,7 +883,7 @@ class BxDolPageViewCacher
 
         $rPages = db_res( $sQuery );
 
-        while ($aPageN = mysql_fetch_assoc($rPages)) {
+        while ($aPageN = $rPages->fetch()) {
             $sPageName  = addslashes($aPageN['Name']);
             $aPageN['Title'] = db_value("SELECT `Title` FROM `{$this -> sDBTable}_pages` WHERE `Name` = '$sPageName'");
             $sPageTitle = addslashes($aPageN['Title']);
@@ -901,11 +901,11 @@ class BxDolPageViewCacher
                     `ColWidth`
                 FROM `{$this -> sDBTable}`
                 WHERE
-                    `Page` = '$sPageName' AND
+                    `Page` = ? AND
                     `Column` > 0
                 GROUP BY `Column`
                 ORDER BY `Column`";
-            $aColumns = $MySQL->getAllWithKey($sQuery, 'Column');
+            $aColumns = $MySQL->getAllWithKey($sQuery, 'Column', [$sPageName]);
 
 			ksort($aColumns);
 
@@ -928,10 +928,10 @@ class BxDolPageViewCacher
                         `Cache`
                     FROM `{$this -> sDBTable}`
                     WHERE
-                        `Page` = '$sPageName' AND
-                        `Column` = $iColumn
+                        `Page` = ? AND
+                        `Column` = ?
                     ORDER BY `Order` ASC";
-                $aBlocks = $MySQL->getAll($sQuery);
+                $aBlocks = $MySQL->getAll($sQuery, [$sPageName, $iColumn]);
 
                 foreach($aBlocks as $aBlock) {
                     $sCacheString .= "          {$aBlock['ID']} => array(\n";

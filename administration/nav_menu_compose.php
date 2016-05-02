@@ -153,7 +153,7 @@ $sComposerInit = "
 ";
 
 $iIndex = 0;
-while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
+while(($aTopItem = $rTopItems->fetch()) !== false) {
     $sComposerInit .= "
 
         aTopItems[$iIndex] = [{$aTopItem['ID']}, '" . bx_js_string( $aTopItem['Name'], BX_ESCAPE_STR_APOS ) . "', " . $aTopItem['Movable'] . "];
@@ -162,7 +162,7 @@ while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
 
     $iSubIndex = 0;
     $rCustomItems = db_res( $sQuery );
-    while(($aCustomItem = mysql_fetch_assoc($rCustomItems)) !== false) {
+    while(($aCustomItem = $rCustomItems->fetch()) !== false) {
         $sComposerInit .= "
         aCustomItems[$iIndex][" . ($iSubIndex++) . "] = [{$aCustomItem['ID']}, '" . bx_js_string( $aCustomItem['Name'], BX_ESCAPE_STR_APOS ) . "', " . $aCustomItem['Movable'] . "];";
     }
@@ -170,7 +170,7 @@ while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
     $iIndex++;
 }
 
-while(($aSystemItem = mysql_fetch_assoc($rSysItems)) !== false) {
+while(($aSystemItem = $rSysItems->fetch()) !== false) {
     $sComposerInit .= "
 
         aSystemItems[$iIndex] = [{$aSystemItem['ID']}, '" . bx_js_string( $aSystemItem['Name'], BX_ESCAPE_STR_APOS ) . "', " . $aSystemItem['Movable'] . "];
@@ -179,7 +179,7 @@ while(($aSystemItem = mysql_fetch_assoc($rSysItems)) !== false) {
 
     $iSubIndex = 0;
     $rCustomItems = db_res( $sQuery );
-    while(($aCustomItem = mysql_fetch_assoc($rCustomItems)) !== false) {
+    while(($aCustomItem = $rCustomItems->fetch()) !== false) {
         $sComposerInit .= "
         aCustomItems[$iIndex][" . ($iSubIndex++) . "] = [{$aCustomItem['ID']}, '" . bx_js_string( $aCustomItem['Name'], BX_ESCAPE_STR_APOS ) . "', " . $aCustomItem['Movable'] . "];";
     }
@@ -188,7 +188,7 @@ while(($aSystemItem = mysql_fetch_assoc($rSysItems)) !== false) {
 }
 
 $sComposerInit .= "\n";
-while(($aAllItem = mysql_fetch_assoc($rAllItems)) !== false) {
+while(($aAllItem = $rAllItems->fetch()) !== false) {
     $sComposerInit .= "
         aAllItems['{$aAllItem['ID']} '] = '" . bx_js_string( $aAllItem['Name'], BX_ESCAPE_STR_APOS ) . "';";
 }

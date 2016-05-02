@@ -137,24 +137,24 @@ function getMemberMembershipInfo_current($iMemberId, $time = '')
                 RIGHT JOIN Profiles
                 ON `sys_acl_levels_members`.IDMember = Profiles.ID
                     AND (`sys_acl_levels_members`.DateStarts IS NULL
-                        OR `sys_acl_levels_members`.DateStarts <= FROM_UNIXTIME($time))
+                        OR `sys_acl_levels_members`.DateStarts <= FROM_UNIXTIME(?))
                     AND (`sys_acl_levels_members`.DateExpires IS NULL
-                        OR `sys_acl_levels_members`.DateExpires > FROM_UNIXTIME($time))
+                        OR `sys_acl_levels_members`.DateExpires > FROM_UNIXTIME(?))
                 LEFT JOIN `sys_acl_levels`
                 ON `sys_acl_levels_members`.IDLevel = `sys_acl_levels`.ID
 
-        WHERE   Profiles.ID = $iMemberId
+        WHERE   Profiles.ID = ?
 
         ORDER BY `sys_acl_levels_members`.DateStarts DESC
 
-        LIMIT 0, 1");
+        LIMIT 0, 1", [$time, $time, $iMemberId]);
 
     /**
      * no such member found
      */
     if (!$aMemLevel || !count($aMemLevel)) {
         //fetch info about Non-member membership
-        $aMemLevel =& $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_NON_MEMBER, 'getRow', "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ".MEMBERSHIP_ID_NON_MEMBER);
+        $aMemLevel =& $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_NON_MEMBER, 'getRow', "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ?", [MEMBERSHIP_ID_NON_MEMBER]);
         if(!$aMemLevel || !count($aMemLevel)) {
             //this should never happen, but just in case
             echo "<br /><b>getMemberMembershipInfo()</b> fatal error: <b>Non-Member</b> membership not found.";
@@ -167,7 +167,7 @@ function getMemberMembershipInfo_current($iMemberId, $time = '')
      * no purchased/assigned memberships for the member or all of them have expired -- the member is assumed to have Standard membership
      */
     if(is_null($aMemLevel['ID'])) {
-        $aMemLevel =& $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_STANDARD, 'getRow', "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ".MEMBERSHIP_ID_STANDARD);
+        $aMemLevel =& $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_STANDARD, 'getRow', "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ?", [MEMBERSHIP_ID_STANDARD]);
         if (!$aMemLevel || !count($aMemLevel)) {
             //again, this should never happen, but just in case
             echo "<br /><b>getMemberMembershipInfo()</b> fatal error: <b>Standard</b> membership not found.";
@@ -367,12 +367,12 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
 
     //no such action
 
-    if(mysql_num_rows($resMembershipAction) < 1) {
+    if($resMembershipAction->rowCount() < 1) {
         echo "<br /><b>checkAction()</b> fatal error. Unknown action ID: $actionID<br />";
         exit();
     }
 
-    $arrAction = mysql_fetch_assoc($resMembershipAction);
+    $arrAction = $resMembershipAction->fetch();
 
     $result[CHECK_ACTION_PARAMETER]	= $arrAction['AdditionalParamValue'];
     $arrLangFileParams[CHECK_ACTION_LANG_FILE_ACTION] = _t('_mma_' . str_replace(' ', '_', $arrAction['Name']));
@@ -441,7 +441,7 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
         //member is requesting/performing this action for the first time,
         //and there is no corresponding record in sys_acl_actions_track table
 
-        if(mysql_num_rows($actionTrack) <= 0) {
+        if($actionTrack->rowCount() <= 0) {
             //add action to sys_acl_actions_track table
 
             db_res("
@@ -455,7 +455,7 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
         //action has been requested/performed at least once at this point
         //and there is a corresponding record in sys_acl_actions_track table
 
-        $actionTrack = mysql_fetch_assoc($actionTrack);
+        $actionTrack = $actionTrack->fetch();
 
         //action record in sys_acl_actions_track table is out of date
 
@@ -688,7 +688,7 @@ function getMemberships($purchasableOnly = false)
 
     $resMemLevels = db_res("SELECT DISTINCT `sys_acl_levels`.ID, `sys_acl_levels`.Name FROM `sys_acl_levels` $queryPurchasable");
 
-    while(list($id, $name) = mysql_fetch_row($resMemLevels)) {
+    while(list($id, $name) = $resMemLevels->fetch()) {
         $result[(int)$id] = $name;
     }
 
@@ -711,7 +711,7 @@ function getMembershipPrices($iMembershipId)
 
     $resMemLevelPrices = db_res("SELECT Days, Price FROM `sys_acl_level_prices` WHERE IDLevel = $iMembershipId ORDER BY Days ASC");
 
-    while(list($days, $price) = mysql_fetch_row($resMemLevelPrices)) {
+    while(list($days, $price) = $resMemLevelPrices->fetch()) {
         $result[(int)$days] = (float)$price;
     }
 
@@ -735,10 +735,10 @@ function getMembershipInfo($iMembershipId)
     $iMembershipId = (int)$iMembershipId;
     $result = array();
 
-    $resMemLevels = db_res("SELECT Name, Active, Purchasable, Removable FROM `sys_acl_levels` WHERE ID = $iMembershipId");
+    $resMemLevels = db_res("SELECT Name, Active, Purchasable, Removable FROM `sys_acl_levels` WHERE ID = ?", [$iMembershipId]);
 
-    if(mysql_num_rows($resMemLevels) > 0) {
-        $result = mysql_fetch_assoc($resMemLevels);
+    if($resMemLevels->rowCount() > 0) {
+        $result = $resMemLevels->fetch();
     }
 
     return $result;
@@ -759,9 +759,10 @@ function defineMembershipActions ($aActionsAll, $sPrefix = 'BX_')
     if (!$aActions)
         return;
 
-    $sActions = implode("','", $aActions);
-    $res = db_res("SELECT `ID`, `Name` FROM `sys_acl_actions` WHERE `Name` IN('$sActions')");
-    while ($r = mysql_fetch_array($res)) {
+//    $sActions = implode("','", $aActions);
+    $sPlaceholders = str_repeat('?', count($aActions));
+    $res = db_res("SELECT `ID`, `Name` FROM `sys_acl_actions` WHERE `Name` IN($sPlaceholders)", [$aActions]);
+    while ($r = $res->fetch()) {
         define ($sPrefix . strtoupper(str_replace(' ', '_', $r['Name'])), $r['ID']);
     }
 }
@@ -786,13 +787,21 @@ function translateMembershipActions (&$aActions)
 
 function markMembershipAsExpiring($iMemberId, $iLevelId, $sTransactionId)
 {
-	db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='1' WHERE `IDMember`='" . $iMemberId . "' AND `IDLevel`='" . $iLevelId . "' AND `TransactionID`='" . $sTransactionId . "' LIMIT 1");
+	db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='1' WHERE `IDMember`= ? AND `IDLevel`= ? AND `TransactionID`= ? LIMIT 1", [
+        $iMemberId,
+        $iLevelId,
+        $sTransactionId
+    ]);
 	return db_affected_rows() > 0;
 }
 
 function unmarkMembershipAsExpiring($iMemberId, $iLevelId, $sTransactionId)
 {
-	db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='0' WHERE `IDMember`='" . $iMemberId . "' AND `IDLevel`='" . $iLevelId . "' AND `TransactionID`='" . $sTransactionId . "' LIMIT 1");
+	db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='0' WHERE `IDMember`= ? AND `IDLevel`= ? AND `TransactionID`= ? LIMIT 1", [
+        $iMemberId,
+        $iLevelId,
+        $sTransactionId
+    ]);
 	return db_affected_rows() > 0;
 }
 
@@ -804,5 +813,5 @@ function unmarkMembershipAsExpiringAll()
 
 function clearActionsTracksForMember($iMemberId)
 {
-	return db_res("DELETE FROM `sys_acl_actions_track` WHERE `IDMember` = " . (int)$iMemberId);
+	return db_res("DELETE FROM `sys_acl_actions_track` WHERE `IDMember` = ?", [$iMemberId]);
 }

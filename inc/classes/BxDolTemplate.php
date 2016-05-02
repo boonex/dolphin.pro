@@ -252,7 +252,7 @@ class BxDolTemplate
         $aInjections = $oCache->getData($GLOBALS['MySQL']->genDbCacheKey($this->_sInjectionsCache));
         if (null === $aInjections) {
             $rInjections = db_res("SELECT `page_index`, `name`, `key`, `type`, `data`, `replace` FROM `" . $this->_sInjectionsTable . "` WHERE `active`='1'");
-            while($aInjection = mysql_fetch_assoc($rInjections))
+            while($aInjection = $rInjections->fetch())
                 $aInjections['page_' . $aInjection['page_index']][$aInjection['key']][] = $aInjection;
 
             $oCache->setData ($GLOBALS['MySQL']->genDbCacheKey($this->_sInjectionsCache), $aInjections);

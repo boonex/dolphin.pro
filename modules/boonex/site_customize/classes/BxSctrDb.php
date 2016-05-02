@@ -89,12 +89,12 @@ class BxSctrDb extends BxDolModuleDb
 
     function getUnitById($iUnitId)
     {
-        return $this->getRow("SELECT * FROM `" . $this->_sPrefix . "units` WHERE `id` = $iUnitId LIMIT 1");
+        return $this->getRow("SELECT * FROM `" . $this->_sPrefix . "units` WHERE `id` = ? LIMIT 1", [$iUnitId]);
     }
 
     function deleteUnit($iUnitId)
     {
-        return $this->query("DELETE FROM `" . $this->_sPrefix . "units` WHERE `id` = $iUnitId");
+        return $this->query("DELETE FROM `" . $this->_sPrefix . "units` WHERE `id` = ?", [$iUnitId]);
     }
 
     function getAllThemes()
@@ -104,23 +104,23 @@ class BxSctrDb extends BxDolModuleDb
 
     function getSharedThemes()
     {
-        return $this->getAll("SELECT * FROM `" . $this->_sPrefix . "themes` WHERE `ownerid` = 0 ORDER BY `id`");
+        return $this->getAll("SELECT * FROM `" . $this->_sPrefix . "themes` WHERE `ownerid` = ? ORDER BY `id`", [0]);
     }
 
     function getThemeByName($sName)
     {
-        return $this->getRow("SELECT * FROM `" . $this->_sPrefix . "themes` WHERE `name` = '$sName' LIMIT 1");
+        return $this->getRow("SELECT * FROM `" . $this->_sPrefix . "themes` WHERE `name` = ? LIMIT 1", [$sName]);
     }
 
     function getThemeById($iThemeId)
     {
-        return $this->getRow("SELECT * FROM `" . $this->_sPrefix . "themes` WHERE `id` = '$iThemeId' LIMIT 1");
+        return $this->getRow("SELECT * FROM `" . $this->_sPrefix . "themes` WHERE `id` = ? LIMIT 1", [$iThemeId]);
     }
 
     function getThemeStyle($iThemeId)
     {
         if ((int)$iThemeId) {
-            $aTheme = $this->getRow("SELECT * FROM `" . $this->_sPrefix . "themes` WHERE `id` = $iThemeId LIMIT 1");
+            $aTheme = $this->getRow("SELECT * FROM `" . $this->_sPrefix . "themes` WHERE `id` = ? LIMIT 1", [$iThemeId]);
 
             if (!empty($aTheme))
                 return unserialize($aTheme['css']);
@@ -131,7 +131,7 @@ class BxSctrDb extends BxDolModuleDb
 
     function addTheme($sName, $iOwnerId, $sCss)
     {
-        if($this->query("INSERT INTO `" . $this->_sPrefix . "themes` (`name`, `ownerid`, `css`) VALUES('$sName', $iOwnerId, '$sCss')"))
+        if($this->query("INSERT INTO `" . $this->_sPrefix . "themes` (`name`, `ownerid`, `css`) VALUES(?, ?, ?)", [$sName, $iOwnerId, $sCss]))
 			return $this->lastId();
 
         return -1;
@@ -139,12 +139,12 @@ class BxSctrDb extends BxDolModuleDb
 
     function deleteTheme($iThemeId)
     {
-        return $this->query("DELETE FROM `" . $this->_sPrefix . "themes` WHERE `id` = $iThemeId");
+        return $this->query("DELETE FROM `" . $this->_sPrefix . "themes` WHERE `id` = ?", [$iThemeId]);
     }
 
     function addImage($sExt)
     {
-        if (strlen($sExt) > 0 && $this->query("INSERT INTO `" . $this->_sPrefix . "images` (`ext`, `count`) VALUES('$sExt', 1)"))
+        if (strlen($sExt) > 0 && $this->query("INSERT INTO `" . $this->_sPrefix . "images` (`ext`, `count`) VALUES(?, 1)", [$sExt]))
             return $this->lastId() . '.' . $sExt;
 
         return '';
@@ -154,7 +154,7 @@ class BxSctrDb extends BxDolModuleDb
     {
         if (strlen($sFileName) > 0) {
             $sId = basename($sFileName, '.' . pathinfo($sFileName, PATHINFO_EXTENSION));
-            return strlen($sId) > 0 ? $this->query("UPDATE `" . $this->_sPrefix . "images` SET `count` = `count` +  1 WHERE `id` = $sId") : 0;
+            return strlen($sId) > 0 ? $this->query("UPDATE `" . $this->_sPrefix . "images` SET `count` = `count` +  1 WHERE `id` = ?", [$sId]) : 0;
         }
 
         return 0;
@@ -166,7 +166,7 @@ class BxSctrDb extends BxDolModuleDb
 
         if (strlen($sFileName) > 0) {
             $sId = basename($sFileName, '.' . pathinfo($sFileName, PATHINFO_EXTENSION));
-            if (strlen($sId) > 0 && $this->query("UPDATE `" . $this->_sPrefix . "images` SET `count` = `count` -  1 WHERE `id` = $sId")) {
+            if (strlen($sId) > 0 && $this->query("UPDATE `" . $this->_sPrefix . "images` SET `count` = `count` -  1 WHERE `id` = ?", [$sId])) {
                 $aRow = $this->getRow("SELECT * FROM `" . $this->_sPrefix . "images` WHERE `id` = $sId LIMIT 1");
                 if ($aRow['count'] < 1)
                     $this->query("DELETE FROM `" . $this->_sPrefix . "images` WHERE `id` = $sId");

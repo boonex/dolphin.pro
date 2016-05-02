@@ -83,9 +83,14 @@ class CategoriesCalendar extends BxTemplCalendar
 
         return $oDb->getAll("SELECT *, DAYOFMONTH(`Date`) AS `Day`
             FROM `sys_categories`
-            WHERE `Date` >= TIMESTAMP('{$this->iYear}-{$this->iMonth}-1')
-            AND `Date` < TIMESTAMP('{$this->iNextYear}-{$this->iNextMonth}-1')
-            AND `Owner` <> 0 AND `Status` = 'active'");
+            WHERE `Date` >= TIMESTAMP(?)
+            AND `Date` < TIMESTAMP(?)
+            AND `Owner` <> 0 AND `Status` = 'active'",
+            [
+                "{$this->iYear}-{$this->iMonth}-1",
+                "{$this->iNextYear}-{$this->iNextMonth}-1",
+            ]
+        );
     }
 
     function getBaseUri()

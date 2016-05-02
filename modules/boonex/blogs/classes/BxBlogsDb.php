@@ -42,9 +42,9 @@ class BxBlogsDb extends BxDolDb
         $sSQL = "
             SELECT `PostCaption`, `PostUri`
             FROM `{$this->_oConfig->sSQLPostsTable}`
-            WHERE `PostID`='{$iPostID}'
+            WHERE `PostID`= ?
         ";
-        return $this->getRow($sSQL);
+        return $this->getRow($sSQL, [$iPostID]);
     }
 
     function getPostCaptionByUri($sPostUri)
@@ -150,7 +150,7 @@ class BxBlogsDb extends BxDolDb
         $vPostsInCat = db_res($sPostsSQL);
 
         $aPosts = array();
-        while ($aPost = mysql_fetch_assoc($vPostsInCat)) {
+        while ($aPost = $vPostsInCat->fetch()) {
             $aPosts[] = (int)$aPost['PostID'];
         }
         return $aPosts;
@@ -205,11 +205,11 @@ class BxBlogsDb extends BxDolDb
     {
         $sBlogsSQL = "
             SELECT * FROM `{$this->_oConfig->sSQLBlogsTable}`
-            WHERE `{$this->_oConfig->sSQLBlogsTable}`.`OwnerID` = '{$iMemberID}'
+            WHERE `{$this->_oConfig->sSQLBlogsTable}`.`OwnerID` = ?
             LIMIT 1
         ";
 
-        return $this->getRow($sBlogsSQL);
+        return $this->getRow($sBlogsSQL, [$iMemberID]);
     }
 
     function getPostOwnerByID($iPostID)
@@ -278,18 +278,18 @@ class BxBlogsDb extends BxDolDb
         $sAllBlogPostInfoSQL = "
             SELECT `{$this->_oConfig->sSQLPostsTable}`. * , `{$this->_oConfig->sSQLPostsTable}`.`PostCaption`
             FROM `{$this->_oConfig->sSQLPostsTable}`
-            WHERE `{$this->_oConfig->sSQLPostsTable}`.`PostID` = '{$iPostID}'
+            WHERE `{$this->_oConfig->sSQLPostsTable}`.`PostID` = ?
             LIMIT 1
         ";
 
-        $aAllBlogPostInfo = $this->getRow($sAllBlogPostInfoSQL);
+        $aAllBlogPostInfo = $this->getRow($sAllBlogPostInfoSQL, [$iPostID]);
         return $aAllBlogPostInfo;
     }
 
     function getJustPostInfo($iPostID)
     {
-        $sBlogPostsSQL = "SELECT * FROM `{$this->_oConfig->sSQLPostsTable}` WHERE `PostID` = '{$iPostID}' LIMIT 1";
-        $aBlogPost = $this->getRow($sBlogPostsSQL);
+        $sBlogPostsSQL = "SELECT * FROM `{$this->_oConfig->sSQLPostsTable}` WHERE `PostID` = ? LIMIT 1";
+        $aBlogPost = $this->getRow($sBlogPostsSQL, [$iPostID]);
         return $aBlogPost;
     }
 

@@ -85,7 +85,7 @@ class BxDolAdminMenu
             $aMenuItem['url'] = str_replace(array('{siteUrl}', '{siteAdminUrl}'), array(BX_DOL_URL_ROOT, BX_DOL_URL_ADMIN), $aMenuItem['url']);
 
             $bActiveCateg = $sFile == 'index.php' && (!empty($_GET['cat'])) && $_GET['cat'] == $aMenuItem['name'];
-            $aSubmenu = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_menu_admin` WHERE `parent_id`='" . $aMenuItem['id'] . "' ORDER BY `order`");
+            $aSubmenu = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_menu_admin` WHERE `parent_id`= ? ORDER BY `order`", [$aMenuItem['id']]);
 
             $oZ = new BxDolAlerts('system', 'admin_menu', 0, 0, array(
 	            'parent' => &$aMenuItem,

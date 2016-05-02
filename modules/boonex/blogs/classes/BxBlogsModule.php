@@ -657,7 +657,7 @@ class BxBlogsModule extends BxDolModule
         $iTotalBlogs = $this->_oDb->getAllBlogsCnt($sStatusFilter);
 
         // process database queries
-        $iTotalNum = mysql_num_rows($vBlogsRes);
+        $iTotalNum = $vBlogsRes->rowCount();
         if ($iTotalNum == 0) {
             $sCode = MsgBox($sNoBlogsC);
 
@@ -665,7 +665,7 @@ class BxBlogsModule extends BxDolModule
         }
 
         $iGenPostsCnt = 0;
-        while ($aBlogsRes = mysql_fetch_assoc($vBlogsRes)) {
+        while ($aBlogsRes = $vBlogsRes->fetch()) {
             if ($aBlogsRes['PostCount'] == 0 && $sType == 'top') //in Top blogs skip posts with 0 comments
             {
                 continue;
@@ -1650,7 +1650,7 @@ EOF;
         $vTags = $this->_oDb->getTagsInfo($iMemberID, $sStatusFilter, '');
 
         $aTagsPost = array();
-        while ($aPost = mysql_fetch_assoc($vTags)) {
+        while ($aPost = $vTags->fetch()) {
             $sTagsCommas = trim($aPost['Tags']);
             $aTags = explode(',', $sTagsCommas);
             foreach ($aTags as $sTagKeyVal) {
@@ -1762,9 +1762,9 @@ EOF;
 
         $sFeaturedSect = '';
         $vFeaturedPosts = $this->_oDb->getFeaturedPosts($iMemberID);
-        if (mysql_num_rows($vFeaturedPosts)) {
+        if ($vFeaturedPosts->rowCount()) {
             $sFeatured = '';
-            while ($aFeaturedPost = mysql_fetch_assoc($vFeaturedPosts)) {
+            while ($aFeaturedPost = $vFeaturedPosts->fetch()) {
                 $iPostID = (int)$aFeaturedPost['PostID'];
                 $aPost = array('Permalink' => $aFeaturedPost['PostUri'], 'Link' => $iPostID);
                 $sPostLink = $this->genBlogLink('show_member_post', $aUser, '', $aPost);

@@ -109,11 +109,11 @@ class BxDolAlerts
         $aResult = array('alerts' => array(), 'handlers' => array());
 
         $rAlerts = db_res("SELECT `unit`, `action`, `handler_id` FROM `sys_alerts` ORDER BY `id` ASC");
-        while($aAlert = mysql_fetch_assoc($rAlerts))
+        while($aAlert = $rAlerts->fetch())
             $aResult['alerts'][$aAlert['unit']][$aAlert['action']][] = $aAlert['handler_id'];
 
         $rHandlers = db_res("SELECT `id`, `class`, `file`, `eval` FROM `sys_alerts_handlers` ORDER BY `id` ASC");
-        while($aHandler = mysql_fetch_assoc($rHandlers))
+        while($aHandler = $rHandlers->fetch())
             $aResult['handlers'][$aHandler['id']] = array('class' => $aHandler['class'], 'file' => $aHandler['file'], 'eval' => $aHandler['eval']);
 
 

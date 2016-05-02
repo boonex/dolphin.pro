@@ -83,7 +83,7 @@ class BxDolAdminSettings
                 if($mixedResult !== true)
                     return $mixedResult;
             } else if(is_numeric($mixedCategory)) {
-                $aItems = $this->_oDb->getAll("SELECT `Name` AS `name`, `desc` AS `title`, `Type` AS `type`, `AvailableValues` AS `extra`, `check` AS `check`, `err_text` AS `check_error` FROM `sys_options` WHERE `kateg`='" . (int)$mixedCategory . "'");
+                $aItems = $this->_oDb->getAll("SELECT `Name` AS `name`, `desc` AS `title`, `Type` AS `type`, `AvailableValues` AS `extra`, `check` AS `check`, `err_text` AS `check_error` FROM `sys_options` WHERE `kateg`= ?", [$mixedCategory]);
 
                 $aItemsData = array();
                 foreach($aItems as $aItem) {
@@ -158,8 +158,9 @@ class BxDolAdminSettings
             if(!is_numeric($mixedCategory) || isset($this->_aCustomCategories[$mixedCategory]['content']))
                 $aFields = $this->{$this->_aCustomCategories[$mixedCategory]['content']}();
             else if(is_numeric($mixedCategory) && (int)$mixedCategory != 0) {
-                $aCategory = $this->_oDb->getRow("SELECT `ID` AS `id`, `name` AS `name` FROM `sys_options_cats` WHERE `ID`='" . (int)$mixedCategory . "'");
-                $aItems = $this->_oDb->getAll("SELECT `Name` AS `name`, `VALUE` AS `value`, `Type` AS `type`, `desc` AS `description`, `AvailableValues` AS `extra`, `check` AS `check`, `err_text` AS `check_error` FROM `sys_options` WHERE `kateg`='" . (int)$mixedCategory . "' ORDER BY `order_in_kateg`");
+                $aCategory = $this->_oDb->getRow("SELECT `ID` AS `id`, `name` AS `name` FROM `sys_options_cats` WHERE `ID`= ?", [$mixedCategory]);
+                $aItems = $this->_oDb->getAll("SELECT `Name` AS `name`, `VALUE` AS `value`, `Type` AS `type`, `desc` AS `description`, `AvailableValues` AS `extra`, `check` AS `check`, `err_text` AS `check_error` 
+                                               FROM `sys_options` WHERE `kateg`= ? ORDER BY `order_in_kateg`", [$mixedCategory]);
 
                 foreach($aItems as $aItem)
                     $aFields[] = $this->_field($aItem);
@@ -373,7 +374,7 @@ class BxDolAdminSettings
     {
         $iId = (int)$_COOKIE['memberID'];
 
-        $aAdmin = $this->_oDb->getRow("SELECT `Password`, `Salt` FROM `Profiles` WHERE `ID`='$iId'");
+        $aAdmin = $this->_oDb->getRow("SELECT `Password`, `Salt` FROM `Profiles` WHERE `ID`= ?", [$iId]);
 
         if(encryptUserPwd($aData['pwd_old'], $aAdmin['Salt']) != $aAdmin['Password'])
             return MsgBox(_t('_adm_txt_settings_wrong_old_pasword'), $this->_iResultTimer);

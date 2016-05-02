@@ -30,7 +30,7 @@ function getBlockedUsers($sBlockerId)
 {
     $aUsers = array();
     $rResult = getResult("SELECT `Profile` FROM `sys_block_list` WHERE `ID`='" . $sBlockerId . "'");
-    while($aUser = mysql_fetch_assoc($rResult))
+    while($aUser = $rResult->fetch())
         $aUsers[] = $aUser['Profile'];
     return $aUsers;
 }

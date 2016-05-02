@@ -727,7 +727,7 @@ class BxBaseBrowse extends BxDolBrowse
         $aExtendedCss = array(
             'ext_css_class' => $this->aDisplaySettings['mode'] == 'extended' ? 'search_filled_block' : ''
         );
-        while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+        while( true == ($aRow = $rResult->fetch()) ) {
             // generate the `couple` thumbnail ;
             if ( $aRow['Couple']) {
                 $aCoupleInfo = getProfileInfo( $aRow['Couple'] );

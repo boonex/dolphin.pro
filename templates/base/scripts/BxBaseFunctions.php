@@ -567,7 +567,7 @@ class BxBaseFunctions
             ";
 
             $rResult = db_res($sQuery);
-            while ( $aRow = mysql_fetch_assoc($rResult) ) {
+            while ( $aRow = $rResult->fetch() ) {
                 $aActions[$sActionsType][] = $aRow;
             }
 

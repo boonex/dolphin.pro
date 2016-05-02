@@ -248,7 +248,7 @@ switch (true) {
     case (isset($_POST['action']) && isset($_POST['id']) && isset($_POST['test'])):
 
         $o = bx_instance('BxDolDNSBlacklists');
-        $aChain = $GLOBALS['MySQL']->getAll("SELECT `zonedomain`, `postvresp` FROM `sys_dnsbl_rules` WHERE `id` = '".(int)$_POST['id']."' AND `active` = 1");
+        $aChain = $GLOBALS['MySQL']->getAll("SELECT `zonedomain`, `postvresp` FROM `sys_dnsbl_rules` WHERE `id` = ? AND `active` = 1", [$_POST['id']]);
 
         $iRet = BX_DOL_DNSBL_FAILURE;
         if ($aChain) {
@@ -381,9 +381,8 @@ function PageCodeDNSBL($aChains, $sMode)
         'adm-dnsbl-deactivate' => _t('_sys_adm_btn_dnsbl_deactivate'),
     ), 'rules');
 
-    $sChains = "'" . implode("','", $aChains) . "'";
-
-    $aRules = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_dnsbl_rules` WHERE `chain` IN($sChains) ORDER BY `chain`, `added` ");
+    $sPlaceholders = str_repeat('?', count($aChains));
+    $aRules = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_dnsbl_rules` WHERE `chain` IN($sPlaceholders) ORDER BY `chain`, `added` ", $aChains);
     foreach ($aRules as $k => $r) {
         $aRules[$k]['comment'] = bx_html_attribute ($r['comment']);
     }
@@ -477,8 +476,8 @@ function PageCodeStopForumSpam($sMode)
 
 function PageCodeRecheckPopup ($aChains, $sFieldTitle, $sId, $sAction)
 {
-    $sChains = "'" . implode("','", $aChains) . "'";
-    $aRules = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_dnsbl_rules` WHERE `chain` IN($sChains) AND `active` = 1 ORDER BY `chain`, `added` ");
+    $sPlaceholders = str_repeat('?', count($aChains));
+    $aRules = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_dnsbl_rules` WHERE `chain` IN($sPlaceholders) AND `active` = 1 ORDER BY `chain`, `added` ", $aChains);
     $oForm = new BxDolAdmFormDnsblRecheck($sFieldTitle, $sId);
     return $GLOBALS['oAdmTemplate']->parseHtmlByName('antispam_dnsbl_recheck.html', array(
         'txt_listed' => bx_js_string(_t('_sys_adm_dnsbl_listed')),
@@ -507,7 +506,7 @@ function PageCodeLog ($sMode)
     $iPerPage = 12;
     $iStart = ($iPage-1) * $iPerPage;
 
-    $aLog = $GLOBALS['MySQL']->getAll("SELECT SQL_CALC_FOUND_ROWS * FROM `sys_antispam_block_log` WHERE `type` = '$sMode' ORDER BY `added` DESC LIMIT $iStart, $iPerPage");
+    $aLog = $GLOBALS['MySQL']->getAll("SELECT SQL_CALC_FOUND_ROWS * FROM `sys_antispam_block_log` WHERE `type` = ? ORDER BY `added` DESC LIMIT $iStart, $iPerPage", [$sMode]);
     $iCount = $GLOBALS['MySQL']->getOne("SELECT FOUND_ROWS()");
     foreach ($aLog as $k => $r) {
         $aLog[$k]['ip'] = long2ip ($r['ip']);

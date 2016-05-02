@@ -39,7 +39,7 @@ class BxSitesDb extends BxDolModuleDb
 
     function getSiteById($iSiteId)
     {
-        return $this->getRow ("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `id` = $iSiteId LIMIT 1");
+        return $this->getRow ("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `id` = ? LIMIT 1", [$iSiteId]);
     }
 
     function getEntryByIdAndOwner ($iSiteId, $iUnusedParam = 0, $bUnusedParam = true)
@@ -49,7 +49,7 @@ class BxSitesDb extends BxDolModuleDb
 
     function getSiteByEntryUri($sEntryUri)
     {
-        return $this->getRow ("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `entryUri` = '$sEntryUri' LIMIT 1");
+        return $this->getRow ("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `entryUri` = ? LIMIT 1", [$sEntryUri]);
     }
 
     function getSiteLatest()
@@ -59,7 +59,7 @@ class BxSitesDb extends BxDolModuleDb
 
     function getSiteByUrl($sUrl)
     {
-        return $this->getRow ("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `url` = '$sUrl' LIMIT 1");
+        return $this->getRow ("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `url` = ? LIMIT 1", [$sUrl]);
     }
 
     function getSites()
@@ -142,7 +142,7 @@ class BxSitesDb extends BxDolModuleDb
 
     function getAccountInfo($sKeyID)
     {
-        return $this->getRow("SELECT * FROM `{$this->sTablePrefix}stwacc_info` WHERE `key_id` = '" . process_db_input($sKeyID) . "' LIMIT 1");
+        return $this->getRow("SELECT * FROM `{$this->sTablePrefix}stwacc_info` WHERE `key_id` = ? LIMIT 1", [$sKeyID]);
     }
 
     // END STW INTEGRATION

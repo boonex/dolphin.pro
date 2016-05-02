@@ -37,7 +37,7 @@ class BxDolUpdater extends BxDolInstaller
         );
 
         //--- Check for module to update ---//
-        $aModuleInfo = $MySQL->getRow("SELECT `id`, `version` FROM `sys_modules` WHERE `path`='" . $this->_aConfig['module_dir'] . "' AND `uri`='" . $this->_aConfig['module_uri'] . "' LIMIT 1");
+        $aModuleInfo = $MySQL->getRow("SELECT `id`, `version` FROM `sys_modules` WHERE `path`= ? AND `uri`= ? LIMIT 1", [$this->_aConfig['module_dir'], $this->_aConfig['module_uri']]);
         if(!$aModuleInfo)
             return array_merge($aResult, array(
                 'message' => $this->_displayResult('check_module_exists', false, '_adm_txt_modules_module_not_found'),

@@ -44,7 +44,8 @@ class BxEventsDb extends BxDolTwigModuleDb
         $sWhere = '';
         if ($isFeatured)
             $sWhere = " AND `{$this->_sFieldFeatured}` = '1' ";
-        return $this->getRow ("SELECT * FROM `" . $this->_sPrefix . "main` WHERE `EventEnd` > " . time() . " AND `Status` = 'approved' AND `{$this->_sFieldAllowViewTo}` = '" . BX_DOL_PG_ALL . "' $sWhere ORDER BY `Featured` DESC, `EventStart` ASC LIMIT 1");
+        return $this->getRow("SELECT * FROM `" . $this->_sPrefix . "main` 
+        WHERE `EventEnd` > ? AND `Status` = ? AND `{$this->_sFieldAllowViewTo}` = ? $sWhere ORDER BY `Featured` DESC, `EventStart` ASC LIMIT 1", [time(), 'approved', BX_DOL_PG_ALL]);
     }
 
     function getEntriesByMonth ($iYear, $iMonth, $iNextYear, $iNextMonth)

@@ -143,7 +143,7 @@ $sComposerInit = "
 ";
 
 $iIndex = 0;
-while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
+while(($aTopItem = $rTopItems->fetch()) !== false) {
     $sComposerInit .= "
 
         aTopItems[$iIndex] = [{$aTopItem['ID']}, '" . bx_js_string( $aTopItem['Name'], BX_ESCAPE_STR_APOS ) . "', {$aTopItem['Movable']}];
@@ -153,7 +153,7 @@ while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
 }
 
 $sComposerInit .= "\n";
-while(($aAllItem = mysql_fetch_assoc($rAllItems)) !== false) {
+while(($aAllItem = $rAllItems->fetch()) !== false) {
     $sComposerInit .= "
         aAllItems['{$aAllItem['ID']} '] = '" . bx_js_string( $aAllItem['Name'], BX_ESCAPE_STR_APOS ) . "';";
 }

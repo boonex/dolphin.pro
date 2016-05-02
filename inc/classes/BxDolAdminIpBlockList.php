@@ -43,7 +43,7 @@ class BxDolAdminIpBlockList
         $rIPList = db_res( $sSQL );
 
         $aTmplVarsItems = array();
-        while( $aIPList = mysql_fetch_assoc( $rIPList ) ) {
+        while( $aIPList =  $rIPList ->fetch() ) {
             $iID = (int)$aIPList['ID'];
             $sFrom = long2ip($aIPList['From']);
             $sLastDT = getLocaleDate($aIPList['DateTimeTS'], BX_DOL_LOCALE_DATE);
@@ -81,7 +81,7 @@ class BxDolAdminIpBlockList
         $rIPList = db_res( $sSQL );
 
         $aTmplVarsItems = array();
-        while( $aIPList = mysql_fetch_assoc( $rIPList ) ) {
+        while( $aIPList =  $rIPList ->fetch() ) {
             $iID = (int)$aIPList['ID'];
             $sFrom = long2ip($aIPList['From']);
             $sTo = ($aIPList['To'] == 0) ? '' : long2ip($aIPList['To']);

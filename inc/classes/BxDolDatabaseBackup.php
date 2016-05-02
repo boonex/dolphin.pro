@@ -43,7 +43,7 @@ class BxDolDatabaseBackup extends BxDolDb
 DROP TABLE IF EXISTS `{$name}`;
 ";
 
-            while($Row = @mysql_fetch_row($Result))
+            while($Row = $Result->fetch(PDO::FETCH_NUM))
                 $this -> sInputs .= preg_replace("/ENGINE=.*/",  "ENGINE=MyISAM DEFAULT CHARSET={$this -> sCharset};\n",  $Row[1]);
         }
 
@@ -61,7 +61,7 @@ DROP TABLE IF EXISTS `{$name}`;
             $Query = "SELECT *  FROM {$name} ";
             $Result =  db_res($Query);
 
-            while($Row = @mysql_fetch_row($Result)) {
+            while($Row = $Result->fetch(PDO::FETCH_NUM)) {
                 $this -> sInputs .= "INSERT INTO `{$name}` VALUES (";
 
                 for ($j = 0; $j < count($Row); $j++ ) {
@@ -82,7 +82,7 @@ DROP TABLE IF EXISTS `{$name}`;
     {
         $Query = "SHOW TABLES";
         $Result =  db_res($Query);
-        while($Row = mysql_fetch_row($Result))
+        while($Row = $Result->fetch(PDO::FETCH_NUM))
             $this -> _getTableStruct($Row[0], $data);
     }
 

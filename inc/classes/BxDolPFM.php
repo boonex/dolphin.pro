@@ -65,9 +65,9 @@ class BxDolPFM
             return false;
 
         // retrieve default language
-        $sLangDfl = $GLOBALS['MySQL']->escape( getParam('lang_default') );
-        $sQuery = "SELECT `ID` FROM `sys_localization_languages` WHERE `Name` = '$sLangDfl'";
-        $this -> sLangID = (int)db_value( $sQuery );
+        $sLangDfl = getParam('lang_default');
+        $sQuery = "SELECT `ID` FROM `sys_localization_languages` WHERE `Name` = ?";
+        $this -> sLangID = (int)db_value( $sQuery, [$sLangDfl]);
 
         if( !$this -> sLangID )
             die('Cannot continue. Default language not found. Check the Basic Settings.');
@@ -117,7 +117,7 @@ class BxDolPFM
 
         $rBlocks = db_res( $sBlocksQuery );
 
-        while( $aBlock = mysql_fetch_assoc( $rBlocks ) ) {
+        while( $aBlock =  $rBlocks ->fetch() ) {
             $iBlockID = $aBlock['ID'];
 
             $this -> aBlocks[ $iBlockID ] = $aBlock['Name'];
@@ -145,7 +145,7 @@ class BxDolPFM
 
             $rItems = db_res( $sItemsQuery );
 
-            while( $aItem = mysql_fetch_assoc( $rItems ) )
+            while( $aItem =  $rItems ->fetch() )
                 $this -> aItems[ $aItem['ID'] ] = array( $aItem['Name'], $iBlockID );
         }
 
@@ -164,7 +164,7 @@ class BxDolPFM
 
         $rBlocksInac = db_res( $sBlocksInacQuery );
 
-        while( $aBlock = mysql_fetch_assoc( $rBlocksInac ) )
+        while( $aBlock =  $rBlocksInac ->fetch() )
             $this -> aBlocksInac[ $aBlock['ID'] ] = $aBlock['Name'];
 
         //items
@@ -191,7 +191,7 @@ class BxDolPFM
 
         $rItemsInac = db_res( $sItemsInacQuery );
 
-        while( $aItem = mysql_fetch_assoc( $rItemsInac ) )
+        while( $aItem =  $rItemsInac ->fetch() )
             $this -> aItemsInac[ $aItem['ID'] ] = $aItem['Name'];
 
         //echoDbg( $this );exit;
@@ -479,7 +479,7 @@ class BxDolPFM
         $rFields = db_res( $sQuery );
 
         $sRet = '';
-        while( $aField = mysql_fetch_assoc( $rFields ) ) {
+        while( $aField =  $rFields ->fetch() ) {
             $sRet .= '<option value="' . $aField['Name'] . '"' .
             ( in_array( $aField['Name'], $aSelected ) ? 'selected="selected"' : '' ) . '>' .
             $aField['Name'] . '</option>';
@@ -549,7 +549,7 @@ class BxDolPFM
         $rMyFields = db_res( $sQuery );
 
         $aMyFields = array( '0' => '-Not set-' );
-        while( $aMyField = mysql_fetch_assoc( $rMyFields ) ) {
+        while( $aMyField =  $rMyFields ->fetch() ) {
             $aMyFields[ $aMyField['ID'] ] = $aMyField['Name'];
         }
 
@@ -1742,7 +1742,7 @@ class BxDolProfileFieldsArea
 
         $rPages = db_res( $sQuery );
 
-        while( $aPage = mysql_fetch_assoc( $rPages ) ) {
+        while( $aPage =  $rPages ->fetch() ) {
             $aPages[] = (int)$aPage['JoinPage'];
         }
 
@@ -1769,7 +1769,7 @@ class BxDolProfileFieldsArea
 
         $rBlocks = db_res( $sQuery );
 
-        while( $aBlock = mysql_fetch_assoc( $rBlocks ) ) {
+        while( $aBlock =  $rBlocks ->fetch() ) {
             $aBlocks[ $aBlock['ID'] ] = $aBlock['Name'];
         }
 
@@ -1808,7 +1808,7 @@ class BxDolProfileFieldsArea
 
         $rItems = db_res( $sQuery );
 
-        while( $aItem = mysql_fetch_assoc($rItems) ) {
+        while( $aItem = $rItems->fetch() ) {
             $aItems[ $aItem['ID'] ] = $aItem;
         }
 

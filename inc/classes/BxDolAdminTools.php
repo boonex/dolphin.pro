@@ -664,7 +664,8 @@ EOF;
     </li>
     <li><b>MySQL</b>:
         <?php
-            $sMysqlVer = mysql_get_server_info($GLOBALS['bx_db_link']);
+            $oDb = BxDolDb::getInstance();
+            $sMysqlVer = $oDb->res('select version()')->fetchColumn();
             echo $sMysqlVer . ' - ';
             if (preg_match ('/^(\d+)\.(\d+)\.(\d+)/', $sMysqlVer, $m)) {
                 $sMysqlVer = "{$m[1]}.{$m[2]}.{$m[3]}";

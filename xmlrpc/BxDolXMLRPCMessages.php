@@ -107,7 +107,7 @@ class BxDolXMLRPCMessages
             INNER JOIN `Profiles` as `p` ON (`p`.`ID` = `m`.`Sender`)
             WHERE $sWhere
             ORDER BY `Date` DESC");
-        while ($aRow = mysql_fetch_array ($r)) {
+        while ($aRow = $r->fetch()) {
             $sIcon = BxDolXMLRPCUtil::getThumbLink($isInbox ? $aRow['Sender'] : $aRow['Recipient'], 'thumb');
             $aMsg = array (
                 'ID' => new xmlrpcval($aRow['ID']),

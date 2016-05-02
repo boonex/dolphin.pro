@@ -29,7 +29,7 @@ class BxDolXMLRPCProfileView extends BxBaseProfileGenerator
             ON ((`pc`.`Func` = 'PFBlock' AND `pc`.`Content` = `pf`.`ID`) OR (`pc`.`Func` = 'GeneralInfo' AND " . BX_BLOCK_GENERALINFO . " = `pf`.`ID`) OR (`pc`.`Func` = 'AdditionalInfo' AND " . BX_BLOCK_ADDITIONALINFO . " = `pf`.`ID`))
             WHERE `pc`.`Page` = 'profile_info' AND `pf`.`Type` = 'block' AND `pc`.`Column` != 0 
             ORDER BY `pc`.`Column`, `pc`.`Order`");
-        while ($a = mysql_fetch_array($r)) {
+        while ($a = $r->fetch()) {
             $iPrivacyId = (int)$GLOBALS['MySQL']->getOne("SELECT `id` FROM `sys_page_compose_privacy` WHERE `user_id`='" . $this->_iProfileID . "' AND `block_id`='" . $a['BlockID'] . "' LIMIT 1");
             if ($iPrivacyId != 0 && !$oPrivacy->check('view_block', $iPrivacyId, $this->_iViewerId))
                 continue;

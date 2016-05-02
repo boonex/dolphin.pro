@@ -147,9 +147,8 @@ function getID( $str, $with_email = 1 )
             }
         }
     }
-
-    $str = process_db_input($str);
-    $iID = (int)db_value( "SELECT `ID` FROM `Profiles` WHERE `NickName` = '$str'" );
+    
+    $iID = (int)db_value( "SELECT `ID` FROM `Profiles` WHERE `NickName` = ?", [$str]);
 
     if(!$iID) {
         $aProfile = getProfileInfo($str);

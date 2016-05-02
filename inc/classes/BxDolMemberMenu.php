@@ -592,7 +592,7 @@
             $sQuery = "SELECT * FROM `sys_menu_member` WHERE `Active` = '1' ORDER BY `Order`";
             $rResult = db_res($sQuery);
 
-            while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+            while( true == ($aRow = $rResult->fetch()) ) {
                 $aRow['Link'] = $oPermalink -> permalink($aRow['Link']);
                 $aRow['linked_items'] = $this -> getLinkedItem($aRow['ID']);
 
@@ -600,7 +600,7 @@
             }
 
             // if items not found ;
-            if ( !mysql_num_rows($rResult) ) {
+            if ( !$rResult->rowCount() ) {
                 $aCacheData[$sMenuSection] = array();
             }
 
@@ -626,7 +626,7 @@
             $rResult = db_res($sQuery);
 
             $aLinkedItems = array();
-            while ( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+            while ( true == ($aRow = $rResult->fetch()) ) {
                 $aLinkedItems[] = array(
                     'code' => $aRow['Eval']
                 );

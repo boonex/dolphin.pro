@@ -154,7 +154,7 @@ class BxDolAlbums
     {
         $sUri = process_db_input($sUri, BX_TAGS_STRIP);
         $iOwnerId = (int)$iOwnerId;
-        return !$GLOBALS['MySQL']->getRow("SELECT 1 FROM $this->sAlbumTable WHERE `Uri` = '$sUri' AND `Owner` = '$iOwnerId' AND `Type` = '{$this->sType}' LIMIT 1");
+        return !$GLOBALS['MySQL']->getRow("SELECT 1 FROM $this->sAlbumTable WHERE `Uri` = ? AND `Owner` = ? AND `Type` = ? LIMIT 1", [$sUri, $iOwnerId, $this->sType]);
     }
 
     function updateAlbum ($mixedIdent, $aData)
@@ -311,8 +311,10 @@ class BxDolAlbums
 
     function getAlbumInfo ($aIdent = array(), $aFields = array())
     {
-        $sqlCondition = "`{$this->sAlbumTable}`.`Type`='{$this->sType}'";
+        $sqlCondition = "`{$this->sAlbumTable}`.`Type`= ?";
+        $aBindings = [$this->sType];
         $aParams = array();
+        // TODO: need dynamic pdo bindings
         foreach($aIdent as $sKey => $sValue) {
             switch (strtolower($sKey)) {
                 case 'fileuri':
@@ -466,8 +468,8 @@ class BxDolAlbums
             $sqlQuery = "SELECT `id_album` as `ID`, `ObjCount`, `LastObjId`
                          FROM `{$this->sAlbumObjectsTable}`
                          LEFT JOIN `{$this->sAlbumTable}` ON `{$this->sAlbumTable}`.`ID` = `{$this->sAlbumObjectsTable}`.`id_album`
-                         WHERE `id_object` = '$iObj' AND `$this->sAlbumTable`.`Type` = '$this->sType'";
-            $aInfo = $GLOBALS['MySQL']->getRow($sqlQuery);
+                         WHERE `id_object` = ? AND `$this->sAlbumTable`.`Type` = ?";
+            $aInfo = $GLOBALS['MySQL']->getRow($sqlQuery, [$iObj, $this->sType]);
             $sqlDelete = "DELETE FROM `{$this->sAlbumObjectsTable}` WHERE `id_album`='{$aInfo['ID']}' AND `id_object`='$iObj' LIMIT 1";
             $GLOBALS['MySQL']->res($sqlDelete);
             if ($aInfo['ObjCount'] > 0 && $bUpdateCounter)

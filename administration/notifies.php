@@ -204,7 +204,10 @@ function PrintStatus($sActionResult)
 
 function getAllMessagesBox()
 {
-    $aMessages = $GLOBALS['MySQL']->getAll("SELECT `id`, `subject`, (`id`=". (int)getPostFieldIfSet('msgs_id') ." OR `subject`='". process_db_input(getPostFieldIfSet('Subj')) ."' ) AS `selected` FROM `sys_sbs_messages`");
+    $aMessages = $GLOBALS['MySQL']->getAll("SELECT `id`, `subject`, (`id`= ? OR `subject`= ? ) AS `selected` FROM `sys_sbs_messages`", [
+        getPostFieldIfSet('msgs_id'),
+        getPostFieldIfSet('Subj')
+    ]);
 
     $sAllMessagesOptions = '';
     foreach($aMessages as $aMessage)
@@ -244,7 +247,7 @@ function getEmailMessage($sAction)
         $sSubject = process_pass_data( $_POST['subject'] );
         $sBody = process_pass_data( $_POST['body'] );
     } elseif ( $sMessageID )
-        list($sSubject, $sBody) = $GLOBALS['MySQL']->getRow("SELECT `subject`, `body` FROM `sys_sbs_messages` WHERE `id`='". $sMessageID . "' LIMIT 1", MYSQL_NUM);
+        list($sSubject, $sBody) = $GLOBALS['MySQL']->getRow("SELECT `subject`, `body` FROM `sys_sbs_messages` WHERE `id`= ? LIMIT 1", [$sMessageID], PDO::FETCH_NUM);
 
     $sSubject = htmlspecialchars($sSubject);
 
@@ -479,7 +482,7 @@ function QueueMessage()
     $sReturn = "";
     $iMsgId = (int)$_POST['msgs_id'];
 
-    $aOriginalMessage = $MySQL->getRow("SELECT `id`, `subject`, `body` FROM `sys_sbs_messages` WHERE `id`='" . $iMsgId . "' LIMIT 1");
+    $aOriginalMessage = $MySQL->getRow("SELECT `id`, `subject`, `body` FROM `sys_sbs_messages` WHERE `id`= ? LIMIT 1", [$iMsgId]);
     if(!is_array($aOriginalMessage) || empty($aOriginalMessage)) {
         return _t('_adm_mmail_Failed_to_queue_emails_X', $iMsgId);
     }

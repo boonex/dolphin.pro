@@ -153,7 +153,7 @@ function getOnline($aRange = array(), $bInRange = true)
 
     $rOnline = getResult($sQuery);
     $aOnline = array();
-    while($aUser = mysql_fetch_array($rOnline))
+    while($aUser = $rOnline->fetch())
         $aOnline[] = $aUser['ID'];
     return $aOnline;
 }

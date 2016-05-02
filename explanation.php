@@ -47,8 +47,8 @@ function membershipActionsList($membershipID)
         SELECT `IDAction`, `Name` $sqlFields
         FROM `sys_acl_matrix`
         INNER JOIN `sys_acl_actions` ON `sys_acl_matrix`.`IDAction` = `sys_acl_actions`.`ID`
-        WHERE `sys_acl_matrix`.`IDLevel` = '{$membershipID}'";
-    $aDraw['bx_repeat:actions'] = $GLOBALS['MySQL']->getAll($sqlQuery);
+        WHERE `sys_acl_matrix`.`IDLevel` = ?";
+    $aDraw['bx_repeat:actions'] = $GLOBALS['MySQL']->getAll($sqlQuery, [$membershipID]);
 
     translateMembershipActions($aDraw['bx_repeat:actions']);
 

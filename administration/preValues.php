@@ -318,7 +318,7 @@ function saveList( $sList, $aData )
     $sValuesAlter = substr( $sValuesAlter, 0, -2 ); //remove ', '
     $sQuery = "SELECT `Name` FROM `sys_profile_fields` WHERE `Type` = 'select_set' AND `Values` = '#!{$sList_db}'";
     $rFields = db_res( $sQuery );
-    while( $aField = mysql_fetch_assoc( $rFields ) ) {
+    while( $aField =  $rFields ->fetch() ) {
         $sField = $aField['Name'];
 
         $sQuery = "ALTER TABLE `Profiles` CHANGE `$sField` `$sField` set($sValuesAlter) NOT NULL default ''";

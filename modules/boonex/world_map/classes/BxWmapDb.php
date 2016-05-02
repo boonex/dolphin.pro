@@ -79,7 +79,11 @@ class BxWmapDb extends BxDolModuleDb
             if ($aPart['join_field_privacy'])
                 $sFields .= ", `p`.`{$aPart['join_field_privacy']}` AS `privacy` ";
 
-            $sSql = "SELECT '$sPart' AS `part`, `p`.`{$aPart['join_field_id']}` AS `id`, `p`.`{$aPart['join_field_title']}` AS `title`, `p`.`{$aPart['join_field_uri']}` AS `uri` $sFields FROM `{$aPart['join_table']}` AS `p` LEFT JOIN `" . $this->_sPrefix . "locations` AS `m` ON (`m`.`id` = `p`.`{$aPart['join_field_id']}` AND `m`.`part` = '$sPart') WHERE ISNULL(`m`.`id`) {$aPart['join_where']} LIMIT $iLimit";
+            $sSql = "SELECT '$sPart' AS `part`, `p`.`{$aPart['join_field_id']}` AS `id`, `p`.`{$aPart['join_field_title']}`
+                     AS `title`, `p`.`{$aPart['join_field_uri']}` AS `uri` $sFields FROM `{$aPart['join_table']}` AS `p` 
+                     LEFT JOIN `" . $this->_sPrefix . "locations` AS `m` ON (`m`.`id` = `p`.`{$aPart['join_field_id']}` AND `m`.`part` = '$sPart') 
+                     WHERE ISNULL(`m`.`id`) {$aPart['join_where']} LIMIT $iLimit";
+
             $a = $this->getAll ($sSql);
             $aRet = array_merge ($aRet, $a);
         }
@@ -111,9 +115,9 @@ class BxWmapDb extends BxDolModuleDb
         $sSql = "SELECT '$sPart' AS `part`, `p`.`{$aPart['join_field_id']}` AS `id`, `p`.`{$aPart['join_field_title']}` AS `title`, `p`.`{$aPart['join_field_uri']}` AS `uri`, `p`.`{$aPart['join_field_author']}` AS `author_id`, `l`.`lat`, `l`.`lng`, `l`.`zoom`, `l`.`type` $sFields
             FROM `{$aPart['join_table']}` AS `p`
             LEFT JOIN `" . $this->_sPrefix . "locations` AS `l` ON (`l`.`id` = `p`.`{$aPart['join_field_id']}` AND `l`.`part` = '$sPart')
-            WHERE `p`.`{$aPart['join_field_id']}` = '$iEntryId' {$aPart['join_where']} LIMIT 1";
+            WHERE `p`.`{$aPart['join_field_id']}` = ? {$aPart['join_where']} LIMIT 1";
 
-        return $this->getRow ($sSql);
+        return $this->getRow ($sSql, [$iEntryId]);
     }
 
     function clearLocations ($sPart, $isClearFailedOnly)
@@ -130,7 +134,9 @@ class BxWmapDb extends BxDolModuleDb
 
     function getLocationById($sPart, $iProfileId)
     {
-        return $this->getRow("SELECT `m`.`id`, `m`.`part`, `m`.`lat`, `m`.`lng`, `m`.`zoom`, `m`.`type`, `m`.`address`, `m`.`country`, `m`.`allow_view_location_to` FROM `" . $this->_sPrefix . "locations` AS `m` WHERE `m`.`failed` = 0 AND `p`.`Status` = 'Active' AND `m`.`id` = '$iProfileId' AND `m`.`part` = '$sPart' LIMIT 1"); // INNER JOIN to profiles was removed here
+        return $this->getRow("SELECT `m`.`id`, `m`.`part`, `m`.`lat`, `m`.`lng`, `m`.`zoom`, `m`.`type`, `m`.`address`, `m`.`country`, `m`.`allow_view_location_to` 
+               FROM `" . $this->_sPrefix . "locations` AS `m` WHERE `m`.`failed` = 0 AND `p`.`Status` = 'Active' 
+               AND `m`.`id` = ? AND `m`.`part` = ? LIMIT 1", [$iProfileId, $sPart]); // INNER JOIN to profiles was removed here
     }
 
     function getLocationsByBounds($sPart, $fLatMin, $fLatMax, $fLngMin, $fLngMax, $aCustomParts, $mixedPrivacyIds = '')

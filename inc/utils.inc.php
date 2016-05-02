@@ -45,6 +45,7 @@ function title2uri($sValue)
         $sValue
     );
 }
+
 function uri2title($sValue)
 {
     return str_replace(
@@ -57,12 +58,12 @@ function uri2title($sValue)
 /**
  * Convert date(timestamp) in accordance with requested format code.
  *
- * @param string $sTimestamp - timestamp
- * @param integer $iCode - format code
- *                  1(4) - short date format. @see sys_options -> short_date_format_php
- *                  2 - time format. @see sys_options -> time_format_php
- *                  3(5) - long date format. @see sys_options -> date_format_php
- *                  6 - RFC 2822 date format.
+ * @param string  $sTimestamp - timestamp
+ * @param integer $iCode      - format code
+ *                            1(4) - short date format. @see sys_options -> short_date_format_php
+ *                            2 - time format. @see sys_options -> time_format_php
+ *                            3(5) - long date format. @see sys_options -> date_format_php
+ *                            6 - RFC 2822 date format.
  */
 function getLocaleDate($sTimestamp = '', $iCode = BX_DOL_LOCALE_DATE_SHORT)
 {
@@ -70,17 +71,18 @@ function getLocaleDate($sTimestamp = '', $iCode = BX_DOL_LOCALE_DATE_SHORT)
 
     return date($sFormat, $sTimestamp);
 }
+
 /**
  * Get data format in accordance with requested format code and format type.
  *
  * @param integer $iCode - format code
- *                  1(4) - short date format. @see sys_options -> short_date_format_php
- *                  2 - time format. @see sys_options -> time_format_php
- *                  3(5) - long date format. @see sys_options -> date_format_php
- *                  6 - RFC 2822 date format.
+ *                       1(4) - short date format. @see sys_options -> short_date_format_php
+ *                       2 - time format. @see sys_options -> time_format_php
+ *                       3(5) - long date format. @see sys_options -> date_format_php
+ *                       6 - RFC 2822 date format.
  * @param integer $iType - format type
- *                  1 - for PHP code.
- *                  2 - for database.
+ *                       1 - for PHP code.
+ *                       2 - for database.
  */
 function getLocaleFormat($iCode = BX_DOL_LOCALE_DATE_SHORT, $iType = BX_DOL_LOCALE_PHP)
 {
@@ -113,10 +115,11 @@ function getLocaleFormat($iCode = BX_DOL_LOCALE_DATE_SHORT, $iType = BX_DOL_LOCA
  */
 function isBlocked($iFirstProfile, $iSecondProfile)
 {
-    $iFirstProfile = (int)$iFirstProfile;
+    $iFirstProfile  = (int)$iFirstProfile;
     $iSecondProfile = (int)$iSecondProfile;
-    $sQuery = "SELECT COUNT(*) FROM `sys_block_list` WHERE `ID` = {$iFirstProfile} AND `Profile` = {$iSecondProfile}";
-    return db_value( $sQuery) ? true : false;
+    $sQuery         = "SELECT COUNT(*) FROM `sys_block_list` WHERE `ID` = {$iFirstProfile} AND `Profile` = {$iSecondProfile}";
+
+    return db_value($sQuery) ? true : false;
 }
 
 /*
@@ -126,9 +129,11 @@ function is_friends($id1, $id2)
 {
     $id1 = (int)$id1;
     $id2 = (int)$id2;
-    if ($id1 == 0 || $id2 == 0)
-       return;
+    if ($id1 == 0 || $id2 == 0) {
+        return;
+    }
     $cnt = db_arr("SELECT SUM(`Check`) AS 'cnt' FROM `sys_friend_list` WHERE `ID`='{$id1}' AND `Profile`='{$id2}' OR `ID`='{$id2}' AND `Profile`='{$id1}'");
+
     return ($cnt['cnt'] > 0 ? true : false);
 }
 
@@ -137,35 +142,39 @@ function is_friends($id1, $id2)
  */
 function WordWrapStr($sString, $iWidth = 25, $sWrapCharacter = '&shy;')
 {
-    if(empty($sString) || mb_strlen($sString, 'UTF-8') <= $iWidth)
+    if (empty($sString) || mb_strlen($sString, 'UTF-8') <= $iWidth) {
         return $sString;
+    }
 
-    $aSpecialSymbols = array("\r", "\n");
+    $aSpecialSymbols          = array("\r", "\n");
     $aSpecialSymbolsWithSpace = array(" _SLASHR_", " _SLASHN_");
-    if ($iWidth > 9)
-        $sString = str_replace($aSpecialSymbols, $aSpecialSymbolsWithSpace, $sString); // preserve new line characters
-    
-    $aWords = mb_split("\s", $sString);
-    $sResult = ' ';
-    foreach($aWords as $sWord) {
+    if ($iWidth > 9) {
+        $sString = str_replace($aSpecialSymbols, $aSpecialSymbolsWithSpace, $sString);
+    } // preserve new line characters
 
-        if(($iWord = mb_strlen($sWord, 'UTF-8')) <= $iWidth) {
-            if($iWord > 0)
+    $aWords  = mb_split("\s", $sString);
+    $sResult = ' ';
+    foreach ($aWords as $sWord) {
+
+        if (($iWord = mb_strlen($sWord, 'UTF-8')) <= $iWidth) {
+            if ($iWord > 0) {
                 $sResult .= $sWord . ' ';
+            }
 
             continue;
         }
 
         $iPosition = 0;
-        while($iPosition < $iWord) {
+        while ($iPosition < $iWord) {
             $sResult .= mb_substr($sWord, $iPosition, $iWidth, 'UTF-8') . $sWrapCharacter;
             $iPosition += $iWidth;
         }
         $sResult .= ' ';
     }
 
-    if ($iWidth > 9)
+    if ($iWidth > 9) {
         $sResult = str_replace($aSpecialSymbolsWithSpace, $aSpecialSymbols, $sResult);
+    }
 
     return trim($sResult);
 }
@@ -184,17 +193,18 @@ function strmaxwordlen($input, $len = 100)
 function strmaxtextlen($sInput, $iMaxLen = 60)
 {
     $sTail = '';
-    $s = trim(strip_tags($sInput));
+    $s     = trim(strip_tags($sInput));
     if (mb_strlen($s) > $iMaxLen) {
-        $s = mb_substr($s, 0, $iMaxLen);
+        $s     = mb_substr($s, 0, $iMaxLen);
         $sTail = '&#8230;';
     }
+
     return htmlspecialchars_adv($s) . $sTail;
 }
 
 function html2txt($content, $tags = "")
 {
-    while($content != strip_tags($content, $tags)) {
+    while ($content != strip_tags($content, $tags)) {
         $content = strip_tags($content, $tags);
     }
 
@@ -203,17 +213,19 @@ function html2txt($content, $tags = "")
 
 function html_encode($text)
 {
-     $searcharray =  array(
-    "'([-_\w\d.]+@[-_\w\d.]+)'",
-    "'((?:(?!://).{3}|^.{0,2}))(www\.[-\d\w\.\/]+)'",
-    "'(http[s]?:\/\/[-_~\w\d\.\/]+)'");
+    $searcharray = array(
+        "'([-_\w\d.]+@[-_\w\d.]+)'",
+        "'((?:(?!://).{3}|^.{0,2}))(www\.[-\d\w\.\/]+)'",
+        "'(http[s]?:\/\/[-_~\w\d\.\/]+)'"
+    );
 
     $replacearray = array(
-    "<a href=\"mailto:\\1\">\\1</a>",
-    "\\1http://\\2",
-    "<a href=\"\\1\" target=_blank>\\1</a>");
+        "<a href=\"mailto:\\1\">\\1</a>",
+        "\\1http://\\2",
+        "<a href=\"\\1\" target=_blank>\\1</a>"
+    );
 
-   return preg_replace($searcharray, $replacearray, stripslashes($text));
+    return preg_replace($searcharray, $replacearray, stripslashes($text));
 }
 
 /*
@@ -230,31 +242,35 @@ function html_encode($text)
  *          BX_SLASHES_ADD - add slashes
  *          BX_SLASHES_NO_ACTION - do not perform any action with slashes
  */
-function process_db_input( $text, $strip_tags = 0, $addslashes = 0 )
+function process_db_input($text, $strip_tags = 0, $addslashes = 0)
 {
     if (is_array($text)) {
-        foreach ($text as $k => $v)
+        foreach ($text as $k => $v) {
             $text[$k] = process_db_input($v, $strip_tags, $addslashes);
+        }
+
         return $text;
     }
 
-    if ((get_magic_quotes_gpc() && $addslashes == BX_SLASHES_AUTO) || $addslashes == BX_SLASHES_STRIP)
+    if ((get_magic_quotes_gpc() && $addslashes == BX_SLASHES_AUTO) || $addslashes == BX_SLASHES_STRIP) {
         $text = stripslashes($text);
-    elseif ($addslashes == BX_SLASHES_ADD)
+    } elseif ($addslashes == BX_SLASHES_ADD) {
         $text = addslashes($text);
+    }
 
+    $oDb = BxDolDb::getInstance();
     switch ($strip_tags) {
-    case BX_TAGS_STRIP_AND_NL2BR:
-        return mysql_real_escape_string(nl2br(strip_tags($text)));
-    case BX_TAGS_STRIP:
-        return mysql_real_escape_string(strip_tags($text));
-    case BX_TAGS_SPECIAL_CHARS:
-        return mysql_real_escape_string(htmlspecialchars($text, ENT_QUOTES, 'UTF-8'));
-    case BX_TAGS_VALIDATE:
-        return mysql_real_escape_string(clear_xss($text));
-    case BX_TAGS_NO_ACTION:
-    default:
-        return mysql_real_escape_string($text);
+        case BX_TAGS_STRIP_AND_NL2BR:
+            return $oDb->escape(nl2br(strip_tags($text)));
+        case BX_TAGS_STRIP:
+            return $oDb->escape(strip_tags($text));
+        case BX_TAGS_SPECIAL_CHARS:
+            return $oDb->escape(htmlspecialchars($text, ENT_QUOTES, 'UTF-8'));
+        case BX_TAGS_VALIDATE:
+            return $oDb->escape(clear_xss($text));
+        case BX_TAGS_NO_ACTION:
+        default:
+            return $oDb->escape($text);
     }
 }
 
@@ -264,21 +280,23 @@ function process_db_input( $text, $strip_tags = 0, $addslashes = 0 )
  * This function cleans the GET/POST/COOKIE data if magic_quotes_gpc() is on
  * for data which should be outputed immediately after submit
  */
-function process_pass_data( $text, $strip_tags = 0 )
+function process_pass_data($text, $strip_tags = 0)
 {
-    if ( $strip_tags )
+    if ($strip_tags) {
         $text = strip_tags($text);
+    }
 
-    if ( !get_magic_quotes_gpc() )
+    if (!get_magic_quotes_gpc()) {
         return $text;
-    else
+    } else {
         return stripslashes($text);
+    }
 }
 
 /*
  * function for output data from database into html
  */
-function htmlspecialchars_adv( $string )
+function htmlspecialchars_adv($string)
 {
     return htmlspecialchars($string, ENT_COMPAT, 'UTF-8', false);
 
@@ -289,49 +307,49 @@ function htmlspecialchars_adv( $string )
     */
 }
 
-function process_text_output( $text, $maxwordlen = 100 )
+function process_text_output($text, $maxwordlen = 100)
 {
-    return ( htmlspecialchars_adv( strmaxwordlen( $text, $maxwordlen ) ) );
+    return (htmlspecialchars_adv(strmaxwordlen($text, $maxwordlen)));
 }
 
-function process_textarea_output( $text, $maxwordlen = 100 )
+function process_textarea_output($text, $maxwordlen = 100)
 {
-    return htmlspecialchars_adv( strmaxwordlen( $text, $maxwordlen ) );
+    return htmlspecialchars_adv(strmaxwordlen($text, $maxwordlen));
 }
 
-function process_text_withlinks_output( $text, $maxwordlen = 100 )
+function process_text_withlinks_output($text, $maxwordlen = 100)
 {
-    return nl2br( html_encode( htmlspecialchars_adv( strmaxwordlen( $text, $maxwordlen ) ) ) );
+    return nl2br(html_encode(htmlspecialchars_adv(strmaxwordlen($text, $maxwordlen))));
 }
 
-function process_line_output( $text, $maxwordlen = 100 )
+function process_line_output($text, $maxwordlen = 100)
 {
-    return htmlspecialchars_adv( strmaxwordlen( $text, $maxwordlen ) );
+    return htmlspecialchars_adv(strmaxwordlen($text, $maxwordlen));
 }
 
-function process_html_output( $text, $maxwordlen = 100 )
+function process_html_output($text, $maxwordlen = 100)
 {
-    return strmaxwordlen( $text, $maxwordlen );
+    return strmaxwordlen($text, $maxwordlen);
 }
 
 /**
-*	Used to construct sturctured arrays in GET or POST data. Supports multidimensional arrays.
-*
-*	@param array	$Values	Specifies values and values names, that should be submitted. Can be multidimensional.
-*
-*	@return string	HTML code, which contains <input type="hidden"...> tags with names and values, specified in $Values array.
-*/
+ *    Used to construct sturctured arrays in GET or POST data. Supports multidimensional arrays.
+ *
+ * @param array $Values Specifies values and values names, that should be submitted. Can be multidimensional.
+ *
+ * @return string    HTML code, which contains <input type="hidden"...> tags with names and values, specified in $Values array.
+ */
 function ConstructHiddenValues($Values)
 {
     /**
-    *	Recursive function, processes multidimensional arrays
-    *
-    *	@param string $Name	Full name of array, including all subarrays' names
-    *
-    *	@param array $Value	Array of values, can be multidimensional
-    *
-    *	@return string	Properly consctructed <input type="hidden"...> tags
-    */
+     *    Recursive function, processes multidimensional arrays
+     *
+     * @param string $Name  Full name of array, including all subarrays' names
+     *
+     * @param array  $Value Array of values, can be multidimensional
+     *
+     * @return string    Properly consctructed <input type="hidden"...> tags
+     */
     function ConstructHiddenSubValues($Name, $Value)
     {
         if (is_array($Value)) {
@@ -339,12 +357,14 @@ function ConstructHiddenValues($Values)
             foreach ($Value as $KeyName => $SubValue) {
                 $Result .= ConstructHiddenSubValues("{$Name}[{$KeyName}]", $SubValue);
             }
-        } else
-            // Exit recurse
-            $Result = "<input type=\"hidden\" name=\"".htmlspecialchars($Name)."\" value=\"".htmlspecialchars($Value)."\" />\n";
+        } else // Exit recurse
+        {
+            $Result = "<input type=\"hidden\" name=\"" . htmlspecialchars($Name) . "\" value=\"" . htmlspecialchars($Value) . "\" />\n";
+        }
 
         return $Result;
     }
+
     /* End of ConstructHiddenSubValues function */
 
     $Result = '';
@@ -358,42 +378,43 @@ function ConstructHiddenValues($Values)
 }
 
 /**
-*	Returns HTML/javascript code, which redirects to another URL with passing specified data (through specified method)
-*
-*	@param string	$ActionURL	destination URL
-*
-*	@param array	$Params	Parameters to be passed (through GET or POST)
-*
-*	@param string	$Method	Submit mode. Only two values are valid: 'get' and 'post'
-*
-*	@return mixed	Correspondent HTML/javascript code or false, if input data is wrong
-*/
-function RedirectCode($ActionURL, $Params = NULL, $Method = "get", $Title = 'Redirect')
+ *    Returns HTML/javascript code, which redirects to another URL with passing specified data (through specified method)
+ *
+ * @param string $ActionURL destination URL
+ *
+ * @param array  $Params    Parameters to be passed (through GET or POST)
+ *
+ * @param string $Method    Submit mode. Only two values are valid: 'get' and 'post'
+ *
+ * @return mixed    Correspondent HTML/javascript code or false, if input data is wrong
+ */
+function RedirectCode($ActionURL, $Params = null, $Method = "get", $Title = 'Redirect')
 {
-    if ((strcasecmp(trim($Method), "get") && strcasecmp(trim($Method), "post")) || (trim($ActionURL) == ""))
+    if ((strcasecmp(trim($Method), "get") && strcasecmp(trim($Method), "post")) || (trim($ActionURL) == "")) {
         return false;
+    }
 
     ob_start();
 
-?>
-<html>
+    ?>
+    <html>
     <head>
         <title><?= $Title ?></title>
     </head>
     <body>
-        <form name="RedirectForm" action="<?= htmlspecialchars($ActionURL) ?>" method="<?= $Method ?>">
+    <form name="RedirectForm" action="<?= htmlspecialchars($ActionURL) ?>" method="<?= $Method ?>">
 
-<?= ConstructHiddenValues($Params) ?>
+        <?= ConstructHiddenValues($Params) ?>
 
-        </form>
-        <script type="text/javascript">
-            <!--
-            document.forms['RedirectForm'].submit();
-            -->
-        </script>
+    </form>
+    <script type="text/javascript">
+        <!--
+        document.forms['RedirectForm'].submit();
+        -->
+    </script>
     </body>
-</html>
-<?php
+    </html>
+    <?php
 
     $Result = ob_get_contents();
     ob_end_clean();
@@ -402,98 +423,121 @@ function RedirectCode($ActionURL, $Params = NULL, $Method = "get", $Title = 'Red
 }
 
 /**
-*	Redirects browser to another URL, passing parameters through POST or GET
-*	Actually just prints code, returned by RedirectCode (see RedirectCode)
-*/
-function Redirect($ActionURL, $Params = NULL, $Method = "get", $Title = 'Redirect')
+ *    Redirects browser to another URL, passing parameters through POST or GET
+ *    Actually just prints code, returned by RedirectCode (see RedirectCode)
+ */
+function Redirect($ActionURL, $Params = null, $Method = "get", $Title = 'Redirect')
 {
     $RedirectCodeValue = RedirectCode($ActionURL, $Params, $Method, $Title);
-    if ($RedirectCodeValue !== false)
+    if ($RedirectCodeValue !== false) {
         echo $RedirectCodeValue;
+    }
 }
 
 function isRWAccessible($sFileName)
 {
     clearstatcache();
     $perms = fileperms($sFileName);
-    return ( $perms & 0x0004 && $perms & 0x0002 ) ? true : false;
+
+    return ($perms & 0x0004 && $perms & 0x0002) ? true : false;
 }
 
 /**
  * Send email function
  *
- * @param string $sRecipientEmail		- Email where email should be send
- * @param string $sMailSubject			- subject of the message
- * @param string $sMailBody				- Body of the message
- * @param integer $iRecipientID			- ID of recipient profile
- * @param array $aPlus					- Array of additional information
+ * @param string  $sRecipientEmail - Email where email should be send
+ * @param string  $sMailSubject    - subject of the message
+ * @param string  $sMailBody       - Body of the message
+ * @param integer $iRecipientID    - ID of recipient profile
+ * @param array   $aPlus           - Array of additional information
  *
  *
- * @return boolean 						- trie if message was send
- * 										- false if not
+ * @return boolean                        - trie if message was send
+ *                                        - false if not
  */
-function sendMail( $sRecipientEmail, $sMailSubject, $sMailBody, $iRecipientID = 0, $aPlus = array(), $sEmailFlag = 'html', $isDisableAlert = false, $bForceSend = false )
-{
+function sendMail(
+    $sRecipientEmail,
+    $sMailSubject,
+    $sMailBody,
+    $iRecipientID = 0,
+    $aPlus = array(),
+    $sEmailFlag = 'html',
+    $isDisableAlert = false,
+    $bForceSend = false
+) {
     global $site;
 
-    if (!$sRecipientEmail || preg_match('/\(2\)$/', $sRecipientEmail))
+    if (!$sRecipientEmail || preg_match('/\(2\)$/', $sRecipientEmail)) {
         return false;
+    }
 
-    if($iRecipientID)
-        $aRecipientInfo = getProfileInfo( $iRecipientID );
+    if ($iRecipientID) {
+        $aRecipientInfo = getProfileInfo($iRecipientID);
+    }
 
     // don't send mail to the user if he/she decided to not receive any site's notifications, unless it is critical emails (like email confirmation)
     if (!$bForceSend) {
-        $aRealRecipient = $GLOBALS['MySQL']->getRow("SELECT * FROM `Profiles` WHERE `Email`='" . process_db_input($sRecipientEmail, BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION) . "' LIMIT 1");
-        if ($aRealRecipient && 1 != $aRealRecipient['EmailNotify'])
+        $aRealRecipient = $GLOBALS['MySQL']->getRow("SELECT * FROM `Profiles` WHERE `Email`= ? LIMIT 1",
+            [$sRecipientEmail]);
+        if ($aRealRecipient && 1 != $aRealRecipient['EmailNotify']) {
             return true;
+        }
     }
 
-    $sEmailNotify       = isset($GLOBALS['site']['email_notify']) ? $GLOBALS['site']['email_notify'] : getParam('site_email_notify');
-    $sSiteTitle         = isset($GLOBALS['site']['title']) ? $GLOBALS['site']['title'] : getParam('site_title');
-    $sMailHeader		= "From: =?UTF-8?B?" . base64_encode( $sSiteTitle ) . "?= <{$sEmailNotify}>";
-    $sMailParameters	= "-f{$sEmailNotify}";
+    $sEmailNotify    = isset($GLOBALS['site']['email_notify']) ? $GLOBALS['site']['email_notify'] : getParam('site_email_notify');
+    $sSiteTitle      = isset($GLOBALS['site']['title']) ? $GLOBALS['site']['title'] : getParam('site_title');
+    $sMailHeader     = "From: =?UTF-8?B?" . base64_encode($sSiteTitle) . "?= <{$sEmailNotify}>";
+    $sMailParameters = "-f{$sEmailNotify}";
 
     if ($aPlus || $iRecipientID) {
-        if(!is_array($aPlus))
+        if (!is_array($aPlus)) {
             $aPlus = array();
+        }
         bx_import('BxDolEmailTemplates');
         $oEmailTemplates = new BxDolEmailTemplates();
-        $sMailSubject = $oEmailTemplates->parseContent($sMailSubject, $aPlus, $iRecipientID);
-        $sMailBody = $oEmailTemplates->parseContent($sMailBody, $aPlus, $iRecipientID);
+        $sMailSubject    = $oEmailTemplates->parseContent($sMailSubject, $aPlus, $iRecipientID);
+        $sMailBody       = $oEmailTemplates->parseContent($sMailBody, $aPlus, $iRecipientID);
     }
 
-    $sMailSubject = '=?UTF-8?B?' . base64_encode( $sMailSubject ) . '?=';
+    $sMailSubject = '=?UTF-8?B?' . base64_encode($sMailSubject) . '?=';
 
     $sMailHeader = "MIME-Version: 1.0\r\n" . $sMailHeader;
 
     if (!$isDisableAlert && 'on' == getParam('bx_smtp_on')) {
-        return BxDolService::call('smtpmailer', 'send', array($sRecipientEmail, $sMailSubject, $sMailBody, $sMailHeader, $sMailParameters, 'html' == $sEmailFlag, $aRecipientInfo));
+        return BxDolService::call('smtpmailer', 'send', array(
+            $sRecipientEmail,
+            $sMailSubject,
+            $sMailBody,
+            $sMailHeader,
+            $sMailParameters,
+            'html' == $sEmailFlag,
+            $aRecipientInfo
+        ));
     }
 
-    if( 'html' == $sEmailFlag) {
-        $sMailHeader = "Content-type: text/html; charset=UTF-8\r\n" . $sMailHeader;
-        $iSendingResult = mail( $sRecipientEmail, $sMailSubject, $sMailBody, $sMailHeader, $sMailParameters );
+    if ('html' == $sEmailFlag) {
+        $sMailHeader    = "Content-type: text/html; charset=UTF-8\r\n" . $sMailHeader;
+        $iSendingResult = mail($sRecipientEmail, $sMailSubject, $sMailBody, $sMailHeader, $sMailParameters);
     } else {
-        $sMailHeader = "Content-type: text/plain; charset=UTF-8\r\n" . $sMailHeader;
-        $sMailBody = html2txt($sMailBody);
-        $iSendingResult = mail( $sRecipientEmail, $sMailSubject, html2txt($sMailBody), $sMailHeader, $sMailParameters );
+        $sMailHeader    = "Content-type: text/plain; charset=UTF-8\r\n" . $sMailHeader;
+        $sMailBody      = html2txt($sMailBody);
+        $iSendingResult = mail($sRecipientEmail, $sMailSubject, html2txt($sMailBody), $sMailHeader, $sMailParameters);
     }
 
     if (!$isDisableAlert) {
         //--- create system event
         bx_import('BxDolAlerts');
         $aAlertData = array(
-            'email'     => $sRecipientEmail,
-            'subject'   => $sMailSubject,
-            'body'      => $sMailBody,
-            'header'    => $sMailHeader,
-            'params'    => $sMailParameters,
-            'html'      => 'html' == $sEmailFlag ? true : false,
+            'email'   => $sRecipientEmail,
+            'subject' => $sMailSubject,
+            'body'    => $sMailBody,
+            'header'  => $sMailHeader,
+            'params'  => $sMailParameters,
+            'html'    => 'html' == $sEmailFlag ? true : false,
         );
 
         $oZ = new BxDolAlerts('profile', 'send_mail', $aRecipientInfo['ID'], '', $aAlertData);
-        $oZ -> alert();
+        $oZ->alert();
     }
 
     return $iSendingResult;
@@ -506,30 +550,40 @@ function sendMail( $sRecipientEmail, $sMailSubject, $sMailBody, $iRecipientID = 
 function get_templates_array($isAllParams = false)
 {
     $aTempls = array();
-    $sPath = BX_DIRECTORY_PATH_ROOT . 'templates/';
-    $sUrl = BX_DOL_URL_ROOT . 'templates/';
+    $sPath   = BX_DIRECTORY_PATH_ROOT . 'templates/';
+    $sUrl    = BX_DOL_URL_ROOT . 'templates/';
 
-    if (!($handle = opendir($sPath)))
-        return array ();
+    if (!($handle = opendir($sPath))) {
+        return array();
+    }
 
     while (false !== ($sFileName = readdir($handle))) {
 
-        if (!is_dir($sPath . $sFileName) || 0 != strncmp($sFileName, 'tmpl_', 5))
+        if (!is_dir($sPath . $sFileName) || 0 != strncmp($sFileName, 'tmpl_', 5)) {
             continue;
+        }
 
-        $sTemplName = substr($sFileName, 5);
-        $sTemplVer = _t('_undefined');
-        $sTemplVendor = _t('_undefined');
-        $sTemplDesc = '';
+        $sTemplName    = substr($sFileName, 5);
+        $sTemplVer     = _t('_undefined');
+        $sTemplVendor  = _t('_undefined');
+        $sTemplDesc    = '';
         $sTemplPreview = 'preview.jpg';
-        $sPreviewImg = false;
+        $sPreviewImg   = false;
 
-        if (file_exists($sPath . $sFileName . '/scripts/BxTemplName.php'))
+        if (file_exists($sPath . $sFileName . '/scripts/BxTemplName.php')) {
             @include($sPath . $sFileName . '/scripts/BxTemplName.php');
-        if ($isAllParams && $sTemplPreview && file_exists($sPath . $sFileName . '/images/' . $sTemplPreview))
+        }
+        if ($isAllParams && $sTemplPreview && file_exists($sPath . $sFileName . '/images/' . $sTemplPreview)) {
             $sPreviewImg = $sUrl . $sFileName . '/images/' . $sTemplPreview;
+        }
 
-        $aTempls[substr($sFileName, 5)] = $isAllParams ? array ('name' => $sTemplName, 'ver' => $sTemplVer, 'vendor' => $sTemplVendor, 'desc' => $sTemplDesc, 'preview' => $sPreviewImg) : $sTemplName;
+        $aTempls[substr($sFileName, 5)] = $isAllParams ? array(
+            'name'    => $sTemplName,
+            'ver'     => $sTemplVer,
+            'vendor'  => $sTemplVendor,
+            'desc'    => $sTemplDesc,
+            'preview' => $sPreviewImg
+        ) : $sTemplName;
     }
 
     closedir($handle);
@@ -543,8 +597,8 @@ function get_templates_array($isAllParams = false)
 
 function templates_select_txt()
 {
-    $templ_choices = get_templates_array();
-    $current_template = ( strlen( $_GET['skin'] ) ) ? $_GET['skin'] : $_COOKIE['skin'];
+    $templ_choices    = get_templates_array();
+    $current_template = (strlen($_GET['skin'])) ? $_GET['skin'] : $_COOKIE['skin'];
 
     foreach ($templ_choices as $tmpl_key => $tmpl_value) {
         if ($current_template == $tmpl_key) {
@@ -554,34 +608,38 @@ function templates_select_txt()
             $ReturnResult .= '<a href="' . bx_html_attribute($_SERVER['PHP_SELF']) . '?' . $sGetTransfer . 'skin=' . $tmpl_key . '">' . $tmpl_value . '</a> | ';
         }
     }
+
     return $ReturnResult;
 }
 
-function extFileExists( $sFileSrc )
+function extFileExists($sFileSrc)
 {
-    return (file_exists( $sFileSrc ) && is_file( $sFileSrc )) ? true : false;
+    return (file_exists($sFileSrc) && is_file($sFileSrc)) ? true : false;
 }
 
 function getVisitorIP($isProxyCheck = true)
 {
-    if (!$isProxyCheck)
+    if (!$isProxyCheck) {
         return $_SERVER['REMOTE_ADDR'];
+    }
 
     $ip = $_SERVER['REMOTE_ADDR'];
-    if ((isset($_SERVER['HTTP_X_FORWARDED_FOR'])) && !empty( $_SERVER['HTTP_X_FORWARDED_FOR']))
+    if ((isset($_SERVER['HTTP_X_FORWARDED_FOR'])) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    elseif ((isset($_SERVER['HTTP_X_REAL_IP'])) && !empty( $_SERVER['HTTP_X_REAL_IP']))
+    } elseif ((isset($_SERVER['HTTP_X_REAL_IP'])) && !empty($_SERVER['HTTP_X_REAL_IP'])) {
         $ip = $_SERVER['HTTP_X_REAL_IP'];
-    elseif ((isset( $_SERVER['HTTP_CLIENT_IP'])) && !empty($_SERVER['HTTP_CLIENT_IP']))
+    } elseif ((isset($_SERVER['HTTP_CLIENT_IP'])) && !empty($_SERVER['HTTP_CLIENT_IP'])) {
         $ip = $_SERVER['HTTP_CLIENT_IP'];
+    }
 
-    if (!preg_match("/^\d+\.\d+\.\d+\.\d+$/", $ip))
+    if (!preg_match("/^\d+\.\d+\.\d+\.\d+$/", $ip)) {
         $ip = $_SERVER['REMOTE_ADDR'];
+    }
 
     return $ip;
 }
 
-function genFlag( $country )
+function genFlag($country)
 {
     return '<img src="' . genFlagUrl($country) . '" />';
 }
@@ -592,12 +650,13 @@ function genFlagUrl($country)
 }
 
 // print debug information ( e.g. arrays )
-function echoDbg( $what, $desc = '' )
+function echoDbg($what, $desc = '')
 {
-    if ( $desc )
+    if ($desc) {
         echo "<b>$desc:</b> ";
+    }
     echo "<pre>";
-        print_r( $what );
+    print_r($what);
     echo "</pre>\n";
 }
 
@@ -618,10 +677,10 @@ function echoDbgLog($mWhat, $sDesc = '', $sFileName = 'debug.log')
 function clear_xss($val)
 {
     // HTML Purifier plugin
-    global $oHtmlPurifier;    
+    global $oHtmlPurifier;
     if (!isset($oHtmlPurifier) && !$GLOBALS['logged']['admin']) {
 
-        require_once( BX_DIRECTORY_PATH_PLUGINS . 'htmlpurifier/HTMLPurifier.standalone.php' );
+        require_once(BX_DIRECTORY_PATH_PLUGINS . 'htmlpurifier/HTMLPurifier.standalone.php');
 
         HTMLPurifier_Bootstrap::registerAutoload();
 
@@ -639,13 +698,18 @@ function clear_xss($val)
             $oConfig->set('URI.Host', $sHost);
             $oConfig->set('HTML.Nofollow', 'true');
         }
-        
+
         if ($sSafeIframeRegexp = getParam('sys_safe_iframe_regexp')) {
             $oConfig->set('HTML.SafeIframe', 'true');
             $oConfig->set('URI.SafeIframeRegexp', $sSafeIframeRegexp);
         }
 
-        $oConfig->set('Filter.Custom', array (new HTMLPurifier_Filter_LocalMovie(), new HTMLPurifier_Filter_YouTube(), new HTMLPurifier_Filter_YoutubeIframe(), new HTMLPurifier_Filter_AddBxLinksClass()));
+        $oConfig->set('Filter.Custom', array(
+            new HTMLPurifier_Filter_LocalMovie(),
+            new HTMLPurifier_Filter_YouTube(),
+            new HTMLPurifier_Filter_YoutubeIframe(),
+            new HTMLPurifier_Filter_AddBxLinksClass()
+        ));
 
         $oDef = $oConfig->getHTMLDefinition(true);
         $oDef->addAttribute('a', 'target', 'Enum#_blank,_self,_target,_top');
@@ -653,42 +717,49 @@ function clear_xss($val)
         $oHtmlPurifier = new HTMLPurifier($oConfig);
     }
 
-    if (!$GLOBALS['logged']['admin'])
+    if (!$GLOBALS['logged']['admin']) {
         $val = $oHtmlPurifier->purify($val);
+    }
 
-    $oZ = new BxDolAlerts('system', 'clear_xss', 0, 0, array('oHtmlPurifier' => $oHtmlPurifier, 'return_data' => &$val));
+    $oZ = new BxDolAlerts('system', 'clear_xss', 0, 0,
+        array('oHtmlPurifier' => $oHtmlPurifier, 'return_data' => &$val));
     $oZ->alert();
 
     return $val;
 }
 
-function _format_when ($iSec, $bShort = false)
+function _format_when($iSec, $bShort = false)
 {
-    $s = '';
+    $s       = '';
     $sSuffix = $bShort ? '_short' : '';
     if ($iSec >= 0) {
         if ($iSec < 3600) {
-            $i = round($iSec/60);
-            $s .= (0 == $i || 1 == $i) ? _t('_just_now') : _t('_x_minutes_ago'.$sSuffix, $i);
-        } else if ($iSec < 86400) {
-            $i = round($iSec/60/60);
-            $s .= ((0 == $i || 1 == $i) && !$bShort) ? _t('_x_hour_ago') : _t('_x_hours_ago'.$sSuffix, $i);
+            $i = round($iSec / 60);
+            $s .= (0 == $i || 1 == $i) ? _t('_just_now') : _t('_x_minutes_ago' . $sSuffix, $i);
         } else {
-            $i = round($iSec/60/60/24);
-            $s .= (0 == $i || 1 == $i) ? _t('_yesterday') : _t('_x_days_ago'.$sSuffix, $i);
+            if ($iSec < 86400) {
+                $i = round($iSec / 60 / 60);
+                $s .= ((0 == $i || 1 == $i) && !$bShort) ? _t('_x_hour_ago') : _t('_x_hours_ago' . $sSuffix, $i);
+            } else {
+                $i = round($iSec / 60 / 60 / 24);
+                $s .= (0 == $i || 1 == $i) ? _t('_yesterday') : _t('_x_days_ago' . $sSuffix, $i);
+            }
         }
     } else {
         if ($iSec > -3600) {
-            $i = round($iSec/60);
-            $s .= (0 == $i || 1 == $i) ? _t('_just_now') : _t('_in_x_minutes'.$sSuffix, -$i);
-        } else if ($iSec > -86400) {
-            $i = round($iSec/60/60);
-            $s .= ((0 == $i || 1 == $i) && !$bShort) ? _t('_in_x_hour') : _t('_in_x_hours'.$sSuffix, -$i);
-        } elseif ($iSec < -86400) {
-            $i = round($iSec/60/60/24);
-            $s .= (0 == $i || 1 == $i) ? _t('_tomorrow') : _t('_in_x_days'.$sSuffix, -$i);
+            $i = round($iSec / 60);
+            $s .= (0 == $i || 1 == $i) ? _t('_just_now') : _t('_in_x_minutes' . $sSuffix, -$i);
+        } else {
+            if ($iSec > -86400) {
+                $i = round($iSec / 60 / 60);
+                $s .= ((0 == $i || 1 == $i) && !$bShort) ? _t('_in_x_hour') : _t('_in_x_hours' . $sSuffix, -$i);
+            } elseif ($iSec < -86400) {
+                $i = round($iSec / 60 / 60 / 24);
+                $s .= (0 == $i || 1 == $i) ? _t('_tomorrow') : _t('_in_x_days' . $sSuffix, -$i);
+            }
         }
     }
+
     return $s;
 }
 
@@ -696,7 +767,7 @@ function _format_time($iSec, $aParams = array())
 {
     $sDivider = isset($aParams['divider']) ? $aParams['divider'] : ':';
 
-    $iSec = (int)$iSec;
+    $iSec    = (int)$iSec;
     $sFormat = $iSec > 3600 ? 'H' . $sDivider . 'i' . $sDivider . 's' : 'i' . $sDivider . 's';
 
     return gmdate($sFormat, $iSec);
@@ -704,159 +775,196 @@ function _format_time($iSec, $aParams = array())
 
 /**
  * Convert timestamp to "ago" date format
- * @param $iTime date/time stamp in seconds
+ *
+ * @param $iTime            date/time stamp in seconds
  * @param $bAutoDateConvert automatically convert dates to full date format instead of "ago" format for old dates (older than 14 days)
- * @param $bShort use short format for relative time
+ * @param $bShort           use short format for relative time
  * @return formatted date string
  */
 function defineTimeInterval($iTime, $bAutoDateConvert = true, $bShort = false)
 {
     $iTimeDiff = time() - (int)$iTime;
 
-    if ($bAutoDateConvert && $iTimeDiff > 14*24*60*60) // don't show "ago" dates for more than 14 days
+    if ($bAutoDateConvert && $iTimeDiff > 14 * 24 * 60 * 60) // don't show "ago" dates for more than 14 days
+    {
         return getLocaleDate((int)$iTime);
+    }
 
     return _format_when($iTimeDiff, $bShort);
 }
 
 function execSqlFile($sFileName)
 {
-    if (! $f = fopen($sFileName, "r"))
+    if (!$f = fopen($sFileName, "r")) {
         return false;
+    }
 
-    db_res( "SET NAMES 'utf8'" );
+    db_res("SET NAMES 'utf8'");
 
     $s_sql = "";
-    while ( $s = fgets ( $f, 10240) ) {
-        $s = trim( $s ); //Utf with BOM only
+    while ($s = fgets($f, 10240)) {
+        $s = trim($s); //Utf with BOM only
 
-        if( !strlen( $s ) ) continue;
-        if ( mb_substr( $s, 0, 1 ) == '#'  ) continue; //pass comments
-        if ( mb_substr( $s, 0, 2 ) == '--' ) continue;
+        if (!strlen($s)) {
+            continue;
+        }
+        if (mb_substr($s, 0, 1) == '#') {
+            continue;
+        } //pass comments
+        if (mb_substr($s, 0, 2) == '--') {
+            continue;
+        }
 
         $s_sql .= $s;
 
-        if ( mb_substr( $s, -1 ) != ';' ) continue;
+        if (mb_substr($s, -1) != ';') {
+            continue;
+        }
 
-        db_res( $s_sql );
+        db_res($s_sql);
         $s_sql = "";
     }
 
     fclose($f);
+
     return true;
 }
 
-function replace_full_uris( $text )
+function replace_full_uris($text)
 {
-    $text = preg_replace_callback( '/([\s\n\r]src\=")([^"]+)(")/', 'replace_full_uri', $text );
+    $text = preg_replace_callback('/([\s\n\r]src\=")([^"]+)(")/', 'replace_full_uri', $text);
+
     return $text;
 }
 
-function replace_full_uri( $matches )
+function replace_full_uri($matches)
 {
-    if( substr( $matches[2], 0, 7 ) != 'http://' and substr( $matches[2], 0, 8 ) != 'https://' and substr( $matches[2], 0, 6 ) != 'ftp://' )
+    if (substr($matches[2], 0, 7) != 'http://' and substr($matches[2], 0, 8) != 'https://' and substr($matches[2], 0,
+            6) != 'ftp://'
+    ) {
         $matches[2] = BX_DOL_URL_ROOT . $matches[2];
+    }
 
     return $matches[1] . $matches[2] . $matches[3];
 }
 
 //--------------------------------------- friendly permalinks --------------------------------------//
 //------------------------------------------- main functions ---------------------------------------//
-function uriGenerate ($s, $sTable, $sField, $iMaxLen = 255)
+function uriGenerate($s, $sTable, $sField, $iMaxLen = 255)
 {
-  $s = uriFilter($s);
+    $s = uriFilter($s);
 
-  if (uriCheckUniq($s, $sTable, $sField)) return $s;
-
-  // try to add date
-
-  if (get_mb_len($s) > 240)
-     $s = get_mb_substr ($s, 0, 240);
-
-  $s .= '-' . date('Y-m-d');
-
-  if (uriCheckUniq($s, $sTable, $sField)) return $s;
-
-  // try to add number
-
-    for ($i = 0 ; $i < 999 ; ++$i) {
-        if (uriCheckUniq($s . '-' . $i, $sTable, $sField)) {
-       return ($s . '-' . $i);
+    if (uriCheckUniq($s, $sTable, $sField)) {
+        return $s;
     }
-  }
-   return rand(0, 999999999);
+
+    // try to add date
+
+    if (get_mb_len($s) > 240) {
+        $s = get_mb_substr($s, 0, 240);
+    }
+
+    $s .= '-' . date('Y-m-d');
+
+    if (uriCheckUniq($s, $sTable, $sField)) {
+        return $s;
+    }
+
+    // try to add number
+
+    for ($i = 0; $i < 999; ++$i) {
+        if (uriCheckUniq($s . '-' . $i, $sTable, $sField)) {
+            return ($s . '-' . $i);
+        }
+    }
+
+    return rand(0, 999999999);
 }
 
-function uriFilter ($s)
+function uriFilter($s)
 {
-    if ($GLOBALS['oTemplConfig']->bAllowUnicodeInPreg)
-        $s = get_mb_replace ('/[^\pL^\pN]+/u', '-', $s); // unicode characters
-    else
-        $s = get_mb_replace ('/([^\d^\w]+)/u', '-', $s); // latin characters only
+    if ($GLOBALS['oTemplConfig']->bAllowUnicodeInPreg) {
+        $s = get_mb_replace('/[^\pL^\pN]+/u', '-', $s);
+    } // unicode characters
+    else {
+        $s = get_mb_replace('/([^\d^\w]+)/u', '-', $s);
+    } // latin characters only
 
-    $s = get_mb_replace ('/([-^]+)/', '-', $s);
-    $s = get_mb_replace ('/([-]+)$/', '', $s); // remove trailing dash
-    if (!$s) $s = '-';
+    $s = get_mb_replace('/([-^]+)/', '-', $s);
+    $s = get_mb_replace('/([-]+)$/', '', $s); // remove trailing dash
+    if (!$s) {
+        $s = '-';
+    }
+
     return $s;
 }
 
-function uriCheckUniq ($s, $sTable, $sField)
+function uriCheckUniq($s, $sTable, $sField)
 {
     return !db_arr("SELECT 1 FROM $sTable WHERE $sField = '$s' LIMIT 1");
 }
 
-function get_mb_replace ($sPattern, $sReplace, $s)
+function get_mb_replace($sPattern, $sReplace, $s)
 {
-    return preg_replace ($sPattern, $sReplace, $s);
+    return preg_replace($sPattern, $sReplace, $s);
 }
 
-function get_mb_len ($s)
+function get_mb_len($s)
 {
     return (function_exists('mb_strlen')) ? mb_strlen($s) : strlen($s);
 }
 
-function get_mb_substr ($s, $iStart, $iLen)
+function get_mb_substr($s, $iStart, $iLen)
 {
-    return (function_exists('mb_substr')) ? mb_substr ($s, $iStart, $iLen) : substr ($s, $iStart, $iLen);
+    return (function_exists('mb_substr')) ? mb_substr($s, $iStart, $iLen) : substr($s, $iStart, $iLen);
 }
 
 /**
  * Block user IP
  *
- * @param $sIP mixed
+ * @param $sIP              mixed
  * @param $iExpirationInSec integer
- * @param $sComment string
+ * @param $sComment         string
  * @return void
  */
 function bx_block_ip($mixedIP, $iExpirationInSec = 86400, $sComment = '')
 {
-    if (preg_match('/^[0-9]+$/', $mixedIP))
+    if (preg_match('/^[0-9]+$/', $mixedIP)) {
         $iIP = $mixedIP;
-    else
+    } else {
         $iIP = sprintf("%u", ip2long($sIP));
+    }
 
     $iExpirationInSec = time() + (int)$iExpirationInSec;
-    $sComment = process_db_input($sComment, BX_TAGS_STRIP);
+    $sComment         = process_db_input($sComment, BX_TAGS_STRIP);
 
-    if (!db_value("SELECT ID FROM `sys_ip_list` WHERE `From` = {$iIP} AND `To` = {$iIP} LIMIT 1"))
+    if (!db_value("SELECT ID FROM `sys_ip_list` WHERE `From` = {$iIP} AND `To` = {$iIP} LIMIT 1")) {
         return db_res("INSERT INTO `sys_ip_list` SET `From` = {$iIP}, `To` = {$iIP}, `Type` = 'deny', `LastDT` = {$iExpirationInSec}, `Desc` = '{$sComment}'");
+    }
+
     return false;
 }
 
 function bx_is_ip_dns_blacklisted($sCurIP = '', $sType = '')
 {
-    if (defined('BX_DOL_CRON_EXECUTE'))
+    if (defined('BX_DOL_CRON_EXECUTE')) {
         return false;
+    }
 
-    if (!$sCurIP)
+    if (!$sCurIP) {
         $sCurIP = getVisitorIP(false);
+    }
 
-    if (bx_is_ip_whitelisted())
+    if (bx_is_ip_whitelisted()) {
         return false;
+    }
 
     $o = bx_instance('BxDolDNSBlacklists');
-    if (BX_DOL_DNSBL_POSITIVE == $o->dnsbl_lookup_ip(BX_DOL_DNSBL_CHAIN_SPAMMERS, $sCurIP) && BX_DOL_DNSBL_POSITIVE != $o->dnsbl_lookup_ip(BX_DOL_DNSBL_CHAIN_WHITELIST, $sCurIP)) {
-        $o->onPositiveDetection ($sCurIP, $sType);
+    if (BX_DOL_DNSBL_POSITIVE == $o->dnsbl_lookup_ip(BX_DOL_DNSBL_CHAIN_SPAMMERS,
+            $sCurIP) && BX_DOL_DNSBL_POSITIVE != $o->dnsbl_lookup_ip(BX_DOL_DNSBL_CHAIN_WHITELIST, $sCurIP)
+    ) {
+        $o->onPositiveDetection($sCurIP, $sType);
+
         return true;
     }
 
@@ -865,16 +973,20 @@ function bx_is_ip_dns_blacklisted($sCurIP = '', $sType = '')
 
 function bx_is_ip_whitelisted($sCurIP = '')
 {
-    if (defined('BX_DOL_CRON_EXECUTE'))
+    if (defined('BX_DOL_CRON_EXECUTE')) {
         return true;
+    }
 
     $iIPGlobalType = (int)getParam('ipListGlobalType');
     if ($iIPGlobalType != 1 && $iIPGlobalType != 2) // 0 - disabled
+    {
         return false;
+    }
 
-    if (!$sCurIP)
+    if (!$sCurIP) {
         $sCurIP = getVisitorIP();
-    $iCurIP = sprintf("%u", ip2long($sCurIP));
+    }
+    $iCurIP    = sprintf("%u", ip2long($sCurIP));
     $iCurrTume = time();
 
     return db_value("SELECT `ID` FROM `sys_ip_list` WHERE `Type` = 'allow' AND `LastDT` > $iCurrTume AND `From` <= '$iCurIP' AND `To` >= '$iCurIP' LIMIT 1") ? true : false;
@@ -882,24 +994,30 @@ function bx_is_ip_whitelisted($sCurIP = '')
 
 function bx_is_ip_blocked($sCurIP = '')
 {
-    if (defined('BX_DOL_CRON_EXECUTE'))
+    if (defined('BX_DOL_CRON_EXECUTE')) {
         return false;
+    }
 
     $iIPGlobalType = (int)getParam('ipListGlobalType');
     if ($iIPGlobalType != 1 && $iIPGlobalType != 2) // 0 - disabled
+    {
         return false;
+    }
 
-    if (!$sCurIP)
+    if (!$sCurIP) {
         $sCurIP = getVisitorIP();
-    $iCurIP = sprintf("%u", ip2long($sCurIP));
+    }
+    $iCurIP    = sprintf("%u", ip2long($sCurIP));
     $iCurrTume = time();
 
-    if (bx_is_ip_whitelisted($sCurIP))
+    if (bx_is_ip_whitelisted($sCurIP)) {
         return false;
+    }
 
     $isBlocked = db_value("SELECT `ID` FROM `sys_ip_list` WHERE `Type` = 'deny' AND `LastDT` > $iCurrTume AND `From` <= '$iCurIP' AND `To` >= '$iCurIP' LIMIT 1");
-    if ($isBlocked)
+    if ($isBlocked) {
         return true;
+    }
 
     // 1 - all allowed except listed
     // 2 - all blocked except listed
@@ -908,25 +1026,30 @@ function bx_is_ip_blocked($sCurIP = '')
 
 /**
  *  spam checking function
- *  @param $s content to check for spam
- *  @param $isStripSlashes slashes parameter:
- *          BX_SLASHES_AUTO - automatically detect magic_quotes_gpc setting
- *          BX_SLASHES_NO_ACTION - do not perform any action with slashes
- *  @return true if spam detected
+ *
+ * @param $s              content to check for spam
+ * @param $isStripSlashes slashes parameter:
+ *                        BX_SLASHES_AUTO - automatically detect magic_quotes_gpc setting
+ *                        BX_SLASHES_NO_ACTION - do not perform any action with slashes
+ * @return true if spam detected
  */
-function bx_is_spam ($val, $isStripSlashes = BX_SLASHES_AUTO)
+function bx_is_spam($val, $isStripSlashes = BX_SLASHES_AUTO)
 {
-    if (defined('BX_DOL_CRON_EXECUTE'))
+    if (defined('BX_DOL_CRON_EXECUTE')) {
         return false;
+    }
 
-    if (isAdmin())
+    if (isAdmin()) {
         return false;
+    }
 
-    if (bx_is_ip_whitelisted())
+    if (bx_is_ip_whitelisted()) {
         return false;
+    }
 
-    if (get_magic_quotes_gpc() && $isStripSlashes == BX_SLASHES_AUTO)
+    if (get_magic_quotes_gpc() && $isStripSlashes == BX_SLASHES_AUTO) {
         $val = stripslashes($val);
+    }
 
     $bRet = false;
     if ('on' == getParam('sys_uridnsbl_enable')) {
@@ -948,22 +1071,23 @@ function bx_is_spam ($val, $isStripSlashes = BX_SLASHES_AUTO)
     if ($bRet && 'on' == getParam('sys_antispam_report')) {
         bx_import('BxDolEmailTemplates');
         $oEmailTemplates = new BxDolEmailTemplates();
-        $aTemplate = $oEmailTemplates->getTemplate('t_SpamReportAuto', 0);
+        $aTemplate       = $oEmailTemplates->getTemplate('t_SpamReportAuto', 0);
 
         $iProfileId = getLoggedId();
-        $aPlus = array(
-            'SpammerUrl' => getProfileLink($iProfileId),
+        $aPlus      = array(
+            'SpammerUrl'      => getProfileLink($iProfileId),
             'SpammerNickName' => getNickName($iProfileId),
-            'Page' => htmlspecialchars_adv($_SERVER['PHP_SELF']),
-            'Get' => print_r($_GET, true),
-            'SpamContent' => htmlspecialchars_adv($val),
+            'Page'            => htmlspecialchars_adv($_SERVER['PHP_SELF']),
+            'Get'             => print_r($_GET, true),
+            'SpamContent'     => htmlspecialchars_adv($val),
         );
 
         sendMail($GLOBALS['site']['email'], $aTemplate['Subject'], $aTemplate['Body'], '', $aPlus);
     }
 
-    if ($bRet && 'on' == getParam('sys_antispam_block'))
+    if ($bRet && 'on' == getParam('sys_antispam_block')) {
         return true;
+    }
 
     return false;
 }
@@ -971,13 +1095,14 @@ function bx_is_spam ($val, $isStripSlashes = BX_SLASHES_AUTO)
 function getmicrotime()
 {
     list($usec, $sec) = explode(" ", microtime());
+
     return ((float)$usec + (float)$sec);
 }
 
 /**
-** @description : function will create cache file with all SQL queries ;
-** @return		:
-*/
+ ** @description : function will create cache file with all SQL queries ;
+ ** @return        :
+ */
 function genSiteStatCache()
 {
     $sqlQuery = "SELECT `Name` as `name`,
@@ -993,24 +1118,25 @@ function genSiteStatCache()
     $rData = db_res($sqlQuery);
 
     $sLine = "return array( \n";
-    while ($aVal = mysql_fetch_assoc($rData)) {
+    while ($aVal = $rData->fetch()) {
         $sLine .= genSiteStatFile($aVal);
     }
-    $sLine = rtrim($sLine, ",\n")."\n);";
+    $sLine = rtrim($sLine, ",\n") . "\n);";
 
     $aResult = eval($sLine);
 
     $oCache = $GLOBALS['MySQL']->getDbCacheObject();
-    return $oCache->setData ($GLOBALS['MySQL']->genDbCacheKey('sys_stat_site'), $aResult);
+
+    return $oCache->setData($GLOBALS['MySQL']->genDbCacheKey('sys_stat_site'), $aResult);
 }
 
 function genSiteStatFile($aVal)
 {
     $oMenu = new BxDolMenu();
 
-    $sLink = $oMenu -> getCurrLink($aVal['link']);
-    $sAdmLink = $oMenu -> getCurrLink($aVal['adm_link']);
-    $sLine = "'{$aVal['name']}'=>array('capt'=>'{$aVal['capt']}', 'query'=>'".addslashes($aVal['query'])."', 'link'=>'$sLink', 'icon'=>'{$aVal['icon']}', 'adm_query'=>'".addslashes($aVal['adm_query'])."', 'adm_link'=>'$sAdmLink', ),\n";
+    $sLink    = $oMenu->getCurrLink($aVal['link']);
+    $sAdmLink = $oMenu->getCurrLink($aVal['adm_link']);
+    $sLine    = "'{$aVal['name']}'=>array('capt'=>'{$aVal['capt']}', 'query'=>'" . addslashes($aVal['query']) . "', 'link'=>'$sLink', 'icon'=>'{$aVal['icon']}', 'adm_query'=>'" . addslashes($aVal['adm_query']) . "', 'adm_link'=>'$sAdmLink', ),\n";
 
     return $sLine;
 }
@@ -1019,13 +1145,14 @@ function getSiteStatArray()
 {
     $oCache = $GLOBALS['MySQL']->getDbCacheObject();
     $aStats = $oCache->getData($GLOBALS['MySQL']->genDbCacheKey('sys_stat_site'));
-    if($aStats === null) {
+    if ($aStats === null) {
         genSiteStatCache();
         $aStats = $oCache->getData($GLOBALS['MySQL']->genDbCacheKey('sys_stat_site'));
     }
 
-    if(!$aStats)
+    if (!$aStats) {
         $aStats = array();
+    }
 
     return $aStats;
 }
@@ -1037,45 +1164,51 @@ function getSiteStatArray()
  * @param        : $aExceptNames (string) - name of unnecessary parameter;
  * @return       : cleared string;
  */
-function getClearedParam( $sExceptParam, $sString )
+function getClearedParam($sExceptParam, $sString)
 {
-    return preg_replace( "/(&amp;|&){$sExceptParam}=([a-z0-9\_\-]{1,})/i",'', $sString);
+    return preg_replace("/(&amp;|&){$sExceptParam}=([a-z0-9\_\-]{1,})/i", '', $sString);
 }
 
 /**
  * import class file, it detect class path by its prefix or module array
  *
  * @param $sClassName - full class name or class postfix in a case of module class
- * @param $aModule - module array or true to get module array from global variable
+ * @param $aModule    - module array or true to get module array from global variable
  */
 function bx_import($sClassName, $aModule = array())
 {
-    if (class_exists($sClassName))
+    if (class_exists($sClassName)) {
         return;
+    }
 
     if ($aModule) {
         $a = (true === $aModule) ? $GLOBALS['aModule'] : $aModule;
-        if (class_exists($a['class_prefix'] . $sClassName))
+        if (class_exists($a['class_prefix'] . $sClassName)) {
             return;
-        require_once (BX_DIRECTORY_PATH_MODULES . $a['path'] . 'classes/' . $a['class_prefix'] . $sClassName . '.php');
+        }
+        require_once(BX_DIRECTORY_PATH_MODULES . $a['path'] . 'classes/' . $a['class_prefix'] . $sClassName . '.php');
     }
 
     if (0 == strncmp($sClassName, 'BxDol', 5)) {
         require_once(BX_DIRECTORY_PATH_CLASSES . $sClassName . '.php');
+
         return;
     }
     if (0 == strncmp($sClassName, 'BxBase', 6)) {
         require_once(BX_DIRECTORY_PATH_BASE . 'scripts/' . $sClassName . '.php');
+
         return;
     }
     if (0 == strncmp($sClassName, 'BxTempl', 7) && !class_exists($sClassName)) {
         if (isset($GLOBALS['iAdminPage']) && (int)$GLOBALS['iAdminPage'] == 1) {
-            if (!defined('BX_DOL_TEMPLATE_DEFAULT_CODE'))
+            if (!defined('BX_DOL_TEMPLATE_DEFAULT_CODE')) {
                 require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolTemplate.php');
+            }
             require_once(BX_DIRECTORY_PATH_ROOT . "templates/tmpl_" . BX_DOL_TEMPLATE_DEFAULT_CODE . "/scripts/" . $sClassName . '.php');
         } else {
             require_once(BX_DIRECTORY_PATH_ROOT . "templates/tmpl_{$GLOBALS['tmpl']}/scripts/" . $sClassName . '.php');
         }
+
         return;
     }
 }
@@ -1084,23 +1217,24 @@ function bx_import($sClassName, $aModule = array())
  * Gets an instance of class pathing necessary parameters if it's necessary.
  *
  * @param string $sClassName class name.
- * @param array $aParams an array of parameters to be pathed to the constructor of the class.
- * @param array $aModule an array with module description. Is used when the requested class is located in some module.
+ * @param array  $aParams    an array of parameters to be pathed to the constructor of the class.
+ * @param array  $aModule    an array with module description. Is used when the requested class is located in some module.
  * @return unknown
  */
 function bx_instance($sClassName, $aParams = array(), $aModule = array())
 {
-    if(isset($GLOBALS['bxDolClasses'][$sClassName]))
+    if (isset($GLOBALS['bxDolClasses'][$sClassName])) {
         return $GLOBALS['bxDolClasses'][$sClassName];
-    else {
+    } else {
         bx_import((empty($aModule) ? $sClassName : str_replace($aModule['class_prefix'], '', $sClassName)), $aModule);
 
-        if(empty($aParams))
+        if (empty($aParams)) {
             $GLOBALS['bxDolClasses'][$sClassName] = new $sClassName();
-        else {
+        } else {
             $sParams = "";
-            foreach($aParams as $mixedKey => $mixedValue)
+            foreach ($aParams as $mixedKey => $mixedValue) {
                 $sParams .= "\$aParams[" . $mixedKey . "], ";
+            }
             $sParams = substr($sParams, 0, -2);
 
             $GLOBALS['bxDolClasses'][$sClassName] = eval("return new " . $sClassName . "(" . $sParams . ");");
@@ -1117,19 +1251,19 @@ function bx_instance($sClassName, $aParams = array(), $aModule = array())
  * @param $iQuoteType - string escaping method: BX_ESCAPE_STR_AUTO(default), BX_ESCAPE_STR_APOS or BX_ESCAPE_STR_QUOTE
  * @return converted string / array
  */
-function bx_js_string ($mixedInput, $iQuoteType = BX_ESCAPE_STR_AUTO)
+function bx_js_string($mixedInput, $iQuoteType = BX_ESCAPE_STR_AUTO)
 {
     $aUnits = array(
         "\n" => "\\n",
         "\r" => "",
     );
     if (BX_ESCAPE_STR_APOS == $iQuoteType) {
-        $aUnits["'"] = "\\'";
-        $aUnits['<script'] = "<scr' + 'ipt";
+        $aUnits["'"]         = "\\'";
+        $aUnits['<script']   = "<scr' + 'ipt";
         $aUnits['</script>'] = "</scr' + 'ipt>";
     } elseif (BX_ESCAPE_STR_QUOTE == $iQuoteType) {
-        $aUnits['"'] = '\\"';
-        $aUnits['<script'] = '<scr" + "ipt';
+        $aUnits['"']         = '\\"';
+        $aUnits['<script']   = '<scr" + "ipt';
         $aUnits['</script>'] = '</scr" + "ipt>';
     } else {
         $aUnits['"'] = '&quote;';
@@ -1137,6 +1271,7 @@ function bx_js_string ($mixedInput, $iQuoteType = BX_ESCAPE_STR_AUTO)
         $aUnits["<"] = '&lt;';
         $aUnits[">"] = '&gt;';
     }
+
     return str_replace(array_keys($aUnits), array_values($aUnits), $mixedInput);
 }
 
@@ -1146,12 +1281,13 @@ function bx_js_string ($mixedInput, $iQuoteType = BX_ESCAPE_STR_AUTO)
  * @param mixed $mixedInput - string/array which should be filtered
  * @return converted string / array
  */
-function bx_html_attribute ($mixedInput)
+function bx_html_attribute($mixedInput)
 {
     $aUnits = array(
         "\"" => "&quot;",
-        "'" => "&apos;",
+        "'"  => "&apos;",
     );
+
     return str_replace(array_keys($aUnits), array_values($aUnits), $mixedInput);
 }
 
@@ -1161,11 +1297,12 @@ function bx_html_attribute ($mixedInput)
  * @param mixed $mixedInput - string/array which should be filtered
  * @return converted string / array
  */
-function bx_php_string_apos ($mixedInput)
+function bx_php_string_apos($mixedInput)
 {
     return str_replace("'", "\\'", $mixedInput);
 }
-function bx_php_string_quot ($mixedInput)
+
+function bx_php_string_quot($mixedInput)
 {
     return str_replace('"', '\\"', $mixedInput);
 }
@@ -1174,28 +1311,31 @@ function bx_php_string_quot ($mixedInput)
  * Gets file contents by URL.
  *
  * @param string $sFileUrl - file URL to be read.
- * @param array $aParams - an array of parameters to be pathed with URL.
+ * @param array  $aParams  - an array of parameters to be pathed with URL.
  * @return string the file's contents.
  */
 function bx_file_get_contents($sFileUrl, $aParams = array(), $sMethod = 'get', $aHeaders = array(), &$sHttpCode = null)
 {
-    if ('post' != $sMethod)
-    	$sFileUrl = bx_append_url_params($sFileUrl, $aParams);
+    if ('post' != $sMethod) {
+        $sFileUrl = bx_append_url_params($sFileUrl, $aParams);
+    }
 
     $sResult = '';
-    if(function_exists('curl_init')) {
+    if (function_exists('curl_init')) {
         $rConnect = curl_init();
 
         curl_setopt($rConnect, CURLOPT_TIMEOUT, 10);
         curl_setopt($rConnect, CURLOPT_URL, $sFileUrl);
-        curl_setopt($rConnect, CURLOPT_HEADER, NULL === $sHttpCode ? false : true);
+        curl_setopt($rConnect, CURLOPT_HEADER, null === $sHttpCode ? false : true);
         curl_setopt($rConnect, CURLOPT_RETURNTRANSFER, 1);
 
-        if (!ini_get('open_basedir'))
+        if (!ini_get('open_basedir')) {
             curl_setopt($rConnect, CURLOPT_FOLLOWLOCATION, 1);
+        }
 
-        if ($aHeaders)
+        if ($aHeaders) {
             curl_setopt($rConnect, CURLOPT_HTTPHEADER, $aHeaders);
+        }
 
         if ('post' == $sMethod) {
             curl_setopt($rConnect, CURLOPT_POST, true);
@@ -1203,7 +1343,7 @@ function bx_file_get_contents($sFileUrl, $aParams = array(), $sMethod = 'get', $
         }
 
         $sAllCookies = '';
-        foreach($_COOKIE as $sKey=>$sValue){
+        foreach ($_COOKIE as $sKey => $sValue) {
             $sAllCookies .= $sKey . '=' . $sValue . ';';
         }
         curl_setopt($rConnect, CURLOPT_COOKIE, $sAllCookies);
@@ -1215,12 +1355,12 @@ function bx_file_get_contents($sFileUrl, $aParams = array(), $sMethod = 'get', $
             $sResult = curl_exec($rConnect);
         }
 
-        if (NULL !== $sHttpCode)
+        if (null !== $sHttpCode) {
             $sHttpCode = curl_getinfo($rConnect, CURLINFO_HTTP_CODE);
+        }
 
         curl_close($rConnect);
-    }
-    else {
+    } else {
         $sResult = @file_get_contents($sFileUrl);
     }
 
@@ -1231,16 +1371,16 @@ function bx_file_get_contents($sFileUrl, $aParams = array(), $sMethod = 'get', $
  * perform write log into 'tmp/log.txt' (for any debug development)
  *
  * @param $sNewLineText - New line debug text
-  */
+ */
 function writeLog($sNewLineText = 'test')
 {
     $sFileName = BX_DIRECTORY_PATH_ROOT . 'tmp/log.txt';
 
     if (is_writable($sFileName)) {
-        if (! $vHandle = fopen($sFileName, 'a')) {
-             echo "Unable to open ({$sFileName})";
+        if (!$vHandle = fopen($sFileName, 'a')) {
+            echo "Unable to open ({$sFileName})";
         }
-        if (fwrite($vHandle, $sNewLineText . "\r\n") === FALSE) {
+        if (fwrite($vHandle, $sNewLineText . "\r\n") === false) {
             echo "Unable write to ({$sFileName})";
         }
         fclose($vHandle);
@@ -1257,54 +1397,57 @@ function getLink($sString, $sUrl)
 
 function getLinkSet($sLinkString, $sUrlPrefix, $sDivider = ';,', $bUriConvert = false)
 {
-    $aSet = preg_split( '/['.$sDivider.']/', $sLinkString, 0, PREG_SPLIT_NO_EMPTY);
+    $aSet      = preg_split('/[' . $sDivider . ']/', $sLinkString, 0, PREG_SPLIT_NO_EMPTY);
     $sFinalSet = '';
 
     foreach ($aSet as $sKey) {
-        $sLink =  $sUrlPrefix . urlencode($bUriConvert ? title2uri($sKey) : $sKey);
+        $sLink = $sUrlPrefix . urlencode($bUriConvert ? title2uri($sKey) : $sKey);
         $sFinalSet .= '<a href="' . $sUrlPrefix . urlencode(title2uri(trim($sKey))) . '">' . $sKey . '</a> ';
     }
 
     return trim($sFinalSet, ' ');
 }
 
-function getRelatedWords (&$aInfo)
+function getRelatedWords(&$aInfo)
 {
     $sString = implode(' ', $aInfo);
-    $aRes = array_unique(explode(' ', $sString));
+    $aRes    = array_unique(explode(' ', $sString));
     $sString = implode(' ', $aRes);
+
     return addslashes($sString);
 }
 
 function getSiteInfo($sSourceUrl, $aProcessAdditionalTags = array())
 {
-    $aResult = array();
+    $aResult  = array();
     $sContent = bx_file_get_contents($sSourceUrl);
 
     if ($sContent) {
         $sCharset = '';
         preg_match("/<meta.+charset=([A-Za-z0-9-]+).+>/i", $sContent, $aMatch);
-        if (isset($aMatch[1]))
+        if (isset($aMatch[1])) {
             $sCharset = $aMatch[1];
+        }
 
-        if (preg_match("/<title[^>]*>(.*)<\/title>/i", $sContent, $aMatch))
+        if (preg_match("/<title[^>]*>(.*)<\/title>/i", $sContent, $aMatch)) {
             $aResult['title'] = $aMatch[1];
-        else
+        } else {
             $aResult['title'] = parse_url($sSourceUrl, PHP_URL_HOST);
+        }
 
         $aResult['description'] = bx_parse_html_tag($sContent, 'meta', 'name', 'description', 'content', $sCharset);
-        $aResult['keywords'] = bx_parse_html_tag($sContent, 'meta', 'name', 'keywords', 'content', $sCharset);
+        $aResult['keywords']    = bx_parse_html_tag($sContent, 'meta', 'name', 'keywords', 'content', $sCharset);
 
         if ($aProcessAdditionalTags) {
 
             foreach ($aProcessAdditionalTags as $k => $a) {
                 $aResult[$k] = bx_parse_html_tag(
-                    $sContent, 
-                    isset($a['tag']) ? $a['tag'] : 'meta', 
-                    isset($a['name_attr']) ? $a['name_attr'] : 'itemprop', 
-                    isset($a['name']) ? $a['name'] : $k, 
-                    isset($a['content_attr']) ? $a['content_attr'] : 'content', 
-                    $sCharset); 
+                    $sContent,
+                    isset($a['tag']) ? $a['tag'] : 'meta',
+                    isset($a['name_attr']) ? $a['name_attr'] : 'itemprop',
+                    isset($a['name']) ? $a['name'] : $k,
+                    isset($a['content_attr']) ? $a['content_attr'] : 'content',
+                    $sCharset);
             }
 
         }
@@ -1313,33 +1456,43 @@ function getSiteInfo($sSourceUrl, $aProcessAdditionalTags = array())
     return $aResult;
 }
 
-function bx_parse_html_tag ($sContent, $sTag, $sAttrNameName, $sAttrNameValue, $sAttrContentName, $sCharset = false)
+function bx_parse_html_tag($sContent, $sTag, $sAttrNameName, $sAttrNameValue, $sAttrContentName, $sCharset = false)
 {
-    if (!preg_match("/<{$sTag}\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"]\s+{$sAttrContentName}[='\" ]+([^('>\")]*)['\"][^>]*>/i", $sContent, $aMatch) || !isset($aMatch[1]))
-        preg_match("/<{$sTag}\s+{$sAttrContentName}[='\" ]+([^('>\")]*)['\"]\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"][^>]*>/i", $sContent, $aMatch);
+    if (!preg_match("/<{$sTag}\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"]\s+{$sAttrContentName}[='\" ]+([^('>\")]*)['\"][^>]*>/i",
+            $sContent, $aMatch) || !isset($aMatch[1])
+    ) {
+        preg_match("/<{$sTag}\s+{$sAttrContentName}[='\" ]+([^('>\")]*)['\"]\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"][^>]*>/i",
+            $sContent, $aMatch);
+    }
 
     $s = isset($aMatch[1]) ? $aMatch[1] : '';
 
-    if ($s && $sCharset)
+    if ($s && $sCharset) {
         $s = mb_convert_encoding($s, 'UTF-8', $sCharset);
+    }
 
     return $s;
 }
 
 /**
  * Parse time duration according to ISO 8601
+ *
  * @return number of seconds
  */
-function bx_parse_time_duration ($sContent)
+function bx_parse_time_duration($sContent)
 {
-    if (!$sContent || !is_string($sContent) || 'P' != strtoupper($sContent[0])) 
+    if (!$sContent || !is_string($sContent) || 'P' != strtoupper($sContent[0])) {
         return false;
+    }
 
-    $a = array('D' => 86400, 'H' => 3600, 'M' => '60', 'S' => 1);
+    $a      = array('D' => 86400, 'H' => 3600, 'M' => '60', 'S' => 1);
     $iTotal = 0;
-    foreach ($a as $sLetter => $iSec)
-        if (preg_match('/(\d+)[' . $sLetter . ']{1}/i', $sContent, $aMatch) && $aMatch[1])
+    foreach ($a as $sLetter => $iSec) {
+        if (preg_match('/(\d+)[' . $sLetter . ']{1}/i', $sContent, $aMatch) && $aMatch[1]) {
             $iTotal += (int)$aMatch[1] * $iSec;
+        }
+    }
+
     return $iTotal;
 }
 
@@ -1349,6 +1502,7 @@ function simple_cmp($a, $b)
     if ($a == $b) {
         return 0;
     }
+
     return ($a < $b) ? -1 : 1;
 }
 
@@ -1356,14 +1510,14 @@ function simple_cmp($a, $b)
 function return_bytes($val)
 {
     $val = trim($val);
-    if(strlen($val) < 2) {
+    if (strlen($val) < 2) {
         return $val;
     }
 
-    $last = strtolower($val{strlen($val)-1});
+    $last = strtolower($val{strlen($val) - 1});
 
     $val = (int)$val;
-    switch($last) {
+    switch ($last) {
         // The 'G' modifier is available since PHP 5.1.0
         case 'k':
             $val *= 1024;
@@ -1375,6 +1529,7 @@ function return_bytes($val)
             $val *= 1024 * 1024 * 1024;
             break;
     }
+
     return $val;
 }
 
@@ -1382,14 +1537,15 @@ function return_bytes($val)
 function genRndPwd($iLength = 8, $bSpecialCharacters = true)
 {
     $sPassword = '';
-    $sChars = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    $sChars    = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-    if($bSpecialCharacters === true)
+    if ($bSpecialCharacters === true) {
         $sChars .= "!?=/&+,.";
+    }
 
-    srand((double)microtime()*1000000);
-    for($i = 0; $i < $iLength; $i++) {
-        $x = mt_rand(0, strlen($sChars) -1);
+    srand((double)microtime() * 1000000);
+    for ($i = 0; $i < $iLength; $i++) {
+        $x = mt_rand(0, strlen($sChars) - 1);
         $sPassword .= $sChars{$x};
     }
 
@@ -1411,35 +1567,40 @@ function encryptUserPwd($sPwd, $sSalt)
 // Advanced stripslashes. Strips strings and arrays
 function stripslashes_adv($s)
 {
-    if (is_string($s))
+    if (is_string($s)) {
         return stripslashes($s);
-    elseif (is_array($s)) {
+    } elseif (is_array($s)) {
         foreach ($s as $k => $v) {
             $s[$k] = stripslashes($v);
         }
+
         return $s;
-    } else
+    } else {
         return $s;
+    }
 }
 
-function bx_get ($sName)
+function bx_get($sName)
 {
-    if (isset($_GET[$sName]))
+    if (isset($_GET[$sName])) {
         return $_GET[$sName];
-    elseif (isset($_POST[$sName]))
+    } elseif (isset($_POST[$sName])) {
         return $_POST[$sName];
-    else
+    } else {
         return false;
+    }
 }
 
-function bx_encode_url_params ($a, $aExcludeKeys = array (), $aOnlyKeys = false)
+function bx_encode_url_params($a, $aExcludeKeys = array(), $aOnlyKeys = false)
 {
     $s = '';
     foreach ($a as $sKey => $sVal) {
-        if (in_array($sKey, $aExcludeKeys))
+        if (in_array($sKey, $aExcludeKeys)) {
             continue;
-        if (false !== $aOnlyKeys && !in_array($sKey, $aOnlyKeys))
+        }
+        if (false !== $aOnlyKeys && !in_array($sKey, $aOnlyKeys)) {
             continue;
+        }
         if (is_array($sVal)) {
             foreach ($sVal as $sSubVal) {
                 $s .= rawurlencode($sKey) . '[]=' . rawurlencode(is_array($sSubVal) ? 'array' : $sSubVal) . '&';
@@ -1448,79 +1609,93 @@ function bx_encode_url_params ($a, $aExcludeKeys = array (), $aOnlyKeys = false)
             $s .= rawurlencode($sKey) . '=' . rawurlencode($sVal) . '&';
         }
     }
+
     return $s;
 }
 
-function bx_append_url_params ($sUrl, $mixedParams)
+function bx_append_url_params($sUrl, $mixedParams)
 {
     $sParams = false == strpos($sUrl, '?') ? '?' : '&';
 
     if (is_array($mixedParams)) {
-        foreach($mixedParams as $sKey => $sValue)
+        foreach ($mixedParams as $sKey => $sValue) {
             $sParams .= $sKey . '=' . $sValue . '&';
+        }
         $sParams = substr($sParams, 0, -1);
     } else {
         $sParams .= $mixedParams;
     }
+
     return $sUrl . $sParams;
 }
 
 function bx_rrmdir($directory)
 {
-    if (substr($directory,-1) == "/")
-        $directory = substr($directory,0,-1);
+    if (substr($directory, -1) == "/") {
+        $directory = substr($directory, 0, -1);
+    }
 
-    if (!file_exists($directory) || !is_dir($directory))
+    if (!file_exists($directory) || !is_dir($directory)) {
         return false;
-    elseif (!is_readable($directory))
+    } elseif (!is_readable($directory)) {
         return false;
+    }
 
-    if (!($directoryHandle = opendir($directory)))
+    if (!($directoryHandle = opendir($directory))) {
         return false;
+    }
 
     while ($contents = readdir($directoryHandle)) {
         if ($contents != '.' && $contents != '..') {
             $path = $directory . "/" . $contents;
 
-            if (is_dir($path))
+            if (is_dir($path)) {
                 bx_rrmdir($path);
-            else
+            } else {
                 unlink($path);
+            }
         }
     }
 
     closedir($directoryHandle);
 
-    if (!rmdir($directory))
+    if (!rmdir($directory)) {
         return false;
+    }
 
     return true;
 }
 
-function bx_clear_folder ($sPath, $aExts = array ())
+function bx_clear_folder($sPath, $aExts = array())
 {
-    if (substr($$sPath,-1) == "/")
-        $sPath = substr($sPath,0,-1);
+    if (substr($$sPath, -1) == "/") {
+        $sPath = substr($sPath, 0, -1);
+    }
 
-    if (!file_exists($sPath) || !is_dir($sPath))
+    if (!file_exists($sPath) || !is_dir($sPath)) {
         return false;
-    elseif (!is_readable($sPath))
+    } elseif (!is_readable($sPath)) {
         return false;
+    }
 
-    if (!($h = opendir($sPath)))
+    if (!($h = opendir($sPath))) {
         return false;
+    }
 
     while ($sFile = readdir($h)) {
-        if ('.' == $sFile || '..' == $sFile)
+        if ('.' == $sFile || '..' == $sFile) {
             continue;
+        }
 
         $sFullPath = $sPath . '/' . $sFile;
 
-        if (is_dir($sFullPath))
+        if (is_dir($sFullPath)) {
             continue;
+        }
 
-        if (!$aExts || (($sExt = pathinfo($sFullPath, PATHINFO_EXTENSION)) && in_array($sExt, $aExts)))
+        if (!$aExts || (($sExt = pathinfo($sFullPath, PATHINFO_EXTENSION)) && in_array($sExt, $aExts))) {
             @unlink($sFullPath);
+        }
     }
 
     closedir($h);
@@ -1528,31 +1703,40 @@ function bx_clear_folder ($sPath, $aExts = array ())
     return true;
 }
 
-function bx_ltrim_str ($sString, $sPrefix, $sReplace = '') {
-    if ($sReplace && substr($sString, 0, strlen($sReplace)) == $sReplace)
+function bx_ltrim_str($sString, $sPrefix, $sReplace = '')
+{
+    if ($sReplace && substr($sString, 0, strlen($sReplace)) == $sReplace) {
         return $sString;
-    if (substr($sString, 0, strlen($sPrefix)) == $sPrefix)
+    }
+    if (substr($sString, 0, strlen($sPrefix)) == $sPrefix) {
         return $sReplace . substr($sString, strlen($sPrefix));
-    return $sString;
-} 
+    }
 
-function bx_member_ip_store ($iMemberId, $sIP = false) {
-    if (getParam('enable_member_store_ip') != 'on')
+    return $sString;
+}
+
+function bx_member_ip_store($iMemberId, $sIP = false)
+{
+    if (getParam('enable_member_store_ip') != 'on') {
         return false;
+    }
 
     $sCurLongIP = sprintf("%u", ip2long($sIP ? $sIP : getVisitorIP()));
+
     return db_res("INSERT INTO `sys_ip_members_visits` SET `MemberID` = " . (int)$iMemberId . ", `From` = '" . $sCurLongIP . "', `DateTime` = NOW()");
 }
 
-function bx_member_ip_get_last ($iMemberId) {
+function bx_member_ip_get_last($iMemberId)
+{
     $sLongIP = db_value("SELECT `From` FROM `sys_ip_members_visits` WHERE `MemberID` = " . (int)$iMemberId . " ORDER BY `DateTime` DESC");
+
     return long2ip($sLongIP);
 }
 
 /**
  * Show HTTP 503 service unavailable error and exit
  */
-function bx_show_service_unavailable_error_and_exit ($sMsg = false, $iRetryAfter = 86400)
+function bx_show_service_unavailable_error_and_exit($sMsg = false, $iRetryAfter = 86400)
 {
     header('HTTP/1.0 503 Service Unavailable', true, 503);
     header('Retry-After: 600');
@@ -1562,58 +1746,66 @@ function bx_show_service_unavailable_error_and_exit ($sMsg = false, $iRetryAfter
 
 function bx_mkdir_r($sDirName, $rights = 0777)
 {
-    $sDirName = bx_ltrim_str ($sDirName, BX_DIRECTORY_PATH_ROOT);
-    $aDirs = explode('/', $sDirName);
-    $sDir = '';
+    $sDirName = bx_ltrim_str($sDirName, BX_DIRECTORY_PATH_ROOT);
+    $aDirs    = explode('/', $sDirName);
+    $sDir     = '';
     foreach ($aDirs as $sPart) {
         $sDir .= $sPart . '/';
-        if (!is_dir(BX_DIRECTORY_PATH_ROOT . $sDir) && strlen(BX_DIRECTORY_PATH_ROOT . $sDir) > 0 && !file_exists(BX_DIRECTORY_PATH_ROOT . $sDir))
-            if (!mkdir(BX_DIRECTORY_PATH_ROOT . $sDir, $rights))
+        if (!is_dir(BX_DIRECTORY_PATH_ROOT . $sDir) && strlen(BX_DIRECTORY_PATH_ROOT . $sDir) > 0 && !file_exists(BX_DIRECTORY_PATH_ROOT . $sDir)) {
+            if (!mkdir(BX_DIRECTORY_PATH_ROOT . $sDir, $rights)) {
                 return false;
+            }
+        }
     }
+
     return true;
 }
 
 /**
  * Returns current site protocol http:// or https://
  */
-function bx_proto ()
+function bx_proto()
 {
     return 0 == strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https' : 'http';
 }
 
 /**
  * Wrap in A tag links in TEXT string
+ *
  * @param $sHtmlOrig - text string without tags
- * @param $sAttrs - attributes string to add to the added A tag
+ * @param $sAttrs    - attributes string to add to the added A tag
  * @return string where all links are wrapped in A tag
  */
 function bx_linkify($text, $sAttrs = '', $bHtmlSpecialChars = false)
 {
-    if ($bHtmlSpecialChars)
+    if ($bHtmlSpecialChars) {
         $text = htmlspecialchars($text, ENT_NOQUOTES, 'UTF-8');
+    }
 
     $re = "@\b((https?://)|(www\.))(([0-9a-zA-Z_!~*'().&=+$%-]+:)?[0-9a-zA-Z_!~*'().&=+$%-]+\@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-zA-Z_!~*'()-]+\.)*([0-9a-zA-Z][0-9a-zA-Z-]{0,61})?[0-9a-zA-Z]\.[a-zA-Z]{2,6})(:[0-9]{1,4})?((/[0-9a-zA-Z_!~*'().;?:\@&=+$,%#-]+)*/?)@";
     preg_match_all($re, $text, $matches, PREG_OFFSET_CAPTURE);
 
     $matches = $matches[0];
 
-    if ($i = count($matches))
+    if ($i = count($matches)) {
         $bAddNofollow = getParam('sys_antispam_add_nofollow') == 'on';
+    }
 
-    while ($i--)
-    {
+    while ($i--) {
         $url = $matches[$i][0];
-        if (!preg_match('@^https?://@', $url))
-            $url = 'http://'.$url;
+        if (!preg_match('@^https?://@', $url)) {
+            $url = 'http://' . $url;
+        }
 
         if (strncmp(BX_DOL_URL_ROOT, $url, strlen(BX_DOL_URL_ROOT)) != 0) {
             $sAttrs .= ' target="_blank" ';
-            if ($bAddNofollow)
+            if ($bAddNofollow) {
                 $sAttrs .= ' rel="nofollow" ';
+            }
         }
 
-        $text = substr_replace($text, '<a ' . $sAttrs . ' href="'.$url.'">'.$matches[$i][0].'</a>', $matches[$i][1], strlen($matches[$i][0]));
+        $text = substr_replace($text, '<a ' . $sAttrs . ' href="' . $url . '">' . $matches[$i][0] . '</a>',
+            $matches[$i][1], strlen($matches[$i][0]));
     }
 
     return $text;
@@ -1621,14 +1813,16 @@ function bx_linkify($text, $sAttrs = '', $bHtmlSpecialChars = false)
 
 /**
  * Wrap in A tag links in HTML string, which aren't wrapped in A tag yet
+ *
  * @param $sHtmlOrig - HTML string
- * @param $sAttrs - attributes string to add to the added A tag
+ * @param $sAttrs    - attributes string to add to the added A tag
  * @return modified HTML string, in case of errror original string is returned
  */
-function bx_linkify_html($sHtmlOrig, $sAttrs = '') 
+function bx_linkify_html($sHtmlOrig, $sAttrs = '')
 {
-    if (!trim($sHtmlOrig))
+    if (!trim($sHtmlOrig)) {
         return $sHtmlOrig;
+    }
 
     $sId = 'bx-linkify-' . md5(microtime());
     $dom = new DOMDocument();
@@ -1641,26 +1835,31 @@ function bx_linkify_html($sHtmlOrig, $sAttrs = '')
         $text->parentNode->replaceChild($frag, $text);
     }
 
-    if (version_compare(PHP_VERSION, '5.3.6') >= 0)
+    if (version_compare(PHP_VERSION, '5.3.6') >= 0) {
         $s = $dom->saveHTML($dom->getElementById($sId));
-    else
+    } else {
         $s = $dom->saveXML($dom->getElementById($sId), LIBXML_NOEMPTYTAG);
+    }
 
     if (false === $s) // in case of error return original string
+    {
         return $sHtmlOrig;
+    }
 
-    if (false !== ($iPos = mb_strpos($s, '<html><body>')) && $iPos < mb_strpos($s, $sId))
-        $s = mb_substr($s, $iPos + 12, -15); // strip <html><body> tags and everything before them
+    if (false !== ($iPos = mb_strpos($s, '<html><body>')) && $iPos < mb_strpos($s, $sId)) {
+        $s = mb_substr($s, $iPos + 12, -15);
+    } // strip <html><body> tags and everything before them
 
     return mb_substr($s, 54, -6); // strip added tags
 }
 
 /**
  * Transform string to method name string, for example it changes 'some_method' string to 'SomeMethod' string
+ *
  * @param string where words are separated with underscore
  * @return string where every word begins with capital letter
  */
-function bx_gen_method_name ($s, $sWordsDelimiter = '_')
+function bx_gen_method_name($s, $sWordsDelimiter = '_')
 {
     return str_replace(' ', '', ucwords(str_replace($sWordsDelimiter, ' ', $s)));
 }

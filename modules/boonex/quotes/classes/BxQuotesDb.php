@@ -30,7 +30,7 @@ class BxQuotesDb extends BxDolModuleDb
     }
     function getQuote($iID)
     {
-        return $this->getRow("SELECT * FROM `" . BX_QUOTES_TABLE . "` WHERE `ID`='{$iID}' LIMIT 1");
+        return $this->getRow("SELECT * FROM `" . BX_QUOTES_TABLE . "` WHERE `ID`= ? LIMIT 1", [$iID]);
     }
     function getAllQuotes()
     {
@@ -38,6 +38,6 @@ class BxQuotesDb extends BxDolModuleDb
     }
     function deleteUnit($iID)
     {
-        return $this->query("DELETE FROM `" . BX_QUOTES_TABLE . "` WHERE `ID`='{$iID}' LIMIT 1");
+        return $this->query("DELETE FROM `" . BX_QUOTES_TABLE . "` WHERE `ID`= ? LIMIT 1", [$iID]);
     }
 }

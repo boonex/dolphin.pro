@@ -167,17 +167,24 @@ function publishRecordedVideo($sUserId, $sTitle, $sCategory, $sTags, $sDesc, $aF
 
 function initVideo($sId, $sTitle, $sCategory, $sTags, $sDesc)
 {
-    global $oDb;
     global $sModule;
-    global $oDb;
+
+    $oDb = BxDolDb::getInstance();
 
     $sUri = video_genUri($sTitle);
     $sUriPart = empty($sUri) ? "" : "`Uri`='" . $sUri . "', ";
 
     $sDBModule = DB_PREFIX . ucfirst($sModule);
 
-    getResult("UPDATE `" . $sDBModule . "Files` SET `Categories`='" . $sCategory . "', `Title`='" . $sTitle . "', " . $sUriPart . "`Tags`='" . $sTags . "', `Description`='" . $sDesc . "' WHERE `ID`='" . $sId . "'");
-    return mysql_affected_rows($oDb->rLink) > 0 ? true : false;
+    getResult("UPDATE `" . $sDBModule . "Files` SET `Categories`= ?, `Title`= ?, " . $sUriPart . "`Tags`= ?, `Description`= ? WHERE `ID`= ?", [
+        $sCategory,
+        $sTitle,
+        $sTags,
+        $sDesc,
+        $sId
+    ]);
+
+    return $oDb->getAffectedRows() > 0 ? true : false;
 }
 
 function getVideoSize($sInputFile)
@@ -396,15 +403,16 @@ function deleteTempFiles($sUserId, $bSourceOnly = false, $aFilesConfig = array()
 function deleteVideo($sFile, $aFilesConfig = array())
 {
     global $sFilesPath;
-    global $oDb;
     global $sModule;
+
+    $oDb = BxDolDb::getInstance();
 
     if (!$aFilesConfig)
         $aFilesConfig = BxDolService::call('videos', 'get_files_config');
 
     $sDBModule = DB_PREFIX . ucfirst($sModule);
     getResult("DELETE FROM `" . $sDBModule . "Files` WHERE `ID`='" . $sFile . "'");
-    if(mysql_affected_rows($oDb->rLink))
+    if($oDb->getAffectedRows())
         video_parseTags($sFile);
     $sFileName = $sFilesPath . $sFile;
     @unlink($sFileName);

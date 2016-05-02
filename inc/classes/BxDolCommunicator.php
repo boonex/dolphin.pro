@@ -165,7 +165,7 @@
                 ";
 
                 $rResult = db_res($sQuery);
-                while( true == ($aRow = mysql_fetch_assoc($rResult)) ) {
+                while( true == ($aRow = $rResult->fetch()) ) {
                     $sExtType = ( !empty($aRequestTypes['specific_key']) and $sAdditionalField )
                         ? ' ' . _t( $aRequestTypes['specific_key'], $aRow[$sAdditionalField] )
                         : null ;

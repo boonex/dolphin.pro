@@ -82,7 +82,7 @@
             $sQuery = "SELECT `ID`, `" . implode('`, `', $aFields ) . "` FROM `" . $this->sDbTable . "` WHERE `Active`='1' ORDER BY `Order`";
             $rMenu = db_res($sQuery);
 
-            while($aItem = mysql_fetch_assoc($rMenu)) {
+            while($aItem = $rMenu->fetch()) {
                 $sEval .= "  " . str_pad( $aItem['ID'], 2 ) . " => array(\n";
 
                 foreach( $aFields as $sKey => $sField ) {

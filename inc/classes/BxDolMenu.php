@@ -327,7 +327,7 @@ class BxDolMenu
         ";
 
         $rMenu = db_res( $sQuery );
-        while( $aMenuItem = mysql_fetch_assoc( $rMenu ) ) {
+        while( $aMenuItem =  $rMenu ->fetch() ) {
             $sEval .= "  " . str_pad( $aMenuItem['ID'], 2 ) . " => array(\n";
 
             foreach( $aFields as $sKey => $sField ) {
@@ -364,7 +364,7 @@ class BxDolMenu
             ";
 
             $rCMenu = db_res( $sQuery );
-            while( $aMenuItem = mysql_fetch_assoc( $rCMenu ) ) {
+            while( $aMenuItem =  $rCMenu ->fetch() ) {
                 $sEval .= "  " . str_pad( $aMenuItem['ID'], 2 ) . " => array(\n";
 
                 foreach( $aFields as $sKey => $sField ) {

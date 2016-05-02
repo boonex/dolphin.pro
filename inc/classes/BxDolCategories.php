@@ -85,6 +85,7 @@ class BxDolCategories extends BxDolTags
 
     function getTagList($aParam)
     {
+        // pdo dynamic bindings
         $sLimit = '';
         $aTotalTags = array();
         $sGroupBy = "GROUP BY `{$this->aTagFields['tag']}`";

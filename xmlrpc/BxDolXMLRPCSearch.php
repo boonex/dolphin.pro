@@ -40,7 +40,7 @@ class BxDolXMLRPCSearch
             ORDER BY `DateLastNav` DESC
             LIMIT $iStart, $iPP");
 
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aProfiles[] = new xmlrpcval(BxDolXMLRPCUtil::fillProfileArray($aRow, 'thumb'), 'struct');
 
         return new xmlrpcval ($aProfiles, "array");
@@ -93,7 +93,7 @@ class BxDolXMLRPCSearch
             ORDER BY `distance` ASC
             LIMIT $iStart, $iPP");
 
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aProfiles[] = new xmlrpcval(BxDolXMLRPCUtil::fillProfileArray($aRow, 'thumb'), 'struct');
 
         return new xmlrpcval ($aProfiles, "array");
@@ -132,7 +132,7 @@ class BxDolXMLRPCSearch
             ORDER BY `DateLastNav` DESC
             LIMIT $iStart, $iPP");
 
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aProfiles[] = new xmlrpcval(BxDolXMLRPCUtil::fillProfileArray($aRow, 'thumb'), 'struct');
 
         return new xmlrpcval ($aProfiles, "array");

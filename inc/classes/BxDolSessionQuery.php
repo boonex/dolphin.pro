@@ -25,7 +25,7 @@ class BxDolSessionQuery extends BxDolDb
     }
     function exists($sId)
     {
-        $aSession = $this->getRow("SELECT `id`, `user_id`, `data` FROM `" . $this->sTable . "` WHERE `id`='" . $sId . "' LIMIT 1");
+        $aSession = $this->getRow("SELECT `id`, `user_id`, `data` FROM `" . $this->sTable . "` WHERE `id`= ? LIMIT 1", [$sId]);
         return !empty($aSession) ? $aSession : false;
     }
     function save($sId, $aSet)

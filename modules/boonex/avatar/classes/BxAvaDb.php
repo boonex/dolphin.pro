@@ -48,7 +48,7 @@ class BxAvaDb extends BxDolModuleDb
         $sWhere = '';
         if (!$isAdmin)
             $sWhere = " AND `author_id` = '$iOwner' ";
-        return $this->getRow ("SELECT * FROM `" . BX_AVATAR_TABLE_PREFIX . "images` WHERE `id` = $iId $sWhere LIMIT 1");
+        return $this->getRow ("SELECT * FROM `" . BX_AVATAR_TABLE_PREFIX . "images` WHERE `id` = ? $sWhere LIMIT 1", [$iId]);
     }
 
     function getAvatarsByAuthor($iProfileId)

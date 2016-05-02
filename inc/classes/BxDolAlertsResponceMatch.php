@@ -50,7 +50,7 @@ class BxDolAlertsResponceMatch extends BxDolAlertsResponse
             $oDb->query("DELETE FROM `sys_profiles_match`");
 
             // get send mails
-            $aSendMails = $oDb->getRow("SELECT `profiles_match` FROM `sys_profiles_match_mails` WHERE `profile_id` = $iProfileId");
+            $aSendMails = $oDb->getRow("SELECT `profiles_match` FROM `sys_profiles_match_mails` WHERE `profile_id` = ?", [$iProfileId]);
             $aSend = !empty($aSendMails) ? unserialize($aSendMails['profiles_match']) : array();
 
             $aProfiles = getMatchProfiles($iProfileId);

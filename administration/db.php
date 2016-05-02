@@ -196,8 +196,8 @@ function getTablesBackupTools($status_text)
     // All tables of Database
     $aTablesOptions = array();
     $tbls = db_list_tables();
-    while ($tbl = mysql_fetch_array($tbls))  {
-        $aTablesOptions[$tbl['0']] = $tbl['0'];
+    foreach ($tbls as $tbl) {
+        $aTablesOptions[$tbl] = $tbl;
     }
 
     $sStatusText = ($status_text and isset($_POST['TablesBackup'])) ? $status_text : '';

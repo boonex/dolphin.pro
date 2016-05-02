@@ -228,7 +228,7 @@ class BxBaseProfileGenerator extends BxDolProfile
 
         $sAddSQL = ($sOldStyle == true) ? " AND `Func`='PFBlock' " : '';
         $rBlocks = db_res( "SELECT * FROM `sys_page_compose` WHERE `Page` = 'profile' AND `Column`=$column AND FIND_IN_SET( '$sVisible', `Visible` ) {$sAddSQL} ORDER BY `Order`" );
-        while( $aBlock = mysql_fetch_assoc( $rBlocks ) ) {
+        while( $aBlock =  $rBlocks ->fetch() ) {
             $func = 'showBlock' . $aBlock['Func'];
             $this->$func( $aBlock['Caption'], $aBlock['Content'] );
         }
@@ -728,7 +728,7 @@ class BxBaseProfileGenerator extends BxDolProfile
             ";
 
             $vResult = db_res( $sQuery );
-            while( $aRow = mysql_fetch_assoc( $vResult ) )
+            while( $aRow =  $vResult ->fetch() )
                 $this->aMutualFriends[ $aRow['friendID'] ] = $aRow['NickName'];
         }
     }
@@ -951,7 +951,7 @@ class BxBaseProfileGenerator extends BxDolProfile
             $aProfiles = array();
             $aProfileStatuses = array();
             $rProfiles = db_res($sQuery);
-            while ($aProfile = mysql_fetch_assoc($rProfiles)) {
+            while ($aProfile = $rProfiles->fetch()) {
                 $aProfiles[] = $aProfile['ID'];
                 $aProfileStatuses[$aProfile['ID']] = $aProfile['is_online'];
             }

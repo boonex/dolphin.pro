@@ -19,35 +19,35 @@ class BxDolXMLRPCUtil
         $r = db_res ("SELECT `p`.`ID` FROM `Profiles` AS `p`
             INNER JOIN `sys_fave_list` AS `h` ON (`h`.`Profile` = `p`.`ID`)
             WHERE `h`.`ID` = $iId");
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aAll[$aRow['ID']] = $aRow;
 
         // mail contacts received
         $r = db_res ("SELECT `p`.`ID` FROM `Profiles` AS `p`
             INNER JOIN `sys_messages` AS `m` ON (`m`.`Sender` = `p`.`ID`)
             WHERE `p`.`ID` != $iId AND `m`.`Recipient` = $iId");
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aAll[$aRow['ID']] = $aRow;
 
         // mail contacts sent
         $r = db_res ("SELECT `p`.`ID` FROM `Profiles` AS `p`
             INNER JOIN `sys_messages` AS `m` ON (`m`.`Recipient` = `p`.`ID`)
             WHERE `p`.`ID` != $iId AND `m`.`Sender` = $iId");
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aAll[$aRow['ID']] = $aRow;
 
         // friends 1
         $r = db_res ("SELECT `p`.`ID` FROM `sys_friend_list` AS `fr`
             LEFT JOIN `Profiles` AS `p` ON (`p`.`ID` = `fr`.`Profile`)
             WHERE `fr`.`ID` = '$iId' AND `fr`.`Profile` != $iId AND `fr`.`Check` = '1'");
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aAll[$aRow['ID']] = $aRow;
 
         // friends 2
         $r = db_res ("SELECT `p`.`ID` FROM `sys_friend_list` AS `fr`
             LEFT JOIN `Profiles` AS `p` ON (`p`.`ID` = `fr`.`ID`)
             WHERE `fr`.`Profile` = '$iId' AND `fr`.`ID` != $iId AND `fr`.`Check` = '1'");
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aAll[$aRow['ID']] = $aRow;
 
         bx_import('BxDolAlerts');
@@ -188,7 +188,7 @@ class BxDolXMLRPCUtil
             $aKeys[$k] = '{' . $v . '}';
 
         $aMenu = array ();
-        $aRecords = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_menu_mobile` WHERE `page` = '$sMenu' AND `active` = 1 ORDER BY `order`");
+        $aRecords = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_menu_mobile` WHERE `page` = ? AND `active` = 1 ORDER BY `order`", [$sMenu]);
 
         bx_import('BxDolAlerts');
         $oZ = new BxDolAlerts('mobile', 'menu', 0, 0, array('menu' => $sMenu, 'data' => &$aRecords, 'markers_replace' => &$aMarkersReplace));

@@ -89,7 +89,12 @@ class TagsCalendar extends BxTemplCalendar
 
         return $oDb->getAll("SELECT *, DAYOFMONTH(`Date`) AS `Day`
             FROM `sys_tags`
-            WHERE `Date` >= TIMESTAMP('{$this->iYear}-{$this->iMonth}-1') AND `Date` < TIMESTAMP('{$this->iNextYear}-{$this->iNextMonth}-1')");
+            WHERE `Date` >= TIMESTAMP(?) AND `Date` < TIMESTAMP(?)",
+            [
+                "{$this->iYear}-{$this->iMonth}-1",
+                "{$this->iNextYear}-{$this->iNextMonth}-1"
+            ]
+        );
     }
 
     function getBaseUri()
