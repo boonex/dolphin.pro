@@ -468,13 +468,15 @@ class BxBaseFunctions
         		'content' => array(
         			'usr_thumb_url0' => $sThumbUrl,
         			'usr_thumb_url0_2x' => $sThumbTwiceUrl,
+        			'usr_thumb_alt0' => $sUserTitle,
         		)
         	),
         	'bx_if:show_thumbnail_image2' => array(
         		'condition' => $bThumb2,
         		'content' => array(
         			'usr_thumb_url1' => $sThumbUrlCouple,
-        			'usr_thumb_url1_2x' => $sThumbTwiceUrlCouple
+        			'usr_thumb_url1_2x' => $sThumbTwiceUrlCouple,
+        			'usr_thumb_alt1' => $sUserTitle,
         		)
         	),
         	'bx_if:show_thumbnail_letter1' => array(
