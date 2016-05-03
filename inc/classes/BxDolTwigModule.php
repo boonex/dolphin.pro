@@ -1294,7 +1294,7 @@ class BxDolTwigModule extends BxDolModule
         }
 
         $sCss = '';
-        $sUri = $this->_oConfig->getUri();
+        $sDbPrefix = $this->_oConfig->getDbPrefix();
         $sBaseUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
         $sNoPhoto = $this->_oTemplate->getIconUrl('no-photo.png');
         if($aEvent['js_mode'])
@@ -1306,16 +1306,16 @@ class BxDolTwigModule extends BxDolModule
         $sClass = $this->_aModule['class_prefix'] . 'Voting';
         $oVoting = new $sClass ($this->_sPrefix, 0, 0);
 
-        $sTextWallObject = _t('_bx_' . $sUri . '_wall_object');
+        $sTextWallObject = _t('_' . $sDbPrefix . '_wall_object');
 
         $sTmplName = isset($aParams['templates']['main']) ? $aParams['templates']['main'] : 'modules/boonex/wall/|timeline_comment.html';
         return array(
-            'title' => _t('_bx_' . $sUri . '_wall_added_new_title_comment', $sOwner, $sTextWallObject),
+            'title' => _t('_' . $sDbPrefix . '_wall_added_new_title_comment', $sOwner, $sTextWallObject),
             'description' => $aComment['cmt_text'],
             'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
         		'mod_prefix' => $this->_sPrefix,
 	            'cpt_user_name' => $sOwner,
-	            'cpt_added_new' => _t('_bx_' . $sUri . '_wall_added_new_comment'),
+	            'cpt_added_new' => _t('_' . $sDbPrefix . '_wall_added_new_comment'),
 	            'cpt_object' => $sTextWallObject,
 	            'cpt_item_url' => $sBaseUrl . $aItem[$this->_oDb->_sFieldUri],
 	            'cnt_comment_text' => $aComment['cmt_text'],
