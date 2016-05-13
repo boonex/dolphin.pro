@@ -31,8 +31,8 @@ function getOnlineUsersInfo($sUserId, $bInit)
 
     $rResult = getUsersMedia($aFullUsers);
     if($rResult != null) {
-        for($i=0; $i<mysql_num_rows($rResult); $i++) {
-            $aUser = mysql_fetch_assoc($rResult);
+        for($i=0; $i<$rResult->rowCount(); $i++) {
+            $aUser = $rResult->fetch();
             $aUserInfo = getUserInfo($aUser['ID']);
             $sOnline = in_array($aUser['ID'], $aActive['online']) ? TRUE_VAL : FALSE_VAL;
             $sFriend = in_array($aUser['ID'], $aFriends) ? TRUE_VAL : FALSE_VAL;

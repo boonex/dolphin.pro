@@ -32,7 +32,7 @@ class BxDolXMLRPCFriends
             ORDER BY `Profiles`.`Avatar` DESC");*/
 
         $aProfiles = array ();
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aProfiles[] = new xmlrpcval(BxDolXMLRPCUtil::fillProfileArray($aRow, 'thumb'), 'struct');
 
         return new xmlrpcval ($aProfiles, "array");
@@ -52,7 +52,7 @@ class BxDolXMLRPCFriends
             ORDER BY `Profiles`.`NickName` ASC");
 
         $aProfiles = array ();
-        while ($aRow = mysql_fetch_array ($r))
+        while ($aRow = $r->fetch())
             $aProfiles[] = new xmlrpcval(BxDolXMLRPCUtil::fillProfileArray($aRow, 'thumb'), 'struct');
 
         return new xmlrpcval ($aProfiles, "array");

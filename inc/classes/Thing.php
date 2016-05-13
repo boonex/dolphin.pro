@@ -2,7 +2,5 @@
 
 class Thing
 {
-    function Thing ()
-    {
-    }
+    function __construct() {}
 }

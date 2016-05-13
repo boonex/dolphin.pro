@@ -9,9 +9,9 @@ define('PROFILE_SOUND_CATEGORY', 'Profile sounds');
 
 class BxSoundsModule extends BxDolFilesModule
 {
-    function BxSoundsModule (&$aModule)
+    function __construct (&$aModule)
     {
-        parent::BxDolFilesModule($aModule);
+        parent::__construct($aModule);
 
         // add more sections for administration
         $this->aSectionsAdmin['processing'] = array('exclude_btns' => 'all');

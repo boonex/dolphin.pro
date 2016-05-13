@@ -11,8 +11,8 @@ class BxDolphConDb extends BxDolConnectDb
     /**
      * Constructor.
      */
-    function BxDolphConDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolConnectDb($oConfig);
+        parent::__construct($oConfig);
     }
 }

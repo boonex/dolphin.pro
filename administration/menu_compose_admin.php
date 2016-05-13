@@ -135,7 +135,7 @@ $sComposerInit = "
 ";
 
 $iIndex = 0;
-while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
+while(($aTopItem = $rTopItems->fetch()) !== false) {
     $sTopestTitle = bx_js_string(_t($aTopItem['title']), BX_ESCAPE_STR_APOS);
     $sComposerInit .= "
 
@@ -145,7 +145,7 @@ while(($aTopItem = mysql_fetch_assoc($rTopItems)) !== false) {
 
     $iSubIndex = 0;
     $rCustomItems = db_res( $sQuery );
-    while(($aCustomItem = mysql_fetch_assoc($rCustomItems)) !== false) {
+    while(($aCustomItem = $rCustomItems->fetch()) !== false) {
         $sCustomTitle = bx_js_string(_t($aCustomItem['title']), BX_ESCAPE_STR_APOS);
         $sComposerInit .= "
         aCustomItems[$iIndex][" . ($iSubIndex++) . "] = [{$aCustomItem['id']}, '{$sCustomTitle}', 3];";

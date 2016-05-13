@@ -14,7 +14,7 @@ class BxDb extends Mistake
     /*
     *set database parameters and connect to it
     */
-    function BxDb($dbname, $user, $password, $host = '', $port = '', $socket = '')
+    function __construct($dbname, $user, $password, $host = '', $port = '', $socket = '')
     {
         $this->host = $host;
         $this->port = $port;
@@ -22,7 +22,7 @@ class BxDb extends Mistake
         $this->dbname = $dbname;
         $this->user = $user;
         $this->password = $password;
-        $this->current_arr_type = MYSQL_ASSOC;
+        $this->current_arr_type = PDO::FETCH_ASSOC;
 
         //	connect to db automatically
         $this->connect();
@@ -40,7 +40,7 @@ class BxDb extends Mistake
         $this->link = @mysql_connect($full_host, $this->user, $this->password) or $this->error('Cannot connect to database');
         if (!$this->link) {
             echo 'Could not connect to MySQL database. <br />Did you properly edit <b>inc/header.inc.php</b> file ?';
-            exit;;
+            exit;
         }
 
         if (!$this->select_db()) {
@@ -67,15 +67,15 @@ class BxDb extends Mistake
     /**
      * execute sql query and return one row result
      */
-    function getRow($query, $arr_type = MYSQL_ASSOC)
+    function getRow($query, $arr_type = PDO::FETCH_ASSOC)
     {
         if(!$query)
             return array();
-        if($arr_type != MYSQL_ASSOC && $arr_type != MYSQL_NUM)
-            $arr_type = MYSQL_ASSOC;
+        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM)
+            $arr_type = PDO::FETCH_ASSOC;
         $res = mysql_query($query, $this->link) or $this->error('Cannot complete query (getRow)');
         $arr_res = array();
-        if($res && mysql_num_rows($res)) {
+        if($res && $res->rowCount()) {
             $arr_res = mysql_fetch_array($res, $arr_type);
             mysql_free_result($res);
         }
@@ -91,7 +91,7 @@ class BxDb extends Mistake
             return false;
         $res = mysql_query($query, $this->link) or $this->error("Cannot complete query [$query] (getOne)");
         $arr_res = array();
-        if($res && mysql_num_rows($res))
+        if($res && $res->rowCount())
             $arr_res = mysql_fetch_array($res);
         if(count($arr_res))
             return $arr_res[0];
@@ -105,7 +105,7 @@ class BxDb extends Mistake
             return array();
         $res = mysql_query($query, $this->link) or $this->error('Cannot complete query (getRow): <br /><br />'.$query.'<br /><br />');
         $arr_res = array();
-        if($res && mysql_num_rows($res)) {
+        if($res && $res->rowCount()) {
             while ($aRow = mysql_fetch_array($res))
                 $arr_res[] = $aRow[0];
             mysql_free_result($res);
@@ -117,17 +117,17 @@ class BxDb extends Mistake
      * execute sql query and return the first row of result
      * and keep $array type and poiter to all data
      */
-    function getFirstRow($query, $arr_type = MYSQL_ASSOC)
+    function getFirstRow($query, $arr_type = PDO::FETCH_ASSOC)
     {
         if(!$query)
             return array();
-        if($arr_type != MYSQL_ASSOC && $arr_type != MYSQL_NUM)
-            $this->current_arr_type = MYSQL_ASSOC;
+        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM)
+            $this->current_arr_type = PDO::FETCH_ASSOC;
         else
             $this->current_arr_type = $arr_type;
         $this->current_res = mysql_query($query, $this->link) or $this->error('Cannot complete query (getFirstRow)');
         $arr_res = array();
-        if($this->current_res && mysql_num_rows($this->current_res))
+        if($this->current_res && $this->current_res->rowCount())
             $arr_res = mysql_fetch_array($this->current_res, $this->current_arr_type);
         return $arr_res;
     }
@@ -142,7 +142,7 @@ class BxDb extends Mistake
             return $arr_res;
         else {
             mysql_free_result($this->current_res);
-            $this->current_arr_type = MYSQL_ASSOC;
+            $this->current_arr_type = PDO::FETCH_ASSOC;
             return array();
         }
     }
@@ -153,7 +153,7 @@ class BxDb extends Mistake
     function getNumRows($res = false)
     {
         if(!$res)
-            $res = @mysql_num_rows($this->current_res);
+            $res = @$this->current_res->rowCount();
 
         if((int)$res > 0)
             return (int)$res;
@@ -187,12 +187,12 @@ class BxDb extends Mistake
     /**
      * execute sql query and return table of records as result
      */
-    function getAll($query, $arr_type = MYSQL_ASSOC)
+    function getAll($query, $arr_type = PDO::FETCH_ASSOC)
     {
         if(!$query)
             return array();
-        if($arr_type != MYSQL_ASSOC && $arr_type != MYSQL_NUM)
-            $arr_type = MYSQL_ASSOC;
+        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM)
+            $arr_type = PDO::FETCH_ASSOC;
 
         $res = mysql_query($query, $this->link) or $this->error('Cannot complete query [' . $query . '] (getAll) ');
         $arr_res = array();

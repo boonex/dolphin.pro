@@ -12,7 +12,7 @@ class BxSitesFormAdd extends BxTemplFormView
     var $_aParam;
     var $_aCustomForm;
 
-    function BxSitesFormAdd($oModule, $aParam = array())
+    function __construct($oModule, $aParam = array())
     {
         $this->_oModule = $oModule;
         $this->_aParam = $aParam;
@@ -30,7 +30,7 @@ class BxSitesFormAdd extends BxTemplFormView
 
         $this->_aCustomForm['inputs'] = array_merge($this->_aCustomForm['inputs'], $aFormInputsSubmit);
 
-        parent::BxTemplFormView ($this->_aCustomForm);
+        parent::__construct ($this->_aCustomForm);
     }
 
     function getUrlForm()

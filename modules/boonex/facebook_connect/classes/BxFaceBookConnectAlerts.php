@@ -8,9 +8,9 @@ bx_import('BxDolConnectAlerts');
 
 class BxFaceBookConnectAlerts extends BxDolConnectAlerts
 {
-    function BxFaceBookConnectAlerts()
+    function __construct()
     {
-        parent::BxDolConnectAlerts();
+        parent::__construct();
         $this -> oModule = BxDolModule::getInstance('BxFaceBookConnectModule');
     }
 }

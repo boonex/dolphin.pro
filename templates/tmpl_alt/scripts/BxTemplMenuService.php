@@ -15,8 +15,8 @@ class BxTemplMenuService extends BxBaseMenuService
     /**
     * Class constructor;
     */
-    function BxTemplMenuService()
+    function __construct()
     {
-        parent::BxBaseMenuService();
+        parent::__construct();
     }
 }

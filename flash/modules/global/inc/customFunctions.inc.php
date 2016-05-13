@@ -147,6 +147,6 @@ function getFriends($sId)
 {
    $aUsers = array();
    $rResult = getResult("SELECT `Profile` FROM `sys_friend_list` WHERE `ID` = '" . $sId . "' AND `Check` = 1 UNION SELECT `ID` FROM `sys_friend_list` WHERE `Profile` = '" . $sId . "' AND `Check` = 1");
-   while($aUser = mysql_fetch_assoc($rResult)) $aUsers[] = $aUser['Profile'];
+   while($aUser = $rResult->fetch()) $aUsers[] = $aUser['Profile'];
    return $aUsers;
 }

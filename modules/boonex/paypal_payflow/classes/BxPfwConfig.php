@@ -26,9 +26,9 @@ class BxPfwConfig extends BxPmtConfig
 	protected $_aLogFiles;
 	protected $_aLogEnabled;
 
-    function BxPfwConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxPmtConfig($aModule);
+        parent::__construct($aModule);
 
         $sParentDirectory = 'boonex/payment/';
         $this->_sParentHomePath = BX_DIRECTORY_PATH_MODULES . $sParentDirectory;

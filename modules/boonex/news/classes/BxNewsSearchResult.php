@@ -8,10 +8,10 @@ bx_import('BxDolTextSearchResult');
 
 class BxNewsSearchResult extends BxDolTextSearchResult
 {
-    function BxNewsSearchResult($oModule = null)
+    function __construct($oModule = null)
     {
         $oModule = !empty($oModule) ? $oModule : BxDolModule::getInstance('BxNewsModule');
 
-        parent::BxDolTextSearchResult($oModule);
+        parent::__construct($oModule);
     }
 }

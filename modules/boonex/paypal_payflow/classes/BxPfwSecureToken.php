@@ -8,9 +8,9 @@ require_once("BxPfwPayPal.php");
 
 class BxPfwSecureToken extends BxPfwPayPal
 {
-	function BxPfwSecureToken($oDb, $oConfig, $aConfig)
+	function __construct($oDb, $oConfig, $aConfig)
 	{
-		parent::BxPfwPayPal($oDb, $oConfig, $aConfig);
+		parent::__construct($oDb, $oConfig, $aConfig);
 
 		unset($this->_aCallParameters['TENDER']);
 		unset($this->_aCallParameters['ACTION']);

@@ -4,9 +4,9 @@ bx_import('BxDolConfig');
 
 class BxH5avConfig extends BxDolConfig
 {
-    function BxH5avConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 
 }

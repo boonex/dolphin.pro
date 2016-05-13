@@ -8,9 +8,9 @@ bx_import('BxBaseMenu');
 
 class BxBaseMenuQlinks2 extends BxBaseMenu
 {
-    function BxBaseMenuQlinks2()
+    function __construct()
     {
-        parent::BxBaseMenu();
+        parent::__construct();
     }
 
     function getCode()

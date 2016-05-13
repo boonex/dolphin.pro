@@ -11,7 +11,7 @@ class BxOAuthFormAdd extends BxTemplFormView
      protected static $LENGTH_ID = 10;
      protected static $LENGTH_SECRET = 32;
 
-    function BxOAuthFormAdd ($oModule)
+    function __construct ($oModule)
     {
         $aCustomForm = array(
 
@@ -69,7 +69,7 @@ class BxOAuthFormAdd extends BxTemplFormView
             ),
         );
 
-        parent::BxTemplFormView ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 
     function insert ($aValsToAdd = array())

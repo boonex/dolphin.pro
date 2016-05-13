@@ -23,7 +23,7 @@ class BxDolProfileFields extends Thing
     	'join' => array('Country', 'Sex'),
     );
 
-    function BxDolProfileFields( $iAreaID )
+    function __construct( $iAreaID )
     {
         $this -> iAreaID = $iAreaID;
 
@@ -524,7 +524,7 @@ class BxDolProfileFields extends Thing
     function checkCaptcha( $mValue )
     {
         bx_import('BxDolForm');
-        return BxDolFormCheckerHelper::checkCaptcha($mValue);
+        return (new BxDolFormCheckerHelper)->checkCaptcha($mValue);
     }
 
     function getAge( $sBirthDate )

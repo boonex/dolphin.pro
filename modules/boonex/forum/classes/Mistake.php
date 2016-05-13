@@ -18,7 +18,7 @@ class Mistake extends ThingPage
     /**
      * constructor
      */
-    function Mistake ()
+    function __construct ()
     {
     }
 

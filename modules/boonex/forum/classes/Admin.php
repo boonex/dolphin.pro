@@ -11,7 +11,7 @@ class Admin extends ThingPage
     /**
      * constructor
      */
-    function Admin ()
+    function __construct ()
     {
         global $f;
         $this->_admin = $f->isAdmin ();

@@ -189,7 +189,7 @@ switch ($sAction) {
         //--- get pending messages ---//
         $sMsgs = "";
         $rResult = getResult("SELECT `Message` FROM `" . MODULE_DB_PREFIX . "Pendings` WHERE `SenderID` = '" . $sSndId . "' AND `RecipientID` = '" . $sRspId . "' ORDER BY `ID`");
-        while($aMsg = mysql_fetch_assoc($rResult)) $sMsgs .= parseXml($aXmlTemplates['message'], $aMsg['Message']);
+        while($aMsg = $rResult->fetch()) $sMsgs .= parseXml($aXmlTemplates['message'], $aMsg['Message']);
         $sContents .= makeGroup($sMsgs, "messages");
         //"break" shouldn't be here
 
@@ -243,12 +243,12 @@ switch ($sAction) {
         $sBlocked = count($aBlocked) == 0 ? "" : " AND `SenderID` NOT IN('" . implode(",", $aBlocked) . "')";
         $rResult = getResult("SELECT `SenderID`, `Message` FROM `" . MODULE_DB_PREFIX ."Pendings` WHERE `RecipientID`='" . $sRspId . "'" . $sBlocked . " ORDER BY `ID` DESC");
         //--- if there is a message return it and some information about it's author ---//
-        while($aMsg = mysql_fetch_assoc($rResult)) {
+        while($aMsg = $rResult->fetch()) {
             $aUserInfo = getUserInfo($aMsg['SenderID']);
             $sContents .= parseXml($aXmlTemplates['message'], $aMsg['SenderID'], $aUserInfo['nick'], $aUserInfo['profile'], $aMsg['Message']);
         }
         $sContents = makeGroup($sContents, "messages");
-        if(mysql_num_rows($rResult))
+        if($rResult->rowCount())
             getResult("DELETE FROM `" . MODULE_DB_PREFIX ."Pendings` WHERE `RecipientID`='" . $sRspId . "'");
         break;
 
@@ -288,7 +288,7 @@ switch ($sAction) {
         $sFiles = "";
         $sQuery = "SELECT * FROM `" . MODULE_DB_PREFIX . "Contacts` AS `imc`, `" . MODULE_DB_PREFIX . "Messages` AS `imm` WHERE `imc`.`ID`=`imm`.`ContactID` AND `imm`.`Type`='file' AND `imc`.`SenderID`='" . $sRspId . "' AND `imc`.`RecipientID`='" . $sSndId . "' ORDER BY `imm`.`ID`";
         $res = getResult($sQuery);
-        while($aFile = mysql_fetch_assoc($res)) {
+        while($aFile = $res->fetch()) {
             $sFileName = $aFile['ID'] . ".file";
             if(!file_exists($sFilesPath . $sFileName)) continue;
             $sFiles .= parseXml($aXmlTemplates['file'], $sFileName, $aFile['Message']);
@@ -299,7 +299,7 @@ switch ($sAction) {
         $iId = getContactId($sRspId, $sSndId);
         $sMsgs = "";
         $res = getResult("SELECT * FROM `" . MODULE_DB_PREFIX . "Messages` WHERE `ContactID`='" . $iId . "' AND `Type`='text' ORDER BY `ID`");
-        while($aMsg = mysql_fetch_assoc($res)) {
+        while($aMsg = $res->fetch()) {
             $aStyle = unserialize($aMsg['Style']);
             $sMsgs .= parseXml($aXmlTemplates['message'], $aMsg['ID'], stripslashes($aMsg['Message']), $aStyle['color'], $aStyle['bold'], $aStyle['underline'], $aStyle['italic'], $aStyle['size'], $aStyle['font'], $aStyle['smileset']);
         }

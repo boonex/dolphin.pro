@@ -17,9 +17,9 @@ class BxDolTwigPageView extends BxDolPageView
     var $_oConfig;
     var $aDataEntry;
 
-    function BxDolTwigPageView($sName, &$oMain, &$aDataEntry)
+    function __construct($sName, &$oMain, &$aDataEntry)
     {
-        parent::BxDolPageView($sName);
+        parent::__construct($sName);
         $this->_oMain = $oMain;
         $this->_oTemplate = $oMain->_oTemplate;
         $this->_oDb = $oMain->_oDb;
@@ -77,7 +77,6 @@ class BxDolTwigPageView extends BxDolPageView
             'cats' => $this->_oTemplate->parseCategories($aData['categories']),
             'tags' => $this->_oTemplate->parseTags($aData['tags']),
             'fields' => $sFields,
-            'author_unit' => $GLOBALS['oFunctions']->getMemberThumbnail($aAuthor['ID'], 'none', true),
             'location' => $sLocation,
         );
         return $this->_oTemplate->parseHtmlByName('entry_view_block_info', $aVars);

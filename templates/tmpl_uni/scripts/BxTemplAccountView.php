@@ -4,8 +4,8 @@ require_once( BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseAccountView.php' );
 
 class BxTemplAccountView extends BxBaseAccountView
 {
-    function BxTemplAccountView($iMember, &$aSite, &$aDir)
+    function __construct($iMember, &$aSite, &$aDir)
     {
-        parent::BxBaseAccountView($iMember, $aSite, $aDir);
+        parent::__construct($iMember, $aSite, $aDir);
     }
 }

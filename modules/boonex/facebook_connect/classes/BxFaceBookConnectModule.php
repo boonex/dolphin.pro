@@ -28,9 +28,9 @@
          *                  [ db_prefix ]    - (string)  this module's Db tables prefix ;
          *                  [ date ]         - (string)  this module's date installation ;
          */
-        function BxFaceBookConnectModule(&$aModule)
+        function __construct(&$aModule)
         {
-            parent::BxDolConnectModule($aModule);
+            parent::__construct($aModule);
 
             require_once(BX_DIRECTORY_PATH_PLUGINS . 'facebook-php-sdk/src/Facebook/autoload.php');
 

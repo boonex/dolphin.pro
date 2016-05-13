@@ -11,9 +11,9 @@ class BxFilesModule extends BxDolFilesModule
     /**
      * Constructor
      */
-    function BxFilesModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolFilesModule($aModule);
+        parent::__construct($aModule);
 
         $this->_oConfig->init($this->_oDb);
 

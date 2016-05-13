@@ -86,9 +86,9 @@
          *                  [ db_prefix ]    - (string)  this module's Db tables prefix ;
          *                  [ date ]         - (string)  this module's date installation ;
          */
-        function BxSimpleMessengerModule($aModule)
+        function __construct($aModule)
         {
-            parent::BxDolModule($aModule);
+            parent::__construct($aModule);
 
             $this -> sHomeUrl    = $this ->_oConfig -> _sHomeUrl;
             $this -> aModuleInfo = $aModule;
@@ -268,7 +268,7 @@
                     if ($iRecipientId) {
 
                         // get chat box;
-                        $aChatBox       = $this -> getChatBox($iRecipientId, false);
+                        $aChatBox       = $this -> getChatBox($iRecipientId);
                         $sChatBox       = $aChatBox['chat_box'];
                         $aRet           = array();
 

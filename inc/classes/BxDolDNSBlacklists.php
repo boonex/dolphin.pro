@@ -36,9 +36,8 @@ define('BX_DOL_DNSBL_CHAIN_URIDNS', "uridns");
  *  There is more handy function available:
  *  @see bx_is_ip_dns_blacklisted
  */
-class BxDolDNSBlacklists extends BxDolMistake
+class BxDolDNSBlacklists
 {
-
     private $aChains = array ();
 
     /**

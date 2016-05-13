@@ -16,9 +16,9 @@ class BxSitesPageView extends BxDolTwigPageView
     var $_oTemplate;
     var $_oConfig;
 
-    function BxSitesPageView(&$oSites, $aSite)
+    function __construct(&$oSites, $aSite)
     {
-        parent::BxDolTwigPageView('bx_sites_view', $oSites, $aSite);
+        parent::__construct('bx_sites_view', $oSites, $aSite);
 
         $this->_oSites = &$oSites;
         $this->_aSite = $aSite;

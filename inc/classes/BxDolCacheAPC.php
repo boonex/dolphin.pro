@@ -13,9 +13,9 @@ class BxDolCacheAPC extends BxDolCache
     /**
      * constructor
      */
-    function BxDolCacheAPC()
+    function __construct()
     {
-        parent::BxDolCache();
+        parent::__construct();
     }
 
     /**

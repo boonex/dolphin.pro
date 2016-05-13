@@ -12,9 +12,9 @@ class BxFilesSearch extends BxTemplSearchResult
     var $oModule;
     var $oTemplate;
     var $bAdminMode = false;
-    function BxFilesSearch ($sParamName = '', $sParamValue = '', $sParamValue1 = '', $sParamValue2 = '')
+    function __construct ($sParamName = '', $sParamValue = '', $sParamValue1 = '', $sParamValue2 = '')
     {
-        parent::BxTemplSearchResult();
+        parent::__construct();
         // main settings
         $this->aCurrent = array(
             'name' => 'bx_files',
@@ -284,7 +284,7 @@ class BxFilesSearch extends BxTemplSearchResult
         $aUnit['pic'] = $this->oModule->_oTemplate->getIconUrl($sPicName);
 
         $aUnit['id'] = $aData['id'];
-        return $this->oModule->_oTemplate->parseHtmlByName('browse_unit_short.html', $aUnit, array('{','}'));;
+        return $this->oModule->_oTemplate->parseHtmlByName('browse_unit_short.html', $aUnit, array('{','}'));
     }
 
     function setSorting ()

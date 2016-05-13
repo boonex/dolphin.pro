@@ -10,9 +10,9 @@ class BxDolConnectDb extends BxDolModuleDb
 {
     var $sTablePrefix;
 
-    function BxDolConnectDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb($oConfig);
+        parent::__construct($oConfig);
 
         $this -> sTablePrefix = $oConfig -> getDbPrefix();
     }

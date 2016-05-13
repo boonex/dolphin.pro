@@ -25,9 +25,9 @@ class BxProfileCustomizeSearchResult extends BxTemplSearchResult
     var $_oModule;
     var $_sType;
 
-    function BxProfileCustomizeSearchResult($sType, $oModule = null)
+    function __construct($sType, $oModule = null)
     {
-        parent::BxTemplSearchResult();
+        parent::__construct();
 
         if(!empty($oModule))
             $this->_oModule = $oModule;

@@ -11,9 +11,9 @@ class BxPfwPageHistory extends BxDolPageView
 	protected $_oMain;
     protected $_iVendorId;
 
-    function BxPfwPageHistory($sType, &$oMain)
+    function __construct($sType, &$oMain)
     {
-        parent::BxDolPageView('bx_pfw_history');
+        parent::__construct('bx_pfw_history');
 
         $this->_iVendorId = $sType == 'site' ? BX_PMT_ADMINISTRATOR_ID : BX_PMT_EMPTY_ID;
         $this->_oMain = $oMain;

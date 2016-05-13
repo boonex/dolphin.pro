@@ -7,8 +7,8 @@ bx_import ('BxBaseCalendar');
  */
 class BxTemplCalendar extends BxBaseCalendar
 {
-    function BxTemplCalendar($iYear, $iMonth)
+    function __construct($iYear, $iMonth)
     {
-        parent::BxBaseCalendar($iYear, $iMonth);
+        parent::__construct($iYear, $iMonth);
     }
 }

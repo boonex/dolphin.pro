@@ -64,10 +64,11 @@ if(isset($_POST['create_language'])) {
     if(empty($aResults['langs']))
         $aResults['langs'] = '_adm_txt_langs_success_delete';
 } else if(isset($_GET['action']) && $_GET['action'] == 'export' && isset($_GET['id'])) {
-    $aLanguage = $GLOBALS['MySQL']->getRow("SELECT `Name`, `Flag`, `Title`, `Direction`, `LanguageCountry` FROM `sys_localization_languages` WHERE `ID`='" . (int)$_GET['id'] . "' LIMIT 1");
+    $aLanguage = $GLOBALS['MySQL']->getRow("SELECT `Name`, `Flag`, `Title`, `Direction`, `LanguageCountry` FROM `sys_localization_languages` WHERE `ID`= ? LIMIT 1", [$_GET['id']]);
 
     $aContent = array();
-    $aItems = $GLOBALS['MySQL']->getAll("SELECT `tlk`.`Key` AS `key`, `tls`.`String` AS `string` FROM `sys_localization_keys` AS `tlk` LEFT JOIN `sys_localization_strings` AS `tls` ON `tlk`.`ID`=`tls`.`IDKey` WHERE `tls`.`IDLanguage`='" . (int)$_GET['id'] . "'");
+    $aItems = $GLOBALS['MySQL']->getAll("SELECT `tlk`.`Key` AS `key`, `tls`.`String` AS `string` FROM `sys_localization_keys` AS `tlk` 
+              LEFT JOIN `sys_localization_strings` AS `tls` ON `tlk`.`ID`=`tls`.`IDKey` WHERE `tls`.`IDLanguage`= ? ", [$_GET['id']]);
     foreach($aItems as $aItem)
         $aContent[$aItem['key']] = $aItem['string'];
 
@@ -200,7 +201,9 @@ function _getKeysList($mixedResult, $bActive = false)
     if(isset($_GET[$sFilterName])) {
         $sFilter = process_db_input($_GET[$sFilterName], BX_TAGS_STRIP);
 
-        $aKeys = $GLOBALS['MySQL']->getAll("SELECT `tk`.`ID` AS `id`, `tk`.`Key` AS `key`, `tc`.`Name` AS `category` FROM `sys_localization_keys` AS `tk` LEFT JOIN `sys_localization_strings` AS `ts` ON `tk`.`ID`=`ts`.`IDKey` LEFT JOIN `sys_localization_categories` AS `tc` ON `tk`.`IDCategory`=`tc`.`ID` WHERE `tk`.`Key` LIKE '%" . $sFilter . "%' COLLATE utf8_general_ci OR `ts`.`String` LIKE '%" . $sFilter . "%' GROUP BY `tk`.`ID`");
+        $aKeys = $GLOBALS['MySQL']->getAll("SELECT `tk`.`ID` AS `id`, `tk`.`Key` AS `key`, `tc`.`Name` AS `category` FROM `sys_localization_keys` AS `tk` 
+                 LEFT JOIN `sys_localization_strings` AS `ts` ON `tk`.`ID`=`ts`.`IDKey` LEFT JOIN `sys_localization_categories` AS `tc` ON `tk`.`IDCategory`=`tc`.`ID` 
+                 WHERE `tk`.`Key` LIKE ? COLLATE utf8_general_ci OR `ts`.`String` LIKE ? GROUP BY `tk`.`ID`", ["%{$sFilter}%", "%{$sFilter}%"]);
         foreach($aKeys as $aKey)
             $aItems[] = array(
                 'id' => $aKey['id'],
@@ -269,8 +272,10 @@ function _getLanguagesList($mixedResult, $bActive = false)
 }
 function _getLanguageCreateForm($mixedResult, $bActive = false)
 {
-    if(isset($_POST['action']) && $_POST['action'] == 'get_edit_form_language' && isset($_POST['id']))
-        $aLanguage = $GLOBALS['MySQL']->getRow("SELECT `ID` AS `id`, `Name` AS `name`, `Flag` AS `flag`, `Title` AS `title`, `Direction` AS `direction`, `LanguageCountry` AS `lang_country` FROM `sys_localization_languages` WHERE `ID`='" . (int)$_POST['id'] . "' LIMIT 1");
+    if (isset($_POST['action']) && $_POST['action'] == 'get_edit_form_language' && isset($_POST['id'])) {
+        $aLanguage = $GLOBALS['MySQL']->getRow("SELECT `ID` AS `id`, `Name` AS `name`, `Flag` AS `flag`, `Title` AS `title`, `Direction` AS `direction`, `LanguageCountry` AS `lang_country` 
+        FROM `sys_localization_languages` WHERE `ID`= ? LIMIT 1", [$_POST['id']]);
+    }
 
     //--- Create language form ---//
     $aFormCreate = array(
@@ -518,7 +523,7 @@ function PageCodeKeyEdit($iId)
         )
     );
 
-    $aStrings = $GLOBALS['MySQL']->getAllWithKey("SELECT CONCAT('string_for_', `IDLanguage`) AS `key`, `String` AS `value` FROM `sys_localization_strings` WHERE `IDKey`='" . $iId . "'", "key");
+    $aStrings = $GLOBALS['MySQL']->getAllWithKey("SELECT CONCAT('string_for_', `IDLanguage`) AS `key`, `String` AS `value` FROM `sys_localization_strings` WHERE `IDKey`= ?", "key", [$iId]);
     $aLanguages = $GLOBALS['MySQL']->getAll("SELECT `ID` AS `id`, `Title` AS `title` FROM `sys_localization_languages`");
     foreach($aLanguages as $aLanguage) {
         $sKey = 'string_for_' . $aLanguage['id'];
@@ -572,7 +577,7 @@ function createLanguage(&$aData)
 
     $MySQL->cleanCache('sys_localization_languages');
 
-    $aStrings = $MySQL->getAll("SELECT `IDKey`, `String` FROM `sys_localization_strings` WHERE `IDLanguage` = $iSourceId");
+    $aStrings = $MySQL->getAll("SELECT `IDKey`, `String` FROM `sys_localization_strings` WHERE `IDLanguage` = ?", [$iSourceId]);
 
     foreach($aStrings as $aString){
         $aString['String'] = addslashes($aString['String']);

@@ -4,7 +4,6 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
 bx_import('BxDolMailBox');
 
 /**
@@ -19,17 +18,15 @@ bx_import('BxDolMailBox');
  * no alerts available
  *
  */
-class BxDolAdminDashboard extends BxDolMistake
+class BxDolAdminDashboard
 {
     private $aBlocks;
 
     /**
      * constructor
      */
-    function BxDolAdminDashboard()
+    function __construct()
     {
-        parent::BxDolMistake();
-
         if (isset($_POST['hide_admin_help']) && $_POST['hide_admin_help']) {
             setParam('sys_show_admin_help', '');
             echo '1';
@@ -43,6 +40,7 @@ class BxDolAdminDashboard extends BxDolMistake
             'stats' => true,
         );
     }
+
     function getCode()
     {
         $sContent = '';

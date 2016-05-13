@@ -11,7 +11,8 @@ bx_import('BxDolProfileFields');
  */
 class BxDolTwigFormBroadcast extends BxTemplFormView
 {
-    function BxDolTwigFormBroadcast ($sCaptionMsgTitle, $sErrMsgTitle, $sCaptionMsgBody, $sErrMsgBory)
+
+    function __construct ($sCaptionMsgTitle, $sErrMsgTitle, $sCaptionMsgBody, $sErrMsgBory)
     {
         $aCustomForm = array(
 
@@ -66,6 +67,6 @@ class BxDolTwigFormBroadcast extends BxTemplFormView
             ),
         );
 
-        parent::BxTemplFormView ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 }

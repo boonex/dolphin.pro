@@ -10,9 +10,9 @@ class BxMbpPageJoin extends BxDolPageView
 {
 	var $_oObject;
 
-    function BxMbpPageJoin(&$oObject)
+    function __construct(&$oObject)
     {
-    	parent::BxDolPageView('bx_mbp_join');
+    	parent::__construct('bx_mbp_join');
 
     	$this->_oObject = $oObject;
     }

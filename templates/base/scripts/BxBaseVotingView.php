@@ -16,9 +16,9 @@ class BxBaseVotingView extends BxDolVoting
     var $_iSizeStarSmallX = 12;
     var $_iSizeStarSmallY = 12;
 
-    function BxBaseVotingView( $sSystem, $iId, $iInit = 1 )
+    function __construct( $sSystem, $iId, $iInit = 1 )
     {
-        BxDolVoting::BxDolVoting( $sSystem, $iId, $iInit ); 
+        parent::__construct( $sSystem, $iId, $iInit );
     }
 
     function getSmallVoting($iCanRate = 1, $iRateOverride = false)

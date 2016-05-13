@@ -11,9 +11,9 @@ class BxPhotosConfig extends BxDolFilesConfig
     /**
      * Constructor
      */
-    function BxPhotosConfig (&$aModule)
+    function __construct (&$aModule)
     {
-        parent::BxDolFilesConfig($aModule);
+        parent::__construct($aModule);
 
         $this->aFilesConfig = array (
             'icon' => array('postfix' => '_ri.jpg', 'size_def' => 32, 'square' => true),

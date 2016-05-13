@@ -5,19 +5,9 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
-
-class BxDolAdminMenu extends BxDolMistake
+class BxDolAdminMenu
 {
-    /**
-     * constructor
-     */
-    function BxDolAdminMenu()
-    {
-        parent::BxDolMistake();
-    }
-
-    function getTopMenu()
+    public static function getTopMenu()
     {
     	$sTmplVarsAddons = '';
     	$aTmplVarsItems = array();
@@ -53,9 +43,9 @@ class BxDolAdminMenu extends BxDolMistake
                 ),
                 'target' => !empty($aItem['target']) ? $aItem['target'] : '_self',
                 'bx_if:show_onclick' => array(
-                	'condition' => !empty($aItem['onclick']),
+                	'condition' => (isset($aItem['onclick']) && !empty($aItem['onclick'])),
                 	'content' => array(
-                		'onclick' => $aItem['onclick']
+                		'onclick' => (isset($aItem['onclick'])) ? $aItem['onclick'] : ''
                 	)
                 ), 
                 'icon' => false === strpos($aItem['icon'], '.') ? '<i class="sys-icon ' . $aItem['icon'] . '"></i>' : '<img src="' . $GLOBALS['oAdmTemplate']->getIconUrl($aItem['icon']) . '" alt="' . _t($aItem['caption']) . '" />',
@@ -67,7 +57,7 @@ class BxDolAdminMenu extends BxDolMistake
         ));
     }
 
-    function getMainMenu()
+    public static function getMainMenu()
     {
         if(!isAdmin())
             return '';
@@ -88,12 +78,14 @@ class BxDolAdminMenu extends BxDolMistake
         ));
         $oZ->alert();
 
+        $oBxDolAdminMenu = new self();
+
         $aItems = array();
         foreach($aMenu as $aMenuItem) {
             $aMenuItem['url'] = str_replace(array('{siteUrl}', '{siteAdminUrl}'), array(BX_DOL_URL_ROOT, BX_DOL_URL_ADMIN), $aMenuItem['url']);
 
             $bActiveCateg = $sFile == 'index.php' && (!empty($_GET['cat'])) && $_GET['cat'] == $aMenuItem['name'];
-            $aSubmenu = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_menu_admin` WHERE `parent_id`='" . $aMenuItem['id'] . "' ORDER BY `order`");
+            $aSubmenu = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_menu_admin` WHERE `parent_id`= ? ORDER BY `order`", [$aMenuItem['id']]);
 
             $oZ = new BxDolAlerts('system', 'admin_menu', 0, 0, array(
 	            'parent' => &$aMenuItem,
@@ -111,13 +103,16 @@ class BxDolAdminMenu extends BxDolMistake
                 else
                     $bActiveItem = false;
 
-                $aSubitems[] = BxDolAdminMenu::_getMainMenuSubitem($aSubmenuItem, $bActiveItem);
+                $aSubitems[] = $oBxDolAdminMenu->_getMainMenuSubitem($aSubmenuItem, $bActiveItem);
             }
-            $aItems[] = BxDolAdminMenu::_getMainMenuItem($aMenuItem, $aSubitems, $bActiveCateg);
+
+            $aItems[] = $oBxDolAdminMenu->_getMainMenuItem($aMenuItem, $aSubitems, $bActiveCateg);
         }
+
         return $GLOBALS['oAdmTemplate']->parseHtmlByName('main_menu.html', array('bx_repeat:items' => $aItems));
     }
-    function getMainMenuLink($sUrl)
+
+    public static function getMainMenuLink($sUrl)
     {
         if(substr($sUrl, 0, 11) == 'javascript:') {
             $sLink = 'javascript:void(0);';
@@ -137,6 +132,7 @@ class BxDolAdminMenu extends BxDolMistake
 
         return array($sLink, $sOnClick);
     }
+
     function _getMainMenuItem($aCateg, $aItems, $bActive)
     {
         global $oAdmTemplate;

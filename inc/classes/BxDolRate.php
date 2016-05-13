@@ -15,9 +15,9 @@ class BxDolRate extends BxDolPageView
     var $iViewer;
     // array of headers for rate page
     var $aPageCaption = array();
-    function BxDolRate($sType)
+    function __construct($sType)
     {
-        parent::BxDolPageView($sType . '_rate');
+        parent::__construct($sType . '_rate');
 
         $this->sType = $sType;
         $this->iViewer = getLoggedId();

@@ -10,11 +10,11 @@ class BxAdsPageView extends BxDolPageView
     var $oAds;
     var $iAdId;
 
-    function BxAdsPageView(&$oAd, $iAdId)
+    function __construct(&$oAd, $iAdId)
     {
         $this->iAdId = $iAdId;
         $this->oAds = &$oAd;
-        parent::BxDolPageView('ads');
+        parent::__construct('ads');
     }
 
     function getBlockCode_AdPhotos()

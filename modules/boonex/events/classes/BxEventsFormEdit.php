@@ -8,9 +8,9 @@ bx_events_import ('FormAdd');
 
 class BxEventsFormEdit extends BxEventsFormAdd
 {
-    function BxEventsFormEdit ($oMain, $iProfileId, $iEventId, &$aEvent)
+    function __construct ($oMain, $iProfileId, $iEventId, &$aEvent)
     {
-        parent::BxEventsFormAdd ($oMain, $iProfileId, $iEventId, $aEvent['PrimPhoto']);
+        parent::__construct ($oMain, $iProfileId, $iEventId, $aEvent['PrimPhoto']);
 
         $aFormInputsId = array (
             'ID' => array (

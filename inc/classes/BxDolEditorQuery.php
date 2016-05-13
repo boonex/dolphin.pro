@@ -23,8 +23,8 @@ class BxDolEditorQuery extends BxDolDb
     static public function getEditorObject ($sObject)
     {
         $oDb = $GLOBALS['MySQL'];
-        $sQuery = "SELECT * FROM `sys_objects_editor` WHERE `object` = '" . $oDb->escape($sObject) . "'";
-        $aObject = $oDb->getRow($sQuery);
+        $sQuery = "SELECT * FROM `sys_objects_editor` WHERE `object` = ?";
+        $aObject = $oDb->getRow($sQuery, [$sObject]);
         if (!$aObject || !is_array($aObject))
             return false;
 

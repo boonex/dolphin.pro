@@ -18,9 +18,9 @@ class BxDolConnectConfig extends BxDolConfig
     public $sEmailTemplatePasswordGenerated;
     public $sDefaultTitleLangKey;
 
-    function BxDolConnectConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
 
         $this->sDefaultRedirectUrl = BX_DOL_URL_ROOT . 'member.php';
     }

@@ -8,8 +8,8 @@ bx_import('BxDolFilesPageHome');
 
 class BxVideosPageHome extends BxDolFilesPageHome
 {
-    function BxVideosPageHome (&$oShared)
+    function __construct (&$oShared)
     {
-        parent::BxDolFilesPageHome($oShared);
+        parent::__construct($oShared);
     }
 }

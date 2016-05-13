@@ -15,7 +15,7 @@ class BxDolPageViewAdmin
     var $bAjaxMode = false;
     var $aTitles; // array containing aliases of pages
 
-    function BxDolPageViewAdmin( $sDBTable, $sCacheFile )
+    function __construct( $sDBTable, $sCacheFile )
     {
         $GLOBALS['oAdmTemplate']->addJsTranslation(array(
             '_adm_pbuilder_Reset_page_warning',
@@ -363,28 +363,28 @@ class BxDolPageViewAdmin
             $sEditorCode = $oEditor->attachEditor('#' . $sEditorId, BX_EDITOR_FULL);
         }
 
-        return $sInitEditor . $GLOBALS['oAdmTemplate']->parseHtmlByName('pbuilder_content.html', array(
+        return /*$sInitEditor. */ $GLOBALS['oAdmTemplate']->parseHtmlByName('pbuilder_content.html', array(
             'top_controls' => $this->getPageSelector(),
             'bx_if:page' => array(
                 'condition' => (bool)$this -> oPage,
                 'content' => array(
                     'bx_if:delete_link' => array(
-                        'condition' => !$this->oPage->isSystem,
+                        'condition' => (isset($this->oPage->isSystem) && !$this->oPage->isSystem),
                         'content' => array(
                         )
                     ),
                     'bx_if:view_link' => array(
-                        'condition' => !$this->oPage->isSystem,
+                        'condition' => (isset($this->oPage->isSystem) && !$this->oPage->isSystem),
                         'content' => array(
                             'site_url' => $GLOBALS['site']['url'],
-                            'page_name' => htmlspecialchars($this->oPage->sName)
+                            'page_name' => (!isset($this->oPage->sName)) ?: htmlspecialchars($this->oPage->sName)
                         )
                     ),
                     'parser_url' => bx_html_attribute($_SERVER['PHP_SELF']),
-                    'page_name' => addslashes($this->oPage->sName),
+                    'page_name' => (!isset($this->oPage->sName)) ?: addslashes($this->oPage->sName),
                     'page_width_min' => getParam('sys_template_page_width_min'),
                     'page_width_max' => getParam('sys_template_page_width_max'),
-                    'page_width' => $this->oPage->iPageWidth,
+                    'page_width' => (!isset($this->oPage->iPageWidth)) ?: $this->oPage->iPageWidth,
                     'main_width' => getParam('main_div_width')
                 )
             ),
@@ -420,7 +420,7 @@ class BxDolPageViewAdmin
             $aPages[] = array(
                 'value' => htmlspecialchars_adv(urlencode($sName)),
                 'title' => htmlspecialchars(!empty($sTitle) ? $sTitle : $sName),
-                'selected' => $this->oPage->sName == $sName ? 'selected="selected"' : ''
+                'selected' => (isset($this->oPage->sName) && $this->oPage->sName == $sName) ? 'selected="selected"' : ''
             );
 
         return $GLOBALS['oAdmTemplate']->parseHtmlByName('pbuilder_cpanel.html', array(
@@ -438,7 +438,7 @@ class BxDolPageViewAdmin
         $sPagesQuery = "SELECT `Name`, `Title` FROM `{$this -> sDBTable}_pages` ORDER BY `Order`";
 
         $rPages = db_res( $sPagesQuery );
-        while( $aPage = mysql_fetch_assoc($rPages) ) {
+        while( $aPage = $rPages->fetch() ) {
             $this -> aPages[] = $aPage['Name'];
             $this -> aTitles[$aPage['Name']] = $aPage['Title'];
         }
@@ -752,12 +752,12 @@ class BxDolPVAPage
                 `ColWidth`
             FROM `{$this -> oParent -> sDBTable}`
             WHERE
-                `Page` = '{$this -> sName_db}' AND
+                `Page` = ? AND
                 `Column` != 0
             GROUP BY `Column`
             ORDER BY `Column`";
 
-        $aColumns = $MySQL->getAllWithKey($sQuery, 'Column');
+        $aColumns = $MySQL->getAllWithKey($sQuery, 'Column', [$this -> sName_db]);
         
 		ksort($aColumns);
 
@@ -773,11 +773,11 @@ class BxDolPVAPage
                     `Caption`
                 FROM `{$this -> oParent -> sDBTable}`
                 WHERE
-                    `Page` = '{$this -> sName_db}' AND
-                    `Column` = $iColumn
+                    `Page` = ? AND
+                    `Column` = ?
                 ORDER BY `Order`";
 
-            $aBlocks = $MySQL->getAll($sQueryActive);
+            $aBlocks = $MySQL->getAll($sQueryActive, [$this -> sName_db, $iColumn]);
             foreach($aBlocks as $aBlock) {
                 $this->aBlocks[$iColumn][$aBlock['ID']] = _t($aBlock['Caption']);
                 $this->aBlocksOrder[$iColumn][] = $aBlock['ID'];
@@ -785,8 +785,8 @@ class BxDolPVAPage
         }
 
         // load minimal widths
-        $sQuery = "SELECT `ID`, `MinWidth` FROM `{$this -> oParent -> sDBTable}` WHERE `MinWidth` > 0 AND `Page`= '{$this -> sName_db}'";
-        $aBlocks = $MySQL->getAll($sQuery);
+        $sQuery = "SELECT `ID`, `MinWidth` FROM `{$this -> oParent -> sDBTable}` WHERE `MinWidth` > 0 AND `Page`= ?";
+        $aBlocks = $MySQL->getAll($sQuery, [$this -> sName_db]);
         foreach($aBlocks as $aBlock)
             $this->aMinWidths[(int)$aBlock['ID']] = (int)$aBlock['MinWidth'];
 
@@ -818,10 +818,10 @@ class BxDolPVAPage
         $rInactive = db_res( $sQueryInactive );
         $rSamples  = db_res( $sQuerySamples );
 
-        while( $aBlock = mysql_fetch_assoc( $rInactive ) )
+        while( $aBlock =  $rInactive ->fetch() )
             $this -> aBlocksInactive[ (string)$aBlock['ID'] . ' '] = _t( $aBlock['Caption'] );
 
-        while( $aBlock = mysql_fetch_assoc( $rSamples ) )
+        while( $aBlock =  $rSamples ->fetch() )
             $this -> aBlocksSamples[ (int)$aBlock['ID'] ] = _t( $aBlock['Caption'] );
 
         asort($this -> aBlocksInactive, SORT_STRING | SORT_FLAG_CASE);
@@ -883,7 +883,7 @@ class BxDolPageViewCacher
 
         $rPages = db_res( $sQuery );
 
-        while ($aPageN = mysql_fetch_assoc($rPages)) {
+        while ($aPageN = $rPages->fetch()) {
             $sPageName  = addslashes($aPageN['Name']);
             $aPageN['Title'] = db_value("SELECT `Title` FROM `{$this -> sDBTable}_pages` WHERE `Name` = '$sPageName'");
             $sPageTitle = addslashes($aPageN['Title']);
@@ -901,11 +901,11 @@ class BxDolPageViewCacher
                     `ColWidth`
                 FROM `{$this -> sDBTable}`
                 WHERE
-                    `Page` = '$sPageName' AND
+                    `Page` = ? AND
                     `Column` > 0
                 GROUP BY `Column`
                 ORDER BY `Column`";
-            $aColumns = $MySQL->getAllWithKey($sQuery, 'Column');
+            $aColumns = $MySQL->getAllWithKey($sQuery, 'Column', [$sPageName]);
 
 			ksort($aColumns);
 
@@ -928,10 +928,10 @@ class BxDolPageViewCacher
                         `Cache`
                     FROM `{$this -> sDBTable}`
                     WHERE
-                        `Page` = '$sPageName' AND
-                        `Column` = $iColumn
+                        `Page` = ? AND
+                        `Column` = ?
                     ORDER BY `Order` ASC";
-                $aBlocks = $MySQL->getAll($sQuery);
+                $aBlocks = $MySQL->getAll($sQuery, [$sPageName, $iColumn]);
 
                 foreach($aBlocks as $aBlock) {
                     $sCacheString .= "          {$aBlock['ID']} => array(\n";

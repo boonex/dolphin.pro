@@ -26,9 +26,9 @@
          * 					[] message_id	 (integer) - number of needed message ;
          */
 
-        function BxTemplMailBox($sPageName, &$aMailBoxSettings )
+        function __construct($sPageName, &$aMailBoxSettings )
         {
             // call the parent constructor ;
-            parent::BxBaseMailBox($sPageName, $aMailBoxSettings);
+            parent::__construct($sPageName, $aMailBoxSettings);
         }
     }

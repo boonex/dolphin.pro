@@ -4,9 +4,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import("BxDolMistake");
-
-class BxPmtProvider extends BxDolMistake
+class BxPmtProvider
 {
     var $_oDb;
     var $_oConfig;
@@ -21,10 +19,8 @@ class BxPmtProvider extends BxDolMistake
     /**
      * Constructor
      */
-    function BxPmtProvider($oDb, $oConfig, $aConfig)
+    function __construct($oDb, $oConfig, $aConfig)
     {
-        parent::BxDolMistake();
-
         $this->_oDb = $oDb;
         $this->_oConfig = $oConfig;
 

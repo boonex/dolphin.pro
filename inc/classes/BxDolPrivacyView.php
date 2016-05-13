@@ -16,9 +16,9 @@ class BxDolPrivacyView extends BxDolTemplate
     /**
      * constructor
      */
-    function BxDolPrivacyView($iOwnerId)
+    function __construct($iOwnerId)
     {
-        parent::BxDolTemplate();
+        parent::__construct();
 
         $this->_iOwnerId = (int)$iOwnerId;
         $this->_oDb = new BxDolPrivacyQuery();

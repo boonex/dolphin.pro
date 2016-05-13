@@ -8,8 +8,8 @@ bx_import('BxDolTextPrivacy');
 
 class BxFdbPrivacy extends BxDolTextPrivacy
 {
-    function BxFdbPrivacy(&$oModule)
+    function __construct(&$oModule)
     {
-        parent::BxDolTextPrivacy($oModule);
+        parent::__construct($oModule);
     }
 }

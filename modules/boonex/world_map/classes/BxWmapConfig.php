@@ -11,8 +11,8 @@ class BxWmapConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxWmapConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 }

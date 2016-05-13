@@ -12,8 +12,8 @@ class BxDskDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxDskDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
     }
 }

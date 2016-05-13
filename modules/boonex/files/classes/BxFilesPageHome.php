@@ -9,9 +9,9 @@ bx_import('BxDolFilesPageHome');
 
 class BxFilesPageHome extends BxDolFilesPageHome
 {
-    function BxFilesPageHome (&$oShared)
+    function __construct (&$oShared)
     {
-        parent::BxDolFilesPageHome($oShared);
+        parent::__construct($oShared);
     }
 
     function getBlockCode_Featured ()

@@ -12,7 +12,7 @@ class BxStoreFormAdd extends BxDolFormMedia
     var $_oMain;
     var $_oDb;
 
-    function BxStoreFormAdd ($oMain, $iProfileId, $isRemovePhotoFieldAllowed = true, $iEntryId = 0, $iThumb = 0)
+    function __construct ($oMain, $iProfileId, $isRemovePhotoFieldAllowed = true, $iEntryId = 0, $iThumb = 0)
     {
         $this->_aMedia = array ();
         if (BxDolRequest::serviceExists('photos', 'perform_photo_upload', 'Uploader'))
@@ -329,7 +329,7 @@ class BxStoreFormAdd extends BxDolFormMedia
 
         $this->processMembershipChecksForMediaUploads ($aCustomForm['inputs']);
 
-        parent::BxDolFormMedia ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 
     function uploadFiles ($sName = 'files', $sTitle = 'files_titles', $sPrivacy = 'allow_purchase_to')

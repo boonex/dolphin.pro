@@ -21,9 +21,9 @@ class BxSoundsPageAlbumView extends BxDolPageView
 
     var $sBrowseCode;
 
-    function BxSoundsPageAlbumView($oModule, $aInfo, $sBrowseCode = '')
+    function __construct($oModule, $aInfo, $sBrowseCode = '')
     {
-        parent::BxDolPageView('bx_sounds_album_view');
+        parent::__construct('bx_sounds_album_view');
         $this->aInfo = $aInfo;
         $this->iProfileId = $oModule->_iProfileId;
 

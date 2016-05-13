@@ -13,9 +13,9 @@ class BxWallDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxWallDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
         $this->_sPrefix = $oConfig->getDbPrefix();
@@ -96,17 +96,20 @@ class BxWallDb extends BxDolModuleDb
     }
     function getUser($mixed, $sType = 'id')
     {
+        $aBindings = [];
         switch($sType) {
             case 'id':
-                $sWhereClause = "`ID`='" . $mixed . "'";
+                $sWhereClause = "`ID`= ?";
+                $aBindings = [$mixed];
                 break;
             case 'username':
-                $sWhereClause = "`NickName`='" . $mixed . "'";
+                $sWhereClause = "`NickName`= ?";
+                $aBindings = [$mixed];
                 break;
         }
 
         $sSql = "SELECT `ID` AS `id`, `Couple` AS `couple`, `NickName` AS `username`, `Password` AS `password`, `Email` AS `email`, `Sex` AS `sex`, `Status` AS `status` FROM `Profiles` WHERE " . $sWhereClause . " LIMIT 1";
-        $aUser = $this->getRow($sSql);
+        $aUser = $this->getRow($sSql, $aBindings);
 
         if(empty($aUser))
             $aUser = array('id' => 0, 'couple' => 0, 'username' => _t('_wall_anonymous'), 'password' => '', 'email' => '', 'sex' => 'male');

@@ -8,9 +8,9 @@ bx_import('BxDolConfig');
 
 class BxZIPConfig extends BxDolConfig
 {
-    function BxZIPConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 
 }

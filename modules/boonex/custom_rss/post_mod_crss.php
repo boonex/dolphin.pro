@@ -56,7 +56,7 @@ if ($iTotalNum > 0) {
     $sMemberRSSSQL = "SELECT * FROM `bx_crss_main` {$aSqlQuery}";
     $vMemberRSS = db_res($sMemberRSSSQL);
 
-    while( $aRSSInfo = mysql_fetch_assoc($vMemberRSS) ) {
+    while( $aRSSInfo = $vMemberRSS->fetch() ) {
         $iRssID = (int)$aRSSInfo['ID'];
         $sRssUrl = process_line_output($aRSSInfo['RSSUrl']);
         $sRssDesc = process_line_output($aRSSInfo['Description']);

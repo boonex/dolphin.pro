@@ -11,9 +11,9 @@ class BxDolTextPageMain extends BxDolPageView
     var $_sPageName;
     var $_oObject;
 
-    function BxDolTextPageMain($sPageName, &$oObject)
+    function __construct($sPageName, &$oObject)
     {
-        parent::BxDolPageView($sPageName);
+        parent::__construct($sPageName);
 
         $this->_oObject = $oObject;
     }

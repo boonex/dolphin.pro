@@ -20,9 +20,9 @@ class BxSoundsPageView extends BxDolPageView
     var $oDb;
     var $oSearch;
 
-    function BxSoundsPageView (&$oShared, &$aFileInfo)
+    function __construct (&$oShared, &$aFileInfo)
     {
-        parent::BxDolPageView('bx_sounds_view');
+        parent::__construct('bx_sounds_view');
         $this->aFileInfo = $aFileInfo;
         $this->iProfileId = &$oShared->_iProfileId;
 

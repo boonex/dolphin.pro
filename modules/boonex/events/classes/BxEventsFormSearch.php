@@ -8,7 +8,7 @@ require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolProfileFields.php');
 
 class BxEventsFormSearch extends BxTemplFormView
 {
-    function BxEventsFormSearch ()
+    function __construct ()
     {
         $oProfileFields = new BxDolProfileFields(0);
         $aCountries = $oProfileFields->convertValues4Input('#!Country');
@@ -71,6 +71,6 @@ class BxEventsFormSearch extends BxTemplFormView
             ),
         );
 
-        parent::BxTemplFormView ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 }

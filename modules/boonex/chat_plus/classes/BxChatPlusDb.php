@@ -11,8 +11,8 @@ class BxChatPlusDb extends BxDolConnectDb
     /**
      * Constructor.
      */
-    function BxChatPlusDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolConnectDb($oConfig);
+        parent::__construct($oConfig);
     }
 }

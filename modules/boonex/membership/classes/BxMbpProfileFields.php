@@ -19,8 +19,8 @@ bx_import("BxDolProfileFields");
 class BxMbpProfileFields extends BxDolProfileFields {
 	var $_oMain;
 
-	function BxMbpProfileFields($iAreaID, $oMain = null) {
-		parent::BxDolProfileFields($iAreaID);
+	function __construct($iAreaID, $oMain = null) {
+		parent::__construct($iAreaID);
 
 		$this->_oMain = $oMain;
 	}

@@ -59,9 +59,9 @@ function showTags($aParam = array(), $iBoxId = 1, $sAction = '', $iBox = 0, $sTi
 
 class TagsCalendar extends BxTemplCalendar
 {
-    function TagsCalendar($iYear, $iMonth)
+    function __construct($iYear, $iMonth)
     {
-        parent::BxTemplCalendar($iYear, $iMonth);
+        parent::__construct($iYear, $iMonth);
     }
 
     function display()
@@ -89,7 +89,12 @@ class TagsCalendar extends BxTemplCalendar
 
         return $oDb->getAll("SELECT *, DAYOFMONTH(`Date`) AS `Day`
             FROM `sys_tags`
-            WHERE `Date` >= TIMESTAMP('{$this->iYear}-{$this->iMonth}-1') AND `Date` < TIMESTAMP('{$this->iNextYear}-{$this->iNextMonth}-1')");
+            WHERE `Date` >= TIMESTAMP(?) AND `Date` < TIMESTAMP(?)",
+            [
+                "{$this->iYear}-{$this->iMonth}-1",
+                "{$this->iNextYear}-{$this->iNextMonth}-1"
+            ]
+        );
     }
 
     function getBaseUri()
@@ -168,10 +173,10 @@ class TagsHomePage extends BxDolPageView
 {
     var $sPage;
 
-    function TagsHomePage()
+    function __construct()
     {
         $this->sPage = 'tags_home';
-        parent::BxDolPageView($this->sPage);
+        parent::__construct($this->sPage);
     }
 
     function getBlockCode_Recent($iBlockId)
@@ -199,10 +204,10 @@ class TagsCalendarPage extends BxDolPageView
 {
     var $sPage;
 
-    function TagsCalendarPage()
+    function __construct()
     {
         $this->sPage = 'tags_calendar';
-        parent::BxDolPageView($this->sPage);
+        parent::__construct($this->sPage);
     }
 
     function getBlockCode_Calendar($iBlockId)
@@ -238,10 +243,10 @@ class TagsSearchPage extends BxDolPageView
     var $oForm;
     var $sPage;
 
-    function TagsSearchPage()
+    function __construct()
     {
         $this->sPage = 'tags_search';
-        parent::BxDolPageView($this->sPage);
+        parent::__construct($this->sPage);
 
         bx_import('BxTemplFormView');
         $this->aSearchForm = array(

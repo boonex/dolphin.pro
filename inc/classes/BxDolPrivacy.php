@@ -4,7 +4,6 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
 bx_import('BxDolPrivacyQuery');
 
 define('BX_DOL_PG_DEFAULT', '1');
@@ -56,17 +55,15 @@ define('BX_DOL_PG_HIDDEN', '8');
  * no alerts available
  *
  */
-class BxDolPrivacy extends BxDolMistake
+class BxDolPrivacy
 {
     var $_oDb;
 
     /**
      * constructor
      */
-    function BxDolPrivacy($sTable = '', $sFieldId = '', $sFieldOwnerId = '')
+    function __construct($sTable = '', $sFieldId = '', $sFieldOwnerId = '')
     {
-        parent::BxDolMistake();
-
         $this->_oDb = new BxDolPrivacyQuery($sTable, $sFieldId, $sFieldOwnerId);
     }
 
@@ -175,7 +172,7 @@ class BxDolPrivacy extends BxDolMistake
      * Static Method.
      * Check whether Privacy Group page/menu is available.
      */
-    function isPrivacyPage()
+    public static function isPrivacyPage()
     {
         return getParam('sys_ps_enable_create_group') == 'on' || getParam('sys_ps_enable_default_values') == 'on' || getParam('sys_ps_enabled_group_1') == 'on';
     }

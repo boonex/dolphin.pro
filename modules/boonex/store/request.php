@@ -12,12 +12,12 @@ bx_import('BxDolRequest');
 
 class BxStoreRequest extends BxDolRequest
 {
-    function BxStoreRequest()
+    function __construct()
     {
-        parent::BxDolRequest();
+        parent::__construct();
     }
 
-    function processAsAction($aModule, &$aRequest, $sClass = "Module")
+    public static function processAsAction($aModule, &$aRequest, $sClass = "Module")
     {
         $sClassRequire = $aModule['class_prefix'] . $sClass;
         $oModule = BxDolRequest::_require($aModule, $sClassRequire);

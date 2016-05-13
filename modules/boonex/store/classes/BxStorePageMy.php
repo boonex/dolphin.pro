@@ -14,14 +14,14 @@ class BxStorePageMy extends BxDolPageView
     var $_oConfig;
     var $_aProfile;
 
-    function BxStorePageMy(&$oMain, &$aProfile)
+    function __construct(&$oMain, &$aProfile)
     {
         $this->_oMain = &$oMain;
         $this->_oTemplate = $oMain->_oTemplate;
         $this->_oDb = $oMain->_oDb;
         $this->_oConfig = $oMain->_oConfig;
         $this->_aProfile = $aProfile;
-        parent::BxDolPageView('bx_store_my');
+        parent::__construct('bx_store_my');
     }
 
     function getBlockCode_Owner()

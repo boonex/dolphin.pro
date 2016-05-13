@@ -11,8 +11,8 @@ class BxQuotesConfig extends BxDolConfig
     /**
     * Constructor
     */
-    function BxQuotesConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 }

@@ -15,9 +15,9 @@
         /**
          * Class constructor;
          */
-        function BxBaseMenuBottom()
+        function __construct()
         {
-            parent::BxDolMenuBottom();
+            parent::__construct();
         }
 
         function getItems()

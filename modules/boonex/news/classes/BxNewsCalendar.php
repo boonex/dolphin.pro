@@ -9,9 +9,9 @@ bx_import('BxDolTextCalendar');
 
 class BxNewsCalendar extends BxDolTextCalendar
 {
-    function BxNewsCalendar($iYear, $iMonth, &$oDb, &$oConfig)
+    function __construct($iYear, $iMonth, &$oDb, &$oConfig)
     {
-        parent::BxDolTextCalendar($iYear, $iMonth, $oDb, $oConfig);
+        parent::__construct($iYear, $iMonth, $oDb, $oConfig);
 
         $this->sCssPrefix = 'news';
     }

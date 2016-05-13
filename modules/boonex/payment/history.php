@@ -13,9 +13,9 @@ class BxPmtHistoryPage extends BxDolPageView
     var $_iVendorId;
     var $_oPayments;
 
-    function BxPmtHistoryPage($sType, &$oPayments)
+    function __construct($sType, &$oPayments)
     {
-        parent::BxDolPageView('bx_pmt_history');
+        parent::__construct('bx_pmt_history');
 
         $this->_iVendorId = $sType == 'site' ? BX_PMT_ADMINISTRATOR_ID : BX_PMT_EMPTY_ID;
         $this->_oPayments = &$oPayments;

@@ -63,12 +63,12 @@ function publishRecordedVideoFile($sUserId)
 function initVideoFile($sId, $sTitle, $sCategory, $sTags, $sDesc)
 {
     global $sModule;
-    global $oDb;
+    $oDb = BxDolDb::getInstance();
 
     $sDBModule = DB_PREFIX . ucfirst($sModule);
 
     getResult("UPDATE `" . $sDBModule . "Files` SET `Categories`='" . $sCategory . "', `Title`='" . $sTitle . "', `Tags`='" . $sTags . "', `Description`='" . $sDesc . "' WHERE `ID`='" . $sId . "'");
-    return mysql_affected_rows($oDb->rLink) > 0 ? true : false;
+    return $oDb->getAffectedRows() > 0 ? true : false;
 }
 
 function _getVideoSize($sInputFile)

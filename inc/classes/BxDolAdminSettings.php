@@ -4,7 +4,6 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
 bx_import('BxTemplFormView');
 
 /**
@@ -31,7 +30,7 @@ bx_import('BxTemplFormView');
  * no alerts available
  *
  */
-class BxDolAdminSettings extends BxDolMistake
+class BxDolAdminSettings
 {
     var $_oDb;
     var $_sActionUrl;
@@ -44,12 +43,10 @@ class BxDolAdminSettings extends BxDolMistake
     /**
      * constructor
      */
-    function BxDolAdminSettings($mixedCategory, $sActionUrl = '')
+    function __construct($mixedCategory, $sActionUrl = '')
     {
-        parent::BxDolMistake();
-
         $this->_oDb = $GLOBALS['MySQL'];
-         $this->_sActionUrl = !empty($sActionUrl) ? $sActionUrl : bx_html_attribute($_SERVER['PHP_SELF']) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
+        $this->_sActionUrl = !empty($sActionUrl) ? $sActionUrl : bx_html_attribute($_SERVER['PHP_SELF']) . (!empty($_SERVER['QUERY_STRING']) ? '?' . $_SERVER['QUERY_STRING'] : '');
 
         $this->_mixedCategory = $mixedCategory;
         $this->_iCategoryActive = 0;
@@ -69,6 +66,7 @@ class BxDolAdminSettings extends BxDolMistake
             )
         );
     }
+
     function setActiveCategory($mixed)
     {
         if (is_int($mixed))
@@ -85,7 +83,7 @@ class BxDolAdminSettings extends BxDolMistake
                 if($mixedResult !== true)
                     return $mixedResult;
             } else if(is_numeric($mixedCategory)) {
-                $aItems = $this->_oDb->getAll("SELECT `Name` AS `name`, `desc` AS `title`, `Type` AS `type`, `AvailableValues` AS `extra`, `check` AS `check`, `err_text` AS `check_error` FROM `sys_options` WHERE `kateg`='" . (int)$mixedCategory . "'");
+                $aItems = $this->_oDb->getAll("SELECT `Name` AS `name`, `desc` AS `title`, `Type` AS `type`, `AvailableValues` AS `extra`, `check` AS `check`, `err_text` AS `check_error` FROM `sys_options` WHERE `kateg`= ?", [$mixedCategory]);
 
                 $aItemsData = array();
                 foreach($aItems as $aItem) {
@@ -160,8 +158,9 @@ class BxDolAdminSettings extends BxDolMistake
             if(!is_numeric($mixedCategory) || isset($this->_aCustomCategories[$mixedCategory]['content']))
                 $aFields = $this->{$this->_aCustomCategories[$mixedCategory]['content']}();
             else if(is_numeric($mixedCategory) && (int)$mixedCategory != 0) {
-                $aCategory = $this->_oDb->getRow("SELECT `ID` AS `id`, `name` AS `name` FROM `sys_options_cats` WHERE `ID`='" . (int)$mixedCategory . "'");
-                $aItems = $this->_oDb->getAll("SELECT `Name` AS `name`, `VALUE` AS `value`, `Type` AS `type`, `desc` AS `description`, `AvailableValues` AS `extra`, `check` AS `check`, `err_text` AS `check_error` FROM `sys_options` WHERE `kateg`='" . (int)$mixedCategory . "' ORDER BY `order_in_kateg`");
+                $aCategory = $this->_oDb->getRow("SELECT `ID` AS `id`, `name` AS `name` FROM `sys_options_cats` WHERE `ID`= ?", [$mixedCategory]);
+                $aItems = $this->_oDb->getAll("SELECT `Name` AS `name`, `VALUE` AS `value`, `Type` AS `type`, `desc` AS `description`, `AvailableValues` AS `extra`, `check` AS `check`, `err_text` AS `check_error` 
+                                               FROM `sys_options` WHERE `kateg`= ? ORDER BY `order_in_kateg`", [$mixedCategory]);
 
                 foreach($aItems as $aItem)
                     $aFields[] = $this->_field($aItem);
@@ -282,10 +281,11 @@ class BxDolAdminSettings extends BxDolMistake
                         'pass' => 'Xss',
                     ),
                 );
+
                 if(substr($aItem['extra'], 0, 4) == 'PHP:')
                     $aField['values'] = eval(substr($aItem['extra'], 4));
                 else
-                    foreach(split(',', $aItem['extra']) as $sValue)
+                    foreach(explode(',', $aItem['extra']) as $sValue)
                         $aField['values'][] = array('key' => $sValue, 'value' => $sValue);
                 break;
 
@@ -374,7 +374,7 @@ class BxDolAdminSettings extends BxDolMistake
     {
         $iId = (int)$_COOKIE['memberID'];
 
-        $aAdmin = $this->_oDb->getRow("SELECT `Password`, `Salt` FROM `Profiles` WHERE `ID`='$iId'");
+        $aAdmin = $this->_oDb->getRow("SELECT `Password`, `Salt` FROM `Profiles` WHERE `ID`= ?", [$iId]);
 
         if(encryptUserPwd($aData['pwd_old'], $aAdmin['Salt']) != $aAdmin['Password'])
             return MsgBox(_t('_adm_txt_settings_wrong_old_pasword'), $this->_iResultTimer);

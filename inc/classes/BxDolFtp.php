@@ -12,7 +12,7 @@ class BxDolFtp
     var $_sPath;
     var $_rStream;
 
-    function BxDolFtp($sHost, $sLogin, $sPassword, $sPath = '/')
+    function __construct($sHost, $sLogin, $sPassword, $sPath = '/')
     {
         $this->_sHost = $sHost;
         $this->_sLogin = $sLogin;

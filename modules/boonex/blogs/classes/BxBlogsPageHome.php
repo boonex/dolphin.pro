@@ -10,9 +10,9 @@ class BxBlogsPageHome extends BxDolPageView
 {
     var $oBlogs;
 
-    function BxBlogsPageHome(&$oBlogs)
+    function __construct(&$oBlogs)
     {
-        parent::BxDolPageView('bx_blogs_home');
+        parent::__construct('bx_blogs_home');
         $this->oBlogs = &$oBlogs;
     }
 

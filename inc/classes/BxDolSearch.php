@@ -45,7 +45,7 @@ class BxDolSearch
      * $aChoice - array of choosen classes (will take a part only existing in `sys_objects_search` table)
      */
 
-    function BxDolSearch ($aChoice = '')
+    function __construct ($aChoice = '')
     {
         $this->aClasses = $GLOBALS['MySQL']->fromCache('sys_objects_search', 'getAllWithKey',
            'SELECT `ID` as `id`,
@@ -215,7 +215,7 @@ class BxDolSearchResult
      * filling identificator field
      */
 
-    function BxDolSearchResult ()
+    function __construct ()
     {
         if (isset($this->aPseud['id']))
             $this->aCurrent['ident'] = $this->aPseud['id'];

@@ -114,7 +114,7 @@ class BxDolForm
      */
     var $id;
 
-    function BxDolForm ($aInfo)
+    function __construct ($aInfo)
     {
         $this->aFormAttrs    = isset($aInfo['form_attrs'])   ? $aInfo['form_attrs']  : array();
         $this->aTableAttrs   = isset($aInfo['table_attrs'])  ? $aInfo['table_attrs'] : array();
@@ -153,8 +153,7 @@ class BxDolForm
             $oChecker->setFormMethod($this->aFormAttrs['method']);
             $oChecker->enableFormCsrfChecking(isset($this->aParams['csrf']['disable']) && $this->aParams['csrf']['disable'] === true ? false : true);
             $this->_isValid = $oChecker->check($this->aInputs);
-        } else
-        if ($aValues) {
+        } else /*if ($aValues)*/ {
             $oChecker = new BxDolFormChecker($this->_sCheckerHelper);
             $oChecker->setFormMethod($this->aFormAttrs['method']);
             $oChecker->fillWithValues($this->aInputs, $aValues);
@@ -169,6 +168,7 @@ class BxDolForm
             'params' => &$this->aParams,
             'inputs' => &$this->aInputs,
         ));
+
         $oZ->alert();
     }
 
@@ -254,7 +254,7 @@ class BxDolForm
         return ($this->isSubmitted() && $this->isValid());
     }
 
-    function getSubmittedValue($sKey, $sMethod)
+    public static function getSubmittedValue($sKey, $sMethod)
     {
         $aData = array();
         if($sMethod == BX_DOL_FORM_METHOD_GET)
@@ -284,11 +284,13 @@ class BxDolForm
         if($bReturn)
             return $sToken;
     }
-    function getCsrfToken()
+
+    public static function getCsrfToken()
     {
         $oSession = BxDolSession::getInstance();
         return $oSession->getValue('csrf_token');
     }
+
     function getCsrfTokenTime()
     {
         $oSession = BxDolSession::getInstance();
@@ -493,6 +495,7 @@ class BxDolFormCheckerHelper
         }
         return preg_match($r, $s) ? true : false;
     }
+
     function checkAvail ($s)
     {
         if (is_array($s)) {
@@ -500,10 +503,12 @@ class BxDolFormCheckerHelper
         }
         return $s ? true : false;
     }
+
     function checkEmail($s)
     {
         return filter_var($s, FILTER_VALIDATE_EMAIL) !== false;
     }
+
     function checkCaptcha($s)
     {
         // init captcha object

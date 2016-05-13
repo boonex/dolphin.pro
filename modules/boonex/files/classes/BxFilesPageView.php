@@ -22,9 +22,9 @@ class BxFilesPageView extends BxDolPageView
     var $oDb;
     var $oSearch;
 
-    function BxFilesPageView (&$oShared, &$aFileInfo)
+    function __construct (&$oShared, &$aFileInfo)
     {
-        parent::BxDolPageView('bx_files_view');
+        parent::__construct('bx_files_view');
         $this->aFileInfo = $aFileInfo;
         $this->iProfileId = &$oShared->_iProfileId;
 

@@ -63,7 +63,7 @@ define('BX_EDITOR_MINI', 3);
  * @endcode
  *
  */
-class BxDolEditor extends BxDolMistake
+class BxDolEditor
 {
     protected $_sObject;
     protected $_aObject;
@@ -74,8 +74,6 @@ class BxDolEditor extends BxDolMistake
      */
     public function __construct($aObject)
     {
-        parent::__construct();
-
         $this->_sObject = $aObject['object'];
         $this->_aObject = $aObject;
     }

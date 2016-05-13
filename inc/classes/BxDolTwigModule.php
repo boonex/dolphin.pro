@@ -15,9 +15,9 @@ class BxDolTwigModule extends BxDolModule
     var $_sPrefix;
     var $_sFilterName;
 
-    function BxDolTwigModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
         $this->_iProfileId = isLogged() ? getLoggedId() : 0;
     }
 
@@ -1294,7 +1294,7 @@ class BxDolTwigModule extends BxDolModule
         }
 
         $sCss = '';
-        $sUri = $this->_oConfig->getUri();
+        $sLangPrefix = '_' . trim($this->_oConfig->getDbPrefix(), '_');
         $sBaseUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
         $sNoPhoto = $this->_oTemplate->getIconUrl('no-photo.png');
         if($aEvent['js_mode'])
@@ -1306,16 +1306,16 @@ class BxDolTwigModule extends BxDolModule
         $sClass = $this->_aModule['class_prefix'] . 'Voting';
         $oVoting = new $sClass ($this->_sPrefix, 0, 0);
 
-        $sTextWallObject = _t('_bx_' . $sUri . '_wall_object');
+        $sTextWallObject = _t($sLangPrefix . '_wall_object');
 
         $sTmplName = isset($aParams['templates']['main']) ? $aParams['templates']['main'] : 'modules/boonex/wall/|timeline_comment.html';
         return array(
-            'title' => _t('_bx_' . $sUri . '_wall_added_new_title_comment', $sOwner, $sTextWallObject),
+            'title' => _t($sLangPrefix . '_wall_added_new_title_comment', $sOwner, $sTextWallObject),
             'description' => $aComment['cmt_text'],
             'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
         		'mod_prefix' => $this->_sPrefix,
 	            'cpt_user_name' => $sOwner,
-	            'cpt_added_new' => _t('_bx_' . $sUri . '_wall_added_new_comment'),
+	            'cpt_added_new' => _t($sLangPrefix . '_wall_added_new_comment'),
 	            'cpt_object' => $sTextWallObject,
 	            'cpt_item_url' => $sBaseUrl . $aItem[$this->_oDb->_sFieldUri],
 	            'cnt_comment_text' => $aComment['cmt_text'],
@@ -1478,7 +1478,7 @@ class BxDolTwigModule extends BxDolModule
 
     function _actionAdministrationManage ($isAdminEntries, $sKeyBtnDelete, $sKeyBtnActivate, $sUrl = false)
     {
-        if ($_POST['action_activate'] && is_array($_POST['entry'])) {
+        if (getPostFieldIfSet('action_activate') && (isset($_POST['entry']) && is_array($_POST['entry']))) {
 
             foreach ($_POST['entry'] as $iId) {
                 if ($this->_oDb->activateEntry($iId)) {
@@ -1486,7 +1486,7 @@ class BxDolTwigModule extends BxDolModule
                 }
             }
 
-        } elseif ($_POST['action_delete'] && is_array($_POST['entry'])) {
+        } elseif (getPostFieldIfSet('action_delete') && (isset($_POST['entry']) && is_array($_POST['entry']))) {
 
             foreach ($_POST['entry'] as $iId) {
 
@@ -1920,7 +1920,7 @@ class BxDolTwigModule extends BxDolModule
         return sendMail($aProfile['Email'], $aTemplate['Subject'], $aTemplate['Body'], $aProfile['ID'], $aTemplateVars);
     }
 
-    function _browseMy (&$aProfile, $sTitle)
+    function _browseMy (&$aProfile, $sTitle = null)
     {
         // check access
         if (!$this->_iProfileId) {

@@ -8,9 +8,9 @@ require_once("BxPfwPayPal.php");
 
 class BxPfwExpressCheckout extends BxPfwPayPal
 {
-	function BxPfwExpressCheckout($oDb, $oConfig, $aConfig)
+	function __construct($oDb, $oConfig, $aConfig)
 	{
-		parent::BxPfwPayPal($oDb, $oConfig, $aConfig);
+		parent::__construct($oDb, $oConfig, $aConfig);
 
 		$this->_aCallParameters['TENDER'] = 'P';
 	}

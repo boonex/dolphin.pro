@@ -9,9 +9,9 @@ require_once(BX_DIRECTORY_PATH_MODULES . 'boonex/payment/classes/BxPmtDb.php');
 
 class BxPfwDb extends BxPmtDb
 {
-    function BxPfwDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxPmtDb($oConfig);
+        parent::__construct($oConfig);
     }
 
 	function getSubscription($aParams)

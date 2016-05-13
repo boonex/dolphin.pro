@@ -11,9 +11,9 @@ class BxMsgModule extends BxDolModule
     /**
      * Constructor
      */
-    function BxMsgModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
 
         //--- Define Membership Actions ---//
         $aActions = $this->_oDb->getMembershipActions();

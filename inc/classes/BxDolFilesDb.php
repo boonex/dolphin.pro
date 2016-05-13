@@ -25,9 +25,9 @@ class BxDolFilesDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxDolFilesDb (&$oConfig)
+    function __construct (&$oConfig)
     {
-        parent::BxDolModuleDb($oConfig);
+        parent::__construct($oConfig);
         $this->_oConfig = &$oConfig;
         $this->iViewer = getLoggedId();
         $this->aFileFields = array(
@@ -124,8 +124,8 @@ class BxDolFilesDb extends BxDolModuleDb
         $iMember = (int)$iMember;
         $iFrom = (int)$iFrom;
         $iPerPage = (int)$iPerPage;
-        $sqlQuery = "SELECT `{$this->aFavoriteFields['fileId']}` FROM `{$this->sFavoriteTable}` WHERE `{$this->aFavoriteFields['ownerId']}`=$iMember LIMIT $iFrom, $iPerPage";
-        return $this->getAll($sqlQuery);
+        $sqlQuery = "SELECT `{$this->aFavoriteFields['fileId']}` FROM `{$this->sFavoriteTable}` WHERE `{$this->aFavoriteFields['ownerId']}`= ? LIMIT $iFrom, $iPerPage";
+        return $this->getAll($sqlQuery, [$iMember]);
     }
 
     function getFavoritesCount ($iFile)
@@ -265,6 +265,7 @@ class BxDolFilesDb extends BxDolModuleDb
 
     function getFileInfo ($aIdent, $bSimple = false, $aFields = array())
     {
+        // TODO: dynamic pdo bindings
         if (isset($aIdent['fileUri']))
             $sqlCondition = "`{$this->sFileTable}`.`{$this->aFileFields['medUri']}`='" . process_db_input($aIdent['fileUri'], BX_TAGS_STRIP) . "'";
         elseif (isset($aIdent['fileId']))
@@ -310,7 +311,7 @@ class BxDolFilesDb extends BxDolModuleDb
     function getMemberList ($sArg)
     {
         $sArg = process_db_input($sArg, BX_TAGS_STRIP);
-        $sqlQuery = "SELECT `ID`, `NickName` FROM `Profiles` WHERE `NickName` LIKE '$sArg%'";
-        return $this->getAll($sqlQuery);
+        $sqlQuery = "SELECT `ID`, `NickName` FROM `Profiles` WHERE `NickName` LIKE ?";
+        return $this->getAll($sqlQuery, ["{$sArg}%"]);
     }
 }

@@ -9,9 +9,9 @@ define('PROFILE_VIDEO_CATEGORY', 'Profile videos');
 
 class BxVideosModule extends BxDolFilesModule
 {
-    function BxVideosModule (&$aModule)
+    function __construct (&$aModule)
     {
-        parent::BxDolFilesModule($aModule);
+        parent::__construct($aModule);
 
         // add more sections for administration
         $this->aSectionsAdmin['processing'] = array('exclude_btns' => 'all');

@@ -19,9 +19,9 @@
         /**
          * Class constructor;
          */
-        function BxShoutBoxConfig($aModule)
+        function __construct($aModule)
         {
-            parent::BxDolConfig($aModule);
+            parent::__construct($aModule);
 
             // define the tables prefix ;
             $this -> sTablePrefix 			= $this -> getDbPrefix();

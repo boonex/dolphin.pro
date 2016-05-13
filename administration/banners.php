@@ -48,7 +48,7 @@ function getPreviewBlock($iBannerID)
 {
     $sPreview = MsgBox(_t('_Empty'));
 
-    if ($_GET['action'] == 'preview' && $iBannerID > 0) {
+    if (getGetFieldIfSet('action') == 'preview' && $iBannerID > 0) {
         $aBannerInfo = db_arr("SELECT * FROM `sys_banners` WHERE `ID` = '{$iBannerID}'");
         $sBannerTitle = process_line_output($aBannerInfo['Title']);
         $sBannerPut = banner_put($aBannerInfo['ID'], 0);
@@ -75,9 +75,9 @@ function getExistedBannersBlock()
     // Get banner info from database.
     $banners_res = db_res("SELECT * FROM `sys_banners` ORDER BY `ID` DESC");
     $sExistedBanners = MsgBox(_t('_Empty'));
-    if ( mysql_num_rows( $banners_res ) ) {
+    if (  $banners_res ->rowCount() ) {
         $sExistedBanners = "<table cellspacing=1 cellpadding=2 border=0 class=small1 width=100%>";
-        while ( $banns_arr = mysql_fetch_array( $banners_res ) ) {
+        while ( $banns_arr = $banners_res->fetch() ) {
             $imp = db_arr("SELECT COUNT(*) FROM `sys_banners_shows` WHERE `ID` = '{$banns_arr['ID']}'");
             $clicks = db_arr("SELECT COUNT(*) FROM `sys_banners_clicks` WHERE `ID` = '{$banns_arr['ID']}'");
 
@@ -132,7 +132,7 @@ function getManageBannersBlock()
     $end_date = bx_get('end_date') !== false ? bx_get('end_date') : $end_date_default;
 
     $Title = $Url = $Active = $Text = $Position = $lhshift = $lvshift = $rhshift = $rvshift = '';
-    $iBannerID = (int)$_GET['banner_id'];
+    $iBannerID = (int)getGetFieldIfSet('banner_id');
     $action	= "new";
 
     if ($iBannerID > 0 && ! strlen(bx_get('action'))) { //banner edit

@@ -18,9 +18,9 @@ class BxProfileCustomizeTemplate extends BxDolModuleTemplate
     /**
      * Constructor
      */
-    function BxProfileCustomizeTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
 
         if (isset($GLOBALS['oAdmTemplate']))
             $GLOBALS['oAdmTemplate']->addDynamicLocation($this->_oConfig->getHomePath(), $this->_oConfig->getHomeUrl());

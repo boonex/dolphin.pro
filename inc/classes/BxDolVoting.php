@@ -6,7 +6,6 @@
  */
 
 require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolVotingQuery.php' );
-require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolMistake.php' );
 
 define( 'BX_PERIOD_PER_VOTE', 7 * 86400 );
 define( 'BX_OLD_VOTES', 365*86400 ); // votes older than this number of seconds will be deleted automatically
@@ -87,7 +86,7 @@ define( 'BX_OLD_VOTES', 365*86400 ); // votes older than this number of seconds 
  *      $aExtra['rate'] - rate
  *
  */
-class BxDolVoting extends BxDolMistake
+class BxDolVoting
 {
     var $_iId = 0;	// item id to be rated
     var $_iCount = 0; // number of votes
@@ -101,7 +100,7 @@ class BxDolVoting extends BxDolMistake
     /**
      * Constructor
      */
-    function BxDolVoting( $sSystem, $iId, $iInit = 1)
+    function __construct( $sSystem, $iId, $iInit = 1)
     {
         $this->_aSystems =& $this->getSystems();
 
@@ -140,7 +139,7 @@ class BxDolVoting extends BxDolMistake
         return new $sClassName($sSys, $iId, $iInit);
     }
 
-    function & getSystems ()
+    public static function & getSystems ()
     {
         if (isset($GLOBALS['bx_dol_voting_systems'])) {
             return $GLOBALS['bx_dol_voting_systems'];
@@ -158,7 +157,7 @@ class BxDolVoting extends BxDolMistake
             $rResult = db_res($sQuery);
 
             $GLOBALS['bx_dol_voting_systems'] = array();
-            while( $aRow = mysql_fetch_assoc($rResult ) ) {
+            while( $aRow = $rResult ->fetch() ) {
                 $GLOBALS['bx_dol_voting_systems'][$aRow['ObjectName']] = array
                 (
                     'table_rating'	=> $aRow['TableRating'],
@@ -224,7 +223,8 @@ class BxDolVoting extends BxDolMistake
         if($this->_sSystem == 'profile' && $this->getId() == getLoggedId())
             return false;
 
-        if(!$this->_oQuery->putVote ($this->getId(), getVisitorIP(), $iVote)) 
+        $sVoterIdentification = isLogged() ? getLoggedId() : getVisitorIP();
+        if(!$this->_oQuery->putVote ($this->getId(), $sVoterIdentification, $iVote))
         	return false;
 
 		$this->checkAction(true);
@@ -249,7 +249,9 @@ class BxDolVoting extends BxDolMistake
     function isDublicateVote ()
     {
         if (!$this->isEnabled()) return false;
-        return $this->_oQuery->isDublicateVote ($this->getId(), getVisitorIP());
+
+        $sVoterIdentification = isLogged() ? getLoggedId() : getVisitorIP();
+        return $this->_oQuery->isDublicateVote ($this->getId(), $sVoterIdentification);
     }
 
     function getId ()

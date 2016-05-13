@@ -8,8 +8,8 @@ require_once(BX_DIRECTORY_PATH_CLASSES . "BxDolInstaller.php");
 
 class BxDolphConInstaller extends BxDolInstaller
 {
-    function BxDolphConInstaller(&$aConfig)
+    function __construct(&$aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
     }
 }

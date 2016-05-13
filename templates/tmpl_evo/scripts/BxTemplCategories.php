@@ -9,8 +9,8 @@ require_once(BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseCategories.php');
 
 class BxTemplCategories extends BxBaseCategories
 {
-    function BxTemplCategories()
+    function __construct()
     {
-        parent::BxBaseCategories();
+        parent::__construct();
     }
 }

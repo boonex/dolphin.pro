@@ -8,10 +8,10 @@ require_once(BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseSearchResult.php');
 
 class BxBaseSearchResultText extends BxBaseSearchResult
 {
-    function BxBaseSearchResultText ()
+    function __construct ()
     {
         $this->aPseud = $this->_getPseud();
-        parent::BxBaseSearchResult();
+        parent::__construct();
         bx_import('BxTemplVotingView');
 
         $this->aConstants['linksTempl'] = $this->isPermalinkEnabled() ? $this->aPermalinks['enabled'] : $this->aPermalinks['disabled'];

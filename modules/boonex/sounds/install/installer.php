@@ -8,9 +8,9 @@ require_once(BX_DIRECTORY_PATH_CLASSES . "BxDolInstaller.php");
 
 class BxSoundsInstaller extends BxDolInstaller
 {
-    function BxSoundsInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
     }
 
     function install($aParams)

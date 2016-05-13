@@ -72,7 +72,7 @@ if(isset($_POST['ps_action']) && $_POST['ps_action'] == 'get_chooser' && $iId !=
 
     $sGroupTitle = "";
     if(($bResult = (int)$GLOBALS['MySQL']->query($sSql)) > 0) {
-        $aGroup = $GLOBALS['MySQL']->getRow("SELECT `id`, `title` FROM `sys_privacy_groups` WHERE `id`='" . $iGroupId . "' LIMIT 1");
+        $aGroup = $GLOBALS['MySQL']->getRow("SELECT `id`, `title` FROM `sys_privacy_groups` WHERE `id`= ? LIMIT ?", [$iGroupId, 1]);
         $sGroupTitle = !empty($aGroup['title']) ? $aGroup['title'] : _t('_ps_group_' . $aGroup['id'] . '_title');
     }
 

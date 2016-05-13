@@ -20,9 +20,9 @@ define('BX_PFW_PROVIDER_RECURRING', 'recurring_billing');
 
 class BxPfwModule extends BxPmtModule
 {
-    function BxPfwModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxPmtModule($aModule);
+        parent::__construct($aModule);
 
 		$this->_oTemplate->init($this);
     }

@@ -8,9 +8,9 @@ bx_import('BxDolConfig');
 
 class BxOAuthConfig extends BxDolConfig
 {
-    function BxOAuthConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 
 }

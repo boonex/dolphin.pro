@@ -12,9 +12,9 @@ class BxBlogsTemplate extends BxDolModuleTemplate
     /*
     * Constructor.
     */
-    function BxBlogsTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
 
         $this->_aTemplates = array('blog_unit', 'blog', 'blogpost_unit', 'admin_page', 'blogpost_unit_mobile', 'browse_unit_private_mobile');
     }
@@ -24,7 +24,7 @@ class BxBlogsTemplate extends BxDolModuleTemplate
         parent::loadTemplates();
     }
 
-    function parseHtmlByTemplateName($sName, $aVariables)
+    function parseHtmlByTemplateName($sName, $aVariables, $mixedKeyWrapperHtml = null)
     {
         return $this->parseHtmlByContent($this->_aTemplates[$sName], $aVariables);
     }

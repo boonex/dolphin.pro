@@ -14,7 +14,7 @@ class BxBaseFunctions
 {
     var	$aSpecialKeys;
 
-    function BxBaseFunctions()
+    function __construct()
     {
         $this -> aSpecialKeys = array('rate' => '', 'rate_cnt' => '');
     }
@@ -22,7 +22,7 @@ class BxBaseFunctions
     function getProfileMatch( $memberID, $profileID )
     {
         $match_n = getProfilesMatch($memberID, $profileID); // impl
-        return DesignProgressPos ( _t("_XX match", $match_n), $GLOBALS['oTemplConfig']->iProfileViewProgressBar, 100, $match_n );;
+        return DesignProgressPos ( _t("_XX match", $match_n), $GLOBALS['oTemplConfig']->iProfileViewProgressBar, 100, $match_n );
     }
 
     function getProfileZodiac( $profileDate )
@@ -254,7 +254,7 @@ class BxBaseFunctions
 
     function msgBox($sText, $iTimer = 0, $sOnTimer = "")
     {
-        $iId = mktime() . mt_rand(1, 1000);
+        $iId = time() . mt_rand(1, 1000);
 
         return $GLOBALS['oSysTemplate']->parseHtmlByName('messageBox.html', array(
             'id' => $iId,
@@ -468,13 +468,15 @@ class BxBaseFunctions
         		'content' => array(
         			'usr_thumb_url0' => $sThumbUrl,
         			'usr_thumb_url0_2x' => $sThumbTwiceUrl,
+        			'usr_thumb_alt0' => bx_html_attribute($sUserTitle),
         		)
         	),
         	'bx_if:show_thumbnail_image2' => array(
         		'condition' => $bThumb2,
         		'content' => array(
         			'usr_thumb_url1' => $sThumbUrlCouple,
-        			'usr_thumb_url1_2x' => $sThumbTwiceUrlCouple
+        			'usr_thumb_url1_2x' => $sThumbTwiceUrlCouple,
+        			'usr_thumb_alt1' => bx_html_attribute($sUserTitle),
         		)
         	),
         	'bx_if:show_thumbnail_letter1' => array(
@@ -567,7 +569,7 @@ class BxBaseFunctions
             ";
 
             $rResult = db_res($sQuery);
-            while ( $aRow = mysql_fetch_assoc($rResult) ) {
+            while ( $aRow = $rResult->fetch() ) {
                 $aActions[$sActionsType][] = $aRow;
             }
 

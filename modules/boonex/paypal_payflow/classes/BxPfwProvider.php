@@ -13,9 +13,9 @@ class BxPfwProvider extends BxPmtProvider
     /**
      * Constructor
      */
-    function BxPfwProvider($oDb, $oConfig, $aConfig)
+    function __construct($oDb, $oConfig, $aConfig)
     {
-        parent::BxPmtProvider($oDb, $oConfig, $aConfig);
+        parent::__construct($oDb, $oConfig, $aConfig);
 
         $this->_aConfig = $aConfig;
     }

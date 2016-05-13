@@ -9,8 +9,8 @@ bx_import("BxDolInstaller");
 
 class BxProfilerInstaller extends BxDolInstaller
 {
-    function BxProfilerInstaller($aConfig)
+    function __construct($aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
     }
 }

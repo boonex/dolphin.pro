@@ -12,8 +12,8 @@
         /**
          * Class constructor;
          */
-        function BxPollPrivacy(&$oModule)
+        function __construct(&$oModule)
         {
-            parent::BxDolPrivacy($oModule -> _oDb -> sTablePrefix . 'data', 'id_poll', 'id_profile');
+            parent::__construct($oModule -> _oDb -> sTablePrefix . 'data', 'id_poll', 'id_profile');
         }
     }

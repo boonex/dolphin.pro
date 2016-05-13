@@ -17,9 +17,9 @@ class BxPmtTemplate extends BxDolModuleTemplate
     /**
      * Constructor
      */
-    function BxPmtTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
 
         $this->_sLangsPrefix = $this->_oConfig->getLangsPrefix();
     }
@@ -111,6 +111,7 @@ class BxPmtTemplate extends BxDolModuleTemplate
             $aItems = BxPmtCart::items2array($aOrder['items']);
         else
             $aItems = BxPmtCart::items2array($aOrder['seller_id'] . '_' . $aOrder['module_id'] . '_' . $aOrder['item_id'] . '_' . $aOrder['item_count']);
+
         foreach($aItems as $aItem) {
             $aInfo = BxDolService::call((int)$aItem['module_id'], 'get_cart_item', array($aOrder['client_id'], $aItem['item_id']));
             if(!empty($aInfo) && is_array($aInfo))
@@ -212,7 +213,6 @@ class BxPmtTemplate extends BxDolModuleTemplate
         $sMethodNameCount = 'get' . ucfirst($sType) . 'OrdersCount';
         if(($iCount = $this->_oDb->$sMethodNameCount($aParams)) > $aParams['per_page']) {
             $oPaginate = new BxDolPaginate(array(
-                'page_url' => 'javascript:void(0);',
                 'start' => $aParams['start'],
                 'count' => $iCount,
                 'per_page' => $aParams['per_page'],

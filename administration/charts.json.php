@@ -25,7 +25,7 @@ function bx_charts_get_json($sObject, $sFrom, $sTo)
 {
     $oJSON = new Services_JSON();
 
-    $aObject = $GLOBALS['MySQL']->getRow("SELECT * FROM `sys_objects_charts` WHERE `object` = '" . $GLOBALS['MySQL']->escape($sObject) . "' AND `active` = 1");
+    $aObject = $GLOBALS['MySQL']->getRow("SELECT * FROM `sys_objects_charts` WHERE `object` = ? AND `active` = ?", [$sObject, 1]);
     if (!$aObject)
         return $oJSON->encode(array('error' => _t('_Error Occured')));
 
@@ -53,7 +53,7 @@ function bx_charts_get_json($sObject, $sFrom, $sTo)
 
 function bx_charts_get_ts($s, $isNowIfError = false)
 {
-    $a = split('-', $s); // YYYY-MM-DD
+    $a = explode('-', $s); // YYYY-MM-DD
     if (!$a || empty($a[0]) || empty($a[1]) || empty($a[2]) || !(int)$a[0] || !(int)$a[1] || !(int)$a[2])
         return $isNowIfError ? time() : false;
     return mktime(0, 0, 0, $a[1], $a[2], $a[0]);
@@ -81,9 +81,9 @@ function bx_charts_get_data($aObject, $iFrom, $iTo)
 
     // get data
     if ($aObject['column_date'] >= 0)
-        $aData = $GLOBALS['MySQL']->getAllWithKey($sQuery, $aObject['column_date'], MYSQL_NUM);
+        $aData = $GLOBALS['MySQL']->getAllWithKey($sQuery, $aObject['column_date'], PDO::FETCH_NUM);
     else
-        $aData = $GLOBALS['MySQL']->getAll($sQuery, MYSQL_NUM);
+        $aData = $GLOBALS['MySQL']->getAll($sQuery, PDO::FETCH_NUM);
     if (!$aData)
         return false;
 

@@ -21,9 +21,9 @@ bx_import('BxDolModule');
  */
 class BxProfilerModule extends BxDolModule
 {
-    function BxProfilerModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
     }
 
     function actionHome ()

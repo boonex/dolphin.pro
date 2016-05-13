@@ -16,9 +16,9 @@ class BxPollDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxPollDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
 
         $this -> _oConfig       = $oConfig;
         $this -> _sTable        = $oConfig -> sTableName;

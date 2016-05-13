@@ -9,9 +9,9 @@
 
     class BxShoutBoxInstaller extends BxDolInstaller
     {
-        function BxShoutBoxInstaller(&$aConfig)
+        function __construct(&$aConfig)
         {
-            parent::BxDolInstaller($aConfig);
+            parent::__construct($aConfig);
         }
 
         function install($aParams)

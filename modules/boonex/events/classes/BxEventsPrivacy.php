@@ -13,10 +13,10 @@ class BxEventsPrivacy extends BxDolPrivacy
     /**
      * Constructor
      */
-    function BxEventsPrivacy(&$oModule)
+    function __construct(&$oModule)
     {
         $this->oModule = $oModule;
-        parent::BxDolPrivacy($oModule->_oDb->_sPrefix . 'main', 'ID', 'ResponsibleID');
+        parent::__construct($oModule->_oDb->_sPrefix . 'main', 'ID', 'ResponsibleID');
     }
 
     /**

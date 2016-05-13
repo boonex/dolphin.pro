@@ -15,8 +15,8 @@ class BxTemplMenuSimple extends BxBaseMenuSimple
     /**
     * Class constructor;
     */
-    function BxTemplMenuSimple()
+    function __construct()
     {
-        parent::BxBaseMenuSimple();
+        parent::__construct();
     }
 }

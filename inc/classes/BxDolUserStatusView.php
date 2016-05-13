@@ -15,7 +15,7 @@ class BxDolUserStatusView
     /**
      * Class constructor ;
      */
-    function BxDolUserStatusView()
+    function __construct()
     {
         $this -> sHomeUrl = BX_DOL_URL_ROOT;
         $this -> aStatuses = array(
@@ -128,7 +128,7 @@ class BxDolUserStatusView
      * @param  : $iMemberId (integer) - logged member's id;
      * @return : Html presentation data;
      */
-    function getStatusPageLight($iMemberId)
+    public static function getStatusPageLight($iMemberId)
     {
         global $oSysTemplate;
 

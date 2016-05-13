@@ -34,9 +34,9 @@ class BxBlogsConfig extends BxDolConfig
     /*
     * Constructor.
     */
-    function BxBlogsConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
 
         $this->_iAnimationSpeed = 'normal';
 

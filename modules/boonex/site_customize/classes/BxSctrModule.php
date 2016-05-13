@@ -66,9 +66,9 @@ class BxSctrModule extends BxDolModule
     /**
      * Constructor
      */
-    function BxSctrModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
         $this->iUserId = isLogged() && isAdmin() ? getLoggedId() : 0;
 
         $this->_oConfig->init($this->_oDb);

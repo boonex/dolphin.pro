@@ -11,14 +11,6 @@ class BxDolCacheXCache extends BxDolCache
     var $iTTL = 3600;
 
     /**
-     * constructor
-     */
-    function BxDolCacheXCache()
-    {
-        parent::BxDolCache();
-    }
-
-    /**
      * Get data from shared memory cache
      *
      * @param  string $sKey - file name

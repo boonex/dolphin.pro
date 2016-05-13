@@ -139,7 +139,7 @@ function mem_expiration_letter( $ID, $membership_name, $expire_days )
 function getID( $str, $with_email = 1 )
 {
     if ( $with_email ) {
-        if ( eregi("^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,4}$", $str) ) {
+        if (filter_var($str, FILTER_VALIDATE_EMAIL)) { //eregi("^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,4}$", $str) ) {
             $str = process_db_input($str);
             $mail_arr = db_arr( "SELECT `ID` FROM `Profiles` WHERE `Email` = '$str'" );
             if ( (int)$mail_arr['ID'] ) {
@@ -147,9 +147,8 @@ function getID( $str, $with_email = 1 )
             }
         }
     }
-
-    $str = process_db_input($str);
-    $iID = (int)db_value( "SELECT `ID` FROM `Profiles` WHERE `NickName` = '$str'" );
+    
+    $iID = (int)db_value( "SELECT `ID` FROM `Profiles` WHERE `NickName` = ?", [$str]);
 
     if(!$iID) {
         $aProfile = getProfileInfo($str);

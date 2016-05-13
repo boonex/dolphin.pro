@@ -19,9 +19,9 @@ class BxDolAdminMobileBuilder extends BxDolAdminBuilder
 {
     var $_sPage;
 
-    function BxDolAdminMobileBuilder ($sPage)
+    function __construct ($sPage)
     {
-        parent::BxDolAdminBuilder(
+        parent::__construct(
             '`sys_menu_mobile`',
             BX_DOL_URL_ADMIN . 'mobileBuilder.php',
             array (
@@ -34,7 +34,7 @@ class BxDolAdminMobileBuilder extends BxDolAdminBuilder
     function getItemsForContainer ($sKey)
     {
         global $MySQL;
-        return $MySQL->getAll("SELECT * FROM `sys_menu_mobile` WHERE `page` = '" . $this->_sPage . "' AND `active` = '" . $MySQL->escape($sKey) . "' ORDER BY `order`");
+        return $MySQL->getAll("SELECT * FROM `sys_menu_mobile` WHERE `page` = '" . $this->_sPage . "' AND `active` = ? ORDER BY `order`", [$sKey]);
     }
 
     function getItem ($aItem)

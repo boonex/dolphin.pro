@@ -18,10 +18,10 @@ class BxProfilerTemplate extends BxDolTwigTemplate
     /**
      * Constructor
      */
-    function BxProfilerTemplate(&$oConfig)
+    function __construct(&$oConfig)
     {
         $oDb = null;
-        parent::BxDolTwigTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
         $this->_isAjaxOutput = $this->_isAjaxRequest();
     }
 

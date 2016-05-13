@@ -11,9 +11,9 @@ class BxPfwTemplate extends BxPmtTemplate
 {
 	var $_oModule;
 
-    function BxPfwTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxPmtTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
 
         $this->_removeLocations($this);
         $this->_addLocations($this);

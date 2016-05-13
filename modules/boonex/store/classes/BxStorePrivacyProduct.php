@@ -13,10 +13,10 @@ class BxStorePrivacyProduct extends BxDolPrivacy
     /**
      * Constructor
      */
-    function BxStorePrivacyProduct(&$oModule)
+    function __construct(&$oModule)
     {
         $this->oModule = $oModule;
-        parent::BxDolPrivacy($oModule->_oDb->getPrefix() . 'products', 'id', 'author_id');
+        parent::__construct($oModule->_oDb->getPrefix() . 'products', 'id', 'author_id');
     }
 
     /**

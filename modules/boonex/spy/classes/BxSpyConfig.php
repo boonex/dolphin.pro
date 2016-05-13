@@ -22,9 +22,9 @@
         /**
          * Class constructor;
          */
-        function BxSpyConfig($aModule)
+        function __construct($aModule)
         {
-            parent::BxDolConfig($aModule);
+            parent::__construct($aModule);
             $this -> iUpdateTime      = getParam('bx_spy_update_time');
             $this -> iDaysForRows     = getParam('bx_spy_keep_rows_days');
             $this -> iSpeedToggleUp   = getParam('bx_spy_toggle_up');

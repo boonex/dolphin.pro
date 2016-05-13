@@ -5,7 +5,6 @@
  */
 
 bx_import('BxDolSiteMapsQuery');
-bx_import('BxDolMistake');
 
 define('BX_SITE_MAPS_URLS_PER_FILE', 20000);
 define('BX_SITE_MAPS_FILES_PREFIX', 'sitemap_');
@@ -28,7 +27,7 @@ define('BX_SITE_MAPS_FILE_INDEX', 'sitemap.xml');
  * You can refer to BoonEx modules for sample record in this table.
  *
  */
-class BxDolSiteMaps extends BxDolMistake
+class BxDolSiteMaps
 {
     static protected $BASE_PATH = BX_DIRECTORY_PATH_CACHE_PUBLIC; // path to generated sitemaps
     static protected $BASE_URL = BX_DOL_URL_CACHE_PUBLIC; // url to generated sitemaps

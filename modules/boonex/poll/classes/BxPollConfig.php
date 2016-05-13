@@ -33,9 +33,9 @@ class BxPollConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxPollConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
 
         // get allowed members polls;
         $this -> iAlowMembersPolls =  getParam( 'enable_poll' );

@@ -13,9 +13,9 @@ class BxMsgDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxMsgDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
     }

@@ -34,9 +34,9 @@ class BxDolTwigModuleDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxDolTwigModuleDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb($oConfig);
+        parent::__construct($oConfig);
     }
 
     // entry functions
@@ -49,9 +49,12 @@ class BxDolTwigModuleDb extends BxDolModuleDb
     function getEntryByIdAndOwner ($iId, $iOwner, $isAdmin)
     {
         $sWhere = '';
-        if (!$isAdmin)
-            $sWhere = " AND `{$this->_sFieldAuthorId}` = '$iOwner' ";
-        return $this->getRow ("SELECT * FROM `" . $this->_sPrefix . $this->_sTableMain . "` WHERE `{$this->_sFieldId}` = $iId $sWhere LIMIT 1");
+        $aBindings = [$iId];
+        if (!$isAdmin) {
+            $sWhere = " AND `{$this->_sFieldAuthorId}` = ? ";
+            $aBindings[] = $iOwner;
+        }
+        return $this->getRow ("SELECT * FROM `" . $this->_sPrefix . $this->_sTableMain . "` WHERE `{$this->_sFieldId}` = ? $sWhere LIMIT 1", $aBindings);
     }
 
     function getEntryById ($iId)
@@ -71,13 +74,14 @@ class BxDolTwigModuleDb extends BxDolModuleDb
 
     function getEntryByUri ($sUri)
     {
-        return $this->getRow ("SELECT * FROM `" . $this->_sPrefix . $this->_sTableMain . "` WHERE `{$this->_sFieldUri}` = '$sUri' LIMIT 1");
+        return $this->getRow ("SELECT * FROM `" . $this->_sPrefix . $this->_sTableMain . "` WHERE `{$this->_sFieldUri}` = ? LIMIT 1", [$sUri]);
     }
 
     function getLatestFeaturedItem ()
     {
         $sWhere = " AND `{$this->_sFieldFeatured}` = '1' ";
-        return $this->getRow ("SELECT * FROM `" . $this->_sPrefix . $this->_sTableMain . "` WHERE `{$this->_sFieldStatus}` = 'approved' AND `{$this->_sFieldAllowViewTo}` = '" . BX_DOL_PG_ALL . "' $sWhere ORDER BY `{$this->_sFieldCreated}` DESC LIMIT 1");
+        return $this->getRow ("SELECT * FROM `" . $this->_sPrefix . $this->_sTableMain . "`
+        WHERE `{$this->_sFieldStatus}` = ? AND `{$this->_sFieldAllowViewTo}` = ? $sWhere ORDER BY `{$this->_sFieldCreated}` DESC LIMIT 1", ['approved', BX_DOL_PG_ALL]);
     }
 
     function getEntriesByMonth ($iYear, $iMonth, $iNextYear, $iNextMonth)
@@ -167,7 +171,7 @@ class BxDolTwigModuleDb extends BxDolModuleDb
 
     function getMedia ($iEntryId, $iMediaId, $sMediaType)
     {
-        return $this->getRow ("SELECT `entry_id`, `media_id` FROM `" . $this->_sPrefix . $this->_sTableMediaPrefix . "{$sMediaType}` WHERE `entry_id` = '$iEntryId' AND `media_id` = '$iMediaId'");
+        return $this->getRow ("SELECT `entry_id`, `media_id` FROM `" . $this->_sPrefix . $this->_sTableMediaPrefix . "{$sMediaType}` WHERE `entry_id` = ? AND `media_id` = ?", [$iEntryId, $iMediaId]);
     }
 
     function setThumbnail ($iEntryId, $iImageId)
@@ -188,7 +192,7 @@ class BxDolTwigModuleDb extends BxDolModuleDb
 
     function getForumById ($iForumId)
     {
-        return $this->getRow ("SELECT * FROM `" . $this->_sPrefix . "forum` WHERE `forum_id` = '{$iForumId}' LIMIT 1");
+        return $this->getRow ("SELECT * FROM `" . $this->_sPrefix . "forum` WHERE `forum_id` = ? LIMIT 1", [$iForumId]);
     }
 
     function createForum ($aDataEntry, $sUsername)

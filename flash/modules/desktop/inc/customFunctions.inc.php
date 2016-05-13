@@ -67,7 +67,7 @@ function getActiveUsers($sUserId)
 
     $aOnline = array();
     $aOffline = array();
-    while(($aUser = mysql_fetch_assoc($rResult)) != null)
+    while(($aUser = $rResult->fetch()) != null)
         if($aUser['Online']) $aOnline[] = $aUser['ID'];
         else $aOffline[] = $aUser['ID'];
 
@@ -133,8 +133,8 @@ function getMails($sId, $sGotMails, $aFullUsers)
 
     $aMails = array();
     $aSenders = array();
-    for($i=0; $i<mysql_num_rows($rResult); $i++) {
-        $aMail = mysql_fetch_assoc($rResult);
+    for($i=0; $i<$rResult->rowCount(); $i++) {
+        $aMail = $rResult->fetch();
         if(!in_array($aMail['Sender'], $aFullUsers)) $aSenders[] = $aMail['Sender'];
         $aMails[] = $aMail;
     }
@@ -143,8 +143,8 @@ function getMails($sId, $sGotMails, $aFullUsers)
     $aMediaUsers = array();
     $rMedia = getUsersMedia($aSenders);
     if($rMedia != null) {
-        for($i=0; $i<mysql_num_rows($rMedia); $i++) {
-            $aUser = mysql_fetch_assoc($rMedia);
+        for($i=0; $i<$rMedia->rowCount(); $i++) {
+            $aUser = $rMedia->fetch();
             $sUserId = $aUser['ID'];
             $aMediaUsers[$sUserId] = getUserInfo($sUserId);
             $aMediaUsers[$sUserId]['music'] = $aUser['CountMusic'] > 0 ? TRUE_VAL : FALSE_VAL;
@@ -170,8 +170,8 @@ function getIms($sId)
 
     $rResult = getResult("SELECT * FROM `" . DB_PREFIX ."ImPendings` WHERE `RecipientID`='" . $sId . "' ORDER BY `ID` DESC");
     $sResult = "";
-    for($i=0; $i<mysql_num_rows($rResult); $i++) {
-        $aIm = mysql_fetch_assoc($rResult);
+    for($i=0; $i<$rResult->rowCount(); $i++) {
+        $aIm = $rResult->fetch();
         $sResult .= parseXml($aXmlTemplates["message"], $aIm['ID'], $aIm['SenderID'], $aIm['Message']);
     }
     return makeGroup($sResult, "ims");

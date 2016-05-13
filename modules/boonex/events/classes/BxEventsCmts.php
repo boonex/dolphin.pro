@@ -11,16 +11,16 @@ class BxEventsCmts extends BxTemplCmtsView
     /**
      * Constructor
      */
-    function BxEventsCmts($sSystem, $iId)
+    function __construct($sSystem, $iId)
     {
-        parent::BxTemplCmtsView($sSystem, $iId);
+        parent::__construct($sSystem, $iId);
     }
 
     function getMain()
     {
         $aPathInfo = pathinfo(__FILE__);
         require_once ($aPathInfo['dirname'] . '/BxEventsSearchResult.php');
-        return BxEventsSearchResult::getMain();
+        return (new BxEventsSearchResult())->getMain();
     }
 
     function getBaseUrl()

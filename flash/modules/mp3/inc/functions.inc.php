@@ -79,17 +79,24 @@ function publishRecordedFile($sUserId, $sTitle, $sCategory, $sTags, $sDesc)
 
 function initFile($sId, $sTitle, $sCategory, $sTags, $sDesc)
 {
-    global $oDb;
     global $sModule;
-    global $oDb;
+
+    $oDb = BxDolDb::getInstance();
 
     $sUri = mp3_genUri($sTitle);
     $sUriPart = empty($sUri) ? "" : "`Uri`='" . $sUri . "', ";
 
     $sDBModule = DB_PREFIX . ucfirst($sModule);
+    
+    getResult("UPDATE `" . $sDBModule . "Files` SET `Categories`= ?, `Title`= ?, " . $sUriPart . "`Tags`= ?, `Description`= ? WHERE `ID`= ?", [
+        $sCategory,
+        $sTitle,
+        $sTags,
+        $sDesc,
+        $sId
+    ]);
 
-    getResult("UPDATE `" . $sDBModule . "Files` SET `Categories`='" . $sCategory . "', `Title`='" . $sTitle . "', " . $sUriPart . "`Tags`='" . $sTags . "', `Description`='" . $sDesc . "' WHERE `ID`='" . $sId . "'");
-    return mysql_affected_rows($oDb->rLink) > 0 ? true : false;
+    return $oDb->getAffectedRows() > 0 ? true : false;
 }
 
 function convertMain($sId)

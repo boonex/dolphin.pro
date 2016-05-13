@@ -4,30 +4,27 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
 bx_import('BxDolSessionQuery');
 
 define('BX_DOL_SESSION_LIFETIME', 3600);
 define('BX_DOL_SESSION_COOKIE', 'memberSession');
 
-class BxDolSession extends BxDolMistake
+class BxDolSession
 {
     var $oDb;
     var $sId;
     var $iUserId;
     var $aData;
 
-    private function BxDolSession()
+    public function __construct()
     {
-        parent::BxDolMistake();
-
         $this->oDb = new BxDolSessionQuery();
         $this->sId = '';
         $this->iUserId = 0;
         $this->aData = array();
     }
 
-    function getInstance()
+    public static function getInstance()
     {
         if(!isset($GLOBALS['bxDolClasses']['BxDolSession']))
             $GLOBALS['bxDolClasses']['BxDolSession'] = new BxDolSession();
@@ -38,7 +35,7 @@ class BxDolSession extends BxDolMistake
         return $GLOBALS['bxDolClasses']['BxDolSession'];
     }
 
-    function start()
+    public function start()
     {
         if (defined('BX_DOL_CRON_EXECUTE'))
             return true;
@@ -56,7 +53,7 @@ class BxDolSession extends BxDolMistake
         return true;
     }
 
-    function destroy()
+    public function destroy()
     {
         $aUrl = parse_url($GLOBALS['site']['url']);
         $sPath = isset($aUrl['path']) && !empty($aUrl['path']) ? $aUrl['path'] : '/';
@@ -70,7 +67,7 @@ class BxDolSession extends BxDolMistake
         $this->aData = array();
     }
 
-    function exists($sId = '')
+    public function exists($sId = '')
     {
         if(empty($sId) && isset($_COOKIE[BX_DOL_SESSION_COOKIE]))
             $sId = process_db_input($_COOKIE[BX_DOL_SESSION_COOKIE], BX_TAGS_STRIP);
@@ -85,12 +82,12 @@ class BxDolSession extends BxDolMistake
             return false;
     }
 
-    function getId()
+    public function getId()
     {
         return $this->sId;
     }
 
-    function setValue($sKey, $mixedValue)
+    public function setValue($sKey, $mixedValue)
     {
         if(empty($this->sId))
             $this->start();
@@ -99,7 +96,7 @@ class BxDolSession extends BxDolMistake
         $this->save();
     }
 
-    function unsetValue($sKey)
+    public function unsetValue($sKey)
     {
         if(empty($this->sId))
             $this->start();
@@ -112,7 +109,7 @@ class BxDolSession extends BxDolMistake
             $this->destroy();
     }
 
-    function getValue($sKey)
+    public function getValue($sKey)
     {
         if(empty($this->sId))
             $this->start();

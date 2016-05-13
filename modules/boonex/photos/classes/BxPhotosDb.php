@@ -11,9 +11,9 @@ class BxPhotosDb extends BxDolFilesDb
     /*
      * Constructor.
      */
-    function BxPhotosDb (&$oConfig)
+    function __construct (&$oConfig)
     {
-        parent::BxDolFilesDb($oConfig);
+        parent::__construct($oConfig);
         $this->sFileTable = 'bx_photos_main';
         $this->sFavoriteTable = 'bx_photos_favorites';
         $this->aFileFields['medDesc'] = 'Desc';

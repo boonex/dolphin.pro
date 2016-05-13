@@ -5,9 +5,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolMistake.php');
-
-class BxDolAlbums extends BxDolMistake
+class BxDolAlbums
 {
     var $sAlbumTable;
     var $sAlbumObjectsTable;
@@ -16,7 +14,7 @@ class BxDolAlbums extends BxDolMistake
     var $sAlbumCoverParam;
     var $iOwnerId;
 
-    function BxDolAlbums ($sType, $iOwnerId = 0)
+    function __construct($sType, $iOwnerId = 0)
     {
         $this->iOwnerId = (int)$iOwnerId;
         $this->sType = process_db_input($sType, BX_TAGS_STRIP);
@@ -156,7 +154,7 @@ class BxDolAlbums extends BxDolMistake
     {
         $sUri = process_db_input($sUri, BX_TAGS_STRIP);
         $iOwnerId = (int)$iOwnerId;
-        return !$GLOBALS['MySQL']->getRow("SELECT 1 FROM $this->sAlbumTable WHERE `Uri` = '$sUri' AND `Owner` = '$iOwnerId' AND `Type` = '{$this->sType}' LIMIT 1");
+        return !$GLOBALS['MySQL']->getRow("SELECT 1 FROM $this->sAlbumTable WHERE `Uri` = ? AND `Owner` = ? AND `Type` = ? LIMIT 1", [$sUri, $iOwnerId, $this->sType]);
     }
 
     function updateAlbum ($mixedIdent, $aData)
@@ -313,8 +311,10 @@ class BxDolAlbums extends BxDolMistake
 
     function getAlbumInfo ($aIdent = array(), $aFields = array())
     {
-        $sqlCondition = "`{$this->sAlbumTable}`.`Type`='{$this->sType}'";
+        $sqlCondition = "`{$this->sAlbumTable}`.`Type`= ?";
+        $aBindings = [$this->sType];
         $aParams = array();
+        // TODO: need dynamic pdo bindings
         foreach($aIdent as $sKey => $sValue) {
             switch (strtolower($sKey)) {
                 case 'fileuri':
@@ -468,8 +468,8 @@ class BxDolAlbums extends BxDolMistake
             $sqlQuery = "SELECT `id_album` as `ID`, `ObjCount`, `LastObjId`
                          FROM `{$this->sAlbumObjectsTable}`
                          LEFT JOIN `{$this->sAlbumTable}` ON `{$this->sAlbumTable}`.`ID` = `{$this->sAlbumObjectsTable}`.`id_album`
-                         WHERE `id_object` = '$iObj' AND `$this->sAlbumTable`.`Type` = '$this->sType'";
-            $aInfo = $GLOBALS['MySQL']->getRow($sqlQuery);
+                         WHERE `id_object` = ? AND `$this->sAlbumTable`.`Type` = ?";
+            $aInfo = $GLOBALS['MySQL']->getRow($sqlQuery, [$iObj, $this->sType]);
             $sqlDelete = "DELETE FROM `{$this->sAlbumObjectsTable}` WHERE `id_album`='{$aInfo['ID']}' AND `id_object`='$iObj' LIMIT 1";
             $GLOBALS['MySQL']->res($sqlDelete);
             if ($aInfo['ObjCount'] > 0 && $bUpdateCounter)

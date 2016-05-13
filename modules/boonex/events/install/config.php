@@ -48,7 +48,6 @@ $aConfig = array(
         'recompile_injections' => 0,
         'recompile_permalinks' => 1,
         'recompile_alerts' => 1,
-        'clear_db_cache' => 1,
         'show_conclusion' => 1,
     ),
     'uninstall' => array (
@@ -71,7 +70,6 @@ $aConfig = array(
         'recompile_injections' => 0,
         'recompile_permalinks' => 1,
         'recompile_alerts' => 1,
-        'clear_db_cache' => 1,
         'show_conclusion' => 1,
     ),
 

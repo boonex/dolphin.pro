@@ -11,9 +11,9 @@ class BxAdsTemplate extends BxDolModuleTemplate
     /*
     * Constructor.
     */
-    function BxAdsTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolModuleTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
 
         $this->_aTemplates = array('unit_ads', 'category', 'filter_form', 'ad_of_day', 'wall_outline_extra_info');
     }
@@ -23,7 +23,7 @@ class BxAdsTemplate extends BxDolModuleTemplate
         parent::loadTemplates();
     }
 
-    function parseHtmlByTemplateName($sName, $aVariables)
+    function parseHtmlByTemplateName($sName, $aVariables, $mixedKeyWrapperHtml = null)
     {
         return $this->parseHtmlByContent($this->_aTemplates[$sName], $aVariables);
     }

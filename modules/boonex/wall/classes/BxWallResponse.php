@@ -14,9 +14,9 @@ class BxWallResponse extends BxDolAlertsResponse
      * Constructor
      * @param BxWallModule $oModule - an instance of current module
      */
-    function BxWallResponse($oModule)
+    function __construct($oModule)
     {
-        parent::BxDolAlertsResponse();
+        parent::__construct();
 
         $this->_oModule = $oModule;
     }

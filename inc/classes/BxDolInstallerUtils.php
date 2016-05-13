@@ -9,9 +9,9 @@ bx_import('BxDolIO');
 
 class BxDolInstallerUtils extends BxDolIO
 {
-    function BxDolInstallerUtils()
+    function __construct()
     {
-        parent::BxDolIO();
+        parent::__construct();
     }
 
     function isXsltEnabled()
@@ -34,7 +34,7 @@ class BxDolInstallerUtils extends BxDolIO
         return !($sAllowUrlInclude == 0);
     }
 
-    function isModuleInstalled($sUri)
+    public static function isModuleInstalled($sUri)
     {
         $oModuleDb = new BxDolModuleDb();
         return $oModuleDb->isModule($sUri);

@@ -13,14 +13,14 @@ class BxAvaPageMain extends BxDolPageView
     var $_oConfig;
     var $_oDb;
 
-    function BxAvaPageMain(&$oMain)
+    function __construct(&$oMain)
     {
         $this->_oMain = &$oMain;
         $this->_oTemplate = $oMain->_oTemplate;
         $this->_oConfig = $oMain->_oConfig;
         $this->_oDb = $oMain->_oDb;
 
-        parent::BxDolPageView('bx_avatar_main');
+        parent::__construct('bx_avatar_main');
 
         $GLOBALS['oTopMenu']->setCurrentProfileID($this->_oMain->_iProfileId);
     }

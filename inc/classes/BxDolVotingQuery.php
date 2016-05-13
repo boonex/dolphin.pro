@@ -14,10 +14,10 @@ class BxDolVotingQuery extends BxDolDb
 {
     var $_aSystem; // current voting system
 
-    function BxDolVotingQuery(&$aSystem)
+    function __construct(&$aSystem)
     {
         $this->_aSystem = &$aSystem;
-        parent::BxDolDb();
+        parent::__construct();
     }
 
     function  getVote ($iId)
@@ -25,7 +25,7 @@ class BxDolVotingQuery extends BxDolDb
         $sPre = $this->_aSystem['row_prefix'];
         $sTable = $this->_aSystem['table_rating'];
 
-        return $this->getRow("SELECT `{$sPre}rating_count` as `count`, (`{$sPre}rating_sum` / `{$sPre}rating_count`) AS `rate` FROM {$sTable} WHERE `{$sPre}id` = '$iId' LIMIT 1");
+        return $this->getRow("SELECT `{$sPre}rating_count` as `count`, (`{$sPre}rating_sum` / `{$sPre}rating_count`) AS `rate` FROM {$sTable} WHERE `{$sPre}id` = ? LIMIT 1", [$iId]);
     }
 
     function  putVote ($iId, $sIp, $iRate)

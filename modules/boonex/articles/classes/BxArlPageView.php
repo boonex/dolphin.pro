@@ -8,8 +8,8 @@ bx_import('BxDolTextPageView');
 
 class BxArlPageView extends BxDolTextPageView
 {
-    function BxArlPageView($sName, &$oObject)
+    function __construct($sName, &$oObject)
     {
-        parent::BxDolTextPageView('articles_single', $sName, $oObject);
+        parent::__construct('articles_single', $sName, $oObject);
     }
 }

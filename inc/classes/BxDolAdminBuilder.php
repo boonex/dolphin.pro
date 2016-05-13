@@ -18,7 +18,7 @@ class BxDolAdminBuilder
      * Constructor
      * @param array $aContainers - containers, id as key and title as value
      */
-    function BxDolAdminBuilder($sTable, $sPostUrl, $aContainers)
+    function __construct($sTable, $sPostUrl, $aContainers)
     {
         $this->_sPostUrl = $sPostUrl;
         $this->_sTable = $sTable;

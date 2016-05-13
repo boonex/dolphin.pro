@@ -58,9 +58,9 @@ class BxGSearchModule extends BxDolModule
     var $_iProfileId;
     var $_sProto = 'http';
 
-    function BxGSearchModule(&$aModule)
+    function __construct(&$aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
         $GLOBALS['aModule'] = $aModule;
         $this->_iProfileId = getLoggedId();
         $GLOBALS['oBxGSearchModule'] = &$this;

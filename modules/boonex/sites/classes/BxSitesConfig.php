@@ -19,9 +19,9 @@ class BxSitesConfig extends BxDolConfig
     /**
      * Constructor
      */
-    function BxSitesConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 
     function init(&$oDb)

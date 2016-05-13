@@ -15,8 +15,8 @@ class BxTemplMenuBottom extends BxBaseMenuBottom
     /**
     * Class constructor;
     */
-    function BxTemplMenuBottom()
+    function __construct()
     {
-        parent::BxBaseMenuBottom();
+        parent::__construct();
     }
 }

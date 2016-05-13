@@ -42,12 +42,12 @@ $sBoxContent = <<<EOF
     <!--
     function switchAdmPage(oLink)
     {
-        var sType = $(oLink).attr('id').replace('main_menu', '');
+        var sType = jQuery(oLink).attr('id').replace('main_menu', '');
         var sName = '#page' + sType;
 
-        $(oLink).parent('.notActive').hide().siblings('.notActive:hidden').show().siblings('.active').hide().siblings('#' + $(oLink).attr('id') + '-act').show();
-        $(sName).siblings('div:visible').bx_anim('hide', 'fade', 'slow', function(){
-            $(sName).bx_anim('show', 'fade', 'slow');
+        jQuery(oLink).parent('.notActive').hide().siblings('.notActive:hidden').show().siblings('.active').hide().siblings('#' + jQuery(oLink).attr('id') + '-act').show();
+        jQuery(sName).siblings('div:visible').bx_anim('hide', 'fade', 'slow', function(){
+            jQuery(sName).bx_anim('show', 'fade', 'slow');
         });
 
         return false;
@@ -196,8 +196,8 @@ function getTablesBackupTools($status_text)
     // All tables of Database
     $aTablesOptions = array();
     $tbls = db_list_tables();
-    while ($tbl = mysql_fetch_array($tbls))  {
-        $aTablesOptions[$tbl['0']] = $tbl['0'];
+    foreach ($tbls as $tbl) {
+        $aTablesOptions[$tbl] = $tbl;
     }
 
     $sStatusText = ($status_text and isset($_POST['TablesBackup'])) ? $status_text : '';

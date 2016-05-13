@@ -8,8 +8,8 @@ bx_import('BxDolConfig');
 
 class BxChatPlusConfig extends BxDolConfig
 {
-    function BxChatPlusConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 }

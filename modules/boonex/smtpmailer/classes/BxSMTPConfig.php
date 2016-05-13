@@ -8,9 +8,9 @@ bx_import('BxDolConfig');
 
 class BxSMTPConfig extends BxDolConfig
 {
-    function BxSMTPConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConfig($aModule);
+        parent::__construct($aModule);
     }
 
 }

@@ -4,10 +4,9 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolMistake.php');
 require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolCacheFile.php');
 
-class BxDolParams extends BxDolMistake
+class BxDolParams
 {
     var $_oDb;
     var $_oCache;
@@ -17,10 +16,8 @@ class BxDolParams extends BxDolMistake
     /**
      * constructor
      */
-    function BxDolParams($oDb)
+    function __construct($oDb)
     {
-        parent::BxDolMistake();
-
         global $site;
 
         $this->_oDb = $oDb;

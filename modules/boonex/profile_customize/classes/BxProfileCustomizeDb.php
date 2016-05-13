@@ -15,16 +15,16 @@ class BxProfileCustomizeDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxProfileCustomizeDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
 
         $this->_oConfig = $oConfig;
     }
 
     function getProfileByUserId($iUserId)
     {
-        return $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_main` WHERE `user_id` = $iUserId LIMIT 1");
+        return $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_main` WHERE `user_id` = ? LIMIT 1", [$iUserId]);
     }
 
     function getProfileTmpByUserId($iUserId)
@@ -94,7 +94,7 @@ class BxProfileCustomizeDb extends BxDolModuleDb
 
     function getUnitById($iUnitId)
     {
-        return $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_units` WHERE `id` = $iUnitId LIMIT 1");
+        return $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_units` WHERE `id` = ? LIMIT 1", [$iUnitId]);
     }
 
     function deleteUnit($iUnitId)
@@ -114,18 +114,18 @@ class BxProfileCustomizeDb extends BxDolModuleDb
 
     function getThemeByName($sName)
     {
-        return $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_themes` WHERE `name` = '$sName' LIMIT 1");
+        return $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_themes` WHERE `name` = ? LIMIT 1", [$sName]);
     }
 
     function getThemeById($iThemeId)
     {
-        return $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_themes` WHERE `id` = '$iThemeId' LIMIT 1");
+        return $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_themes` WHERE `id` = ? LIMIT 1", [$iThemeId]);
     }
 
     function getThemeStyle($iThemeId)
     {
         if ((int)$iThemeId) {
-            $aTheme = $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_themes` WHERE `id` = $iThemeId LIMIT 1");
+            $aTheme = $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_themes` WHERE `id` = ? LIMIT 1", [$iThemeId]);
 
             if (!empty($aTheme))
                 return unserialize($aTheme['css']);
@@ -173,7 +173,7 @@ class BxProfileCustomizeDb extends BxDolModuleDb
         if (strlen($sFileName) > 0) {
             $sId = basename($sFileName, '.' . pathinfo($sFileName, PATHINFO_EXTENSION));
             if (strlen($sId) > 0 && $this->query("UPDATE `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_images` SET `count` = `count` -  1 WHERE `id` = $sId")) {
-                $aRow = $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_images` WHERE `id` = $sId LIMIT 1");
+                $aRow = $this->getRow("SELECT * FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_images` WHERE `id` = ? LIMIT 1", [$sId]);
                 if ($aRow['count'] < 1)
                     $this->query("DELETE FROM `" . BX_PROFILE_CUSTOM_TABLE_PREFIX . "_images` WHERE `id` = $sId");
                 else

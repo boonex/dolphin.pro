@@ -23,9 +23,9 @@ class BxDolSearchPageView extends BxDolPageView
 
     var $aFilterSortSettings;
 
-    function BxDolSearchPageView()
+    function __construct()
     {
-        parent::BxDolPageView('search');
+        parent::__construct('search');
 
         // get search mode
         switch( $_REQUEST['search_mode'] ) {

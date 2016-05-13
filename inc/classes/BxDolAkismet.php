@@ -6,16 +6,16 @@
  */
 
 /**
- * Spam detection based on the message conetnt and logged in user
+ * Spam detection based on the message content and logged in user
  */
-class BxDolAkismet extends BxDolMistake
+class BxDolAkismet
 {
     var $oAkismet = null;
 
     /**
      * Constructor
      */
-    public function BxDolAkismet($iProfileID = 0)
+    public function __construct($iProfileID = 0)
     {
         $sKey = getParam('sys_akismet_api_key');
         if ($sKey) {

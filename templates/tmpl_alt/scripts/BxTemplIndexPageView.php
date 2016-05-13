@@ -9,8 +9,8 @@ bx_import ('BxBaseIndexPageView');
 
 class BxTemplIndexPageView extends BxBaseIndexPageView
 {
-    function BxTemplIndexPageView()
+    function __construct()
     {
-        BxBaseIndexPageView::BxBaseIndexPageView();
+        BxBaseIndexPageView::__construct();
     }
 }

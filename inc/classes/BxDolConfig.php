@@ -6,7 +6,6 @@
 
 require_once(BX_DIRECTORY_PATH_INC . 'utils.inc.php');
 
-bx_import('BxDolMistake');
 bx_import('BxDolPermalinks');
 
 /**
@@ -34,7 +33,7 @@ bx_import('BxDolPermalinks');
  *
  */
 
-class BxDolConfig extends BxDolMistake
+class BxDolConfig
 {
     var $_iId;
 
@@ -59,10 +58,8 @@ class BxDolConfig extends BxDolMistake
     /**
      * constructor
      */
-    function BxDolConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolMistake();
-
         $this->_iId = empty($aModule['id']) ? 0 : (int)$aModule['id'];
         $this->_sVendor = $aModule['vendor'];
         $this->_sClassPrefix = $aModule['class_prefix'];

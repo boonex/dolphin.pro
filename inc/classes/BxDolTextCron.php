@@ -12,9 +12,9 @@ class BxDolTextCron extends BxDolCron
 {
     var $_oModule;
 
-    function BxDolTextCron()
+    function __construct()
     {
-        parent::BxDolCron();
+        parent::__construct();
 
         $this->_oModule = null;
     }

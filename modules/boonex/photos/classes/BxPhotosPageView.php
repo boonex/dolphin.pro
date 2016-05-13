@@ -20,9 +20,9 @@ class BxPhotosPageView extends BxDolPageView
     var $oDb;
     var $oSearch;
 
-    function BxPhotosPageView (&$oShared, &$aFileInfo, $sPage = 'bx_photos_view')
+    function __construct (&$oShared, &$aFileInfo, $sPage = 'bx_photos_view')
     {
-        parent::BxDolPageView($sPage);
+        parent::__construct($sPage);
         $this->aFileInfo = $aFileInfo;
         $this->iProfileId = &$oShared->_iProfileId;
 

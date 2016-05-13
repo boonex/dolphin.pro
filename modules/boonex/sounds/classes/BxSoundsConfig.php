@@ -12,9 +12,9 @@ class BxSoundsConfig extends BxDolFilesConfig
     /**
      * Constructor
      */
-    function BxSoundsConfig (&$aModule)
+    function __construct (&$aModule)
     {
-        parent::BxDolFilesConfig($aModule);
+        parent::__construct($aModule);
 
         // only image files can added/removed here, changing list of sound files requires source code modification
         // image files support square resizing, just specify 'square' => true

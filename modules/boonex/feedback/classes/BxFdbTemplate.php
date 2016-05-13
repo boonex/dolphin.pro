@@ -9,9 +9,9 @@ bx_import('BxDolTextTemplate');
 
 class BxFdbTemplate extends BxDolTextTemplate
 {
-    function BxFdbTemplate(&$oConfig, &$oDb)
+    function __construct(&$oConfig, &$oDb)
     {
-        parent::BxDolTextTemplate($oConfig, $oDb);
+        parent::__construct($oConfig, $oDb);
 
         $this->sCssPrefix = 'feedback';
     }

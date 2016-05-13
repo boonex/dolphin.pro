@@ -11,9 +11,9 @@ class BxDolCmtsProfile extends BxTemplCmtsView
     /**
      * Constructor
      */
-    function BxDolCmtsProfile($sSystem, $iId, $iInit = 1)
+    function __construct($sSystem, $iId, $iInit = 1)
     {
-        parent::BxTemplCmtsView($sSystem, $iId, $iInit);
+        parent::__construct($sSystem, $iId, $iInit);
     }
 
 	function getBaseUrl()

@@ -25,9 +25,9 @@
          * 					: mode (mode) - switch mode to extended and simple,
          * @param		: $sPageName (string) - need for page builder ;
          */
-        function BxTemplBrowse( &$aFilteredSettings, &$aDisplaySettings, $sPageName )
+        function __construct( &$aFilteredSettings, &$aDisplaySettings, $sPageName )
         {
             // call the parent constructor ;
-            parent::BxBaseBrowse( $aFilteredSettings, $aDisplaySettings, $sPageName );
+            parent::__construct( $aFilteredSettings, $aDisplaySettings, $sPageName );
         }
     }

@@ -8,9 +8,9 @@ bx_import('BxDolTwigPageView');
 
 class BxEventsPageView extends BxDolTwigPageView
 {
-    function BxEventsPageView(&$oEventsMain, &$aEvent)
+    function __construct(&$oEventsMain, &$aEvent)
     {
-        parent::BxDolTwigPageView('bx_events_view', $oEventsMain, $aEvent);
+        parent::__construct('bx_events_view', $oEventsMain, $aEvent);
     }
 
     function getBlockCode_Info()

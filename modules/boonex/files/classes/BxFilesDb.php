@@ -12,9 +12,9 @@ class BxFilesDb extends BxDolFilesDb
     /*
      * Constructor.
      */
-    function BxFilesDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolFilesDb($oConfig);
+        parent::__construct($oConfig);
 
         $this->sFileTable = 'bx_files_main';
         $this->sFavoriteTable = 'bx_files_favorites';

@@ -25,7 +25,7 @@ function getMatchProfiles($iProfileId, $bForce = false, $sSort = 'none')
         return $aResult;
 
     if (!$bForce) {
-        $aMatch = $oDb->getRow("SELECT `profiles_match` FROM `sys_profiles_match` WHERE `profile_id` = $iProfileId AND `sort` = '$sSort'");
+        $aMatch = $oDb->getRow("SELECT `profiles_match` FROM `sys_profiles_match` WHERE `profile_id` = ? AND `sort` = ?", [$iProfileId, $sSort]);
         if (!empty($aMatch))
             return unserialize($aMatch['profiles_match']);
     } else
@@ -40,6 +40,7 @@ function getMatchProfiles($iProfileId, $bForce = false, $sSort = 'none')
     $iAge = (int)$oDb->getOne("SELECT DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), '{$aProf['DateOfBirth']}')), '%Y') + 0 AS age");
 
     foreach ($aMathFields as $sKey => $aFields) {
+        // TODO: pdo dynamic bindings
         $aMathFields[$sKey]['profiles'] = array();
 
         if ($aProf[$aFields['Name']] && $aMathFields[$aFields['MatchField']]['Name']) {

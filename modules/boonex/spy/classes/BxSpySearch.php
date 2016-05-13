@@ -16,10 +16,10 @@
         /**
          * Class constructor ;
          */
-        function BxSpySearch($oSpyObject = null)
+        function __construct($oSpyObject = null)
         {
             // call the parent constructor ;
-            parent::BxTemplSearchResultText();
+            parent::__construct();
 
             if(!$oSpyObject) {
                 $this -> oSpyObject = BxDolModule::getInstance('BxSpyModule');

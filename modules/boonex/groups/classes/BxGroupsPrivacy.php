@@ -13,10 +13,10 @@ class BxGroupsPrivacy extends BxDolPrivacy
     /**
      * Constructor
      */
-    function BxGroupsPrivacy(&$oModule)
+    function __construct(&$oModule)
     {
         $this->oModule = $oModule;
-        parent::BxDolPrivacy($oModule->_oDb->getPrefix() . 'main', 'id', 'author_id');
+        parent::__construct($oModule->_oDb->getPrefix() . 'main', 'id', 'author_id');
     }
 
     /**

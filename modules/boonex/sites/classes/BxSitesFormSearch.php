@@ -6,7 +6,7 @@
 
 class BxSitesFormSearch extends BxTemplFormView
 {
-    function BxSitesFormSearch ($oConfig)
+    function __construct ($oConfig)
     {
         $aCustomForm = array(
 
@@ -45,6 +45,6 @@ class BxSitesFormSearch extends BxTemplFormView
             ),
         );
 
-        parent::BxTemplFormView ($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 }

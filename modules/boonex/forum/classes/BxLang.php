@@ -12,7 +12,7 @@ class BxLang
     var $_sSkin = 'default';
     var $_iVisualProcessing = true;
 
-    function BxLang ($sLang, $sSkin)
+    function __construct ($sLang, $sSkin)
     {
         $this->_sLang = $sLang;
         $this->_sSkin = preg_replace ('#_\w{2}$#', '', $sSkin);

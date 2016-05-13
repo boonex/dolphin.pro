@@ -14,9 +14,9 @@ class BxGSearchDb extends BxDolModuleDb
     /*
      * Constructor.
      */
-    function BxGSearchDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
         $this->_sPrefix = $oConfig->getDbPrefix();
     }
 

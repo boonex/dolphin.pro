@@ -17,9 +17,9 @@ class BxDolphConConfig extends BxDolConnectConfig
 
     var $sScope = 'basic';
 
-    function BxDolphConConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolConnectConfig($aModule);
+        parent::__construct($aModule);
 
         $this -> sApiID = getParam('bx_dolphcon_api_key');
         $this -> sApiSecret = getParam('bx_dolphcon_connect_secret');

@@ -8,9 +8,9 @@ bx_import('BxDolTextConfig');
 
 class BxFdbConfig extends BxDolTextConfig
 {
-    function BxFdbConfig($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolTextConfig($aModule);
+        parent::__construct($aModule);
     }
     function init(&$oDb)
     {

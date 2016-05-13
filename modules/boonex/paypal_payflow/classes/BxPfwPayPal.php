@@ -15,9 +15,9 @@ class BxPfwPayPal extends BxPfwProvider
 
 	protected $_sLangsPrefix;
 
-	function BxPfwPayPal($oDb, $oConfig, $aConfig)
+	function __construct($oDb, $oConfig, $aConfig)
 	{
-		parent::BxPfwProvider($oDb, $oConfig, $aConfig);
+		parent::__construct($oDb, $oConfig, $aConfig);
 
 		$this->_aCallParameters = array(
 			'TENDER' => '',

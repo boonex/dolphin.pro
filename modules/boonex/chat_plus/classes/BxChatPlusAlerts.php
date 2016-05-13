@@ -8,9 +8,9 @@ bx_import('BxDolAlertsResponse');
 
 class BxChatPlusAlerts extends BxDolAlertsResponse
 {
-    function BxChatPlusAlerts()
+    function __construct()
     {
-        parent::BxDolAlertsResponse();
+        parent::__construct();
         //$this -> oModule = BxDolModule::getInstance('BxChatPlusModule');
     }
 }

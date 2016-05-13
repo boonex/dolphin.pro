@@ -17,7 +17,7 @@
         /**
          * Class constructor;
          */
-        function BxSpyCron()
+        function __construct()
         {
             $this -> oSpyObject = BxDolModule::getInstance('BxSpyModule');
             $this -> iDaysForRows = $this -> oSpyObject -> _oConfig -> iDaysForRows;

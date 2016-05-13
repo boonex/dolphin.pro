@@ -21,9 +21,9 @@ class BxFilesPageAlbumView extends BxDolPageView
 
     var $sBrowseCode;
 
-    function BxFilesPageAlbumView($oModule, $aInfo, $sBrowseCode = '')
+    function __construct($oModule, $aInfo, $sBrowseCode = '')
     {
-        parent::BxDolPageView('bx_files_album_view');
+        parent::__construct('bx_files_album_view');
         $this->aInfo = $aInfo;
         $this->iProfileId = $oModule->_iProfileId;
 

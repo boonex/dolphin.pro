@@ -10,7 +10,7 @@ class BxPfwLog
 	protected $bLogError;
 	protected $sFileError;
 
-	protected function BxPfwLog()
+	protected function __construct()
 	{
 		$oMain = BxDolModule::getInstance('BxPfwModule');
 

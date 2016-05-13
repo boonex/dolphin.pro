@@ -8,8 +8,8 @@ bx_import('BxDolTextPageView');
 
 class BxNewsPageView extends BxDolTextPageView
 {
-    function BxNewsPageView($sName, &$oObject)
+    function __construct($sName, &$oObject)
     {
-        parent::BxDolTextPageView('news_single', $sName, $oObject);
+        parent::__construct('news_single', $sName, $oObject);
     }
 }

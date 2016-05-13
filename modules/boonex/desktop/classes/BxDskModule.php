@@ -11,9 +11,9 @@ class BxDskModule extends BxDolModule
     /**
      * Constructor
      */
-    function BxDskModule($aModule)
+    function __construct($aModule)
     {
-        parent::BxDolModule($aModule);
+        parent::__construct($aModule);
     }
 
     function serviceGetFileUrl()

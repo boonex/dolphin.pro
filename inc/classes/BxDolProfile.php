@@ -4,10 +4,9 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMistake');
 bx_import('BxDolProfileQuery');
 
-class BxDolProfile extends BxDolMistake
+class BxDolProfile
 {
     var $_iProfileID;
     var $_aProfile;
@@ -20,7 +19,7 @@ class BxDolProfile extends BxDolMistake
      *
      * @return User
      */
-    function BxDolProfile( $vProfileID, $bWithEmail = 1 )
+    function __construct( $vProfileID, $bWithEmail = 1 )
     {
         $this -> _iProfileID = $this -> getID( $vProfileID, $bWithEmail );
     }
@@ -33,7 +32,7 @@ class BxDolProfile extends BxDolMistake
      */
     function getProfileThumbnail( $float )
     {
-        $ret = $this -> getProfileImageUrl( $iProfileID, 0);
+        $ret = $this -> getProfileImageUrl( $iProfileID );
     }
 
     /**
@@ -156,7 +155,7 @@ class BxDolProfile extends BxDolMistake
         $oPDb = new BxDolProfileQuery();
 
         if ( $bWithEmail ) {
-            if ( eregi("^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,4}$", $vID) ) {
+            if (filter_var($vID, FILTER_VALIDATE_EMAIL)) {    //eregi("^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,4}$", $vID) ) {
                 $aMail = $oPDb -> getIdByEmail( $vID );
                 if ( (int)$aMail['ID'] ) {
                     return (int)$aMail['ID'];

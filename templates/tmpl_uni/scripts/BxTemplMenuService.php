@@ -15,8 +15,23 @@ class BxTemplMenuService extends BxBaseMenuService
     /**
     * Class constructor;
     */
-    function BxTemplMenuService()
+    function __construct()
     {
-        parent::BxBaseMenuService();
+        parent::__construct();
     }
+
+	function getItems()
+	{
+		$sContent = parent::getItems();
+
+		return $GLOBALS[oSysTemplate]->parseHtmlByContent($sContent, array(
+			'bx_if:show_profile_link' => array(
+				'condition' => $this->aMenuInfo['memberID'] != 0,
+				'content' => array(
+					'link' => getProfileLink($this->aMenuInfo['memberID']),
+					'title' => getNickName($this->aMenuInfo['memberID'])
+				)
+			)
+		));
+	}
 }

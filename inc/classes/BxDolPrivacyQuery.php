@@ -22,9 +22,9 @@ class BxDolPrivacyQuery extends BxDolDb
     /**
      * constructor
      */
-    function BxDolPrivacyQuery($sTable = '', $sFieldId = '', $sFieldOwnerId = '')
+    function __construct($sTable = '', $sFieldId = '', $sFieldOwnerId = '')
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $this->_sTable = $sTable;
         $this->_sFieldId = $sFieldId;
@@ -45,7 +45,8 @@ class BxDolPrivacyQuery extends BxDolDb
         return $this->fromMemory(
             $this->_sObjectCache . $this->_sTable . '_' . $sAction . '_' . $iObjectId,
             "getRow",
-            "SELECT `" . $this->_sFieldOwnerId . "` AS `owner_id`, `" . $sAction . "` AS `group_id` FROM `" . $this->_sTable . "` WHERE `" . $this->_sFieldId . "`='" . $iObjectId . "' LIMIT 1"
+            "SELECT `" . $this->_sFieldOwnerId . "` AS `owner_id`, `" . $sAction . "` AS `group_id` FROM `" . $this->_sTable . "` WHERE `" . $this->_sFieldId . "`= ? LIMIT 1",
+            [$iObjectId]
         );
     }
     function isGroupMember($mixedObjectGroupId, $iObjectOwnerId, $iViewerId)
@@ -146,8 +147,8 @@ class BxDolPrivacyQuery extends BxDolDb
     }
     function getMembersIds($iGroupId)
     {
-        $sSql = "SELECT `member_id` AS `id` FROM `sys_privacy_members` WHERE `group_id`='" . $iGroupId . "'";
-        return $this->getAll($sSql);
+        $sSql = "SELECT `member_id` AS `id` FROM `sys_privacy_members` WHERE `group_id`= ?";
+        return $this->getAll($sSql, [$iGroupId]);
     }
     function addToGroup($iGroupId, $aMemberIds)
     {
@@ -190,11 +191,11 @@ class BxDolPrivacyQuery extends BxDolDb
                     `ta`.`default_group` AS `action_default_value`,
                     `td`.`group_id` AS `default_value`
                 FROM `sys_privacy_actions` AS `ta`
-                LEFT JOIN `sys_privacy_defaults` AS `td` ON `ta`.`id`=`td`.`action_id` AND `td`.`owner_id`='" . $iOwnerId . "'
+                LEFT JOIN `sys_privacy_defaults` AS `td` ON `ta`.`id`=`td`.`action_id` AND `td`.`owner_id`= ?
                 INNER JOIN `sys_modules` AS `tm` ON `ta`.`module_uri`=`tm`.`uri`
                 WHERE 1
                 ORDER BY `tm`.`title`";
-        return $this->getAll($sSql);
+        return $this->getAll($sSql, [$iOwnerId]);
     }
     function getDefaultValue($iOwnerId, $sModuleUri, $sActionName)
     {
@@ -234,8 +235,8 @@ class BxDolPrivacyQuery extends BxDolDb
                 `title`,
                 `default_group`
             FROM `sys_privacy_actions` AS `ta`
-            WHERE `module_uri`='" . $sModuleUri . "' AND `name`='" . $sActionName . "'
+            WHERE `module_uri`= ? AND `name`= ?
             LIMIT 1";
-        return $this->fromCache($this->_sActionCache . $sModuleUri . '_' . $sActionName, 'getRow', $sSql);
+        return $this->fromCache($this->_sActionCache . $sModuleUri . '_' . $sActionName, 'getRow', $sSql, [$sModuleUri, $sActionName]);
     }
 }

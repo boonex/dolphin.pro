@@ -8,17 +8,9 @@
 /**
  * Spam detection based on username, email and ip powered by  Stop Forum Spam - http://www.stopforumspam.com/
  */
-class BxDolStopForumSpam extends BxDolMistake
+class BxDolStopForumSpam
 {
     var $_aKeys = array ('ip' => 1, 'email' => 1, 'username' => 1);
-
-    /**
-     * Constructor
-     */
-    public function BxDolStopForumSpam()
-    {
-        
-    }
 
     /** 
      * Check if user is spammer

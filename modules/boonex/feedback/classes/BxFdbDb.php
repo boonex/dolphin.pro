@@ -8,9 +8,9 @@ bx_import('BxDolTextDb');
 
 class BxFdbDb extends BxDolTextDb
 {
-    function BxFdbDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolTextDb($oConfig);
+        parent::__construct($oConfig);
     }
     function getEntries($aParams)
     {

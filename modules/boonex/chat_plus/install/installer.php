@@ -8,8 +8,8 @@ bx_import('BxDolInstaller');
 
 class BxChatPlusInstaller extends BxDolInstaller
 {
-    function BxChatPlusInstaller(&$aConfig)
+    function __construct(&$aConfig)
     {
-        parent::BxDolInstaller($aConfig);
+        parent::__construct($aConfig);
     }
 }

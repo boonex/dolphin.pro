@@ -14,9 +14,9 @@ class BxDolModuleDb extends BxDolDb
     /*
      * Constructor.
      */
-    function BxDolModuleDb($oConfig = null)
+    function __construct($oConfig = null)
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         if(is_a($oConfig,'BxDolConfig'))
             $this->_sPrefix = $oConfig->getDbPrefix();
@@ -44,23 +44,23 @@ class BxDolModuleDb extends BxDolDb
     }
     function getModuleById($iId)
     {
-        $sSql = "SELECT `id`, `title`, `vendor`, `version`, `update_url`, `path`, `uri`, `class_prefix`, `db_prefix`, `dependencies`, `date` FROM `sys_modules` WHERE `id`='" . $iId . "' LIMIT 1";
-        return $this->fromMemory('sys_modules_' . $iId, 'getRow', $sSql);
+        $sSql = "SELECT `id`, `title`, `vendor`, `version`, `update_url`, `path`, `uri`, `class_prefix`, `db_prefix`, `dependencies`, `date` FROM `sys_modules` WHERE `id`= ? LIMIT 1";
+        return $this->fromMemory('sys_modules_' . $iId, 'getRow', $sSql, [$iId]);
     }
     function getModuleByUri($sUri)
     {
-        $sSql = "SELECT `id`, `title`, `vendor`, `version`, `update_url`, `path`, `uri`, `class_prefix`, `db_prefix`, `dependencies`, `date` FROM `sys_modules` WHERE `uri`='" . $sUri . "' LIMIT 1";
-        return $this->fromMemory('sys_modules_' . $sUri, 'getRow', $sSql);
+        $sSql = "SELECT `id`, `title`, `vendor`, `version`, `update_url`, `path`, `uri`, `class_prefix`, `db_prefix`, `dependencies`, `date` FROM `sys_modules` WHERE `uri`= ? LIMIT 1";
+        return $this->fromMemory('sys_modules_' . $sUri, 'getRow', $sSql, [$sUri]);
     }
     function isModule($sUri)
     {
-        $sSql = "SELECT `id` FROM `sys_modules` WHERE `uri`='" . $sUri . "' LIMIT 1";
-        return (int)$this->getOne($sSql) > 0;
+        $sSql = "SELECT `id` FROM `sys_modules` WHERE `uri`= ? LIMIT 1";
+        return (int)$this->getOne($sSql, [$sUri]) > 0;
     }
     function isModuleParamsUsed($sUri, $sPath, $sPrefixDb, $sPrefixClass)
     {
-        $sSql = "SELECT `id` FROM `sys_modules` WHERE `uri`='" . $sUri . "' || `path`='" . $sPath . "' || `db_prefix`='" . $sPrefixDb . "' || `class_prefix`='" . $sPrefixClass . "' LIMIT 1";
-        return (int)$this->getOne($sSql) > 0;
+        $sSql = "SELECT `id` FROM `sys_modules` WHERE `uri`= ? || `path`= ? || `db_prefix`= ? || `class_prefix`= ? LIMIT 1";
+        return (int)$this->getOne($sSql, [$sUri, $sPath, $sPrefixDb, $sPrefixClass]) > 0;
     }
     function getModules()
     {
@@ -69,8 +69,8 @@ class BxDolModuleDb extends BxDolDb
     }
     function getDependent($sUri)
     {
-        $sSql = "SELECT `id`, `title` FROM `sys_modules` WHERE `dependencies` LIKE '%" . $sUri . "%'";
-        return $this->getAll($sSql);
+        $sSql = "SELECT `id`, `title` FROM `sys_modules` WHERE `dependencies` LIKE ?";
+        return $this->getAll($sSql, ["%{$sUri}%"]);
     }
 
     /**
@@ -82,6 +82,6 @@ class BxDolModuleDb extends BxDolDb
     function getSettingsCategoryId($sCatName)
     {
         $sCatName = process_db_input($sCatName);
-        return $this -> getOne('SELECT `kateg` FROM `sys_options` WHERE `Name` = "' . $sCatName . '"');
+        return $this -> getOne('SELECT `kateg` FROM `sys_options` WHERE `Name` = ?', [$sCatName]);
     }    
 }

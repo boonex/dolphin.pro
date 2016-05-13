@@ -13,9 +13,9 @@ class BxDolCacheFile extends BxDolCache
     /**
      * constructor
      */
-    function BxDolCacheFile()
+    function __construct()
     {
-        parent::BxDolCache();
+        parent::__construct();
 
         $this->sPath = BX_DIRECTORY_PATH_DBCACHE;
     }

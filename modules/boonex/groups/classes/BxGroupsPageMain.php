@@ -8,11 +8,11 @@ bx_import('BxDolTwigPageMain');
 
 class BxGroupsPageMain extends BxDolTwigPageMain
 {
-    function BxGroupsPageMain(&$oMain)
+    function __construct(&$oMain)
     {
         $this->sSearchResultClassName = 'BxGroupsSearchResult';
         $this->sFilterName = 'bx_groups_filter';
-        parent::BxDolTwigPageMain('bx_groups_main', $oMain);
+        parent::__construct('bx_groups_main', $oMain);
     }
 
     function getBlockCode_LatestFeaturedGroup()

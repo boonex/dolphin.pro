@@ -190,7 +190,7 @@ function _getLevelsCreateForm($iLevelId, $bActive = false)
 
     $aLevel = array();
     if(($bEdit = $iLevelId != 0) === true)
-        $aLevel = $GLOBALS['MySQL']->getRow("SELECT `Name` AS `Name`, `Description` AS `Description`, `Order` AS `Order` FROM `sys_acl_levels` WHERE `ID`='" . $iLevelId . "' LIMIT 1");
+        $aLevel = $GLOBALS['MySQL']->getRow("SELECT `Name` AS `Name`, `Description` AS `Description`, `Order` AS `Order` FROM `sys_acl_levels` WHERE `ID`= ? LIMIT 1", [$iLevelId]);
 
     $aForm = array(
         'form_attrs' => array(
@@ -379,7 +379,8 @@ function PageCodeActions($iId, $mixedResult)
     $aItems = array();
 
     $aActions = $GLOBALS['MySQL']->getAll("SELECT `ta`.`ID` AS `id`, `ta`.`Name` AS `title` FROM `sys_acl_actions` AS `ta` ORDER BY `ta`.`Name`");
-    $aActionsActive = $GLOBALS['MySQL']->getAllWithKey("SELECT `ta`.`ID` AS `id`, `ta`.`Name` AS `title` FROM `sys_acl_actions` AS `ta` LEFT JOIN `sys_acl_matrix` AS `tm` ON `ta`.`ID`=`tm`.`IDAction` LEFT JOIN `sys_acl_levels` AS `tl` ON `tm`.`IDLevel`=`tl`.`ID` WHERE `tl`.`ID`='" . $iId . "'", "id");
+    $aActionsActive = $GLOBALS['MySQL']->getAllWithKey("SELECT `ta`.`ID` AS `id`, `ta`.`Name` AS `title` FROM `sys_acl_actions` AS `ta` 
+                      LEFT JOIN `sys_acl_matrix` AS `tm` ON `ta`.`ID`=`tm`.`IDAction` LEFT JOIN `sys_acl_levels` AS `tl` ON `tm`.`IDLevel`=`tl`.`ID` WHERE `tl`.`ID`= ?", "id", [$iId]);
 
     translateMembershipActions($aActions);
 
@@ -428,7 +429,7 @@ function PageCodeActions($iId, $mixedResult)
 }
 function PageCodeAction($iLevelId, $iActionId, $mixedResult)
 {
-    $aAction = $GLOBALS['MySQL']->getRow("SELECT * FROM `sys_acl_matrix` WHERE `IDLevel`='" . $iLevelId . "' AND `IDAction`='" . $iActionId . "'");
+    $aAction = $GLOBALS['MySQL']->getRow("SELECT * FROM `sys_acl_matrix` WHERE `IDLevel`='" . $iLevelId . "' AND `IDAction`= ?", [$iActionId]);
 
     $aForm = array(
         'form_attrs' => array(
@@ -519,7 +520,7 @@ function PageCodePrices($iId, $mixedResult)
     $sCurrencySign = $aInfo['sign'];
 
     $aItems = array();
-    $aPrices = $GLOBALS['MySQL']->getAll("SELECT `id` AS `id`, `Days` AS `days`, `Price` AS `price` FROM `sys_acl_level_prices` WHERE `IDLevel`='" . $iId . "' ORDER BY `id`");
+    $aPrices = $GLOBALS['MySQL']->getAll("SELECT `id` AS `id`, `Days` AS `days`, `Price` AS `price` FROM `sys_acl_level_prices` WHERE `IDLevel`= ? ORDER BY `id`", [$iId]);
     foreach($aPrices as $aPrice)
         $aItems[] = array(
             'id' => $aPrice['id'],
@@ -571,7 +572,7 @@ function deleteMembership($iId)
 {
     $iId = (int)$iId;
 
-    $aLevel = $GLOBALS['MySQL']->getRow("SELECT `Icon` AS `icon`, `Removable` AS `removable` FROM `sys_acl_levels` WHERE `ID`='" . $iId . "'");
+    $aLevel = $GLOBALS['MySQL']->getRow("SELECT `Icon` AS `icon`, `Removable` AS `removable` FROM `sys_acl_levels` WHERE `ID`= ?", [$iId]);
     if(empty($aLevel))
         return "_adm_txt_mlevels_not_found";
 

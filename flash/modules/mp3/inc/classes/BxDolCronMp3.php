@@ -55,8 +55,8 @@ class BxDolCronMp3 extends BxDolCron
             $rResult = getResult("SELECT * FROM `" . $sDbPrefix . "Files` WHERE `Status`='" . STATUS_PENDING . "' ORDER BY `ID` LIMIT " . $iFilesCount);
             if (!$rResult)
                 break;
-            for($i=0; $i<mysql_num_rows($rResult); $i++) {
-                $aFile = mysql_fetch_assoc($rResult);
+            for($i=0; $i<$rResult->rowCount(); $i++) {
+                $aFile = $rResult->fetch();
                 if(convert($aFile['ID'])) {
                     $sType = 'bx_sounds';
                     //album counter & cover update

@@ -11,9 +11,9 @@ class BxDolCacheFileHtml extends BxDolCacheFile
     /**
      * constructor
      */
-    function BxDolCacheFileHtml()
+    function __construct()
     {
-        parent::BxDolCacheFile();
+        parent::__construct();
     }
 
     /**

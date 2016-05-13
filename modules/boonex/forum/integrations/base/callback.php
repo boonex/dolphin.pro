@@ -103,7 +103,7 @@ function onNewTopic ($iForumId, $sTopicSubject, $sTopicText, $isTopicSticky, $sU
 
     if (BX_ORCA_INTEGRATION == 'dolphin' && !isAdmin($oProfile->getID())) {
         defineForumActions();
-        $aForum = $fdb->getForum($iForumId, false);
+        $aForum = $fdb->getForum($iForumId);
         $iActionId = BX_FORUM_PUBLIC_POST;
         if (isset($aForum['forum_type']) && 'private' == $aForum['forum_type'])
             $iActionId = BX_FORUM_PRIVATE_POST;

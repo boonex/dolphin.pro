@@ -11,9 +11,9 @@ class BxSitesPrivacy extends BxDolPrivacy
     /**
      * Constructor
      */
-    function BxSitesPrivacy(&$oModule)
+    function __construct(&$oModule)
     {
-        parent::BxDolPrivacy('bx_sites_main', 'id', 'ownerid');
+        parent::__construct('bx_sites_main', 'id', 'ownerid');
     }
 
     /**

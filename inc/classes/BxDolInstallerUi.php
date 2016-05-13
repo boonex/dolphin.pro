@@ -35,9 +35,9 @@ class BxDolInstallerUi extends BxDolDb
             ),
         );
 
-    function BxDolInstallerUi()
+    function __construct()
     {
-        parent::BxDolDb();
+        parent::__construct();
 
         $this->_sDefVersion = '0.0.0';
         $this->_aCheckPathes = array();
@@ -471,7 +471,7 @@ class BxDolInstallerUi extends BxDolDb
     }
 
     //--- Static methods ---//
-    function checkForUpdates($aModule)
+    public static function checkForUpdates($aModule)
     {
     	if(empty($aModule['update_url']))
     		return array();

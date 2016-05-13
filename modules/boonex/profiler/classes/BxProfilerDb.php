@@ -13,9 +13,9 @@ class BxProfilerDb extends BxDolModuleDb
 {
     var $_oConfig;
 
-    function BxProfilerDb(&$oConfig)
+    function __construct(&$oConfig)
     {
-        parent::BxDolModuleDb();
+        parent::__construct();
         $this->_oConfig = $oConfig;
     }
 

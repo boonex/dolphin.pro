@@ -4,8 +4,8 @@ require_once( BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseSearchResultSharedMedia.ph
 
 class BxTemplSearchResultSharedMedia extends BxBaseSearchResultSharedMedia
 {
-    function BxTemplSearchResultSharedMedia ($sModuleClass = '')
+    function __construct ($sModuleClass = '')
     {
-        parent::BxBaseSearchResultSharedMedia($sModuleClass);
+        parent::__construct($sModuleClass);
     }
 }
