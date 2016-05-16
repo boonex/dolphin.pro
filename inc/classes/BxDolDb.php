@@ -69,6 +69,8 @@ class BxDolDb
         }
 
         $this->oParams = $GLOBALS['bx_db_param'];
+
+        @set_exception_handler(array($this, 'queryExceptionHandler'));
     }
 
     /**
@@ -76,19 +78,26 @@ class BxDolDb
      */
     protected function connect()
     {
-        $sSocketOrHost = ($this->socket) ? "unix_socket={$this->socket}" : "host={$this->host};port={$this->port}";
+    	try {
+	        $sSocketOrHost = ($this->socket) ? "unix_socket={$this->socket}" : "host={$this->host};port={$this->port}";
 
-        $this->link = new PDO(
-            "mysql:{$sSocketOrHost};dbname={$this->dbname};charset=utf8",
-            $this->user,
-            $this->password,
-            [
-                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode=""',
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false
-            ]
-        );
+	        $this->link = new PDO(
+	            "mysql:{$sSocketOrHost};dbname={$this->dbname};charset=utf8",
+	            $this->user,
+	            $this->password,
+	            [
+	                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode=""',
+	                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+	                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+	                PDO::ATTR_EMULATE_PREPARES   => false
+	            ]
+	        );
+    	}
+    	catch (PDOException $e) {
+    		$this->error_message = $e->getMessage();
+    		$this->error('Database connect failed');
+    		return;
+    	}
     }
 
     /**
@@ -412,14 +421,23 @@ class BxDolDb
         return $this->link->lastInsertId();
     }
 
+    public function queryExceptionHandler($oException)
+    {
+		$this->error_message = $oException->getMessage();
+    	$this->error('Database query error');
+    	return;
+    }
+
     public function getErrorMessage()
     {
-        $s = $this->link->errorInfo();
-        if ($s) {
-            return $s;
-        } else {
-            return $this->error_message;
-        }
+    	if(!empty($this->error_message))
+			return $this->error_message;
+
+		$aError = $this->link->errorInfo();
+        if(!empty($aError[2]))
+            return $aError[2];
+
+        return 'Database error';
     }
 
     public function error($text, $isForceErrorChecking = false, $sSqlQuery = '')
@@ -711,7 +729,15 @@ EOJ;
 
     public function escape($s)
     {
-        return $this->link->quote($s);
+    	try {
+        	$s = $this->link->quote($s);
+        }
+    	catch (PDOException $e) {
+    		$this->error('Escape string error');
+    		return false;
+    	}
+
+        return $s;
     }
 
     public function unescape($mixed)
