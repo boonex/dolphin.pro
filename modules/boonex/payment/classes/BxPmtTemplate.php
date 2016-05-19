@@ -358,7 +358,7 @@ class BxPmtTemplate extends BxDolModuleTemplate
                     'item_url' => $aItem['url'],
                     'item_quantity' => $aItem['quantity'],
                 	'bx_if:show_price_paid' => array(
-                		'condition' => (int)$aItem['price'] != 0,
+                		'condition' => (float)$aItem['price'] != 0,
                 		'content' => array(
                 			'item_price' => $aItem['quantity'] * $aItem['price'],
                 			'vendor_currency_code' => $aVendor['vendor_currency_code'],
