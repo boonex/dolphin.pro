@@ -24,7 +24,9 @@ class Handler
             $this->email($e);
         }
 
-        $this->render($e, (BX_DOL_FULL_ERROR === true));
+        // default to true if not defined, so we can debug better
+        $bFullError = (!defined('BX_DOL_FULL_ERROR')) ? true : BX_DOL_FULL_ERROR;
+        $this->render($e, $bFullError);
     }
 
     /**
@@ -95,8 +97,15 @@ class Handler
         $sMailBody .= "<hr />Request parameters: <pre>" . print_r($_REQUEST, true) . " </pre>";
         $sMailBody .= "--\nAuto-report system\n";
 
+        if (!defined('BX_DOL_REPORT_EMAIl')) {
+            global $site;
+            $bugReportEmail = $site['bugReportMail'];
+        } else {
+            $bugReportEmail = BX_DOL_REPORT_EMAIL;
+        }
+
         sendMail(
-            BX_DOL_REPORT_EMAIL,
+            $bugReportEmail,
             _t('_Exception_uncaught_in_msg') . " " . BX_DOL_URL_ROOT,
             $sMailBody,
             0,
