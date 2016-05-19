@@ -221,7 +221,7 @@ EOJ;
 
 // set error reporting level
 // only show errors, hide notices, deprecated and strict warnings
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING);
 
 // set default encoding for multibyte functions
 mb_internal_encoding('UTF-8');

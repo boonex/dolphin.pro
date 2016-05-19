@@ -587,9 +587,9 @@ EOF;
 
         $aMysqlSettings = array (
             'key_buffer_size' => array('op' => '>=', 'val' => 128*1024, 'type' => 'bytes'),
-            'query_cache_limit' => array('op' => '>=', 'val' => 1000000),
+            'query_cache_limit' => array('op' => '>=', 'val' => 1000000, 'type' => 'bytes'),
             'query_cache_size' => array('op' => '>=', 'val' => 16*1024*1024, 'type' => 'bytes'),
-            'query_cache_type' => array('op' => 'strcasecmp', 'val' => 'on'),
+            'query_cache_type' => array('op' => 'strcasecmp', 'val' => 'on', 'type' => 'bool'),
             'max_heap_table_size' => array('op' => '>=', 'val' => 16*1024*1024, 'type' => 'bytes'),
             'tmp_table_size' => array('op' => '>=', 'val' => 16*1024*1024, 'type' => 'bytes'),
             'thread_cache_size ' => array('op' => '>', 'val' => 0),
@@ -684,8 +684,12 @@ EOF;
         ?>
         <ul>
             <?php
-                foreach ($aRequiredApacheModules as $sName => $sNameCompiledName)
-                    echo '<li>' . $sName . ' - ' . $this->checkApacheModule($sName, $sNameCompiledName) . '</li>';
+                $bIsNginx = (stripos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false);
+
+                if(!$bIsNginx) {
+                    foreach ($aRequiredApacheModules as $sName => $sNameCompiledName)
+                        echo '<li>' . $sName . ' - ' . $this->checkApacheModule($sName, $sNameCompiledName) . '</li>';
+                }
             ?>
         </ul>
     </li>
@@ -784,7 +788,8 @@ EOF;
             <?php
                 foreach ($aMysqlSettings as $sName => $r) {
                     $a = $this->checkMysqlSetting($sName, $r);
-                    echo "<li><b>$sName</b> = " . $this->format_output($a['real_val'], $r) ." - " . ($a['res'] ? '<b class="ok">OK</b>' : "<b class='fail'>FAIL</b> (must be {$r['op']} " . $this->format_output($r['val'], $r) . ")") . "</li>\n";
+                    $operation = ($r['op'] === 'strcasecmp') ? '' : $r['op'];
+                    echo "<li><b>$sName</b> = " . $this->format_output($a['real_val'], $r) ." - " . ($a['res'] ? '<b class="ok">OK</b>' : "<b class='fail'>FAIL</b> (must be {$operation} " . $this->format_output($r['val'], $r) . ")") . "</li>\n";
                 }
             ?>
         </ul>
@@ -888,9 +893,9 @@ EOF;
         return array ('res' => $bResult, 'real_val' => $mixedVal);
     }
 
-    function checkMysqlSetting($sName, $a, $l = false)
+    function checkMysqlSetting($sName, $a)
     {
-        $mixedVal = $this->mysqlGetOption($sName, $l);
+        $mixedVal = $this->mysqlGetOption($sName);
         $mixedVal = $this->format_input ($mixedVal, $a);
 
         switch ($a['op']) {
@@ -912,9 +917,11 @@ EOF;
 
     function format_output ($mixedVal, $a)
     {
-        switch (isset($a['type'])) {
+        switch ($a['type']) {
             case 'bool':
                 return $mixedVal ? 'On' : 'Off';
+            case 'bytes':
+                return format_bytes($mixedVal, true);
             default:
                 return $mixedVal;
         }
@@ -924,7 +931,7 @@ EOF;
     {
         switch (isset($a['type'])) {
             case 'bytes':
-                return $this->format_bytes ($mixedVal);
+                return $this->format_bytes($mixedVal);
             default:
                 return $mixedVal;
         }
@@ -986,9 +993,9 @@ EOF;
         return false;
     }
 
-    function mysqlGetOption ($s, $l)
+    function mysqlGetOption ($s)
     {
-        return db_value("SELECT @@{$s}", $l);
+        return db_value("SELECT @@{$s}");
     }
 
     function getUrlForGooglePageSpeed ($sRule)

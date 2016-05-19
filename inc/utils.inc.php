@@ -1491,6 +1491,47 @@ function simple_cmp($a, $b)
     return ($a < $b) ? -1 : 1;
 }
 
+/**
+ * @param int  $bytes
+ * @param bool $shorter
+ * @return string
+ */
+function format_bytes($bytes, $shorter = false)
+{
+    $units = [
+        true  => [
+            'GB'    => 'G',
+            'MB'    => 'M',
+            'KB'    => 'K',
+            'bytes' => 'B',
+            'byte'  => 'B'
+        ],
+        false => [
+            'GB'    => ' GB',
+            'MB'    => ' MB',
+            'KB'    => ' KB',
+            'bytes' => ' bytes',
+            'byte'  => ' byte'
+        ]
+    ];
+
+    if ($bytes >= 1073741824) {
+        $bytes = number_format($bytes / 1073741824, 2) . $units[$shorter]['GB'];
+    } elseif ($bytes >= 1048576) {
+        $bytes = number_format($bytes / 1048576, 2) . $units[$shorter]['MB'];
+    } elseif ($bytes >= 1024) {
+        $bytes = number_format($bytes / 1024, 2) . $units[$shorter]['KB'];
+    } elseif ($bytes > 1) {
+        $bytes = $bytes . $units[$shorter]['bytes'];
+    } elseif ($bytes == 1) {
+        $bytes = $bytes . $units[$shorter]['byte'];
+    } else {
+        $bytes = '0' . $units[$shorter]['bytes'];
+    }
+
+    return $bytes;
+}
+
 // calculation ini_get('upload_max_filesize') in bytes as example
 function return_bytes($val)
 {
