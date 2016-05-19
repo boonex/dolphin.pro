@@ -240,8 +240,7 @@
          */
         function getSettingsCategory($sName)
         {
-            $sName = $this -> escape($sName);
-            return $this -> getOne("SELECT `kateg` FROM `sys_options` WHERE `Name` = '{$sName}'");
+            return $this -> getOne("SELECT `kateg` FROM `sys_options` WHERE `Name` = ?", [$sName]);
         }
 
         function insertData($aData)

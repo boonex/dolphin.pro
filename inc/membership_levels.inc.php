@@ -760,8 +760,8 @@ function defineMembershipActions ($aActionsAll, $sPrefix = 'BX_')
         return;
 
 //    $sActions = implode("','", $aActions);
-    $sPlaceholders = str_repeat('?', count($aActions));
-    $res = db_res("SELECT `ID`, `Name` FROM `sys_acl_actions` WHERE `Name` IN($sPlaceholders)", [$aActions]);
+    $sPlaceholders = implode(',', array_fill(0, count($aActions), '?'));
+    $res = db_res("SELECT `ID`, `Name` FROM `sys_acl_actions` WHERE `Name` IN({$sPlaceholders})", $aActions);
     while ($r = $res->fetch()) {
         define ($sPrefix . strtoupper(str_replace(' ', '_', $r['Name'])), $r['ID']);
     }

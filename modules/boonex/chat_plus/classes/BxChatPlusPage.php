@@ -8,9 +8,9 @@ bx_import('BxDolPageView');
 
 class BxChatPlusPage extends BxDolPageView
 {
-    function BxChatPlusPage($sPageName)
+    function __construct($sPageName)
     {
-        parent::BxDolPageView($sPageName);
+        parent::__construct($sPageName);
     }
 
     function getChatBlockMenu($iBlockID, $aMenu)

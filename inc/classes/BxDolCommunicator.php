@@ -144,7 +144,7 @@
                         IF(`{$sTableName}`.`ID` = {$this -> aCommunicatorSettings['member_id']},
                             `{$sTableName}`.`Profile`, `{$sTableName}`.`ID`) AS `iMemberID`,
 
-                        IF(`{$sTableName}`.`ID` = {$this -> aCommunicatorSettings['member_id']}, '{$sRequestFrom}', '{$sRequestTo}')
+                        IF(`{$sTableName}`.`ID` = {$this -> aCommunicatorSettings['member_id']}, $sRequestFrom, $sRequestTo)
                             AS `sType`,
 
                         DATE_FORMAT(`{$sTableName}`.`When`, '" . getLocaleFormat(BX_DOL_LOCALE_DATE, BX_DOL_LOCALE_DB) . "') AS `sDate`

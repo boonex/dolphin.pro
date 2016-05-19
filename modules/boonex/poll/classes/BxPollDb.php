@@ -40,11 +40,11 @@ class BxPollDb extends BxDolModuleDb
      */
     function getAllPolls($sLimit, $iMemberID = 0, $bAllPolls = false, $iApproval = 1, $sExtraSql = null, $sOrder = '`poll_date` DESC')
     {
-        $sLimit = $this -> escape($sLimit);
+        $sLimit = $this -> escape($sLimit, false);
         $iMemberID = (int) $iMemberID;
         $iApproval = (int) $iApproval;
-        $sExtraSql = $this -> escape($sExtraSql);
-        $sOrder	= $this -> escape($sOrder);
+        $sExtraSql = $this -> escape($sExtraSql, false);
+        $sOrder	= $this -> escape($sOrder, false);
 
         // ** init some needed variables ;
 
@@ -112,7 +112,7 @@ class BxPollDb extends BxDolModuleDb
      */
     function getAllFeaturedPolls($sLimit, $iStatus = 1, $bOnlyPublic = false)
     {
-        $sLimit = $this -> escape($sLimit);
+        $sLimit = $this -> escape($sLimit, false);
         $iStatus = (int) $iStatus;
         settype($bOnlyPublic, 'boolean');
 
@@ -132,9 +132,9 @@ class BxPollDb extends BxDolModuleDb
     function getPollsCount($iMemberID = 0, $bAllPools = false, $iApproval = 1, $sExtraSql = null)
     {
         $iMemberID = (int) $iMemberID;
-        $bOnlyPublic = (bool) $bOnlyPublic;
+//        $bOnlyPublic = (bool) $bOnlyPublic;
         $iApproval = (int) $iApproval;
-        $sExtraSql = $this -> escape($sExtraSql);
+        $sExtraSql = $this -> escape($sExtraSql, false);
 
         // ** init some needed variables ;
 

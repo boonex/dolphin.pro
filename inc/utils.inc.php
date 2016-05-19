@@ -29,9 +29,12 @@ define('BX_SLASHES_ADD', 1);
 define('BX_SLASHES_STRIP', 2);
 define('BX_SLASHES_NO_ACTION', 3);
 
-define('BX_ESCAPE_STR_AUTO', 0); ///< turn apostropes and quote signs into html special chars, for use in @see bx_js_string and @see bx_html_attribute
-define('BX_ESCAPE_STR_APOS', 1); ///< escape apostrophes only, for js strings enclosed in apostrophes, for use in @see bx_js_string and @see bx_html_attribute
-define('BX_ESCAPE_STR_QUOTE', 2); ///< escape quotes only, for js strings enclosed in quotes, for use in @see bx_js_string and @see bx_html_attribute
+define('BX_ESCAPE_STR_AUTO',
+    0); ///< turn apostropes and quote signs into html special chars, for use in @see bx_js_string and @see bx_html_attribute
+define('BX_ESCAPE_STR_APOS',
+    1); ///< escape apostrophes only, for js strings enclosed in apostrophes, for use in @see bx_js_string and @see bx_html_attribute
+define('BX_ESCAPE_STR_QUOTE',
+    2); ///< escape quotes only, for js strings enclosed in quotes, for use in @see bx_js_string and @see bx_html_attribute
 
 /**
  * The following two functions are needed to convert title to uri and back.

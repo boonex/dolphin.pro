@@ -482,9 +482,13 @@ class BxDolInstaller extends BxDolInstallerUtils
             $sQuery = str_replace("[db_prefix]", $this->_aConfig['db_prefix'], $sQuery);
             if($sDelimiter != ';')
                 $sQuery = str_replace($sDelimiter, "", $sQuery);
-            $rResult = db_res(trim($sQuery), false);
-            if(!$rResult)
-                $aResult[] = array('query' => $sQuery, 'error' => $rResult->errorInfo());
+
+            try {
+                $rResult = db_res(trim($sQuery));
+            } catch (Exception $e) {
+                $aResult[] = array('query' => $sQuery, 'error' => $e->getMessage());
+            }
+
 
             $sQuery = "";
         }
@@ -512,13 +516,13 @@ class BxDolInstaller extends BxDolInstallerUtils
         $iCategoryId = 100;
         $sCategoryName = isset($this->_aConfig['language_category']) ? $this->_aConfig['language_category'] : '';
         if($bInstall && !empty($sCategoryName)) {
-            $res = db_res("INSERT IGNORE INTO `sys_localization_categories` SET `Name`='" . $sCategoryName . "'");
+            $res = db_res("INSERT IGNORE INTO `sys_localization_categories` SET `Name`= ?", [$sCategoryName]);
             if(db_affected_rows($res) <= 0 )
                 $iCategoryId = (int)db_value("SELECT `ID` FROM `sys_localization_categories` WHERE `Name`='" . $sCategoryName . "' LIMIT 1");
             else
                 $iCategoryId = db_last_id();
         } else if(!$bInstall && !empty($sCategoryName)) {
-            db_res("DELETE FROM `sys_localization_categories` WHERE `Name`='" . $sCategoryName . "'");
+            db_res("DELETE FROM `sys_localization_categories` WHERE `Name`= ?", [$sCategoryName]);
         }
 
         //--- Process languages' key=>value pears ---//

@@ -220,7 +220,8 @@ EOJ;
 }
 
 // set error reporting level
-error_reporting(E_ALL & ~E_NOTICE);
+// only show errors, hide notices, deprecated and strict warnings
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
 
 // set default encoding for multibyte functions
 mb_internal_encoding('UTF-8');
@@ -1262,23 +1263,30 @@ function RunSQL($sAdminName, $sAdminPassword)
     $aDbConf['passwd'] = $_POST['db_password'];
     $aDbConf['db']     = $_POST['db_name'];
 
-    $aDbConf['host'] .= ($aDbConf['port'] ? ":{$aDbConf['port']}" : '') . ($aDbConf['sock'] ? ":{$aDbConf['sock']}" : '');
-
-    $pass     = true;
+//    $aDbConf['host'] .= ($aDbConf['port'] ? ":{$aDbConf['port']}" : '') . ($aDbConf['sock'] ? ":{$aDbConf['sock']}" : '');
+//
+//    $pass     = true;
     $errorMes = '';
     $filename = $_POST['sql_file'];
 
-    $vLink = @mysql_connect($aDbConf['host'], $aDbConf['user'], $aDbConf['passwd']);
+//    $vLink = @mysql_connect($aDbConf['host'], $aDbConf['user'], $aDbConf['passwd']);
 
-    if (!$vLink) {
-        return printInstallError(mysql_error());
+    try {
+        $sSocketOrHost = ($aDbConf['sock']) ? "unix_socket={$aDbConf['sock']}" : "host={$aDbConf['host']};port={$aDbConf['port']}";
+        $vLink = new PDO(
+            "mysql:{$sSocketOrHost};dbname={$aDbConf['db']};charset=utf8",
+            $aDbConf['user'],
+            $aDbConf['passwd'],
+            [
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode=""',
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false
+            ]
+        );
+    } catch (PDOException $e) {
+        return printInstallError($e->getMessage());
     }
-
-    if (!mysql_select_db($aDbConf['db'], $vLink)) {
-        return printInstallError(mysql_error($vLink));
-    }
-
-    mysql_query("SET sql_mode = ''", $vLink);
 
     if (!($f = fopen($filename, "r"))) {
         return printInstallError('Could not open file with sql instructions:' . $filename);
@@ -1308,60 +1316,79 @@ function RunSQL($sAdminName, $sAdminPassword)
             continue;
         }
 
-        $res = mysql_query($s_sql, $vLink);
-        if (!$res) {
-            $errorMes .= 'Error while executing: ' . $s_sql . '<br />' . mysql_error($vLink) . '<hr />';
+        try {
+            $vLink->exec($s_sql);
+        } catch (PDOException $e) {
+            $errorMes .= 'Error while executing: ' . $s_sql . '<br />' . $e->getMessage() . '<hr />';
         }
 
         $s_sql = '';
     }
 
-    $sAdminNameDB     = DbEscape($sAdminName, false);
-    $sSiteEmail       = DbEscape($_POST['site_email']);
+    $sAdminNameDB     = $sAdminName;
+    $sSiteEmail       = $_POST['site_email'];
     $sSaltDB          = base64_encode(substr(md5(microtime()), 2, 6));
     $sAdminPasswordDB = sha1(md5($sAdminPassword) . $sSaltDB); // encryptUserPwd
     $sAdminQuery      = "
         INSERT INTO `Profiles`
             (`NickName`, `Email`, `Password`, `Salt`, `Status`, `Role`, `DateReg`)
         VALUES
-            ('{$sAdminNameDB}', '{$sSiteEmail}', '{$sAdminPasswordDB}', '{$sSaltDB}', 'Active', 3, NOW())
+            (?, ?, ?, ?, ?, ?, NOW())
     ";
-    mysql_query($sAdminQuery, $vLink);
 
-    if (!$res) {
-        $errorMes .= 'Error while executing: ' . $s_sql . '<br />' . mysql_error($vLink) . '<hr />';
+    try {
+        $stmt = $vLink->prepare($sAdminQuery);
+        $stmt->execute([$sAdminNameDB, $sSiteEmail, $sAdminPasswordDB, $sSaltDB, 'Active', 3]);
+    } catch (PDOException $e) {
+        $errorMes .= 'Error while executing: ' . $s_sql . '<br />' . $e->getMessage() . '<hr />';
     }
 
     fclose($f);
 
     $enable_gd_value = extension_loaded('gd') ? 'on' : '';
-    if (!(mysql_query("UPDATE `sys_options` SET `VALUE`='{$enable_gd_value}' WHERE `Name`='enable_gd'", $vLink))) {
-        $ret .= "<font color=red><i><b>Error</b>:</i> " . mysql_error($vLink) . "</font><hr>";
+    $ret = '';
+
+    try {
+        $stmt = $vLink->prepare("UPDATE `sys_options` SET `VALUE`= ? WHERE `Name`= ?");
+        $stmt->execute([$enable_gd_value, 'enable_gd']);
+    } catch (PDOException $e) {
+        $ret .= "<font color=red><i><b>Error</b>:</i> " . $e->getMessage() . "</font><hr>";
     }
 
-    $sSiteTitle       = DbEscape($_POST['site_title']);
-    $sSiteDesc        = DbEscape($_POST['site_desc']);
-    $sSiteEmailNotify = DbEscape($_POST['notify_email']);
+    $sSiteTitle       = $_POST['site_title'];
+    $sSiteDesc        = $_POST['site_desc'];
+    $sSiteEmailNotify = $_POST['notify_email'];
     if ($sSiteEmail != '' && $sSiteTitle != '' && $sSiteEmailNotify != '') {
-        if (!(mysql_query("UPDATE `sys_options` SET `VALUE`='{$sSiteEmail}' WHERE `Name`='site_email'", $vLink))) {
-            $ret .= "<font color=red><i><b>Error</b>:</i> " . mysql_error($vLink) . "</font><hr>";
+        $stmt = $vLink->prepare("UPDATE `sys_options` SET `VALUE`= ? WHERE `Name`= ?");
+
+        try {
+            $stmt->execute([$sSiteEmail, 'site_email']);
+        } catch (PDOException $e) {
+            $ret .= "<font color=red><i><b>Error</b>:</i> " . $e->getMessage() . "</font><hr>";
         }
-        if (!(mysql_query("UPDATE `sys_options` SET `VALUE`='{$sSiteTitle}' WHERE `Name`='site_title'", $vLink))) {
-            $ret .= "<font color=red><i><b>Error</b>:</i> " . mysql_error($vLink) . "</font><hr>";
+
+        try {
+            $stmt->execute([$sSiteTitle, 'site_title']);
+        } catch (PDOException $e) {
+            $ret .= "<font color=red><i><b>Error</b>:</i> " . $e->getMessage() . "</font><hr>";
         }
-        if (!(mysql_query("UPDATE `sys_options` SET `VALUE`='{$sSiteEmailNotify}' WHERE `Name`='site_email_notify'",
-            $vLink))
-        ) {
-            $ret .= "<font color=red><i><b>Error</b>:</i> " . mysql_error($vLink) . "</font><hr>";
+
+        try {
+            $stmt->execute([$sSiteEmailNotify, 'site_email_notify']);
+        } catch (PDOException $e) {
+            $ret .= "<font color=red><i><b>Error</b>:</i> " . $e->getMessage() . "</font><hr>";
         }
-        if (!(mysql_query("UPDATE `sys_options` SET `VALUE`='{$sSiteDesc}' WHERE `Name`='MetaDescription'", $vLink))) {
-            $ret .= "<font color=red><i><b>Error</b>:</i> " . mysql_error($vLink) . "</font><hr>";
+
+        try {
+            $stmt->execute([$sSiteDesc, 'MetaDescription']);
+        } catch (PDOException $e) {
+            $ret .= "<font color=red><i><b>Error</b>:</i> " . $e->getMessage() . "</font><hr>";
         }
     } else {
-        $ret .= "<font color=red><i><b>Error</b>:</i> Don`t received POSTed site_email or site_title or site_email_notify</font><hr>";
+        $ret .= "<font color=red><i><b>Error</b>:</i> Didn't received POSTed site_email or site_title or site_email_notify</font><hr>";
     }
 
-    mysql_close($vLink);
+    $vLink = null;
 
     $errorMes .= $ret;
 
@@ -1370,15 +1397,6 @@ function RunSQL($sAdminName, $sAdminPassword)
     } else {
         return 'done';
     }
-}
-
-function DbEscape($s, $isDetectMagixQuotes = true)
-{
-    if (get_magic_quotes_gpc() && $isDetectMagixQuotes) {
-        $s = stripslashes($s);
-    }
-
-    return mysql_real_escape_string($s);
 }
 
 function CheckSQLParams()
@@ -1390,24 +1408,26 @@ function CheckSQLParams()
     $aDbConf['passwd'] = $_POST['db_password'];
     $aDbConf['db']     = $_POST['db_name'];
 
-    $aDbConf['host'] .= ($aDbConf['port'] ? ":{$aDbConf['port']}" : '') . ($aDbConf['sock'] ? ":{$aDbConf['sock']}" : '');
-
-    $vLink = @mysql_connect($aDbConf['host'], $aDbConf['user'], $aDbConf['passwd']);
-
-    if (!$vLink) {
-        return printInstallError('MySQL error: ' . mysql_error());
+    try {
+        $sSocketOrHost = ($aDbConf['sock']) ? "unix_socket={$aDbConf['sock']}" : "host={$aDbConf['host']};port={$aDbConf['port']}";
+        $vLink = new PDO(
+            "mysql:{$sSocketOrHost};dbname={$aDbConf['db']};charset=utf8",
+            $aDbConf['user'],
+            $aDbConf['passwd'],
+            [
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode=""',
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false
+            ]
+        );
+    } catch (PDOException $e) {
+        return printInstallError('MySQL error: ' . $e->getMessage());
     }
 
-    if (!mysql_select_db($aDbConf['db'], $vLink)) {
-        return printInstallError('MySQL error: ' . mysql_error($vLink));
-    }
-
-    mysql_close($vLink);
+    $vLink = null;
 }
 
 // set error reporting level
-if (version_compare(phpversion(), "5.3.0", ">=") == 1) {
-    error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
-} else {
-    error_reporting(E_ALL & ~E_NOTICE);
-}
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
+

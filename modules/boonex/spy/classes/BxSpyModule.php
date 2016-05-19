@@ -106,7 +106,7 @@
             $this -> sPathToModule  = BX_DOL_URL_ROOT . $this -> _oConfig -> getBaseUri();
             $this -> aModuleInfo    = $aModule;
 
-            $this -> oSearch        = &new BxSpySearch($this);
+            $this -> oSearch        = new BxSpySearch($this);
 
             // define current page's mode;
             $this -> sSpyMode   = isset($_GET['mode']) ? $_GET['mode'] : 'global';

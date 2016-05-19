@@ -17,12 +17,20 @@ class BxPageACDb extends BxDolModuleDb
 
         $this->_oConfig = &$oConfig;
     }
-    function fromCache($sName, $sFunc, $sQuery, $sExtra = '')
+
+    function fromCache($sName, $sFunc)
     {
+        $aArgs = func_get_args();
+        array_shift($aArgs); // shift $sName
+        array_shift($aArgs); // shift $sFunc
+        $sQuery = array_shift($aArgs);
+        $sExtra = array_shift($aArgs);
+
         $sName = 'sys_modules_'.$this->_oConfig->getUri().'_'.$sName;
         $sHash = md5($sName.$GLOBALS['site']['ver'] . $GLOBALS['site']['build'] . $GLOBALS['site']['url']);
         return parent::fromCache($sName.'_'.$sHash, $sFunc, $sQuery, $sExtra);
     }
+
     function cleanCache($sName)
     {
         $sName = 'sys_modules_'.$this->_oConfig->getUri().'_'.$sName;

@@ -10,7 +10,10 @@ class Handler
 
     ];
 
-    public function handle(Exception $e)
+    /**
+     * @param Throwable|Exception $e
+     */
+    public function handle($e)
     {
         if (in_array(get_class($e), $this->dontReport)) {
             return;
@@ -18,13 +21,17 @@ class Handler
 
         if ($e instanceof PDOException) {
             // lets only email for DB failures
-            //$this->email($e);
+            $this->email($e);
         }
 
         $this->render($e, (BX_DOL_FULL_ERROR === true));
     }
 
-    protected function render(Exception $e, $bFullMsg = false)
+    /**
+     * @param Throwable|Exception $e
+     * @param boolean             $bFullMsg display full error message with back trace
+     */
+    protected function render($e, $bFullMsg = false)
     {
         ob_start();
 
@@ -33,13 +40,13 @@ class Handler
         <body>
         <?php if (!$bFullMsg): ?>
             <div style="border:2px solid red;padding:4px;width:600px;margin:0px auto;">
-                <div style="text-align:center;background-color:red;color:white;font-weight:bold;">
-                    Something went wrong, please try reloading the page.
+                <div style="text-align:center;background-color:transparent;color:#000;font-weight:bold;">
+                    <?= _t('_Exception_user_msg') ?>
                 </div>
             </div>
         <?php else: ?>
             <div style="border:2px solid red;padding:10px;width:90%;margin:0px auto;">
-                <h2 style="margin-top: 0px;">An uncaught exception was thrown</h2>
+                <h2 style="margin-top: 0px;"><?= _t('_Exception_uncaught_msg') ?></h2>
                 <h3>Details</h3>
                 <table style="table-layout: fixed;">
                     <tr>
@@ -73,9 +80,12 @@ class Handler
         bx_show_service_unavailable_error_and_exit($sOutput);
     }
 
-    protected function email(Exception $e)
+    /**
+     * @param Throwable|Exception $e
+     */
+    protected function email($e)
     {
-        $sMailBody = "An uncaught exception was thrown in " . BX_DOL_URL_ROOT . "<br /><br /> \n";
+        $sMailBody = _t('_Exception_uncaught_in_msg') . " " . BX_DOL_URL_ROOT . "<br /><br /> \n";
         $sMailBody .= "Type: " . get_class($e) . "<br /><br /> ";
         $sMailBody .= "Message: " . $e->getMessage() . "<br /><br /> ";
         $sMailBody .= "File: " . $e->getFile() . "<br /><br /> ";
@@ -87,12 +97,12 @@ class Handler
 
         sendMail(
             BX_DOL_REPORT_EMAIL,
-            "An uncaught exception was thrown in " . BX_DOL_URL_ROOT,
+            _t('_Exception_uncaught_in_msg') . " " . BX_DOL_URL_ROOT,
             $sMailBody,
             0,
             [],
             'html',
-            true,
+            false,
             true
         );
     }

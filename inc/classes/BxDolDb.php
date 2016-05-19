@@ -166,8 +166,8 @@ class BxDolDb
             }
         } catch (PDOException $e) {
             // check if this is not a replay call already
-            // [removed] check if the error is about mysql server going away/disconnecting
-            if (!$bReplaying) { //&& (stripos($e->getMessage(), 'gone away') !== false)) {
+            // check if the error is about mysql server going away/disconnecting
+            if (!$bReplaying && (stripos($e->getMessage(), 'gone away') !== false)) {
                 // reconnect to db
                 $this->disconnect();
                 $this->connect();
@@ -435,6 +435,11 @@ class BxDolDb
         return $aResult;
     }
 
+    /**
+     * Retuns last insert id
+     * 
+     * @return string
+     */
     public function lastId()
     {
         return $this->link->lastInsertId();
@@ -597,7 +602,7 @@ class BxDolDb
         // don't need the actual quotes pdo adds, so it
         // behaves kinda like mysql_real_escape_string
         // p.s. things we do for legacy code
-        return trim($sText, "'");
+        return trim($pdoEscapted, "'");
     }
 
     /**
