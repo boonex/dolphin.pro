@@ -8,10 +8,13 @@ require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolCacheFile.php');
 
 class BxDolParams
 {
-    var $_oDb;
-    var $_oCache;
-    var $_sCacheFile;
-    var $_aParams;
+    /**
+     * @var BxDolDb
+     */
+    public $_oDb;
+    public $_oCache;
+    public $_sCacheFile;
+    public $_aParams;
 
     /**
      * constructor
@@ -23,7 +26,8 @@ class BxDolParams
         $this->_oDb = $oDb;
         $this->_sCacheFile = 'sys_options_' . md5($site['ver'] . $site['build'] . $site['url']) . '.php';
 
-        $this->_oCache = new BxDolCacheFile(); // feel free to change to another cache system if you are sure that it is available
+        // feel free to change to another cache system if you are sure that it is available
+        $this->_oCache = new BxDolCacheFile();
         $this->_aParams = $this->_oCache->getData($this->_sCacheFile);
 
         if (empty($this->_aParams) && $this->_oDb != null)
@@ -42,13 +46,13 @@ class BxDolParams
         if ($bFromCache && $this->isInCache($sKey))
            return $this->_aParams[$sKey];
         else
-           return $this->_oDb->getOne("SELECT `VALUE` FROM `sys_options` WHERE `Name`='" . $sKey . "' LIMIT 1");
+           return $this->_oDb->getOne("SELECT `VALUE` FROM `sys_options` WHERE `Name`= ? LIMIT 1", [$sKey]);
     }
 
     function set($sKey, $mixedValue)
     {
         //--- Update Database ---//
-        $this->_oDb->query("UPDATE `sys_options` SET `VALUE`='" . $mixedValue . "' WHERE `Name`='" . $sKey . "' LIMIT 1");
+        $this->_oDb->query("UPDATE `sys_options` SET `VALUE`= ? WHERE `Name`= ? LIMIT 1", [$mixedValue, $sKey]);
 
         //--- Update Cache ---//
         $this->cache();

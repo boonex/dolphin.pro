@@ -346,7 +346,7 @@ class BxDolFormChecker
 
             if (!isset ($a['checker']))  {
                 if ($a['type'] != 'checkbox' && $a['type'] != 'submit')
-                    $aInputs[$k]['value'] = $_FILES[$a['name']] ? '' : (get_magic_quotes_gpc() ? stripslashes_adv($val) : $val);
+                    $aInputs[$k]['value'] = $_FILES[$a['name']] ? '' : $val;
                 continue;
             }
 
@@ -364,7 +364,7 @@ class BxDolFormChecker
                 ++$iErrors;
                 $aInputs[$k]['error'] = $a['checker']['error'];
             }
-            $aInputs[$k]['value'] = $_FILES[$a['name']] ? '' : (get_magic_quotes_gpc() ? stripslashes_adv($val) : $val);
+            $aInputs[$k]['value'] = $_FILES[$a['name']] ? '' : $val;
         }
 
         // check for spam

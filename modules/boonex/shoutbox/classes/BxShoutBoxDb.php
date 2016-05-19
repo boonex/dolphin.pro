@@ -245,15 +245,23 @@
         }
 
         function insertData($aData)
-        {            
-            foreach($aData as $a)
-                $this->query("INSERT INTO `bx_shoutbox_objects` (`name`, `title`, `table`, `code_allow_use`, `code_allow_delete`, `code_allow_block`) VALUES ('" . $a['name'] . "', '" . $a['title'] . "', '" . $a['table'] . "', '" . $this->escape($a['code_allow_use']) . "', '" . $this->escape($a['code_allow_delete']) . "', '" . $this->escape($a['code_allow_block']) . "')");
+        {
+            foreach ($aData as $a) {
+                $this->query("INSERT INTO `bx_shoutbox_objects` (`name`, `title`, `table`, `code_allow_use`, `code_allow_delete`, `code_allow_block`) VALUES (?, ?, ?, ?, ?, ?)", [
+                    $a['name'],
+                    $a['title'],
+                    $a['table'],
+                    $a['code_allow_use'],
+                    $a['code_allow_delete'],
+                    $a['code_allow_block']
+                ]);
+            }
         }
 
         function deleteData($aData)
         {
             foreach($aData as $a)
-                $this->query("DELETE FROM `bx_shoutbox_objects` WHERE `name` = '" . $a['name'] . "'");
+                $this->query("DELETE FROM `bx_shoutbox_objects` WHERE `name` = ?", [$a['name']]);
         }
 
     }

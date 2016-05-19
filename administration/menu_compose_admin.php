@@ -47,8 +47,8 @@ if(bx_get('action') !== false) {
             $id = (int)bx_get('id');
             if( $id > 1000 ) {
                 $id = $id - 1000;
-                db_res( "DELETE FROM `sys_menu_admin` WHERE `id`='{$id}' AND `parent_id`='0'" );
-                echo db_affected_rows();
+                $res = db_res( "DELETE FROM `sys_menu_admin` WHERE `id`='{$id}' AND `parent_id`='0'" );
+                echo db_affected_rows($res);
             } else
                 echo 1;
             exit;
@@ -86,12 +86,12 @@ if(bx_get('action') !== false) {
             if( $id > 1000 ) {
                 $id = $id - 1000;
 
-                db_res( "DELETE FROM `sys_menu_admin` WHERE `id` = '{$id}' AND `parent_id`='0'" );
+                $res = db_res( "DELETE FROM `sys_menu_admin` WHERE `id` = '{$id}' AND `parent_id`='0'" );
             } else {
-                db_res( "DELETE FROM `sys_menu_admin` WHERE `id` = '{$id}'" );
+                $res = db_res( "DELETE FROM `sys_menu_admin` WHERE `id` = '{$id}'" );
             }
 
-            if( db_affected_rows() )
+            if( db_affected_rows($res) )
                 echo 'OK';
             else
                 echo _t('_adm_mbuilder_Could_not_delete_the_item');

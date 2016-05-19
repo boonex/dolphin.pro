@@ -62,9 +62,9 @@ class BxPmtDb extends BxDolModuleDb
                 `tuv`.`option_id` AS `option_id`,
                 `tuv`.`value` AS `value`
             FROM `" . $this->_sPrefix . "user_values` AS `tuv`
-            WHERE `tuv`.`user_id`='" . $iUserId . "'";
+            WHERE `tuv`.`user_id`= ?";
 
-        return $this->getAllWithKey($sSql, 'option_id');
+        return $this->getAllWithKey($sSql, 'option_id', [$iUserId]);
     }
     function updateOption($iUserId, $iOptionId, $sValue)
     {
@@ -206,17 +206,21 @@ class BxPmtDb extends BxDolModuleDb
            return $this->getAll("SELECT `id`, `name`, `type` FROM `" . $this->_sPrefix . "providers_options`");
 
         $sWhereAddon = "";
-        if(!empty($iProviderId))
-            $sWhereAddon = " AND `tpo`.`provider_id`='" . $iProviderId . "'";
+        $aBindings = [];
+        if (!empty($iProviderId)) {
+            $sWhereAddon = " AND `tpo`.`provider_id`= ? ";
+            $aBindings[] = $iProviderId;
+        }
+        $aBindings[] = $iUserId;
 
         $sSql = "SELECT
                `tpo`.`name` AS `name`,
                `tuv`.`value` AS `value`
             FROM `" . $this->_sPrefix . "providers_options` AS `tpo`
             LEFT JOIN `" . $this->_sPrefix . "user_values` AS `tuv` ON `tpo`.`id`=`tuv`.`option_id`
-            WHERE 1" . $sWhereAddon . " AND `tuv`.`user_id`='" . $iUserId . "'";
+            WHERE 1" . $sWhereAddon . " AND `tuv`.`user_id`= ?";
 
-        return $this->getAllWithKey($sSql, 'name');
+        return $this->getAllWithKey($sSql, 'name', $aBindings);
     }
 
     function getPending($aParams)
@@ -224,9 +228,11 @@ class BxPmtDb extends BxDolModuleDb
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
         $sMethodName = 'getRow';
+        $aBindings   = [];
         switch($aParams['type']) {
             case 'id':
-                $sWhereClause = " AND `id`='" . $aParams['id'] . "'";
+                $sWhereClause = " AND `id`= ? ";
+                $aBindings[] = $aParams['id'];
                 break;
         }
         $sSql = "SELECT
@@ -246,8 +252,9 @@ class BxPmtDb extends BxDolModuleDb
                 FROM `" . $this->_sPrefix . "transactions_pending`
                 WHERE 1 " . $sWhereClause . "
                 LIMIT 1";
-        return $this->$sMethodName($sSql);
+        return $this->$sMethodName($sSql, $aBindings);
     }
+    
     function insertPending($iClientId, $sProviderName, $aCartInfo)
     {
         $sItems = "";

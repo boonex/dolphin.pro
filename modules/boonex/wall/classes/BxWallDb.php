@@ -243,10 +243,10 @@ class BxWallDb extends BxDolModuleDb
             	$sWhereClause = "";
 
             	if(isset($aParams['type']))
-                	$sWhereClause .= "AND `te`.`content` LIKE '%" . $this->escape($aParams['type']) . "%'";
+                	$sWhereClause .= "AND `te`.`content` LIKE '%" . $this->escape($aParams['type'], false) . "%'";
 
                 if(isset($aParams['action']))
-                	$sWhereClause .= "AND `te`.`content` LIKE '%" . $this->escape($aParams['action']) . "%'";
+                	$sWhereClause .= "AND `te`.`content` LIKE '%" . $this->escape($aParams['action'], false) . "%'";
                 break;
 
             case BX_WALL_VIEW_OUTLINE:

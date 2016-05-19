@@ -484,7 +484,7 @@ class BxDolInstaller extends BxDolInstallerUtils
                 $sQuery = str_replace($sDelimiter, "", $sQuery);
             $rResult = db_res(trim($sQuery), false);
             if(!$rResult)
-                $aResult[] = array('query' => $sQuery, 'error' => mysql_error());
+                $aResult[] = array('query' => $sQuery, 'error' => $rResult->errorInfo());
 
             $sQuery = "";
         }
@@ -512,8 +512,8 @@ class BxDolInstaller extends BxDolInstallerUtils
         $iCategoryId = 100;
         $sCategoryName = isset($this->_aConfig['language_category']) ? $this->_aConfig['language_category'] : '';
         if($bInstall && !empty($sCategoryName)) {
-            db_res("INSERT IGNORE INTO `sys_localization_categories` SET `Name`='" . $sCategoryName . "'");
-            if(db_affected_rows() <= 0 )
+            $res = db_res("INSERT IGNORE INTO `sys_localization_categories` SET `Name`='" . $sCategoryName . "'");
+            if(db_affected_rows($res) <= 0 )
                 $iCategoryId = (int)db_value("SELECT `ID` FROM `sys_localization_categories` WHERE `Name`='" . $sCategoryName . "' LIMIT 1");
             else
                 $iCategoryId = db_last_id();
@@ -703,8 +703,8 @@ class BxDolInstaller extends BxDolInstallerUtils
             foreach($aLangContent as $sKey => $sValue) {
                 $iLangKeyId = (int)db_value("SELECT `ID` FROM `sys_localization_keys` WHERE `IDCategory`='" . $iCategoryId . "' AND `Key`='" . $sKey . "' LIMIT 1");
                 if($iLangKeyId == 0) {
-                    db_res("INSERT INTO `sys_localization_keys`(`IDCategory`, `Key`) VALUES('" . $iCategoryId . "', '" . $sKey . "')");
-                    if(db_affected_rows() <= 0)
+                    $res = db_res("INSERT INTO `sys_localization_keys`(`IDCategory`, `Key`) VALUES('" . $iCategoryId . "', '" . $sKey . "')");
+                    if(db_affected_rows($res) <= 0)
                         continue;
 
                     $iLangKeyId = db_last_id();
@@ -726,28 +726,36 @@ class BxDolInstaller extends BxDolInstallerUtils
         if (getLangIdByName($aLangInfo['Name'])) // language already exists
             return false;
 
-        $sLangName = $oDb->escape($aLangInfo['Name']);
-        $sLangFlag = $oDb->escape($aLangInfo['Flag']);
-        $sLangTitle = $oDb->escape($aLangInfo['Title']);
-        $sLangDir = $oDb->escape(isset($aLangInfo['Direction']) && $aLangInfo['Direction'] ? $aLangInfo['Direction'] : 'LTR');
-        $sLangCountryCode = $oDb->escape(isset($aLangInfo['LanguageCountry']) && $aLangInfo['LanguageCountry'] ? $aLangInfo['LanguageCountry'] : $aLangInfo['Name'] . '_' . strtoupper($aLangInfo['Flag']));
+        $sLangName = $aLangInfo['Name'];
+        $sLangFlag = $aLangInfo['Flag'];
+        $sLangTitle = $aLangInfo['Title'];
+        $sLangDir = isset($aLangInfo['Direction']) && $aLangInfo['Direction'] ? $aLangInfo['Direction'] : 'LTR';
+        $sLangCountryCode = isset($aLangInfo['LanguageCountry']) && $aLangInfo['LanguageCountry'] ? $aLangInfo['LanguageCountry'] : $aLangInfo['Name'] . '_' . strtoupper($aLangInfo['Flag']);
 
-        if (!$oDb->res("INSERT INTO `sys_localization_languages` VALUES (NULL, '{$sLangName}', '{$sLangFlag}', '{$sLangTitle}', '{$sLangDir}', '{$sLangCountryCode}')"))
+        if (!$oDb->res("INSERT INTO `sys_localization_languages` VALUES (?, ?, ?, ?, ?, ?)", [
+            NULL,
+            $sLangName,
+            $sLangFlag,
+            $sLangTitle,
+            $sLangDir,
+            $sLangCountryCode
+        ])) {
             return false;
+        }
         $iLangKey = $oDb->lastId();
 
         foreach ($aLanguage as $sKey => $sValue) {
-            $sDbKey = $oDb->escape($sKey);
-            $sDbValue = $oDb->escape($sValue);
+            $sDbKey = $sKey;
+            $sDbValue = $sValue;
 
-            $iExistedKey = $oDb->getOne("SELECT `ID` FROM `sys_localization_keys` WHERE `Key` = '{$sDbKey}'");
+            $iExistedKey = $oDb->getOne("SELECT `ID` FROM `sys_localization_keys` WHERE `Key` = ?", [$sDbKey]);
             if (!$iExistedKey) { // key is missing, insert new key
-                if (!$oDb->res("INSERT INTO `sys_localization_keys` VALUES (NULL, " . BX_DOL_LANGUAGE_CATEGORY_SYSTEM . ", '{$sDbKey}')"))
+                if (!$oDb->res("INSERT INTO `sys_localization_keys` VALUES (NULL, ?, ?)", [BX_DOL_LANGUAGE_CATEGORY_SYSTEM, $sDbKey]))
                     continue;
                 $iExistedKey = $oDb->lastId();
             }
 
-            $oDb->res("INSERT INTO `sys_localization_strings` VALUES({$iExistedKey}, {$iLangKey}, '{$sDbValue}')");
+            $oDb->res("INSERT INTO `sys_localization_strings` VALUES(?, ?, ?)", [$iExistedKey, $iLangKey, $sDbValue]);
         }
 
         return true;

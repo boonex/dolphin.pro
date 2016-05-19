@@ -72,7 +72,7 @@ class BxDolAdminSettings
         if (is_int($mixed))
             $this->_iCategoryActive = $mixed;
         else
-            $this->_iCategoryActive = (int)$this->_oDb->getOne("SELECT `ID` FROM `sys_options_cats` WHERE `name`='" . $this->_oDb->escape($mixed) . "'");
+            $this->_iCategoryActive = (int)$this->_oDb->getOne("SELECT `ID` FROM `sys_options_cats` WHERE `name`= ?", [$mixed]);
     }
     function saveChanges(&$aData)
     {

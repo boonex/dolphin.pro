@@ -1175,7 +1175,7 @@ EOF;
             @unlink($sDFilePath);
 
             $vSqlRes = $this->_oDb->performUpdatePostWithPhoto($iPostID);
-            $sRet = (db_affected_rows() > 0) ? _t($sSuccUpdPost) : _t($sFailUpdPost);
+            $sRet = (db_affected_rows($vSqlRes) > 0) ? _t($sSuccUpdPost) : _t($sFailUpdPost);
             print 1;
 
             return MsgBox($sRet);
@@ -1235,7 +1235,7 @@ EOF;
             }
 
             $vSqlRes = $this->_oDb->deletePost($iPostID);
-            $sRet = (db_affected_rows() > 0) ? _t('_post_successfully_deleted') : _t('_failed_to_delete_post');
+            $sRet = (db_affected_rows($vSqlRes) > 0) ? _t('_post_successfully_deleted') : _t('_failed_to_delete_post');
 
             $this->isAllowedPostDelete($iPostOwnerID, true); // perform action
 

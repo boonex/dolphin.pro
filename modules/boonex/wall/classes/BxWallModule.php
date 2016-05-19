@@ -953,7 +953,7 @@ class BxWallModule extends BxDolModule
 
         $aOwner = $this->_oDb->getUser($this->_getAuthorId());
 
-        $sContent = get_magic_quotes_gpc() ? stripslashes($_POST['content']) : $_POST['content'];
+        $sContent = $_POST['content'];
         $sContent = strip_tags($sContent);        
         $sContent = nl2br($sContent);
 

@@ -41,7 +41,7 @@ class BxDolAlertsResponceMatch extends BxDolAlertsResponse
         $aProfile = getProfileInfo($iProfileId);
 
         if ($aProfile['Status'] == 'Active' && ($aProfile['UpdateMatch'] || $sAction == 'join')) {
-            $oDb = new BxDolDb();
+            $oDb = BxDolDb::getInstance();
 
             // clear field "UpdateMatch"
             $oDb->query("UPDATE `Profiles` SET `UpdateMatch` = 0 WHERE `ID`= $iProfileId");
@@ -83,7 +83,7 @@ class BxDolAlertsResponceMatch extends BxDolAlertsResponse
 
     function _profileDelete($iProfileId)
     {
-        $oDb = new BxDolDb();
+        $oDb = BxDolDb::getInstance();
 
         $oDb->query("DELETE FROM `sys_profiles_match`");
         $oDb->query("DELETE FROM `sys_profiles_match_mails` WHERE `profile_id` = $iProfileId");
@@ -91,7 +91,7 @@ class BxDolAlertsResponceMatch extends BxDolAlertsResponse
 
     function _profileChangeStatus()
     {
-        $oDb = new BxDolDb();
+        $oDb = BxDolDb::getInstance();
         $oDb->query("DELETE FROM `sys_profiles_match`");
     }
 }

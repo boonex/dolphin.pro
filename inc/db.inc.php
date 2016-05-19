@@ -9,6 +9,11 @@ require_once("header.inc.php");
 require_once(BX_DIRECTORY_PATH_INC . 'utils.inc.php');
 require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolDb.php');
 
+/**
+ * Please don't get lazy, get your db instance yourself
+ *
+ * @var BxDolDb
+ */
 $GLOBALS['MySQL'] = BxDolDb::getInstance();
 
 $site['title']        = getParam('site_title');
@@ -18,61 +23,80 @@ $site['email_notify'] = getParam('site_email_notify');
 date_default_timezone_set(getParam('site_timezone'));
 $GLOBALS['MySQL']->setTimezone(getParam('site_timezone'));
 
-function db_list_tables($error_checking = true)
+/**
+ * @return array
+ */
+function db_list_tables()
 {
-    $GLOBALS['MySQL']->setErrorChecking($error_checking);
-
     return $GLOBALS['MySQL']->listTables();
 }
 
 /**
- * @param       $query
- * @param array $bindings
- * @param bool  $error_checking
+ * @param string $query
+ * @param array  $bindings
  * @return PDOStatement
  */
-function db_res($query, $bindings = [], $error_checking = true)
+function db_res($query, $bindings = [])
 {
-    $GLOBALS['MySQL']->setErrorChecking($error_checking);
-
     return $GLOBALS['MySQL']->res($query, $bindings);
 }
 
+/**
+ * @return int
+ */
 function db_last_id()
 {
     return $GLOBALS['MySQL']->lastId();
 }
 
-function db_affected_rows()
+/**
+ * @param null|PDOStatement $oStmt
+ * @return int
+ */
+function db_affected_rows($oStmt = null)
 {
-    return $GLOBALS['MySQL']->getAffectedRows();
+    return $GLOBALS['MySQL']->getAffectedRows($oStmt);
 }
 
-function db_res_assoc_arr($query, $bindings = [], $error_checking = true)
+/**
+ * @param string $query
+ * @param array  $bindings
+ * @return array
+ */
+function db_res_assoc_arr($query, $bindings = [])
 {
-    $GLOBALS['MySQL']->setErrorChecking($error_checking);
-
     return $GLOBALS['MySQL']->getAll($query, $bindings);
 }
 
-function db_arr($query, $bindings = [], $error_checking = true)
+/**
+ * @param string $query
+ * @param array  $bindings
+ * @return mixed
+ */
+function db_arr($query, $bindings = [])
 {
-    $GLOBALS['MySQL']->setErrorChecking($error_checking);
-
     return $GLOBALS['MySQL']->getRow($query, $bindings, PDO::FETCH_BOTH);
 }
 
-function db_assoc_arr($query, $bindings = [], $error_checking = true)
+/**
+ * @param string $query
+ * @param array  $bindings
+ * @return mixed
+ */
+function db_assoc_arr($query, $bindings = [])
 {
-    $GLOBALS['MySQL']->setErrorChecking($error_checking);
-
     return $GLOBALS['MySQL']->getRow($query, $bindings);
 }
 
+/**
+ * @param string $query
+ * @param array  $bindings
+ * @param bool   $error_checking Only here cuz order of args might break old code
+ * @param int    $index
+ * @return mixed
+ */
 function db_value($query, $bindings = [], $error_checking = true, $index = 0)
 {
-    $GLOBALS['MySQL']->setErrorChecking($error_checking);
-
     return $GLOBALS['MySQL']->getOne($query, $bindings, $index);
 }
 
@@ -98,17 +122,31 @@ function fill_assoc_array($res)
     return $GLOBALS['MySQL']->fillArray($res, PDO::FETCH_ASSOC);
 }
 
-function getParam($param_name, $use_cache = true)
+/**
+ * @param      $sParamName
+ * @param bool $bUseCache
+ * @return mixed
+ */
+function getParam($sParamName, $bUseCache = true)
 {
-    return $GLOBALS['MySQL']->getParam($param_name, $use_cache);
+    return $GLOBALS['MySQL']->getParam($sParamName, $bUseCache);
 }
 
-function getParamDesc($param_name)
+/**
+ * @param $sParamName
+ * @return mixed
+ */
+function getParamDesc($sParamName)
 {
-    return $GLOBALS['MySQL']->getOne("SELECT `desc` FROM `sys_options` WHERE `Name` = '$param_name'");
+    return $GLOBALS['MySQL']->getOne("SELECT `desc` FROM `sys_options` WHERE `Name` = ?", [$sParamName]);
 }
 
-function setParam($param_name, $param_val)
+/**
+ * @param $sParamName
+ * @param $sParamValue
+ * @return mixed
+ */
+function setParam($sParamName, $sParamValue)
 {
-    return $GLOBALS['MySQL']->setParam($param_name, $param_val);
+    return $GLOBALS['MySQL']->setParam($sParamName, $sParamValue);
 }

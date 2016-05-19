@@ -252,11 +252,11 @@ class BxDolTwigModuleDb extends BxDolModuleDb
 
     function getPotentialVisitors ($iProfileId)
     {
-        $a = $this->getAllWithKey ("SELECT `p`.`NickName`, `p`.`ID` FROM `sys_friend_list` AS `o` INNER JOIN `Profiles` AS `p` ON (`p`.`ID` = `o`.`ID` AND `o`.`Profile` = '$iProfileId')", 'NickName');
-        $a = array_merge($a, $this->getAllWithKey ("SELECT `p`.`NickName`, `p`.`ID` FROM `sys_friend_list` AS `o` INNER JOIN `Profiles` AS `p` ON (`p`.`ID` = `o`.`Profile` AND `o`.`ID` = '$iProfileId')", 'NickName'));
-        $a = array_merge($a, $this->getAllWithKey ("SELECT `p`.`NickName`, `p`.`ID` FROM `sys_fave_list` AS `o` INNER JOIN `Profiles` AS `p` ON (`p`.`ID` = `o`.`ID` AND `o`.`Profile` = '$iProfileId')", 'NickName'));
-        $a = array_merge($a, $this->getAllWithKey ("SELECT `p`.`NickName`, `p`.`ID` FROM `sys_fave_list` AS `o` INNER JOIN `Profiles` AS `p` ON (`p`.`ID` = `o`.`Profile` AND `o`.`ID` = '$iProfileId')", 'NickName'));
-        $a = array_merge($a, $this->getAllWithKey ("SELECT `p`.`NickName`, `p`.`ID` FROM `sys_messages` AS `o` INNER JOIN `Profiles` AS `p` ON (`p`.`ID` = `o`.`Recipient` AND `o`.`Sender` = '$iProfileId')", 'NickName'));
+        $a = $this->getAllWithKey ("SELECT `p`.`NickName`, `p`.`ID` FROM `sys_friend_list` AS `o` INNER JOIN `Profiles` AS `p` ON (`p`.`ID` = `o`.`ID` AND `o`.`Profile` = ?)", 'NickName', [$iProfileId]);
+        $a = array_merge($a, $this->getAllWithKey ("SELECT `p`.`NickName`, `p`.`ID` FROM `sys_friend_list` AS `o` INNER JOIN `Profiles` AS `p` ON (`p`.`ID` = `o`.`Profile` AND `o`.`ID` = ?)", 'NickName', [$iProfileId]));
+        $a = array_merge($a, $this->getAllWithKey ("SELECT `p`.`NickName`, `p`.`ID` FROM `sys_fave_list` AS `o` INNER JOIN `Profiles` AS `p` ON (`p`.`ID` = `o`.`ID` AND `o`.`Profile` = ?)", 'NickName', [$iProfileId]));
+        $a = array_merge($a, $this->getAllWithKey ("SELECT `p`.`NickName`, `p`.`ID` FROM `sys_fave_list` AS `o` INNER JOIN `Profiles` AS `p` ON (`p`.`ID` = `o`.`Profile` AND `o`.`ID` = ?)", 'NickName', [$iProfileId]));
+        $a = array_merge($a, $this->getAllWithKey ("SELECT `p`.`NickName`, `p`.`ID` FROM `sys_messages` AS `o` INNER JOIN `Profiles` AS `p` ON (`p`.`ID` = `o`.`Recipient` AND `o`.`Sender` = ?)", 'NickName', [$iProfileId]));
         foreach ($a as $k => $r) {
             if ($iProfileId == $r['ID']) {
                 unset($a[$k]);

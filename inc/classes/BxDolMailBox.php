@@ -608,9 +608,9 @@
                           AND
                       `Recipient` = {$this -> aMailBoxSettings['member_id']}
             ";
-               db_res($sQuery);
+               $res = db_res($sQuery);
 
-               return db_affected_rows();
+               return db_affected_rows($res);
           }
 
           /**
@@ -653,9 +653,10 @@
                           AND
                       `{$sFieldName}` = {$this -> aMailBoxSettings['member_id']}
                ";
-               db_res($sQuery);
 
-               return db_affected_rows();
+               $res = db_res($sQuery);
+
+               return db_affected_rows($res);
           }
 
           /**
@@ -707,9 +708,9 @@
                                    `Recipient` = {$iMessageOwner}
                               )
                     ";
-                    db_res($sQuery);
+                    $res = db_res($sQuery);
 
-                    return db_affected_rows();
+                    return db_affected_rows($res);
                }
           }
 

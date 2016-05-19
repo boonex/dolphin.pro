@@ -590,7 +590,7 @@ class BxBaseFormView extends BxDolForm
 
         $sAttrs = $this->convertArray2Attrs($aAttrs);
 
-        $sValue = htmlspecialchars_adv($aInput['value']);
+        $sValue = (isset($aInput['value'])) ? htmlspecialchars_adv($aInput['value']) : '';
 
         return $this->getInput('textarea', $sAttrs, $sValue);
     }

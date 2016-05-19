@@ -193,13 +193,13 @@ function deleteLanguage($langID = 0)
     $numStrings = $numStrings->fetch(PDO::FETCH_NUM);
     $numStrings = $numStrings[0];
 
-    db_res('DELETE FROM `sys_localization_strings` WHERE `IDLanguage` = '.$langID);
+    $res1 = db_res('DELETE FROM `sys_localization_strings` WHERE `IDLanguage` = '.$langID);
 
-    if(db_affected_rows() < $numStrings) return false;
+    if(db_affected_rows($res1) < $numStrings) return false;
 
-    db_res('DELETE FROM `sys_localization_languages` WHERE `ID` = '.$langID);
+    $res2 = db_res('DELETE FROM `sys_localization_languages` WHERE `ID` = '.$langID);
 
-    if(db_affected_rows() <= 0) return false;
+    if(db_affected_rows($res2) <= 0) return false;
 
     @unlink( BX_DIRECTORY_PATH_ROOT . 'langs/lang-'.$arrLang['Name'].'.php');
 
@@ -372,7 +372,7 @@ function addStringToLanguage($langKey, $langString, $langID = -1, $categoryID = 
         INSERT INTO	`sys_localization_keys`
         SET			`IDCategory` = $categoryID,
                     `Key` = '$langKey'", false );
-    if ( !$resInsertKey || db_affected_rows() <= 0 )
+    if ( !$resInsertKey || db_affected_rows($resInsertKey) <= 0 )
         return false;
 
     $keyID = db_last_id();
@@ -383,7 +383,7 @@ function addStringToLanguage($langKey, $langString, $langID = -1, $categoryID = 
             SET			`IDKey` = $keyID,
                         `IDLanguage` = {$arrLanguage['ID']},
                         `String` = '$langString'", false );
-        if ( !$resInsertString || db_affected_rows() <= 0 )
+        if ( !$resInsertString || db_affected_rows($resInsertString) <= 0 )
             return false;
 
         compileLanguage($arrLanguage['ID']);
@@ -425,7 +425,7 @@ function updateStringInLanguage($langKey, $langString, $langID = -1)
             SET			`String` = '$langString'
             WHERE		`IDKey` = $keyID
             AND			`IDLanguage` = {$arrLanguage['ID']}", false );
-        if ( !$resUpdateString || db_affected_rows() <= 0 )
+        if ( !$resUpdateString || db_affected_rows($resUpdateString) <= 0 )
             return false;
     }
 
@@ -464,7 +464,7 @@ function deleteStringFromLanguage($langKey, $langID = -1)
             DELETE	FROM `sys_localization_strings`
             WHERE		`IDKey` = $keyID
             AND			`IDLanguage` = {$arrLanguage['ID']}", false );
-        if ( !$resDeleteString || db_affected_rows() <= 0 )
+        if ( !$resDeleteString || db_affected_rows($resDeleteString) <= 0 )
             return false;
     }
 
@@ -472,7 +472,7 @@ function deleteStringFromLanguage($langKey, $langID = -1)
         DELETE FROM `sys_localization_keys`
         WHERE	`Key` = '$langKey' LIMIT 1", false );
 
-    return !$resDeleteKey || db_affected_rows() <= 0 ? false : true;
+    return !$resDeleteKey || db_affected_rows($resDeleteKey) <= 0 ? false : true;
 }
 
 function _t_action( $str, $arg0 = "", $arg1 = "", $arg2 = "" )

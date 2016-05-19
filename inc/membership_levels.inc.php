@@ -606,8 +606,8 @@ function setMembership($iMemberId, $iMembershipId, $iDays = 0, $bStartsNow = fal
             return true;
 
         //delete any present and future memberships
-        db_res("DELETE FROM `sys_acl_levels_members` WHERE `IDMember`='" . $iMemberId . "' AND (`DateExpires` IS NULL OR `DateExpires`>NOW())");
-        if(db_affected_rows() <= 0)
+        $res = db_res("DELETE FROM `sys_acl_levels_members` WHERE `IDMember`='" . $iMemberId . "' AND (`DateExpires` IS NULL OR `DateExpires`>NOW())");
+        if(db_affected_rows($res) <= 0)
             return false;
     }
 
@@ -634,8 +634,8 @@ function setMembership($iMemberId, $iMembershipId, $iDays = 0, $bStartsNow = fal
      * set lifetime membership if 0 days is used.
      */
     $iDateExpires = $iDays != 0 ? (int)$iDateStarts + $iDays * $SECONDS_IN_DAY : 'NULL';
-    db_res("INSERT `sys_acl_levels_members` (`IDMember`, `IDLevel`, `DateStarts`, `DateExpires`, `TransactionID`) VALUES ('" . $iMemberId . "', '" . $iMembershipId . "', FROM_UNIXTIME(" . $iDateStarts . "), FROM_UNIXTIME(" . $iDateExpires . "), '" . $sTransactionId . "')");
-    if(db_affected_rows() <= 0)
+    $res = db_res("INSERT `sys_acl_levels_members` (`IDMember`, `IDLevel`, `DateStarts`, `DateExpires`, `TransactionID`) VALUES ('" . $iMemberId . "', '" . $iMembershipId . "', FROM_UNIXTIME(" . $iDateStarts . "), FROM_UNIXTIME(" . $iDateExpires . "), '" . $sTransactionId . "')");
+    if(db_affected_rows($res) <= 0)
        return false;
 
     //Set Membership Alert
@@ -787,28 +787,28 @@ function translateMembershipActions (&$aActions)
 
 function markMembershipAsExpiring($iMemberId, $iLevelId, $sTransactionId)
 {
-	db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='1' WHERE `IDMember`= ? AND `IDLevel`= ? AND `TransactionID`= ? LIMIT 1", [
+	$res = db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='1' WHERE `IDMember`= ? AND `IDLevel`= ? AND `TransactionID`= ? LIMIT 1", [
         $iMemberId,
         $iLevelId,
         $sTransactionId
     ]);
-	return db_affected_rows() > 0;
+	return db_affected_rows($res) > 0;
 }
 
 function unmarkMembershipAsExpiring($iMemberId, $iLevelId, $sTransactionId)
 {
-	db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='0' WHERE `IDMember`= ? AND `IDLevel`= ? AND `TransactionID`= ? LIMIT 1", [
+	$res = db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='0' WHERE `IDMember`= ? AND `IDLevel`= ? AND `TransactionID`= ? LIMIT 1", [
         $iMemberId,
         $iLevelId,
         $sTransactionId
     ]);
-	return db_affected_rows() > 0;
+	return db_affected_rows($res) > 0;
 }
 
 function unmarkMembershipAsExpiringAll()
 {
-	db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='0' WHERE 1");
-	return db_affected_rows() > 0;
+	$res = db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='0' WHERE 1");
+	return db_affected_rows($res) > 0;
 }
 
 function clearActionsTracksForMember($iMemberId)

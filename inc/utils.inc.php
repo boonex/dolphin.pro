@@ -228,53 +228,46 @@ function html_encode($text)
     return preg_replace($searcharray, $replacearray, stripslashes($text));
 }
 
-/*
+/**
  * functions for input data into database
- * @param $text string to pass to database
- * @param $strip_tags tags parameter:
- *          BX_TAGS_STRIP - strip tags
- *          BX_TAGS_SPECIAL_CHARS - translate to special html chars (not good to use this, it is better to do such thing during output to browser)
- *          BX_TAGS_VALIDATE - validate HTML
- *          BX_TAGS_NO_ACTION - do not perform any action with tags
- *  @param $addslashes slashes parameter:
- *          BX_SLASHES_AUTO - automatically detect magic_quotes_gpc setting
- *          BX_SLASHES_STRIP - strip slashes
- *          BX_SLASHES_ADD - add slashes
- *          BX_SLASHES_NO_ACTION - do not perform any action with slashes
+ *
+ * @param array|string $sText
+ * @param int          $iStripTags tags parameter:
+ *                                 BX_TAGS_STRIP - strip tags
+ *                                 BX_TAGS_SPECIAL_CHARS - translate to special html chars (not good to use this, it is better to do such thing during output to browser)
+ *                                 BX_TAGS_VALIDATE - validate HTML
+ *                                 BX_TAGS_NO_ACTION - do not perform any action with tags
+ * @return string
  */
-function process_db_input($text, $strip_tags = 0, $addslashes = 0)
+function process_db_input($sText, $iStripTags = 0)
 {
-    if (is_array($text)) {
-        foreach ($text as $k => $v) {
-            $text[$k] = process_db_input($v, $strip_tags, $addslashes);
+    if (is_array($sText)) {
+        foreach ($sText as $k => $v) {
+            $sText[$k] = process_db_input($v, $iStripTags);
         }
 
-        return $text;
-    }
-
-    if ((get_magic_quotes_gpc() && $addslashes == BX_SLASHES_AUTO) || $addslashes == BX_SLASHES_STRIP) {
-        $text = stripslashes($text);
-    } elseif ($addslashes == BX_SLASHES_ADD) {
-        $text = addslashes($text);
+        return $sText;
     }
 
     $oDb = BxDolDb::getInstance();
-    switch ($strip_tags) {
+    switch ($iStripTags) {
         case BX_TAGS_STRIP_AND_NL2BR:
-            return $oDb->escape(nl2br(strip_tags($text)));
+            return $oDb->escape(nl2br(strip_tags($sText)), false);
         case BX_TAGS_STRIP:
-            return $oDb->escape(strip_tags($text));
+            return $oDb->escape(strip_tags($sText), false);
         case BX_TAGS_SPECIAL_CHARS:
-            return $oDb->escape(htmlspecialchars($text, ENT_QUOTES, 'UTF-8'));
+            return $oDb->escape(htmlspecialchars($sText, ENT_QUOTES, 'UTF-8'), false);
         case BX_TAGS_VALIDATE:
-            return $oDb->escape(clear_xss($text));
+            return $oDb->escape(clear_xss($sText), false);
         case BX_TAGS_NO_ACTION:
         default:
-            return $oDb->escape($text);
+            return $oDb->escape($sText, false);
     }
 }
 
-/*
+/**
+ * @deprecated no gpc anymore, so no need for this function
+ *
  * function for processing pass data
  *
  * This function cleans the GET/POST/COOKIE data if magic_quotes_gpc() is on
@@ -286,11 +279,7 @@ function process_pass_data($text, $strip_tags = 0)
         $text = strip_tags($text);
     }
 
-    if (!get_magic_quotes_gpc()) {
-        return $text;
-    } else {
-        return stripslashes($text);
-    }
+    return $text;
 }
 
 /*
@@ -1027,13 +1016,10 @@ function bx_is_ip_blocked($sCurIP = '')
 /**
  *  spam checking function
  *
- * @param $s              content to check for spam
- * @param $isStripSlashes slashes parameter:
- *                        BX_SLASHES_AUTO - automatically detect magic_quotes_gpc setting
- *                        BX_SLASHES_NO_ACTION - do not perform any action with slashes
+ * @param $val
  * @return true if spam detected
  */
-function bx_is_spam($val, $isStripSlashes = BX_SLASHES_AUTO)
+function bx_is_spam($val)
 {
     if (defined('BX_DOL_CRON_EXECUTE')) {
         return false;
@@ -1045,10 +1031,6 @@ function bx_is_spam($val, $isStripSlashes = BX_SLASHES_AUTO)
 
     if (bx_is_ip_whitelisted()) {
         return false;
-    }
-
-    if (get_magic_quotes_gpc() && $isStripSlashes == BX_SLASHES_AUTO) {
-        $val = stripslashes($val);
     }
 
     $bRet = false;

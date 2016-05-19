@@ -76,26 +76,18 @@ class Handler
     protected function email(Exception $e)
     {
         $sMailBody = "An uncaught exception was thrown in " . BX_DOL_URL_ROOT . "<br /><br /> \n";
-
         $sMailBody .= "Type: " . get_class($e) . "<br /><br /> ";
-
         $sMailBody .= "Message: " . $e->getMessage() . "<br /><br /> ";
-
         $sMailBody .= "File: " . $e->getFile() . "<br /><br /> ";
-
         $sMailBody .= "Line: " . $e->getLine() . "<br /><br /> ";
-
         $sMailBody .= "Debug backtrace:\n <pre>" . htmlspecialchars_adv(nl2br($e->getTraceAsString())) . "</pre> ";
-
         $sMailBody .= "<hr />Called script: " . $_SERVER['PHP_SELF'] . "<br /> ";
-
         $sMailBody .= "<hr />Request parameters: <pre>" . print_r($_REQUEST, true) . " </pre>";
-
         $sMailBody .= "--\nAuto-report system\n";
 
         sendMail(
             BX_DOL_REPORT_EMAIL,
-            "An uncaught exception was thrown" . BX_DOL_URL_ROOT,
+            "An uncaught exception was thrown in " . BX_DOL_URL_ROOT,
             $sMailBody,
             0,
             [],

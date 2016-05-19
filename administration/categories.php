@@ -32,7 +32,7 @@ $logged['admin'] = member_auth( 1, true, true );
 
 function actionAllCategories()
 {
-    $oDb = new BxDolDb();
+    $oDb = BxDolDb::getInstance();
 
     // check actions
     if(bx_get('pathes') !== false) {
@@ -105,7 +105,7 @@ function actionAllCategories()
 
 function actionPending()
 {
-    $oDb = new BxDolDb();
+    $oDb = BxDolDb::getInstance();
     $sFormName = 'categories_aprove_form';
     $aItems = array();
 
@@ -235,7 +235,7 @@ function getAddCategoryForm()
     $sResult = '';
 
     if ($oForm->isSubmittedAndValid()) {
-        $oDb = new BxDolDb();
+        $oDb = BxDolDb::getInstance();
         if ($oDb->getOne("SELECT COUNT(*) FROM `sys_categories` WHERE `Category` = '" . $oForm->getCleanValue('Category') . "' AND `ID` = 0 AND `Type` = '" . $oForm->getCleanValue('Type') . "'") == 0) {
             $aValsAdd = array (
                 'ID' => 0,
