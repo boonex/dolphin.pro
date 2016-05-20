@@ -4,23 +4,23 @@
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
-class Handler
+class BxDolExceptionHandler
 {
     protected $dontReport = [
 
     ];
 
     /**
-     * @param Throwable|Exception $e
+     * @param Throwable $e
      */
-    public function handle($e)
+    public function handle(Throwable $e)
     {
         if (in_array(get_class($e), $this->dontReport)) {
             return;
         }
 
-        if ($e instanceof PDOException) {
-            // lets only email for DB failures
+        $bEmailError = (!defined('BX_DOL_EMAIL_ERROR')) ? true : BX_DOL_EMAIL_ERROR;
+        if ($bEmailError) {
             $this->email($e);
         }
 
@@ -30,10 +30,10 @@ class Handler
     }
 
     /**
-     * @param Throwable|Exception $e
-     * @param boolean             $bFullMsg display full error message with back trace
+     * @param Throwable $e
+     * @param boolean   $bFullMsg display full error message with back trace
      */
-    protected function render($e, $bFullMsg = false)
+    protected function render(Throwable $e, $bFullMsg = false)
     {
         ob_start();
 
@@ -83,9 +83,9 @@ class Handler
     }
 
     /**
-     * @param Throwable|Exception $e
+     * @param Throwable $e
      */
-    protected function email($e)
+    protected function email(Throwable $e)
     {
         $sMailBody = _t('_Exception_uncaught_in_msg') . " " . BX_DOL_URL_ROOT . "<br /><br /> \n";
         $sMailBody .= "Type: " . get_class($e) . "<br /><br /> ";

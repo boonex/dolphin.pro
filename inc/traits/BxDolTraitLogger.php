@@ -4,8 +4,12 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-trait Logger
+trait BxDolTraitLogger
 {
-    // TODO: Implement maybe?
-    public function log($logThis) {}
+    /**
+     * TODO: Implement maybe?
+     *
+     * @param $logMe
+     */
+    public function log($logMe) {}
 }

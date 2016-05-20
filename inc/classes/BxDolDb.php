@@ -7,16 +7,12 @@
 
 define('BX_DOL_TABLE_PROFILES', '`Profiles`');
 
-//define('DB_FULL_VISUAL_PROCESSING', true);
-//define('DB_FULL_DEBUG_MODE', true);
-//define('DB_DO_EMAIL_ERROR_REPORT', true);
-
 require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolParams.php');
-require_once(BX_DIRECTORY_PATH_INC . 'traits/Logger.php');
+require_once(BX_DIRECTORY_PATH_INC . 'traits/BxDolTraitLogger.php');
 
 class BxDolDb
 {
-    use Logger;
+    use BxDolTraitLogger;
 
     protected $host, $port, $socket, $dbname, $user, $password;
 
