@@ -183,7 +183,7 @@ class BxWmapDb extends BxDolModuleDb
     {
         $sQuery = "INSERT INTO `" . $this->_sPrefix . "parts` SET ";
         foreach ($aOptions as $sField => $sValue)
-            $sQuery .= "`$sField` = '" . $this->escape($sValue) . "',";
+            $sQuery .= "`$sField` = {$this->escape($sValue)},";
         $sQuery = trim ($sQuery, ', ');
         if (!$this->query($sQuery))
             return false;
@@ -309,7 +309,7 @@ class BxWmapDb extends BxDolModuleDb
         foreach ($this->_aCategs as $sType => $sCateg) {
 
             $sCateg = str_replace('{Part}', ucfirst($sPart), $sCateg);
-            if (!$this->query("INSERT INTO `sys_options_cats` SET `name` = '" . $this->escape($sCateg) . "', `menu_order` = " . (++$iOrderCateg)))
+            if (!$this->query("INSERT INTO `sys_options_cats` SET `name` = {$this->escape($sCateg)}, `menu_order` = " . (++$iOrderCateg)))
                 return false;
 
             $iCategId = $this->lastId();
@@ -324,13 +324,23 @@ class BxWmapDb extends BxDolModuleDb
                 $sName = str_replace('{type}', $sType, $sName);
 
                 $bRes = $this->query("INSERT INTO `sys_options` SET
-                    `Name` = '" . $this->escape($sName) . "',
-                    `VALUE` = '" . $this->escape($aFields['defaults'][$sType]) . "',
-                    `kateg` = " . (int)$iCategId . ",
-                    `desc` = '" . $this->escape($aFields['title']) . "',
-                    `Type` = '" . $this->escape($aFields['type']) . "',
-                    `order_in_kateg` = " . (++$iOrderInCateg) . ",
-                    `AvailableValues` = '" . $this->escape($aFields['values']) . "'");
+                    `Name` = ?,
+                    `VALUE` = ?,
+                    `kateg` = ?,
+                    `desc` = ?,
+                    `Type` = ?,
+                    `order_in_kateg` = ?,
+                    `AvailableValues` = ?",
+                    [
+                        $sName,
+                        $aFields['defaults'][$sType],
+                        $iCategId,
+                        $aFields['title'],
+                        $aFields['type'],
+                        ++$iOrderInCateg,
+                        $aFields['values']
+                    ]
+                );
 
                 if (!$bRes)
                     return false;

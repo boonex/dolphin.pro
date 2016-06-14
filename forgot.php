@@ -144,10 +144,10 @@ function generateUserNewPwd($ID)
             `Password` = '" . encryptUserPwd($sPwd, $sSalt) . "',
             `Salt` = '$sSalt'
         WHERE
-            `ID`='$ID'
+            `ID`= ?
     ";
 
-    db_res($sQuery);
+    db_res($sQuery, [$ID]);
     createUserDataFile($ID);
 
     require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolAlerts.php');

@@ -30,8 +30,8 @@ bx_import('BxDolDb');
  */
 class BxDolPermalinks
 {
-    var $sCacheFile;
-    var $aLinks;
+    public $sCacheFile;
+    public $aLinks;
     protected $oDb;
 
     function __construct()
@@ -64,7 +64,7 @@ class BxDolPermalinks
             $aResult[$aLink['standard']] = array(
                 'permalink' => $aLink['permalink'],
                 'check'     => $aLink['check'],
-                'enabled'   => $this->getParam($aLink['check']) == 'on'
+                'enabled'   => $this->oDb->getParam($aLink['check']) == 'on'
             );
         }
 

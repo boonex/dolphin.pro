@@ -52,7 +52,7 @@ if(bx_get('action') !== false) {
         exit;
         case 'deactivate_item':
             $res = db_res( "UPDATE `sys_menu_top` SET `Active`=0 WHERE `ID`=" . (int)bx_get('id'));
-            echo db_affected_rows();
+            echo db_affected_rows($res);
             $oMenu -> compile();
         exit;
         case 'save_item':
@@ -101,8 +101,8 @@ if(bx_get('action') !== false) {
                 exit;
             }
 
-            db_res( "DELETE FROM `sys_menu_top` WHERE `ID` = $id" );
-            if( db_affected_rows() )
+            $res = db_res( "DELETE FROM `sys_menu_top` WHERE `ID` = $id" );
+            if( db_affected_rows($res) )
                 echo 'OK';
             else
                 echo _t('_adm_mbuilder_Could_not_delete_the_item');

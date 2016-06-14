@@ -352,7 +352,7 @@ EOF;
         return $aDBTopMenu;
     }
 
-    function getBottomMenu($sAllLinkType = 'browseAll', $iId = 0, $sUri = '')
+    function getBottomMenu($sAllLinkType = 'browseAll', $iId = 0, $sUri = '', $aExclude = array(), $bPgnSim = TRUE)
     {
          $aDBBottomMenu = array();
          if ($this->aCurrent['paginate']['totalPages'] > 1) {
@@ -400,7 +400,7 @@ EOF;
         return array();
     }
 
-    function showPagination($bAdmin = false)
+    function showPagination($bAdmin = false, $bChangePage = true, $bPageReload = true)
     {
         $aPgnParams = array(
             'page_url' => $this->aCurrent['paginate']['page_url'],

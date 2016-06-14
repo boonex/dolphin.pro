@@ -258,7 +258,7 @@ class BxDolAdminIpBlockList
     {
         $iTime = time();
         $r = db_res("DELETE FROM `sys_ip_list` WHERE `LastDT` <= $iTime");
-        if ($r && ($iAffectedRows = db_affected_rows())) {
+        if ($r && ($iAffectedRows = db_affected_rows($r))) {
             db_res("OPTIMIZE TABLE `sys_ip_list`");
             return $iAffectedRows;
         } else {

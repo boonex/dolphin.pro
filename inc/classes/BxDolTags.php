@@ -31,7 +31,7 @@ class BxDolTags
 
     function __construct()
     {
-        $this->oDb = new BxDolDb();
+        $this->oDb = BxDolDb::getInstance();
         $this->iViewer = getLoggedId();
 
         $this->sCacheFile = 'sys_objects_tag';

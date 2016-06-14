@@ -374,10 +374,9 @@ class BxDolProfileFields extends Thing
             $sAdd = "AND `ID` != $iProfileID";
         } else
             $sAdd = '';
-
-        $mValue_db = $GLOBALS['MySQL']->escape($mValue);
-        $sQuery = "SELECT COUNT(*) FROM `Profiles` WHERE `{$aItem['Name']}` = '$mValue_db' $sAdd";
-        if( (int)db_value( $sQuery ) )
+        
+        $sQuery = "SELECT COUNT(*) FROM `Profiles` WHERE `{$aItem['Name']}` = ? $sAdd";
+        if( (int)db_value( $sQuery, [$mValue] ) )
             return false;
 
         return true;

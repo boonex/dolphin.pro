@@ -16,7 +16,7 @@ $ID = (int)$bann_arr['ID'];
 $Url = $bann_arr['Url'];
 
 if ( $ID > 0 ) {
-    db_res("INSERT INTO `sys_banners_clicks` SET `ID` = $ID, `Date` = ".time().", `IP` = '". $_SERVER['REMOTE_ADDR']. "'", 0);
+    db_res("INSERT INTO `sys_banners_clicks` SET `ID` = ?, `Date` = ?, `IP` = ?", [$ID, time(), $_SERVER['REMOTE_ADDR']]);
 
     header ("HTTP/1.1 301 Moved Permanently");
     header ("Location: $Url");

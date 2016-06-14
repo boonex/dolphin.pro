@@ -52,7 +52,7 @@ class BxDolUpdater extends BxDolInstaller
             ));
 
         //--- Check hash ---//
-        $aFilesOrig = $MySQL->getAllWithKey("SELECT `file`, `hash` FROM `sys_modules_file_tracks` WHERE `module_id`='" . $aModuleInfo['id'] . "'", "file");
+        $aFilesOrig = $MySQL->getAllWithKey("SELECT `file`, `hash` FROM `sys_modules_file_tracks` WHERE `module_id`= ?", "file", [$aModuleInfo['id']]);
 
         $aFiles = array();
         $this->_hash($this->_sModulePath, $aFiles);

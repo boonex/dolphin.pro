@@ -385,7 +385,7 @@
                                   ($aP['FD']  & 0x001f),
                                   (($aP['FD'] & 0xfe00) >>  9) + 1980);
 
-                $this->Entries[] = &new SimpleUnzipEntry($aI);
+                $this->Entries[] = new SimpleUnzipEntry($aI);
             } // end for each entries
 
             return $this->Entries;

@@ -216,7 +216,7 @@
                 $this -> query($sQuery);
             }
 
-            $sAlertName = $this -> escape($this -> _oConfig -> getAlertSystemName());
+            $sAlertName = $this -> _oConfig -> getAlertSystemName();
 
             //--- Update System Alerts ---//
             $sQuery =
@@ -226,11 +226,11 @@
                 FROM
                     `sys_alerts_handlers`
                 WHERE
-                   `name`= '{$sAlertName}'
+                   `name`= ?
                 LIMIT 1
             ";
 
-            $iHandlerId = (int) $this -> getOne($sQuery);
+            $iHandlerId = (int) $this -> getOne($sQuery, [$sAlertName]);
 
             foreach($aData['alerts'] as $aAlert) {
                 $aAlert['unit']		= process_db_input($aAlert['unit'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
@@ -281,7 +281,7 @@
             }
 
             // define system alert name;
-            $sAlertName = $this -> escape($this -> _oConfig -> getAlertSystemName());
+            $sAlertName = $this -> _oConfig -> getAlertSystemName();
 
             //--- Update System Alerts ---//
             $sQuery =
@@ -291,11 +291,11 @@
                 FROM
                     `sys_alerts_handlers`
                 WHERE
-                   `name`= '{$sAlertName}'
+                   `name`= ?
                 LIMIT 1
             ";
 
-            $iHandlerId = (int) $this -> getOne($sQuery);
+            $iHandlerId = (int) $this -> getOne($sQuery, [$sAlertName]);
             foreach($aData['alerts'] as $aAlert) {
                 $aAlert['unit']		= process_db_input($aAlert['unit'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
                 $aAlert['action']	= process_db_input($aAlert['action'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);

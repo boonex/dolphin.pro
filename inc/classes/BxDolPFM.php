@@ -809,10 +809,8 @@ class BxDolPFM
         if( $sKey == '' )
             return '';
 
-        $sKey_db = $GLOBALS['MySQL']->escape( $sKey );
-
-        $sQuery = "SELECT `ID` FROM `sys_localization_keys` WHERE `Key` = '$sKey_db'";
-        $iKeyID = (int)db_value( $sQuery );
+        $sQuery = "SELECT `ID` FROM `sys_localization_keys` WHERE `Key` = ?";
+        $iKeyID = (int)db_value( $sQuery , [$sKey]);
 
         if( !$iKeyID )
             return '';
@@ -1130,7 +1128,7 @@ class BxDolPFM
             if( $aItem['Type'] == 'block' and $aUpdate['Name'] ) {
                 $sQuery = "
                     UPDATE `sys_page_compose` SET
-                        `Caption` = '_FieldCaption_" . $GLOBALS['MySQL']->escape( $sNewName ) . "_View'
+                        `Caption` = '_FieldCaption_" . $GLOBALS['MySQL']->escape( $sNewName, false ) . "_View'
                     WHERE
                         `Func` = 'PFBlock' AND
                         `Content` = '$iItemID'
@@ -1181,7 +1179,7 @@ class BxDolPFM
             if( is_null( $sValue ) )
                 $aUpdateStrs[] = "`$sKey` = NULL";
             else
-                $aUpdateStrs[] = "`$sKey` = '" . $GLOBALS['MySQL']->escape( $sValue ) . "'";
+                $aUpdateStrs[] = "`$sKey` = {$GLOBALS['MySQL']->escape( $sValue )}";
         }
 
         $sQuery = "
@@ -1211,7 +1209,7 @@ class BxDolPFM
                 $aAlter['Type'] .= '_linked';
 
             $sQuery = "ALTER TABLE `Profiles` CHANGE `{$aItem['Name']}` `{$aAlter['Name']}` {$this -> aTypesAlter[$aAlter['Type']]}";
-            $sReplacedVal = ($aAlter['Default'] != '') ? "default '" . $GLOBALS['MySQL']->escape( $aAlter['Default'] ) . "'" : "";
+            $sReplacedVal = ($aAlter['Default'] != '') ? "default '" . $GLOBALS['MySQL']->escape( $aAlter['Default'], false ) . "'" : "";
             $sQuery = str_replace( '{default}', $sReplacedVal, $sQuery );
 
             if( $aAlter['Type'] == 'select_one' or $aAlter['Type'] == 'select_set' ) { //insert values
@@ -1286,15 +1284,12 @@ class BxDolPFM
         if( $sKey == '' )
             return false;
 
-        $sKey_db    = $GLOBALS['MySQL']->escape( $sKey );
-        $sString_db = $GLOBALS['MySQL']->escape( $sString );
-
-        $sQuery = "SELECT `ID` FROM `sys_localization_keys` WHERE `Key` = '$sKey_db'";
-        $iKeyID = (int)db_value( $sQuery );
+        $sQuery = "SELECT `ID` FROM `sys_localization_keys` WHERE `Key` = ?";
+        $iKeyID = (int)db_value( $sQuery, [$sKey]);
 
         if( !$iKeyID ) { //create key
-            $sQuery = "INSERT INTO `sys_localization_keys` (`IDCategory`,`Key`) VALUES (32,'$sKey_db')";
-            db_res( $sQuery );
+            $sQuery = "INSERT INTO `sys_localization_keys` (`IDCategory`,`Key`) VALUES (?, ?)";
+            db_res( $sQuery, [32, $sKey]);
             $iKeyID = db_last_id();
         }
 
@@ -1307,13 +1302,13 @@ class BxDolPFM
         if( $iCount ) {
             $sQuery = "
                 UPDATE `sys_localization_strings`
-                SET `String` = '$sString_db'
-                WHERE `IDKey` = $iKeyID AND `IDLanguage` = {$this -> sLangID}";
+                SET `String` = ?
+                WHERE `IDKey` = ? AND `IDLanguage` = ?";
 
-            db_res( $sQuery );
+            db_res( $sQuery, [$sString, $iKeyID, $this->sLangID] );
         } else {
-            $sQuery = "INSERT INTO `sys_localization_strings` VALUES ( $iKeyID, {$this -> sLangID}, '$sString_db' )";
-            db_res( $sQuery );
+            $sQuery = "INSERT INTO `sys_localization_strings` VALUES ( ?, ?, ? )";
+            db_res( $sQuery, [$iKeyID, $this->sLangID, $sString]);
         }
 
         compileLanguage( $this -> sLangID );

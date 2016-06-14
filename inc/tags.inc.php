@@ -36,11 +36,11 @@ function explodeTags( $text )
 function storeTags( $iID, $sTags, $sType )
 {
     $aTags = explodeTags( $sTags );
-    db_res( "DELETE FROM `sys_tags` WHERE `ID` = $iID AND `Type` = '$sType'" ); //re-store if exist
+    db_res( "DELETE FROM `sys_tags` WHERE `ID` = ? AND `Type` = ?", [$iID, $sType]); //re-store if exist
 
     foreach( $aTags as $sTag ) {
         $sTag = addslashes( $sTag );
-        db_res( "INSERT INTO `sys_tags` VALUES ( '$sTag', $iID, '$sType', CURRENT_TIMESTAMP )", 0 );
+        db_res( "INSERT INTO `sys_tags` VALUES ( ?, ?, ?, CURRENT_TIMESTAMP )", [$sTag, $iID, $sType]);
     }
 }
 

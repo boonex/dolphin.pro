@@ -171,8 +171,8 @@ class BxDolPageViewAdmin
         $sUri = uriGenerate(process_db_input($_REQUEST['uri']), $this -> sDBTable . '_pages', 'Name');
         $sTitle = process_db_input($_REQUEST['title']);
 
-        db_res("INSERT INTO `{$this -> sDBTable}_pages` (`Name`, `Title`, `Order`, `System`) SELECT '{$sUri}', '$sTitle', MAX(`Order`) + 1, '0' FROM `{$this -> sDBTable}_pages` LIMIT 1");
-        if(!db_affected_rows()) 
+        $res = db_res("INSERT INTO `{$this -> sDBTable}_pages` (`Name`, `Title`, `Order`, `System`) SELECT '{$sUri}', '$sTitle', MAX(`Order`) + 1, '0' FROM `{$this -> sDBTable}_pages` LIMIT 1");
+        if(!db_affected_rows($res))
         	return array('code' => '1', 'message' => 'Failed database insert');
 
         $iPageId = db_last_id();

@@ -144,7 +144,7 @@
                         IF(`{$sTableName}`.`ID` = {$this -> aCommunicatorSettings['member_id']},
                             `{$sTableName}`.`Profile`, `{$sTableName}`.`ID`) AS `iMemberID`,
 
-                        IF(`{$sTableName}`.`ID` = {$this -> aCommunicatorSettings['member_id']}, '{$sRequestFrom}', '{$sRequestTo}')
+                        IF(`{$sTableName}`.`ID` = {$this -> aCommunicatorSettings['member_id']}, $sRequestFrom, $sRequestTo)
                             AS `sType`,
 
                         DATE_FORMAT(`{$sTableName}`.`When`, '" . getLocaleFormat(BX_DOL_LOCALE_DATE, BX_DOL_LOCALE_DB) . "') AS `sDate`
@@ -248,13 +248,13 @@
                         )
                 ";
 
-                db_res($sQuery);
+                $res = db_res($sQuery);
             } else {
                 $sQuery = "DELETE FROM `{$sTableName}` WHERE `ID` = {$iID} AND `Profile` = {$iProfile}";
-                db_res($sQuery);
+                $res = db_res($sQuery);
             }
 
-            $iRet = db_affected_rows();
+            $iRet = db_affected_rows($res);
 
             switch ($sTableName) {
             case 'sys_friend_list':
@@ -283,7 +283,7 @@
          */
         function _addRequest( $sTableName, $iMemberID )
         {
-             $sTableName = process_db_input($sTableName);
+            $sTableName = process_db_input($sTableName);
             $iMemberID = (int) $iMemberID;
 
             $sQuery =
@@ -298,6 +298,7 @@
                     `Profile` = {$iMemberID}
            ";
 
+            $res = null;
            // if pair non-existent ;
            if ( !db_value($sQuery) ) {
                $sQuery =
@@ -308,10 +309,11 @@
                         `ID` = {$this -> aCommunicatorSettings['member_id']},
                         `Profile` = {$iMemberID}
                ";
-               db_res($sQuery);
+
+               $res = db_res($sQuery);
            }
 
-           return db_affected_rows();
+           return db_affected_rows($res);
         }
 
         /**

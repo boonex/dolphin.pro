@@ -76,7 +76,7 @@ class BxDolCronCmd extends BxDolCron
         if ( $db_clean_vkiss > 0 ) {
             $res = db_res("DELETE FROM `sys_greetings` WHERE `When` < NOW() - INTERVAL $db_clean_vkiss DAY");
             if ( $res ) {
-                $db_clean_vkiss_num = db_affected_rows();
+                $db_clean_vkiss_num = db_affected_rows($res);
                 db_res("OPTIMIZE TABLE `sys_greetings`");
             }
         }
@@ -84,7 +84,7 @@ class BxDolCronCmd extends BxDolCron
         if ( $db_clean_msg > 0 ) {
             $res = db_res("DELETE FROM `sys_messages` WHERE `Date` < NOW() - INTERVAL $db_clean_msg DAY");
             if ( $res ) {
-                $db_clean_msg_num = db_affected_rows();
+                $db_clean_msg_num = db_affected_rows($res);
                 db_res("OPTIMIZE TABLE `sys_messages`");
             }
         }

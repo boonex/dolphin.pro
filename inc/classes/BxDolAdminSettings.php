@@ -72,7 +72,7 @@ class BxDolAdminSettings
         if (is_int($mixed))
             $this->_iCategoryActive = $mixed;
         else
-            $this->_iCategoryActive = (int)$this->_oDb->getOne("SELECT `ID` FROM `sys_options_cats` WHERE `name`='" . $this->_oDb->escape($mixed) . "'");
+            $this->_iCategoryActive = (int)$this->_oDb->getOne("SELECT `ID` FROM `sys_options_cats` WHERE `name`= ?", [$mixed]);
     }
     function saveChanges(&$aData)
     {
@@ -266,7 +266,7 @@ class BxDolAdminSettings
                 if(substr($aItem['extra'], 0, 4) == 'PHP:')
                     $aField['values'] = eval(substr($aItem['extra'], 4));
                 else
-                    foreach(split(',', $aItem['extra']) as $sValue)
+                    foreach(explode(',', $aItem['extra']) as $sValue)
                         $aField['values'][$sValue] = $sValue;
                 break;
 
@@ -303,7 +303,7 @@ class BxDolAdminSettings
                 if(substr($aItem['extra'], 0, 4) == 'PHP:')
                     $aField['values'] = eval(substr($aItem['extra'], 4));
                 else
-                    foreach(split(',', $aItem['extra']) as $sValue)
+                    foreach(explode(',', $aItem['extra']) as $sValue)
                         $aField['values'][$sValue] = $sValue;
                 break;
 

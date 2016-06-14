@@ -247,9 +247,9 @@ class BxDolProfilesController
         $sSet = $this -> collectSetString( $aData );
         $sQuery = "UPDATE `Profiles` SET {$sSet} WHERE `ID` = " . (int)$iMemberID;
         //echo $sQuery ;
-        db_res($sQuery);
+        $res = db_res($sQuery);
         $this -> createProfileCache( $iMemberID );
-        return (bool)db_affected_rows();
+        return (bool)db_affected_rows($res);
     }
 
     /**
@@ -307,13 +307,13 @@ class BxDolProfilesController
 
         foreach( $aData as $sField => $mValue ) {
             if( is_string($mValue) )
-                $sValue = "'" . $GLOBALS['MySQL']->escape($mValue) . "'";
+                $sValue = "{$GLOBALS['MySQL']->escape($mValue)}";
             elseif( is_bool($mValue) )
                 $sValue = (int)$mValue;
             elseif( is_array($mValue) ) {
                 $sValue = '';
                 foreach( $mValue as $sStr )
-                    $sValue .= $GLOBALS['MySQL']->escape(str_replace( ',', '', $sStr )) . ',';
+                    $sValue .= $GLOBALS['MySQL']->escape(str_replace( ',', '', $sStr ), false) . ',';
 
                 $sValue = "'" . substr($sValue,0,-1) . "'";
             } elseif( is_int($mValue) ) {
@@ -352,7 +352,7 @@ class BxDolProfilesController
 
         $sNewValue = $sValue . $sRand;
 
-        $iCount = (int)db_value( "SELECT COUNT(*) FROM `Profiles` WHERE `$sFieldName` = '" . $GLOBALS['MySQL']->escape($sNewValue) . "'" );
+        $iCount = (int)db_value( "SELECT COUNT(*) FROM `Profiles` WHERE `$sFieldName` = {$GLOBALS['MySQL']->escape($sNewValue)}" );
         if( $iCount )
             return genUniqueValue( $sFieldName, $sValue, true );
         else

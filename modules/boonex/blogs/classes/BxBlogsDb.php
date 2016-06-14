@@ -383,7 +383,7 @@ class BxBlogsDb extends BxDolDb
     {
         $sStatus = $this -> escape($sStatus);
         $sExtra = $sStatus
-            ? " AND `{$this->_oConfig->sSQLPostsTable}`.`PostStatus` = '{$sStatus}'"
+            ? " AND `{$this->_oConfig->sSQLPostsTable}`.`PostStatus` = $sStatus"
             : '';
 
         return $this->getAll ("

@@ -202,8 +202,6 @@ class BxPageACModule extends BxDolModule
         $sRule = trim($sRule);
         if (empty($sRule)) return '';
 
-        if(get_magic_quotes_gpc()) $sRule = stripslashes($sRule); //remove slashes to work with an URL pattern as is
-
         $sBaseURL = basename(BX_DOL_URL_ROOT);
 
         if (strpos($sRule, BX_DOL_URL_ROOT) === 0) $sRule = substr($sRule, strlen(BX_DOL_URL_ROOT)); //if URL starts from http://www.site.com
@@ -219,7 +217,6 @@ class BxPageACModule extends BxDolModule
             $sRule = addcslashes($sRule, '|\\{}[]()#:^$.?+*'); //   |\{}[]()#:^$.?+* - special regex characters
             if (!empty($sRule)) $sRule .= '.*';
         }
-        if(get_magic_quotes_gpc()) $sRule = addslashes($sRule); //add slashes back if necessary because later process_db_input will be called.
 
         return $sRule;
     }

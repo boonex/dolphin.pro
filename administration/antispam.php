@@ -381,7 +381,7 @@ function PageCodeDNSBL($aChains, $sMode)
         'adm-dnsbl-deactivate' => _t('_sys_adm_btn_dnsbl_deactivate'),
     ), 'rules');
 
-    $sPlaceholders = str_repeat('?', count($aChains));
+    $sPlaceholders = implode(',', array_fill(0, count($aChains), '?'));
     $aRules = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_dnsbl_rules` WHERE `chain` IN($sPlaceholders) ORDER BY `chain`, `added` ", $aChains);
     foreach ($aRules as $k => $r) {
         $aRules[$k]['comment'] = bx_html_attribute ($r['comment']);
@@ -476,7 +476,7 @@ function PageCodeStopForumSpam($sMode)
 
 function PageCodeRecheckPopup ($aChains, $sFieldTitle, $sId, $sAction)
 {
-    $sPlaceholders = str_repeat('?', count($aChains));
+    $sPlaceholders = implode(',', array_fill(0, count($aChains), '?'));
     $aRules = $GLOBALS['MySQL']->getAll("SELECT * FROM `sys_dnsbl_rules` WHERE `chain` IN($sPlaceholders) AND `active` = 1 ORDER BY `chain`, `added` ", $aChains);
     $oForm = new BxDolAdmFormDnsblRecheck($sFieldTitle, $sId);
     return $GLOBALS['oAdmTemplate']->parseHtmlByName('antispam_dnsbl_recheck.html', array(

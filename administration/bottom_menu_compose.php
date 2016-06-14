@@ -48,7 +48,7 @@ if(bx_get('action') !== false) {
             break;
         case 'deactivate_item':
             $res = db_res( "UPDATE `" . $oMenu->sDbTable . "` SET `Active`='0' WHERE `ID`=" . (int)bx_get('id') );
-            $sResponce =  db_affected_rows();
+            $sResponce =  db_affected_rows($res);
             break;
         case 'save_item':
             $id = (int)$_POST['id'];
@@ -93,8 +93,8 @@ if(bx_get('action') !== false) {
                 } else if( !(int)$aItem['Deletable'] ) {
                     $sResponce = 'Item is non-deletable';
                 } else {
-                    db_res( "DELETE FROM `" . $oMenu->sDbTable . "` WHERE `ID` = $id" );
-                    $sResponce = ( db_affected_rows() ) ? 'OK' : 'Couldn\'t delete the item';
+                    $res = db_res( "DELETE FROM `" . $oMenu->sDbTable . "` WHERE `ID` = $id" );
+                    $sResponce = ( db_affected_rows($res) ) ? 'OK' : 'Couldn\'t delete the item';
                 }
             }
             break;

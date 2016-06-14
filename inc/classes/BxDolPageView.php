@@ -591,7 +591,7 @@ class BxDolPageView
             if($bActive)
             	$sActive = $sTitle;
 
-            $isTextIcon = false === strpos($aLink['icon'], '.');
+            $isTextIcon = (isset($aLink['icon']) && (false === strpos($aLink['icon'], '.')));
 
             if (isset($aLink['icon']) && !$isTextIcon)
                 $aLink['class'] = isset($aLink['class']) ? $aLink['class'] . ' with_icon' : 'with_icon';

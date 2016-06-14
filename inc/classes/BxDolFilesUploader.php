@@ -164,7 +164,7 @@ class BxDolFilesUploader extends BxDolTemplate
                 $sForm = $this->{$aUplMethods[$sMode]}($this->_aExtras);
             }
         } else {
-            $sForm = $this->$aUplMethods[$aUploaders[0]]($this->_aExtras);
+            $sForm = $this->{$aUplMethods[$aUploaders[0]]}($this->_aExtras);
         }
         ob_start();
         ?>

@@ -23,7 +23,7 @@ class BxDolMemberInfoQuery extends BxDolDb
 
     static public function getMemberInfoObject($sObject)
     {
-        $oDb     = $GLOBALS['MySQL'];
+        $oDb     = BxDolDb::getInstance();
         $sQuery  = "SELECT * FROM `sys_objects_member_info` WHERE `object` = ?";
         $aObject = $oDb->getRow($sQuery, [$sObject]);
         if (!$aObject || !is_array($aObject)) {
@@ -35,9 +35,9 @@ class BxDolMemberInfoQuery extends BxDolDb
 
     static public function getMemberInfoKeysByType($sType)
     {
-        $oDb      = $GLOBALS['MySQL'];
-        $sQuery   = "SELECT * FROM `sys_objects_member_info` WHERE `type` = '" . $oDb->escape($sType) . "' ORDER BY `title` ASC";
-        $aObjects = $oDb->getPairs($sQuery, 'object', 'title');
+        $oDb      = BxDolDb::getInstance();
+        $sQuery   = "SELECT * FROM `sys_objects_member_info` WHERE `type` = ? ORDER BY `title` ASC";
+        $aObjects = $oDb->getPairs($sQuery, 'object', 'title', [$sType]);
         if (!$aObjects || !is_array($aObjects)) {
             return false;
         }

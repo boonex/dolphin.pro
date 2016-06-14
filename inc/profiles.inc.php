@@ -504,8 +504,8 @@ function isLoggedBanned($iCurUserID = 0)
             FROM `sys_admin_ban_list`
             WHERE `ProfID`='{$iCCurUserID}'
         ";
-        db_res($CheckSQL);
-        if (db_affected_rows()>0) {
+        $res = db_res($CheckSQL);
+        if (db_affected_rows($res)>0) {
             return true;
         }
     }

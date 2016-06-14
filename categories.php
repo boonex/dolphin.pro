@@ -79,7 +79,7 @@ class CategoriesCalendar extends BxTemplCalendar
 
     function getData()
     {
-        $oDb = new BxDolDb();
+        $oDb = BxDolDb::getInstance();
 
         return $oDb->getAll("SELECT *, DAYOFMONTH(`Date`) AS `Day`
             FROM `sys_categories`

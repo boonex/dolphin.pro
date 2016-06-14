@@ -581,9 +581,9 @@ function createLanguage(&$aData)
 
     foreach($aStrings as $aString){
         $aString['String'] = addslashes($aString['String']);
-        $MySQL->query("INSERT INTO `sys_localization_strings`(`IDKey`, `IDLanguage`, `String`) VALUES ('{$aString['IDKey']}', $iId, '{$aString['String']}')");
+        $count = $MySQL->query("INSERT INTO `sys_localization_strings`(`IDKey`, `IDLanguage`, `String`) VALUES ('{$aString['IDKey']}', $iId, '{$aString['String']}')");
 
-        if( !db_affected_rows() )
+        if( !$count )
             return '_adm_txt_langs_cannot_add_string';
     }
 
@@ -607,7 +607,15 @@ function importLanguage(&$aData, &$aFiles)
     if (_checkLangUnique($aLangInfo['Name']) === true)
         return '_adm_txt_langs_cannot_create';
 
-    $mixedResult = $MySQL->query("INSERT INTO `sys_localization_languages` (`Name`, `Flag`, `Title`, `Direction`, `LanguageCountry`) VALUES ('" . process_db_input($aLangInfo['Name']) . "', '" . process_db_input($aLangInfo['Flag']) . "', '" . process_db_input($aLangInfo['Title']) . "', '" . process_db_input($aLangInfo['Direction']) . "', '" . process_db_input($aLangInfo['LanguageCountry']) . "')");
+    $mixedResult = $MySQL->query("INSERT INTO `sys_localization_languages` (`Name`, `Flag`, `Title`, `Direction`, `LanguageCountry`) 
+                                  VALUES (?, ?, ?, ?, ?)", [
+            $aLangInfo['Name'],
+            $aLangInfo['Flag'],
+            $aLangInfo['Title'],
+            $aLangInfo['Direction'],
+            $aLangInfo['LanguageCountry']
+        ]
+    );
     if($mixedResult === false) {
         @unlink($sTmpPath);
         return '_adm_txt_langs_cannot_create';
