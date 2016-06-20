@@ -2363,7 +2363,7 @@ EOF;
             'sCountryOptions' => $sCountryOptions,
             'sCateg' => $sCateg,
             'sSubCateg' => $sSubCateg,
-            'sKeywordsStr' => $sKeywordsStr,
+            'sKeywordsStr' => bx_html_attribute($sKeywordsStr),
         );
         $sContent = $this->_oTemplate->parseHtmlByTemplateName('filter_form', $aVariables);
 
