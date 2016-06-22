@@ -70,6 +70,12 @@ class BxDolInstallerUi extends BxDolDb
                     'type' => 'block_header',
                     'caption' => _t('_adm_txt_modules_ftp_access'),
                 ),
+                'host' => array(
+                    'type' => 'text',
+                    'name' => 'host',
+                    'caption' => _t('_adm_txt_modules_host'),
+                    'value' => getParam('sys_ftp_login')
+                ),
                 'login' => array(
                     'type' => 'text',
                     'name' => 'login',
@@ -293,10 +299,12 @@ class BxDolInstallerUi extends BxDolDb
     //--- Actions ---//
     function actionUpload($sType, $aFile, $aFtpInfo)
     {
+    	$sHost = htmlspecialchars_adv(clear_xss($aFtpInfo['host']));
         $sLogin = htmlspecialchars_adv(clear_xss($aFtpInfo['login']));
         $sPassword = htmlspecialchars_adv(clear_xss($aFtpInfo['password']));
         $sPath = htmlspecialchars_adv(clear_xss($aFtpInfo['path']));
 
+        setParam('sys_ftp_host', $sHost);
         setParam('sys_ftp_login', $sLogin);
         setParam('sys_ftp_password', $sPassword);
         setParam('sys_ftp_dir', $sPath);
@@ -334,7 +342,7 @@ class BxDolInstallerUi extends BxDolDb
 
             if (!$sErrMsg && $sPackageRootFolder) {
 
-                $oFtp = new BxDolFtp($_SERVER['HTTP_HOST'], $sLogin, $sPassword, $sPath);
+                $oFtp = new BxDolFtp(!empty($sHost) ? $sHost : $_SERVER['HTTP_HOST'], $sLogin, $sPassword, $sPath);
 
                 if (!$oFtp->connect())
                     $sErrMsg = '_adm_txt_modules_cannot_connect_to_ftp';
@@ -389,7 +397,11 @@ class BxDolInstallerUi extends BxDolDb
     }
     function actionDelete($aDirectories, $sType = 'module')
     {
-        $oFtp = new BxDolFtp($_SERVER['HTTP_HOST'], getParam('sys_ftp_login'), getParam('sys_ftp_password'), getParam('sys_ftp_dir'));
+    	$sFtpHost = getParam('sys_ftp_host');
+		if(empty($sFtpHost))
+			$sFtpHost = $_SERVER['HTTP_HOST'];
+
+        $oFtp = new BxDolFtp($sFtpHost, getParam('sys_ftp_login'), getParam('sys_ftp_password'), getParam('sys_ftp_dir'));
         if (!$oFtp->connect())
             return '_adm_txt_modules_cannot_connect_to_ftp';
 
@@ -444,6 +456,7 @@ class BxDolInstallerUi extends BxDolDb
 		$oZip->close();
 
 		//--- Move unarchived package.
+		$sHost = getParam('sys_ftp_host');
 		$sLogin = getParam('sys_ftp_login');
 		$sPassword = getParam('sys_ftp_password');
 		$sPath = getParam('sys_ftp_dir');
@@ -451,7 +464,7 @@ class BxDolInstallerUi extends BxDolDb
 			return _t('_adm_txt_modules_no_ftp_info');
 
 		bx_import('BxDolFtp');
-		$oFtp = new BxDolFtp($_SERVER['HTTP_HOST'], $sLogin, $sPassword, $sPath);
+		$oFtp = new BxDolFtp(!empty($sHost) ? $sHost : $_SERVER['HTTP_HOST'], $sLogin, $sPassword, $sPath);
 
 		if(!$oFtp->connect())
         	return _t('_adm_txt_modules_cannot_connect_to_ftp');
