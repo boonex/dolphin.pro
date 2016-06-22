@@ -118,7 +118,7 @@ switch ($sAction) {
         break;
 
     case 'RzSetBlocked':
-        $sUser = isset($_REQUEST['user']) ? $_REQUEST['user'] : "";
+        $sUser = isset($_REQUEST['user']) ? process_db_input($_REQUEST['user']) : "";
         $bBlocked = isset($_REQUEST['blocked']) ? $_REQUEST['blocked'] == TRUE_VAL : false;
         blockUser($sId, $sUser, $bBlocked);
         break;
@@ -135,8 +135,8 @@ switch ($sAction) {
         break;
 
     case 'RayzSetMembershipSetting':
-        $sKey = isset($_REQUEST['key']) ? $_REQUEST['key'] : "";
-        $sValue = isset($_REQUEST['value']) ? $_REQUEST['value'] : "";
+        $sKey = isset($_REQUEST['key']) ? process_db_input($_REQUEST['key']) : "";
+        $sValue = isset($_REQUEST['value']) ? process_db_input($_REQUEST['value']) : "";
         $aKeys = getArray("SELECT `keys`.`ID` AS `KeyID`, `values`.`ID` AS `ValueID` FROM `" . MODULE_DB_PREFIX . "MembershipsSettings` AS `keys` LEFT JOIN `" . MODULE_DB_PREFIX . "Memberships` AS `values` ON `keys`.`ID`=`values`.`Setting` AND `values`.`Membership`='" . $sId . "' WHERE `keys`.`Name`='" . $sKey . "' LIMIT 1");
         if(empty($aKeys['KeyID'])) {
             $sContents = parseXml($aXmlTemplates['result'], "Error saving setting.", FAILED_VAL);
@@ -164,8 +164,8 @@ switch ($sAction) {
         getResult("INSERT INTO `" . MODULE_DB_PREFIX . "Profiles` SET `ID`='" . $sId . "', `Type`='" . CHAT_TYPE_FULL . "', `Smileset`='" . $sDefSmileset . "'");
 
         $iCurrentTime = time();
-        $sSex = isset($_REQUEST['sex']) ? $_REQUEST['sex'] : "M";
-        $sAge = isset($_REQUEST['age']) ? $_REQUEST['age'] : "25";
+        $sSex = isset($_REQUEST['sex']) ? process_db_input($_REQUEST['sex']) : "M";
+        $sAge = isset($_REQUEST['age']) ? process_db_input($_REQUEST['age']) : "25";
         $sPhoto = $sSex == "F" ? $sWomanImageUrl : $sManImageUrl;
         getResult("REPLACE `" . MODULE_DB_PREFIX . "CurrentUsers` SET `ID`='" . $sId . "', `Nick`='" . $sNick . "', `Sex`='" . $sSex . "', `Age`='" . $sAge . "', `Desc`='" . $sDesc . "', `Photo`='" . $sPhoto . "', `Profile`='" . $sProfileUrl . "', `Start`='" . $iCurrentTime . "', `When`='" . $iCurrentTime . "', `Status`='" . USER_STATUS_NEW . "'");
         getResult("DELETE FROM `" . MODULE_DB_PREFIX . "RoomsUsers` WHERE `User`='" . $sId . "'");
