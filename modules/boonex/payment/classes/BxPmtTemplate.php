@@ -379,16 +379,15 @@ class BxPmtTemplate extends BxDolModuleTemplate
             $sControlPanel = BxTemplSearchResult::showAdminActionsPanel('items_from_' . $aVendor['vendor_id'], $aButtons, 'items', true, true);
 
             //--- Get General ---//
-            $sTxtShoppingCart = _t($this->_sLangsPrefix . 'txt_shopping_cart');
-
             $aVendors[] = array(
                 'vendor_id' => $aVendor['vendor_id'],
                 'bx_if:show_link' => array(
                     'condition' => !empty($aVendor['vendor_profile_url']),
                     'content' => array(
-            			'txt_shopping_cart' => $sTxtShoppingCart,
-                        'vendor_username' => $aVendor['vendor_profile_name'],
-                        'vendor_url' => $aVendor['vendor_profile_url'],
+            			'txt_shopping_cart' => _t($this->_sLangsPrefix . 'txt_shopping_cart', $this->parseHtmlByName('vendor_link.html', array(
+            				'vendor_username' => $aVendor['vendor_profile_name'],
+                        	'vendor_url' => $aVendor['vendor_profile_url'],	
+            			))),
                         'vendor_currency_code' => $aVendor['vendor_currency_code'],
                         'items_count' => $aVendor['items_count'],
                         'items_price' => $aVendor['items_price']
@@ -397,8 +396,7 @@ class BxPmtTemplate extends BxDolModuleTemplate
                 'bx_if:show_text' => array(
                     'condition' => empty($aVendor['vendor_profile_url']),
                     'content' => array(
-                		'txt_shopping_cart' => $sTxtShoppingCart,
-                        'vendor_username' => $aVendor['vendor_profile_name'],
+                		'txt_shopping_cart' => _t($this->_sLangsPrefix . 'txt_shopping_cart', $aVendor['vendor_profile_name']),
                         'vendor_currency_code' => $aVendor['vendor_currency_code'],
                         'items_count' => $aVendor['items_count'],
                         'items_price' => $aVendor['items_price']
