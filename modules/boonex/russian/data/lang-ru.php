@@ -1480,6 +1480,7 @@ $LANG= array(
   '_adm_txt_modules_ftp_access' => 'FTP доступ',
   '_adm_txt_modules_ftp_copy_failed' => 'FTP-передача прервана, проверьте разрешения на запись для этого FTP-пользователя',
   '_adm_txt_modules_has_dependents' => 'Невозможно удалить. Этот модуль имеет следующие зависимые модули. Вы должны сначала удалить их.',
+  '_adm_txt_modules_host' => 'Хост',
   '_adm_txt_modules_login' => 'Логин',
   '_adm_txt_modules_module' => 'Модуль',
   '_adm_txt_modules_module_config_not_found' => 'Файл конфигурации модуля не найден',

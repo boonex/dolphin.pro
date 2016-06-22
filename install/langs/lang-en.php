@@ -1484,6 +1484,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_txt_modules_ftp_access' => 'FTP access',
   '_adm_txt_modules_ftp_copy_failed' => 'FTP transfer failed, please check write permission for this FTP user',
   '_adm_txt_modules_has_dependents' => 'Failed to uninstall. The module has the following dependent modules. You need to uninstall them first.',
+  '_adm_txt_modules_host' => 'Host',
   '_adm_txt_modules_login' => 'Login',
   '_adm_txt_modules_module' => 'Module',
   '_adm_txt_modules_module_config_not_found' => 'Module\'s config file was not found',

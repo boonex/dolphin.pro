@@ -85,7 +85,11 @@ class BxDolUpdater extends BxDolInstaller
         if(!file_exists($sPath))
             return BX_DOL_INSTALLER_FAILED;
 
-        $oFtp = new BxDolFtp($_SERVER['HTTP_HOST'], getParam('sys_ftp_login'), getParam('sys_ftp_password'), getParam('sys_ftp_dir'));
+		$sFtpHost = getParam('sys_ftp_host');
+		if(empty($sFtpHost))
+			$sFtpHost = $_SERVER['HTTP_HOST'];
+
+        $oFtp = new BxDolFtp($sFtpHost, getParam('sys_ftp_login'), getParam('sys_ftp_password'), getParam('sys_ftp_dir'));
         if($oFtp->connect() == false)
             return BX_DOL_INSTALLER_FAILED;
 

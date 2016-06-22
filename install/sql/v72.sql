@@ -1069,9 +1069,10 @@ INSERT INTO `sys_options` VALUES
 -- CAT: General
 SET @iCatGeneral = 3;
 INSERT INTO `sys_options` VALUES
-('sys_ftp_login', '', @iCatGeneral, 'FTP server login', 'digit', '', '', 1, ''),
-('sys_ftp_password', '', @iCatGeneral, 'FTP server password', 'digit', '', '', 2, ''),
-('sys_ftp_dir', '', @iCatGeneral, 'Path to Dolphin on FTP server', 'digit', '', '', 3, ''),
+('sys_ftp_host', '', @iCatGeneral, 'FTP host', 'digit', '', '', 1, ''),
+('sys_ftp_login', '', @iCatGeneral, 'FTP login', 'digit', '', '', 2, ''),
+('sys_ftp_password', '', @iCatGeneral, 'FTP password', 'digit', '', '', 3, ''),
+('sys_ftp_dir', '', @iCatGeneral, 'Path to Dolphin on FTP server', 'digit', '', '', 4, ''),
 
 ('MetaDescription', '', @iCatGeneral, 'Homepage meta-description', 'text', '', '', 10, ''),
 ('MetaKeyWords', '', @iCatGeneral, 'Homepage meta-keywords', 'text', '', '', 20, ''),
