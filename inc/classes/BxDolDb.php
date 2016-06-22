@@ -131,6 +131,11 @@ class BxDolDb
         $this->link->query('SET time_zone = "' . $oDate->format('P') . '"');
     }
 
+    public function getLink()
+    {
+    	return $this->link;
+    }
+
     /**
      * execute any query
      *
