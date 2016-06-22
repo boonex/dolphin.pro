@@ -430,7 +430,7 @@ class BxBaseCmtsView extends BxDolCmts
         if (!$a['cmt_author_id'] || !getProfileInfo($a['cmt_author_id'])) {
             if (!@include_once (BX_DIRECTORY_PATH_MODULES . 'boonex/avatar/include.php'))
                 return '';
-            return '<div class="thumbnail_block" style="float:none;width:'.(BX_AVA_ICON_W+8).'px;height:'.(BX_AVA_ICON_H+8).'px;"><div class="thumbnail_image" style="width:'.(BX_AVA_ICON_W+4).'px;height:'.(BX_AVA_ICON_H+4).'px;"><img src="' . $oFunctions->getSexPic('', 'small') . '" /></div></div>';
+            return '<div class="thumbnail_block thumbnail_block_icon" style="float:none;"><div class="thumbnail_image"><img class="thumbnail_image_file bx-def-thumbnail bx-def-shadow bx-img-retina" src="' . $oFunctions->getSexPic('', 'small') . '" /></div></div>';
         } else {
             return $oFunctions->getMemberIcon($a['cmt_author_id']);
         }

@@ -744,7 +744,7 @@ class BxSitesModule extends BxDolTwigModule
     {
         $iId = (int)$aEvent['object_id'];
         $iOwner = (int)$aEvent['owner_id'];
-        $sOwner = getNickName($iOwner);
+        $sOwner = $iOwner != 0 ? getNickName($iOwner) : _t('_Anonymous');
 
         $aContent = unserialize($aEvent['content']);
         if(empty($aContent) || empty($aContent['object_id']))
