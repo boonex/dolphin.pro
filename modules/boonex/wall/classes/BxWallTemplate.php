@@ -81,7 +81,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 				$sResult = $this->parseHtmlByTemplateName('balloon', array(
 		        	'post_type' => $aEvent['type'],
 		            'post_id' => $aEvent['id'],
-		            'post_owner_icon' => get_member_thumbnail($aEvent['owner_id'], 'none'),
+		            'post_owner_icon' => $this->getOwnerThumbnail((int)$aEvent['owner_id']),
 		        	'post_content' => $aResult['content'],
 		            'comments_content' => $sComments
 		        ));
@@ -109,7 +109,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 
 				$sResult = $this->parseHtmlByContent($aResult['content'], array(
 		            'post_id' => $aEvent['id'],
-		            'post_owner_icon' => get_member_icon($aEvent['owner_id'], 'none'),
+		            'post_owner_icon' => $this->getOwnerIcon((int)$aEvent['owner_id']),
 					'post_vote' => $sVote,
 					'post_repost' => $sRepost
 		        ));
@@ -151,7 +151,7 @@ class BxWallTemplate extends BxDolModuleTemplate
         return $this->parseHtmlByTemplateName('balloon', array(
             'post_type' => bx_ltrim_str($aEvent['type'], $sPrefix, ''),
             'post_id' => $aEvent['id'],
-            'post_owner_icon' => get_member_thumbnail((int)$aEvent['object_id'], 'none'),
+            'post_owner_icon' => $this->getOwnerThumbnail((int)$aEvent['object_id']),
             'post_content' => $aResult['content'],
         	'comments_content' => $aResult['comments']
         ));
@@ -602,6 +602,29 @@ class BxWallTemplate extends BxDolModuleTemplate
                 'post_id' => $aEvent['id']
             ))
         );
+    }
+
+    function getOwnerThumbnail($iOwnerId)
+    {
+    	return $this->getOwnerImage('thumbnail', $iOwnerId);
+    }
+
+    function getOwnerIcon($iOwnerId)
+    {
+    	return $this->getOwnerImage('icon', $iOwnerId);
+    }
+
+    protected function getOwnerImage($sType, $iOwnerId)
+    {
+    	$sFunction = 'get_member_' . $sType;
+    	if($iOwnerId != 0 && function_exists($sFunction))
+    		return $sFunction($iOwnerId, 'none');
+
+		$aType2Icon = array('icon' => 'small', 'thumbnail' => 'medium');
+    	return $this->parseHtmlByName('owner_image.html', array(
+    		'class' => 'thumbnail_block_' . $sType,
+    		'src' => $GLOBALS['oFunctions']->getSexPic('', $aType2Icon[$sType])
+    	));
     }
 
     function getDefaultComments($iEventId)
