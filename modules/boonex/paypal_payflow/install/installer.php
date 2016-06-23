@@ -8,10 +8,14 @@ require_once(BX_DIRECTORY_PATH_CLASSES . "BxDolInstaller.php");
 
 class BxPfwInstaller extends BxDolInstaller
 {
+	protected $_sParamDefaultPayment;
+
     function __construct($aConfig)
     {
-        parent::__construct($aConfig);
-    }
+         parent::__construct($aConfig);
+
+        $this->_sParamDefaultPayment = 'sys_default_payment';
+	}
 
     function install($aParams)
     {
@@ -19,6 +23,19 @@ class BxPfwInstaller extends BxDolInstaller
 
         if($aResult['result'])
             BxDolService::call($this->_aConfig['home_uri'], 'update_dependent_modules');
+
+		if($aResult['result'] && getParam($this->_sParamDefaultPayment) == '')
+        	setParam($this->_sParamDefaultPayment, $this->_aConfig['home_uri']);
+
+        return $aResult;
+    }
+
+	function uninstall($aParams)
+    {
+        $aResult = parent::uninstall($aParams);
+
+        if($aResult['result'] && getParam($this->_sParamDefaultPayment) == $this->_aConfig['home_uri'])
+        	setParam($this->_sParamDefaultPayment, '');
 
         return $aResult;
     }
