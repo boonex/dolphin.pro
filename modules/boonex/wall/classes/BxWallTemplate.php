@@ -493,7 +493,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 
 	function displayProfileCommentAdd($aEvent)
     {
-        $iId = (int)$aEvent['object_id'];
+        $iComment = (int)$aEvent['object_id'];
         $iOwner = (int)$aEvent['owner_id'];
         $sOwner = getNickName($iOwner);
 
@@ -511,8 +511,8 @@ class BxWallTemplate extends BxDolModuleTemplate
         if(!$oCmts->isEnabled())
             return '';
 
-		$aItem['url'] = getProfileLink($iId);
-        $aComment = $oCmts->getCommentRow($iId);
+		$aItem['url'] = getProfileLink($iItem);
+        $aComment = $oCmts->getCommentRow($iComment);
 
         $sTextWallObject = _t('_wall_object_profile');
         return array(
@@ -525,7 +525,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 	            'cpt_item_url' => $aItem['url'],
 	            'cnt_comment_text' => $aComment['cmt_text'],
 	            'cnt_item_page' => $aItem['url'],
-	            'cnt_item_icon' => get_member_thumbnail($iId, 'none', true),
+	            'cnt_item_icon' => get_member_thumbnail($iItem, 'none', true),
 	            'cnt_item_title' => $aItem['title'],
 	            'cnt_item_description' => $aItem['description'],
 	            'post_id' => $aEvent['id'],
