@@ -764,6 +764,8 @@ class BxSitesModule extends BxDolTwigModule
             return '';
 
         $aComment = $oCmts->getCommentRow($iId);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sImage = '';
         if($aItem['photo']) {
@@ -825,6 +827,8 @@ class BxSitesModule extends BxDolTwigModule
             return '';
 
         $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sImage = '';
         if($aItem['photo']) {

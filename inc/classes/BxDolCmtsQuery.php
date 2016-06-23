@@ -104,8 +104,10 @@ class BxDolCmtsQuery extends BxDolDb
             WHERE `c`.`cmt_object_id` = ? AND `c`.`cmt_id` = ?
             LIMIT 1", [$iId, $iCmtId]);
 
-        $aComment['cmt_text'] = str_replace("[ray_url]", $sHomeUrl, $aComment['cmt_text']);
-        $aComment['cmt_ago'] = defineTimeInterval($aComment['cmt_time_ts']);
+		if(!empty($aComment) && is_array($aComment)) {
+	        $aComment['cmt_text'] = str_replace("[ray_url]", $sHomeUrl, $aComment['cmt_text']);
+	        $aComment['cmt_ago'] = defineTimeInterval($aComment['cmt_time_ts']);
+		}
 
         return $aComment;
     }

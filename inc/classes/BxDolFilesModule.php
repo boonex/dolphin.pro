@@ -1597,6 +1597,8 @@ class BxDolFilesModule extends BxDolModule
             return '';
 
         $aComment = $oCmts->getCommentRow($iId);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sCss = '';
         $sUri = $this->_oConfig->getUri();

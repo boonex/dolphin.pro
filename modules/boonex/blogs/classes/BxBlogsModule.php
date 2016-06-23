@@ -3359,6 +3359,8 @@ EOF;
         }
 
         $aComment = $oCmts->getCommentRow($iId);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sCss = '';
         if ($aEvent['js_mode']) {
@@ -3423,6 +3425,8 @@ EOF;
 
         $aItem['url'] = $this->genUrl($aItem['ID'], $aItem['PostUri'], 'entry');
         $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sCss = '';
         if ($aEvent['js_mode']) {
