@@ -76,6 +76,7 @@ class BxSitesPageView extends BxDolTwigPageView
 EOF;
             }
 
+            $aInfo['repostCpt'] = $aInfo['repostScript'] = '';
 	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
 				$sCode .= BxDolService::call('wall', 'get_repost_js_script');
 

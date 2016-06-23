@@ -1514,13 +1514,15 @@ EOF;
                 'base_url'              => $this->sHomeUrl,
                 'TitleShare'            => $this->isAllowedShare($this->aViewingPostInfo) ? _t('_Share') : '',
             );
-            if (BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
-                $sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
 
-                $aActionKeys['repostCpt'] = _t('_Repost');
-                $aActionKeys['repostScript'] = BxDolService::call('wall', 'get_repost_js_click',
-                    array($this->_iVisitorID, 'bx_blogs', 'create', $this->iViewingPostID));
-            }
+            $aActionKeys['repostCpt'] = $aActionKeys['repostScript'] = '';
+	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+	        	$sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
+	
+				$aActionKeys['repostCpt'] = _t('_Repost');
+				$aActionKeys['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->_iVisitorID, 'bx_blogs', 'create', $this->iViewingPostID));
+	        }
+
             $sActionsVal = $GLOBALS['oFunctions']->genObjectsActions($aActionKeys, 'bx_blogs', false);
 
             return $sSubsAddon . $sActionsVal;

@@ -1773,8 +1773,10 @@ EOF;
                 'sbs_ads_script' => $aButton['script'],
                 'TitleShare'     => $this->isAllowedShare($aSqlResStr) ? _t('_Share') : '',
             );
-            if (BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
-                $sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
+
+            $aActionKeys['repostCpt'] = $aActionKeys['repostScript'] = '';
+	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+	        	$sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
 
                 $aActionKeys['repostCpt']    = _t('_Repost');
                 $aActionKeys['repostScript'] = BxDolService::call('wall', 'get_repost_js_click',
