@@ -1394,6 +1394,8 @@ EOF;
                 'base_url' => $this->sHomeUrl,
             	'TitleShare' => $this->isAllowedShare($this->aViewingPostInfo) ? _t('_Share') : '',
             );
+
+            $aActionKeys['repostCpt'] = $aActionKeys['repostScript'] = '';
 	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
 	        	$sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
 	

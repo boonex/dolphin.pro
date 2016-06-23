@@ -246,6 +246,7 @@ class BxPollView extends BxDolPageView
 
         $aUnitInfo['TitleShare'] = $this->oModule->isAllowedShare($this -> aPollInfo) ? _t('_Share') : '';
 
+        $aUnitInfo['repostCpt'] = $aUnitInfo['repostScript'] = '';
     	if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
         	$sCode .= BxDolService::call('wall', 'get_repost_js_script');
 

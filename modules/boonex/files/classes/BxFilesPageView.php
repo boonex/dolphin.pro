@@ -83,6 +83,7 @@ class BxFilesPageView extends BxDolPageView
             $aReplacement['approvedAct'] = $iAppr;
         }
 
+        $aReplacement['repostCpt'] = $aReplacement['repostScript'] = '';
     	if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
         	$sCode .= BxDolService::call('wall', 'get_repost_js_script');
 
