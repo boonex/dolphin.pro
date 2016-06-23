@@ -1529,6 +1529,7 @@ $LANG= array(
   '_adm_txt_modules_writable' => 'Изменяемый',
   '_adm_txt_modules_wrong_dependency_uninstall' => 'Сначала нужно удалть следующие модули:',
   '_adm_txt_modules_wrong_dependency_install' => 'Сначала нужно установить следующие модули:',
+  '_adm_txt_modules_wrong_dependency_install_payment' => 'У Вас должен быть установлен хотя бы один модуль обработки платежей и выбран как модуль по умолчанию в Настройки -> Расширенные настройки -> General -> Payment module.',
   '_adm_txt_modules_wrong_mysql_query' => 'Ошибки в следующих MySQL запросах:',
   '_adm_txt_modules_wrong_mysql_query_msg' => 'Ошибка: {0}',
   '_adm_txt_modules_wrong_package_format' => 'Неправильный формат пакета',
