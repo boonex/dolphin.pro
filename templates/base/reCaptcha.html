@@ -1,19 +1,19 @@
 <div id="__id__" class="form_input_captcha" style="display:none">
 	<div id="recaptcha_image"></div>
-	<div class="recaptcha_only_if_incorrect_sol" style="color:red">Incorrect please try again</div>
+	<div class="recaptcha_only_if_incorrect_sol" style="color:red"><bx_text:_sys_recaptcha_incorrect /></div>
 	<div class="solution">
 		<div class="solution-cnt">
-			<span class="recaptcha_only_if_image">Type the text:</span>
-			<span class="recaptcha_only_if_audio">Enter the numbers you hear:</span>
+			<span class="recaptcha_only_if_image"><bx_text:_sys_recaptcha_text_image /></span>
+			<span class="recaptcha_only_if_audio"><bx_text:_sys_recaptcha_text_audio /></span>
 			<input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />
 		</div>
 	</div>
 	<div class="options">
 		<div class="options-cnt">
-			<a href="javascript:Recaptcha.reload()" id="icon-reload" title="Get another CAPTCHA"><i class="sys-icon refresh"> refresh</i></a>
-			<a class="recaptcha_only_if_image" href="javascript:Recaptcha.switch_type('audio')" id="icon-audio" title="Get an audio CAPTCHA"><i class="sys-icon volume-up"> audio</i></a>
-			<a class="recaptcha_only_if_audio" href="javascript:Recaptcha.switch_type('image')" id="icon-image" title="Get an image CAPTCHA"><i class="sys-icon picture-o"> image</i></a>
-			<a href="javascript:Recaptcha.showhelp()" id="icon-help" title="Help"><i class="sys-icon question-circle"> help</i></a>
+			<a href="javascript:Recaptcha.reload()" id="icon-reload" title="<bx_text_attribute:_sys_recaptcha_btn_title_refresh />"><i class="sys-icon refresh"> <bx_text:_sys_recaptcha_btn_refresh /></i></a>
+			<a class="recaptcha_only_if_image" href="javascript:Recaptcha.switch_type('audio')" id="icon-audio" title="<bx_text_attribute:_sys_recaptcha_btn_title_audio />"><i class="sys-icon volume-up"> <bx_text:_sys_recaptcha_btn_audio /></i></a>
+			<a class="recaptcha_only_if_audio" href="javascript:Recaptcha.switch_type('image')" id="icon-image" title="<bx_text_attribute:_sys_recaptcha_btn_title_image />"><i class="sys-icon picture-o"> <bx_text:_sys_recaptcha_btn_image /></i></a>
+			<a href="javascript:Recaptcha.showhelp()" id="icon-help" title="<bx_text_attribute:_sys_recaptcha_btn_title_help />"><i class="sys-icon question-circle"> <bx_text:_sys_recaptcha_btn_help /></i></a>
 		</div>
 	</div>
 </div>
