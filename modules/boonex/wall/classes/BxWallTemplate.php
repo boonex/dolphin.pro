@@ -513,6 +513,8 @@ class BxWallTemplate extends BxDolModuleTemplate
 
 		$aItem['url'] = getProfileLink($iItem);
         $aComment = $oCmts->getCommentRow($iComment);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sTextWallObject = _t('_wall_object_profile');
         return array(
@@ -557,6 +559,8 @@ class BxWallTemplate extends BxDolModuleTemplate
 
         $aItem['url'] = getProfileLink($iId);
         $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sTextWallObject = _t('_wall_object_profile');
         return array(
