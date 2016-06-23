@@ -513,7 +513,7 @@ class BxBaseProfileGenerator extends BxDolProfile
 				)
 			),
 			'bx_if:show_actions' => array(
-				'condition' => $bProfileOwner,
+				'condition' => $bProfileOwner && BxDolRequest::serviceExists('photos', 'get_album_uploader_url'),
 				'content' => array(
 					'href_upload' => BxDolService::call('photos', 'get_album_uploader_url', array($p_arr['ID'], 'profile_cover_album_name'))
 				)
