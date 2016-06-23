@@ -1093,7 +1093,7 @@ INSERT INTO `sys_options` VALUES
 ('enable_gd', 'on', @iCatGeneral, 'Enable GD library for image processing', 'checkbox', '', '', 150, ''),
 ('useLikeOperator', 'on', @iCatGeneral, 'Disable full-text search', 'checkbox', '', '', 160, ''),
 
-('sys_default_payment', 'payment', @iCatGeneral, 'Payment module (at least one payment processing module should be installed)', 'select', '', '', 170, 'PHP:bx_import(\'BxDolPayments\'); return BxDolPayments::getInstance()->getPayments();'),
+('sys_default_payment', '', @iCatGeneral, 'Payment module (at least one payment processing module should be installed)', 'select', '', '', 170, 'PHP:bx_import(\'BxDolPayments\'); return BxDolPayments::getInstance()->getPayments();'),
 
 ('sys_embedly_key', '', @iCatGeneral, 'Embedly Key', 'digit', '', '', 180, '');
 
