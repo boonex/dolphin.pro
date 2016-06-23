@@ -1533,6 +1533,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_txt_modules_writable' => 'Writable',
   '_adm_txt_modules_wrong_dependency_uninstall' => 'The following modules should be uninstalled first:',
   '_adm_txt_modules_wrong_dependency_install' => 'The following modules should be installed first:',
+  '_adm_txt_modules_wrong_dependency_install_payment' => 'You need to have at least one payment processing module installed and selected as default in Settings -> Advanced Settings -> General -> Payment module.',
   '_adm_txt_modules_wrong_mysql_query' => 'There are errors in the following MySQL queries:',
   '_adm_txt_modules_wrong_mysql_query_msg' => 'Error: {0}',
   '_adm_txt_modules_wrong_package_format' => 'Wrong package format',
