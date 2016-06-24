@@ -322,6 +322,18 @@ img.wall-pm-thumbnail {
     background-position: center;
 }
 
+div.wall-pm-duration {
+	position: absolute;
+
+	bottom: 5px;
+	right: 5px;
+
+	padding: 3px;
+
+	background-color: rgba(0, 0, 0, 0.2);
+	color: #ffffff;
+}
+
 /*--- Post Actions Styles ---*/
 div.wall-event-actions .bx-btn {
 	position: relative;

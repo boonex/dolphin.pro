@@ -276,7 +276,13 @@ class BxWallTemplate extends BxDolModuleTemplate
                     'image_height' => isset($aMediaInfo['height']) ? (int)$aMediaInfo['height'] : 0,
                     'link' => isset($aMediaInfo['url']) ? $aMediaInfo['url'] : '',
                     'title' => isset($aMediaInfo['title']) ? bx_html_attribute($aMediaInfo['title']) : '',
-                    'description' => isset($aMediaInfo['description']) ? $aMediaInfo['description'] : ''
+                    'description' => isset($aMediaInfo['description']) ? $aMediaInfo['description'] : '',
+            		'bx_if:show_duration' => array(
+						'condition' => !empty($aMediaInfo['duration_f']),
+            			'content' => array(
+            				'duration_f' => $aMediaInfo['duration_f']
+            			)
+            		)
                 ))
             );
 
