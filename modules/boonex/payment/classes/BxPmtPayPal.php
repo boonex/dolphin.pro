@@ -169,20 +169,21 @@ class BxPmtPayPal extends BxPmtProvider
                return $aResponse;
 
             array_walk($aResponse['content'], create_function('&$arg', "\$arg = trim(\$arg);"));
-            if(strcmp($aResponse['content'][0], "INVALID") == 0)
+            if(strcmp($aResponse['content'][1], "INVALID") == 0)
                 return array('code' => -1, 'message' => _t('_payment_pp_err_wrong_transaction'));
-            else if(strcmp($aResponse['content'][0], "VERIFIED") != 0)
+            else if(strcmp($aResponse['content'][1], "VERIFIED") != 0)
                 return array('code' => 2, 'message' => _t('_payment_pp_err_wrong_verification_status'));
-        } else if($iPrcType == PP_PRC_TYPE_PDT) {
+        }
+        else if($iPrcType == PP_PRC_TYPE_PDT) {
             $sRequest = "cmd=_notify-synch&tx=" . $aData['tx'] . "&at=" . $this->getOption('token');
             $aResponse = $this->_readValidationData($sConnectionUrl, $sRequest);
 
             if((int)$aResponse['code'] !== 0)
                return $aResponse;
 
-            if(strcmp($aResponse['content'][0], "FAIL") == 0)
+            if(strcmp($aResponse['content'][1], "FAIL") == 0)
                 return array('code' => -1, 'message' => _t('_payment_pp_err_wrong_transaction'));
-            else if(strcmp($aResponse['content'][0], "SUCCESS") != 0)
+            else if(strcmp($aResponse['content'][1], "SUCCESS") != 0)
                 return array('code' => 2, 'message' => _t('_payment_pp_err_wrong_verification_status'));
 
             $aKeys = array();
@@ -214,18 +215,18 @@ class BxPmtPayPal extends BxPmtProvider
 
     function _readValidationData($sConnectionUrl, $sRequest)
     {
-        $sHeader = "POST /cgi-bin/webscr HTTP/1.0\r\n";
-        $sHeader .= "Host: " . $sConnectionUrl . "\r\n";
-        $sHeader .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $sHeader .= "Content-Length: " . strlen($sRequest) . "\r\n";
-        $sHeader .= "Connection: close\r\n\r\n";
-
         $iErrCode = 0;
         $sErrMessage = "";
 
 		$rSocket = fsockopen("ssl://" . $sConnectionUrl, 443, $iErrCode, $sErrMessage, 60);
         if(!$rSocket)
             return array('code' => 2, 'message' => 'Can\'t connect to remote host for validation (' . $sErrMessage . ')');
+
+		$sHeader = "POST /cgi-bin/webscr HTTP/1.1\r\n";
+        $sHeader .= "Host: " . $sConnectionUrl . "\r\n";
+        $sHeader .= "Content-Type: application/x-www-form-urlencoded\r\n";
+        $sHeader .= "Content-Length: " . strlen($sRequest) . "\r\n";
+        $sHeader .= "Connection: close\r\n\r\n";
 
         fputs($rSocket, $sHeader);
         fputs($rSocket, $sRequest);
@@ -239,6 +240,7 @@ class BxPmtPayPal extends BxPmtProvider
 
         return array('code' => 0, 'content' => explode("\n", $sResponseContent));
     }
+
     function _getReceivedAmount($sCurrencyCode, &$aResultData)
     {
         $fAmount = 0.00;
