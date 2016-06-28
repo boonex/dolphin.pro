@@ -10,16 +10,6 @@ define ('TF_FORUM_USER',	'`'.$gConf['db']['prefix'].'forum_user`');
 
 class DbLogin extends BxDb
 {
-
-    /**
-     * constructor
-     */
-    function __construct ()
-    {
-        global $gConf;
-        parent::__construct ($gConf['db']['db'], $gConf['db']['user'], $gConf['db']['pwd'], $gConf['db']['host'], $gConf['db']['port'], $gConf['db']['sock']);
-    }
-
     function getUserByName ($s)
     {
         $sql = "SELECT `user_name` FROM " . TF_FORUM_USER . " WHERE `user_name` = '$s' LIMIT 1";

@@ -19,16 +19,6 @@ define ('CAT_ORDER_STEP', 128);
 
 class DbAdmin extends BxDb
 {
-
-    /**
-     * constructor
-     */
-    function __construct ()
-    {
-        global $gConf;
-        parent::__construct ($gConf['db']['db'], $gConf['db']['user'], $gConf['db']['pwd'], $gConf['db']['host'], $gConf['db']['port'], $gConf['db']['sock']);
-    }
-
     function deleteCategoryAll ($cat_id)
     {
         $sql = "SELECT `forum_id` FROM " . TF_FORUM . " WHERE `cat_id` = '$cat_id'";

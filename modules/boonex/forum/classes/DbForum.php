@@ -43,15 +43,6 @@ class DbForum extends BxDb
         'forum_vote' => 'user_name',
     );
 
-    /**
-     * constructor
-     */
-    function __construct ()
-    {
-        global $gConf;
-        parent::__construct ($gConf['db']['db'], $gConf['db']['user'], $gConf['db']['pwd'], $gConf['db']['host'], $gConf['db']['port'], $gConf['db']['sock']);
-    }
-
     function searchMessages ($s, $u, $f, $type, $posts, $start, &$num = null)
     {
         global $gConf;
