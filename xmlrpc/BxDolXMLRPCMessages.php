@@ -41,7 +41,7 @@ class BxDolXMLRPCMessages
             return new xmlrpcval (BX_MAILBOX_SEND_UNKNOWN_RECIPIENT);
 
         $aMailBoxSettings = array ('member_id' => $iId);
-        $oMailBox = &new BxTemplMailBox('mail_page_compose', $aMailBoxSettings);
+        $oMailBox = new BxTemplMailBox('mail_page_compose', $aMailBoxSettings);
 
         $aComposeSettings = array (
             'send_copy' => 'recipient' == $sSendTo || 'both' == $sSendTo ? true : false,

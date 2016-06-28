@@ -13,9 +13,9 @@ class BxDolXMLRPCProfileView extends BxBaseProfileGenerator
 {
     var $_iViewerId;
 
-    function BxDolXMLRPCProfileView($iProfileId, $iViewerId = 0)
+    function __construct($iProfileId, $iViewerId = 0)
     {
-        BxBaseProfileGenerator::BxBaseProfileGenerator ((int)$iProfileId);
+        BxBaseProfileGenerator::__construct ((int)$iProfileId);
         $this->_iViewerId = $iViewerId;
     }
 
