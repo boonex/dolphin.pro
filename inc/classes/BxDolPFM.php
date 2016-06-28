@@ -1384,7 +1384,7 @@ class BxDolPFM
 
 class BxDolPFMAreaJSONObj
 {
-    function BxDolPFMAreaJSONObj( $oArea )
+    function __construct( $oArea )
     {
         $this -> id = $oArea -> iAreaID;
 
@@ -1410,7 +1410,7 @@ class BxDolPFMAreaJSONObj
 /* Used for JSON generation */
 class BxDolPFMItem
 {
-    function BxDolPFMItem( $iID, $sName, $iBlock = 0 )
+    function __construct( $iID, $sName, $iBlock = 0 )
     {
         $this -> id = $iID;
         $this -> name = $sName;
@@ -1428,7 +1428,7 @@ class BxDolPFMCacher
 {
     var $aAreasProps;
 
-    function BxDolPFMCacher()
+    function __construct()
     {
         //additional properties for caching blocks
         $aAddBlockProps = array(
@@ -1561,7 +1561,7 @@ class BxDolProfileFieldsArea
     var $aBlocks;
     var $aPages;
 
-    function BxDolProfileFieldsArea( $iAreaID, &$oParent )
+    function __construct( $iAreaID, &$oParent )
     {
         $this -> id = $iAreaID;
         $this -> oParent = &$oParent;

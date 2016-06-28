@@ -82,7 +82,7 @@ class BxDolMobileTemplate extends BxDolModuleTemplate
         $this->displayMsg(_t('_sys_request_page_not_found_cpt'));
     }
 
-    function displayMsg($sMsg, $bTranslateMsg = false, $sTitle = false, $bTranslateMsg = false)
+    function displayMsg($sMsg, $bTranslateMsg = false, $sTitle = false)
     {
         $sMsg = $bTranslateMsg ? _t($sMsg) : $sMsg;
         $sTitle = $bTranslateMsg ? _t($sTitle) : $sTitle;

@@ -563,12 +563,12 @@ class BxDolDb
     {
         if (array_key_exists($sName, $GLOBALS['gl_db_cache'])) {
             return $GLOBALS['gl_db_cache'][$sName];
-
         }
 
         $aArgs = func_get_args();
         array_shift($aArgs); // shift $sName
         array_shift($aArgs); // shift $sFunc
+
         // pass other function parameters as database function parameters
         $GLOBALS['gl_db_cache'][$sName] = call_user_func_array(array($this, $sFunc), $aArgs);
 

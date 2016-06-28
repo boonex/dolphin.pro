@@ -10,7 +10,7 @@ class BxDolUpgradeController
     var $oDb;
     var $oUtil;
 
-    function BxDolUpgradeController()
+    function __construct()
     {
         $this->oDb = new BxDolUpgradeDb();
         $this->oUtil = new BxDolUpgradeUtil($this->oDb);

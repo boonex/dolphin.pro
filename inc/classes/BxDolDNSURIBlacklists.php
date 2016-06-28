@@ -20,7 +20,7 @@ class BxDolDNSURIBlacklists
     /**
      * Constructor
      */
-    public function BxDolDNSURIBlacklists()
+    public function __construct()
     {
         $this->aZonesUrls = array ( // for some reason original urls are restricted to fetch, so copies are created locally
             2 => BX_DIRECTORY_PATH_ROOT . "two-level-tlds",

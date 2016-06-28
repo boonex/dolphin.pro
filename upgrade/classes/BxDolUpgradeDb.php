@@ -19,7 +19,7 @@ class BxDolUpgradeDb
     /*
     *set database parameters and connect to it
     */
-    function BxDolUpgradeDb()
+    function __construct()
     {
         $this->host = DATABASE_HOST;
         $this->port = DATABASE_PORT;

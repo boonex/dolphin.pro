@@ -147,7 +147,7 @@ class BxBaseProfileGenerator extends BxDolProfile
     var $iCountMutFriends;
     var $iFriendsPerPage;
 
-    function BxBaseProfileGenerator( $ID )
+    function __construct( $ID )
     {
         global $site;
 

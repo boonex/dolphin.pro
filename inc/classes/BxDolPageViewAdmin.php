@@ -716,7 +716,7 @@ class BxDolPVAPage
     var $sDefaultSqlFile; //file containing default setting for reset
     var $isSystem; // defines if the page is system or created by admin
 
-    function BxDolPVAPage( $sPage, &$oParent )
+    function __construct( $sPage, &$oParent )
     {
         global $admin_dir;
 
@@ -846,7 +846,7 @@ class BxDolPVAPageJSON
     var $widths;
     var $min_widths;
 
-    function BxDolPVAPageJSON( $oParent )
+    function __construct( $oParent )
     {
         $this -> widths     = $oParent -> aColsWidths;
         $this -> min_widths = $oParent -> aMinWidths;
@@ -862,7 +862,7 @@ class BxDolPageViewCacher
     var $sCacheFile;
     var $oBlocksCacheObject;
 
-    function BxDolPageViewCacher( $sDBTable, $sCacheFile )
+    function __construct( $sDBTable, $sCacheFile )
     {
         $this -> sDBTable = $sDBTable;
         $this -> sCacheFile = $sCacheFile;

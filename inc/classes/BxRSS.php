@@ -159,7 +159,7 @@ class BxRSSItem
     var $enclosure_length;
     var $enclosure_type;
 
-    function BxRSSItem( $aItem )
+    function __construct( $aItem )
     {
         $this -> title       = $aItem['title']['value'];
         $this -> link        = $aItem['link']['value'];

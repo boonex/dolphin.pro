@@ -284,7 +284,7 @@
         // try to define the callback function name ;
         if ( isset($_GET['callback_function']) and in_array($_GET['callback_function'], $aCallbackFunctions) ) {
             if (method_exists($oMailBox, $_GET['callback_function']))
-                $sOutputHtml = $oMailBox -> $_GET['callback_function']();
+                $sOutputHtml = $oMailBox->{$_GET['callback_function']}();
         }
 
         header('Content-Type: text/html; charset=utf-8');

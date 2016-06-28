@@ -304,7 +304,7 @@ class BxDolFormChecker
     var $_sFormMethod;
     var $_bFormCsrfChecking;
 
-    function BxDolFormChecker ($sHelper = '')
+    function __construct ($sHelper = '')
     {
         $this->_sFormMethod = BX_DOL_FORM_METHOD_GET;
         $this->_bFormCsrfChecking = true;

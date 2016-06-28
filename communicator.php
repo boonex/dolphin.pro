@@ -149,7 +149,7 @@
         // try to define the callback function name ;
         if ( isset($_POST['callback_function']) and in_array($_POST['callback_function'], $aCallbackFunctions) ) {
             if ( method_exists($oCommunicator, $_POST['callback_function']) )
-                $sOutputHtml = $oCommunicator -> $_POST['callback_function']();
+                $sOutputHtml = $oCommunicator->{$_POST['callback_function']}();
         }
 
         header('Content-Type: text/html; charset=utf-8');

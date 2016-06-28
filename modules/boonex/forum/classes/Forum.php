@@ -112,7 +112,7 @@ EOF;
                         while (list (,$w) = each ($ws)) {
                             if ($w) {
                                 $wreg = str_replace(array('(', ')'), array('\\(', '\\)'), $w);
-                                $ind = eregi( "([^>]*<)", $r['post_text'], $ind ); // html tags?
+                                $ind = preg_match( "([^>]*<)/i", $r['post_text'], $ind ); // html tags?
                                 if ($ind)
                                     $r['post_text'] = preg_replace("/($wreg)(?=[^>]*<)/i", "<span style=\"background-color:yellow\">$w</span>", "<div>{$r['post_text']}</div>");
                                 else

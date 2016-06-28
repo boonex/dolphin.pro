@@ -43,7 +43,7 @@ class BxDolDNSBlacklists
     /**
      * Constructor
      */
-    public function BxDolDNSBlacklists()
+    public function __construct()
     {
         $this->initChains();
     }

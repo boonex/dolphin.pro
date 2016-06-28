@@ -10,7 +10,7 @@ class BxDolUpgradeUtil
     var $oDb;
     var $sFolder;
 
-    function BxDolUpgradeUtil($oDb)
+    function __construct($oDb)
     {
         $this->oDb = $oDb;
     }

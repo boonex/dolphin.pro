@@ -7,7 +7,7 @@ class RadiusAssistant
     var $maxLong;
     var $minLong;
 
-    function RadiusAssistant($Latitude, $Longitude, $Miles)
+    function __construct($Latitude, $Longitude, $Miles)
     {
         //global $maxLat, $minLat, $maxLong, $minLong;
         $EQUATOR_LAT_MILE = 69.172;
