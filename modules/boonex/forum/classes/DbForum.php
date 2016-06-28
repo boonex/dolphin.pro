@@ -133,12 +133,12 @@ class DbForum extends BxDb
 
     function getCatTitle ($id)
     {
-        return $this->getOne ("SELECT `cat_name` FROM " . TF_FORUM_CAT . " WHERE `cat_id` = '$id'");
+        return $this->getOne ("SELECT `cat_name` FROM " . TF_FORUM_CAT . " WHERE `cat_id` = ?", [$id]);
     }
 
     function getCat ($id)
     {
-        return $this->getRow ("SELECT `cat_id`, `cat_uri`, `cat_name`, `cat_order`, `cat_expanded` FROM " . TF_FORUM_CAT . " WHERE `cat_id` = '$id'");
+        return $this->getRow ("SELECT `cat_id`, `cat_uri`, `cat_name`, `cat_order`, `cat_expanded` FROM " . TF_FORUM_CAT . " WHERE `cat_id` = ?", [$id]);
     }
 
     function getForums ($c)
@@ -166,27 +166,27 @@ class DbForum extends BxDb
     function getForumBy ($sName, $sVal)
     {
         global $gConf;
-        return $this->getRow ( "SELECT `cat_id`, `forum_id`, `forum_uri`, `forum_title`, `forum_desc`, `forum_order`, `forum_type`, `forum_posts`, `forum_last` AS `forum_last` FROM " . TF_FORUM . " WHERE `$sName` = '$sVal' LIMIT 1");
+        return $this->getRow ( "SELECT `cat_id`, `forum_id`, `forum_uri`, `forum_title`, `forum_desc`, `forum_order`, `forum_type`, `forum_posts`, `forum_last` AS `forum_last` FROM " . TF_FORUM . " WHERE `$sName` = ? LIMIT 1", [$sVal]);
     }
 
     function getForumByPostId ($post_id)
     {
-        return $this->getRow ( "SELECT `tf`.`forum_id`, `tf`.`forum_uri`, `tf`.`forum_type` FROM " . TF_FORUM . " AS `tf` INNER JOIN " . TF_FORUM_POST . " USING(`forum_id`) WHERE `post_id` = '$post_id' LIMIT 1");
+        return $this->getRow ( "SELECT `tf`.`forum_id`, `tf`.`forum_uri`, `tf`.`forum_type` FROM " . TF_FORUM . " AS `tf` INNER JOIN " . TF_FORUM_POST . " USING(`forum_id`) WHERE `post_id` = ? LIMIT 1", [$post_id]);
     }
 
     function getForumByTopicId ($topic_id)
     {
-        return $this->getRow ( "SELECT `tf`.`forum_id`, `tf`.`forum_uri`, `tf`.`forum_type` FROM " . TF_FORUM . " AS `tf` INNER JOIN " . TF_FORUM_TOPIC . " USING(`forum_id`) WHERE `topic_id` = '$topic_id' LIMIT 1");
+        return $this->getRow ( "SELECT `tf`.`forum_id`, `tf`.`forum_uri`, `tf`.`forum_type` FROM " . TF_FORUM . " AS `tf` INNER JOIN " . TF_FORUM_TOPIC . " USING(`forum_id`) WHERE `topic_id` = ? LIMIT 1", [$topic_id]);
     }
 
     function getPostIds ($p)
     {
-        return $this->getRow ( "SELECT `forum_id`, `topic_id` FROM " . TF_FORUM_POST . " WHERE `post_id` = '$p' LIMIT 1");
+        return $this->getRow ( "SELECT `forum_id`, `topic_id` FROM " . TF_FORUM_POST . " WHERE `post_id` = ? LIMIT 1", [$p]);
     }
 
     function getTopicsNum ($f)
     {
-        return $this->_getTopicsNumWithCondition(" AND `topic_hidden` = '0' AND `forum_id` = '$f' ");
+        return $this->_getTopicsNumWithCondition(" AND `topic_hidden` = '0' AND `forum_id` = ? ", [$f]);
     }
 
     function getRecentTopicsNum ()
@@ -203,8 +203,8 @@ class DbForum extends BxDb
     {
         global $gConf;
 
-        $sql = "SELECT f1.`topic_id`, f1.`topic_uri`, `topic_title`, `first_post_user`, `first_post_when` AS `first_when`, `last_post_user`, `last_post_when` AS `last_when`, `last_post_when`, `topic_posts` AS `count_posts`, `topic_sticky`, `topic_locked` FROM " . TF_FORUM_TOPIC . " AS f1 WHERE f1.`topic_hidden` = '0' AND f1.`forum_id` = '$f' ORDER BY `topic_sticky` DESC, `last_post_when` DESC, f1.`topic_id` DESC LIMIT $start, {$gConf['topics_per_page']}";
-        return $this->getAll ($sql);
+        $sql = "SELECT f1.`topic_id`, f1.`topic_uri`, `topic_title`, `first_post_user`, `first_post_when` AS `first_when`, `last_post_user`, `last_post_when` AS `last_when`, `last_post_when`, `topic_posts` AS `count_posts`, `topic_sticky`, `topic_locked` FROM " . TF_FORUM_TOPIC . " AS f1 WHERE f1.`topic_hidden` = '0' AND f1.`forum_id` = ? ORDER BY `topic_sticky` DESC, `last_post_when` DESC, f1.`topic_id` DESC LIMIT $start, {$gConf['topics_per_page']}";
+        return $this->getAll ($sql, [$f]);
     }
 
     function getRecentTopics ($start)
@@ -250,16 +250,16 @@ class DbForum extends BxDb
 
         if ($start < 0) $start = 0;
 
-        $sql = "SELECT $sCalcFoundRows f1.`topic_id`, f1.`topic_uri`, `topic_title`, `last_post_when`, `topic_posts` AS `count_posts` FROM " . TF_FORUM_TOPIC . " AS f1 INNER JOIN "  . TF_FORUM_FLAG . " AS f2 USING (`topic_id`) WHERE f2.`user` = '$u' ORDER BY `last_post_when` DESC LIMIT $start, {$gConf['topics_per_page']}";
+        $sql = "SELECT $sCalcFoundRows f1.`topic_id`, f1.`topic_uri`, `topic_title`, `last_post_when`, `topic_posts` AS `count_posts` FROM " . TF_FORUM_TOPIC . " AS f1 INNER JOIN "  . TF_FORUM_FLAG . " AS f2 USING (`topic_id`) WHERE f2.`user` = ? ORDER BY `last_post_when` DESC LIMIT $start, {$gConf['topics_per_page']}";
 
-        $aRows = $this->getAll ($sql);
+        $aRows = $this->getAll ($sql, [$u]);
         if ($num !== null) $num = $this->getOne('SELECT FOUND_ROWS()');
         return $aRows;
     }
 
     function getSubscribersToTopic ($iTopicId)
     {
-        return $this->getAll ("SELECT `user` FROM "  . TF_FORUM_FLAG . " WHERE `topic_id` = '$iTopicId'");
+        return $this->getAll ("SELECT `user` FROM "  . TF_FORUM_FLAG . " WHERE `topic_id` = ?", [$iTopicId]);
     }
 
     function getMyThreadsTopics ($u, $start = 0, &$num = null)
@@ -271,9 +271,9 @@ class DbForum extends BxDb
 
         if ($start < 0) $start = 0;
 
-        $sql = "SELECT DISTINCTROW $sCalcFoundRows f1.`topic_id`, f1.`topic_uri`, `topic_title`, `last_post_when`, `topic_posts` AS `count_posts` FROM " . TF_FORUM_TOPIC . " AS f1 INNER JOIN "  . TF_FORUM_POST . " AS f2 USING (`topic_id`) WHERE f2.`user` = '$u' ORDER BY `last_post_when` DESC LIMIT $start, {$gConf['topics_per_page']}";
+        $sql = "SELECT DISTINCTROW $sCalcFoundRows f1.`topic_id`, f1.`topic_uri`, `topic_title`, `last_post_when`, `topic_posts` AS `count_posts` FROM " . TF_FORUM_TOPIC . " AS f1 INNER JOIN "  . TF_FORUM_POST . " AS f2 USING (`topic_id`) WHERE f2.`user` = ? ORDER BY `last_post_when` DESC LIMIT $start, {$gConf['topics_per_page']}";
 
-        $aRows = $this->getAll ($sql);
+        $aRows = $this->getAll ($sql, [$u]);
         if ($num !== null) $num = $this->getOne('SELECT FOUND_ROWS()');
         return $aRows;
     }
@@ -290,30 +290,30 @@ class DbForum extends BxDb
 
     function getTopicBy ($sName, $sVal)
     {
-        return $this->getRow ( "SELECT `topic_id`, `topic_uri`, `topic_title`, `topic_posts`, `forum_title`, `forum_desc`, `forum_type`, `forum_uri`, f1.`forum_id`, `cat_id`, `topic_locked`, `topic_sticky`, `topic_hidden` FROM " . TF_FORUM_TOPIC . " AS f1 INNER JOIN " . TF_FORUM . " USING (`forum_id`) WHERE f1.`$sName` = '$sVal' LIMIT 1");
+        return $this->getRow ( "SELECT `topic_id`, `topic_uri`, `topic_title`, `topic_posts`, `forum_title`, `forum_desc`, `forum_type`, `forum_uri`, f1.`forum_id`, `cat_id`, `topic_locked`, `topic_sticky`, `topic_hidden` FROM " . TF_FORUM_TOPIC . " AS f1 INNER JOIN " . TF_FORUM . " USING (`forum_id`) WHERE f1.`$sName` = ? LIMIT 1", [$sVal]);
     }
 
     function getPostUser ($p)
     {
-        return $this->getOne ( "SELECT `user` FROM " . TF_FORUM_POST . " WHERE `post_id` = '$p'");
+        return $this->getOne ( "SELECT `user` FROM " . TF_FORUM_POST . " WHERE `post_id` = ?", [$p]);
     }
 
     function getTopicPost ($t, $x = 'last')
     {
         global $gConf;
         $sOrderDir = ('last' == $x ?  'DESC' : 'ASC');
-        return $this->getRow ( "SELECT `user`, t1.`when` AS `when2`, `when` FROM " . TF_FORUM_POST . " AS t1 WHERE `topic_id` = '$t' ORDER BY t1.`when` $sOrderDir, t1.`post_id` $sOrderDir LIMIT 1");
+        return $this->getRow ( "SELECT `user`, t1.`when` AS `when2`, `when` FROM " . TF_FORUM_POST . " AS t1 WHERE `topic_id` = ? ORDER BY t1.`when` $sOrderDir, t1.`post_id` $sOrderDir LIMIT 1", [$t]);
     }
 
     function getTopicDesc ($t)
     {
-        return $this->getOne ( "SELECT `post_text` FROM " . TF_FORUM_POST . " WHERE `topic_id` = '$t' ORDER BY `when` ASC LIMIT 1");
+        return $this->getOne ( "SELECT `post_text` FROM " . TF_FORUM_POST . " WHERE `topic_id` = ? ORDER BY `when` ASC LIMIT 1", [$t]);
     }
 
     function editPost ($p, $text, $user)
     {
         $this->logAction ($p, $user, TF_ACTION_EDIT_POST);
-        return $this->query ("UPDATE " . TF_FORUM_POST . " SET `post_text` = '$text' WHERE post_id = '$p'");
+        return $this->query ("UPDATE " . TF_FORUM_POST . " SET `post_text` = ? WHERE post_id = ?", [$text, $p]);
     }
 
     function newTopic ($f, $title, $text, $sticky, $user, $uri)
@@ -323,21 +323,25 @@ class DbForum extends BxDb
         $sticky = $sticky ? $ts : 0;
 
         // add topic title
-        if (!$this->query ("INSERT INTO" . TF_FORUM_TOPIC . " SET `topic_posts` = 1, `forum_id` = '$f', `topic_title` = '$title', `when` = '$ts', `first_post_user` = '$user', `first_post_when` = '$ts', `last_post_user` = '$user', `last_post_when` = '$ts', `topic_sticky` = '$sticky', `topic_uri` = '$uri'"))
+        if (!$this->query ("INSERT INTO" . TF_FORUM_TOPIC . " SET `topic_posts` = 1, `forum_id` = ?, `topic_title` = ?, `when` = ?, `first_post_user` = ?, `first_post_when` = ?, `last_post_user` = ?, `last_post_when` = ?, `topic_sticky` = ?, `topic_uri` = ?", [
+            $f, $title, $ts, $user, $ts, $user, $ts, $sticky, $uri
+        ])) {
             return false;
+        }
+
 
         // get topic_id
-        if (!($topic_id = $this->getOne ("SELECT `topic_id` FROM " . TF_FORUM_TOPIC . " WHERE `forum_id` = '$f' AND `when` = '$ts'")))
+        if (!($topic_id = $this->getOne ("SELECT `topic_id` FROM " . TF_FORUM_TOPIC . " WHERE `forum_id` = ? AND `when` = ?", [$f, $ts])))
             return false;
 
         // add topic post
-        if (!$this->query ("INSERT INTO" . TF_FORUM_POST . " SET `topic_id` = '$topic_id', `forum_id` = '$f', `user` = '$user', `post_text` = '$text', `when` = '$ts'"))
+        if (!$this->query ("INSERT INTO" . TF_FORUM_POST . " SET `topic_id` = ?, `forum_id` = ?, `user` = ?, `post_text` = ?, `when` = ?", [$topic_id, $f, $user, $text, $ts]))
             return false;
 
         $iPostId = $this->getLastId();
 
         // increase number of forum posts and set timeof last post
-        if (!$this->query ("UPDATE" . TF_FORUM . " SET `forum_posts` = `forum_posts` + 1, `forum_topics` = `forum_topics` + 1, `forum_last` = '$ts' WHERE `forum_id` = '$f'"))
+        if (!$this->query ("UPDATE" . TF_FORUM . " SET `forum_posts` = `forum_posts` + 1, `forum_topics` = `forum_topics` + 1, `forum_last` = ? WHERE `forum_id` = ?", [$ts, $f]))
             return false;
 
         // update user stats
@@ -348,7 +352,7 @@ class DbForum extends BxDb
 
     function stick ($topic_id, $user)
     {
-        if (!$this->query ("UPDATE" . TF_FORUM_TOPIC . " SET `topic_sticky` = IF(`topic_sticky`, 0, 1) WHERE `topic_id` = '{$topic_id}'"))
+        if (!$this->query ("UPDATE" . TF_FORUM_TOPIC . " SET `topic_sticky` = IF(`topic_sticky`, 0, 1) WHERE `topic_id` = ?", [$topic_id]))
             return false;
 
         $this->logAction ($topic_id, $user, TF_ACTION_STICK);
@@ -358,7 +362,7 @@ class DbForum extends BxDb
 
     function hideTopic ($is_hide, $topic_id, $user)
     {
-        if (!$this->query ("UPDATE" . TF_FORUM_TOPIC . " SET `topic_hidden` = '" . ($is_hide ? 1 : 0) . "' WHERE `topic_id` = '{$topic_id}'"))
+        if (!$this->query ("UPDATE" . TF_FORUM_TOPIC . " SET `topic_hidden` = '" . ($is_hide ? 1 : 0) . "' WHERE `topic_id` = ?", [$topic_id]))
             return false;
 
         $this->logAction ($topic_id, $user, $is_hide ? TF_ACTION_HIDE_TOPIC : TF_ACTION_UNHIDE_TOPIC);
@@ -368,14 +372,14 @@ class DbForum extends BxDb
 
     function hidePost ($is_hide, $post_id, $user)
     {
-        if (!$this->query ("UPDATE" . TF_FORUM_POST . " SET `hidden` = '" . ($is_hide ? 1 : 0) . "' WHERE `post_id` = '{$post_id}'"))
+        if (!$this->query ("UPDATE" . TF_FORUM_POST . " SET `hidden` = '" . ($is_hide ? 1 : 0) . "' WHERE `post_id` = ?", [$post_id]))
             return false;
 
         $this->logAction ($post_id, $user, $is_hide ? TF_ACTION_HIDE_POST : TF_ACTION_UNHIDE_POST);
 
         if (!$is_hide) {
             $p = $this->getPost ($post_id, '');
-            if ($p['votes'] < 0 && $this->query("UPDATE " . TF_FORUM_POST . " SET `votes` = 0 WHERE `post_id` = '$post_id' LIMIT 1"))
+            if ($p['votes'] < 0 && $this->query("UPDATE " . TF_FORUM_POST . " SET `votes` = 0 WHERE `post_id` = ? LIMIT 1", [$post_id]))
                 $this->logAction ($post_id, $user, TF_ACTION_RESET_VOTES);
         }
 
@@ -396,11 +400,11 @@ class DbForum extends BxDb
         $last = $this->getTopicPost ($a['topic_id'], 'last');
 
         // decrease number of topic posts
-        if (!$this->query ("UPDATE" . TF_FORUM_TOPIC . " SET `topic_posts` = `topic_posts` - 1, `last_post_user` = '{$last['user']}', `last_post_when` = '{$last['when2']}' WHERE `topic_id` = '{$a['topic_id']}'"))
+        if (!$this->query ("UPDATE" . TF_FORUM_TOPIC . " SET `topic_posts` = `topic_posts` - 1, `last_post_user` = ?, `last_post_when` = ? WHERE `topic_id` = ?", [$last['user'], $last['when2'], $a['topic_id']]))
             return false;
 
         // delete topic
-        if (0 == $this->getOne("SELECT COUNT(*) FROM " . TF_FORUM_POST . " WHERE `topic_id` = '{$a['topic_id']}'")) {
+        if (0 == $this->getOne("SELECT COUNT(*) FROM " . TF_FORUM_POST . " WHERE `topic_id` = ?", [$a['topic_id']])) {
             $this->delTopic ($a['topic_id'], '');
         }
 
@@ -412,11 +416,11 @@ class DbForum extends BxDb
         $user = $this->getPostUser ($post_id);
 
         // delete post
-        if (!$this->query ("DELETE FROM " . TF_FORUM_POST . " WHERE `post_id` = '$post_id'"))
+        if (!$this->query ("DELETE FROM " . TF_FORUM_POST . " WHERE `post_id` = ?", [$post_id]))
             return false;
 
         // decrease number of forum posts
-        $this->query ("UPDATE" . TF_FORUM . " SET `forum_posts` = `forum_posts` - 1 WHERE `forum_id` = '{$forum_id}'");
+        $this->query ("UPDATE" . TF_FORUM . " SET `forum_posts` = `forum_posts` - 1 WHERE `forum_id` = ?", [$forum_id]);
 
         // update user stats
         $this->userStatsDec ($user);
@@ -430,20 +434,20 @@ class DbForum extends BxDb
     {
         $t = $this->getTopic ($topic_id);
 
-        if (!$this->query("DELETE FROM " . TF_FORUM_TOPIC . " WHERE `topic_id` = '{$topic_id}'"))
+        if (!$this->query("DELETE FROM " . TF_FORUM_TOPIC . " WHERE `topic_id` = ?", [$topic_id]))
             return false;
 
         $this->logAction ($topic_id, $user, TF_ACTION_DEL_TOPIC);
 
         // descrease number of topics
-        $this->query ("UPDATE " . TF_FORUM . " SET `forum_topics` = `forum_topics` - 1 WHERE `forum_id` = '{$t['forum_id']}'");
+        $this->query ("UPDATE " . TF_FORUM . " SET `forum_topics` = `forum_topics` - 1 WHERE `forum_id` = ?", [$t['forum_id']]);
 
         // delete flags/subscriptions
-        $this->query("DELETE FROM " . TF_FORUM_FLAG . " WHERE `topic_id` = '{$topic_id}'");
+        $this->query("DELETE FROM " . TF_FORUM_FLAG . " WHERE `topic_id` = ?", [$topic_id]);
 
         // delete posts
-        $sql =  "SELECT `post_id` FROM " . TF_FORUM_POST . " WHERE `topic_id` = '{$topic_id}'";
-        $p = $this->getAll ($sql);
+        $sql =  "SELECT `post_id` FROM " . TF_FORUM_POST . " WHERE `topic_id` = ?";
+        $p = $this->getAll ($sql, [$topic_id]);
         foreach ($p as $r)
             $this->_deletePostWithoutUpdatingTopic ($r['post_id'], $t['forum_id']);
 
@@ -452,7 +456,7 @@ class DbForum extends BxDb
 
     function moveTopic ($topic_id, $forum_id, $old_forum_id)
     {
-        if (!$this->query ("UPDATE " . TF_FORUM_TOPIC . " SET `forum_id` = '{$forum_id}' WHERE `topic_id` = '{$topic_id}'"))
+        if (!$this->query ("UPDATE " . TF_FORUM_TOPIC . " SET `forum_id` = ? WHERE `topic_id` = ?", [$forum_id, $topic_id]))
             return false;
 
         $t = $this->getTopic ($topic_id);
@@ -460,13 +464,13 @@ class DbForum extends BxDb
             return false;
 
         // update topic posts
-        $this->query ("UPDATE " . TF_FORUM_POST . " SET `forum_id` = '{$forum_id}' WHERE `topic_id` = '{$topic_id}'");
+        $this->query ("UPDATE " . TF_FORUM_POST . " SET `forum_id` = ? WHERE `topic_id` = ?", [$forum_id, $topic_id]);
 
         // descrease number of topics/posts in old forum
-        $this->query ("UPDATE " . TF_FORUM . " SET `forum_topics` = `forum_topics` - 1, `forum_posts` = `forum_posts` - {$t['topic_posts']} WHERE `forum_id` = '{$old_forum_id}'");
+        $this->query ("UPDATE " . TF_FORUM . " SET `forum_topics` = `forum_topics` - 1, `forum_posts` = `forum_posts` - {$t['topic_posts']} WHERE `forum_id` = ?", [$old_forum_id]);
 
         // increase number of topics/posts in new forum
-        $this->query ("UPDATE " . TF_FORUM . " SET `forum_topics` = `forum_topics` + 1, `forum_posts` = `forum_posts` + {$t['topic_posts']} WHERE `forum_id` = '{$forum_id}'");
+        $this->query ("UPDATE " . TF_FORUM . " SET `forum_topics` = `forum_topics` + 1, `forum_posts` = `forum_posts` + {$t['topic_posts']} WHERE `forum_id` = ?", [$forum_id]);
 
         return true;
     }
@@ -476,21 +480,28 @@ class DbForum extends BxDb
         $ts = time ();
 
         // add topic post
-        if (!$this->query ("INSERT INTO" . TF_FORUM_POST . " SET `topic_id` = '$topic_id', `forum_id` = '$forum_id', `user` = '$user', `post_text` = '$text', `when` = '$ts'"))
+        if (!$this->query ("INSERT INTO" . TF_FORUM_POST . " SET `topic_id` = ?, `forum_id` = ?, `user` = ?, `post_text` = ?, `when` = ?", [$topic_id, $forum_id, $user, $text, $ts]))
             return false;
 
         $iReplyId = $this->getOne("SELECT LAST_INSERT_ID()");
 
         // increase number of forum posts and set timeof last post
-        if (!$this->query ("UPDATE" . TF_FORUM . " SET `forum_posts` = `forum_posts` + 1, `forum_last` = '$ts' WHERE `forum_id` = '$forum_id'"))
+        if (!$this->query ("UPDATE" . TF_FORUM . " SET `forum_posts` = `forum_posts` + 1, `forum_last` = ? WHERE `forum_id` = ?", [$ts, $forum_id]))
             return $iReplyId;
 
         // update last post
         $last = $this->getPost ($iReplyId, '');
 
         // increase number of topic posts
-        if (!$this->query ("UPDATE" . TF_FORUM_TOPIC . " SET `topic_posts` = `topic_posts` + 1, `last_post_user` = '{$last['user']}', `last_post_when` = '{$last['when']}' WHERE `topic_id` = '{$topic_id}'"))
+        if (!$this->query("UPDATE" . TF_FORUM_TOPIC . " SET `topic_posts` = `topic_posts` + 1, `last_post_user` = ?, `last_post_when` = ? WHERE `topic_id` = ?",
+            [
+                $last['user'],
+                $last['when'],
+                $topic_id
+            ])
+        ) {
             return $iReplyId;
+        }
 
         // update user stats
         $this->userStatsInc ($user, $ts);
@@ -520,9 +531,9 @@ class DbForum extends BxDb
             $sql_add2 = " LEFT JOIN " . TF_FORUM_VOTE . " AS t2 ON ( t2.`user_name` = '$u' AND t1.`post_id` = t2.`post_id`) ";
         }
 
-        $sql =  "SELECT `ft`.`forum_id`, `t1`.`topic_id`, `t1`.`post_id`, `user`, `post_text`, `votes`, `hidden`, t1.`when` $sql_add1 FROM " . TF_FORUM_POST . " AS t1 $sql_add2 INNER JOIN " . TF_FORUM_TOPIC . " AS `ft`  ON (`ft`.`topic_id` = `t1`.`topic_id`) WHERE $sName = '$sVal' ORDER BY t1.`when` " . ('ASC' == $sOrder ? 'ASC' : 'DESC') . ((int)$iLimit ? ' LIMIT ' . (int)$iLimit : '');
+        $sql =  "SELECT `ft`.`forum_id`, `t1`.`topic_id`, `t1`.`post_id`, `user`, `post_text`, `votes`, `hidden`, t1.`when` $sql_add1 FROM " . TF_FORUM_POST . " AS t1 $sql_add2 INNER JOIN " . TF_FORUM_TOPIC . " AS `ft`  ON (`ft`.`topic_id` = `t1`.`topic_id`) WHERE $sName = ? ORDER BY t1.`when` " . ('ASC' == $sOrder ? 'ASC' : 'DESC') . ((int)$iLimit ? ' LIMIT ' . (int)$iLimit : '');
 
-        return $this->getAll ($sql);
+        return $this->getAll ($sql, [$sVal]);
     }
 
     function _cutPostText (&$a, $sPostTextField = 'post_text')
@@ -554,11 +565,11 @@ class DbForum extends BxDb
             FROM " . TF_FORUM_POST . " AS t1
         INNER JOIN " . TF_FORUM_TOPIC . " AS t2
             ON (t1.`topic_id` = t2.`topic_id`)
-        WHERE  t1.`user` = '$user' AND `t2`.`topic_hidden` = '0'
+        WHERE  t1.`user` = ? AND `t2`.`topic_hidden` = '0'
         ORDER BY " . $order_by . "
         LIMIT $limit";
 
-        $a = $this->getAll ($sql);
+        $a = $this->getAll ($sql, [$user]);
         $this->_cutPostText($a);
         return $a;
     }
@@ -604,89 +615,89 @@ class DbForum extends BxDb
             $sql_add2 = " LEFT JOIN " . TF_FORUM_VOTE . " AS t2 ON ( t2.`user_name` = '$u' AND t1.`post_id` = t2.`post_id`) ";
         }
 
-        $sql =  "SELECT `forum_id`, `topic_id`, t1.`post_id`, `user`, `post_text`, `votes`, `hidden`, t1.`when` $sql_add1  FROM " . TF_FORUM_POST . " AS t1 $sql_add2 WHERE t1.`post_id` = '$post_id' LIMIT 1";
-        return $this->getRow ($sql);
+        $sql =  "SELECT `forum_id`, `topic_id`, t1.`post_id`, `user`, `post_text`, `votes`, `hidden`, t1.`when` $sql_add1  FROM " . TF_FORUM_POST . " AS t1 $sql_add2 WHERE t1.`post_id` = ? LIMIT 1";
+        return $this->getRow ($sql, [$post_id]);
     }
 
     function getPostWhen ($post_id)
     {
-        return $this->getOne ("SELECT `when` FROM " . TF_FORUM_POST . " WHERE `post_id` = '$post_id' LIMIT 1");
+        return $this->getOne ("SELECT `when` FROM " . TF_FORUM_POST . " WHERE `post_id` = ? LIMIT 1", [$post_id]);
     }
 
     function getUserPosts ($u)
     {
         //return $this->getOne ("SELECT COUNT(`post_id`) FROM " . TF_FORUM_POST . " WHERE `user` = '$u'");
-        return (int)$this->getOne ("SELECT `posts` FROM " . TF_FORUM_USER_STAT . " WHERE `user` = '$u'");
+        return (int)$this->getOne ("SELECT `posts` FROM " . TF_FORUM_USER_STAT . " WHERE `user` = ?", [$u]);
     }
 
     function insertVote ($post_id, $u, $vote)
     {
-        $isOwnPost = $this->getOne("SELECT `post_id` FROM " . TF_FORUM_POST . " WHERE `user` = '$u' AND `post_id` = '$post_id' LIMIT 1");
+        $isOwnPost = $this->getOne("SELECT `post_id` FROM " . TF_FORUM_POST . " WHERE `user` = ? AND `post_id` = ? LIMIT 1", [$u, $post_id]);
         if ($isOwnPost)
             return false;
 
-        $vote_prev = $this->getOne("SELECT `vote_point` FROM " . TF_FORUM_VOTE . " WHERE `user_name` = '$u' AND `post_id` = '$post_id'");
+        $vote_prev = $this->getOne("SELECT `vote_point` FROM " . TF_FORUM_VOTE . " WHERE `user_name` = ? AND `post_id` = ?", [$u, $post_id]);
 
-        $sql = "INSERT INTO " . TF_FORUM_VOTE . " SET `user_name` = '$u', `post_id` = '$post_id', `vote_point` = " . ($vote > 0 ? '1' : '-1') . ", `vote_when` = UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE `vote_point` = " . ($vote > 0 ? '1' : '-1') . ", `vote_when` = UNIX_TIMESTAMP()";
-        if (!$this->query($sql))
+        $sql = "INSERT INTO " . TF_FORUM_VOTE . " SET `user_name` = ?, `post_id` = ?, `vote_point` = " . ($vote > 0 ? '1' : '-1') . ", `vote_when` = UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE `vote_point` = " . ($vote > 0 ? '1' : '-1') . ", `vote_when` = UNIX_TIMESTAMP()";
+        if (!$this->query($sql, [$u, $post_id]))
             return false;
-    
+
         $diff = $vote - $vote_prev;
         if ($diff > 0 || $diff < -1)
-            return $this->query("UPDATE " . TF_FORUM_POST . " SET `votes` = `votes` + " . ($diff < -1 ? -1 : 1) . " WHERE `post_id` = '$post_id' LIMIT 1");
+            return $this->query("UPDATE " . TF_FORUM_POST . " SET `votes` = `votes` + " . ($diff < -1 ? -1 : 1) . " WHERE `post_id` = ? LIMIT 1", [$post_id]);
         else
             return true;
     }
 
     function getTopicByPostId ($post_id)
     {
-        $sql = "SELECT `topic_id`, `forum_id` FROM " . TF_FORUM_POST . " WHERE `post_id` = '$post_id'";
-        return $this->getRow ($sql);
+        $sql = "SELECT `topic_id`, `forum_id` FROM " . TF_FORUM_POST . " WHERE `post_id` = ?";
+        return $this->getRow ($sql, [$post_id]);
     }
 
     function report ($post_id, $u)
     {
         $this->logAction ($post_id, $u, TF_ACTION_REPORT);
 
-        $sql = "UPDATE " . TF_FORUM_POST . " SET `reports` = `reports` + 1 WHERE `post_id` = '$post_id' LIMIT 1";
-        return $this->query($sql);
+        $sql = "UPDATE " . TF_FORUM_POST . " SET `reports` = `reports` + 1 WHERE `post_id` = ? LIMIT 1";
+        return $this->query($sql, [$post_id]);
     }
 
     function isFlagged ($topic_id, $u)
     {
-        $sql = "SELECT `topic_id` FROM " . TF_FORUM_FLAG . " WHERE `user` = '$u' AND `topic_id` = '$topic_id'";
-        return $this->getOne ($sql);
+        $sql = "SELECT `topic_id` FROM " . TF_FORUM_FLAG . " WHERE `user` = ? AND `topic_id` = ?";
+        return $this->getOne ($sql, [$u, $topic_id]);
     }
 
     function flag ($topic_id, $u)
     {
-        $sql = "INSERT INTO " . TF_FORUM_FLAG . " SET `user` = '$u', `topic_id` = '$topic_id', `when` = UNIX_TIMESTAMP()";
-        return $this->query ($sql);
+        $sql = "INSERT INTO " . TF_FORUM_FLAG . " SET `user` = ?, `topic_id` = ?, `when` = UNIX_TIMESTAMP()";
+        return $this->query ($sql, [$u, $topic_id]);
     }
 
     function unflag ($topic_id, $u)
     {
-        $sql = "DELETE FROM " . TF_FORUM_FLAG . " WHERE `user` = '$u' AND `topic_id` = '$topic_id' LIMIT 1";
-        return $this->query ($sql);
+        $sql = "DELETE FROM " . TF_FORUM_FLAG . " WHERE `user` = ? AND `topic_id` = ? LIMIT 1";
+        return $this->query ($sql, [$u, $topic_id]);
     }
 
     function updateUserActivity ($user)
     {
         global $gConf;
 
-        $sql = "SELECT `act_current` FROM " . TF_FORUM_USER_ACT . " WHERE `user`  = '$user' LIMIT 1";
-        $current = (int)$this->getOne ($sql);
+        $sql = "SELECT `act_current` FROM " . TF_FORUM_USER_ACT . " WHERE `user`  = ? LIMIT 1";
+        $current = (int)$this->getOne ($sql, [$user]);
 
         if ((time() - $current) > $gConf['online']) {
-            if ((int)$this->getOne ("SELECT COUNT(*) FROM " . TF_FORUM_USER_ACT . " WHERE `user`  = '$user' LIMIT 1"))
-                $sql = "UPDATE " . TF_FORUM_USER_ACT . " SET `act_current`='" . time() . "', `act_last` = '$current' WHERE `user` = '$user'";
+            if ((int)$this->getOne ("SELECT COUNT(*) FROM " . TF_FORUM_USER_ACT . " WHERE `user`  = ? LIMIT 1", [$user]))
+                $sql = "UPDATE " . TF_FORUM_USER_ACT . " SET `act_current`='" . time() . "', `act_last` = '$current' WHERE `user` = ?";
             else
-                $sql = "INSERT INTO " . TF_FORUM_USER_ACT . " (`user`,`act_current`,`act_last`) VALUES ('$user', '" . time() . "', '$current')";
+                $sql = "INSERT INTO " . TF_FORUM_USER_ACT . " (`user`,`act_current`,`act_last`) VALUES (?, '" . time() . "', '$current')";
         } else {
-            $sql = "UPDATE " . TF_FORUM_USER_ACT . " SET `act_current`='" . time() . "' WHERE `user` = '$user'";
+            $sql = "UPDATE " . TF_FORUM_USER_ACT . " SET `act_current`='" . time() . "' WHERE `user` = ?";
         }
 
-        return $this->query ($sql);
+        return $this->query ($sql, [$user]);
     }
 
     function updateUserLastActivity ($user)
@@ -695,48 +706,48 @@ class DbForum extends BxDb
 
         $t = time();
 
-        $sql = "UPDATE " . TF_FORUM_USER_ACT . " SET `act_current`='$t', `act_last` = '$t' WHERE `user` = '$user'";
+        $sql = "UPDATE " . TF_FORUM_USER_ACT . " SET `act_current`= ?, `act_last` = ? WHERE `user` = ?";
 
-        return $this->query ($sql);
+        return $this->query ($sql, [$t, $t, $user]);
     }
 
     function getUserLastActivity ($user)
     {
-        $sql = "SELECT `act_last` FROM " . TF_FORUM_USER_ACT . " WHERE `user`  = '$user' LIMIT 1";
-        return (int)$this->getOne ($sql);
+        $sql = "SELECT `act_last` FROM " . TF_FORUM_USER_ACT . " WHERE `user`  = ? LIMIT 1";
+        return (int)$this->getOne ($sql, [$user]);
     }
 
     function getUserLastOnlineTime ($user)
     {
         global $gConf;
-        return $this->getOne ("SELECT `act_current` AS `act_current` FROM " . TF_FORUM_USER_ACT . " WHERE `user`  = '$user' LIMIT 1");
+        return $this->getOne ("SELECT `act_current` AS `act_current` FROM " . TF_FORUM_USER_ACT . " WHERE `user`  = ? LIMIT 1", [$user]);
     }
 
     function userStatsInc ($user, $when)
     {
-        $u = $this->getOne ("SELECT `user` FROM " . TF_FORUM_USER_STAT . " WHERE `user` = '$user'");
+        $u = $this->getOne ("SELECT `user` FROM " . TF_FORUM_USER_STAT . " WHERE `user` = ?", [$user]);
         if ($u) {
-            $this->query ("UPDATE " . TF_FORUM_USER_STAT . " SET `posts` = `posts` + 1, `user_last_post` = '$when' WHERE `user` = '$user'");
+            $this->query ("UPDATE " . TF_FORUM_USER_STAT . " SET `posts` = `posts` + 1, `user_last_post` = ? WHERE `user` = ?", [$when, $user]);
         } else {
-            $this->query ("INSERT INTO " . TF_FORUM_USER_STAT . " SET `posts` = 1, `user_last_post` = '$when', `user` = '$user'");
+            $this->query ("INSERT INTO " . TF_FORUM_USER_STAT . " SET `posts` = 1, `user_last_post` = ?, `user` = ?", [$when, $user]);
         }
     }
 
     function userStatsDec ($user)
     {
-        $u = $this->getOne ("SELECT `user` FROM " . TF_FORUM_USER_STAT . " WHERE `user` = '$user'");
+        $u = $this->getOne ("SELECT `user` FROM " . TF_FORUM_USER_STAT . " WHERE `user` = ?", [$user]);
         if (!$u) return;
 
-        $when = $this->getOne ("SELECT `when` FROM " . TF_FORUM_POST . " WHERE `user` = '$user' ORDER BY `when` DESC LIMIT 1");
+        $when = $this->getOne ("SELECT `when` FROM " . TF_FORUM_POST . " WHERE `user` = ? ORDER BY `when` DESC LIMIT 1", [$user]);
 
-        return $this->query ("UPDATE " . TF_FORUM_USER_STAT . " SET `posts` = `posts` - 1, `user_last_post` = '$when' WHERE `user` = '$user'");
+        return $this->query ("UPDATE " . TF_FORUM_USER_STAT . " SET `posts` = `posts` - 1, `user_last_post` = ? WHERE `user` = ?", [$when, $user]);
     }
 
     function getUserStat ($u)
     {
         global $gConf;
 
-        return $this->getRow ("SELECT `posts`, `user_last_post` FROM " . TF_FORUM_USER_STAT . " WHERE `user` = '$u'");
+        return $this->getRow ("SELECT `posts`, `user_last_post` FROM " . TF_FORUM_USER_STAT . " WHERE `user` = ?", [$u]);
     }
 
     function _cutLivePosts (&$a)
@@ -769,7 +780,7 @@ class DbForum extends BxDb
 
     function getNewPostTs ($ts)
     {
-        return $this->getOne("SELECT `when` FROM " . TF_FORUM_POST . " WHERE `when` > '$ts' ORDER BY `when` ASC LIMIT 1");
+        return $this->getOne("SELECT `when` FROM " . TF_FORUM_POST . " WHERE `when` > ? ORDER BY `when` ASC LIMIT 1", [$ts]);
     }
 
     function getLogActionsCount ($u, $sAction, $iPeriod = 0)
@@ -778,37 +789,37 @@ class DbForum extends BxDb
         if ($iPeriod)
             $sWhere = " AND `action_when` >= (UNIX_TIMESTAMP() - $iPeriod)";
 
-        $sql = "SELECT COUNT(*) FROM " . TF_FORUM_ACTIONS_LOG . " WHERE `user_name` = '" . $this->escape($u) . "' AND `action_name` = '" . $sAction . "' " . $sWhere;
-        return $this->getOne($sql);
+        $sql = "SELECT COUNT(*) FROM " . TF_FORUM_ACTIONS_LOG . " WHERE `user_name` = ? AND `action_name` = ? " . $sWhere;
+        return $this->getOne($sql, [$u, $sAction]);
     }
 
     function logAction ($id, $u, $action)
     {
-        $sql = "INSERT INTO " . TF_FORUM_ACTIONS_LOG . " SET `user_name` = '" . $this->escape($u) . "', `id` = '$id', `action_name` = '" . $action . "', `action_when` = UNIX_TIMESTAMP()";
-        return $this->query($sql);
+        $sql = "INSERT INTO " . TF_FORUM_ACTIONS_LOG . " SET `user_name` = ?, `id` = ?, `action_name` = ?, `action_when` = UNIX_TIMESTAMP()";
+        return $this->query($sql, [$u, $id, $action]);
     }
 
     function updateAttachmentDownloads($hash)
     {
-        $sql = "UPDATE " . TF_FORUM_ATTACHMENTS . " SET `att_downloads` = `att_downloads` + 1 WHERE `att_hash` = '$hash' LIMIT 1";
-        return $this->query ($sql);
+        $sql = "UPDATE " . TF_FORUM_ATTACHMENTS . " SET `att_downloads` = `att_downloads` + 1 WHERE `att_hash` = ? LIMIT 1";
+        return $this->query ($sql, [$hash]);
     }
 
     function getAttachment($hash)
     {
-        $sql = "SELECT `a`.`att_hash`, `a`.`att_name`, `a`.`att_type`, `a`.`att_size`, `a`.`att_downloads`, `p`.`forum_id` FROM " . TF_FORUM_ATTACHMENTS . " AS `a` LEFT JOIN " . TF_FORUM_POST . " AS `p` ON (`a`.`post_id` = `p`.`post_id`) WHERE `att_hash` = '$hash' LIMIT 1";
-        return $this->getRow ($sql);
+        $sql = "SELECT `a`.`att_hash`, `a`.`att_name`, `a`.`att_type`, `a`.`att_size`, `a`.`att_downloads`, `p`.`forum_id` FROM " . TF_FORUM_ATTACHMENTS . " AS `a` LEFT JOIN " . TF_FORUM_POST . " AS `p` ON (`a`.`post_id` = `p`.`post_id`) WHERE `att_hash` = ? LIMIT 1";
+        return $this->getRow ($sql, [$hash]);
     }
 
     function getAttachments ($post_id)
     {
-        $sql = "SELECT `att_hash`, `att_name`, `att_type`, `att_size`, `att_downloads` FROM " . TF_FORUM_ATTACHMENTS . " WHERE `post_id` = '$post_id'";
-        return $this->getAll ($sql);
+        $sql = "SELECT `att_hash`, `att_name`, `att_type`, `att_size`, `att_downloads` FROM " . TF_FORUM_ATTACHMENTS . " WHERE `post_id` = ?";
+        return $this->getAll ($sql, [$post_id]);
     }
 
     function insertAttachment ($post_id, $hash, $name, $type, $size)
     {
-        return $this->query("INSERT INTO " . TF_FORUM_ATTACHMENTS . " SET `att_hash` = '$hash', `post_id` = '$post_id', `att_name` = '$name', `att_type` = '$type', `att_when` = UNIX_TIMESTAMP(), `att_size` = '$size'");
+        return $this->query("INSERT INTO " . TF_FORUM_ATTACHMENTS . " SET `att_hash` = ?, `post_id` = ?, `att_name` = ?, `att_type` = ?, `att_when` = UNIX_TIMESTAMP(), `att_size` = ?", [$hash, $post_id, $name, $type, $size]);
     }
 
     function removeAttachments ($post_id)
@@ -824,7 +835,7 @@ class DbForum extends BxDb
     function removeAttachment ($hash)
     {
         global $gConf;
-        $ret = $this->query("DELETE FROM " . TF_FORUM_ATTACHMENTS . " WHERE `att_hash` = '$hash'");
+        $ret = $this->query("DELETE FROM " . TF_FORUM_ATTACHMENTS . " WHERE `att_hash` = ?", [$hash]);
         @unlink($gConf['dir']['attachments'] . orca_build_path ($hash) . $hash);
         return $ret;
     }
@@ -839,28 +850,32 @@ class DbForum extends BxDb
                 $x = mt_rand(0, strlen($sChars)-1);
                 $s .= $sChars{$x};
             }
-        } while ($this->getOne("SELECT `post_id` FROM " . TF_FORUM_ATTACHMENTS . " WHERE `att_hash` = '$s' LIMIT 1"));
+        } while ($this->getOne("SELECT `post_id` FROM " . TF_FORUM_ATTACHMENTS . " WHERE `att_hash` = ? LIMIT 1", [$s]));
         return $s;
     }
 
     function getSignature ($user)
     {
-        return $this->getOne ("SELECT `signature` FROM " . TF_FORUM_SIGNATURES . " WHERE `user` = '$user'");
+        return $this->getOne ("SELECT `signature` FROM " . TF_FORUM_SIGNATURES . " WHERE `user` = ?", [$user]);
     }
 
     function updateSignature ($signature, $user)
     {
-        return $this->query ("INSERT INTO " . TF_FORUM_SIGNATURES . " SET `user` = '$user', `signature` = '$signature', `when` = UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE `signature` = '$signature', `when` = UNIX_TIMESTAMP()");
+        return $this->query ("INSERT INTO " . TF_FORUM_SIGNATURES . " SET `user` = ?, `signature` = ?, `when` = UNIX_TIMESTAMP() ON DUPLICATE KEY UPDATE `signature` = ?, `when` = UNIX_TIMESTAMP()", [
+            $user,
+            $signature,
+            $signature
+        ]);
     }
 
     function isLocked ($topic_id)
     {
-        return $this->getOne ("SELECT `topic_locked` FROM " . TF_FORUM_TOPIC . " WHERE `topic_id` = $topic_id LIMIT 1");
+        return $this->getOne ("SELECT `topic_locked` FROM " . TF_FORUM_TOPIC . " WHERE `topic_id` = ? LIMIT 1", [$topic_id]);
     }
 
     function lock ($topic_id, $user)
     {
-        if (!$this->query ("UPDATE " . TF_FORUM_TOPIC . " SET `topic_locked` = IF(`topic_locked`, 0, 1) WHERE `topic_id` = $topic_id LIMIT 1"))
+        if (!$this->query ("UPDATE " . TF_FORUM_TOPIC . " SET `topic_locked` = IF(`topic_locked`, 0, 1) WHERE `topic_id` = ? LIMIT 1", [$topic_id]))
             return false;
 
         $this->logAction ($topic_id, $user, TF_ACTION_LOCK);
@@ -878,16 +893,16 @@ class DbForum extends BxDb
 
         if ($sUserNew == $gConf['anonymous']) {
             unset($aTables2Field['forum_actions_log']);
-            $iAffectedRows += $this->query ("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_flag` WHERE `user` = '" . $this->escape($sUserOld) . "'");
-            $iAffectedRows += $this->query ("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_signatures` WHERE `user` = '" . $this->escape($sUserOld) . "'");
-            $iAffectedRows += $this->query ("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_user_activity` WHERE `user` = '" . $this->escape($sUserOld) . "'");
-            $iAffectedRows += $this->query ("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_user_stat` WHERE `user` = '" . $this->escape($sUserOld) . "'");
-            $iAffectedRows += $this->query ("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_vote` WHERE `user` = '" . $this->escape($sUserOld) . "'");
+            $iAffectedRows += $this->query ("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_flag` WHERE `user` = ?", [$sUserOld]);
+            $iAffectedRows += $this->query ("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_signatures` WHERE `user` = ?", [$sUserOld]);
+            $iAffectedRows += $this->query ("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_user_activity` WHERE `user` = ?", [$sUserOld]);
+            $iAffectedRows += $this->query ("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_user_stat` WHERE `user` = ?", [$sUserOld]);
+            $iAffectedRows += $this->query ("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_vote` WHERE `user` = ?", [$sUserOld]);
         }
 
         foreach ($aTables2Field as $sTable => $sField)
-            $iAffectedRows += $this->query ("UPDATE `" . $gConf['db']['prefix'] . $sTable . "` SET `" . $sField . "` = '" . $this->escape($sUserNew) . "' WHERE `" . $sField . "` = '" . $this->escape($sUserOld) . "'");
-        $iAffectedRows += $this->query ("UPDATE `" . $gConf['db']['prefix'] . "forum_topic` SET `last_post_user` = '" . $this->escape($sUserNew) . "' WHERE `last_post_user` = '" . $this->escape($sUserOld) . "'");
+            $iAffectedRows += $this->query ("UPDATE `" . $gConf['db']['prefix'] . $sTable . "` SET `" . $sField . "` = '" . $this->escape($sUserNew) . "' WHERE `" . $sField . "` = ?", [$sUserOld]);
+        $iAffectedRows += $this->query ("UPDATE `" . $gConf['db']['prefix'] . "forum_topic` SET `last_post_user` = '" . $this->escape($sUserNew) . "' WHERE `last_post_user` = ?", [$sUserOld]);
 
         return $iAffectedRows;
     }
@@ -900,17 +915,17 @@ class DbForum extends BxDb
         $iAffectedRowsForumPosts = 0;
 
         $aTables2Field = $this->_aUserTables2Field;
-        
+
         unset($aTables2Field['forum_topic']);
         unset($aTables2Field['forum_post']);
 
         foreach ($aTables2Field as $sTable => $sField)
-            $iAffectedRows += $this->query ("DELETE FROM `" . $gConf['db']['prefix'] . $sTable . "` WHERE `" . $sField . "` = '" . $this->escape($sUser) . "'");
+            $iAffectedRows += $this->query ("DELETE FROM `" . $gConf['db']['prefix'] . $sTable . "` WHERE `" . $sField . "` = ?", [$sUser]);
 
-        $aPosts = $this->getAll("SELECT `post_id` FROM " . TF_FORUM_POST . " WHERE `user` = '" . $this->escape($sUser) . "'");
+        $aPosts = $this->getAll("SELECT `post_id` FROM " . TF_FORUM_POST . " WHERE `user` = ?", [$sUser]);
         foreach ($aPosts as $r)
             $iAffectedRows += $this->deletePost ($r['post_id']);
 
         return $iAffectedRows;
-    }    
+    }
 }

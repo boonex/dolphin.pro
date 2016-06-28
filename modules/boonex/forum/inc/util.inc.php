@@ -110,7 +110,8 @@ function prepare_to_db(&$s, $iAllowHTML = 1)
 {
     if (1 == $iAllowHTML) {
         cleanPost($s);
-        $s = process_db_input($s, BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION);
+        // if html is allowed than we will not run it through process_db_input
+        // cuz are using PDO bindings and don't want to run escape on it
     } elseif (-1 == $iAllowHTML) {
         $s = process_db_input($s);
     } else {
@@ -122,7 +123,9 @@ function filter_to_db($s, $iAllowHTML = 0)
 {
     if ($iAllowHTML) {
         cleanPost($s);
-        return process_db_input($s, BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION);
+        // if html is allowed than we will not run it through process_db_input
+        // cuz are using PDO bindings and don't want to run escape on it
+        return $s;
     } else {
         return process_db_input($s, BX_TAGS_STRIP);
     }

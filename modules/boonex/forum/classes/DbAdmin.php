@@ -33,16 +33,16 @@ class DbAdmin extends BxDb
 
     function getCatByForumId ($forum_id)
     {
-        $sql = "SELECT `cat_id`, `cat_uri` FROM " . TF_FORUM . " INNER JOIN " . TF_FORUM_CAT . " USING (`cat_id`) WHERE `forum_id` = '$forum_id' LIMIT 1";
-        return $this->getRow ($sql);
+        $sql = "SELECT `cat_id`, `cat_uri` FROM " . TF_FORUM . " INNER JOIN " . TF_FORUM_CAT . " USING (`cat_id`) WHERE `forum_id` = ? LIMIT 1";
+        return $this->getRow ($sql, [$forum_id]);
     }
 
     function getCatOrder ($cat_id)
     {
         if (!$cat_id)
             return false;
-        $sql = "SELECT `cat_order` FROM " . TF_FORUM_CAT . " WHERE `cat_id` = $cat_id LIMIT 1";
-        return $this->getOne($sql);
+        $sql = "SELECT `cat_order` FROM " . TF_FORUM_CAT . " WHERE `cat_id` = ? LIMIT 1";
+        return $this->getOne($sql, [$cat_id]);
     }
 
     function getCatsInOrder ($cat_order, $dir, $num)
@@ -60,8 +60,8 @@ class DbAdmin extends BxDb
 
     function deleteCategory ($cat_id)
     {
-        $sql = "DELETE FROM " . TF_FORUM_CAT . " WHERE `cat_id` = '$cat_id'";
-        return $this->query ($sql);
+        $sql = "DELETE FROM " . TF_FORUM_CAT . " WHERE `cat_id` = ?";
+        return $this->query ($sql, [$cat_id]);
     }
 
     function deleteForumPosts ($forum_id)
@@ -72,58 +72,58 @@ class DbAdmin extends BxDb
             $this->query ("DELETE FROM " . TF_FORUM_REPORT . " WHERE `post_id` = '{$r['post_id']}'");
             $this->query ("UPDATE " . TF_FORUM_USER_STAT . " SET `posts` = `posts` - 1 WHERE `user` = '{$r['user']}' AND `posts` > 0");
         }
-        return $this->query ("DELETE FROM " . TF_FORUM_POST . " WHERE `forum_id` = '$forum_id'");
+        return $this->query ("DELETE FROM " . TF_FORUM_POST . " WHERE `forum_id` = ?", [$forum_id]);
     }
 
     function deleteForumTopics ($forum_id)
     {
-        $a = $this->getAll ("SELECT `topic_id` FROM " . TF_FORUM_TOPIC . " WHERE `forum_id` = '$forum_id'");
+        $a = $this->getAll ("SELECT `topic_id` FROM " . TF_FORUM_TOPIC . " WHERE `forum_id` = ?", [$forum_id]);
         foreach ($a as $r)
-            $this->query ("DELETE FROM " . TF_FORUM_FLAG . " WHERE `topic_id` = '{$r['topic_id']}'");
+            $this->query ("DELETE FROM " . TF_FORUM_FLAG . " WHERE `topic_id` = ?", [$r['topic_id']]);
 
-        return $this->query ("DELETE FROM " . TF_FORUM_TOPIC . " WHERE `forum_id` = '$forum_id'");
+        return $this->query ("DELETE FROM " . TF_FORUM_TOPIC . " WHERE `forum_id` = ?", [$forum_id]);
     }
 
     function deleteForum ($forum_id)
     {
-        $sql = "DELETE FROM " . TF_FORUM . " WHERE `forum_id` = '$forum_id'";
-        return $this->query ($sql);
+        $sql = "DELETE FROM " . TF_FORUM . " WHERE `forum_id` = ?";
+        return $this->query ($sql, [$forum_id]);
     }
 
     function getCatName ($cat_id)
     {
-        $sql = "SELECT `cat_name` FROM " . TF_FORUM_CAT . " WHERE `cat_id` = '$cat_id' LIMIT 1";
-        return $this->getOne ($sql);
+        $sql = "SELECT `cat_name` FROM " . TF_FORUM_CAT . " WHERE `cat_id` = ? LIMIT 1";
+        return $this->getOne ($sql, [$cat_id]);
     }
 
     function editCategory ($cat_id, $cat_name, $cat_order, $cat_expanded)
     {
-        $sql = "UPDATE " . TF_FORUM_CAT . " SET `cat_name` = '$cat_name', `cat_order` = '$cat_order', `cat_expanded` = '$cat_expanded' WHERE `cat_id` = '$cat_id'";
-        return $this->query ($sql);
+        $sql = "UPDATE " . TF_FORUM_CAT . " SET `cat_name` = ?, `cat_order` = ?, `cat_expanded` = ? WHERE `cat_id` = ?";
+        return $this->query ($sql, [$cat_name, $cat_order, $cat_expanded, $cat_id]);
     }
 
     function insertCategory ($cat_name, $uri, $cat_order, $cat_expanded)
     {
-        $sql = "INSERT INTO " . TF_FORUM_CAT . " SET `cat_name` = '$cat_name', `cat_uri` = '$uri', `cat_order` = '$cat_order', `cat_expanded` = '$cat_expanded'";
-        return $this->query ($sql);
+        $sql = "INSERT INTO " . TF_FORUM_CAT . " SET `cat_name` = ?, `cat_uri` = ?, `cat_order` = ?, `cat_expanded` = ?";
+        return $this->query ($sql, [$cat_name, $uri, $cat_order, $cat_expanded]);
     }
 
     function getForum ($forum_id)
     {
-        $sql = "SELECT `cat_id`, `forum_title`, `forum_desc`, `forum_order`, `forum_type` FROM " . TF_FORUM . " WHERE `forum_id` = '$forum_id' LIMIT 1";
-        return $this->getRow ($sql);
+        $sql = "SELECT `cat_id`, `forum_title`, `forum_desc`, `forum_order`, `forum_type` FROM " . TF_FORUM . " WHERE `forum_id` = ? LIMIT 1";
+        return $this->getRow ($sql, [$forum_id]);
     }
 
     function editForum ($forum_id, $title, $desc, $type, $order)
     {
-        $sql = "UPDATE " . TF_FORUM . " SET `forum_title` = '$title', `forum_desc` = '$desc', `forum_type` = '$type', `forum_order` = '$order' WHERE `forum_id` = '$forum_id'";
-        return $this->query ($sql);
+        $sql = "UPDATE " . TF_FORUM . " SET `forum_title` = ?, `forum_desc` = ?, `forum_type` = ?, `forum_order` = ? WHERE `forum_id` = ?";
+        return $this->query ($sql, [$title, $desc, $type, $order, $forum_id]);
     }
 
     function insertForum ($cat_id, $title, $desc, $type, $uri, $order)
     {
-        $sql = "INSERT INTO " . TF_FORUM . " SET `cat_id` = '$cat_id', `forum_title` = '$title', `forum_desc` = '$desc', `forum_type` = '$type', `forum_uri` = '$uri', `forum_order` = '$order'";
-        return $this->query ($sql);
+        $sql = "INSERT INTO " . TF_FORUM . " SET `cat_id` = ?, `forum_title` = ?, `forum_desc` = ?, `forum_type` = ?, `forum_uri` = ?, `forum_order` = ?";
+        return $this->query ($sql, [$cat_id, $title, $desc, $type, $uri, $order]);
     }
 
     function getReportedPosts ($u)
@@ -155,7 +155,7 @@ class DbAdmin extends BxDb
 
     function clearReport ($post_id)
     {
-        return $this->query ("UPDATE " . TF_FORUM_POST . " SET `reports` = 0 WHERE `post_id` = '$post_id' LIMIT 1");
+        return $this->query ("UPDATE " . TF_FORUM_POST . " SET `reports` = 0 WHERE `post_id` = ? LIMIT 1", [$post_id]);
     }
 
 // private functions
