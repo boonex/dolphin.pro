@@ -32,7 +32,6 @@ function postVideo($sUploadedFile, $aFileInfo)
             deleteTempVideos($sId);
             return false;
         }
-        $oDb->reconnect();
     }
     $aResult = initVideo($sId, $aFileInfo['category'], addslashes($aFileInfo['title']), addslashes($aFileInfo['tags']), addslashes($aFileInfo['description']));
     if($aResult['status'] == SUCCESS_VAL) return $aResult['file'];

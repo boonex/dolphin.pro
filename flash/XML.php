@@ -68,4 +68,3 @@ switch($sContentsType) {
         break;
 }
 echo $sContents;
-$oDb->disconnect();

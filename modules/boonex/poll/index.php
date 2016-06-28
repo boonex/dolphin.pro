@@ -68,7 +68,7 @@
             : null
     );
 
-    $oPoll = & new BxPollModule($aModule, $aPollSettings);
+    $oPoll = new BxPollModule($aModule, $aPollSettings);
 
     $_page['name_index']	= $iIndex;
 

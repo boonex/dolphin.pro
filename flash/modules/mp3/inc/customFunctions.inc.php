@@ -35,7 +35,6 @@ function postMusic($sUploadedFile, $aFileInfo)
             deleteTempMp3s($sId);
             return false;
         }
-        if(!$aFileInfo['mp3']) $oDb->reconnect();
     }
     $aResult = initFile($sId, $aFileInfo['category'], addslashes($aFileInfo['title']), addslashes($aFileInfo['tags']), addslashes($aFileInfo['description']));
 

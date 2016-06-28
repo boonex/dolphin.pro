@@ -213,8 +213,8 @@
                 $this -> sPathToModule .= '&action=' . rawurlencode($this -> aPollSettings['action']);
             }
 
-            $this -> oPrivacy = &new BxPollPrivacy($this);
-            $this -> oSearch  = &new BxPollSearch($this);
+            $this -> oPrivacy = new BxPollPrivacy($this);
+            $this -> oSearch  = new BxPollSearch($this);
         }
 
         /**
@@ -973,7 +973,7 @@
                     $aForm['inputs']['allow_comments_to']['value']  = (string) $aPollInfo['allow_comment_to'];
                     $aForm['inputs']['allow_vote_to']['value']      = (string) $aPollInfo['allow_vote_to'];
 
-                    $oForm = &new BxTemplFormView($aForm);
+                    $oForm = new BxTemplFormView($aForm);
                     $oForm -> initChecker();
 
                     // create new poll
@@ -1308,7 +1308,7 @@
         {
             bx_import('BxTemplSearchResult');
 
-            $oNewSearchresult = &new BxTemplSearchResult();
+            $oNewSearchresult = new BxTemplSearchResult();
 
             $aPolls     = array();
             $aPollsList = array();
