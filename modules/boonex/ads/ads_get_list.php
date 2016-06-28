@@ -6,7 +6,6 @@
 
 require_once('../../../inc/header.inc.php');
 require_once( BX_DIRECTORY_PATH_INC . "db.inc.php" );
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 
 $sSQL = '';
 $iCategID = (int)bx_get('cat_id');
@@ -53,8 +52,7 @@ switch (bx_get('action')) {
             $aResult['Unit2'] = $sUnit2;
             $aResult['SubCats'] = $aSubCats;
 
-            $oJson = new Services_JSON();
-            echo $oJson->encode($aResult);
+            echo json_encode($aResult);
         }
         break;
 }

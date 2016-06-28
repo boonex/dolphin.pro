@@ -13,7 +13,6 @@ require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'profiles.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'admin_design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'utils.inc.php' );
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 
 bx_import('BxTemplSearchResult');
 bx_import('BxTemplBrowse');
@@ -84,8 +83,7 @@ if(isset($_POST['adm-mp-activate']) && (bool)$_POST['members']) {
             $aParams[$aValue[0]] = $aValue[1];
         }
 
-    $oJson = new Services_JSON();
-    echo $oJson->encode(array('code' => 0, 'content' => getMembers(array(
+    echo json_encode(array('code' => 0, 'content' => getMembers(array(
         'view_type' => $_POST['view_type'],
         'view_start' => (int)$_POST['view_start'],
         'view_per_page' => (int)$_POST['view_per_page'],
@@ -95,7 +93,6 @@ if(isset($_POST['adm-mp-activate']) && (bool)$_POST['members']) {
     ))));
     exit;
 } else if(isset($_POST['action']) && $_POST['action'] == 'get_controls') {
-    $oJson = new Services_JSON();
 
     $sCtlType = process_db_input($_POST['ctl_type'], BX_TAGS_STRIP);
     $sMethodName = 'getBlock' . ucfirst($sCtlType);
@@ -104,7 +101,7 @@ if(isset($_POST['adm-mp-activate']) && (bool)$_POST['members']) {
         exit;
     }
 
-    echo $oJson->encode(array(
+    echo json_encode(array(
         'code' => 0,
         'content' => $oAdmTemplate->parseHtmlByName('mp_ctl_type_' . $sCtlType . '.html', $sMethodName($sCtlType))
     ));

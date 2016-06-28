@@ -18,7 +18,6 @@ require_once('inc/header.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'utils.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'design.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'languages.inc.php');
-require_once(BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php');
 
 bx_import('BxDolSubscription');
 
@@ -47,15 +46,13 @@ if(isset($_POST['direction'])) {
     }
 
     header('Content-Type:text/javascript; charset=utf-8');
-    $oJson = new Services_JSON();
-    echo $oJson->encode($aResult);
+    echo json_encode($aResult);
 } 
 else if(isset($_GET['sid'])) {
     $aResult = $oSubscription->unsubscribe(array('type' => 'sid', 'sid' => $_GET['sid']));
     if(isset($_GET['js']) && (int)$_GET['js'] == 1) {
     	header('Content-Type:text/javascript; charset=utf-8');
-        $oJson = new Services_JSON();
-        echo $oJson->encode($aResult);
+        echo json_encode($aResult);
         exit;
     }
 

@@ -8,7 +8,6 @@
 require_once( '../inc/header.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'admin_design.inc.php' );
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php');
 
 bx_import('BxDolFtp');
 bx_import('BxDolInstallerUi');
@@ -57,8 +56,7 @@ if(isset($_POST['action'])) {
 	}
 
 	header('Content-Type:text/javascript; charset=utf-8');
-	$oJson = new Services_JSON();
-    echo $oJson->encode($aResult);
+    echo json_encode($aResult);
 	exit;
 }
 

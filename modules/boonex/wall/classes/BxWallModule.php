@@ -10,8 +10,6 @@ bx_import('BxDolPaginate');
 bx_import('BxDolRssFactory');
 bx_import('BxDolAdminSettings');
 
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
-
 require_once('BxWallCmts.php');
 require_once('BxWallVoting.php');
 require_once('BxWallPrivacy.php');
@@ -201,7 +199,6 @@ class BxWallModule extends BxDolModule
      */
     function actionDelete()
     {
-        $oJson = new Services_JSON();
         header('Content-Type:text/javascript');
 
         $this->_iOwnerId = (int)$_POST['WallOwnerId'];
@@ -210,15 +207,15 @@ class BxWallModule extends BxDolModule
         $aEvent = $this->_oDb->getEvents(array('browse' => 'id', 'object_id' => $iEvent));
 
         if(!$this->_isCommentDeleteAllowed($aEvent, true))
-            return $oJson->encode(array('code' => 1));
+            return json_encode(array('code' => 1));
 
         $bResult = $this->_oDb->deleteEvent(array('id' => $iEvent));
         if($bResult) {
         	$this->onDelete($aEvent);
 
-            return $oJson->encode(array('code' => 0, 'id' => $iEvent));
+            return json_encode(array('code' => 0, 'id' => $iEvent));
         } else
-            return $oJson->encode(array('code' => 2));
+            return json_encode(array('code' => 2));
     }
     /**
      * Get post content.
@@ -274,9 +271,8 @@ class BxWallModule extends BxDolModule
 
         list($sContent, $sPaginate) = $this->_getPostsOutline('desc', $iStart, $iPerPage, $sFilter, $aModules);
 
-        $oJson = new Services_JSON();
         header('Content-Type:text/javascript; charset=utf-8');
-        return $oJson->encode(array(
+        return json_encode(array(
             'code' => 0,
             'items' => $sContent,
             'paginate' => $sPaginate

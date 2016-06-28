@@ -4,8 +4,6 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
-
 bx_import('BxDolModule');
 bx_import('BxDolPaginate');
 
@@ -137,8 +135,7 @@ class BxWmapModule extends BxDolModule
                 'icon' => $aIconJSON,
             );
 
-        $oParser = new Services_JSON();
-        echo $oParser->encode($aRet);
+        echo json_encode($aRet);
     }
 
     function actionGetData ($iZoom, $fLatMin, $fLatMax, $fLngMin, $fLngMax, $sMapClassInstanceName, $sCustomParts = '', $sCustom = '')
@@ -202,8 +199,7 @@ class BxWmapModule extends BxDolModule
                 'icon' => $this->_getIconArray((count($a) > 1 ? 'group.png' : $sIcon)),
             );
         }
-        $oParser = new Services_JSON();
-        return $oParser->encode($aRet);
+        return json_encode($aRet);
     }
 
     // ================================== admin actions

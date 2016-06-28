@@ -7,8 +7,6 @@
 bx_import('BxDolModule');
 bx_import('BxDolAdminSettings');
 
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
-
 define('BX_PMT_ORDERS_TYPE_PENDING', 'pending');
 define('BX_PMT_ORDERS_TYPE_PROCESSED', 'processed');
 define('BX_PMT_ORDERS_TYPE_SUBSCRIPTION', 'subscription');
@@ -182,35 +180,32 @@ class BxPmtModule extends BxDolModule
             $aResult = array('code' => 1, 'message' => MsgBox(_t($this->_sLangsPrefix . 'msg_no_results')));
 
         header('Content-Type:text/javascript; charset=utf-8');
-        $oJson = new Services_JSON();
-        return $oJson->encode($aResult);
+        return json_encode($aResult);
     }
     function actionGetOrder()
     {
         $aData = &$_POST;
 
         header('Content-Type:text/javascript; charset=utf-8');
-        $oJson = new Services_JSON();
 
         if(!isset($aData['type']) || !in_array($aData['type'], $this->_aOrderTypes))
-           return $oJson->encode(array('code' => 1, 'message' => MsgBox(_t($this->_sLangsPrefix . 'err_wrong_data'))));
+           return json_encode(array('code' => 1, 'message' => MsgBox(_t($this->_sLangsPrefix . 'err_wrong_data'))));
 
         $iId = 0;
         if(isset($aData['id']))
             $iId = (int)$aData['id'];
 
         $sData = $this->_oOrders->getOrder($aData['type'], $iId);
-        return $oJson->encode(array('code' => 0, 'message' => '', 'data' => $sData));
+        return json_encode(array('code' => 0, 'message' => '', 'data' => $sData));
     }
     function actionGetOrders()
     {
         $aData = &$_POST;
 
         header('Content-Type:text/javascript; charset=utf-8');
-        $oJson = new Services_JSON();
 
         if(!isset($aData['type']) || !in_array($aData['type'], $this->_aOrderTypes))
-           return $oJson->encode(array('code' => 1, 'message' => $this->_sLangsPrefix . 'err_wrong_data'));
+           return json_encode(array('code' => 1, 'message' => $this->_sLangsPrefix . 'err_wrong_data'));
 
         $iStart = 0;
         if(isset($aData['start']))
@@ -234,7 +229,7 @@ class BxPmtModule extends BxDolModule
             $aParams['user_id'] = (int)$this->_iUserId;
 
         $sData = $this->_oOrders->getOrders($aData['type'], $aParams);
-        return $oJson->encode(array('code' => 0, 'message' => '', 'data' => $sData));
+        return json_encode(array('code' => 0, 'message' => '', 'data' => $sData));
     }
     function actionManualOrderSubmit()
     {
@@ -517,8 +512,7 @@ class BxPmtModule extends BxDolModule
         $aResult = $this->_oCart->addToCart($this->_iUserId, $iVendorId, $iModuleId, $iItemId, $iItemCount);
 
         header('Content-Type:text/javascript; charset=utf-8');
-        $oJson = new Services_JSON();
-        return $oJson->encode($aResult);
+        return json_encode($aResult);
     }
     function serviceAddToCart($iVendorId, $iModuleId, $iItemId, $iItemCount)
     {
@@ -532,8 +526,7 @@ class BxPmtModule extends BxDolModule
         $aResult = $this->_oCart->deleteFromCart($this->_iUserId, $iVendorId, $iModuleId, $iItemId);
 
         header('Content-Type:text/javascript; charset=utf-8');
-        $oJson = new Services_JSON();
-        return $oJson->encode($aResult);
+        return json_encode($aResult);
     }
     /**
      * Isn't used yet.
@@ -543,8 +536,7 @@ class BxPmtModule extends BxDolModule
         $aResult = $this->_oCart->deleteFromCart($this->_iUserId, $iVendorId);
 
         header('Content-Type:text/javascript; charset=utf-8');
-        $oJson = new Services_JSON();
-        return $oJson->encode($aResult);
+        return json_encode($aResult);
     }
 
 
@@ -852,11 +844,10 @@ class BxPmtModule extends BxDolModule
     }
     function _onResultInline($aResult)
     {
-        $oJson = new Services_JSON();
 
         return $this->_oTemplate->parseHtmlByTemplateName('on_result_inline', array(
             'js_object' => $aResult['js_object'],
-            'params' => $oJson->encode(array(
+            'params' => json_encode(array(
                 'code' => $aResult['code'],
                 'message' => MsgBox(_t($aResult['message'])),
                 'parent_id' => $aResult['parent_id']

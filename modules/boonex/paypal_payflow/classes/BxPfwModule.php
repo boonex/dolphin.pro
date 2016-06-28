@@ -301,12 +301,10 @@ class BxPfwModule extends BxPmtModule
 	
 	protected function _onResultJson($aResult)
     {
-        $oJson = new Services_JSON();
-
         if(isset($aResult['message']))
         	$aResult['message'] = _t($aResult['message']);
 
 		header('Content-Type:text/javascript; charset=utf-8');
-        return $oJson->encode($aResult);
+        return json_encode($aResult);
     }
 }

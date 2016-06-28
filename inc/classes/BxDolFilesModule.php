@@ -913,16 +913,13 @@ class BxDolFilesModule extends BxDolModule
     {
 		header('Content-Type:text/javascript; charset=utf-8');
 
-		require_once(BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php');
-		$oJSON = new Services_JSON();
-
 		$mixedAlbum = bx_get('album');
 		if(is_numeric($mixedAlbum)) {
 			$iAlbumId = (int)$mixedAlbum;
 			if($iAlbumId == 0) { 
 				$sTitle = clear_xss(bx_get('title'));
 				if(empty($sTitle)) {
-					echo $oJSON->encode(array('status' => 'Fail', 'error_msg' => _t('_title_min_lenght', 1)));
+					echo json_encode(array('status' => 'Fail', 'error_msg' => _t('_title_min_lenght', 1)));
 					exit;
 				}
 
@@ -942,7 +939,7 @@ class BxDolFilesModule extends BxDolModule
 			$mixedAlbum = uriFilter(clear_xss($mixedAlbum));
 
 		$sOwnerNick = getUsername($this->_iProfileId);
-		echo $oJSON->encode(array('status' => 'OK', 'album_uri' => $mixedAlbum, 'owner_name' => $sOwnerNick));
+		echo json_encode(array('status' => 'OK', 'album_uri' => $mixedAlbum, 'owner_name' => $sOwnerNick));
 		exit;
     }
 

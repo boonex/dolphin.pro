@@ -7,7 +7,6 @@
 require_once( BX_DIRECTORY_PATH_CLASSES . 'Thing.php' );
 require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolPFM.php' );
 require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolPrivacy.php' );
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 
 class BxDolProfileFields extends Thing
 {
@@ -68,8 +67,7 @@ class BxDolProfileFields extends Thing
         if( $bCouple )
             $aJsonErrors[1] = $aErrors[1];
 
-        $oParser = new Services_JSON();
-        return $oParser -> encode( $aJsonErrors );
+        return json_encode( $aJsonErrors );
     }
 
     //sets to $Errors intuitive array

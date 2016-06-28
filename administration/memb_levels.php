@@ -10,7 +10,6 @@ require_once( BX_DIRECTORY_PATH_INC . 'profiles.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'admin_design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'utils.inc.php' );
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 bx_import('BxDolAdminSettings');
 bx_import('BxTemplSearchResult');
 
@@ -67,12 +66,10 @@ if(isset($_POST['save']) && isset($_POST['cat'])) {
     $sQuery .= !empty($_POST['dateEnd']) && strtotime($_POST['dateEnd']) > 0 ? ", `AllowedPeriodEnd`=FROM_UNIXTIME(" . strtotime($_POST['dateEnd']) . ")" : "";
     $aResult = $GLOBALS['MySQL']->query($sQuery) > 0 ? array('code' => 0, 'message' => MsgBox(_t('_adm_txt_mlevels_action_saved'))) : array('code' => 1, 'message' => MsgBox(_t('_adm_txt_mlevels_action_cannot_save')));
 
-    $oJson = new Services_JSON();
-    echo "<script>parent.onResult(" . $oJson->encode($aResult) . ");</script>";
+    echo "<script>parent.onResult(" . json_encode($aResult) . ");</script>";
     exit;
 } else if(isset($_POST['action']) && $_POST['action'] == 'get_edit_form_action') {
-    $oJson = new Services_JSON();
-    echo $oJson->encode(array('code' => PageCodeAction((int)$_POST['level_id'], (int)$_POST['action_id'], $mixedResultAction)));
+    echo json_encode(array('code' => PageCodeAction((int)$_POST['level_id'], (int)$_POST['action_id'], $mixedResultAction)));
     exit;
 }
 

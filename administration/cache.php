@@ -67,9 +67,8 @@ if (!empty($_POST['clear_cache'])) {
 			);
         }
     }
-
-    $oJson = new Services_JSON();
-    echo $oJson->encode($aResult);
+    
+    echo json_encode($aResult);
     exit;
 }
 

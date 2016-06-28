@@ -4,8 +4,6 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once( BX_DIRECTORY_PATH_ROOT . 'plugins/Services_JSON.php' );
-
 class BxDolPageViewAdmin
 {
     var $aPages = array();
@@ -830,8 +828,7 @@ class BxDolPVAPage
     function getJSON()
     {
         $oPVAPageJSON = new BxDolPVAPageJSON( $this );
-        $oJson = new Services_JSON();
-        return $oJson -> encode($oPVAPageJSON);
+        return json_encode($oPVAPageJSON);
     }
 
 }

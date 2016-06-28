@@ -5,7 +5,7 @@
  */
 
 bx_import('BxDolFilesModule');
-require_once(BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php');
+
 define('PROFILE_PHOTO_CATEGORY', 'Profile photos');
 
 class BxPhotosModule extends BxDolFilesModule
@@ -41,8 +41,7 @@ class BxPhotosModule extends BxDolFilesModule
             ));
             $aInfo['paginate'] = $oPaginate->getPaginate();
             header('Content-Type:text/javascript; charset=utf-8');
-            $oJSON = new Services_JSON();
-            echo $oJSON->encode($aInfo);
+            echo json_encode($aInfo);
         }
     }
 

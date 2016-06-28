@@ -5,7 +5,6 @@
  */
 
 require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolCmtsQuery.php' );
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 
 define('BX_OLD_CMT_VOTES', 365*86400); // comment votes older than this number of seconds will be deleted automatically
 
@@ -557,12 +556,10 @@ class BxDolCmts
     {
         if (!$this->isEnabled()) return '{}';
 
-        $oJson = new Services_JSON();
-
         $iCmtId = (int)$_REQUEST['Cmt'];
 
         if ($this->_isSpam($_REQUEST['CmtText']))
-            return $oJson->encode(array('err' => sprintf(_t("_sys_spam_detected"), BX_DOL_URL_ROOT . 'contact.php')));
+            return json_encode(array('err' => sprintf(_t("_sys_spam_detected"), BX_DOL_URL_ROOT . 'contact.php')));
 
 		$iObjectId = $this->getId();
         $iAuthorId = $this->_getAuthorId();
@@ -595,7 +592,7 @@ class BxDolCmts
 
         $aCmt = $this->_oQuery->getCommentSimple($iObjectId, $iCmtId);
 
-        return $oJson->encode(array('text' => $aCmt['cmt_text'], 'mood' => $aCmt['cmt_mood'], 'mood_text' => _t($this->_aMoodText[$aCmt['cmt_mood']])));
+        return json_encode(array('text' => $aCmt['cmt_text'], 'mood' => $aCmt['cmt_mood'], 'mood_text' => _t($this->_aMoodText[$aCmt['cmt_mood']])));
     }
 
     function actionCmtRate ()

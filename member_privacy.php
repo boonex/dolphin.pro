@@ -7,7 +7,6 @@
 
 require_once( 'inc/header.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 
 bx_import('BxDolPrivacy');
 bx_import('BxTemplPrivacyView');
@@ -53,9 +52,8 @@ if(isset($_POST['ps_action']) && $_POST['ps_action'] == 'get_chooser' && $iId !=
         $sCode = PopupBox('dbPrivacyMenu' . $iBlockId, _t('_ps_bcpt_block_privacy'), $sCode);
     }
 
-    $oJson = new Services_JSON();
     header('Content-Type:text/javascript; charset=utf-8');
-    echo $oJson->encode(array(
+    echo json_encode(array(
         'code' => !empty($sCode) ? 0 : 1,
         'data' => $sCode,
     ));
@@ -76,9 +74,8 @@ if(isset($_POST['ps_action']) && $_POST['ps_action'] == 'get_chooser' && $iId !=
         $sGroupTitle = !empty($aGroup['title']) ? $aGroup['title'] : _t('_ps_group_' . $aGroup['id'] . '_title');
     }
 
-    $oJson = new Services_JSON();
     header('Content-Type:text/javascript; charset=utf-8');
-    echo $oJson->encode(array(
+    echo json_encode(array(
         'code' => $bResult ? 0 : 1,
         'group' => $sGroupTitle,
     ));

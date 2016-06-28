@@ -6,7 +6,6 @@
 
 bx_import('BxDolModule');
 bx_import('BxDolCacheFile');
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 
 class BxPageACModule extends BxDolModule
 {
@@ -137,8 +136,7 @@ class BxPageACModule extends BxDolModule
         }elseif ($sAction == 'save') {
             $this->saveMenuItem('top', $iMenuItemID);
             $aResult = array('message' => MsgBox(_t('_Saved')), 'timer' => 1);
-            $oJson = new Services_JSON();
-            return $oJson->encode($aResult);
+            return json_encode($aResult);
         }
     }
     function actionMemberMenu($sAction, $iMenuItemID)
@@ -153,8 +151,7 @@ class BxPageACModule extends BxDolModule
         }elseif ($sAction == 'save') {
             $this->saveMenuItem('member', $iMenuItemID);
             $aResult = array('message' => MsgBox(_t('_Saved')), 'timer' => 1);
-            $oJson = new Services_JSON();
-            return $oJson->encode($aResult);
+            return json_encode($aResult);
         }
     }
     function saveMenuItem($sType, $iMenuItemID)
@@ -193,8 +190,7 @@ class BxPageACModule extends BxDolModule
             if (empty($aVisibleTo) && !isset($aData[-1])) $aVisibleTo[] = 0;
             $this->_oDb->setPageBlockVisibility($iID, $aVisibleTo);
             $aResult = array('message' => MsgBox(_t('_Saved')), 'timer' => 1);
-            $oJson = new Services_JSON();
-            return $oJson->encode($aResult);
+            return json_encode($aResult);
         }
     }
     function _validateRule($sRule, $bIsAdvanced)

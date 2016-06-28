@@ -15,7 +15,7 @@ bx_import('BxDolAdminSettings');
 bx_import('BxTemplTagsModule');
 bx_import('BxTemplCategoriesModule');
 
-require_once(BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php');
+
 
 class BxDolTextModule extends BxDolModule
 {

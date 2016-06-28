@@ -17,8 +17,6 @@ require_once( BX_DIRECTORY_PATH_INC . 'admin_design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'utils.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'languages.inc.php' );
 
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
-
 bx_import('BxDolMemberMenu');
 
  // Check if administrator is logged in.  If not display login form.
@@ -90,8 +88,7 @@ if(bx_get('action') !== false) {
                 updateLangFile( $_POST['Caption'], $_POST['LangCaption'] );
 
                 $res['message'] = MsgBox($res['message']);
-                $oJson = new Services_JSON();
-                echo $oJson->encode($res);
+                echo json_encode($res);
                 exit;
             }
             break;

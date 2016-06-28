@@ -2823,10 +2823,7 @@ EOF;
         $sResult = $sJS . $sCode . $oForm->getCode();
 
         if (bx_get('mode') == 'json') {
-            require_once(BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php');
-            $oJson = new Services_JSON();
-
-            return $oJson->encode($sResult);
+            return json_encode($sResult);
         }
 
         $sResult = $this->_oTemplate->parseHtmlByName('default_margin.html', array('content' => $sResult));
@@ -2951,10 +2948,7 @@ $(document).ready(function(){
 EOF;
 
         if (bx_get('mode') == 'json') {
-            require_once(BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php');
-            $oJson = new Services_JSON();
-
-            return $oJson->encode($sResult);
+            return json_encode($sResult);
         }
 
         $sResult = $this->_oTemplate->parseHtmlByName('default_margin.html', array('content' => $sJS . $sResult));

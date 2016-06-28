@@ -20,7 +20,6 @@ require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'admin_design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'utils.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'languages.inc.php' );
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 bx_import('BxDolMenu');
 
 // Check if administrator is logged in.  If not display login form.
@@ -80,8 +79,7 @@ if(bx_get('action') !== false) {
 
             $aResult['message'] = MsgBox($aResult['message']);
 
-            $oJson = new Services_JSON();
-            echo $oJson->encode($aResult);
+            echo json_encode($aResult);
         exit;
         case 'delete_item':
             $id = (int)$_POST['id'];

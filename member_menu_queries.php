@@ -12,7 +12,6 @@ header('Content-Type: text/html; charset=utf-8');
 
 require_once( 'inc/header.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 
 bx_import('BxTemplMemberMenu');
 bx_import('BxDolPageView');
@@ -117,8 +116,7 @@ if ( isset($_GET['action']) ) {
                         }
 
                         header('Content-Type: text/plain; charset=utf-8');
-                        $oJsonParser = new Services_JSON();
-                        $sOutputHtml = $oJsonParser -> encode($aBubbles);
+                        $sOutputHtml = json_encode($aBubbles);
                     }
                 }
             break;

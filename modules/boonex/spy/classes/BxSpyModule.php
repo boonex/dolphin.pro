@@ -12,8 +12,6 @@
     require_once('BxSpyResponseProfiles.php');
     require_once('BxSpySearch.php');
 
-    require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
-
     /**
      * Spy module by BoonEx
      *
@@ -244,14 +242,13 @@
             $aActivites = $this -> oSearch -> getSearchData();
             $aProccesedActivites = $this -> _proccesActivites($aActivites, ' style="display:none" ', true);
 
-            $oJsonParser  = new Services_JSON();
             $aRet = array(
                 'events'        => $aProccesedActivites,
                 'last_event_id' => $this -> _oDb -> getLastActivityId($sType),
             );
 
             // draw builded data;
-            echo $oJsonParser -> encode($aRet);
+            echo json_encode($aRet);
         }
 
         /**

@@ -91,8 +91,7 @@ class BxDolPFM
     {
         $this -> fillMyArrays();
         $this -> oJSONObject = new BxDolPFMAreaJSONObj( $this );
-        $oJSONConv = new Services_JSON();
-        return $oJSONConv -> encode( $this -> oJSONObject );
+        return json_encode( $this -> oJSONObject );
     }
 
     function fillMyArrays()

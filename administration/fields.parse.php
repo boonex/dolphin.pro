@@ -15,7 +15,6 @@ require_once( '../inc/header.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'db.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
 require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolPFM.php' );
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 
 send_headers_page_changed();
 

@@ -17,7 +17,6 @@ require_once( BX_DIRECTORY_PATH_INC . 'profiles.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'admin_design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'utils.inc.php' );
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
 bx_import('BxTemplSearchResult');
 
 $logged['admin'] = member_auth( 1, true, true );
@@ -82,15 +81,13 @@ if(isset($_POST['create_language'])) {
     echo $sContent;
     exit;
 } else if(isset($_POST['action']) && $_POST['action'] == 'get_edit_form_language') {
-    $oJson = new Services_JSON();
-    echo $oJson->encode(array('code' => PopupBox('adm-langs-wnd-edit', _t('_adm_box_cpt_lang_edit_language'), _getLanguageCreateForm(true))));
+    echo json_encode(array('code' => PopupBox('adm-langs-wnd-edit', _t('_adm_box_cpt_lang_edit_language'), _getLanguageCreateForm(true))));
     exit;
 }
 
 //--- Create/Delete/Edit Language Key ---//
 if(isset($_POST['action']) && $_POST['action'] == 'get_edit_form_key') {
-    $oJson = new Services_JSON();
-    echo $oJson->encode(array('code' => PageCodeKeyEdit((int)$_POST['id'])));
+    echo json_encode(array('code' => PageCodeKeyEdit((int)$_POST['id'])));
     exit;
 }
 if(isset($_POST['create_key'])) {
@@ -115,8 +112,7 @@ if(isset($_POST['create_key'])) {
 
     $aResult['message'] = MsgBox(_t($aResult['message']));
 
-    $oJson = new Services_JSON();
-    echo "<script>parent.onResult('add', " . $oJson->encode($aResult) . ");</script>";
+    echo "<script>parent.onResult('add', " . json_encode($aResult) . ");</script>";
     exit;
 } else if(isset($_POST['edit_key'])) {
     $iId = (int)$_POST['id'];
@@ -132,8 +128,7 @@ if(isset($_POST['create_key'])) {
     $aResult = $bCompiled ? array('code' => 0, 'message' => '_adm_txt_langs_success_key_save') : array('code' => 1, 'message' => '_adm_txt_langs_cannot_compile');
     $aResult['message'] = MsgBox(_t($aResult['message']));
 
-    $oJson = new Services_JSON();
-    echo "<script>parent.onResult('edit', " . $oJson->encode($aResult) . ");</script>";
+    echo "<script>parent.onResult('edit', " . json_encode($aResult) . ");</script>";
     exit;
 }
 
