@@ -29,7 +29,8 @@ $aConfig = array(
      * Installation/Uninstallation Section.
      */
     'install' => array(
-        'check_dependencies' => 1,
+    	'check_payment' => 1,
+        'check_dependencies' => 0,
         'show_introduction' => 1,
         'change_permissions' => 0,
         'execute_sql' => 1,

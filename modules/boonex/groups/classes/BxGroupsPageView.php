@@ -96,6 +96,7 @@ class BxGroupsPageView extends BxDolTwigPageView
                 'TitleActivate' => method_exists($this->_oMain, 'isAllowedActivate') && $this->_oMain->isAllowedActivate($this->aDataEntry) ? _t('_bx_groups_admin_activate') : '',
             );
 
+            $aInfo['repostCpt'] = $aInfo['repostScript'] = '';
 	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
 				$sCode .= BxDolService::call('wall', 'get_repost_js_script');
 

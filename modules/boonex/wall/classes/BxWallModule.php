@@ -362,7 +362,7 @@ class BxWallModule extends BxDolModule
      */
     function actionRss($sUsername)
     {
-        $aOwner = $this->_oDb->getUser($sUsername, 'username');
+        $aOwner = $this->_oDb->getUser(process_db_input($sUsername), 'username');
 
         $aEvents = $this->_oDb->getEvents(array(
             'browse' => 'owner',

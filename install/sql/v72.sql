@@ -1069,9 +1069,10 @@ INSERT INTO `sys_options` VALUES
 -- CAT: General
 SET @iCatGeneral = 3;
 INSERT INTO `sys_options` VALUES
-('sys_ftp_login', '', @iCatGeneral, 'FTP server login', 'digit', '', '', 1, ''),
-('sys_ftp_password', '', @iCatGeneral, 'FTP server password', 'digit', '', '', 2, ''),
-('sys_ftp_dir', '', @iCatGeneral, 'Path to Dolphin on FTP server', 'digit', '', '', 3, ''),
+('sys_ftp_host', '', @iCatGeneral, 'FTP host', 'digit', '', '', 1, ''),
+('sys_ftp_login', '', @iCatGeneral, 'FTP login', 'digit', '', '', 2, ''),
+('sys_ftp_password', '', @iCatGeneral, 'FTP password', 'digit', '', '', 3, ''),
+('sys_ftp_dir', '', @iCatGeneral, 'Path to Dolphin on FTP server', 'digit', '', '', 4, ''),
 
 ('MetaDescription', '', @iCatGeneral, 'Homepage meta-description', 'text', '', '', 10, ''),
 ('MetaKeyWords', '', @iCatGeneral, 'Homepage meta-keywords', 'text', '', '', 20, ''),
@@ -1092,7 +1093,7 @@ INSERT INTO `sys_options` VALUES
 ('enable_gd', 'on', @iCatGeneral, 'Enable GD library for image processing', 'checkbox', '', '', 150, ''),
 ('useLikeOperator', 'on', @iCatGeneral, 'Disable full-text search', 'checkbox', '', '', 160, ''),
 
-('sys_default_payment', 'payment', @iCatGeneral, 'Payment module (at least one payment processing module should be installed)', 'select', '', '', 170, 'PHP:bx_import(\'BxDolPayments\'); return BxDolPayments::getInstance()->getPayments();'),
+('sys_default_payment', '', @iCatGeneral, 'Payment module (at least one payment processing module should be installed)', 'select', '', '', 170, 'PHP:bx_import(\'BxDolPayments\'); return BxDolPayments::getInstance()->getPayments();'),
 
 ('sys_embedly_key', '', @iCatGeneral, 'Embedly Key', 'digit', '', '', 180, '');
 

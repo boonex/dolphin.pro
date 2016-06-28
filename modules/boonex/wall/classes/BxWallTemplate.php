@@ -81,7 +81,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 				$sResult = $this->parseHtmlByTemplateName('balloon', array(
 		        	'post_type' => $aEvent['type'],
 		            'post_id' => $aEvent['id'],
-		            'post_owner_icon' => get_member_thumbnail($aEvent['owner_id'], 'none'),
+		            'post_owner_icon' => $this->getOwnerThumbnail((int)$aEvent['owner_id']),
 		        	'post_content' => $aResult['content'],
 		            'comments_content' => $sComments
 		        ));
@@ -109,7 +109,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 
 				$sResult = $this->parseHtmlByContent($aResult['content'], array(
 		            'post_id' => $aEvent['id'],
-		            'post_owner_icon' => get_member_icon($aEvent['owner_id'], 'none'),
+		            'post_owner_icon' => $this->getOwnerIcon((int)$aEvent['owner_id']),
 					'post_vote' => $sVote,
 					'post_repost' => $sRepost
 		        ));
@@ -151,7 +151,7 @@ class BxWallTemplate extends BxDolModuleTemplate
         return $this->parseHtmlByTemplateName('balloon', array(
             'post_type' => bx_ltrim_str($aEvent['type'], $sPrefix, ''),
             'post_id' => $aEvent['id'],
-            'post_owner_icon' => get_member_thumbnail((int)$aEvent['object_id'], 'none'),
+            'post_owner_icon' => $this->getOwnerThumbnail((int)$aEvent['object_id']),
             'post_content' => $aResult['content'],
         	'comments_content' => $aResult['comments']
         ));
@@ -276,7 +276,13 @@ class BxWallTemplate extends BxDolModuleTemplate
                     'image_height' => isset($aMediaInfo['height']) ? (int)$aMediaInfo['height'] : 0,
                     'link' => isset($aMediaInfo['url']) ? $aMediaInfo['url'] : '',
                     'title' => isset($aMediaInfo['title']) ? bx_html_attribute($aMediaInfo['title']) : '',
-                    'description' => isset($aMediaInfo['description']) ? $aMediaInfo['description'] : ''
+                    'description' => isset($aMediaInfo['description']) ? $aMediaInfo['description'] : '',
+            		'bx_if:show_duration' => array(
+						'condition' => !empty($aMediaInfo['duration_f']),
+            			'content' => array(
+            				'duration_f' => $aMediaInfo['duration_f']
+            			)
+            		)
                 ))
             );
 
@@ -493,7 +499,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 
 	function displayProfileCommentAdd($aEvent)
     {
-        $iId = (int)$aEvent['object_id'];
+        $iComment = (int)$aEvent['object_id'];
         $iOwner = (int)$aEvent['owner_id'];
         $sOwner = getNickName($iOwner);
 
@@ -511,8 +517,10 @@ class BxWallTemplate extends BxDolModuleTemplate
         if(!$oCmts->isEnabled())
             return '';
 
-		$aItem['url'] = getProfileLink($iId);
-        $aComment = $oCmts->getCommentRow($iId);
+		$aItem['url'] = getProfileLink($iItem);
+        $aComment = $oCmts->getCommentRow($iComment);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sTextWallObject = _t('_wall_object_profile');
         return array(
@@ -525,7 +533,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 	            'cpt_item_url' => $aItem['url'],
 	            'cnt_comment_text' => $aComment['cmt_text'],
 	            'cnt_item_page' => $aItem['url'],
-	            'cnt_item_icon' => get_member_thumbnail($iId, 'none', true),
+	            'cnt_item_icon' => get_member_thumbnail($iItem, 'none', true),
 	            'cnt_item_title' => $aItem['title'],
 	            'cnt_item_description' => $aItem['description'],
 	            'post_id' => $aEvent['id'],
@@ -557,6 +565,8 @@ class BxWallTemplate extends BxDolModuleTemplate
 
         $aItem['url'] = getProfileLink($iId);
         $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sTextWallObject = _t('_wall_object_profile');
         return array(
@@ -602,6 +612,29 @@ class BxWallTemplate extends BxDolModuleTemplate
                 'post_id' => $aEvent['id']
             ))
         );
+    }
+
+    function getOwnerThumbnail($iOwnerId)
+    {
+    	return $this->getOwnerImage('thumbnail', $iOwnerId);
+    }
+
+    function getOwnerIcon($iOwnerId)
+    {
+    	return $this->getOwnerImage('icon', $iOwnerId);
+    }
+
+    protected function getOwnerImage($sType, $iOwnerId)
+    {
+    	$sFunction = 'get_member_' . $sType;
+    	if($iOwnerId != 0 && function_exists($sFunction))
+    		return $sFunction($iOwnerId, 'none');
+
+		$aType2Icon = array('icon' => 'small', 'thumbnail' => 'medium');
+    	return $this->parseHtmlByName('owner_image.html', array(
+    		'class' => 'thumbnail_block_' . $sType,
+    		'src' => $GLOBALS['oFunctions']->getSexPic('', $aType2Icon[$sType])
+    	));
     }
 
     function getDefaultComments($iEventId)

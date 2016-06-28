@@ -11,6 +11,33 @@ class BxMbpInstaller extends BxDolInstaller
     function __construct($aConfig)
     {
         parent::__construct($aConfig);
+        $this->_aActions['check_payment'] = array(
+			'title' => _t('_adm_txt_modules_check_dependencies'),
+		);
+    }
+
+	function actionCheckPayment($bInstall = true)
+	{
+		if(!$bInstall)
+			return BX_DOL_INSTALLER_SUCCESS;
+
+		$aError = array('code' => BX_DOL_INSTALLER_FAILED, 'content' => _t('_adm_txt_modules_wrong_dependency_install_payment'));
+
+		$sPayment = getParam('sys_default_payment');
+		if(empty($sPayment))
+			return $aError;
+
+		$oModuleDb = new BxDolModuleDb();
+		$aPayment = $oModuleDb->getModuleByUri($sPayment);
+		if(empty($aPayment) || !is_array($aPayment))
+			return $aError;
+
+    	return BX_DOL_INSTALLER_SUCCESS;
+    }
+
+	function actionCheckPaymentFailed($mixedResult)
+    {
+        return $mixedResult['content'];
     }
 
 	function install($aParams)

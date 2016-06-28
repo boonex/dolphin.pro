@@ -1773,8 +1773,10 @@ EOF;
                 'sbs_ads_script' => $aButton['script'],
                 'TitleShare'     => $this->isAllowedShare($aSqlResStr) ? _t('_Share') : '',
             );
-            if (BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
-                $sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
+
+            $aActionKeys['repostCpt'] = $aActionKeys['repostScript'] = '';
+	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+	        	$sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
 
                 $aActionKeys['repostCpt']    = _t('_Repost');
                 $aActionKeys['repostScript'] = BxDolService::call('wall', 'get_repost_js_click',
@@ -2498,7 +2500,7 @@ EOF;
             'sCountryOptions'  => $sCountryOptions,
             'sCateg'           => $sCateg,
             'sSubCateg'        => $sSubCateg,
-            'sKeywordsStr'     => $sKeywordsStr,
+            'sKeywordsStr'     => bx_html_attribute($sKeywordsStr),
         );
         $sContent   = $this->_oTemplate->parseHtmlByTemplateName('filter_form', $aVariables);
 
@@ -3689,7 +3691,7 @@ EOF;
     {
         $iId    = (int)$aEvent['object_id'];
         $iOwner = (int)$aEvent['owner_id'];
-        $sOwner = getNickName($iOwner);
+        $sOwner = $iOwner != 0 ? getNickName($iOwner) : _t('_Anonymous');
 
         $aContent = unserialize($aEvent['content']);
         if (empty($aContent) || empty($aContent['object_id'])) {
@@ -3713,6 +3715,8 @@ EOF;
         }
 
         $aComment = $oCmts->getCommentRow($iId);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sCss = '';
         if ($aEvent['js_mode']) {
@@ -3770,7 +3774,9 @@ EOF;
         }
 
         $aItem['url'] = $this->genUrl($aItem['ID'], $aItem['EntryUri'], 'entry');
-        $aComment     = $oCmts->getCommentRow((int)$aContent['comment_id']);
+        $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sCss = '';
         if ($aEvent['js_mode']) {

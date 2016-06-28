@@ -2213,7 +2213,7 @@
         {
             $iId = (int)$aEvent['object_id'];
             $iOwner = (int)$aEvent['owner_id'];
-            $sOwner = getNickName($iOwner);
+            $sOwner = $iOwner != 0 ? getNickName($iOwner) : _t('_Anonymous');
 
 			$aContent = unserialize($aEvent['content']);
 			if(empty($aContent) || empty($aContent['object_id']))
@@ -2233,6 +2233,8 @@
                 return '';
 
             $aComment = $oCmts->getCommentRow($iId);
+            if(empty($aComment) || !is_array($aComment))
+        		return array('perform_delete' => true);
 
             $sCss = '';
             if($aEvent['js_mode'])
@@ -2289,6 +2291,8 @@
 			$aItem = array_shift($aItem);
             $aItem['url'] = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . '&action=show_poll_info&id=' . $aItem['id_poll'];
             $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
+            if(empty($aComment) || !is_array($aComment))
+        		return array('perform_delete' => true);
 
             $sCss = '';
             if($aEvent['js_mode'])

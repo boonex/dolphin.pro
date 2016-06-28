@@ -33,12 +33,7 @@ class BxOAuthModule extends BxDolModule
             'public_key_table'  => '',
         );
 
-        $this->_oStorage = new OAuth2\Storage\Pdo(array(
-            'dsn' => $this->_buildDSN(), 
-            'username' => $GLOBALS['db']['user'], 
-            'password' => $GLOBALS['db']['passwd'],
-            'options' => array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"),
-        ), $aConfig);
+        $this->_oStorage = new OAuth2\Storage\Pdo(BxDolDb::getInstance()->getLink(), $aConfig);
 
         $this->_oServer = new OAuth2\Server($this->_oStorage, array (
             'require_exact_redirect_uri' => false,
@@ -50,19 +45,6 @@ class BxOAuthModule extends BxDolModule
         // Add the "Authorization Code" grant type (this is where the oauth magic happens)
         $this->_oServer->addGrantType(new OAuth2\GrantType\AuthorizationCode($this->_oStorage));
 
-    }
-
-    protected function _buildDSN () 
-    {
-        $sDSN = 'mysql:';
-        if (!empty($GLOBALS['db']['host']))
-            $sDSN .= 'host=' . $GLOBALS['db']['host'] . ';';
-        if (!empty($GLOBALS['db']['port']))
-            $sDSN .= 'port=' . $GLOBALS['db']['port'] . ';';
-        if (!empty($GLOBALS['db']['sock']))
-            $sDSN .= 'unix_socket=' . $GLOBALS['db']['sock'] . ';';
-        $sDSN .= 'dbname=' . $GLOBALS['db']['db'] . ';charset=UTF8';
-        return $sDSN;
     }
 
     function actionToken ()

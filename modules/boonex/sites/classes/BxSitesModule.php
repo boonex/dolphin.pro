@@ -744,7 +744,7 @@ class BxSitesModule extends BxDolTwigModule
     {
         $iId = (int)$aEvent['object_id'];
         $iOwner = (int)$aEvent['owner_id'];
-        $sOwner = getNickName($iOwner);
+        $sOwner = $iOwner != 0 ? getNickName($iOwner) : _t('_Anonymous');
 
         $aContent = unserialize($aEvent['content']);
         if(empty($aContent) || empty($aContent['object_id']))
@@ -764,6 +764,8 @@ class BxSitesModule extends BxDolTwigModule
             return '';
 
         $aComment = $oCmts->getCommentRow($iId);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sImage = '';
         if($aItem['photo']) {
@@ -825,6 +827,8 @@ class BxSitesModule extends BxDolTwigModule
             return '';
 
         $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sImage = '';
         if($aItem['photo']) {

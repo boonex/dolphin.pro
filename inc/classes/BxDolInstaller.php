@@ -415,8 +415,12 @@ class BxDolInstaller extends BxDolInstallerUtils
         if(empty($aChangeItems))
         	return BX_DOL_INSTALLER_SUCCESS;
 
+		$sFtpHost = getParam('sys_ftp_host');
+		if(empty($sFtpHost))
+			$sFtpHost = $_SERVER['HTTP_HOST'];
+
 		bx_import('BxDolFtp');
-		$oFile = new BxDolFtp($_SERVER['HTTP_HOST'], getParam('sys_ftp_login'), getParam('sys_ftp_password'), getParam('sys_ftp_dir'));
+		$oFile = new BxDolFtp($sFtpHost, getParam('sys_ftp_login'), getParam('sys_ftp_password'), getParam('sys_ftp_dir'));
 
 		if(!$oFile->connect())
 			return array('code' => BX_DOL_INSTALLER_FAILED, 'content_msg' => '_adm_txt_modules_wrong_permissions_change_cannot_connect_to_ftp', 'content_data' => $aResult);
