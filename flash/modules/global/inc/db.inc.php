@@ -14,7 +14,7 @@ class BxDbConnect
 {
     function getResult($sQuery)
     {
-        return BxDolDb::getInstance()->query($sQuery);
+        return BxDolDb::getInstance()->res($sQuery);
     }
 
     function getArray($sQuery)
