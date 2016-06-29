@@ -18,19 +18,19 @@ class BxDolTextSiteMaps extends BxDolSiteMaps
     {
         parent::__construct($aSystem);
 
-        $this->_oModule = $oModule;
-        $this->_aQueryParts = array (
-            'fields' => "`id`, `uri`, `when`", // fields list
-            'field_date' => "when", // date field name
+        $this->_oModule     = $oModule;
+        $this->_aQueryParts = array(
+            'fields'          => "`id`, `uri`, `when`", // fields list
+            'field_date'      => "when", // date field name
             'field_date_type' => "timestamp", // date field type
-            'table' => "`" . $this->_oModule->_oConfig->getDbPrefix() . "entries`", // table name
-            'join' => "", // join SQL part
-            'where' => "AND `status` = '" . BX_TD_STATUS_ACTIVE . "'", // SQL condition, without WHERE
-            'order' => " `when` ASC ", // SQL order, without ORDER BY
+            'table'           => "`" . $this->_oModule->_oConfig->getDbPrefix() . "entries`", // table name
+            'join'            => "", // join SQL part
+            'where'           => "AND `status` = '" . BX_TD_STATUS_ACTIVE . "'", // SQL condition, without WHERE
+            'order'           => " `when` ASC ", // SQL order, without ORDER BY
         );
     }
 
-    protected function _genUrl ($a)
+    protected function _genUrl($a)
     {
         return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'view/' . $a['uri'];
     }

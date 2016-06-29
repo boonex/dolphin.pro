@@ -18,20 +18,27 @@ class BxStoreSiteMaps extends BxDolSiteMaps
     {
         parent::__construct($aSystem);
 
-        $this->_aQueryParts = array (
-            'fields' => "`id`, `uri`, `created`", // fields list
-            'field_date' => "created", // date field name
-            'field_date_type' => "timestamp", // date field type
-            'table' => "`bx_store_products`", // table name
-            'join' => "", // join SQL part
-            'where' => "AND `status` = 'approved' AND `allow_view_product_to` = '" . BX_DOL_PG_ALL . "'", // SQL condition, without WHERE
-            'order' => " `created` ASC ", // SQL order, without ORDER BY
+        $this->_aQueryParts = array(
+            'fields'          => "`id`, `uri`, `created`",
+            // fields list
+            'field_date'      => "created",
+            // date field name
+            'field_date_type' => "timestamp",
+            // date field type
+            'table'           => "`bx_store_products`",
+            // table name
+            'join'            => "",
+            // join SQL part
+            'where'           => "AND `status` = 'approved' AND `allow_view_product_to` = '" . BX_DOL_PG_ALL . "'",
+            // SQL condition, without WHERE
+            'order'           => " `created` ASC ",
+            // SQL order, without ORDER BY
         );
 
         $this->_oModule = BxDolModule::getInstance('BxStoreModule');
     }
 
-    protected function _genUrl ($a)
+    protected function _genUrl($a)
     {
         return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'view/' . $a['uri'];
     }

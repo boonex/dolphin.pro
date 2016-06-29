@@ -4,4 +4,4 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once( BX_DIRECTORY_PATH_MODULES . $aModule['path'] . '/home.php');
+require_once(BX_DIRECTORY_PATH_MODULES . $aModule['path'] . '/home.php');

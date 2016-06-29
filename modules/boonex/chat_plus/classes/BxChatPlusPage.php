@@ -15,18 +15,19 @@ class BxChatPlusPage extends BxDolPageView
 
     function getChatBlockMenu($iBlockID, $aMenu)
     {
-        if (!$aMenu || !($oModule = BxDolModule::getInstance('BxChatPlusModule')))
+        if (!$aMenu || !($oModule = BxDolModule::getInstance('BxChatPlusModule'))) {
             return '';
+        }
 
         reset($aMenu);
         $sTitle = key($aMenu);
-        $a = current($aMenu);
-        
+        $a      = current($aMenu);
+
         return $oModule->_oTemplate->parseHtmlByName('chat_block_menu.html', array(
             'block_id' => $iBlockID,
-            'href' => $a['href'],
-            'target' => isset($a['target']) ? $a['target'] : '',
-            'title' => $sTitle,
+            'href'     => $a['href'],
+            'target'   => isset($a['target']) ? $a['target'] : '',
+            'title'    => $sTitle,
         ));
     }
 }

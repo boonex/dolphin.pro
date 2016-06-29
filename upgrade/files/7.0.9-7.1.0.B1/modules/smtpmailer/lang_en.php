@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ CHANGED KEYS ==================
+    // ================ CHANGED KEYS ==================
 
-  '_bx_smtp_administration' => 'SMTP Mailer',
+    '_bx_smtp_administration' => 'SMTP Mailer',
 
 );

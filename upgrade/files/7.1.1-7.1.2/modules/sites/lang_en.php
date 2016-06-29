@@ -2,10 +2,10 @@
 
 $aLangContent = array(
 
-  // ================ DELETED KEYS ==================
+    // ================ DELETED KEYS ==================
 
-/*  
-  '_bx_sites_action_title_share' => 'Share',
-*/
+    /*  
+      '_bx_sites_action_title_share' => 'Share',
+    */
 
 );

@@ -4,7 +4,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once( BX_DIRECTORY_PATH_INC . 'profiles.inc.php' );
+require_once(BX_DIRECTORY_PATH_INC . 'profiles.inc.php');
 
 bx_import('BxDolModuleDb');
 bx_import('BxDolConnectModule');
@@ -26,7 +26,8 @@ class BxDolphConModule extends BxDolConnectModule
      */
     function actionAdministration()
     {
-        parent::_actionAdministration('bx_dolphcon_api_key', '_bx_dolphcon_settings', '_bx_dolphcon_information', '_bx_dolphcon_information_block');
+        parent::_actionAdministration('bx_dolphcon_api_key', '_bx_dolphcon_settings', '_bx_dolphcon_information',
+            '_bx_dolphcon_information_block');
     }
 
     /**
@@ -36,22 +37,22 @@ class BxDolphConModule extends BxDolConnectModule
      */
     function actionStart()
     {
-        if (isLogged())
-            $this->_redirect ($this -> _oConfig -> sDefaultRedirectUrl);
+        if (isLogged()) {
+            $this->_redirect($this->_oConfig->sDefaultRedirectUrl);
+        }
 
         if (!$this->_oConfig->sApiID || !$this->_oConfig->sApiSecret || !$this->_oConfig->sApiUrl) {
-            $sCode =  MsgBox( _t('_bx_dolphcon_profile_error_api_keys') );
-            $this->_oTemplate->getPage(_t('_bx_dolphcon'), $sCode);            
-        } 
-        else {
+            $sCode = MsgBox(_t('_bx_dolphcon_profile_error_api_keys'));
+            $this->_oTemplate->getPage(_t('_bx_dolphcon'), $sCode);
+        } else {
 
             // define redirect URL to the remote Dolphin site                
             $sUrl = bx_append_url_params($this->_oConfig->sApiUrl . 'auth', array(
                 'response_type' => 'code',
-                'client_id' => $this->_oConfig->sApiID,
-                'redirect_uri' => $this->_oConfig->sPageHandle,
-                'scope' => $this->_oConfig->sScope,
-                'state' => $this->_genCsrfToken(),
+                'client_id'     => $this->_oConfig->sApiID,
+                'redirect_uri'  => $this->_oConfig->sPageHandle,
+                'scope'         => $this->_oConfig->sScope,
+                'state'         => $this->_genCsrfToken(),
             ));
             $this->_redirect($sUrl);
         }
@@ -62,6 +63,7 @@ class BxDolphConModule extends BxDolConnectModule
         // check CSRF token
         if ($this->_getCsrfToken() != bx_get('state')) {
             $this->_oTemplate->getPage(_t('_Error'), MsgBox(_t('_bx_dolphcon_state_invalid')));
+
             return;
         }
 
@@ -70,6 +72,7 @@ class BxDolphConModule extends BxDolConnectModule
         if (!$sCode) {
             $sErrorDescription = bx_get('error_description') ? bx_get('error_description') : _t('_Error occured');
             $this->_oTemplate->getPage(_t('_Error'), MsgBox($sErrorDescription));
+
             return;
         }
 
@@ -83,16 +86,19 @@ class BxDolphConModule extends BxDolConnectModule
         ), 'post');
 
         // handle error
-        if (!$s || NULL === ($aResponse = json_decode($s, true)) || !isset($aResponse['access_token']) || isset($aResponse['error'])) {
+        if (!$s || null === ($aResponse = json_decode($s,
+                true)) || !isset($aResponse['access_token']) || isset($aResponse['error'])
+        ) {
             $sErrorDescription = isset($aResponse['error_description']) ? $aResponse['error_description'] : _t('_Error occured');
             $this->_oTemplate->getPage(_t('_Error'), MsgBox($sErrorDescription));
+
             return;
         }
 
         // get the data, especially access_token
-        $sAccessToken = $aResponse['access_token'];
-        $sExpiresIn = $aResponse['expires_in'];
-        $sExpiresAt = new \DateTime('+' . $sExpiresIn . ' seconds');
+        $sAccessToken  = $aResponse['access_token'];
+        $sExpiresIn    = $aResponse['expires_in'];
+        $sExpiresAt    = new \DateTime('+' . $sExpiresIn . ' seconds');
         $sRefreshToken = $aResponse['refresh_token'];
 
         // request info about profile
@@ -101,9 +107,10 @@ class BxDolphConModule extends BxDolConnectModule
         ));
 
         // handle error
-        if (!$s || NULL === ($aResponse = json_decode($s, true)) || !$aResponse || isset($aResponse['error'])) {
-            $sErrorDescription = isset($aResponse['error_description']) ? $aResponse['error_description'] : _t('_Error occured'); 
+        if (!$s || null === ($aResponse = json_decode($s, true)) || !$aResponse || isset($aResponse['error'])) {
+            $sErrorDescription = isset($aResponse['error_description']) ? $aResponse['error_description'] : _t('_Error occured');
             $this->_oTemplate->getPage(_t('_Error'), MsgBox($sErrorDescription));
+
             return;
         }
 
@@ -113,27 +120,26 @@ class BxDolphConModule extends BxDolConnectModule
 
             // check if user logged in before
             $iLocalProfileId = $this->_oDb->getProfileId($aRemoteProfileInfo['id']);
-            
-            if ($iLocalProfileId) { 
+
+            if ($iLocalProfileId) {
                 // user already exists
 
                 $aLocalProfileInfo = getProfileInfo($iLocalProfileId);
 
                 $this->setLogged($iLocalProfileId, $aLocalProfileInfo['Password']);
 
-            }             
-            else { 
+            } else {
                 // register new user
                 $sAlternativeNickName = '';
-                if (getID($aRemoteProfileInfo['NickName']))
+                if (getID($aRemoteProfileInfo['NickName'])) {
                     $sAlternativeNickName = $this->getAlternativeName($aRemoteProfileInfo['NickName']);
+                }
 
                 $this->getJoinAfterPaymentPage($aRemoteProfileInfo);
 
                 $this->_createProfile($aRemoteProfileInfo, $sAlternativeNickName);
             }
-        } 
-        else {
+        } else {
             $this->_oTemplate->getPage(_t('_Error'), MsgBox(_t('_bx_dolphcon_profile_error_info')));
         }
     }
@@ -145,21 +151,23 @@ class BxDolphConModule extends BxDolConnectModule
     }
 
     /**
-     * @param $aProfileInfo - remote profile info
+     * @param $aProfileInfo     - remote profile info
      * @param $sAlternativeName - suffix to add to NickName to make it unique
      * @return profile array info, ready for the local database
      */
     protected function _convertRemoteFields($aProfileInfo, $sAlternativeName = '')
     {
-        $aProfileFields = $aProfileInfo;
+        $aProfileFields             = $aProfileInfo;
         $aProfileFields['NickName'] = $aProfileInfo['NickName'] . $sAlternativeName;
+
         return $aProfileFields;
     }
 
     protected function _genCsrfToken($bReturn = false)
     {
-        if ($GLOBALS['MySQL']->getParam('sys_security_form_token_enable') != 'on' || defined('BX_DOL_CRON_EXECUTE'))
+        if ($GLOBALS['MySQL']->getParam('sys_security_form_token_enable') != 'on' || defined('BX_DOL_CRON_EXECUTE')) {
             return false;
+        }
 
         $oSession = BxDolSession::getInstance();
 
@@ -168,8 +176,7 @@ class BxDolphConModule extends BxDolConnectModule
             $sToken = genRndPwd(20, true);
             $oSession->setValue('bx_dolphcon_csrf_token', $sToken);
             $oSession->setValue('bx_dolphcon_csrf_token_time', time());
-        }
-        else {
+        } else {
             $sToken = $oSession->getValue('bx_dolphcon_csrf_token');
         }
 
@@ -179,6 +186,7 @@ class BxDolphConModule extends BxDolConnectModule
     protected function _getCsrfToken()
     {
         $oSession = BxDolSession::getInstance();
+
         return $oSession->getValue('bx_dolphcon_csrf_token');
     }
 

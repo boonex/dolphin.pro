@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_pageac' => 'Page Access Control',
+    '_sys_module_pageac' => 'Page Access Control',
 
 );

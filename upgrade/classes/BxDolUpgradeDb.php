@@ -5,8 +5,8 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-define( 'BX_UPGRADE_DB_FULL_VISUAL_PROCESSING', true );
-define( 'BX_UPGRADE_DB_FULL_DEBUG_MODE', true );
+define('BX_UPGRADE_DB_FULL_VISUAL_PROCESSING', true);
+define('BX_UPGRADE_DB_FULL_DEBUG_MODE', true);
 
 class BxDolUpgradeDb
 {
@@ -21,12 +21,12 @@ class BxDolUpgradeDb
     */
     function __construct()
     {
-        $this->host = DATABASE_HOST;
-        $this->port = DATABASE_PORT;
-        $this->socket = DATABASE_SOCK;
-        $this->dbname = DATABASE_NAME;
-        $this->user = DATABASE_USER;
-        $this->password = DATABASE_PASS;
+        $this->host             = DATABASE_HOST;
+        $this->port             = DATABASE_PORT;
+        $this->socket           = DATABASE_SOCK;
+        $this->dbname           = DATABASE_NAME;
+        $this->user             = DATABASE_USER;
+        $this->password         = DATABASE_PASS;
         $this->current_arr_type = PDO::FETCH_ASSOC;
 
         $this->connect();
@@ -38,15 +38,17 @@ class BxDolUpgradeDb
     function connect()
     {
         $full_host = $this->host;
-        $full_host .= $this->port ? ':'.$this->port : '';
-        $full_host .= $this->socket ? ':'.$this->socket : '';
+        $full_host .= $this->port ? ':' . $this->port : '';
+        $full_host .= $this->socket ? ':' . $this->socket : '';
 
         $this->link = @mysql_pconnect($full_host, $this->user, $this->password);
-        if (!$this->link)
+        if (!$this->link) {
             $this->error('Database connect failed', true);
+        }
 
-        if (!$this->select_db())
+        if (!$this->select_db()) {
             $this->error('Database select failed', true);
+        }
 
         $this->res("SET NAMES 'utf8'");
         $this->res("SET sql_mode = ''");
@@ -70,34 +72,41 @@ class BxDolUpgradeDb
      */
     function getRow($query, $arr_type = PDO::FETCH_ASSOC)
     {
-        if(!$query)
+        if (!$query) {
             return array();
-        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH)
+        }
+        if ($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH) {
             $arr_type = PDO::FETCH_ASSOC;
-        $res = $this->res ($query);
+        }
+        $res     = $this->res($query);
         $arr_res = array();
-        if($res && $res->rowCount()) {
+        if ($res && $res->rowCount()) {
             $arr_res = mysql_fetch_array($res, $arr_type);
             mysql_free_result($res);
         }
+
         return $arr_res;
     }
+
     /**
      * execute sql query and return a column as result
      */
     function getColumn($sQuery)
     {
-        if(!$sQuery)
+        if (!$sQuery) {
             return array();
+        }
 
         $rResult = $this->res($sQuery);
 
         $aResult = array();
-        if($rResult) {
-            while($aRow = mysql_fetch_array($rResult, PDO::FETCH_NUM))
+        if ($rResult) {
+            while ($aRow = mysql_fetch_array($rResult, PDO::FETCH_NUM)) {
                 $aResult[] = $aRow[0];
+            }
             mysql_free_result($rResult);
         }
+
         return $aResult;
     }
 
@@ -106,16 +115,19 @@ class BxDolUpgradeDb
      */
     function getOne($query, $index = 0)
     {
-        if(!$query)
+        if (!$query) {
             return false;
-        $res = $this->res ($query);
+        }
+        $res     = $this->res($query);
         $arr_res = array();
-        if($res && $res->rowCount())
+        if ($res && $res->rowCount()) {
             $arr_res = mysql_fetch_array($res);
-        if(count($arr_res))
+        }
+        if (count($arr_res)) {
             return $arr_res[$index];
-        else
+        } else {
             return false;
+        }
     }
 
     /**
@@ -124,16 +136,20 @@ class BxDolUpgradeDb
      */
     function getFirstRow($query, $arr_type = PDO::FETCH_ASSOC)
     {
-        if(!$query)
+        if (!$query) {
             return array();
-        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM)
+        }
+        if ($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM) {
             $this->current_arr_type = PDO::FETCH_ASSOC;
-        else
+        } else {
             $this->current_arr_type = $arr_type;
-        $this->current_res = $this->res ($query);
-        $arr_res = array();
-        if($this->current_res && $this->current_res->rowCount())
+        }
+        $this->current_res = $this->res($query);
+        $arr_res           = array();
+        if ($this->current_res && $this->current_res->rowCount()) {
             $arr_res = mysql_fetch_array($this->current_res, $this->current_arr_type);
+        }
+
         return $arr_res;
     }
 
@@ -143,11 +159,12 @@ class BxDolUpgradeDb
     function getNextRow()
     {
         $arr_res = mysql_fetch_array($this->current_res, $this->current_arr_type);
-        if($arr_res)
+        if ($arr_res) {
             return $arr_res;
-        else {
+        } else {
             mysql_free_result($this->current_res);
             $this->current_arr_type = PDO::FETCH_ASSOC;
+
             return array();
         }
     }
@@ -157,12 +174,13 @@ class BxDolUpgradeDb
      */
     function getNumRows($res = false)
     {
-        if ($res)
+        if ($res) {
             return (int)@$res->rowCount();
-        elseif (!$this->current_res)
+        } elseif (!$this->current_res) {
             return (int)@$this->current_res->rowCount();
-        else
+        } else {
             return 0;
+        }
     }
 
     /**
@@ -179,8 +197,10 @@ class BxDolUpgradeDb
     function query($query)
     {
         $res = $this->res($query);
-        if($res)
+        if ($res) {
             return mysql_affected_rows($this->link);
+        }
+
         return false;
     }
 
@@ -189,13 +209,20 @@ class BxDolUpgradeDb
      */
     function res($query, $error_checking = true)
     {
-        if(!$query)
+        if (!$query) {
             return false;
-        if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->beginQuery($query);
+        }
+        if (isset($GLOBALS['bx_profiler'])) {
+            $GLOBALS['bx_profiler']->beginQuery($query);
+        }
         $res = mysql_query($query, $this->link);
-        if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->endQuery($res);
-        if (!$res && $error_checking)
+        if (isset($GLOBALS['bx_profiler'])) {
+            $GLOBALS['bx_profiler']->endQuery($res);
+        }
+        if (!$res && $error_checking) {
             $this->error('Database query error', false, $query);
+        }
+
         return $res;
     }
 
@@ -204,19 +231,23 @@ class BxDolUpgradeDb
      */
     function getAll($query, $arr_type = PDO::FETCH_ASSOC)
     {
-        if(!$query)
+        if (!$query) {
             return array();
+        }
 
-        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH)
+        if ($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH) {
             $arr_type = PDO::FETCH_ASSOC;
+        }
 
-        $res = $this->res ($query);
+        $res     = $this->res($query);
         $arr_res = array();
-        if($res) {
-            while($row = mysql_fetch_array($res, $arr_type))
+        if ($res) {
+            while ($row = mysql_fetch_array($res, $arr_type)) {
                 $arr_res[] = $row;
+            }
             mysql_free_result($res);
         }
+
         return $arr_res;
     }
 
@@ -225,15 +256,18 @@ class BxDolUpgradeDb
      */
     function fillArray($res, $arr_type = PDO::FETCH_ASSOC)
     {
-        if(!$res)
+        if (!$res) {
             return array();
+        }
 
-        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH)
+        if ($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH) {
             $arr_type = PDO::FETCH_ASSOC;
+        }
 
         $arr_res = array();
-        while($row = mysql_fetch_array($res, $arr_type))
+        while ($row = mysql_fetch_array($res, $arr_type)) {
             $arr_res[] = $row;
+        }
         mysql_free_result($res);
 
         return $arr_res;
@@ -244,17 +278,19 @@ class BxDolUpgradeDb
      */
     function getAllWithKey($query, $sFieldKey)
     {
-        if(!$query)
+        if (!$query) {
             return array();
+        }
 
-        $res = $this->res ($query);
+        $res     = $this->res($query);
         $arr_res = array();
-        if($res) {
-            while($row = mysql_fetch_array($res, PDO::FETCH_ASSOC)) {
+        if ($res) {
+            while ($row = mysql_fetch_array($res, PDO::FETCH_ASSOC)) {
                 $arr_res[$row[$sFieldKey]] = $row;
             }
             mysql_free_result($res);
         }
+
         return $arr_res;
     }
 
@@ -263,17 +299,19 @@ class BxDolUpgradeDb
      */
     function getPairs($query, $sFieldKey, $sFieldValue, $arr_type = PDO::FETCH_ASSOC)
     {
-        if(!$query)
+        if (!$query) {
             return array();
+        }
 
-        $res = $this->res ($query);
+        $res     = $this->res($query);
         $arr_res = array();
-        if($res) {
-            while($row = mysql_fetch_array($res, PDO::FETCH_ASSOC)) {
+        if ($res) {
+            while ($row = mysql_fetch_array($res, PDO::FETCH_ASSOC)) {
                 $arr_res[$row[$sFieldKey]] = $row[$sFieldValue];
             }
             mysql_free_result($res);
         }
+
         return $arr_res;
     }
 
@@ -284,10 +322,11 @@ class BxDolUpgradeDb
 
     function error($text, $isForceErrorChecking = false, $sSqlQuery = '')
     {
-        if ($this->error_checking || $isForceErrorChecking)
-            $this->genMySQLErr ($text, $sSqlQuery);
-        else
-            $this->log($text.': '.mysql_error($this->link));
+        if ($this->error_checking || $isForceErrorChecking) {
+            $this->genMySQLErr($text, $sSqlQuery);
+        } else {
+            $this->log($text . ': ' . mysql_error($this->link));
+        }
     }
 
     function listTables()
@@ -302,9 +341,9 @@ class BxDolUpgradeDb
         $iFields = mysql_num_fields($rFields);
 
         $aResult = array('original' => array(), 'uppercase' => array());
-        for($i = 0; $i < $iFields; $i++) {
-            $sName = mysql_field_name($rFields, $i);
-            $aResult['original'][] = $sName;
+        for ($i = 0; $i < $iFields; $i++) {
+            $sName                  = mysql_field_name($rFields, $i);
+            $aResult['original'][]  = $sName;
             $aResult['uppercase'][] = strtoupper($sName);
         }
 
@@ -313,24 +352,24 @@ class BxDolUpgradeDb
 
     function getEncoding()
     {
-        return  mysql_client_encoding($this->link) or $this->error('Database get encoding error');
+        return mysql_client_encoding($this->link) or $this->error('Database get encoding error');
     }
 
-    function genMySQLErr( $out, $query ='' )
+    function genMySQLErr($out, $query = '')
     {
         global $site;
 
         $aBackTrace = debug_backtrace();
-        unset( $aBackTrace[0] );
+        unset($aBackTrace[0]);
 
-        if( $query ) {
+        if ($query) {
             //try help to find error
 
             $aFoundError = array();
 
-            foreach( $aBackTrace as $aCall ) {
-                foreach( $aCall['args'] as $argNum => $argVal ) {
-                    if( is_string($argVal) and strcmp( $argVal, $query ) == 0 ) {
+            foreach ($aBackTrace as $aCall) {
+                foreach ($aCall['args'] as $argNum => $argVal) {
+                    if (is_string($argVal) and strcmp($argVal, $query) == 0) {
                         $aFoundError['file']     = $aCall['file'];
                         $aFoundError['line']     = $aCall['line'];
                         $aFoundError['function'] = $aCall['function'];
@@ -339,7 +378,7 @@ class BxDolUpgradeDb
                 }
             }
 
-            if( $aFoundError ) {
+            if ($aFoundError) {
                 $sFoundError = <<<EOJ
 Found error in the file '<b>{$aFoundError['file']}</b>' at line <b>{$aFoundError['line']}</b>.<br />
 Called '<b>{$aFoundError['function']}</b>' function with erroneous argument #<b>{$aFoundError['arg']}</b>.<br /><br />
@@ -347,62 +386,66 @@ EOJ;
             }
         }
 
-        if( BX_UPGRADE_DB_FULL_VISUAL_PROCESSING ) {
+        if (BX_UPGRADE_DB_FULL_VISUAL_PROCESSING) {
             ?>
-                <div style="border:2px solid red;padding:4px;width:600px;margin:0px auto;">
-                    <div style="text-align:center;background-color:red;color:white;font-weight:bold;">Error</div>
-                    <div style="text-align:center;"><?=$out?></div>
-            <?php
-            if( BX_UPGRADE_DB_FULL_DEBUG_MODE ) {
-                if( strlen( $query ) )
-                    echo "<div><b>Query:</b><br />{$query}</div>";
+            <div style="border:2px solid red;padding:4px;width:600px;margin:0px auto;">
+                <div style="text-align:center;background-color:red;color:white;font-weight:bold;">Error</div>
+                <div style="text-align:center;"><?= $out ?></div>
+                <?php
+                if (BX_UPGRADE_DB_FULL_DEBUG_MODE) {
+                    if (strlen($query)) {
+                        echo "<div><b>Query:</b><br />{$query}</div>";
+                    }
 
-                echo '<div><b>Mysql error:</b><br />'.mysql_error($this->link).'</div>';
-                echo '<div style="overflow:scroll;height:300px;border:1px solid gray;">';
+                    echo '<div><b>Mysql error:</b><br />' . mysql_error($this->link) . '</div>';
+                    echo '<div style="overflow:scroll;height:300px;border:1px solid gray;">';
                     echo $sFoundError;
                     echo "<b>Debug backtrace:</b><br />";
-                    echoDbg( $aBackTrace );
+                    echoDbg($aBackTrace);
 
                     echo "<b>Called script:</b> {$_SERVER['PHP_SELF']}<br />";
                     echo "<b>Request parameters:</b><br />";
-                    echoDbg( $_REQUEST );
-                echo '</div>';
-            }
-            ?>
-                </div>
+                    echoDbg($_REQUEST);
+                    echo '</div>';
+                }
+                ?>
+            </div>
             <?php
-        } else
+        } else {
             echo $out;
+        }
 
         exit;
     }
 
-    function setErrorChecking ($b)
+    function setErrorChecking($b)
     {
         $this->error_checking = $b;
     }
 
-    function escape ($s)
+    function escape($s)
     {
         return mysql_real_escape_string($s);
     }
 
-    function executeSQL($sPath, $aReplace = array (), $isBreakOnError = true)
+    function executeSQL($sPath, $aReplace = array(), $isBreakOnError = true)
     {
-        if(!file_exists($sPath) || !($rHandler = fopen($sPath, "r")))
-            return array ('query' => "fopen($sPath, 'r')", 'error' => 'file not found or permission denied');
+        if (!file_exists($sPath) || !($rHandler = fopen($sPath, "r"))) {
+            return array('query' => "fopen($sPath, 'r')", 'error' => 'file not found or permission denied');
+        }
 
-        $sQuery = "";
+        $sQuery     = "";
         $sDelimiter = ';';
-        $aResult = array();
-        while(!feof($rHandler)) {
+        $aResult    = array();
+        while (!feof($rHandler)) {
             $sStr = trim(fgets($rHandler));
 
-            if(empty($sStr) || $sStr[0] == "" || $sStr[0] == "#" || ($sStr[0] == "-" && $sStr[1] == "-"))
+            if (empty($sStr) || $sStr[0] == "" || $sStr[0] == "#" || ($sStr[0] == "-" && $sStr[1] == "-")) {
                 continue;
+            }
 
             //--- Change delimiter ---//
-            if(strpos($sStr, "DELIMITER //") !== false || strpos($sStr, "DELIMITER ;") !== false) {
+            if (strpos($sStr, "DELIMITER //") !== false || strpos($sStr, "DELIMITER ;") !== false) {
                 $sDelimiter = trim(str_replace('DELIMITER', '', $sStr));
                 continue;
             }
@@ -410,19 +453,23 @@ EOJ;
             $sQuery .= $sStr;
 
             //--- Check for multiline query ---//
-            if(substr($sStr, -strlen($sDelimiter)) != $sDelimiter)
+            if (substr($sStr, -strlen($sDelimiter)) != $sDelimiter) {
                 continue;
+            }
 
             //--- Execute query ---//
-            if ($aReplace)
+            if ($aReplace) {
                 $sQuery = str_replace($aReplace['from'], $aReplace['to'], $sQuery);
-            if($sDelimiter != ';')
+            }
+            if ($sDelimiter != ';') {
                 $sQuery = str_replace($sDelimiter, "", $sQuery);
+            }
             $rResult = $this->res(trim($sQuery), false);
-            if(!$rResult) {
+            if (!$rResult) {
                 $aResult[] = array('query' => $sQuery, 'error' => mysql_error($this->link));
-                if ($isBreakOnError)
+                if ($isBreakOnError) {
                     break;
+                }
             }
 
             $sQuery = "";

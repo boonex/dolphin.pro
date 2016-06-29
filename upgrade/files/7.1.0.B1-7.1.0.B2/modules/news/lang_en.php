@@ -2,9 +2,9 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_news' => 'News',
-  '_mma_News_Delete' => 'news delete',
+    '_sys_module_news' => 'News',
+    '_mma_News_Delete' => 'news delete',
 
 );

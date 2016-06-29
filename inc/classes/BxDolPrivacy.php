@@ -44,7 +44,7 @@ define('BX_DOL_PG_HIDDEN', '8');
  *     //show necessary content
  *    }
  *
- *    @see an example of integration in the default Dolphin's modules(feedback, events, sites, etc)
+ * @see an example of integration in the default Dolphin's modules(feedback, events, sites, etc)
  *
  *
  * Memberships/ACL:
@@ -79,37 +79,43 @@ class BxDolPrivacy
      */
     function getGroupChooser($iOwnerId, $sModuleUri, $sActionName, $aDynamicGroups = array(), $sTitle = "")
     {
-        if(empty($sActionName))
+        if (empty($sActionName)) {
             return array();
+        }
 
         $sValue = $this->_oDb->getDefaultValue($iOwnerId, $sModuleUri, $sActionName);
 
-        if(empty($sValue))
+        if (empty($sValue)) {
             $sValue = $this->_oDb->getDefaultValueModule($sModuleUri, $sActionName);
+        }
 
         $aValues = array();
         $aGroups = $this->_oDb->getGroupsBy(array('type' => 'owner', 'owner_id' => $iOwnerId, 'full' => true));
-        foreach($aGroups as $aGroup) {
-            if((int)$aGroup['owner_id'] == 0 && $this->_oDb->getParam('sys_ps_enabled_group_' . $aGroup['id']) != 'on')
-               continue;
+        foreach ($aGroups as $aGroup) {
+            if ((int)$aGroup['owner_id'] == 0 && $this->_oDb->getParam('sys_ps_enabled_group_' . $aGroup['id']) != 'on') {
+                continue;
+            }
 
-            $aValues[] = array('key' => $aGroup['id'], 'value' => ((int)$aGroup['owner_id'] == 0 ? _t('_ps_group_' . $aGroup['id'] . '_title') : $aGroup['title']));
+            $aValues[] = array('key'   => $aGroup['id'],
+                               'value' => ((int)$aGroup['owner_id'] == 0 ? _t('_ps_group_' . $aGroup['id'] . '_title') : $aGroup['title'])
+            );
         }
         $aValues = array_merge($aValues, $aDynamicGroups);
 
-        $sName = $this->getFieldAction($sActionName);
+        $sName    = $this->getFieldAction($sActionName);
         $sCaption = $this->_oDb->getFieldActionTitle($sModuleUri, $sActionName);
+
         return array(
-            'type' => 'select',
-            'name' => $sName,
+            'type'    => 'select',
+            'name'    => $sName,
             'caption' => (!empty($sTitle) ? $sTitle : _t(!empty($sCaption) ? $sCaption : '_' . $sName)),
-            'value' => $sValue,
-            'values' => $aValues,
+            'value'   => $sValue,
+            'values'  => $aValues,
             'checker' => array(
-                'func' => 'avail',
+                'func'  => 'avail',
                 'error' => _t('_ps_ferr_incorrect_select')
             ),
-            'db' => array(
+            'db'      => array(
                 'pass' => 'Int'
             )
         );
@@ -125,21 +131,26 @@ class BxDolPrivacy
      */
     function check($sAction, $iObjectId, $iViewerId = 0)
     {
-        if(empty($iViewerId))
+        if (empty($iViewerId)) {
             $iViewerId = getLoggedId();
+        }
 
         $aObject = $this->_oDb->getObjectInfo($this->getFieldAction($sAction), $iObjectId);
-        if(empty($aObject) || !is_array($aObject))
+        if (empty($aObject) || !is_array($aObject)) {
             return false;
+        }
 
-        if($aObject['group_id'] == BX_DOL_PG_HIDDEN)
+        if ($aObject['group_id'] == BX_DOL_PG_HIDDEN) {
             return false;
+        }
 
-        if(isAdmin() || $iViewerId == $aObject['owner_id'])
+        if (isAdmin() || $iViewerId == $aObject['owner_id']) {
             return true;
+        }
 
-        if($this->_oDb->isGroupMember($aObject['group_id'], $aObject['owner_id'], $iViewerId))
+        if ($this->_oDb->isGroupMember($aObject['group_id'], $aObject['owner_id'], $iViewerId)) {
             return true;
+        }
 
         return $this->isDynamicGroupMember($aObject['group_id'], $aObject['owner_id'], $iViewerId, $iObjectId);
     }

@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_bx_groups_privacy_view_forum' => 'View Forum',
+    '_bx_groups_privacy_view_forum' => 'View Forum',
 
 );

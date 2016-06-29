@@ -3,7 +3,6 @@
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
-
 //  mail sending class
 
 class BxMail extends Mistake
@@ -12,9 +11,10 @@ class BxMail extends Mistake
 
     /**
      * send mail with password
-     * @param $p	email template variables to replace
+     *
+     * @param $p    email template variables to replace
      */
-    function sendActivationMail (&$p)
+    function sendActivationMail(&$p)
     {
         global $gConf;
 
@@ -25,13 +25,14 @@ class BxMail extends Mistake
 EOF;
 
         $p['site_url'] = $gConf['url']['base'];
-        for (reset ($p) ; list ($k, $v) = each ($p); ) {
-            $mailContent = str_replace ('{'.$k.'}', $v, $mailContent);
+        for (reset($p); list ($k, $v) = each($p);) {
+            $mailContent = str_replace('{' . $k . '}', $v, $mailContent);
         }
 
         $headers = "From: =?UTF-8?B?" . base64_encode($gConf['def_title']) . "?= <" . $gConf['email']['sender'] . ">\r\nContent-type: text/html; charset=UTF-8\r\n";
-        $subj = '=?UTF-8?B?' . base64_encode($subj) . '?=';
-        return mail ($p['email'], $subj, $mailContent, $headers, '-f'.$gConf['email']['sender']);
+        $subj    = '=?UTF-8?B?' . base64_encode($subj) . '?=';
+
+        return mail($p['email'], $subj, $mailContent, $headers, '-f' . $gConf['email']['sender']);
     }
 
 }

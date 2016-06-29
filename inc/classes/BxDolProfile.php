@@ -19,9 +19,9 @@ class BxDolProfile
      *
      * @return User
      */
-    function __construct( $vProfileID, $bWithEmail = 1 )
+    function __construct($vProfileID, $bWithEmail = 1)
     {
-        $this -> _iProfileID = $this -> getID( $vProfileID, $bWithEmail );
+        $this->_iProfileID = $this->getID($vProfileID, $bWithEmail);
     }
 
     /**
@@ -30,9 +30,9 @@ class BxDolProfile
      * @param unknown_type $ID
      * @param unknown_type $float
      */
-    function getProfileThumbnail( $float )
+    function getProfileThumbnail($float)
     {
-        $ret = $this -> getProfileImageUrl( $iProfileID );
+        $ret = $this->getProfileImageUrl($iProfileID);
     }
 
     /**
@@ -41,7 +41,7 @@ class BxDolProfile
      * @param unknown_type $ID
      * @param unknown_type $imageNum
      */
-    function getProfileImageUrl( $imageNum )
+    function getProfileImageUrl($imageNum)
     {
 
     }
@@ -53,30 +53,32 @@ class BxDolProfile
     {
         global $aUser;
 
-        $bUseCacheSystem = ( getParam('enable_cache_system') == 'on' ) ? true : false;
+        $bUseCacheSystem = (getParam('enable_cache_system') == 'on') ? true : false;
 
-        $oPDb = new BxDolProfileQuery();
-        $sProfileCache = BX_DIRECTORY_PATH_CACHE . 'user' . $this -> _iProfileID . '.php';
-        if( $bUseCacheSystem && file_exists( $sProfileCache ) && is_file( $sProfileCache ) ) {
+        $oPDb          = new BxDolProfileQuery();
+        $sProfileCache = BX_DIRECTORY_PATH_CACHE . 'user' . $this->_iProfileID . '.php';
+        if ($bUseCacheSystem && file_exists($sProfileCache) && is_file($sProfileCache)) {
             require_once($sProfileCache);
-            $this -> _aProfile = $aUser[$this -> _iProfileID];
-        } else
-            $this -> _aProfile = $oPDb -> getProfileDataById( $this -> _iProfileID );
-
-        //get couple data
-        if( $this -> _aProfile['Couple'] ) {
-            $this -> bCouple = true;
-            $this -> _iCoupleID = $this -> _aProfile['Couple'];
-
-            $sProfileCache = BX_DIRECTORY_PATH_CACHE . 'user' . $this -> _iCoupleID . '.php';
-            if( $bUseCacheSystem && file_exists( $sProfileCache ) && is_file( $sProfileCache ) ) {
-                require_once($sProfileCache);
-                $this -> _aCouple = $aUser[$this -> _iCoupleID];
-            } else
-                $this -> _aCouple = $oPDb -> getProfileDataById( $this -> _iCoupleID );
+            $this->_aProfile = $aUser[$this->_iProfileID];
+        } else {
+            $this->_aProfile = $oPDb->getProfileDataById($this->_iProfileID);
         }
 
-        return $this -> _aProfile;
+        //get couple data
+        if ($this->_aProfile['Couple']) {
+            $this->bCouple    = true;
+            $this->_iCoupleID = $this->_aProfile['Couple'];
+
+            $sProfileCache = BX_DIRECTORY_PATH_CACHE . 'user' . $this->_iCoupleID . '.php';
+            if ($bUseCacheSystem && file_exists($sProfileCache) && is_file($sProfileCache)) {
+                require_once($sProfileCache);
+                $this->_aCouple = $aUser[$this->_iCoupleID];
+            } else {
+                $this->_aCouple = $oPDb->getProfileDataById($this->_iCoupleID);
+            }
+        }
+
+        return $this->_aProfile;
     }
 
     /**
@@ -91,16 +93,16 @@ class BxDolProfile
      * $aData['Sex'] = 'male';
      *
      */
-    function updateProfileData( $aData )
+    function updateProfileData($aData)
     {
-        if( is_array( $aData ) ) {
+        if (is_array($aData)) {
             $sQueryAdd = '';
-            foreach($aData as $key => $value ) {
+            foreach ($aData as $key => $value) {
                 $sQueryAdd .= " `$key` = '$value', ";
             }
         }
 
-        $this -> updateProfileDataFile( $iProfileID );
+        $this->updateProfileDataFile($iProfileID);
     }
 
     /**
@@ -108,7 +110,7 @@ class BxDolProfile
      *
      * @param int $iProfileID
      */
-    function updateProfileDataFile( $iProfileID )
+    function updateProfileDataFile($iProfileID)
     {
 
     }
@@ -119,7 +121,7 @@ class BxDolProfile
      * $offer_upgrade - will this code be printed at [c]ontrol [p]anel
      * $credits - will print credits status if $credits == 1
      */
-    function getMembershipStatus( $iPrifileID, $offer_upgrade = true, $credits = 0 )
+    function getMembershipStatus($iPrifileID, $offer_upgrade = true, $credits = 0)
     {
 
     }
@@ -139,7 +141,8 @@ class BxDolProfile
     function getNickName()
     {
         $oProfileQuery = new BxDolProfileQuery();
-        return process_line_output( $oProfileQuery -> getNickName( $this -> _iProfileID ) );
+
+        return process_line_output($oProfileQuery->getNickName($this->_iProfileID));
     }
 
     function getPassword()
@@ -147,28 +150,30 @@ class BxDolProfile
 
     }
 
-    function getID( $vID = false, $bWithEmail = 1 )
+    function getID($vID = false, $bWithEmail = 1)
     {
-        if (false === $vID)
-            return $this -> _iProfileID;
+        if (false === $vID) {
+            return $this->_iProfileID;
+        }
 
         $oPDb = new BxDolProfileQuery();
 
-        if ( $bWithEmail ) {
-            if (filter_var($vID, FILTER_VALIDATE_EMAIL)) {    //eregi("^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,4}$", $vID) ) {
-                $aMail = $oPDb -> getIdByEmail( $vID );
-                if ( (int)$aMail['ID'] ) {
+        if ($bWithEmail) {
+            if (filter_var($vID,
+                FILTER_VALIDATE_EMAIL)) {    //eregi("^[_.0-9a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,4}$", $vID) ) {
+                $aMail = $oPDb->getIdByEmail($vID);
+                if ((int)$aMail['ID']) {
                     return (int)$aMail['ID'];
                 }
             }
         }
 
         $iID = (int)$vID;
-        if ( strcmp("$vID", "$iID") == 0 ) {
+        if (strcmp("$vID", "$iID") == 0) {
             return $iID;
         } else {
-            $aNick = $oPDb -> getIdByNickname( $vID );
-            if ( (int)$aNick['ID'] ) {
+            $aNick = $oPDb->getIdByNickname($vID);
+            if ((int)$aNick['ID']) {
                 return (int)$aNick['ID'];
             }
         }

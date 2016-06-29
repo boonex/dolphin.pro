@@ -29,11 +29,14 @@ class BxEventsPrivacy extends BxDolPrivacy
      */
     function isDynamicGroupMember($mixedGroupId, $iObjectOwnerId, $iViewerId, $iObjectId)
     {
-        $aDataEntry = array ('ID' => $iObjectId, 'ResponsibleID' => $iObjectOwnerId);
+        $aDataEntry = array('ID' => $iObjectId, 'ResponsibleID' => $iObjectOwnerId);
         if ('p' == $mixedGroupId)  // participants
-            return $this->oModule->isFan ($aDataEntry, $iViewerId, true);
-        elseif ('a' == $mixedGroupId) // admins only
-            return $this->oModule->isEntryAdmin ($aDataEntry, $iViewerId);
+        {
+            return $this->oModule->isFan($aDataEntry, $iViewerId, true);
+        } elseif ('a' == $mixedGroupId) // admins only
+        {
+            return $this->oModule->isEntryAdmin($aDataEntry, $iViewerId);
+        }
 
         return false;
     }

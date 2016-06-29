@@ -16,25 +16,35 @@ class BxPhotosPageAlbumsOwner extends BxDolFilesPageAlbumsOwner
     function getBlockCode_ProfilePhotos()
     {
         list($sParamName, $sParamValue, $sParamValue1, $sParamValue2, $sParamValue3) = $this->aAddParams;
-        if($sParamValue != 'owner')
+        if ($sParamValue != 'owner') {
             return '';
+        }
 
-        $oSearch = $this->getSearchObject();
+        $oSearch                                   = $this->getSearchObject();
         $oSearch->aCurrent['restriction']['album'] = array(
-            'value'=>'', 'field'=>'Uri', 'operator'=>'=', 'paramName'=>'albumUri', 'table'=>'sys_albums'
+            'value'     => '',
+            'field'     => 'Uri',
+            'operator'  => '=',
+            'paramName' => 'albumUri',
+            'table'     => 'sys_albums'
         );
 
         $oSearch->aCurrent['restriction']['album_owner'] = array(
-            'value'=>'', 'field'=>'Owner', 'operator'=>'=', 'paramName'=>'albumOwner', 'table'=>'sys_albums'
+            'value'     => '',
+            'field'     => 'Owner',
+            'operator'  => '=',
+            'paramName' => 'albumOwner',
+            'table'     => 'sys_albums'
         );
 
-        $sUri = BxDolAlbums::getAbumUri($this->oConfig->getGlParam('profile_album_name'), $this->iOwnerId);
+        $sUri    = BxDolAlbums::getAbumUri($this->oConfig->getGlParam('profile_album_name'), $this->iOwnerId);
         $aParams = array('album' => $sUri, 'owner' => $this->iOwnerId);
         $aCustom = array(
-            'per_page' => $this->oConfig->getGlParam('number_top'),
-            'simple_paginate' => FALSE
+            'per_page'        => $this->oConfig->getGlParam('number_top'),
+            'simple_paginate' => false
         );
-        $aHtml = $oSearch->getBrowseBlock($aParams, $aCustom);
+        $aHtml   = $oSearch->getBrowseBlock($aParams, $aCustom);
+
         return array($aHtml['code'], $aHtml['menu_top'], $aHtml['menu_bottom'], '');
     }
 }

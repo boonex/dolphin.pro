@@ -8,13 +8,15 @@ bx_import('BxDolAlerts');
 
 class BxSitesProfileDeleteResponse extends BxDolAlertsResponse
 {
-    function response ($oTag)
+    function response($oTag)
     {
-        if (!($iProfileId = (int)$oTag->iObject))
+        if (!($iProfileId = (int)$oTag->iObject)) {
             return;
+        }
 
-        if (!defined('BX_SITES_ON_PROFILE_DELETE'))
-            define ('BX_SITES_ON_PROFILE_DELETE', 1);
+        if (!defined('BX_SITES_ON_PROFILE_DELETE')) {
+            define('BX_SITES_ON_PROFILE_DELETE', 1);
+        }
 
         $_GET['r'] = 'sites/delete_profile_sites/' . $iProfileId;
         chdir(BX_DIRECTORY_PATH_MODULES);

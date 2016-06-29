@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_profile_customize' => 'Настройка Профиля',
+    '_sys_module_profile_customize' => 'Настройка Профиля',
 
 );

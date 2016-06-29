@@ -8,46 +8,48 @@ require_once("BxPfwPayPal.php");
 
 class BxPfwSecureToken extends BxPfwPayPal
 {
-	function __construct($oDb, $oConfig, $aConfig)
-	{
-		parent::__construct($oDb, $oConfig, $aConfig);
+    function __construct($oDb, $oConfig, $aConfig)
+    {
+        parent::__construct($oDb, $oConfig, $aConfig);
 
-		unset($this->_aCallParameters['TENDER']);
-		unset($this->_aCallParameters['ACTION']);
-		unset($this->_aCallParameters['VERBOSITY']);
-	}
+        unset($this->_aCallParameters['TENDER']);
+        unset($this->_aCallParameters['ACTION']);
+        unset($this->_aCallParameters['VERBOSITY']);
+    }
 
-	function getSecureToken($iPendingId, $aCartInfo)
-	{
-		$sTokenId = md5(uniqid(rand(), true));
-		$this->_getSecureToken($iPendingId, $aCartInfo, $sTokenId);
+    function getSecureToken($iPendingId, $aCartInfo)
+    {
+        $sTokenId = md5(uniqid(rand(), true));
+        $this->_getSecureToken($iPendingId, $aCartInfo, $sTokenId);
 
-		$aResponse = $this->_executeCall();
-		if($aResponse === false || strcmp($sTokenId, $aResponse['SECURETOKENID']) != 0)
-			return false;
+        $aResponse = $this->_executeCall();
+        if ($aResponse === false || strcmp($sTokenId, $aResponse['SECURETOKENID']) != 0) {
+            return false;
+        }
 
-		$this->_logInfo(__METHOD__, $aResponse);
-		return array(
-			'token' => $aResponse['SECURETOKEN'], 
-			'token_id' => $aResponse['SECURETOKENID'],
-		);
-	}
+        $this->_logInfo(__METHOD__, $aResponse);
 
-	protected function _getSecureToken($iPendingId, $aCartInfo, $sTokenId)
-	{
-		$this->_aValidationParameters = array('CREATESECURETOKEN', 'SECURETOKENID', 'ERRORURL', 'CANCELURL', 'AMT');
+        return array(
+            'token'    => $aResponse['SECURETOKEN'],
+            'token_id' => $aResponse['SECURETOKENID'],
+        );
+    }
 
-		$this->_aCallParameters['CREATESECURETOKEN'] = 'Y';
-		$this->_aCallParameters['SECURETOKENID'] = $sTokenId;
+    protected function _getSecureToken($iPendingId, $aCartInfo, $sTokenId)
+    {
+        $this->_aValidationParameters = array('CREATESECURETOKEN', 'SECURETOKENID', 'ERRORURL', 'CANCELURL', 'AMT');
 
-		$sUrlAddon = $this->_sName . '/' . $aCartInfo['vendor_id'] . '/';
-		$this->_aCallParameters['RETURNURL'] = $this->_oConfig->getReturnUrl() . $sUrlAddon;
-		$this->_aCallParameters['CANCELURL'] = $this->_oConfig->getCancelUrl();
-		$this->_aCallParameters['ERRORURL'] = $this->_oConfig->getResponseUrl() . $sUrlAddon;
+        $this->_aCallParameters['CREATESECURETOKEN'] = 'Y';
+        $this->_aCallParameters['SECURETOKENID']     = $sTokenId;
 
-		$this->_aCallParameters['INVNUM'] = $iPendingId;
+        $sUrlAddon                           = $this->_sName . '/' . $aCartInfo['vendor_id'] . '/';
+        $this->_aCallParameters['RETURNURL'] = $this->_oConfig->getReturnUrl() . $sUrlAddon;
+        $this->_aCallParameters['CANCELURL'] = $this->_oConfig->getCancelUrl();
+        $this->_aCallParameters['ERRORURL']  = $this->_oConfig->getResponseUrl() . $sUrlAddon;
 
-		$this->_aCallParameters['AMT'] = sprintf( "%.2f", (float)$aCartInfo['items_price']);
-		$this->_aCallParameters['CURRENCY'] = $aCartInfo['vendor_currency_code'];
-	}
+        $this->_aCallParameters['INVNUM'] = $iPendingId;
+
+        $this->_aCallParameters['AMT']      = sprintf("%.2f", (float)$aCartInfo['items_price']);
+        $this->_aCallParameters['CURRENCY'] = $aCartInfo['vendor_currency_code'];
+    }
 }

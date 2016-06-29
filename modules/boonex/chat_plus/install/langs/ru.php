@@ -4,15 +4,15 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-$aLangContent = array (
-    '_sys_module_chat_plus' => 'Чат+',
-    '_bx_chat_plus' => 'Чат+',
-    '_bx_chat_plus_chat' => 'Чат',
-    '_bx_chat_plus_setting' => 'Настройки Чата',
-    '_bx_chat_plus_not_configured' => 'Чат не сконфигурирован',
+$aLangContent = array(
+    '_sys_module_chat_plus'                 => 'Чат+',
+    '_bx_chat_plus'                         => 'Чат+',
+    '_bx_chat_plus_chat'                    => 'Чат',
+    '_bx_chat_plus_setting'                 => 'Настройки Чата',
+    '_bx_chat_plus_not_configured'          => 'Чат не сконфигурирован',
     '_bx_chat_plus_open_in_separate_window' => 'Полно-экранный режим',
-    '_bx_chat_plus_information' => 'Информация',
-    '_bx_chat_plus_information_block' => 'Чат сервер должен быть сконфигурирован, чтобы этот модуль заработал. <br />
+    '_bx_chat_plus_information'             => 'Информация',
+    '_bx_chat_plus_information_block'       => 'Чат сервер должен быть сконфигурирован, чтобы этот модуль заработал. <br />
 
 Нужно ввести URL чата в форме ниже. <br />
 

@@ -4,7 +4,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-define ('BX_OLD_VIEWS', 3*86400); // views older than this number of seconds will be deleted automatically
+define('BX_OLD_VIEWS', 3 * 86400); // views older than this number of seconds will be deleted automatically
 
 /**
  * Track any object views automatically
@@ -35,39 +35,45 @@ define ('BX_OLD_VIEWS', 3*86400); // views older than this number of seconds wil
  */
 class BxDolViews
 {
-    var $_iId = 0;	// item id to be viewed
+    var $_iId = 0;    // item id to be viewed
     var $_sSystem = ''; // current view system name
-    var $_aSystem = array (); // current view system array
+    var $_aSystem = array(); // current view system array
 
     /**
      * Constructor
      */
     function __construct($sSystem, $iId, $isMakeView = true)
     {
-        $aSystems = $this->getAllSystems ();
-        if (!isset($aSystems[$sSystem]))
+        $aSystems = $this->getAllSystems();
+        if (!isset($aSystems[$sSystem])) {
             return;
+        }
         $this->_aSystem = $aSystems[$sSystem];
         $this->_sSystem = $sSystem;
-        if (!$this->isEnabled())
+        if (!$this->isEnabled()) {
             return;
+        }
         $this->_iId = $iId;
-        if ($isMakeView)
+        if ($isMakeView) {
             $this->makeView();
+        }
     }
 
-    function makeView ()
+    function makeView()
     {
-        if (!$this->isEnabled()) return false;
+        if (!$this->isEnabled()) {
+            return false;
+        }
 
         $iMemberId = getLoggedId() ? getLoggedId() : 0;
-        $sIp = $_SERVER['REMOTE_ADDR'];
-        $iTime = time();
+        $sIp       = $_SERVER['REMOTE_ADDR'];
+        $iTime     = time();
 
-        if ($iMemberId)
+        if ($iMemberId) {
             $sWhere = " AND `viewer` = '$iMemberId' ";
-        else
+        } else {
             $sWhere = " AND `viewer` = '0' AND `ip` = INET_ATON('$sIp') ";
+        }
         $iTs = (int)($GLOBALS['MySQL']->getOne("SELECT `ts` FROM `{$this->_aSystem['table_track']}` WHERE `id` = '" . $this->getId() . "' $sWhere"));
 
         $iRet = 0;
@@ -89,12 +95,12 @@ class BxDolViews
         return false;
     }
 
-    function getId ()
+    function getId()
     {
         return $this->_iId;
     }
 
-    function isEnabled ()
+    function isEnabled()
     {
         return $this->_aSystem && $this->_aSystem['is_on'];
     }
@@ -104,33 +110,37 @@ class BxDolViews
         return $this->_sSystem;
     }
 
-    function getAllSystems ()
+    function getAllSystems()
     {
-        return $GLOBALS['MySQL']->fromCache('sys_objects_views', 'getAllWithKey', 'SELECT * FROM `sys_objects_views`', 'name');
+        return $GLOBALS['MySQL']->fromCache('sys_objects_views', 'getAllWithKey', 'SELECT * FROM `sys_objects_views`',
+            'name');
     }
 
     // call this function when associated object is deleted
-    function onObjectDelete ($iId = 0)
+    function onObjectDelete($iId = 0)
     {
-        $iId = (int) $iId;
-        if( $GLOBALS['MySQL']->query("DELETE FROM `{$this->_aSystem['table_track']}`
-            WHERE `id` = '" . ($iId ? $iId : $this->getId()) . "'") ) {
-                $GLOBALS['MySQL']->query("OPTIMIZE TABLE `{$this->_aSystem['table_track']}`");
+        $iId = (int)$iId;
+        if ($GLOBALS['MySQL']->query("DELETE FROM `{$this->_aSystem['table_track']}`
+            WHERE `id` = '" . ($iId ? $iId : $this->getId()) . "'")
+        ) {
+            $GLOBALS['MySQL']->query("OPTIMIZE TABLE `{$this->_aSystem['table_track']}`");
         }
     }
 
     // it is called on cron every day or similar period
-    function maintenance ()
+    function maintenance()
     {
-        $iTime = time() - BX_OLD_VIEWS;
-        $aSystems = $this->getAllSystems ();
+        $iTime           = time() - BX_OLD_VIEWS;
+        $aSystems        = $this->getAllSystems();
         $iDeletedRecords = 0;
         foreach ($aSystems as $aSystem) {
-            if (!$aSystem['is_on'])
+            if (!$aSystem['is_on']) {
                 continue;
+            }
             $iDeletedRecords += $GLOBALS['MySQL']->query("DELETE FROM `{$aSystem['table_track']}` WHERE `ts` < $iTime");
             $GLOBALS['MySQL']->query("OPTIMIZE TABLE `{$aSystem['table_track']}`");
         }
+
         return $iDeletedRecords;
     }
 

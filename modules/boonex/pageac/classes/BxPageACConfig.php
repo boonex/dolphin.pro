@@ -6,7 +6,7 @@
 
 bx_import('BxDolConfig');
 
-require_once( BX_DIRECTORY_PATH_INC . 'membership_levels.inc.php' );
+require_once(BX_DIRECTORY_PATH_INC . 'membership_levels.inc.php');
 
 class BxPageACConfig extends BxDolConfig
 {
@@ -14,6 +14,7 @@ class BxPageACConfig extends BxDolConfig
      * Constructor
      */
     var $_aMemberships;
+
     function __construct($aModule)
     {
         parent::__construct($aModule);

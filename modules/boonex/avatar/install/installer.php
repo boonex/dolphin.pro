@@ -18,29 +18,33 @@ class BxAvaInstaller extends BxDolInstaller
     {
         $aResult = parent::install($aParams);
 
-        if($aResult['result'] && BxDolRequest::serviceExists('wall', 'update_handlers'))
+        if ($aResult['result'] && BxDolRequest::serviceExists('wall', 'update_handlers')) {
             BxDolService::call('wall', 'update_handlers', array($this->_aConfig['home_uri'], true));
+        }
 
         return $aResult;
     }
 
     function uninstall($aParams)
     {
-        if(BxDolRequest::serviceExists('wall', 'update_handlers'))
+        if (BxDolRequest::serviceExists('wall', 'update_handlers')) {
             BxDolService::call('wall', 'update_handlers', array($this->_aConfig['home_uri'], false));
+        }
 
         $aResult = parent::uninstall($aParams);
 
         if ($aResult['result']) {
             foreach ($this->_aConfig['install_permissions']['writable'] as $sDir) {
                 $sPath = BX_DIRECTORY_PATH_MODULES . $this->_aConfig['home_dir'] . $sDir;
-                if (is_dir($sPath))
+                if (is_dir($sPath)) {
                     bx_clear_folder($sPath);
+                }
             }
             bx_import('BxDolCacheUtilities');
             $oCacheUtilities = new BxDolCacheUtilities();
             $oCacheUtilities->clear('users');
         }
+
         return $aResult;
     }
 }

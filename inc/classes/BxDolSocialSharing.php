@@ -20,7 +20,6 @@ bx_import('BxDolSocialSharingQuery');
  *
  *
  * Alerts:
-
  * Type/unit: system
  * Action: social_sharing_display
  * Options:
@@ -31,26 +30,28 @@ bx_import('BxDolSocialSharingQuery');
  */
 class BxDolSocialSharing
 {
-    var $_aSocialButtons = array (); // active social buttons array
+    var $_aSocialButtons = array(); // active social buttons array
 
     /**
      * Constructor
      */
     protected function __construct()
     {
-        $oQuery = new BxDolSocialSharingQuery();
+        $oQuery                = new BxDolSocialSharingQuery();
         $this->_aSocialButtons = $oQuery->getActiveButtons();
     }
 
     /**
      * Get object instance
+     *
      * @param $sObject object name
      * @return object instance
      */
     static public function getInstance()
     {
-        if (isset($GLOBALS['bxDolClasses']['BxDolSocialSharing']))
+        if (isset($GLOBALS['bxDolClasses']['BxDolSocialSharing'])) {
             return $GLOBALS['bxDolClasses']['BxDolSocialSharing'];
+        }
 
         bx_import('BxTemplSocialSharing');
         $o = new BxTemplSocialSharing();
@@ -58,62 +59,71 @@ class BxDolSocialSharing
         return ($GLOBALS['bxDolClasses']['BxDolSocialSharing'] = $o);
     }
 
-    public function getCode ($sUrl, $sTitle, $aCustomVars = false)
+    public function getCode($sUrl, $sTitle, $aCustomVars = false)
     {
         // overrided in template class
     }
 
     /**
      * Replace provided markers in string.
+     *
      * @param $s - string to replace markers in
      * @param $a - markers array
      * @return string with replaces markers
      */
-    protected function _replaceMarkers ($s, $a)
+    protected function _replaceMarkers($s, $a)
     {
-        if (empty($s) || empty($a) || !is_array($a))
+        if (empty($s) || empty($a) || !is_array($a)) {
             return $s;
+        }
 
-        foreach ($a as $sKey => $sValue)
+        foreach ($a as $sKey => $sValue) {
             $s = str_replace('{' . $sKey . '}', $sValue, $s);
+        }
 
         return $s;
     }
 
     /**
      * Get most facebook locale for provided language code.
+     *
      * @param $sLang lang code
      * @return locale string or empty string if no lacale is found
      */
-    protected function _getLocaleFacebook ($sLocale)
+    protected function _getLocaleFacebook($sLocale)
     {
         $aLocales = $this->_getLocalesFacebook();
-        if (!isset($aLocales[$sLocale]))
+        if (!isset($aLocales[$sLocale])) {
             return '';
+        }
+
         return $sLocale;
     }
 
     /**
      * Get facebook locales
+     *
      * @return locales array, lang is array key and locale is array value
      */
-    protected function _getLocalesFacebook ()
+    protected function _getLocalesFacebook()
     {
-        $oCache = $GLOBALS['MySQL']->getDbCacheObject();
+        $oCache    = $GLOBALS['MySQL']->getDbCacheObject();
         $sCacheKey = $GLOBALS['MySQL']->genDbCacheKey('sys_social_sharing_locales_fb');
-        $aData = $oCache->getData($sCacheKey);
+        $aData     = $oCache->getData($sCacheKey);
         if (null === $aData) {
-            $sXML = bx_file_get_contents ('http://www.facebook.com/translations/FacebookLocales.xml');
-            if (!$sXML)
+            $sXML = bx_file_get_contents('http://www.facebook.com/translations/FacebookLocales.xml');
+            if (!$sXML) {
                 return false;
+            }
             $xmlLocates = new SimpleXMLElement($sXML);
-            $aData = array ();
+            $aData      = array();
             foreach ($xmlLocates->locale as $xmlLocale) {
-                $sLocale = (string)($xmlLocale->codes->code->standard->representation);
+                $sLocale         = (string)($xmlLocale->codes->code->standard->representation);
                 $aData[$sLocale] = 1;
             }
-            $oCache->setData ($sCacheKey, $aData);
+            $oCache->setData($sCacheKey, $aData);
         }
+
         return $aData;
     }
 }

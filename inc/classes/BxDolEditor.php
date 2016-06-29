@@ -8,26 +8,29 @@ bx_import('BxDolEditorQuery');
 
 /**
  * Standard WYSIWYG editor view.
+ *
  * @see BxDolEditor::attachEditor
  */
 define('BX_EDITOR_STANDARD', 1);
 
 /**
  * Full WYSIWYG editor view. If not supported by editor, standard view is used.
+ *
  * @see BxDolEditor::attachEditor
  */
 define('BX_EDITOR_FULL', 2);
 
 /**
  * Mini WYSIWYG editor view. If not supported by editor, standard view is used.
+ *
  * @see BxDolEditor::attachEditor
  */
 define('BX_EDITOR_MINI', 3);
 
 /**
- * @page objects
+ * @page    objects
  * @section editor Editor
- * @ref BxDolEditor
+ * @ref     BxDolEditor
  */
 
 /**
@@ -70,6 +73,7 @@ class BxDolEditor
 
     /**
      * Constructor
+     *
      * @param $aObject array of editor options
      */
     public function __construct($aObject)
@@ -80,39 +84,45 @@ class BxDolEditor
 
     /**
      * Get editor object instance by object name
+     *
      * @param $sObject object name
      * @return object instance or false on error
      */
     static public function getObjectInstance($sObject = false)
     {
-        if (!$sObject)
+        if (!$sObject) {
             $sObject = getParam('sys_editor_default');
+        }
 
-        if (isset($GLOBALS['bxDolClasses']['BxDolEditor!'.$sObject]))
-            return $GLOBALS['bxDolClasses']['BxDolEditor!'.$sObject];
+        if (isset($GLOBALS['bxDolClasses']['BxDolEditor!' . $sObject])) {
+            return $GLOBALS['bxDolClasses']['BxDolEditor!' . $sObject];
+        }
 
         $aObject = BxDolEditorQuery::getEditorObject($sObject);
-        if (!$aObject || !is_array($aObject))
+        if (!$aObject || !is_array($aObject)) {
             return false;
+        }
 
-        if (empty($aObject['override_class_name']))
+        if (empty($aObject['override_class_name'])) {
             return false;
+        }
 
         $sClass = $aObject['override_class_name'];
-        if (!empty($aObject['override_class_file']))
+        if (!empty($aObject['override_class_file'])) {
             require_once(BX_DIRECTORY_PATH_ROOT . $aObject['override_class_file']);
-        else
+        } else {
             bx_import($sClass);
+        }
 
         $o = new $sClass($aObject);
 
-        return ($GLOBALS['bxDolClasses']['BxDolEditor!'.$sObject] = $o);
+        return ($GLOBALS['bxDolClasses']['BxDolEditor!' . $sObject] = $o);
     }
 
     /**
      * Get object name
      */
-    public function getObjectName ()
+    public function getObjectName()
     {
         return $this->_sObject;
     }
@@ -120,18 +130,19 @@ class BxDolEditor
     /**
      * Get minimal width which is neede for editor for the provided view mode
      */
-    public function getWidth ($iViewMode)
+    public function getWidth($iViewMode)
     {
         // override this function in particular editor class
     }
 
     /**
      * Attach editor to HTML element, in most cases - textarea.
-     * @param $sSelector - jQuery selector to attach editor to.
-     * @param $iViewMode - editor view mode: BX_EDITOR_STANDARD, BX_EDITOR_MINI, BX_EDITOR_FULL
+     *
+     * @param $sSelector    - jQuery selector to attach editor to.
+     * @param $iViewMode    - editor view mode: BX_EDITOR_STANDARD, BX_EDITOR_MINI, BX_EDITOR_FULL
      * @param $bDynamicMode - is AJAX mode or not, the HTML with editor area is loaded synamically.
      */
-    public function attachEditor ($sSelector, $iViewMode, $bDynamicMode = false)
+    public function attachEditor($sSelector, $iViewMode, $bDynamicMode = false)
     {
         // override this function in particular editor class
     }
@@ -139,24 +150,27 @@ class BxDolEditor
     /**
      * Add css/js files which are needed for editor display and functionality.
      */
-    protected function _addJsCss ($bDynamicMode = false)
+    protected function _addJsCss($bDynamicMode = false)
     {
         // override this function in particular editor class
     }
 
     /**
      * Replace provided markers string.
+     *
      * @param $s - string to replace markers in
      * @param $a - markers array
      * @return string with replaces markers
      */
-    protected function _replaceMarkers ($s, $a)
+    protected function _replaceMarkers($s, $a)
     {
-        if (empty($s) || empty($a) || !is_array($a))
+        if (empty($s) || empty($a) || !is_array($a)) {
             return $s;
+        }
 
-        foreach ($a as $sKey => $sValue)
+        foreach ($a as $sKey => $sValue) {
             $s = str_replace('{' . $sKey . '}', $sValue, $s);
+        }
 
         return $s;
     }

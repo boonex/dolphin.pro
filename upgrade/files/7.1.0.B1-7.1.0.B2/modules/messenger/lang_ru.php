@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_messenger' => 'Мессенджер',
+    '_sys_module_messenger' => 'Мессенджер',
 
 );

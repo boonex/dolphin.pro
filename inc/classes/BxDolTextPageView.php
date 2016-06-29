@@ -17,26 +17,32 @@ class BxDolTextPageView extends BxDolPageView
     {
         parent::__construct($sPageName);
 
-        $this->_sName = process_db_input($sName, BX_TAGS_STRIP);
+        $this->_sName   = process_db_input($sName, BX_TAGS_STRIP);
         $this->_oObject = $oObject;
     }
+
     function getBlockCode_Content()
     {
         return $this->_oObject->getBlockView($this->_sName);
     }
+
     function getBlockCode_Comment()
     {
         return $this->_oObject->getBlockComment($this->_sName);
     }
+
     function getBlockCode_Vote()
     {
         $sContent = $this->_oObject->getBlockVote($this->_sName);
+
         return !empty($sContent) ? array($sContent, array(), array(), false) : '';
     }
+
     function getBlockCode_Action()
     {
         return $this->_oObject->getBlockAction($this->_sName);
     }
+
     function getBlockCode_SocialSharing()
     {
         return $this->_oObject->getBlockSocialSharing($this->_sName);

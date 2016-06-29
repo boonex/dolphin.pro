@@ -8,7 +8,7 @@ bx_import('BxDolFilesCalendar');
 
 class BxSoundsCalendar extends BxDolFilesCalendar
 {
-    function __construct ($iYear, $iMonth, &$oDb, &$oTemplate, &$oConfig)
+    function __construct($iYear, $iMonth, &$oDb, &$oTemplate, &$oConfig)
     {
         parent::__construct($iYear, $iMonth, $oDb, $oTemplate, $oConfig);
     }

@@ -8,24 +8,26 @@ $GLOBALS['bx_profiler_disable'] = true;
 define('BX_DOL_CRON_EXECUTE', '1');
 
 $aPathInfo = pathinfo(__FILE__);
-require_once ($aPathInfo['dirname'] . '/../inc/header.inc.php');
+require_once($aPathInfo['dirname'] . '/../inc/header.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'utils.inc.php');
-require_once(BX_DIRECTORY_PATH_INC . 'profiles.inc.php' );
+require_once(BX_DIRECTORY_PATH_INC . 'profiles.inc.php');
 require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolDb.php');
 
 function getRange($iLow, $iHigh, $iStep)
 {
     $aResult = array();
-    for ($i = $iLow; $i <= $iHigh && $iStep; $i += $iStep)
+    for ($i = $iLow; $i <= $iHigh && $iStep; $i += $iStep) {
         $aResult[] = $i;
+    }
+
     return $aResult;
 }
 
 function getPeriod($sPeriod, $iLow, $iHigh)
 {
-    $aRes = array();
+    $aRes  = array();
     $iStep = 1;
-    $sErr = '';
+    $sErr  = '';
 
     do {
         if ('' === $sPeriod) {
@@ -40,8 +42,9 @@ function getPeriod($sPeriod, $iLow, $iHigh)
             break;
         }
 
-        if (count($aParam) == 2 && is_numeric($aParam[1]))
+        if (count($aParam) == 2 && is_numeric($aParam[1])) {
             $iStep = $aParam[1];
+        }
 
         $sPeriod = $aParam[0];
 
@@ -53,13 +56,15 @@ function getPeriod($sPeriod, $iLow, $iHigh)
                 break;
             }
 
-            if (count($aParam) == 2)
+            if (count($aParam) == 2) {
                 $aRes = getRange($aParam[0], $aParam[1], $iStep);
-            else
+            } else {
                 $aRes = explode(',', $sPeriod);
-        } else
+            }
+        } else {
             $aRes = getRange($iLow, $iHigh, $iStep);
-    } while(false);
+        }
+    } while (false);
 
     if ($sErr) {
         // show error or add to log
@@ -71,10 +76,11 @@ function getPeriod($sPeriod, $iLow, $iHigh)
 function checkCronJob($sPeriods, $aDate = array())
 {
     $aParam = explode(' ', preg_replace("{ +}", ' ', trim($sPeriods)));
-    $bRes = true;
+    $bRes   = true;
 
-    if(empty($aDate))
+    if (empty($aDate)) {
         $aDate = getdate(time());
+    }
 
     for ($i = 0; $i < count($aParam); $i++) {
         switch ($i) {
@@ -100,8 +106,9 @@ function checkCronJob($sPeriods, $aDate = array())
                 break;
         }
 
-        if (!$bRes)
+        if (!$bRes) {
             break;
+        }
     }
 
     return $bRes;
@@ -109,24 +116,28 @@ function checkCronJob($sPeriods, $aDate = array())
 
 function runJob($aJob)
 {
-    if(!empty($aJob['file']) && !empty($aJob['class']) && file_exists(BX_DIRECTORY_PATH_ROOT . $aJob['file'])) {
-        if(!class_exists($aJob['class']))
+    if (!empty($aJob['file']) && !empty($aJob['class']) && file_exists(BX_DIRECTORY_PATH_ROOT . $aJob['file'])) {
+        if (!class_exists($aJob['class'])) {
             require_once(BX_DIRECTORY_PATH_ROOT . $aJob['file']);
+        }
 
         $oHandler = new $aJob['class']();
         $oHandler->processing();
-    } else if(!empty($aJob['eval'])) {
-        require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolService.php');
-        eval($aJob['eval']);
+    } else {
+        if (!empty($aJob['eval'])) {
+            require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolService.php');
+            eval($aJob['eval']);
+        }
     }
 }
 
-$oDb = BxDolDb::getInstance();
+$oDb   = BxDolDb::getInstance();
 $aJobs = $oDb->fromCache('sys_cron_jobs', 'getAll', 'SELECT * FROM `sys_cron_jobs`');
 
 $aDate = getdate(time());
 
-foreach($aJobs as $aRow) {
-    if (checkCronJob($aRow['time'], $aDate))
+foreach ($aJobs as $aRow) {
+    if (checkCronJob($aRow['time'], $aDate)) {
         runJob($aRow);
+    }
 }

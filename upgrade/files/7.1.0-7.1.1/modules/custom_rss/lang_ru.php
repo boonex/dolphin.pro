@@ -2,13 +2,13 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_crss_status_active' => 'Активный',
-  '_crss_status_passive' => 'Не активный',
+    '_crss_status_active'  => 'Активный',
+    '_crss_status_passive' => 'Не активный',
 
-  // ================ CHANGED KEYS ==================
+    // ================ CHANGED KEYS ==================
 
-  '_crss_Custom_Feeds' => 'Мои RSS-каналы',
+    '_crss_Custom_Feeds' => 'Мои RSS-каналы',
 
 );

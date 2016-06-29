@@ -11,6 +11,6 @@ class BxFaceBookConnectAlerts extends BxDolConnectAlerts
     function __construct()
     {
         parent::__construct();
-        $this -> oModule = BxDolModule::getInstance('BxFaceBookConnectModule');
+        $this->oModule = BxDolModule::getInstance('BxFaceBookConnectModule');
     }
 }

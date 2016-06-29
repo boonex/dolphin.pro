@@ -2,14 +2,14 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_payment_pp_cnt_type_http' => 'HTTP',
+    '_payment_pp_cnt_type_http' => 'HTTP',
 
-  // ================ DELETED KEYS ==================
+    // ================ DELETED KEYS ==================
 
-/*
-  '_payment_pp_cnt_type_html' => 'HTML',
-*/
-    
+    /*
+      '_payment_pp_cnt_type_html' => 'HTML',
+    */
+
 );

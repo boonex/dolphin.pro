@@ -20,8 +20,8 @@ class BxGroupsRequest extends BxDolRequest
     public static function processAsAction($aModule, &$aRequest, $sClass = "Module")
     {
         $sClassRequire = $aModule['class_prefix'] . $sClass;
-        $oModule = BxDolRequest::_require($aModule, $sClassRequire);
-        $aVars = array ('BaseUri' => $oModule->_oConfig->getBaseUri());
+        $oModule       = BxDolRequest::_require($aModule, $sClassRequire);
+        $aVars         = array('BaseUri' => $oModule->_oConfig->getBaseUri());
         $GLOBALS['oTopMenu']->setCustomSubActions($aVars, 'bx_groups_title', false);
 
         return BxDolRequest::processAsAction($aModule, $aRequest, $sClass);

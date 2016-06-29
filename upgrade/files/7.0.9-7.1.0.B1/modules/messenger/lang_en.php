@@ -2,14 +2,14 @@
 
 $aLangContent = array(
 
-  // ================ CHANGED KEYS ==================
+    // ================ CHANGED KEYS ==================
 
-  '_messenger_err_not_logged_in' => 'Please, login before using Messenger',
+    '_messenger_err_not_logged_in' => 'Please, login before using Messenger',
 
-  // ================ DELETED KEYS (commented because processed via SQL file) ==================
+    // ================ DELETED KEYS (commented because processed via SQL file) ==================
 
-  /*
-  '_messenger_box_caption' => 'Messenger',
-  */
+    /*
+    '_messenger_box_caption' => 'Messenger',
+    */
 
 );

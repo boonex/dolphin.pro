@@ -8,6 +8,7 @@ bx_import('BxDolCaptcha');
 
 /**
  * reCAPTCHA representation.
+ *
  * @see BxDolCaptcha
  */
 class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
@@ -21,16 +22,17 @@ class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
     protected $_sKeyPublic;
     protected $_sKeyPrivate;
 
-    public function __construct ($aObject, $oTemplate)
+    public function __construct($aObject, $oTemplate)
     {
-        parent::__construct ($aObject);
+        parent::__construct($aObject);
 
-        if ($oTemplate)
+        if ($oTemplate) {
             $this->_oTemplate = $oTemplate;
-        else
+        } else {
             $this->_oTemplate = $GLOBALS['oSysTemplate'];
+        }
 
-        $this->_sKeyPublic = getParam('sys_recaptcha_key_public');
+        $this->_sKeyPublic  = getParam('sys_recaptcha_key_public');
         $this->_sKeyPrivate = getParam('sys_recaptcha_key_private');
 
         $this->_sProto = bx_proto();
@@ -39,9 +41,9 @@ class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
     /**
      * Display captcha.
      */
-    public function display ($bDynamicMode = false)
+    public function display($bDynamicMode = false)
     {
-        $sId = 'sys-captcha-' . time() . rand(0, PHP_INT_MAX);
+        $sId   = 'sys-captcha-' . time() . rand(0, PHP_INT_MAX);
         $sInit = "
             Recaptcha.create('" . $this->_sKeyPublic . "', '" . $sId . "', {
                 lang: '" . bx_lang_name() . "',
@@ -74,25 +76,27 @@ class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
 
         }
 
-        return $this->_addJsCss($bDynamicMode) . $GLOBALS['oSysTemplate']->parseHtmlByName('reCaptcha.html', array('id' => $sId)) . $sCode;
+        return $this->_addJsCss($bDynamicMode) . $GLOBALS['oSysTemplate']->parseHtmlByName('reCaptcha.html',
+            array('id' => $sId)) . $sCode;
     }
 
     /**
      * Check captcha.
      */
-    public function check ()
+    public function check()
     {
         require_once(BX_DIRECTORY_PATH_PLUGINS . 'recaptcha/recaptchalib.php');
 
         $oResp = recaptcha_check_answer(
             $this->_sKeyPrivate,
             $_SERVER["REMOTE_ADDR"],
-            $this->getUserResponse (),
+            $this->getUserResponse(),
             process_pass_data(bx_get('recaptcha_response_field'))
         );
 
         if (!$oResp->is_valid) {
             $this->_error = $oResp->error;
+
             return false;
         }
 
@@ -102,7 +106,7 @@ class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
     /**
      * Return text entered by user
      */
-    public function getUserResponse ()
+    public function getUserResponse()
     {
         return process_pass_data(bx_get('recaptcha_challenge_field'));
     }
@@ -110,7 +114,7 @@ class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
     /**
      * Check if captcha is available, like all API keys are specified.
      */
-    public function isAvailable ()
+    public function isAvailable()
     {
         return !empty($this->_sKeyPublic) && !empty($this->_sKeyPrivate);
     }
@@ -120,12 +124,15 @@ class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
      */
     protected function _addJsCss($bDynamicMode = false)
     {
-        if ($bDynamicMode)
+        if ($bDynamicMode) {
             return '';
-        if ($this->_bJsCssAdded)
+        }
+        if ($this->_bJsCssAdded) {
             return '';
+        }
         $this->_oTemplate->addJs($this->_sProto . '://www.google.com/recaptcha/api/js/recaptcha_ajax.js');
         $this->_bJsCssAdded = true;
+
         return '';
     }
 }

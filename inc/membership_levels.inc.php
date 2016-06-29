@@ -5,38 +5,38 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once( 'header.inc.php' );
-require_once( BX_DIRECTORY_PATH_INC . 'db.inc.php' );
-require_once( BX_DIRECTORY_PATH_INC . 'languages.inc.php' );
-require_once( BX_DIRECTORY_PATH_INC . 'profiles.inc.php' );
+require_once('header.inc.php');
+require_once(BX_DIRECTORY_PATH_INC . 'db.inc.php');
+require_once(BX_DIRECTORY_PATH_INC . 'languages.inc.php');
+require_once(BX_DIRECTORY_PATH_INC . 'profiles.inc.php');
 
 //MESSAGE CONSTANTS PASSED TO _t_ext() FUNCTION BY checkAction()
 //NOTE: checkAction() RETURNS LANGUAGE DEPENDANT MESSAGES
 
-define('CHECK_ACTION_MESSAGE_NOT_ALLOWED',			"_ACTION_NOT_ALLOWED");
-define('CHECK_ACTION_MESSAGE_NOT_ACTIVE',			"_ACTION_NOT_ACTIVE");
-define('CHECK_ACTION_MESSAGE_LIMIT_REACHED',		"_ACTION_LIMIT_REACHED");
-define('CHECK_ACTION_MESSAGE_MESSAGE_EVERY_PERIOD',	"_ACTION_EVERY_PERIOD");
-define('CHECK_ACTION_MESSAGE_NOT_ALLOWED_BEFORE',	"_ACTION_NOT_ALLOWED_BEFORE");
-define('CHECK_ACTION_MESSAGE_NOT_ALLOWED_AFTER',	"_ACTION_NOT_ALLOWED_AFTER");
+define('CHECK_ACTION_MESSAGE_NOT_ALLOWED', "_ACTION_NOT_ALLOWED");
+define('CHECK_ACTION_MESSAGE_NOT_ACTIVE', "_ACTION_NOT_ACTIVE");
+define('CHECK_ACTION_MESSAGE_LIMIT_REACHED', "_ACTION_LIMIT_REACHED");
+define('CHECK_ACTION_MESSAGE_MESSAGE_EVERY_PERIOD', "_ACTION_EVERY_PERIOD");
+define('CHECK_ACTION_MESSAGE_NOT_ALLOWED_BEFORE', "_ACTION_NOT_ALLOWED_BEFORE");
+define('CHECK_ACTION_MESSAGE_NOT_ALLOWED_AFTER', "_ACTION_NOT_ALLOWED_AFTER");
 
 //NODES OF THE $args ARRAY THAT IS PASSED TO THE _t_ext() FUNCTION BY checkAction()
 
-define('CHECK_ACTION_LANG_FILE_ACTION',		1);
-define('CHECK_ACTION_LANG_FILE_MEMBERSHIP',	2);
-define('CHECK_ACTION_LANG_FILE_LIMIT',		3);
-define('CHECK_ACTION_LANG_FILE_PERIOD',		4);
-define('CHECK_ACTION_LANG_FILE_AFTER',		5);
-define('CHECK_ACTION_LANG_FILE_BEFORE',		6);
-define('CHECK_ACTION_LANG_FILE_SITE_EMAIL',	7);
+define('CHECK_ACTION_LANG_FILE_ACTION', 1);
+define('CHECK_ACTION_LANG_FILE_MEMBERSHIP', 2);
+define('CHECK_ACTION_LANG_FILE_LIMIT', 3);
+define('CHECK_ACTION_LANG_FILE_PERIOD', 4);
+define('CHECK_ACTION_LANG_FILE_AFTER', 5);
+define('CHECK_ACTION_LANG_FILE_BEFORE', 6);
+define('CHECK_ACTION_LANG_FILE_SITE_EMAIL', 7);
 
 //ACTION ID's
 
-define('ACTION_ID_SEND_VKISS',		 1);
-define('ACTION_ID_VIEW_PROFILES',	 2);
-define('ACTION_ID_VOTE',			 3);
-define('ACTION_ID_SEND_MESSAGE',	 4);
-define('ACTION_ID_GET_EMAIL',		 5);
+define('ACTION_ID_SEND_VKISS', 1);
+define('ACTION_ID_VIEW_PROFILES', 2);
+define('ACTION_ID_VOTE', 3);
+define('ACTION_ID_SEND_MESSAGE', 4);
+define('ACTION_ID_GET_EMAIL', 5);
 define('ACTION_ID_COMMENTS_POST', 6);
 define('ACTION_ID_COMMENTS_VOTE', 7);
 define('ACTION_ID_COMMENTS_EDIT_OWN', 8);
@@ -56,23 +56,23 @@ define('CHECK_ACTION_PARAMETER', 3);
 
 //CHECK_ACTION_RESULT NODE VALUES
 
-define('CHECK_ACTION_RESULT_ALLOWED',				0);
-define('CHECK_ACTION_RESULT_NOT_ALLOWED',			1);
-define('CHECK_ACTION_RESULT_NOT_ACTIVE',			2);
-define('CHECK_ACTION_RESULT_LIMIT_REACHED',			3);
-define('CHECK_ACTION_RESULT_NOT_ALLOWED_BEFORE',	4);
-define('CHECK_ACTION_RESULT_NOT_ALLOWED_AFTER',		5);
+define('CHECK_ACTION_RESULT_ALLOWED', 0);
+define('CHECK_ACTION_RESULT_NOT_ALLOWED', 1);
+define('CHECK_ACTION_RESULT_NOT_ACTIVE', 2);
+define('CHECK_ACTION_RESULT_LIMIT_REACHED', 3);
+define('CHECK_ACTION_RESULT_NOT_ALLOWED_BEFORE', 4);
+define('CHECK_ACTION_RESULT_NOT_ALLOWED_AFTER', 5);
 
 /**
  * Returns number of members with a given membership at a given time
  *
- * @param int $iMembershipId		- members of what membership should be counted.
- * 								  if 0, then all members are counted ($except is not considered);
- * 								  if MEMBERSHIP_ID_NON_MEMBER is specified, function returns -1
+ * @param int            $iMembershipId - members of what membership should be counted.
+ *                                      if 0, then all members are counted ($except is not considered);
+ *                                      if MEMBERSHIP_ID_NON_MEMBER is specified, function returns -1
  *
- * @param unix_timestamp $time	- date/time to use when counting members.
- * 								  if not specified, uses the present moment
- * @param boolean $except		- if true, counts all members that DON'T have specified membership
+ * @param unix_timestamp $time          - date/time to use when counting members.
+ *                                      if not specified, uses the present moment
+ * @param boolean        $except        - if true, counts all members that DON'T have specified membership
  *
  *
  */
@@ -120,7 +120,7 @@ define('CHECK_ACTION_RESULT_NOT_ALLOWED_AFTER',		5);
 function getMemberMembershipInfo_current($iMemberId, $time = '')
 {
     $iMemberId = (int)$iMemberId;
-    $time = ($time == '') ? time() : (int)$time;
+    $time      = ($time == '') ? time() : (int)$time;
 
     /**
      * Fetch the last purchased/assigned membership that is still active for the given member.
@@ -154,20 +154,23 @@ function getMemberMembershipInfo_current($iMemberId, $time = '')
      */
     if (!$aMemLevel || !count($aMemLevel)) {
         //fetch info about Non-member membership
-        $aMemLevel =& $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_NON_MEMBER, 'getRow', "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ?", [MEMBERSHIP_ID_NON_MEMBER]);
-        if(!$aMemLevel || !count($aMemLevel)) {
+        $aMemLevel =& $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_NON_MEMBER, 'getRow',
+            "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ?", [MEMBERSHIP_ID_NON_MEMBER]);
+        if (!$aMemLevel || !count($aMemLevel)) {
             //this should never happen, but just in case
             echo "<br /><b>getMemberMembershipInfo()</b> fatal error: <b>Non-Member</b> membership not found.";
             exit();
         }
+
         return $aMemLevel;
     }
 
     /**
      * no purchased/assigned memberships for the member or all of them have expired -- the member is assumed to have Standard membership
      */
-    if(is_null($aMemLevel['ID'])) {
-        $aMemLevel =& $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_STANDARD, 'getRow', "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ?", [MEMBERSHIP_ID_STANDARD]);
+    if (is_null($aMemLevel['ID'])) {
+        $aMemLevel =& $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_STANDARD, 'getRow',
+            "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ?", [MEMBERSHIP_ID_STANDARD]);
         if (!$aMemLevel || !count($aMemLevel)) {
             //again, this should never happen, but just in case
             echo "<br /><b>getMemberMembershipInfo()</b> fatal error: <b>Standard</b> membership not found.";
@@ -186,14 +189,16 @@ function getMemberMembershipInfo_latest($iMemberId, $iTime = '')
     $iTime = $iTime == '' ? time() : (int)$iTime;
 
     $aMembershipCurrent = getMemberMembershipInfo_current($iMemberId, $iTime);
-    if(in_array($aMembershipCurrent['ID'], array(MEMBERSHIP_ID_STANDARD, MEMBERSHIP_ID_NON_MEMBER)))
+    if (in_array($aMembershipCurrent['ID'], array(MEMBERSHIP_ID_STANDARD, MEMBERSHIP_ID_NON_MEMBER))) {
         return $aMembershipCurrent;
+    }
 
     $aMembership = $aMembershipCurrent;
-    while($aMembership['ID'] != MEMBERSHIP_ID_STANDARD) {
+    while ($aMembership['ID'] != MEMBERSHIP_ID_STANDARD) {
         $aMembershipLast = $aMembership;
-        if((int)$aMembership['DateExpires'] == 0)
+        if ((int)$aMembership['DateExpires'] == 0) {
             break;
+        }
 
         $aMembership = getMemberMembershipInfo_current($iMemberId, $aMembership['DateExpires']);
     }
@@ -208,7 +213,7 @@ function getMemberMembershipInfo_latest($iMemberId, $iTime = '')
  * If there are no memberships purchased/assigned to the
  * given member or all of them have expired at the given point,
  * the member is assumed to be a standard member, and the function
- * returns	information about the Standard membership. This will
+ * returns    information about the Standard membership. This will
  * also happen if a member wasnt actually registered in the database
  * at that point - the function will still return info about Standard
  * membership, not the Non-member one.
@@ -220,14 +225,14 @@ function getMemberMembershipInfo_latest($iMemberId, $iTime = '')
  * The Standard and Non-member memberships have their
  * DateStarts and DateExpires attributes set to NULL.
  *
- * @param int $iMemberId	- ID of a member to get info about
- * @param int $time		- specifies the time to use when determining membership;
- * 						  if not specified, the function takes the current time
+ * @param int $iMemberId    - ID of a member to get info about
+ * @param int $time         - specifies the time to use when determining membership;
+ *                          if not specified, the function takes the current time
  *
- * @return array(	'ID'			=> membership id,
- * 					'Name'			=> membership name,
- * 					'DateStarts'	=> (UNIX timestamp) date/time purchased,
- * 					'DateExpires'	=> (UNIX timestamp) date/time expires )
+ * @return array(    'ID'            => membership id,
+ *                    'Name'            => membership name,
+ *                    'DateStarts'    => (UNIX timestamp) date/time purchased,
+ *                    'DateExpires'    => (UNIX timestamp) date/time expires )
  *
  */
 function getMemberMembershipInfo($iMemberId, $iTime = '')
@@ -235,22 +240,23 @@ function getMemberMembershipInfo($iMemberId, $iTime = '')
     $iTime = ($iTime == '') ? time() : (int)$iTime;
 
     $aMembershipCurrent = getMemberMembershipInfo_current($iMemberId, $iTime);
-    if(in_array($aMembershipCurrent['ID'], array(MEMBERSHIP_ID_STANDARD, MEMBERSHIP_ID_NON_MEMBER)))
+    if (in_array($aMembershipCurrent['ID'], array(MEMBERSHIP_ID_STANDARD, MEMBERSHIP_ID_NON_MEMBER))) {
         return $aMembershipCurrent;
+    }
 
     $aMembership = $aMembershipCurrent;
     do {
         $iDateStarts = $aMembership['DateStarts'];
         $aMembership = getMemberMembershipInfo_current($iMemberId, ((int)$iDateStarts < 1 ? 0 : $iDateStarts - 1));
-    } while($aMembership['ID'] == $aMembershipCurrent['ID'] && (int)$aMembership['DateStarts']);
+    } while ($aMembership['ID'] == $aMembershipCurrent['ID'] && (int)$aMembership['DateStarts']);
 
     $aMembership = $aMembershipCurrent;
     do {
         $iDateExpires = $aMembership['DateExpires'];
-        $aMembership = getMemberMembershipInfo_current($iMemberId, $iDateExpires);
-    } while($aMembership['ID'] == $aMembershipCurrent['ID'] && (int)$aMembership['DateExpires']);
+        $aMembership  = getMemberMembershipInfo_current($iMemberId, $iDateExpires);
+    } while ($aMembership['ID'] == $aMembershipCurrent['ID'] && (int)$aMembership['DateExpires']);
 
-    $aMembershipCurrent['DateStarts'] = $iDateStarts;
+    $aMembershipCurrent['DateStarts']  = $iDateStarts;
     $aMembershipCurrent['DateExpires'] = $iDateExpires;
 
     return $aMembershipCurrent;
@@ -260,14 +266,14 @@ function getMemberMembershipInfo($iMemberId, $iTime = '')
  * Checks if a given action is allowed for a given member and updates action information if the
  * action is performed.
  *
- * @param int $iMemberId			- ID of a member that is going to perform an action
- * @param int $actionID			- ID of the action itself
- * @param boolean $performAction	- if true, then action information is updated, i.e. action
- * 								  is 'performed'
+ * @param int     $iMemberId        - ID of a member that is going to perform an action
+ * @param int     $actionID         - ID of the action itself
+ * @param boolean $performAction    - if true, then action information is updated, i.e. action
+ *                                  is 'performed'
  *
- * @return array(	CHECK_ACTION_RESULT => CHECK_ACTION_RESULT_ constant,
- * 					CHECK_ACTION_MESSAGE => CHECK_ACTION_MESSAGE_ constant,
- * 					CHECK_ACTION_PARAMETER => additional action parameter (string) )
+ * @return array(    CHECK_ACTION_RESULT => CHECK_ACTION_RESULT_ constant,
+ *                    CHECK_ACTION_MESSAGE => CHECK_ACTION_MESSAGE_ constant,
+ *                    CHECK_ACTION_PARAMETER => additional action parameter (string) )
  *
  *
  * NOTES:
@@ -284,27 +290,27 @@ function getMemberMembershipInfo($iMemberId, $iTime = '')
  *
  * Additional variables passed to the lang. file on errors (can be used in error messages):
  *
- * 	For all errors:
+ *    For all errors:
  *
- * 		$arg0[CHECK_ACTION_LANG_FILE_ACTION]	= name of the action
- * 		$arg0[CHECK_ACTION_LANG_FILE_MEMBERSHIP]= name of the current membership
+ *        $arg0[CHECK_ACTION_LANG_FILE_ACTION]    = name of the action
+ *        $arg0[CHECK_ACTION_LANG_FILE_MEMBERSHIP]= name of the current membership
  *
- * 	CHECK_ACTION_RESULT_LIMIT_REACHED:
+ *    CHECK_ACTION_RESULT_LIMIT_REACHED:
  *
- * 		$arg0[CHECK_ACTION_LANG_FILE_LIMIT]		= limit on number of actions allowed for the member
- * 		$arg0[CHECK_ACTION_LANG_FILE_PERIOD]	= period that the limit is set for (in hours, 0 if unlimited)
+ *        $arg0[CHECK_ACTION_LANG_FILE_LIMIT]        = limit on number of actions allowed for the member
+ *        $arg0[CHECK_ACTION_LANG_FILE_PERIOD]    = period that the limit is set for (in hours, 0 if unlimited)
  *
- * 	CHECK_ACTION_RESULT_NOT_ALLOWED_BEFORE:
+ *    CHECK_ACTION_RESULT_NOT_ALLOWED_BEFORE:
  *
- * 		$arg0[CHECK_ACTION_LANG_FILE_BEFORE]	= date/time since when the action is allowed
+ *        $arg0[CHECK_ACTION_LANG_FILE_BEFORE]    = date/time since when the action is allowed
  *
- * 	CHECK_ACTION_RESULT_NOT_ALLOWED_AFTER:
+ *    CHECK_ACTION_RESULT_NOT_ALLOWED_AFTER:
  *
- * 		$arg0[CHECK_ACTION_LANG_FILE_AFTER]		= date/time since when the action is not allowed
+ *        $arg0[CHECK_ACTION_LANG_FILE_AFTER]        = date/time since when the action is not allowed
  *
  * $result[CHECK_ACTION_PARAMETER] contains an additional parameter that can be considered
  * when performing the action (like the number of profiles to show in search result)
-*/
+ */
 function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProfID = 0, $isCheckMemberStatus = true)
 {
     global $logged;
@@ -312,15 +318,15 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
 
     //output array initialization
 
-    $result = array();
+    $result            = array();
     $arrLangFileParams = array();
 
-    $dateFormat = "F j, Y, g:i a";	//used when displaying error messages
+    $dateFormat = "F j, Y, g:i a";    //used when displaying error messages
 
     //input validation
 
-    $iMemberId = (int)$iMemberId;
-    $actionID = (int)$actionID;
+    $iMemberId     = (int)$iMemberId;
+    $actionID      = (int)$actionID;
     $performAction = $performAction ? true : false;
 
     //get current member's membership information
@@ -332,18 +338,19 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
 
     //profile active check
 
-    if($arrMembership['ID'] != MEMBERSHIP_ID_NON_MEMBER || $logged['admin'] || $logged['moderator']) {
+    if ($arrMembership['ID'] != MEMBERSHIP_ID_NON_MEMBER || $logged['admin'] || $logged['moderator']) {
         $iDestID = $iMemberId;
-        if ( (isAdmin() || isModerator()) && $iForcedProfID>0) {
-            $iDestID = $iForcedProfID;
+        if ((isAdmin() || isModerator()) && $iForcedProfID > 0) {
+            $iDestID       = $iForcedProfID;
             $performAction = false;
         }
 
         if ($isCheckMemberStatus) {
-            $active = getProfileInfo( $iDestID );
+            $active = getProfileInfo($iDestID);
             if ($active['Status'] != 'Active') {
-                $result[CHECK_ACTION_RESULT] = CHECK_ACTION_RESULT_NOT_ACTIVE;
+                $result[CHECK_ACTION_RESULT]  = CHECK_ACTION_RESULT_NOT_ACTIVE;
                 $result[CHECK_ACTION_MESSAGE] = _t_ext(CHECK_ACTION_MESSAGE_NOT_ACTIVE, $arrLangFileParams);
+
                 return $result;
             }
         }
@@ -367,41 +374,42 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
 
     //no such action
 
-    if($resMembershipAction->rowCount() < 1) {
+    if ($resMembershipAction->rowCount() < 1) {
         echo "<br /><b>checkAction()</b> fatal error. Unknown action ID: $actionID<br />";
         exit();
     }
 
     $arrAction = $resMembershipAction->fetch();
 
-    $result[CHECK_ACTION_PARAMETER]	= $arrAction['AdditionalParamValue'];
+    $result[CHECK_ACTION_PARAMETER]                   = $arrAction['AdditionalParamValue'];
     $arrLangFileParams[CHECK_ACTION_LANG_FILE_ACTION] = _t('_mma_' . str_replace(' ', '_', $arrAction['Name']));
 
     //action is not allowed for the current membership
 
-    if(is_null($arrAction['IDAction'])) {
-        $result[CHECK_ACTION_RESULT] = CHECK_ACTION_RESULT_NOT_ALLOWED;
+    if (is_null($arrAction['IDAction'])) {
+        $result[CHECK_ACTION_RESULT]  = CHECK_ACTION_RESULT_NOT_ALLOWED;
         $result[CHECK_ACTION_MESSAGE] = _t_ext(CHECK_ACTION_MESSAGE_NOT_ALLOWED, $arrLangFileParams);
+
         return $result;
     }
 
     //Check fixed period limitations if present (also for non-members)
 
-    if($arrAction['AllowedPeriodStart'] && time() < $arrAction['AllowedPeriodStart']) {
+    if ($arrAction['AllowedPeriodStart'] && time() < $arrAction['AllowedPeriodStart']) {
 
         $arrLangFileParams[CHECK_ACTION_LANG_FILE_BEFORE] = date($dateFormat, $arrAction['AllowedPeriodStart']);
 
-        $result[CHECK_ACTION_RESULT] = CHECK_ACTION_RESULT_NOT_ALLOWED_BEFORE;
+        $result[CHECK_ACTION_RESULT]  = CHECK_ACTION_RESULT_NOT_ALLOWED_BEFORE;
         $result[CHECK_ACTION_MESSAGE] = _t_ext(CHECK_ACTION_MESSAGE_NOT_ALLOWED_BEFORE, $arrLangFileParams);
 
         return $result;
     }
 
-    if($arrAction['AllowedPeriodEnd'] && time() > $arrAction['AllowedPeriodEnd']) {
+    if ($arrAction['AllowedPeriodEnd'] && time() > $arrAction['AllowedPeriodEnd']) {
 
         $arrLangFileParams[CHECK_ACTION_LANG_FILE_AFTER] = date($dateFormat, $arrAction['AllowedPeriodEnd']);
 
-        $result[CHECK_ACTION_RESULT] = CHECK_ACTION_RESULT_NOT_ALLOWED_AFTER;
+        $result[CHECK_ACTION_RESULT]  = CHECK_ACTION_RESULT_NOT_ALLOWED_AFTER;
         $result[CHECK_ACTION_MESSAGE] = _t_ext(CHECK_ACTION_MESSAGE_NOT_ALLOWED_AFTER, $arrLangFileParams);
 
         return $result;
@@ -411,23 +419,24 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
 
     if ($arrMembership['ID'] == MEMBERSHIP_ID_NON_MEMBER) {
         $result[CHECK_ACTION_RESULT] = CHECK_ACTION_RESULT_ALLOWED;
+
         return $result;
     }
 
     //check other limitations (for members only)
 
-    $allowedCnt = (int)$arrAction['AllowedCount'];		//number of allowed actions
-                                                        //if not specified or 0, number of
-                                                        //actions is unlimited
+    $allowedCnt = (int)$arrAction['AllowedCount'];        //number of allowed actions
+    //if not specified or 0, number of
+    //actions is unlimited
 
-    $periodLen = (int)$arrAction['AllowedPeriodLen'];	//period for AllowedCount in hours
-                                                        //if not specified, AllowedCount is
-                                                        //treated as total number of actions
-                                                        //permitted
+    $periodLen = (int)$arrAction['AllowedPeriodLen'];    //period for AllowedCount in hours
+    //if not specified, AllowedCount is
+    //treated as total number of actions
+    //permitted
 
     //number of actions is limited
 
-    if($allowedCnt > 0) {
+    if ($allowedCnt > 0) {
         //get current action info for the member
 
         $actionTrack = db_res("SELECT ActionsLeft,
@@ -436,12 +445,12 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
                                WHERE IDAction = $actionID AND IDMember = $iMemberId");
 
         $actionsLeft = $performAction ? $allowedCnt - 1 : $allowedCnt;
-        $validSince = time();
+        $validSince  = time();
 
         //member is requesting/performing this action for the first time,
         //and there is no corresponding record in sys_acl_actions_track table
 
-        if($actionTrack->rowCount() <= 0) {
+        if ($actionTrack->rowCount() <= 0) {
             //add action to sys_acl_actions_track table
 
             db_res("
@@ -449,6 +458,7 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
                 VALUES ($actionID, $iMemberId, $actionsLeft, FROM_UNIXTIME($validSince))");
 
             $result[CHECK_ACTION_RESULT] = CHECK_ACTION_RESULT_ALLOWED;
+
             return $result;
         }
 
@@ -461,13 +471,14 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
 
         $periodEnd = (int)$actionTrack['ValidSince'] + $periodLen * 3600; //ValidSince is in seconds, PeriodLen is in hours
 
-        if($periodLen > 0 && $periodEnd < time()) {
+        if ($periodLen > 0 && $periodEnd < time()) {
             db_res("
                 UPDATE	`sys_acl_actions_track`
                 SET		ActionsLeft = $actionsLeft, ValidSince = FROM_UNIXTIME($validSince)
                 WHERE	IDAction = $actionID AND IDMember = $iMemberId");
 
             $result[CHECK_ACTION_RESULT] = CHECK_ACTION_RESULT_ALLOWED;
+
             return $result;
         }
 
@@ -477,11 +488,11 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
 
         //action limit reached for now
 
-        if($actionsLeft <= 0 ) {
-            $arrLangFileParams[CHECK_ACTION_LANG_FILE_LIMIT] = $allowedCnt;
+        if ($actionsLeft <= 0) {
+            $arrLangFileParams[CHECK_ACTION_LANG_FILE_LIMIT]  = $allowedCnt;
             $arrLangFileParams[CHECK_ACTION_LANG_FILE_PERIOD] = $periodLen;
 
-            $result[CHECK_ACTION_RESULT] = CHECK_ACTION_RESULT_LIMIT_REACHED;
+            $result[CHECK_ACTION_RESULT]  = CHECK_ACTION_RESULT_LIMIT_REACHED;
             $result[CHECK_ACTION_MESSAGE] = '<div style="width: 80%">' .
                 _t_ext(CHECK_ACTION_MESSAGE_LIMIT_REACHED, $arrLangFileParams) .
                 ($periodLen > 0 ? _t_ext(CHECK_ACTION_MESSAGE_MESSAGE_EVERY_PERIOD, $arrLangFileParams) : '') .
@@ -490,7 +501,7 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
             return $result;
         }
 
-        if($performAction) {
+        if ($performAction) {
             $actionsLeft--;
 
             db_res("
@@ -501,25 +512,26 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
     }
 
     $result[CHECK_ACTION_RESULT] = CHECK_ACTION_RESULT_ALLOWED;
+
     return $result;
 }
 
 /**
  * Buy a membership for a member
  *
- * @param int $iMemberId			- member that is going to get the membership
- * @param int $iMembershipId		- bought membership
- * @param int $sTransactionId	- internal key of the transaction (ID from Transactions table)
- * @param boolean $bStartsNow	- if true, the membership will start immediately;
- *								  if false, the membership will start after the current
- *								  membership expires
+ * @param int     $iMemberId        - member that is going to get the membership
+ * @param int     $iMembershipId    - bought membership
+ * @param int     $sTransactionId   - internal key of the transaction (ID from Transactions table)
+ * @param boolean $bStartsNow       - if true, the membership will start immediately;
+ *                                  if false, the membership will start after the current
+ *                                  membership expires
  *
- * @return boolean				- true in case of success, false in case of failure
+ * @return boolean                - true in case of success, false in case of failure
  *
  */
 function buyMembership($iMemberId, $iMembershipId, $sTransactionId, $bStartsNow = false)
 {
-    $iMemberId = (int)$iMemberId;
+    $iMemberId     = (int)$iMemberId;
     $iMembershipId = (int)$iMembershipId;
 
     $aMembership = db_arr("SELECT
@@ -531,18 +543,21 @@ function buyMembership($iMemberId, $iMembershipId, $sTransactionId, $bStartsNow 
         LEFT JOIN `sys_acl_level_prices` AS `tlp` ON `tl`.`ID`=`tlp`.`IDLevel`
         WHERE `tlp`.`id`='" . $iMembershipId . "'"
     );
-    if(!is_array($aMembership) || empty($aMembership))
+    if (!is_array($aMembership) || empty($aMembership)) {
         return false;
+    }
 
     $iMembershipId = (int)$aMembership['ID'];
 
     //check for predefined non-purchasable memberships
-    if(in_array($iMembershipId, array(MEMBERSHIP_ID_NON_MEMBER, MEMBERSHIP_ID_STANDARD, MEMBERSHIP_ID_PROMOTION)))
+    if (in_array($iMembershipId, array(MEMBERSHIP_ID_NON_MEMBER, MEMBERSHIP_ID_STANDARD, MEMBERSHIP_ID_PROMOTION))) {
         return false;
+    }
 
     //check if membership is active and purchasable
-    if($aMembership['Active'] != 'yes' || $aMembership['Purchasable'] != 'yes')
+    if ($aMembership['Active'] != 'yes' || $aMembership['Purchasable'] != 'yes') {
         return false;
+    }
 
     return setMembership($iMemberId, $iMembershipId, $aMembership['Days'], $bStartsNow, $sTransactionId);
 }
@@ -550,83 +565,100 @@ function buyMembership($iMemberId, $iMembershipId, $sTransactionId, $bStartsNow 
 /**
  * Set a membership for a member
  *
- * @param int $iMemberId			- member that is going to get the membership
- * @param int $iMembershipId		- membership that is going to be assigned to the member
- * 								  if $iMembershipId == MEMBERSHIP_ID_STANDARD then $days
- *								  and $bStartsNow parameters are not used, so Standard
- *								  membership is always set immediately and `forever`
+ * @param int     $iMemberId        - member that is going to get the membership
+ * @param int     $iMembershipId    - membership that is going to be assigned to the member
+ *                                  if $iMembershipId == MEMBERSHIP_ID_STANDARD then $days
+ *                                  and $bStartsNow parameters are not used, so Standard
+ *                                  membership is always set immediately and `forever`
  *
- * @param int $days				- number of days to set membership for
- *								  if 0, then the membership is set forever
+ * @param int     $days             - number of days to set membership for
+ *                                  if 0, then the membership is set forever
  *
- * @param boolean $bStartsNow	- if true, the membership will start immediately;
- *								  if false, the membership will start after the current
- *								  membership expires
+ * @param boolean $bStartsNow       - if true, the membership will start immediately;
+ *                                  if false, the membership will start after the current
+ *                                  membership expires
  *
- * @return boolean				- true in case of success, false in case of failure
+ * @return boolean                - true in case of success, false in case of failure
  *
  *
  */
-function setMembership($iMemberId, $iMembershipId, $iDays = 0, $bStartsNow = false, $sTransactionId = '', $isSendMail = true)
-{
-    $iMemberId = (int)$iMemberId;
+function setMembership(
+    $iMemberId,
+    $iMembershipId,
+    $iDays = 0,
+    $bStartsNow = false,
+    $sTransactionId = '',
+    $isSendMail = true
+) {
+    $iMemberId     = (int)$iMemberId;
     $iMembershipId = (int)$iMembershipId;
-    $iDays = (int)$iDays;
-    $bStartsNow = $bStartsNow ? true : false;
+    $iDays         = (int)$iDays;
+    $bStartsNow    = $bStartsNow ? true : false;
 
     $SECONDS_IN_DAY = 86400;
 
-    if(!$iMemberId)
+    if (!$iMemberId) {
         $iMemberId = -1;
+    }
 
-    if(empty($sTransactionId))
+    if (empty($sTransactionId)) {
         $sTransactionId = 'NULL';
+    }
 
     //check if member exists
     $aProfileInfo = getProfileInfo($iMemberId);
-    if(!$aProfileInfo)
+    if (!$aProfileInfo) {
         return false;
+    }
 
     //check if membership exists
     $iRes = (int)db_value("SELECT COUNT(`ID`) FROM `sys_acl_levels` WHERE `ID`='" . $iMembershipId . "' LIMIT 1");
-    if($iRes != 1)
+    if ($iRes != 1) {
         return false;
+    }
 
-    if($iMembershipId == MEMBERSHIP_ID_NON_MEMBER)
+    if ($iMembershipId == MEMBERSHIP_ID_NON_MEMBER) {
         return false;
+    }
 
     $aMembershipCurrent = getMemberMembershipInfo($iMemberId);
-    $aMembershipLatest = getMemberMembershipInfo_latest($iMemberId);
+    $aMembershipLatest  = getMemberMembershipInfo_latest($iMemberId);
 
     /**
      * Setting Standard membership level
      */
-    if($iMembershipId == MEMBERSHIP_ID_STANDARD) {
-        if($aMembershipCurrent['ID'] == MEMBERSHIP_ID_STANDARD)
+    if ($iMembershipId == MEMBERSHIP_ID_STANDARD) {
+        if ($aMembershipCurrent['ID'] == MEMBERSHIP_ID_STANDARD) {
             return true;
+        }
 
         //delete any present and future memberships
         $res = db_res("DELETE FROM `sys_acl_levels_members` WHERE `IDMember`='" . $iMemberId . "' AND (`DateExpires` IS NULL OR `DateExpires`>NOW())");
-        if(db_affected_rows($res) <= 0)
+        if (db_affected_rows($res) <= 0) {
             return false;
+        }
     }
 
-    if($iDays < 0)
+    if ($iDays < 0) {
         return false;
+    }
 
     $iDateStarts = time();
-    if(!$bStartsNow) {
+    if (!$bStartsNow) {
         /**
          * make the membership starts after the latest membership expires
          * or return false if latest membership isn't Standard and is lifetime membership
          */
-        if(!is_null($aMembershipLatest['DateExpires']))
+        if (!is_null($aMembershipLatest['DateExpires'])) {
             $iDateStarts = $aMembershipLatest['DateExpires'];
-        else if(is_null($aMembershipLatest['DateExpires']) && $aMembershipLatest['ID'] != MEMBERSHIP_ID_STANDARD)
-            return false;
+        } else {
+            if (is_null($aMembershipLatest['DateExpires']) && $aMembershipLatest['ID'] != MEMBERSHIP_ID_STANDARD) {
+                return false;
+            }
+        }
     } else {
         // delete previous profile's membership level and actions traces
-        db_res("DELETE FROM `sys_acl_levels_members` WHERE `IDMember`='" . $iMemberId . "'"); 
+        db_res("DELETE FROM `sys_acl_levels_members` WHERE `IDMember`='" . $iMemberId . "'");
         clearActionsTracksForMember($iMemberId);
     }
 
@@ -634,29 +666,32 @@ function setMembership($iMemberId, $iMembershipId, $iDays = 0, $bStartsNow = fal
      * set lifetime membership if 0 days is used.
      */
     $iDateExpires = $iDays != 0 ? (int)$iDateStarts + $iDays * $SECONDS_IN_DAY : 'NULL';
-    $res = db_res("INSERT `sys_acl_levels_members` (`IDMember`, `IDLevel`, `DateStarts`, `DateExpires`, `TransactionID`) VALUES ('" . $iMemberId . "', '" . $iMembershipId . "', FROM_UNIXTIME(" . $iDateStarts . "), FROM_UNIXTIME(" . $iDateExpires . "), '" . $sTransactionId . "')");
-    if(db_affected_rows($res) <= 0)
-       return false;
+    $res          = db_res("INSERT `sys_acl_levels_members` (`IDMember`, `IDLevel`, `DateStarts`, `DateExpires`, `TransactionID`) VALUES ('" . $iMemberId . "', '" . $iMembershipId . "', FROM_UNIXTIME(" . $iDateStarts . "), FROM_UNIXTIME(" . $iDateExpires . "), '" . $sTransactionId . "')");
+    if (db_affected_rows($res) <= 0) {
+        return false;
+    }
 
     //Set Membership Alert
     bx_import('BxDolAlerts');
-    $oZ = new BxDolAlerts('profile', 'set_membership', '', $iMemberId, array('mlevel'=> $iMembershipId, 'days' => $iDays, 'starts_now' => $bStartsNow, 'txn_id' => $sTransactionId));
+    $oZ = new BxDolAlerts('profile', 'set_membership', '', $iMemberId,
+        array('mlevel' => $iMembershipId, 'days' => $iDays, 'starts_now' => $bStartsNow, 'txn_id' => $sTransactionId));
     $oZ->alert();
 
     //Notify user about changed membership level
     bx_import('BxDolEmailTemplates');
     $oEmailTemplate = new BxDolEmailTemplates();
-    $aTemplate = $oEmailTemplate->getTemplate('t_MemChanged', $iMemberId);
+    $aTemplate      = $oEmailTemplate->getTemplate('t_MemChanged', $iMemberId);
 
     $aMembershipInfo = getMembershipInfo($iMembershipId);
-    $aTemplateVars = array(
+    $aTemplateVars   = array(
         'MembershipLevel' => $aMembershipInfo['Name']
     );
 
-    if ($isSendMail)
-        sendMail( $aProfileInfo['Email'], $aTemplate['Subject'], $aTemplate['Body'], $iMemberId, $aTemplateVars);
+    if ($isSendMail) {
+        sendMail($aProfileInfo['Email'], $aTemplate['Subject'], $aTemplate['Body'], $iMemberId, $aTemplateVars);
+    }
 
-	//Notify admin about changed user's membership level
+    //Notify admin about changed user's membership level
     $aTemplate = $oEmailTemplate->parseTemplate('t_UserMemChanged', $aTemplateVars, $iMemberId);
     sendMail($GLOBALS['site']['email'], $aTemplate['Subject'], $aTemplate['Body']);
 
@@ -666,11 +701,11 @@ function setMembership($iMemberId, $iMembershipId, $iDays = 0, $bStartsNow = fal
 /**
  * Get the list of existing memberships
  *
- * @param bool $purchasableOnly	- if true, fetches only purchasable memberships;
- * 								  'purchasable' here means that:
- *								  1. MemLevels.Purchasable = 'yes'
- *								  2. MemLevels.Active = 'yes'
- * 								  3. there is at least one pricing option for the membership
+ * @param bool $purchasableOnly     - if true, fetches only purchasable memberships;
+ *                                  'purchasable' here means that:
+ *                                  1. MemLevels.Purchasable = 'yes'
+ *                                  2. MemLevels.Active = 'yes'
+ *                                  3. there is at least one pricing option for the membership
  *
  * @return array( membershipID_1 => membershipName_1,  membershipID_2 => membershipName_2, ...) - if no such memberships, then just array()
  *
@@ -682,13 +717,13 @@ function getMemberships($purchasableOnly = false)
 
     $queryPurchasable = '';
 
-    if($purchasableOnly) {
+    if ($purchasableOnly) {
         $queryPurchasable = "INNER JOIN `sys_acl_level_prices` ON `sys_acl_level_prices`.IDLevel = `sys_acl_levels`.ID WHERE Purchasable = 'yes' AND Active = 'yes'";
     }
 
     $resMemLevels = db_res("SELECT DISTINCT `sys_acl_levels`.ID, `sys_acl_levels`.Name FROM `sys_acl_levels` $queryPurchasable");
 
-    while(list($id, $name) = $resMemLevels->fetch()) {
+    while (list($id, $name) = $resMemLevels->fetch()) {
         $result[(int)$id] = $name;
     }
 
@@ -698,7 +733,7 @@ function getMemberships($purchasableOnly = false)
 /**
  * Get pricing options for the given membership
  *
- * @param int $iMembershipId	- membership to get prices for
+ * @param int $iMembershipId - membership to get prices for
  *
  * @return array( days1 => price1, days2 => price2, ...) - if no prices set, then just array()
  *
@@ -707,11 +742,11 @@ function getMemberships($purchasableOnly = false)
 function getMembershipPrices($iMembershipId)
 {
     $iMembershipId = (int)$iMembershipId;
-    $result = array();
+    $result        = array();
 
     $resMemLevelPrices = db_res("SELECT Days, Price FROM `sys_acl_level_prices` WHERE IDLevel = $iMembershipId ORDER BY Days ASC");
 
-    while(list($days, $price) = $resMemLevelPrices->fetch()) {
+    while (list($days, $price) = $resMemLevelPrices->fetch()) {
         $result[(int)$days] = (float)$price;
     }
 
@@ -721,23 +756,24 @@ function getMembershipPrices($iMembershipId)
 /**
  * Get info about a given membership
  *
- * @param int $iMembershipId	- membership to get info about
+ * @param int $iMembershipId - membership to get info about
  *
- * @return array(	'Name' => name,
- * 					'Active' => active,
- *					'Purchasable' => purchasable,
- *					'Removable' => removable)
+ * @return array(    'Name' => name,
+ *                    'Active' => active,
+ *                    'Purchasable' => purchasable,
+ *                    'Removable' => removable)
  *
  *
  */
 function getMembershipInfo($iMembershipId)
 {
     $iMembershipId = (int)$iMembershipId;
-    $result = array();
+    $result        = array();
 
-    $resMemLevels = db_res("SELECT Name, Active, Purchasable, Removable FROM `sys_acl_levels` WHERE ID = ?", [$iMembershipId]);
+    $resMemLevels = db_res("SELECT Name, Active, Purchasable, Removable FROM `sys_acl_levels` WHERE ID = ?",
+        [$iMembershipId]);
 
-    if($resMemLevels->rowCount() > 0) {
+    if ($resMemLevels->rowCount() > 0) {
         $result = $resMemLevels->fetch();
     }
 
@@ -750,68 +786,78 @@ function getMembershipInfo($iMembershipId)
  *
  * @param $aActions array of actions from sys_acl_actions table, with default array keys (starting from 0) and text values
  */
-function defineMembershipActions ($aActionsAll, $sPrefix = 'BX_')
+function defineMembershipActions($aActionsAll, $sPrefix = 'BX_')
 {
-    $aActions = array ();
-    foreach ($aActionsAll as $sName)
-        if (!defined($sPrefix . strtoupper(str_replace(' ', '_', $sName))))
+    $aActions = array();
+    foreach ($aActionsAll as $sName) {
+        if (!defined($sPrefix . strtoupper(str_replace(' ', '_', $sName)))) {
             $aActions[] = $sName;
-    if (!$aActions)
+        }
+    }
+    if (!$aActions) {
         return;
+    }
 
-//    $sActions = implode("','", $aActions);
+    //    $sActions = implode("','", $aActions);
     $sPlaceholders = implode(',', array_fill(0, count($aActions), '?'));
-    $res = db_res("SELECT `ID`, `Name` FROM `sys_acl_actions` WHERE `Name` IN({$sPlaceholders})", $aActions);
+    $res           = db_res("SELECT `ID`, `Name` FROM `sys_acl_actions` WHERE `Name` IN({$sPlaceholders})", $aActions);
     while ($r = $res->fetch()) {
-        define ($sPrefix . strtoupper(str_replace(' ', '_', $r['Name'])), $r['ID']);
+        define($sPrefix . strtoupper(str_replace(' ', '_', $r['Name'])), $r['ID']);
     }
 }
 
 function membershipActionsCmp($a, $b)
 {
     $sNameField = isset($a['Name']) ? 'Name' : 'title';
+
     return strcmp($a[$sNameField], $b[$sNameField]);
 }
 
-function translateMembershipActions (&$aActions)
+function translateMembershipActions(&$aActions)
 {
     reset($aActions);
-    $a = current ($aActions);
+    $a          = current($aActions);
     $sNameField = isset($a['Name']) ? 'Name' : 'title';
 
-    foreach ($aActions as $i => $a)
+    foreach ($aActions as $i => $a) {
         $aActions[$i][$sNameField] = _t('_mma_' . str_replace(' ', '_', $a[$sNameField]));
+    }
 
-    usort ($aActions, 'membershipActionsCmp');
+    usort($aActions, 'membershipActionsCmp');
 }
 
 function markMembershipAsExpiring($iMemberId, $iLevelId, $sTransactionId)
 {
-	$res = db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='1' WHERE `IDMember`= ? AND `IDLevel`= ? AND `TransactionID`= ? LIMIT 1", [
-        $iMemberId,
-        $iLevelId,
-        $sTransactionId
-    ]);
-	return db_affected_rows($res) > 0;
+    $res = db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='1' WHERE `IDMember`= ? AND `IDLevel`= ? AND `TransactionID`= ? LIMIT 1",
+        [
+            $iMemberId,
+            $iLevelId,
+            $sTransactionId
+        ]);
+
+    return db_affected_rows($res) > 0;
 }
 
 function unmarkMembershipAsExpiring($iMemberId, $iLevelId, $sTransactionId)
 {
-	$res = db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='0' WHERE `IDMember`= ? AND `IDLevel`= ? AND `TransactionID`= ? LIMIT 1", [
-        $iMemberId,
-        $iLevelId,
-        $sTransactionId
-    ]);
-	return db_affected_rows($res) > 0;
+    $res = db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='0' WHERE `IDMember`= ? AND `IDLevel`= ? AND `TransactionID`= ? LIMIT 1",
+        [
+            $iMemberId,
+            $iLevelId,
+            $sTransactionId
+        ]);
+
+    return db_affected_rows($res) > 0;
 }
 
 function unmarkMembershipAsExpiringAll()
 {
-	$res = db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='0' WHERE 1");
-	return db_affected_rows($res) > 0;
+    $res = db_res("UPDATE `sys_acl_levels_members` SET `Expiring`='0' WHERE 1");
+
+    return db_affected_rows($res) > 0;
 }
 
 function clearActionsTracksForMember($iMemberId)
 {
-	return db_res("DELETE FROM `sys_acl_actions_track` WHERE `IDMember` = ?", [$iMemberId]);
+    return db_res("DELETE FROM `sys_acl_actions_track` WHERE `IDMember` = ?", [$iMemberId]);
 }

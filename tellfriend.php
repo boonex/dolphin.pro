@@ -15,20 +15,22 @@ bx_import('BxTemplFormView');
 
 // --------------- page variables and login
 
-$_page['name_index'] 	= 29;
-$_page['css_name']		= array('forms_adv.css');
+$_page['name_index'] = 29;
+$_page['css_name']   = array('forms_adv.css');
 
-$_page['header'] = _t("_Tell a friend");
+$_page['header']      = _t("_Tell a friend");
 $_page['header_text'] = _t("_Tell a friend");
 
 $profileID = 0;
-if( isset($_GET['ID']) ) {
-    $profileID = (int) $_GET['ID'];
-} else if( isset($_POST['ID']) ) {
-    $profileID = (int) $_POST['ID'];
+if (isset($_GET['ID'])) {
+    $profileID = (int)$_GET['ID'];
+} else {
+    if (isset($_POST['ID'])) {
+        $profileID = (int)$_POST['ID'];
+    }
 }
 
-$iSenderID = getLoggedId();
+$iSenderID   = getLoggedId();
 $aSenderInfo = getProfileInfo($iSenderID);
 
 // --------------- page components
@@ -37,61 +39,62 @@ $sCaption = ($profileID) ? _t('_TELLAFRIEND2', $site['title']) : _t('_TELLAFRIEN
 
 $aForm = array(
     'form_attrs' => array(
-        'id' => 'invite_friend',
-        'name' => 'invite_friend',
-        'action' => BX_DOL_URL_ROOT . 'tellfriend.php',
-        'method' => 'post',
+        'id'       => 'invite_friend',
+        'name'     => 'invite_friend',
+        'action'   => BX_DOL_URL_ROOT . 'tellfriend.php',
+        'method'   => 'post',
         'onsubmit' => "return bx_ajax_form_check(this)",
     ),
-    'params' => array (
+    'params'     => array(
         'db' => array(
-            'submit_name' => 'do_submit', // we need alternative hidden field name here, instead of submit, becuase AJAX submit doesn't pass submit button value
+            'submit_name' => 'do_submit',
+            // we need alternative hidden field name here, instead of submit, becuase AJAX submit doesn't pass submit button value
         ),
     ),
-    'inputs' => array (
-        'header1' => array(
-            'type' => 'block_header',
+    'inputs'     => array(
+        'header1'         => array(
+            'type'    => 'block_header',
             'caption' => $sCaption,
         ),
-        'do_submit' => array(
-            'type' => 'hidden',
-            'name' => 'do_submit', // hidden submit field for AJAX submit
+        'do_submit'       => array(
+            'type'  => 'hidden',
+            'name'  => 'do_submit', // hidden submit field for AJAX submit
             'value' => 1,
         ),
-        'id' => array(
-            'type' => 'hidden',
-            'name' => 'ID',
+        'id'              => array(
+            'type'  => 'hidden',
+            'name'  => 'ID',
             'value' => $profileID,
         ),
-        'sender_name' => array(
-            'type' => 'text',
-            'name' => 'sender_name',
+        'sender_name'     => array(
+            'type'    => 'text',
+            'name'    => 'sender_name',
             'caption' => _t("_Your name"),
-            'value' => getNickName($aSenderInfo['ID']),
+            'value'   => getNickName($aSenderInfo['ID']),
         ),
-        'sender_email' => array(
-            'type' => 'text',
-            'name' => 'sender_email',
+        'sender_email'    => array(
+            'type'    => 'text',
+            'name'    => 'sender_email',
             'caption' => _t("_Your email"),
-            'value' => $aSenderInfo['Email'],
-            'checker' => array (
-                'func' => 'email',
+            'value'   => $aSenderInfo['Email'],
+            'checker' => array(
+                'func'  => 'email',
                 'error' => _t('_Incorrect Email'),
             ),
         ),
         'recipient_email' => array(
-            'type' => 'text',
-            'name' => 'recipient_email',
+            'type'    => 'text',
+            'name'    => 'recipient_email',
             'caption' => _t("_Friend email"),
-            'value' => '',
-            'checker' => array (
-                'func' => 'email',
+            'value'   => '',
+            'checker' => array(
+                'func'  => 'email',
                 'error' => _t('_sys_adm_form_err_required_field'),
             ),
         ),
-        'submit_send' => array(
-            'type' => 'submit',
-            'name' => 'submit_send',
+        'submit_send'     => array(
+            'type'  => 'submit',
+            'name'  => 'submit_send',
             'value' => _t("_Send Letter"),
         ),
     )
@@ -101,7 +104,7 @@ $aForm = array(
 $oForm = new BxTemplFormView($aForm);
 $oForm->initChecker();
 if ($oForm->isSubmittedAndValid()) {
-    $s = SendTellFriend($iSenderID) ? "_Email was successfully sent" : "_Email sent failed";
+    $s         = SendTellFriend($iSenderID) ? "_Email was successfully sent" : "_Email sent failed";
     $sPageCode = MsgBox(_t($s));
 } else {
     $sPageCode = $oForm->getCode();
@@ -118,8 +121,8 @@ $sPageCode = $GLOBALS['oSysTemplate']->parseHtmlByName('default_margin.html', ar
 
 // output ajax popup
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-    $aVarsPopup = array (
-        'title' => $_page['header'],
+    $aVarsPopup = array(
+        'title'   => $_page['header'],
         'content' => $sPageCode,
     );
     header('Content-type:text/html;charset=utf-8');
@@ -128,7 +131,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 }
 
 // output regular page
-$_ni = $_page['name_index'];
+$_ni                           = $_page['name_index'];
 $_page_cont[$_ni]['page_code'] = $sPageCode;
 PageCode();
 
@@ -144,28 +147,30 @@ function SendTellFriend($iSenderID = 0)
 
     $sSenderName  = clear_xss(bx_get('sender_name'));
     $sSenderEmail = clear_xss(bx_get('sender_email'));
-    if(strlen(trim($sSenderEmail)) <= 0)
+    if (strlen(trim($sSenderEmail)) <= 0) {
         return 0;
+    }
 
-    $sRecipientEmail   = clear_xss(bx_get('recipient_email'));
-    if(strlen(trim($sRecipientEmail)) <= 0)
+    $sRecipientEmail = clear_xss(bx_get('recipient_email'));
+    if (strlen(trim($sRecipientEmail)) <= 0) {
         return 0;
+    }
 
-    $sLinkAdd = $iSenderID > 0 ? 'idFriend=' . $iSenderID : '';
+    $sLinkAdd       = $iSenderID > 0 ? 'idFriend=' . $iSenderID : '';
     $rEmailTemplate = new BxDolEmailTemplates();
-    if($profileID) {
-        $aTemplate = $rEmailTemplate -> getTemplate('t_TellFriendProfile', getLoggedId());
-        $Link = getProfileLink($profileID, $sLinkAdd);
-    } 
-    else {
-        $aTemplate = $rEmailTemplate -> getTemplate('t_TellFriend', getLoggedId());
-        $Link = BX_DOL_URL_ROOT;
-        if (strlen($sLinkAdd) > 0)
+    if ($profileID) {
+        $aTemplate = $rEmailTemplate->getTemplate('t_TellFriendProfile', getLoggedId());
+        $Link      = getProfileLink($profileID, $sLinkAdd);
+    } else {
+        $aTemplate = $rEmailTemplate->getTemplate('t_TellFriend', getLoggedId());
+        $Link      = BX_DOL_URL_ROOT;
+        if (strlen($sLinkAdd) > 0) {
             $Link .= '?' . $sLinkAdd;
+        }
     }
 
     return sendMail($sRecipientEmail, $aTemplate['Subject'], $aTemplate['Body'], '', array(
-        'Link' => $Link,
+        'Link'     => $Link,
         'FromName' => $sSenderName
     ));
 }

@@ -12,7 +12,7 @@ class BxVideosRate extends BxDolFilesRate
 {
     function __construct()
     {
-        $oMedia = new BxVideosSearch();
+        $oMedia                          = new BxVideosSearch();
         $oMedia->aCurrent['ownFields'][] = 'Video';
         $oMedia->aCurrent['ownFields'][] = 'Source';
 
@@ -21,6 +21,7 @@ class BxVideosRate extends BxDolFilesRate
 
     function getRateFile(&$aData)
     {
-        return $this->oMedia->oTemplate->getFileConcept($aData[0]['id'], array('ext'=>$aData[0]['Video'], 'source'=>$aData[0]['Source']));
+        return $this->oMedia->oTemplate->getFileConcept($aData[0]['id'],
+            array('ext' => $aData[0]['Video'], 'source' => $aData[0]['Source']));
     }
 }

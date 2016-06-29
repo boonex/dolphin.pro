@@ -73,6 +73,7 @@
  */
 class BxDolCron
 {
-    function __construct(){}
-    function processing() {}
+    function __construct() { }
+
+    function processing() { }
 }

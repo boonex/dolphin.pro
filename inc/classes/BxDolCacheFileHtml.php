@@ -25,11 +25,13 @@ class BxDolCacheFileHtml extends BxDolCacheFile
      */
     function getData($sKey, $iTTL = false)
     {
-        if(!file_exists($this->sPath . $sKey))
+        if (!file_exists($this->sPath . $sKey)) {
             return null;
+        }
 
-        if ($iTTL > 0 && $this->_removeFileIfTtlExpired ($this->sPath . $sKey, $iTTL))
+        if ($iTTL > 0 && $this->_removeFileIfTtlExpired($this->sPath . $sKey, $iTTL)) {
             return null;
+        }
 
         return file_get_contents($this->sPath . $sKey);
     }
@@ -39,11 +41,13 @@ class BxDolCacheFileHtml extends BxDolCacheFile
      */
     function getDataFilePath($sKey, $iTTL = false)
     {
-        if (!file_exists($this->sPath . $sKey))
+        if (!file_exists($this->sPath . $sKey)) {
             return null;
+        }
 
-        if ($iTTL > 0 && $this->_removeFileIfTtlExpired ($this->sPath . $sKey, $iTTL))
+        if ($iTTL > 0 && $this->_removeFileIfTtlExpired($this->sPath . $sKey, $iTTL)) {
             return null;
+        }
 
         return $this->sPath . $sKey;
     }
@@ -51,18 +55,20 @@ class BxDolCacheFileHtml extends BxDolCacheFile
     /**
      * Save all data in cache file.
      *
-     * @param  string  $sKey      - file name
-     * @param  mixed   $mixedData - the data to be cached in the file
-     * @param  int     $iTTL      - time to live
+     * @param  string $sKey      - file name
+     * @param  mixed  $mixedData - the data to be cached in the file
+     * @param  int    $iTTL      - time to live
      * @return boolean result of operation.
      */
     function setData($sKey, $mixedData, $iTTL = false)
     {
-        if(file_exists($this->sPath . $sKey) && !is_writable($this->sPath . $sKey))
-           return false;
+        if (file_exists($this->sPath . $sKey) && !is_writable($this->sPath . $sKey)) {
+            return false;
+        }
 
-        if(!($rHandler = fopen($this->sPath . $sKey, 'w')))
-           return false;
+        if (!($rHandler = fopen($this->sPath . $sKey, 'w'))) {
+            return false;
+        }
 
         fwrite($rHandler, $mixedData);
         fclose($rHandler);

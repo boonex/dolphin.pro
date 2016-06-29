@@ -8,6 +8,7 @@ bx_import('BxDolDb');
 
 /**
  * Database queries for editor objects.
+ *
  * @see BxDolEditor
  */
 class BxDolEditorQuery extends BxDolDb
@@ -20,13 +21,14 @@ class BxDolEditorQuery extends BxDolDb
         $this->_aObject = $aObject;
     }
 
-    static public function getEditorObject ($sObject)
+    static public function getEditorObject($sObject)
     {
-        $oDb = $GLOBALS['MySQL'];
-        $sQuery = "SELECT * FROM `sys_objects_editor` WHERE `object` = ?";
+        $oDb     = $GLOBALS['MySQL'];
+        $sQuery  = "SELECT * FROM `sys_objects_editor` WHERE `object` = ?";
         $aObject = $oDb->getRow($sQuery, [$sObject]);
-        if (!$aObject || !is_array($aObject))
+        if (!$aObject || !is_array($aObject)) {
             return false;
+        }
 
         return $aObject;
     }

@@ -2,12 +2,12 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_poll' => 'Опрос',
+    '_sys_module_poll' => 'Опрос',
 
-  // ================ CHANGED KEYS ==================
+    // ================ CHANGED KEYS ==================
 
-  '_bx_poll_home' => 'Главная',
+    '_bx_poll_home' => 'Главная',
 
 );

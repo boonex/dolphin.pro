@@ -34,11 +34,12 @@ define('BX_DOL_DNSBL_CHAIN_URIDNS', "uridns");
  *
  *
  *  There is more handy function available:
- *  @see bx_is_ip_dns_blacklisted
+ *
+ * @see bx_is_ip_dns_blacklisted
  */
 class BxDolDNSBlacklists
 {
-    private $aChains = array ();
+    private $aChains = array();
 
     /**
      * Constructor
@@ -51,40 +52,50 @@ class BxDolDNSBlacklists
     public function dnsbl_lookup_ip($mixedChain, $sIp, $querymode = BX_DOL_DNSBL_ANYPOSTV_RETFIRST)
     {
         $lookupkey = $this->ipreverse($sIp);
-        if (false === $lookupkey)
-            return BX_DOL_DNSBL_FAILURE;	// unable to prepare lookup string from address
+        if (false === $lookupkey) {
+            return BX_DOL_DNSBL_FAILURE;
+        }    // unable to prepare lookup string from address
 
-        if (is_array($mixedChain))
+        if (is_array($mixedChain)) {
             $aChain = $mixedChain;
-        else
+        } else {
             $aChain = &$this->aChains[$mixedChain];
+        }
+
         return $this->dnsbl_lookup($aChain, $lookupkey, $querymode);
     }
 
-    public function dnsbl_lookup_uri($sUri, $mixedChain = BX_DOL_DNSBL_CHAIN_URIDNS, $querymode = BX_DOL_DNSBL_ANYPOSTV_RETFIRST)
-    {
-        if (!$sUri)
+    public function dnsbl_lookup_uri(
+        $sUri,
+        $mixedChain = BX_DOL_DNSBL_CHAIN_URIDNS,
+        $querymode = BX_DOL_DNSBL_ANYPOSTV_RETFIRST
+    ) {
+        if (!$sUri) {
             return BX_DOL_DNSBL_FAILURE;
+        }
 
-        if (is_array($mixedChain))
+        if (is_array($mixedChain)) {
             $aChain = $mixedChain;
-        else
+        } else {
             $aChain = &$this->aChains[$mixedChain];
+        }
+
         return $this->dnsbl_lookup($aChain, $sUri, $querymode);
     }
 
-    public function onPositiveDetection ($sIP, $sExtraData = '', $sType = 'dnsbl')
+    public function onPositiveDetection($sIP, $sExtraData = '', $sType = 'dnsbl')
     {
-        $iIP = sprintf("%u", ip2long($sIP));
-        $iMemberId = getLoggedId();
+        $iIP        = sprintf("%u", ip2long($sIP));
+        $iMemberId  = getLoggedId();
         $sExtraData = process_db_input($sExtraData);
+
         return $GLOBALS['MySQL']->query("INSERT INTO `sys_antispam_block_log` SET `ip` = '$iIP', `member_id` = '$iMemberId', `type` = '$sType', `extra` = '$sExtraData', `added` = " . time());
     }
 
-    public function clearCache ()
+    public function clearCache()
     {
-        $GLOBALS['MySQL']->cleanCache('sys_dnsbl_'.BX_DOL_DNSBL_CHAIN_SPAMMERS);
-        $GLOBALS['MySQL']->cleanCache('sys_dnsbl_'.BX_DOL_DNSBL_CHAIN_WHITELIST);
+        $GLOBALS['MySQL']->cleanCache('sys_dnsbl_' . BX_DOL_DNSBL_CHAIN_SPAMMERS);
+        $GLOBALS['MySQL']->cleanCache('sys_dnsbl_' . BX_DOL_DNSBL_CHAIN_WHITELIST);
     }
 
     /*************** private function ***************/
@@ -92,64 +103,81 @@ class BxDolDNSBlacklists
     private function dnsbl_lookup(&$zones, $key, $querymode)
     {
         $numpositive = 0;
-        $numservers = count ($zones);
-        $servers = $zones;
+        $numservers  = count($zones);
+        $servers     = $zones;
 
-        if (!$servers)
-            return BX_DOL_DNSBL_FAILURE; // no servers defined
+        if (!$servers) {
+            return BX_DOL_DNSBL_FAILURE;
+        } // no servers defined
 
-        if (($querymode!=BX_DOL_DNSBL_ANYPOSTV_RETFIRST) && ($querymode!=BX_DOL_DNSBL_ANYPOSTV_RETEVERY)
-             && ($querymode!=BX_DOL_DNSBL_ALLPOSTV_RETEVERY))
-             return BX_DOL_DNSBL_FAILURE;	// invalid querymode
+        if (($querymode != BX_DOL_DNSBL_ANYPOSTV_RETFIRST) && ($querymode != BX_DOL_DNSBL_ANYPOSTV_RETEVERY)
+            && ($querymode != BX_DOL_DNSBL_ALLPOSTV_RETEVERY)
+        ) {
+            return BX_DOL_DNSBL_FAILURE;
+        }    // invalid querymode
 
         foreach ($servers as $r) {
-            $resultaddr = gethostbyname ($key . "." . $r['zonedomain']);
+            $resultaddr = gethostbyname($key . "." . $r['zonedomain']);
 
             if ($resultaddr && $resultaddr != $key . "." . $r['zonedomain']) {
                 // we got some result from the DNS query, not NXDOMAIN. should we consider 'positive'?
-                $postvresp = $r['postvresp'];	// check positive match criteria
+                $postvresp = $r['postvresp'];    // check positive match criteria
                 if (
-                    BX_DOL_DNSBL_MATCH_ANY == $postvresp || 
+                    BX_DOL_DNSBL_MATCH_ANY == $postvresp ||
                     (preg_match("/^\d+\.\d+\.\d+\.\d+$/", $postvresp) && $resultaddr == $postvresp) ||
                     (is_numeric($postvresp) && (ip2long($resultaddr) & $postvresp))
                 ) {
                     $numpositive++;
-                    if ($querymode == BX_DOL_DNSBL_ANYPOSTV_RETFIRST)
-                        return BX_DOL_DNSBL_POSITIVE;	// found one positive, returning single
+                    if ($querymode == BX_DOL_DNSBL_ANYPOSTV_RETFIRST) {
+                        return BX_DOL_DNSBL_POSITIVE;
+                    }    // found one positive, returning single
                 }
             }
         }
         // all servers were queried
-        if ($numpositive == $numservers)
+        if ($numpositive == $numservers) {
             return BX_DOL_DNSBL_POSITIVE;
-        else if (($querymode == BX_DOL_DNSBL_ANYPOSTV_RETEVERY) && ($numpositive > 0))
-            return BX_DOL_DNSBL_POSITIVE;
-        else
-            return BX_DOL_DNSBL_NEGATIVE;
+        } else {
+            if (($querymode == BX_DOL_DNSBL_ANYPOSTV_RETEVERY) && ($numpositive > 0)) {
+                return BX_DOL_DNSBL_POSITIVE;
+            } else {
+                return BX_DOL_DNSBL_NEGATIVE;
+            }
+        }
     }
 
-    private function ipreverse ($sIp)
+    private function ipreverse($sIp)
     {
-        if (!preg_match ('/(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/', $sIp, $m))
+        if (!preg_match('/(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/', $sIp, $m)) {
             return false;
+        }
 
         return "{$m[4]}.{$m[3]}.{$m[2]}.{$m[1]}";
     }
 
     private function initChains()
     {
-        if (!isset($GLOBALS['bx_dol_dnsbl_'.BX_DOL_DNSBL_CHAIN_SPAMMERS]))
-            $GLOBALS['bx_dol_dnsbl_'.BX_DOL_DNSBL_CHAIN_SPAMMERS] = $GLOBALS['MySQL']->fromCache('sys_dnsbl_'.BX_DOL_DNSBL_CHAIN_SPAMMERS, 'getAll', "SELECT `zonedomain`, `postvresp` FROM `sys_dnsbl_rules` WHERE `chain` = '".BX_DOL_DNSBL_CHAIN_SPAMMERS."' AND `active` = 1");
+        if (!isset($GLOBALS['bx_dol_dnsbl_' . BX_DOL_DNSBL_CHAIN_SPAMMERS])) {
+            $GLOBALS['bx_dol_dnsbl_' . BX_DOL_DNSBL_CHAIN_SPAMMERS] = $GLOBALS['MySQL']->fromCache('sys_dnsbl_' . BX_DOL_DNSBL_CHAIN_SPAMMERS,
+                'getAll',
+                "SELECT `zonedomain`, `postvresp` FROM `sys_dnsbl_rules` WHERE `chain` = '" . BX_DOL_DNSBL_CHAIN_SPAMMERS . "' AND `active` = 1");
+        }
 
-        if (!isset($GLOBALS['bx_dol_dnsbl_'.BX_DOL_DNSBL_CHAIN_WHITELIST]))
-            $GLOBALS['bx_dol_dnsbl_'.BX_DOL_DNSBL_CHAIN_WHITELIST] = $GLOBALS['MySQL']->fromCache('sys_dnsbl_'.BX_DOL_DNSBL_CHAIN_WHITELIST, 'getAll', "SELECT `zonedomain`, `postvresp` FROM `sys_dnsbl_rules` WHERE `chain` = '".BX_DOL_DNSBL_CHAIN_WHITELIST."' AND `active` = 1");
+        if (!isset($GLOBALS['bx_dol_dnsbl_' . BX_DOL_DNSBL_CHAIN_WHITELIST])) {
+            $GLOBALS['bx_dol_dnsbl_' . BX_DOL_DNSBL_CHAIN_WHITELIST] = $GLOBALS['MySQL']->fromCache('sys_dnsbl_' . BX_DOL_DNSBL_CHAIN_WHITELIST,
+                'getAll',
+                "SELECT `zonedomain`, `postvresp` FROM `sys_dnsbl_rules` WHERE `chain` = '" . BX_DOL_DNSBL_CHAIN_WHITELIST . "' AND `active` = 1");
+        }
 
-        if (!isset($GLOBALS['bx_dol_dnsbl_'.BX_DOL_DNSBL_CHAIN_URIDNS]))
-            $GLOBALS['bx_dol_dnsbl_'.BX_DOL_DNSBL_CHAIN_URIDNS] = $GLOBALS['MySQL']->fromCache('sys_dnsbl_'.BX_DOL_DNSBL_CHAIN_URIDNS, 'getAll', "SELECT `zonedomain`, `postvresp` FROM `sys_dnsbl_rules` WHERE `chain` = '".BX_DOL_DNSBL_CHAIN_URIDNS."' AND `active` = 1");
+        if (!isset($GLOBALS['bx_dol_dnsbl_' . BX_DOL_DNSBL_CHAIN_URIDNS])) {
+            $GLOBALS['bx_dol_dnsbl_' . BX_DOL_DNSBL_CHAIN_URIDNS] = $GLOBALS['MySQL']->fromCache('sys_dnsbl_' . BX_DOL_DNSBL_CHAIN_URIDNS,
+                'getAll',
+                "SELECT `zonedomain`, `postvresp` FROM `sys_dnsbl_rules` WHERE `chain` = '" . BX_DOL_DNSBL_CHAIN_URIDNS . "' AND `active` = 1");
+        }
 
-        $this->aChains[BX_DOL_DNSBL_CHAIN_SPAMMERS] = &$GLOBALS['bx_dol_dnsbl_'.BX_DOL_DNSBL_CHAIN_SPAMMERS];
-        $this->aChains[BX_DOL_DNSBL_CHAIN_WHITELIST] = &$GLOBALS['bx_dol_dnsbl_'.BX_DOL_DNSBL_CHAIN_WHITELIST];
-        $this->aChains[BX_DOL_DNSBL_CHAIN_URIDNS] = &$GLOBALS['bx_dol_dnsbl_'.BX_DOL_DNSBL_CHAIN_URIDNS];
+        $this->aChains[BX_DOL_DNSBL_CHAIN_SPAMMERS]  = &$GLOBALS['bx_dol_dnsbl_' . BX_DOL_DNSBL_CHAIN_SPAMMERS];
+        $this->aChains[BX_DOL_DNSBL_CHAIN_WHITELIST] = &$GLOBALS['bx_dol_dnsbl_' . BX_DOL_DNSBL_CHAIN_WHITELIST];
+        $this->aChains[BX_DOL_DNSBL_CHAIN_URIDNS]    = &$GLOBALS['bx_dol_dnsbl_' . BX_DOL_DNSBL_CHAIN_URIDNS];
 
     }
 

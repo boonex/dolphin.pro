@@ -9,7 +9,7 @@ bx_import('BxTemplCmtsView');
 
 class BxDolFilesCmtsAlbums extends BxTemplCmtsView
 {
-	var $_oModule;
+    var $_oModule;
 
     function __construct($sSystem, $iId, $iInit = 1)
     {
@@ -18,12 +18,13 @@ class BxDolFilesCmtsAlbums extends BxTemplCmtsView
         $this->_oModule = null;
     }
 
-	function getBaseUrl()
+    function getBaseUrl()
     {
-    	$aEntry = $this->_oModule->oAlbums->getAlbumInfo(array('fileid' => $this->getId()));
-    	if(empty($aEntry) || !is_array($aEntry))
-    		return '';
+        $aEntry = $this->_oModule->oAlbums->getAlbumInfo(array('fileid' => $this->getId()));
+        if (empty($aEntry) || !is_array($aEntry)) {
+            return '';
+        }
 
-    	return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'browse/album/' . $aEntry['Uri'] . '/owner/' . getUsername($aEntry['Owner']); 
+        return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'browse/album/' . $aEntry['Uri'] . '/owner/' . getUsername($aEntry['Owner']);
     }
 }

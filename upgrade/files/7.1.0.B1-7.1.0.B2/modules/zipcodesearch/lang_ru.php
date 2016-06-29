@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_zipcodesearch' => 'ZIP Поиск',
+    '_sys_module_zipcodesearch' => 'ZIP Поиск',
 
 );

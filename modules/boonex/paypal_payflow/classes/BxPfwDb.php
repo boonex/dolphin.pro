@@ -14,31 +14,32 @@ class BxPfwDb extends BxPmtDb
         parent::__construct($oConfig);
     }
 
-	function getSubscription($aParams)
+    function getSubscription($aParams)
     {
         return $this->getProcessed($aParams);
     }
 
-	function getProcessed($aParams)
+    function getProcessed($aParams)
     {
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
-        $sMethodName = 'getRow';
+        $sMethodName  = 'getRow';
         $sWhereClause = "";
-        switch($aParams['type']) {
+        switch ($aParams['type']) {
             case 'id':
                 $sWhereClause = " AND `tt`.`id`='" . $aParams['id'] . "'";
                 break;
             case 'order_id':
                 $sWhereClause = " AND `tt`.`order_id`='" . $aParams['order_id'] . "'";
                 break;
-			case 'order_profile':
+            case 'order_profile':
                 $sWhereClause = " AND `ttp`.`order_profile`='" . $aParams['order_profile'] . "'";
                 break;
             case 'mixed':
                 $sMethodName = 'getAll';
-                foreach($aParams['conditions'] as $sKey => $sValue)
+                foreach ($aParams['conditions'] as $sKey => $sValue) {
                     $sWhereClause .= " AND `tt`.`" . $sKey . "`='" . $sValue . "'";
+                }
                 break;
 
         }
@@ -65,13 +66,15 @@ class BxPfwDb extends BxPmtDb
 
         return $this->$sMethodName($sSql);
     }
-	function getSubscriptionOrders($aParams)
+
+    function getSubscriptionOrders($aParams)
     {
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
         $sFilterAddon = "";
-        if(!empty($aParams['filter']))
+        if (!empty($aParams['filter'])) {
             $sFilterAddon = " AND (DATE_FORMAT(FROM_UNIXTIME(`tt`.`date`), '" . $sDateFormat . "') LIKE '%" . $aParams['filter'] . "%' OR `tt`.`order_id` LIKE '%" . $aParams['filter'] . "%' OR `tp`.`NickName` LIKE '%" . $aParams['filter'] . "%' OR `ttp`.`order` LIKE '%" . $aParams['filter'] . "%')";
+        }
 
         $sSql = "SELECT
                `tt`.`id` AS `id`,
@@ -93,13 +96,15 @@ class BxPfwDb extends BxPmtDb
 
         return $this->getAll($sSql);
     }
+
     function getSubscriptionOrdersCount($aParams)
     {
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
         $sFilterAddon = "";
-        if(!empty($aParams['filter']))
+        if (!empty($aParams['filter'])) {
             $sFilterAddon = " AND (DATE_FORMAT(FROM_UNIXTIME(`tt`.`date`), '" . $sDateFormat . "') LIKE '%" . $aParams['filter'] . "%' OR `tt`.`order_id` LIKE '%" . $aParams['filter'] . "%' OR `tp`.`NickName` LIKE '%" . $aParams['filter'] . "%' OR `ttp`.`order` LIKE '%" . $aParams['filter'] . "%')";
+        }
 
         $sSql = "SELECT
                COUNT(`tt`.`id`)
@@ -111,13 +116,15 @@ class BxPfwDb extends BxPmtDb
 
         return (int)$this->getOne($sSql);
     }
-	function getHistoryOrders($aParams)
+
+    function getHistoryOrders($aParams)
     {
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
         $sFilterAddon = $aParams['seller_id'] != BX_PMT_EMPTY_ID ? " AND `tt`.`seller_id`='" . $aParams['seller_id'] . "'" : " AND `tt`.`seller_id`<>'" . BX_PMT_ADMINISTRATOR_ID . "'";
-        if(!empty($aParams['filter']))
+        if (!empty($aParams['filter'])) {
             $sFilterAddon = " AND (DATE_FORMAT(FROM_UNIXTIME(`tt`.`date`), '" . $sDateFormat . "') LIKE '%" . $aParams['filter'] . "%' OR `tt`.`order_id` LIKE '%" . $aParams['filter'] . "%' OR `tp`.`NickName` LIKE '%" . $aParams['filter'] . "%' OR `ttp`.`order` LIKE '%" . $aParams['filter'] . "%')";
+        }
 
         $sSql = "SELECT
                `tt`.`id` AS `id`,

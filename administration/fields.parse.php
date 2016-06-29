@@ -4,24 +4,24 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-define ('BX_SECURITY_EXCEPTIONS', true);
-$aBxSecurityExceptions = array ();
+define('BX_SECURITY_EXCEPTIONS', true);
+$aBxSecurityExceptions   = array();
 $aBxSecurityExceptions[] = 'POST.Check';
 $aBxSecurityExceptions[] = 'REQUEST.Check';
 $aBxSecurityExceptions[] = 'POST.Values';
 $aBxSecurityExceptions[] = 'REQUEST.Values';
 
-require_once( '../inc/header.inc.php' );
-require_once( BX_DIRECTORY_PATH_INC . 'db.inc.php' );
-require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
-require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolPFM.php' );
+require_once('../inc/header.inc.php');
+require_once(BX_DIRECTORY_PATH_INC . 'db.inc.php');
+require_once(BX_DIRECTORY_PATH_INC . 'design.inc.php');
+require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolPFM.php');
 
 send_headers_page_changed();
 
-$logged['admin'] = member_auth( 1, true, true );
+$logged['admin'] = member_auth(1, true, true);
 
 $sAction = bx_get('action');
-switch(true) {
+switch (true) {
     case 'getArea' == $sAction:
         genAreaJSON((int)bx_get('id'));
         break;
@@ -35,7 +35,7 @@ switch(true) {
         savePositions((int)bx_get('id'));
         break;
     case 'loadEditForm' == $sAction:
-    	header('Content-Type: text/html; charset=utf-8');
+        header('Content-Type: text/html; charset=utf-8');
         showEditForm((int)bx_get('id'), (int)bx_get('area'));
         break;
     case 'dummy' == $sAction:
@@ -53,67 +53,68 @@ switch(true) {
 
 function createNewBlock()
 {
-    $oFields = new BxDolPFM( 1 );
-    $iNewID = $oFields -> createNewBlock();
+    $oFields = new BxDolPFM(1);
+    $iNewID  = $oFields->createNewBlock();
     header('Content-Type:text/javascript');
     echo '{"id":' . $iNewID . '}';
 }
 
 function createNewItem()
 {
-    $oFields = new BxDolPFM( 1 );
-    $iNewID = $oFields -> createNewField();
+    $oFields = new BxDolPFM(1);
+    $iNewID  = $oFields->createNewField();
 
     header('Content-Type:text/javascript');
     echo '{"id":' . $iNewID . '}';
 }
 
-function genAreaJSON( $iAreaID )
+function genAreaJSON($iAreaID)
 {
-    $oFields = new BxDolPFM( $iAreaID );
+    $oFields = new BxDolPFM($iAreaID);
 
     header('Content-Type:text/javascript; charset=utf-8');
-    echo $oFields -> genJSON();
+    echo $oFields->genJSON();
 }
 
-function savePositions( $iAreaID )
+function savePositions($iAreaID)
 {
-    $oFields = new BxDolPFM( $iAreaID );
+    $oFields = new BxDolPFM($iAreaID);
 
-    header( 'Content-Type:text/javascript' );
-    $oFields -> savePositions( $_POST );
+    header('Content-Type:text/javascript');
+    $oFields->savePositions($_POST);
 
     $oCacher = new BxDolPFMCacher();
-    $oCacher -> createCache();
+    $oCacher->createCache();
 }
 
-function saveItem( $iAreaID, $aData )
+function saveItem($iAreaID, $aData)
 {
-    $oFields = new BxDolPFM( $iAreaID );
-    $oFields -> saveItem( $_POST );
+    $oFields = new BxDolPFM($iAreaID);
+    $oFields->saveItem($_POST);
 
     $oCacher = new BxDolPFMCacher();
-    $oCacher -> createCache();
+    $oCacher->createCache();
 }
 
-function deleteItem( $iItemID, $iAreaID )
+function deleteItem($iItemID, $iAreaID)
 {
-    $oFields = new BxDolPFM( $iAreaID );
-    $oFields -> deleteItem( $iItemID );
+    $oFields = new BxDolPFM($iAreaID);
+    $oFields->deleteItem($iItemID);
 
     $oCacher = new BxDolPFMCacher();
-    $oCacher -> createCache();
+    $oCacher->createCache();
 }
 
-function showEditForm( $iItemID, $iAreaID )
+function showEditForm($iItemID, $iAreaID)
 {
-    $oFields = new BxDolPFM( $iAreaID );
+    $oFields = new BxDolPFM($iAreaID);
 
     ob_start();
     ?>
-    <form name="fieldEditForm" method="post" action="<?=$GLOBALS['site']['url_admin'] . 'fields.parse.php'; ?>" target="fieldFormSubmit" onsubmit="clearFormErrors( this )">
+    <form name="fieldEditForm" method="post" action="<?= $GLOBALS['site']['url_admin'] . 'fields.parse.php'; ?>"
+          target="fieldFormSubmit" onsubmit="clearFormErrors( this )">
         <div class="edit_item_table_cont">
-            <?=$oFields -> genFieldEditForm( $iItemID ); ?>
+            <?= $oFields->genFieldEditForm($iItemID); ?>
         </div>
     </form>
 

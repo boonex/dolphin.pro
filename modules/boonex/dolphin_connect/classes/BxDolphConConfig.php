@@ -21,19 +21,20 @@ class BxDolphConConfig extends BxDolConnectConfig
     {
         parent::__construct($aModule);
 
-        $this -> sApiID = getParam('bx_dolphcon_api_key');
-        $this -> sApiSecret = getParam('bx_dolphcon_connect_secret');
-        $this -> sApiUrl = trim(getParam('bx_dolphcon_connect_url'), '/') . (getParam('bx_dolphcon_connect_url_rewrite') ? '/m/oauth2/' : '/modules/?r=oauth2/');
+        $this->sApiID     = getParam('bx_dolphcon_api_key');
+        $this->sApiSecret = getParam('bx_dolphcon_connect_secret');
+        $this->sApiUrl    = trim(getParam('bx_dolphcon_connect_url'),
+                '/') . (getParam('bx_dolphcon_connect_url_rewrite') ? '/m/oauth2/' : '/modules/?r=oauth2/');
 
-        $this -> sSessionUid = 'dolphcon_session';
-        $this -> sSessionProfile = 'dolphcon_session_profile';
+        $this->sSessionUid     = 'dolphcon_session';
+        $this->sSessionProfile = 'dolphcon_session_profile';
 
-        $this -> sEmailTemplatePasswordGenerated = 't_bx_dolphcon_password_generated';
-        $this -> sDefaultTitleLangKey = '_bx_dolphcon';
+        $this->sEmailTemplatePasswordGenerated = 't_bx_dolphcon_password_generated';
+        $this->sDefaultTitleLangKey            = '_bx_dolphcon';
 
-        $this -> sPageStart = BX_DOL_URL_ROOT . $this -> getBaseUri() . 'start';
-        $this -> sPageHandle = BX_DOL_URL_ROOT . $this -> getBaseUri() . 'handle';
+        $this->sPageStart  = BX_DOL_URL_ROOT . $this->getBaseUri() . 'start';
+        $this->sPageHandle = BX_DOL_URL_ROOT . $this->getBaseUri() . 'handle';
 
-        $this -> sRedirectPage = getParam('bx_dolphcon_connect_redirect_page');
+        $this->sRedirectPage = getParam('bx_dolphcon_connect_redirect_page');
     }
 }

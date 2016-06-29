@@ -2,26 +2,26 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ================
+    // ================ ADDED KEYS ================
 
-  '_adm_box_cpt_injections' => 'Инъекции',
-  '_adm_dsc_settings_injection_body' => 'Код для вставки перед закрывающим BODY тагом',
-  '_adm_dsc_settings_injection_head' => 'Код для вставки перед закрывающим HEAD тагом',
-  '_adm_txt_mp_intersex' => 'интерсекс',
-  '_adm_txt_mp_other' => 'другие',
-  '_adm_txt_settings_injection_body' => '&lt;BODY&gt; инъекция',
-  '_adm_txt_settings_injection_head' => '&lt;HEAD&gt; инъекция',
+    '_adm_box_cpt_injections'          => 'Инъекции',
+    '_adm_dsc_settings_injection_body' => 'Код для вставки перед закрывающим BODY тагом',
+    '_adm_dsc_settings_injection_head' => 'Код для вставки перед закрывающим HEAD тагом',
+    '_adm_txt_mp_intersex'             => 'интерсекс',
+    '_adm_txt_mp_other'                => 'другие',
+    '_adm_txt_settings_injection_body' => '&lt;BODY&gt; инъекция',
+    '_adm_txt_settings_injection_head' => '&lt;HEAD&gt; инъекция',
 
-  // ================ CHANGED KEYS ================
+    // ================ CHANGED KEYS ================
 
-  '_ABOUT_US' => 'Этот сайт создан с помощью <a href="https://www.boonex.com/features" target="_blank">BoonEx Dolphin</a>. Остальное - тайна, покрытая мраком.',
-  '_adm_admtools_Perm_description' => 'Дельфину нужен особый доступ к определённым файлам и директориям. Пожалуйста, измените разрешения так, как указано в таблице ниже. Полезная информация о разрешениях находится <a href="https://www.boonex.com/trac/dolphin/wiki/DetailedInstall#InstallScript-Step1-Permissions" target="_blank">здесь</a>.',
-  '_adm_box_cpt_splash' => 'Заставка',
-  '_adm_fields_mutual_couple_fields_desc' => 'Укажите поля, которые будут общими для обоих лиц в парном профиле. Воспользуйтесь клавишей Ctrl для выбора нескольких полей.<br /><b>Замечание:</b> Имя Пользователя, Пароль, Электронный Адрес, Страна, Город, Почтовый Индекс и Получать Уведомления Сайта являются общими в обязательном порядке.',
-  '_adm_license_note_unregistered' => '<a href="https://www.boonex.com/start"><b>Приобрести лицензию</b></a> для удаления ссылок от BoonEx и предупреждений для пробной версии.',
-  '_adm_license_popup_note' => 'Пробная копия! <b><a href="https://www.boonex.com/start">Получить лицензию</a></b> и зарегистрировать:',
-  '_adm_license_trial_copy_login_text' => 'Это пробная копия Дельфина. <a href="https://www.boonex.com/start" target="_blank">Получить лицензию у BoonEx.</a>',
-  '_adm_txt_dashboard_help' => '
+    '_ABOUT_US'                             => 'Этот сайт создан с помощью <a href="https://www.boonex.com/features" target="_blank">BoonEx Dolphin</a>. Остальное - тайна, покрытая мраком.',
+    '_adm_admtools_Perm_description'        => 'Дельфину нужен особый доступ к определённым файлам и директориям. Пожалуйста, измените разрешения так, как указано в таблице ниже. Полезная информация о разрешениях находится <a href="https://www.boonex.com/trac/dolphin/wiki/DetailedInstall#InstallScript-Step1-Permissions" target="_blank">здесь</a>.',
+    '_adm_box_cpt_splash'                   => 'Заставка',
+    '_adm_fields_mutual_couple_fields_desc' => 'Укажите поля, которые будут общими для обоих лиц в парном профиле. Воспользуйтесь клавишей Ctrl для выбора нескольких полей.<br /><b>Замечание:</b> Имя Пользователя, Пароль, Электронный Адрес, Страна, Город, Почтовый Индекс и Получать Уведомления Сайта являются общими в обязательном порядке.',
+    '_adm_license_note_unregistered'        => '<a href="https://www.boonex.com/start"><b>Приобрести лицензию</b></a> для удаления ссылок от BoonEx и предупреждений для пробной версии.',
+    '_adm_license_popup_note'               => 'Пробная копия! <b><a href="https://www.boonex.com/start">Получить лицензию</a></b> и зарегистрировать:',
+    '_adm_license_trial_copy_login_text'    => 'Это пробная копия Дельфина. <a href="https://www.boonex.com/start" target="_blank">Получить лицензию у BoonEx.</a>',
+    '_adm_txt_dashboard_help'               => '
 <ol class="adm-ds-help bx-def-font-large">
     <li>
         Как изменить логотип сайта на собственный
@@ -69,7 +69,7 @@ $aLangContent = array(
         Зарегистрируйте свою лицензию <a href="{0}license.php">здесь</a>
     </li>
 </ol>',
-  '_adm_txt_mp_promotion' => 'промоушен',
-  '_powered_by_Dolphin' => 'Наш вебсайт построен на <a href="https://www.boonex.com/features">BoonEx Dolphin</a>. Любой желающий может создать свою собственную социальную сеть на основе программного обеспечения от BoonEx.',
+    '_adm_txt_mp_promotion'                 => 'промоушен',
+    '_powered_by_Dolphin'                   => 'Наш вебсайт построен на <a href="https://www.boonex.com/features">BoonEx Dolphin</a>. Любой желающий может создать свою собственную социальную сеть на основе программного обеспечения от BoonEx.',
 
 );

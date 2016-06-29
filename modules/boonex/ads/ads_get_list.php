@@ -5,9 +5,9 @@
  */
 
 require_once('../../../inc/header.inc.php');
-require_once( BX_DIRECTORY_PATH_INC . "db.inc.php" );
+require_once(BX_DIRECTORY_PATH_INC . "db.inc.php");
 
-$sSQL = '';
+$sSQL     = '';
 $iCategID = (int)bx_get('cat_id');
 
 $aResult = array();
@@ -15,9 +15,9 @@ $aResult = array();
 switch (bx_get('action')) {
     case 'get_subcat_info':
     default:
-        if ($iCategID>0) {
+        if ($iCategID > 0) {
             $sCustName1 = $sCustName2 = $sUnit = $sUnit2 = '';
-            $sSQL = "
+            $sSQL       = "
                 SELECT `bx_ads_category_subs`.`ID` , `bx_ads_category_subs`.`NameSub` AS `Name`, `CustomFieldName1`, `CustomFieldName2`, `Unit1`, `Unit2`
                 FROM `bx_ads_category_subs`
                 INNER JOIN `bx_ads_category` ON (`bx_ads_category`.`ID`=`bx_ads_category_subs`.`IDClassified`)
@@ -26,7 +26,7 @@ switch (bx_get('action')) {
             ";
 
             $aSubCats = array();
-            $vData = db_res($sSQL);
+            $vData    = db_res($sSQL);
             while ($aUnit = $vData->fetch()) {
                 if ($sCustName1 == '') {
                     $sCustName1 = htmlspecialchars($aUnit['CustomFieldName1']);
@@ -41,16 +41,16 @@ switch (bx_get('action')) {
                     $sUnit2 = htmlspecialchars($aUnit['Unit2']);
                 }
 
-                $iSubCatID = (int)$aUnit['ID'];
+                $iSubCatID   = (int)$aUnit['ID'];
                 $iSubCatName = ($aUnit['Name']);
-                $aSubCats[] = array('id' => $iSubCatID, 'value' => $iSubCatName);
+                $aSubCats[]  = array('id' => $iSubCatID, 'value' => $iSubCatName);
             }
 
             $aResult['CustomFieldName1'] = $sCustName1;
             $aResult['CustomFieldName2'] = $sCustName2;
-            $aResult['Unit'] = $sUnit;
-            $aResult['Unit2'] = $sUnit2;
-            $aResult['SubCats'] = $aSubCats;
+            $aResult['Unit']             = $sUnit;
+            $aResult['Unit2']            = $sUnit2;
+            $aResult['SubCats']          = $aSubCats;
 
             echo json_encode($aResult);
         }

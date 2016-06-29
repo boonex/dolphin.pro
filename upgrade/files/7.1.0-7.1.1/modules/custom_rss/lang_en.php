@@ -2,9 +2,9 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_crss_status_active' => 'Active',
-  '_crss_status_passive' => 'Passive',
+    '_crss_status_active'  => 'Active',
+    '_crss_status_passive' => 'Passive',
 
 );

@@ -4,11 +4,12 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import ('BxDolTwigTemplate');
+bx_import('BxDolTwigTemplate');
 
 /*
  * Avatar module View
  */
+
 class BxAvaTemplate extends BxDolTwigTemplate
 {
     /**

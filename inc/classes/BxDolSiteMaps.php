@@ -34,82 +34,94 @@ class BxDolSiteMaps
     static protected $BASE_PATH_INDEX = BX_DIRECTORY_PATH_ROOT; // path to generated index sitemap
     static protected $BASE_URL_INDEX = BX_DOL_URL_ROOT; // url to generated index sitemap
 
-    protected $_aSystem = array (); // current sitemap system array
+    protected $_aSystem = array(); // current sitemap system array
     protected $_oQuery = null;
-    protected $_aQueryParts = array (
-        'fields' => "", // fields list, for example: `id`, `uri`, `last_edit_ts`
-        'field_date' => "", // date field name, for example: `last_edit_ts`
+    protected $_aQueryParts = array(
+        'fields'          => "", // fields list, for example: `id`, `uri`, `last_edit_ts`
+        'field_date'      => "", // date field name, for example: `last_edit_ts`
         'field_date_type' => "timestamp", // date field type (datetime or timestamp)
-        'table' => "", // table name, for example: `my_table`
-        'join' => "", // join SQL part
-        'where' => "", // SQL condition, without WHERE, for example: active = 1
-        'order' => "", // SQL order, without ORDER BY, for example: `date` ASC
+        'table'           => "", // table name, for example: `my_table`
+        'join'            => "", // join SQL part
+        'where'           => "", // SQL condition, without WHERE, for example: active = 1
+        'order'           => "", // SQL order, without ORDER BY, for example: `date` ASC
     );
 
     protected function __construct($aSystem)
     {
         $this->_aSystem = $aSystem;
-        $this->_oQuery = new BxDolSiteMapsQuery($this->_aSystem);
+        $this->_oQuery  = new BxDolSiteMapsQuery($this->_aSystem);
     }
 
     /**
      * Get sitemap object instance by object name
+     *
      * @param $sObject object name
      * @return object instance or false on error
      */
     static public function getObjectInstance($sObject)
     {
-        if (isset($GLOBALS['bxDolClasses']['BxDolSiteMaps!'.$sObject]))
-            return $GLOBALS['bxDolClasses']['BxDolSiteMaps!'.$sObject];
+        if (isset($GLOBALS['bxDolClasses']['BxDolSiteMaps!' . $sObject])) {
+            return $GLOBALS['bxDolClasses']['BxDolSiteMaps!' . $sObject];
+        }
 
-        $aSystems =& self::getSystems ();
-        if (!$aSystems || !isset($aSystems[$sObject]))
+        $aSystems =& self::getSystems();
+        if (!$aSystems || !isset($aSystems[$sObject])) {
             return false;
+        }
 
         $aObject = $aSystems[$sObject];
 
-        if (!($sClass = $aObject['class_name']))
+        if (!($sClass = $aObject['class_name'])) {
             return false;
+        }
 
-        if (!empty($aObject['class_file']))
+        if (!empty($aObject['class_file'])) {
             require_once(BX_DIRECTORY_PATH_ROOT . $aObject['class_file']);
-        else
+        } else {
             bx_import($sClass);
+        }
 
         $o = new $sClass($aObject);
 
-        return ($GLOBALS['bxDolClasses']['BxDolSiteMaps!'.$sObject] = $o);
+        return ($GLOBALS['bxDolClasses']['BxDolSiteMaps!' . $sObject] = $o);
     }
 
     /**
      * get all systems
      */
-    static public function & getSystems () {
-        if (!isset($GLOBALS['bx_dol_site_maps_systems']))
-            $GLOBALS['bx_dol_site_maps_systems'] = BxDolSiteMapsQuery::getAllActiveSystemsFromCache ();
+    static public function & getSystems()
+    {
+        if (!isset($GLOBALS['bx_dol_site_maps_systems'])) {
+            $GLOBALS['bx_dol_site_maps_systems'] = BxDolSiteMapsQuery::getAllActiveSystemsFromCache();
+        }
+
         return $GLOBALS['bx_dol_site_maps_systems'];
     }
 
     /**
      * it is called on cron every day or similar period to generate sitemaps from all modules
      */
-    static public function generateAllSiteMaps ()
+    static public function generateAllSiteMaps()
     {
-        if (!self::deleteAllSiteMaps ())
+        if (!self::deleteAllSiteMaps()) {
             return false;
+        }
 
-        if (!getParam('sys_sitemap_enable'))
+        if (!getParam('sys_sitemap_enable')) {
             return false;
+        }
 
-        $aSystems =& self::getSystems ();
-        $aFiles = array ();
+        $aSystems =& self::getSystems();
+        $aFiles   = array();
         foreach ($aSystems as $sSystem => $aSystem) {
-            if (!($o = self::getObjectInstance($sSystem)))
+            if (!($o = self::getObjectInstance($sSystem))) {
                 continue;
+            }
             $aFiles = array_merge($aFiles, $o->generate());
         }
-        if (empty($aFiles))
+        if (empty($aFiles)) {
             return true;
+        }
 
         $sFileContents = '<' . '?xml version="1.0" encoding="UTF-8"?' . ">\n";
         $sFileContents .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
@@ -117,14 +129,15 @@ class BxDolSiteMaps
         foreach ($aFiles as $sFile) {
             $sFileContents .= "\t<sitemap>\n";
             $sFileContents .= "\t\t<loc>" . self::_escape(self::$BASE_URL . $sFile) . "</loc>\n";
-            $sFileContents .= "\t\t<lastmod>" . self::_formatDate (time()) . "</lastmod>\n";
+            $sFileContents .= "\t\t<lastmod>" . self::_formatDate(time()) . "</lastmod>\n";
             $sFileContents .= "\t</sitemap>\n";
         }
 
         $sFileContents .= '</sitemapindex>';
 
-        if (!file_put_contents (self::$BASE_PATH_INDEX . BX_SITE_MAPS_FILE_INDEX, $sFileContents))
+        if (!file_put_contents(self::$BASE_PATH_INDEX . BX_SITE_MAPS_FILE_INDEX, $sFileContents)) {
             return false;
+        }
 
         return true;
     }
@@ -132,18 +145,24 @@ class BxDolSiteMaps
     /**
      * delete all sitemaps
      */
-    static public function deleteAllSiteMaps ()
+    static public function deleteAllSiteMaps()
     {
-        if (file_exists(self::$BASE_PATH_INDEX . BX_SITE_MAPS_FILE_INDEX) && false === file_put_contents(self::$BASE_PATH_INDEX . BX_SITE_MAPS_FILE_INDEX, ''))
+        if (file_exists(self::$BASE_PATH_INDEX . BX_SITE_MAPS_FILE_INDEX) && false === file_put_contents(self::$BASE_PATH_INDEX . BX_SITE_MAPS_FILE_INDEX,
+                '')
+        ) {
             return false;
+        }
 
-        if (!($rHandler = opendir(self::$BASE_PATH)))
+        if (!($rHandler = opendir(self::$BASE_PATH))) {
             return false;
+        }
 
         $l = strlen(BX_SITE_MAPS_FILES_PREFIX);
-        while (($sFile = readdir($rHandler)) !== false)
-            if (0 == strncmp($sFile, BX_SITE_MAPS_FILES_PREFIX, $l) && file_exists(self::$BASE_PATH . $sFile))
-                @unlink (self::$BASE_PATH . $sFile);
+        while (($sFile = readdir($rHandler)) !== false) {
+            if (0 == strncmp($sFile, BX_SITE_MAPS_FILES_PREFIX, $l) && file_exists(self::$BASE_PATH . $sFile)) {
+                @unlink(self::$BASE_PATH . $sFile);
+            }
+        }
 
         closedir($rHandler);
 
@@ -153,7 +172,7 @@ class BxDolSiteMaps
     /**
      * get sitemaps index file url
      */
-    static public function getSiteMapIndexUrl ()
+    static public function getSiteMapIndexUrl()
     {
         return self::$BASE_URL_INDEX . BX_SITE_MAPS_FILE_INDEX;
     }
@@ -161,7 +180,7 @@ class BxDolSiteMaps
     /**
      * get sitemaps index file path
      */
-    static public function getSiteMapIndexPath ()
+    static public function getSiteMapIndexPath()
     {
         return self::$BASE_PATH_INDEX . BX_SITE_MAPS_FILE_INDEX;
     }
@@ -169,36 +188,41 @@ class BxDolSiteMaps
     /**
      * generate files for current
      */
-    public function generate ()
+    public function generate()
     {
-        if (!getParam('sys_sitemap_enable'))
-            return array ();
+        if (!getParam('sys_sitemap_enable')) {
+            return array();
+        }
 
-        $aFiles = array ();
+        $aFiles = array();
         $iStart = 0;
         $iCount = $this->_getCount();
-        if (!$iCount)
-            return array ();
+        if (!$iCount) {
+            return array();
+        }
 
         do {
 
-            $aRows = $this->_getRecords ($iStart);
-            if (empty($aRows))
+            $aRows = $this->_getRecords($iStart);
+            if (empty($aRows)) {
                 break;
+            }
 
             $iFileIndex = round($iStart / BX_SITE_MAPS_URLS_PER_FILE);
-            $sFileName = BX_SITE_MAPS_FILES_PREFIX . $this->_aSystem['object'] . '_' . $iFileIndex . '.xml';
-            if (!($f = fopen (self::$BASE_PATH . $sFileName, 'w')))
+            $sFileName  = BX_SITE_MAPS_FILES_PREFIX . $this->_aSystem['object'] . '_' . $iFileIndex . '.xml';
+            if (!($f = fopen(self::$BASE_PATH . $sFileName, 'w'))) {
                 break;
+            }
 
-            fwrite($f, $this->_genXmlUrlsBegin ());
-            foreach ($aRows as $aRow)
-                fwrite($f, $this->_genXmlUrl ($aRow));
-            fwrite($f, $this->_genXmlUrlsEnd ());
+            fwrite($f, $this->_genXmlUrlsBegin());
+            foreach ($aRows as $aRow) {
+                fwrite($f, $this->_genXmlUrl($aRow));
+            }
+            fwrite($f, $this->_genXmlUrlsEnd());
 
             fclose($f);
 
-            @chmod (self::$BASE_PATH . $sFileName, 0666);
+            @chmod(self::$BASE_PATH . $sFileName, 0666);
 
             $aFiles[] = $sFileName;
 
@@ -209,101 +233,114 @@ class BxDolSiteMaps
         return $aFiles;
     }
 
-    protected function _genXmlUrlsBegin ()
+    protected function _genXmlUrlsBegin()
     {
         $s = '<' . '?xml version="1.0" encoding="UTF-8"?' . ">\n";
         $s .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+
         return $s;
     }
 
-    protected function _genXmlUrlsEnd ()
+    protected function _genXmlUrlsEnd()
     {
         return '</urlset>';
     }
 
-    protected function _genXmlUrl ($a)
+    protected function _genXmlUrl($a)
     {
         $sUrl = $this->_genUrl($a);
 
         if (BxDolRequest::serviceExists('pageac', 'is_url_accessable')) {
-            if (!BxDolService::call('pageac', 'is_url_accessable', array($sUrl)))
+            if (!BxDolService::call('pageac', 'is_url_accessable', array($sUrl))) {
                 return '';
+            }
         }
 
-        $s  = "\t<url>\n";
+        $s = "\t<url>\n";
 
         $s .= "\t\t<loc>" . $this->_escape($sUrl) . "</loc>\n";
 
-        if (!empty($a[$this->_aQueryParts['field_date']]))
-            $s .= "\t\t<lastmod>" . $this->_genDate ($a) . "</lastmod>\n";
+        if (!empty($a[$this->_aQueryParts['field_date']])) {
+            $s .= "\t\t<lastmod>" . $this->_genDate($a) . "</lastmod>\n";
+        }
 
-        if (!empty($this->_aSystem['changefreq']))
+        if (!empty($this->_aSystem['changefreq'])) {
             $s .= "\t\t<changefreq>" . $this->_genChangeFreq($a) . "</changefreq>\n";
+        }
 
-        if (!empty($this->_aSystem['priority']))
+        if (!empty($this->_aSystem['priority'])) {
             $s .= "\t\t<priority>" . $this->_aSystem['priority'] . "</priority>\n";
+        }
 
         $s .= "\t</url>\n";
 
         return $s;
     }
 
-    protected function _genUrl ($a)
+    protected function _genUrl($a)
     {
         // override this
         return '';
     }
 
-    protected function _genDate ($a)
+    protected function _genDate($a)
     {
-        return $this->_formatDate ($this->_getDateTimeStamp($a));
+        return $this->_formatDate($this->_getDateTimeStamp($a));
     }
 
-    protected function _genChangeFreq ($a)
+    protected function _genChangeFreq($a)
     {
-        if ('auto' != $this->_aSystem['changefreq'])
+        if ('auto' != $this->_aSystem['changefreq']) {
             return $this->_aSystem['changefreq'];
+        }
 
-        if (empty($a[$this->_aQueryParts['field_date']]))
+        if (empty($a[$this->_aQueryParts['field_date']])) {
             return 'daily';
+        }
 
         // auto
         $iTimestamp = abs(time() - $this->_getDateTimeStamp($a));
-        if ($iTimestamp < 2*86400) // less than 2 days
+        if ($iTimestamp < 2 * 86400) // less than 2 days
+        {
             return 'hourly';
-        elseif ($iTimestamp < 14*86400) // less than 2 weeks
+        } elseif ($iTimestamp < 14 * 86400) // less than 2 weeks
+        {
             return 'daily';
-        elseif ($iTimestamp < 60*86400) // less than 2 months
+        } elseif ($iTimestamp < 60 * 86400) // less than 2 months
+        {
             return 'weekly';
-        else
+        } else {
             return 'monthly';
+        }
     }
 
-    protected function _getCount ()
+    protected function _getCount()
     {
         return $this->_oQuery->getCount($this->_aQueryParts);
     }
 
-    protected function _getRecords ($iStart)
+    protected function _getRecords($iStart)
     {
         return $this->_oQuery->getRecords($this->_aQueryParts, $iStart, BX_SITE_MAPS_URLS_PER_FILE);
     }
 
-    static protected function _formatDate ($iTimestamp)
+    static protected function _formatDate($iTimestamp)
     {
         return date('Y-m-d', $iTimestamp);
     }
 
-    protected function _getDateTimeStamp ($a)
+    protected function _getDateTimeStamp($a)
     {
-        if ('datetime' == $this->_aQueryParts['field_date_type'])
-            return 0 == strncmp('0000-00-00', $a[$this->_aQueryParts['field_date']], 10) ? time() : strtotime($a[$this->_aQueryParts['field_date']]);
-        else
+        if ('datetime' == $this->_aQueryParts['field_date_type']) {
+            return 0 == strncmp('0000-00-00', $a[$this->_aQueryParts['field_date']],
+                10) ? time() : strtotime($a[$this->_aQueryParts['field_date']]);
+        } else {
             return 0 == $this->_aQueryParts['field_date'] ? time() : $a[$this->_aQueryParts['field_date']];
+        }
     }
 
-    static protected function _escape ($s)
+    static protected function _escape($s)
     {
-        return htmlspecialchars ($s, ENT_COMPAT|ENT_HTML401, 'UTF-8');
+        return htmlspecialchars($s, ENT_COMPAT | ENT_HTML401, 'UTF-8');
     }
 }

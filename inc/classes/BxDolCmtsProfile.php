@@ -16,19 +16,21 @@ class BxDolCmtsProfile extends BxTemplCmtsView
         parent::__construct($sSystem, $iId, $iInit);
     }
 
-	function getBaseUrl()
+    function getBaseUrl()
     {
-    	$aEntry = getProfileInfo($this->getId());
-    	if(empty($aEntry) || !is_array($aEntry))
-    		return '';
+        $aEntry = getProfileInfo($this->getId());
+        if (empty($aEntry) || !is_array($aEntry)) {
+            return '';
+        }
 
-    	return getProfileLink($aEntry['ID']); 
+        return getProfileLink($aEntry['ID']);
     }
 
     function isRemoveAllowedAll()
     {
-        if($this->_iId == $this->_getAuthorId() && getParam('enable_cmts_profile_delete') == 'on')
-           return true;
+        if ($this->_iId == $this->_getAuthorId() && getParam('enable_cmts_profile_delete') == 'on') {
+            return true;
+        }
 
         return parent::isRemoveAllowedAll();
     }

@@ -124,8 +124,9 @@ class BxDolBlogsPageView extends BxDolPageView
  * Service methods:
  *
  * Delete blog (carefully with it)
+ *
  * @see BxBlogsModule::serviceActionDeleteBlog
- * BxDolService::call('blogs', 'action_delete_blog', array());
+ *      BxDolService::call('blogs', 'action_delete_blog', array());
  *
  * Blogs block for index page (as PHP function)
  * @see BxBlogsModule::serviceBlogsIndexPage
@@ -220,12 +221,12 @@ class BxBlogsModule extends BxDolModule
     {
         parent::__construct($aModule);
 
-        $this->iIconSize = (int)getParam('bx_blogs_iconsize');
-        $this->iThumbSize = (int)getParam('bx_blogs_thumbsize');
+        $this->iIconSize     = (int)getParam('bx_blogs_iconsize');
+        $this->iThumbSize    = (int)getParam('bx_blogs_thumbsize');
         $this->iBigThumbSize = (int)getParam('bx_blogs_bigthumbsize');
-        $this->iImgSize = (int)getParam('bx_blogs_imagesize');
+        $this->iImgSize      = (int)getParam('bx_blogs_imagesize');
 
-        $this->sHomeUrl = $this->_oConfig->getHomeUrl();
+        $this->sHomeUrl  = $this->_oConfig->getHomeUrl();
         $this->sHomePath = $this->_oConfig->getHomePath();
 
         $this->_iVisitorID = isLogged() ? getLoggedId() : 0;
@@ -233,10 +234,10 @@ class BxBlogsModule extends BxDolModule
         //temple
         $this->bAdminMode = $this->isAdmin() == true;
 
-        $this->iPostViewType = 1;
-        $this->iViewingPostID = -1;
+        $this->iPostViewType     = 1;
+        $this->iViewingPostID    = -1;
         $this->iLastPostedPostID = -1;
-        $this->aViewingPostInfo = array();
+        $this->aViewingPostInfo  = array();
 
         $this->sSpacerPath = getTemplateIcon('spacer.gif');
 
@@ -306,13 +307,13 @@ class BxBlogsModule extends BxDolModule
                 $sCaption = _t('_Add Post');
                 break;
             case 'show_member_blog':
-                $sCaption = _t('_bx_blog_My_blog');
+                $sCaption  = _t('_bx_blog_My_blog');
                 $iMemberID = $this->defineUserId();
                 if (!$iMemberID) {
                     $GLOBALS['oTopMenu']->setCustomSubHeader(_t('_sys_request_page_not_found_cpt'));
                     $GLOBALS['oSysTemplate']->displayPageNotFound();
                 } else {
-                    $sUser = getNickName($iMemberID);
+                    $sUser   = getNickName($iMemberID);
                     $sAsBlog = _t('_bx_blog_Members_blog', $sUser);
                 }
                 //$GLOBALS['oTopMenu']->setCustomSubHeader($sAsBlog);
@@ -321,17 +322,17 @@ class BxBlogsModule extends BxDolModule
             case 'edit_post':
                 $sCaption = _t('_Post');
                 if (false !== bx_get('EditPostID')) {
-                    $iPostID = (int)bx_get('EditPostID');
+                    $iPostID  = (int)bx_get('EditPostID');
                     $sCaption = htmlspecialchars($this->_oDb->getPostCaptionByID($iPostID));
                 }
                 break;
             case 'show_member_post':
                 $sCaption = _t('_Post');
                 if (false !== bx_get('postUri')) {
-                    $sPostUri = process_db_input(bx_get('postUri'), BX_TAGS_STRIP);
+                    $sPostUri  = process_db_input(bx_get('postUri'), BX_TAGS_STRIP);
                     $sPostCapt = $this->_oDb->getPostCaptionByUri($sPostUri);
                 } elseif (false !== bx_get('post_id')) {
-                    $iPostID = (int)bx_get('post_id');
+                    $iPostID   = (int)bx_get('post_id');
                     $sPostCapt = $this->_oDb->getPostCaptionByID($iPostID);
                 }
                 if ($sPostCapt != '') {
@@ -567,10 +568,10 @@ class BxBlogsModule extends BxDolModule
                 'field'    => 'PostStatus',
                 'operator' => '='
             );
-            $oBlogSearch->bShowCheckboxes = true;
-            $oBlogSearch->aCurrent['paginate']['perPage'] = $this->_oConfig->getPerPage();
-            $sPosts = $oBlogSearch->displayResultBlock();
-            $sPosts = ($oBlogSearch->aCurrent['paginate']['totalNum'] == 0) ? MsgBox(_t('_bx_blog_No_blogs_available')) : $sPosts;
+            $oBlogSearch->bShowCheckboxes                         = true;
+            $oBlogSearch->aCurrent['paginate']['perPage']         = $this->_oConfig->getPerPage();
+            $sPosts                                               = $oBlogSearch->displayResultBlock();
+            $sPosts                                               = ($oBlogSearch->aCurrent['paginate']['totalNum'] == 0) ? MsgBox(_t('_bx_blog_No_blogs_available')) : $sPosts;
 
             $sAdmPanel = $oBlogSearch->showAdminActionsPanel('bposts_box', array(
                 'action_approve'    => '_Approve',
@@ -579,7 +580,7 @@ class BxBlogsModule extends BxDolModule
             ), 'bposts');
 
             $oBlogSearch->aCurrent['paginate']['page_url'] = $sPostLink;
-            $sPostPagination = $oBlogSearch->showPagination3();
+            $sPostPagination                               = $oBlogSearch->showPagination3();
 
             $aVariables = array(
                 'admin_page'  => $sPostLink,
@@ -613,8 +614,8 @@ class BxBlogsModule extends BxDolModule
         }
 
         // lang keys
-        $sPostsC = _t('_bx_blog_Posts');
-        $sNoBlogsC = _t('_Empty');
+        $sPostsC    = _t('_bx_blog_Posts');
+        $sNoBlogsC  = _t('_Empty');
         $sAllBlogsC = _t('_bx_blog_All_Blogs');
         $sTopBlogsC = _t('_bx_blog_Top_Blogs');
 
@@ -633,7 +634,7 @@ class BxBlogsModule extends BxDolModule
             $iCurPage = 1;
         }
         $sLimitFrom = ($iCurPage - 1) * $iPerPage;
-        $sqlLimit = "LIMIT {$sLimitFrom}, {$iPerPage}";
+        $sqlLimit   = "LIMIT {$sLimitFrom}, {$iPerPage}";
         ////////////////////////////
         $sCaption = $sAllBlogsC;
 
@@ -646,7 +647,7 @@ class BxBlogsModule extends BxDolModule
         switch ($sType) {
             case 'top':
                 $vBlogsRes = $this->_oDb->getTopBlogs($sStatusFilter, $sqlLimit);
-                $sCaption = $sTopBlogsC;
+                $sCaption  = $sTopBlogsC;
                 break;
             case 'last':
             default:
@@ -671,16 +672,16 @@ class BxBlogsModule extends BxDolModule
                 continue;
             }
 
-            $aOwnerInfo = getProfileInfo($aBlogsRes['OwnerID']);
+            $aOwnerInfo     = getProfileInfo($aBlogsRes['OwnerID']);
             $sOwnerNickname = getNickName($aBlogsRes['OwnerID']);
             if ($aBlogsRes['OwnerID'] == 0) {
                 $sOwnerNickname = _t('_Admin');
             }
             if ($sOwnerNickname) {
-                $sCont = get_member_thumbnail($aBlogsRes['OwnerID'], 'left');
+                $sCont          = get_member_thumbnail($aBlogsRes['OwnerID'], 'left');
                 $sBlogOwnerLink = $this->genBlogLink('show_member_blog',
                     array('Permalink' => $aOwnerInfo['NickName'], 'Link' => $aBlogsRes['OwnerID']));
-                $sDescription = htmlspecialchars(strip_tags($aBlogsRes['Description']));
+                $sDescription   = htmlspecialchars(strip_tags($aBlogsRes['Description']));
 
                 $aBlogUnitVariables = array(
                     'owner_thumbnail'  => $sCont,
@@ -733,7 +734,7 @@ EOF;
      * Generate List of Posts for mobile frontend
      *
      * @param $iAuthor - display posts of provided user only
-     * @param $sMode - display all latest[default], featured or top posts
+     * @param $sMode   - display all latest[default], featured or top posts
      * @return HTML presentation of data
      */
     function GenPostListMobile($iAuthor = 0, $sMode = false)
@@ -749,16 +750,16 @@ EOF;
         echo $oMobileTemplate->addCss('blogs_common.css', 1);
 
         $iPerPage = 10;
-        $iPage = (int)bx_get('page');
+        $iPage    = (int)bx_get('page');
         if ($iPage < 1) {
             $iPage = 1;
         }
 
         $this->iPostViewType = 4;
 
-        $sOrder = 'last';
+        $sOrder         = 'last';
         $sMobileWrapper = 'mobile_row.html';
-        $aParams = array();
+        $aParams        = array();
         switch ($sMode) {
             case 'post':
                 $aViewingPostInfo = $this->_oDb->getPostInfo((int)bx_get('id'));
@@ -770,29 +771,29 @@ EOF;
                     return;
                 }
                 $this->iPostViewType = 3;
-                $aParams = array('id' => (int)bx_get('id'));
-                $sCaption = _t('_bx_blog_post_view');
-                $sMobileWrapper = 'mobile_box.html';
+                $aParams             = array('id' => (int)bx_get('id'));
+                $sCaption            = _t('_bx_blog_post_view');
+                $sMobileWrapper      = 'mobile_box.html';
                 echo $oMobileTemplate->addCss('blogs.css', 1);
                 break;
             case 'user':
-                $aParams = array('id' => (int)bx_get('id'));
+                $aParams  = array('id' => (int)bx_get('id'));
                 $sCaption = _t('_bx_blog_Members_blog', getNickName((int)bx_get('id')));
                 break;
             case 'featured':
                 $sCaption = _t('_bx_blog_Featured_Posts');
                 break;
             case 'top':
-                $sOrder = 'top';
+                $sOrder   = 'top';
                 $sCaption = _t('_bx_blog_Top_Posts');
                 break;
             case 'popular':
-                $sOrder = 'popular';
+                $sOrder   = 'popular';
                 $sCaption = _t('_bx_blog_Popular_Posts');
                 break;
             case 'last':
             default:
-                $sMode = 'last';
+                $sMode    = 'last';
                 $sCaption = _t('_bx_blog_Latest_posts');
         }
 
@@ -803,7 +804,8 @@ EOF;
         }
 
         $oTmpBlogSearch = false;
-        $sCode = $this->_GenPosts($this->iPostViewType, $iPerPage, $sMode, $aParams, $sOrder, $oBlogSearchResults,
+        $sCode          = $this->_GenPosts($this->iPostViewType, $iPerPage, $sMode, $aParams, $sOrder,
+            $oBlogSearchResults,
             $sMobileWrapper);
         if (!$sCode || $oBlogSearchResults->aCurrent['paginate']['totalNum'] == 0) {
             $oMobileTemplate->displayNoData($sCaption);
@@ -836,7 +838,7 @@ EOF;
     function GenPostLists($sType = '', $bBlock = true)
     {
         $sDisplayMode = '';
-        $sTypeMode = '';
+        $sTypeMode    = '';
         switch ($sType) {
             case 'last':
                 $sDisplayMode = 'last';
@@ -845,7 +847,7 @@ EOF;
                 $sDisplayMode = 'popular';
                 break;
             case 'featured':
-                $sTypeMode = 'featured';
+                $sTypeMode    = 'featured';
                 $sDisplayMode = 'last';
                 break;
             case 'top':
@@ -863,14 +865,15 @@ EOF;
         }
 
         $oTmpBlogSearch = false;
-        $sCode = $this->_GenPosts($this->iPostViewType, $this->_oConfig->getPerPage(), $sTypeMode, false, $sDisplayMode,
+        $sCode          = $this->_GenPosts($this->iPostViewType, $this->_oConfig->getPerPage(), $sTypeMode, false,
+            $sDisplayMode,
             $oTmpBlogSearch);
         if ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) {
             $sCode = MsgBox(_t('_Empty'));
         }
 
         $oTmpBlogSearch->aCurrent['paginate']['page_url'] = $oTmpBlogSearch->getCurrentUrl($sType . '_posts', 0, '');
-        $sPagination = $oTmpBlogSearch->showPagination3();
+        $sPagination                                      = $oTmpBlogSearch->showPagination3();
 
         $sRetHtmlVal = <<<EOF
 <div class="bx-def-bc-padding">
@@ -885,10 +888,11 @@ EOF;
 
     /**
      * Get list of blog posts
+     *
      * @param $iPostViewType view type
-     * @param $iPerPage posts per page
-     * @param $sMode last[default], top, featured
-     * @param $sOrder last[default], popular, top
+     * @param $iPerPage      posts per page
+     * @param $sMode         last[default], top, featured
+     * @param $sOrder        last[default], popular, top
      * @param $oSearchResult search result object will be assigned to this variable
      * @return HTML string of blog posts
      */
@@ -899,7 +903,7 @@ EOF;
         $oTmpBlogSearch = new BxBlogsSearchUnit($this);
         $oTmpBlogSearch->PerformObligatoryInit($this, $iPostViewType, $sMobileWrapper);
         $oTmpBlogSearch->aCurrent['paginate']['perPage'] = $iPerPage;
-        $oTmpBlogSearch->aCurrent['sorting'] = $sOrder;
+        $oTmpBlogSearch->aCurrent['sorting']             = $sOrder;
 
         switch ($sMode) {
             case 'user':
@@ -936,10 +940,10 @@ EOF;
         $sCatUri = process_db_input(bx_get('uri'), BX_TAGS_STRIP);
         if ($sCatUri) {
             $this->iPostViewType = 4;
-            $sCaption = $GLOBALS['MySQL']->unescape($sCatUri);
+            $sCaption            = $GLOBALS['MySQL']->unescape($sCatUri);
 
             $oTmpBlogSearch = false;
-            $sCode = $this->_GenPosts($this->iPostViewType, $this->_oConfig->getPerPage(), 'category',
+            $sCode          = $this->_GenPosts($this->iPostViewType, $this->_oConfig->getPerPage(), 'category',
                 array('cat_uri' => $sCatUri), 'last', $oTmpBlogSearch);
             if ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) {
                 $sCode = MsgBox(_t('_Empty'));
@@ -955,24 +959,24 @@ EOF;
      * Generate User Right Part for Blogs
      *
      * @param $aBlogsRes - Blog Array Data
-     * @param $iView - type of view(1 is short view, 2 is full view, 3 is post view(short))
+     * @param $iView     - type of view(1 is short view, 2 is full view, 3 is post view(short))
      * @return HTML presentation of data
      */
     function GenMemberDescrAndCat($aBlogsRes, $sCategoryName = '')
     {
-        $sSureC = _t('_Are_you_sure');
+        $sSureC         = _t('_Are_you_sure');
         $sApplyChangesC = _t('_Submit');
 
-        $iMemberID = (int)$aBlogsRes['OwnerID'];
+        $iMemberID      = (int)$aBlogsRes['OwnerID'];
         $sOwnerNickname = getNickName($iMemberID);
 
-        $aBlogInfo = $this->_oDb->getBlogInfo($iMemberID);
+        $aBlogInfo              = $this->_oDb->getBlogInfo($iMemberID);
         $this->aViewingPostInfo = $aBlogInfo;
 
         if ($this->iViewingPostID == -1) {
 
-            $aBlogID = (int)$aBlogInfo['ID'];
-            $sWorkLink = $this->genBlogFormUrl();
+            $aBlogID         = (int)$aBlogInfo['ID'];
+            $sWorkLink       = $this->genBlogFormUrl();
             $sProcessingFile = $this->genBlogSubUrl();
 
             $aBlogActionKeys = array(
@@ -991,8 +995,8 @@ EOF;
             $sBlogActionsVal = $GLOBALS['oFunctions']->genObjectsActions($aBlogActionKeys, 'bx_blogs_m', false);
 
             if (($this->_iVisitorID == $iMemberID && $iMemberID > 0) || $this->bAdminMode == true) {
-                $aBlogDesc = $aBlogInfo['Description'];
-                $sDescrAct = $this->ActionPrepareForEdit($aBlogDesc);
+                $aBlogDesc        = $aBlogInfo['Description'];
+                $sDescrAct        = $this->ActionPrepareForEdit($aBlogDesc);
                 $sBlogDescription = process_html_output($aBlogDesc);
 
                 $sBlogActionsVal .= <<<EOF
@@ -1016,11 +1020,11 @@ EOF;
         $sBlogActionsSect = ($sBlogActionsVal != '') ? DesignBoxContent(_t('_Actions'), $sBlogActionsVal, 1) : '';
 
         $sDescriptionSect = DesignBoxContent(_t('_Overview'), $this->getPostOverviewBlock(), 1);
-        $sCategoriesSect = $this->getPostCategoriesBlock();
-        $sTagsSect = DesignBoxContent(_t('_Tags'), $this->getPostTagsBlock(), 1);
+        $sCategoriesSect  = $this->getPostCategoriesBlock();
+        $sTagsSect        = DesignBoxContent(_t('_Tags'), $this->getPostTagsBlock(), 1);
 
         $sFeaturedSectCont = $this->getPostFeatureBlock();
-        $sFeaturedSect = ($sFeaturedSectCont) ? DesignBoxContent(_t('_bx_blog_Featured_Posts'),
+        $sFeaturedSect     = ($sFeaturedSectCont) ? DesignBoxContent(_t('_bx_blog_Featured_Posts'),
             $this->getPostFeatureBlock(), 1) : '';
 
         return $sBlogActionsSect . $sActionsSect . $sDescriptionSect . $sCategoriesSect . $sFeaturedSect . $sTagsSect;
@@ -1036,9 +1040,9 @@ EOF;
     {
         $iCheckedMemberID = $this->_iVisitorID;
 
-        $sRetHtml = '';
+        $sRetHtml   = '';
         $sBlogPosts = '';
-        $iMemberID = $this->defineUserId();
+        $iMemberID  = $this->defineUserId();
 
         if ($iUserID > 0) {
             $iMemberID = $iUserID;
@@ -1064,17 +1068,17 @@ EOF;
         }
 
         if ($aBlogsRes['OwnerID'] > 0) {
-            $sUser = getNickName($aBlogsRes['OwnerID']);
+            $sUser     = getNickName($aBlogsRes['OwnerID']);
             $aUserInfo = getProfileInfo($aBlogsRes['OwnerID']);
         } else {
-            $sUser = _t('_Admin');
+            $sUser     = _t('_Admin');
             $aUserInfo = array('NickName' => _t('_Admin'));
         }
         $sOwnerBlogLink = $this->genBlogLink('show_member_blog_home',
             array('Permalink' => $aUserInfo['NickName'], 'Link' => $aBlogsRes['OwnerID']));
-        $sAsBlog = _t('_bx_blog_Members_blog', $sUser);
+        $sAsBlog        = _t('_bx_blog_Members_blog', $sUser);
 
-        $sHome = $this->genBlogFormUrl();
+        $sHome        = $this->genBlogFormUrl();
         $sCurCategory = $sCategoryName;
 
         $sBreadCrumb = ($sCurCategory != '') ? $sCurCategory : _t('_bx_blog_Latest_posts');
@@ -1085,26 +1089,26 @@ EOF;
             require_once($this->_oConfig->getClassPath() . 'BxBlogsSearchUnit.php');
             $oTmpBlogSearch = new BxBlogsSearchUnit($this);
             $oTmpBlogSearch->PerformObligatoryInit($this, 4);
-            $oTmpBlogSearch->aCurrent['sorting'] = 'last';
-            $oTmpBlogSearch->aCurrent['paginate']['perPage'] = $this->_oConfig->getPerPage();
+            $oTmpBlogSearch->aCurrent['sorting']                       = 'last';
+            $oTmpBlogSearch->aCurrent['paginate']['perPage']           = $this->_oConfig->getPerPage();
             $oTmpBlogSearch->aCurrent['restriction']['owner']['value'] = $iMemberID;
 
             if ($sCategoryName != '') {
 
-                $oTmpBlogSearch->aCurrent['join']['category'] = array(
+                $oTmpBlogSearch->aCurrent['join']['category']              = array(
                     'type'       => 'left',
                     'table'      => 'sys_categories',
                     'mainField'  => 'PostID',
                     'onField'    => 'ID',
                     'joinFields' => array('Category')
                 );
-                $oTmpBlogSearch->aCurrent['restriction']['category'] = array(
+                $oTmpBlogSearch->aCurrent['restriction']['category']       = array(
                     'field'    => 'Category',
                     'operator' => '=',
                     'table'    => 'sys_categories',
                     'value'    => $sCategoryName
                 );
-                $oTmpBlogSearch->aCurrent['restriction']['category_type'] = array(
+                $oTmpBlogSearch->aCurrent['restriction']['category_type']  = array(
                     'field'    => 'Type',
                     'operator' => '=',
                     'table'    => 'sys_categories',
@@ -1126,16 +1130,18 @@ EOF;
             // Prepare link to pagination
             if ($this->bUseFriendlyLinks == false || $this->bAdminMode == true) { //old variant
                 $sCategUrlAdd = $sCategoryName ? "category={$sCategoryName}" : '';
-                $sRequest = bx_append_url_params($sOwnerBlogLink, $sCategUrlAdd . '&page={page}&per_page={per_page}');
+                $sRequest     = bx_append_url_params($sOwnerBlogLink,
+                    $sCategUrlAdd . '&page={page}&per_page={per_page}');
             } else {
                 $sCategUrlAdd = $sCategoryName ? "/category/{$sCategoryName}" : '';
-                $sRequest = bx_append_url_params($sOwnerBlogLink . $sCategUrlAdd, 'page={page}&per_page={per_page}');
+                $sRequest     = bx_append_url_params($sOwnerBlogLink . $sCategUrlAdd,
+                    'page={page}&per_page={per_page}');
             }
 
             // End of prepare link to pagination
             $oTmpBlogSearch->aCurrent['paginate']['page_url'] = $sRequest;
 
-            $sPagination = $oTmpBlogSearch->showPagination3();
+            $sPagination       = $oTmpBlogSearch->showPagination3();
             $sBlogPostsHtmlVal = <<<EOF
 <div class="bx-def-bc-padding">
     {$sBlogPostsVal}
@@ -1146,7 +1152,7 @@ EOF;
 
         $sPostsSect = DesignBoxContent($sBreadCrumb, $sBlogPostsHtmlVal, 1);
         $sRightSect = $this->GenMemberDescrAndCat($aBlogsRes, $sCategoryName);
-        $sRetHtml = $this->Templater($sPostsSect, $sRightSect);
+        $sRetHtml   = $this->Templater($sPostsSect, $sRightSect);
 
         return $sRetHtml;
     }
@@ -1158,12 +1164,12 @@ EOF;
         $sSuccUpdPost = _t('_bx_blog_Post_succ_updated');
         $sFailUpdPost = _t('_bx_blog_Post_fail_updated');
 
-        $iPostID = (int)bx_get('post_id');
+        $iPostID      = (int)bx_get('post_id');
         $iPostOwnerID = $this->_oDb->getPostOwnerByID($iPostID);
 
         if ((($this->_iVisitorID == $iPostOwnerID && $iPostOwnerID > 0) || $this->bAdminMode) && $iPostID > 0) {
             $sFileNameExt = '';
-            $sFileName = $this->_oDb->getPostPhotoByID($iPostID);
+            $sFileName    = $this->_oDb->getPostPhotoByID($iPostID);
             if ($sFileName == '') {
                 $sFileName = 'blog_' . $iPostID;
             }
@@ -1175,7 +1181,7 @@ EOF;
             @unlink($sDFilePath);
 
             $vSqlRes = $this->_oDb->performUpdatePostWithPhoto($iPostID);
-            $sRet = (db_affected_rows($vSqlRes) > 0) ? _t($sSuccUpdPost) : _t($sFailUpdPost);
+            $sRet    = (db_affected_rows($vSqlRes) > 0) ? _t($sSuccUpdPost) : _t($sFailUpdPost);
             print 1;
 
             return MsgBox($sRet);
@@ -1220,7 +1226,7 @@ EOF;
             $oVoting = new BxTemplVotingView ($this->_oConfig->getRateSystemName(), $iPostID);
             $oVoting->deleteVotings($iPostID);
 
-            $sFileName = $this->_oDb->getPostPhotoByID($iPostID);
+            $sFileName     = $this->_oDb->getPostPhotoByID($iPostID);
             $sFilePathPost = 'big_' . $sFileName;
             if ($sFilePathPost != '' && file_exists(BX_BLOGS_IMAGES_PATH . $sFilePathPost) && is_file(BX_BLOGS_IMAGES_PATH . $sFilePathPost)) {
                 @unlink(BX_BLOGS_IMAGES_PATH . $sFilePathPost);
@@ -1235,7 +1241,7 @@ EOF;
             }
 
             $vSqlRes = $this->_oDb->deletePost($iPostID);
-            $sRet = (db_affected_rows($vSqlRes) > 0) ? _t('_post_successfully_deleted') : _t('_failed_to_delete_post');
+            $sRet    = (db_affected_rows($vSqlRes) > 0) ? _t('_post_successfully_deleted') : _t('_failed_to_delete_post');
 
             $this->isAllowedPostDelete($iPostOwnerID, true); // perform action
 
@@ -1271,7 +1277,7 @@ EOF;
     {
         if ($this->iViewingPostID < 0) {
             if (false !== bx_get('postUri')) {
-                $sPostUri = process_db_input(bx_get('postUri'), BX_TAGS_STRIP);
+                $sPostUri             = process_db_input(bx_get('postUri'), BX_TAGS_STRIP);
                 $this->iViewingPostID = (int)$this->_oDb->getPostIDByUri($sPostUri);
             } elseif (false !== bx_get('post_id')) {
                 $this->iViewingPostID = (int)bx_get('post_id');
@@ -1332,27 +1338,27 @@ EOF;
             $oTmpBlogSearch->aCurrent['restriction']['activeStatus'] = '';
         }
         $oTmpBlogSearch->aCurrent['paginate']['perPage'] = 1;
-        $sPostStringVal = $oTmpBlogSearch->displayResultBlock();
+        $sPostStringVal                                  = $oTmpBlogSearch->displayResultBlock();
 
         // back - forward func
         $iOwnerID = (int)$this->aViewingPostInfo['OwnerID'];
 
-        $sCategoryName = $this->defineCategoryName();
-        $sCategoryUrlAdd = ($sCategoryName != '') ? "&category=" . $sCategoryName : '';
-        $sStatusFilter = ($this->isAdmin() == true) ? '1' : "`PostStatus`='approval'";
+        $sCategoryName    = $this->defineCategoryName();
+        $sCategoryUrlAdd  = ($sCategoryName != '') ? "&category=" . $sCategoryName : '';
+        $sStatusFilter    = ($this->isAdmin() == true) ? '1' : "`PostStatus`='approval'";
         $aPostsInCategory = $this->_oDb->getPostsInCategory($sStatusFilter, $sCategoryName, $iOwnerID);
 
         reset($aPostsInCategory);
         $iCurKey = array_search($this->iViewingPostID, $aPostsInCategory);
 
         $sBackNextNav = '';
-        $sMoreIcon = $this->_oTemplate->getIconUrl('more.png');
+        $sMoreIcon    = $this->_oTemplate->getIconUrl('more.png');
         if (isset($aPostsInCategory[$iCurKey - 1]) && $aPostsInCategory[$iCurKey - 1] > 0) {
-            $iPrevUnitID = (int)$aPostsInCategory[$iCurKey - 1];
-            $aPrevPostInfo = $this->_oDb->getPostCaptionAndUriByID($iPrevUnitID);
+            $iPrevUnitID      = (int)$aPostsInCategory[$iCurKey - 1];
+            $aPrevPostInfo    = $this->_oDb->getPostCaptionAndUriByID($iPrevUnitID);
             $sPrevPostCaption = $aPrevPostInfo['PostCaption'];
-            $sPrevPostUri = $aPrevPostInfo['PostUri'];
-            $sUnitUrl = $this->genUrl($iPrevUnitID, $sPrevPostUri) . $sCategoryUrlAdd;
+            $sPrevPostUri     = $aPrevPostInfo['PostUri'];
+            $sUnitUrl         = $this->genUrl($iPrevUnitID, $sPrevPostUri) . $sCategoryUrlAdd;
             $sBackNextNav .= <<<EOF
 <i class="bot_icon_left sys-icon arrow-left"></i>
 <a title="{$sPrevPostCaption}" href="{$sUnitUrl}" class="backMembers bx-def-margin-thd-left">
@@ -1361,11 +1367,11 @@ EOF;
 EOF;
         }
         if (isset($aPostsInCategory[$iCurKey + 1]) && $aPostsInCategory[$iCurKey + 1] > 0) {
-            $iNextUnitID = (int)$aPostsInCategory[$iCurKey + 1];
-            $aNextPostInfo = $this->_oDb->getPostCaptionAndUriByID($iNextUnitID);
+            $iNextUnitID      = (int)$aPostsInCategory[$iCurKey + 1];
+            $aNextPostInfo    = $this->_oDb->getPostCaptionAndUriByID($iNextUnitID);
             $sNextPostCaption = $aNextPostInfo['PostCaption'];
-            $sNextPostUri = $aNextPostInfo['PostUri'];
-            $sUnitUrl = $this->genUrl($iNextUnitID, $sNextPostUri) . $sCategoryUrlAdd;
+            $sNextPostUri     = $aNextPostInfo['PostUri'];
+            $sUnitUrl         = $this->genUrl($iNextUnitID, $sNextPostUri) . $sCategoryUrlAdd;
             $sBackNextNav .= <<<EOF
 <i class="bot_icon_right sys-icon arrow-right"></i>
 <a title="{$sNextPostCaption}" href="{$sUnitUrl}" class="moreMembers bx-def-margin-thd-right">
@@ -1393,12 +1399,12 @@ EOF;
             return '';
         }
 
-        $sUrl = $this->genUrl($this->aViewingPostInfo['PostID'], $this->aViewingPostInfo['PostUri']);
-        $sTitle = $this->aViewingPostInfo['PostCaption'];
-        $sImgUrl = false;
+        $sUrl          = $this->genUrl($this->aViewingPostInfo['PostID'], $this->aViewingPostInfo['PostUri']);
+        $sTitle        = $this->aViewingPostInfo['PostCaption'];
+        $sImgUrl       = false;
         $aCustomParams = false;
         if ($this->aViewingPostInfo['PostPhoto']) {
-            $sImgUrl = BX_BLOGS_IMAGES_URL . 'orig_' . $this->aViewingPostInfo['PostPhoto'];
+            $sImgUrl       = BX_BLOGS_IMAGES_URL . 'orig_' . $this->aViewingPostInfo['PostPhoto'];
             $aCustomParams = array(
                 'img_url'         => $sImgUrl,
                 'img_url_encoded' => rawurlencode($sImgUrl)
@@ -1415,7 +1421,7 @@ EOF;
     {
         require_once($this->_oConfig->getClassPath() . 'BxBlogsCmts.php');
         $_oCmtsView = new BxBlogsCmts($this->_oConfig->getCommentSystemName(), $this->iViewingPostID);
-        $sPostComm = $_oCmtsView->getExtraCss();
+        $sPostComm  = $_oCmtsView->getExtraCss();
         $sPostComm .= $_oCmtsView->getExtraJs();
         $sPostComm .= (!$_oCmtsView->isEnabled()) ? MsgBox(_t('_bx_blog_Comments_is_disabled')) : $_oCmtsView->getCommentsFirst();
 
@@ -1426,23 +1432,23 @@ EOF;
     {
         if ($this->iPostViewType == 3 && $this->iViewingPostID > 0) {
 
-            $iMemberID = (int)$this->aViewingPostInfo['OwnerID'];
-            $aOwnerInfo = getProfileInfo($iMemberID);
+            $iMemberID      = (int)$this->aViewingPostInfo['OwnerID'];
+            $aOwnerInfo     = getProfileInfo($iMemberID);
             $sOwnerNickname = getNickName($iMemberID);
-            $aUser = array('Permalink' => $aOwnerInfo['NickName'], 'Link' => $iMemberID);
+            $aUser          = array('Permalink' => $aOwnerInfo['NickName'], 'Link' => $iMemberID);
 
             $sOwnerBlogLinkSub = $this->genBlogLink('show_member_blog_home', $aUser, '', '', '', true);
 
-            $sApproveC = _t('_Approve');
-            $sDisApproveC = _t('_Disapprove');
-            $sFeatureItC = _t('_Feature it');
+            $sApproveC     = _t('_Approve');
+            $sDisApproveC  = _t('_Disapprove');
+            $sFeatureItC   = _t('_Feature it');
             $sDeFeatureItC = _t('_De-Feature it');
 
             $bApproveAllowed = $this->isAllowedApprove() ? 'true' : 'false';
 
             if (($this->_iVisitorID == $iMemberID && $iMemberID > 0) || $this->bAdminMode || $bApproveAllowed) {
                 $iFeaturedStatus = $this->_oDb->getFeaturedStatus($this->iViewingPostID);
-                $sFeatureC = ((int)$iFeaturedStatus == 1) ? $sDeFeatureItC : $sFeatureItC;
+                $sFeatureC       = ((int)$iFeaturedStatus == 1) ? $sDeFeatureItC : $sFeatureItC;
 
                 if ($this->bAdminMode || $bApproveAllowed == 'true') {
                     $iApproved = 0; //0 = not changed; 1 = app; 2 = disapp;
@@ -1460,15 +1466,15 @@ EOF;
                     $sCurPostStatus = $this->_oDb->getActiveStatus($this->iViewingPostID);
                     switch ($iApproved) {
                         case 0:
-                            $sSAAction = ($sCurPostStatus == 'disapproval') ? 'approve' : 'disapprove';
+                            $sSAAction  = ($sCurPostStatus == 'disapproval') ? 'approve' : 'disapprove';
                             $sSACaption = ($sCurPostStatus == 'disapproval') ? $sApproveC : $sDisApproveC;
                             break;
                         case 1:
-                            $sSAAction = 'disapprove';
+                            $sSAAction  = 'disapprove';
                             $sSACaption = $sDisApproveC;
                             break;
                         case 2:
-                            $sSAAction = 'approve';
+                            $sSAAction  = 'approve';
                             $sSACaption = $sApproveC;
                             break;
                     }
@@ -1477,18 +1483,18 @@ EOF;
 
             $sLink = $this->genBlogLink('show_member_blog_home', $aUser);
 
-            $sViewingPostUri = $this->_oDb->getPostUriByID($this->iViewingPostID);
-            $aViewingPost = array('Permalink' => $sViewingPostUri, 'Link' => $this->iViewingPostID);
+            $sViewingPostUri  = $this->_oDb->getPostUriByID($this->iViewingPostID);
+            $aViewingPost     = array('Permalink' => $sViewingPostUri, 'Link' => $this->iViewingPostID);
             $sViewingPostLink = $this->genBlogLink('show_member_post', $aUser, '', $aViewingPost);
-            $sLink = $this->genBlogLink('show_member_post', $aUser, '', $aViewingPost, '', true);
+            $sLink            = $this->genBlogLink('show_member_post', $aUser, '', $aViewingPost, '', true);
 
             $sProcessingFile = $this->genBlogSubUrl();
 
             bx_import('BxDolSubscription');
             $oSubscription = BxDolSubscription::getInstance();
-            $aButton = $oSubscription->getButton($this->_iVisitorID, 'bx_' . $this->_oConfig->getUri(), '',
+            $aButton       = $oSubscription->getButton($this->_iVisitorID, 'bx_' . $this->_oConfig->getUri(), '',
                 $this->iViewingPostID);
-            $sSubsAddon = $oSubscription->getData();
+            $sSubsAddon    = $oSubscription->getData();
 
             $aActionKeys = array(
                 'edit_allowed'          => $this->isAllowedPostEdit(-1) ? 'true' : 'false',
@@ -1516,12 +1522,13 @@ EOF;
             );
 
             $aActionKeys['repostCpt'] = $aActionKeys['repostScript'] = '';
-	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
-	        	$sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
-	
-				$aActionKeys['repostCpt'] = _t('_Repost');
-				$aActionKeys['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->_iVisitorID, 'bx_blogs', 'create', $this->iViewingPostID));
-	        }
+            if (BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+                $sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
+
+                $aActionKeys['repostCpt']    = _t('_Repost');
+                $aActionKeys['repostScript'] = BxDolService::call('wall', 'get_repost_js_click',
+                    array($this->_iVisitorID, 'bx_blogs', 'create', $this->iViewingPostID));
+            }
 
             $sActionsVal = $GLOBALS['oFunctions']->genObjectsActions($aActionKeys, 'bx_blogs', false);
 
@@ -1533,7 +1540,7 @@ EOF;
     {
         $aPostInfo = $this->_oDb->getPostInfo($iEntryId);
         if ($aPostInfo['OwnerID']) {
-            $sEntryUrl = $this->genUrl($iEntryId, $aPostInfo['PostUri']);
+            $sEntryUrl     = $this->genUrl($iEntryId, $aPostInfo['PostUri']);
             $sEntryCaption = $aPostInfo['PostCaption'];
         } else {
             return array('skip' => true);
@@ -1562,7 +1569,7 @@ EOF;
 
         bx_import('BxTemplVotingView');
         $bPossibleToRate = $this->oPrivacy->check('rate', $this->iViewingPostID, $this->_iVisitorID);
-        $oVotingView = new BxTemplVotingView ($this->_oConfig->getRateSystemName(), $this->iViewingPostID);
+        $oVotingView     = new BxTemplVotingView ($this->_oConfig->getRateSystemName(), $this->iViewingPostID);
         if ($oVotingView && $oVotingView->isEnabled() && $bPossibleToRate) {
             $sVotePostRating = $oVotingView->getBigVoting(1);
         } else {
@@ -1575,10 +1582,10 @@ EOF;
 
     function getPostOverviewBlock()
     {
-        $iMemberID = (int)$this->aViewingPostInfo['OwnerID'];
-        $aBlogInfo = $this->_oDb->getBlogInfo($iMemberID);
+        $iMemberID        = (int)$this->aViewingPostInfo['OwnerID'];
+        $aBlogInfo        = $this->_oDb->getBlogInfo($iMemberID);
         $sBlogDescription = '<div class="blog_desc bx-def-margin-sec-top">' . process_html_output($aBlogInfo['Description']) . '</div>';
-        $aAuthor = getProfileInfo($iMemberID);
+        $aAuthor          = getProfileInfo($iMemberID);
 
         $aVars = array(
             'author_unit' => get_member_thumbnail($aAuthor['ID'], 'none', true),
@@ -1592,14 +1599,14 @@ EOF;
             bx_import('BxDolCategories');
             bx_import('BxDolTags');
             $oCategories = new BxDolCategories();
-            $oTags = new BxDolTags();
+            $oTags       = new BxDolTags();
 
-            $sCats = '';
+            $sCats       = '';
             $aCategories = $oCategories->explodeTags($this->aViewingPostInfo['Categories']);
-            $aCatLinks = array();
+            $aCatLinks   = array();
             if (count($aCategories) > 0) {
                 foreach ($aCategories as $iKey => $sCatValue) {
-                    $sCatLink = $oBlogSearch->getCurrentUrl('category', title2uri(trim($sCatValue)),
+                    $sCatLink    = $oBlogSearch->getCurrentUrl('category', title2uri(trim($sCatValue)),
                         title2uri(trim($sCatValue)),
                         array('ownerId' => $iMemberID, 'blogOwnerName' => $aAuthor['NickName']));
                     $aCatLinks[] = '<a href="' . $sCatLink . '" rel="nofollow">' . $sCatValue . '</a>';
@@ -1607,24 +1614,24 @@ EOF;
                 $sCats = implode(", ", $aCatLinks);
             }
 
-            $sTags = '';
-            $aTags = $oTags->explodeTags($this->aViewingPostInfo['Tags']);
+            $sTags     = '';
+            $aTags     = $oTags->explodeTags($this->aViewingPostInfo['Tags']);
             $aTagLinks = array();
             if (count($aTags) > 0) {
                 foreach ($aTags as $sTagKey) {
                     if ($sTagKey != '') {
-                        $sTagLink = $oBlogSearch->getCurrentUrl('tag', $iPostID, title2uri(trim($sTagKey)));
+                        $sTagLink    = $oBlogSearch->getCurrentUrl('tag', $iPostID, title2uri(trim($sTagKey)));
                         $aTagLinks[] = '<a href="' . $sTagLink . '" title="' . $sTagKey . '" rel="nofollow">' . $sTagKey . '</a>';
                     }
                 }
                 $sTags = implode(", ", $aTagLinks);
             }
 
-            $aVars['date'] = getLocaleDate($this->aViewingPostInfo['PostDate'], BX_DOL_LOCALE_DATE_SHORT);
+            $aVars['date']     = getLocaleDate($this->aViewingPostInfo['PostDate'], BX_DOL_LOCALE_DATE_SHORT);
             $aVars['date_ago'] = defineTimeInterval($this->aViewingPostInfo['PostDate'], false);
-            $aVars['cats'] = $sCats;
-            $aVars['tags'] = $sTags;
-            $aVars['fields'] = '';
+            $aVars['cats']     = $sCats;
+            $aVars['tags']     = $sTags;
+            $aVars['fields']   = '';
 
             return $this->_oTemplate->parseHtmlByName('entry_view_block_info.html', $aVars);
         }
@@ -1634,9 +1641,9 @@ EOF;
 
     function getPostTagsBlock()
     {
-        $iMemberID = (int)$this->aViewingPostInfo['OwnerID'];
+        $iMemberID      = (int)$this->aViewingPostInfo['OwnerID'];
         $sOwnerNickname = getNickName($iMemberID);
-        $aOwnerInfo = getProfileInfo($iMemberID);
+        $aOwnerInfo     = getProfileInfo($iMemberID);
 
         $sOwnerAddAp = ($iMemberID == $this->_iVisitorID
             || $this->isAllowedApprove() || $this->isAllowedPostEdit(-1)
@@ -1654,7 +1661,7 @@ EOF;
         $aTagsPost = array();
         while ($aPost = $vTags->fetch()) {
             $sTagsCommas = trim($aPost['Tags']);
-            $aTags = explode(',', $sTagsCommas);
+            $aTags       = explode(',', $sTagsCommas);
             foreach ($aTags as $sTagKeyVal) {
                 $sTagKey = trim($sTagKeyVal);
                 if ($sTagKey != '') {
@@ -1672,7 +1679,7 @@ EOF;
         if (count($aTagsPost)) {
             $iMinFontSize = $GLOBALS['oTemplConfig']->iTagsMinFontSize;
             $iMaxFontSize = $GLOBALS['oTemplConfig']->iTagsMaxFontSize;
-            $iFontDiff = $iMaxFontSize - $iMinFontSize;
+            $iFontDiff    = $iMaxFontSize - $iMinFontSize;
 
             $iMinRating = min($aTagsPost);
             $iMaxRating = max($aTagsPost);
@@ -1685,7 +1692,7 @@ EOF;
 
         foreach ($aTagsPost as $sTag => $iCount) {
             $iTagSize = $iMinFontSize + round($iFontDiff * (($iCount - $iMinRating) / $iRatingDiff));
-            $href = str_replace('{tag}', urlencode($sTag), $sCrtHrefTmpl);
+            $href     = str_replace('{tag}', urlencode($sTag), $sCrtHrefTmpl);
             $sTagLink = $this->genBlogLink('search_by_tag', $aProf, '', '', title2uri($sTag));
 
             $sTagsVals .= '<span class="one_tag" style="font-size:' . $iTagSize . 'px;">
@@ -1705,10 +1712,10 @@ EOF;
 
     function getPostCategoriesBlock()
     {
-        $iMemberID = (int)$this->aViewingPostInfo['OwnerID'];
-        $aOwnerInfo = getProfileInfo($iMemberID);
+        $iMemberID      = (int)$this->aViewingPostInfo['OwnerID'];
+        $aOwnerInfo     = getProfileInfo($iMemberID);
         $sOwnerNickname = getNickName($iMemberID);
-        $aProf = array('Permalink' => $aOwnerInfo['NickName'], 'Link' => $iMemberID);
+        $aProf          = array('Permalink' => $aOwnerInfo['NickName'], 'Link' => $iMemberID);
 
         $sOwnerAddAp = ($iMemberID == $this->_iVisitorID
             || $this->isAllowedApprove() || $this->isAllowedPostEdit(-1)
@@ -1718,28 +1725,28 @@ EOF;
 
         $sStatusFilter = ($this->isAdmin() == true) ? '' : $sOwnerAddAp;
 
-        $sNewC = ucfirst(_t('_new'));
+        $sNewC        = ucfirst(_t('_new'));
         $sCategoriesC = _t('_bx_blog_Categories');
-        $sPostsCL = mb_strtolower(_t('_bx_blog_Posts'));
+        $sPostsCL     = mb_strtolower(_t('_bx_blog_Posts'));
 
         $sCategories = '';
 
-        $oCategories = new BxDolCategories();
+        $oCategories    = new BxDolCategories();
         $aAllCategories = $oCategories->getCategoriesList('bx_blogs', $iMemberID);
 
         if (is_array($aAllCategories) && count($aAllCategories) > 0) {
             foreach ($aAllCategories as $iCatID => $sCategoryName) {
                 $sCategoryNameS = addslashes($sCategoryName);
-                $iCountCatPost = $this->_oDb->getPostsCntInCategory($sCategoryNameS, $sStatusFilter, $iMemberID);
+                $iCountCatPost  = $this->_oDb->getPostsCntInCategory($sCategoryNameS, $sStatusFilter, $iMemberID);
 
                 if ($iCountCatPost == 0) {
                     continue;
                 }
 
-                $sCatName = process_line_output($sCategoryName);
+                $sCatName    = process_line_output($sCategoryName);
                 $sSpacerName = $this->sSpacerPath;
 
-                $aCat = array('Permalink' => title2uri($sCategoryName), 'Link' => title2uri($sCategoryName));
+                $aCat     = array('Permalink' => title2uri($sCategoryName), 'Link' => title2uri($sCategoryName));
                 $sCatLink = $this->genBlogLink('show_member_blog', $aProf, $aCat);
 
                 $sCategories .= <<<EOF
@@ -1758,18 +1765,18 @@ EOF;
 
     function getPostFeatureBlock()
     {
-        $iMemberID = (int)$this->aViewingPostInfo['OwnerID'];
+        $iMemberID  = (int)$this->aViewingPostInfo['OwnerID'];
         $aOwnerInfo = getProfileInfo($iMemberID);
-        $aUser = array('Permalink' => $aOwnerInfo['NickName'], 'Link' => $iMemberID);
+        $aUser      = array('Permalink' => $aOwnerInfo['NickName'], 'Link' => $iMemberID);
 
-        $sFeaturedSect = '';
+        $sFeaturedSect  = '';
         $vFeaturedPosts = $this->_oDb->getFeaturedPosts($iMemberID);
         if ($vFeaturedPosts->rowCount()) {
             $sFeatured = '';
             while ($aFeaturedPost = $vFeaturedPosts->fetch()) {
-                $iPostID = (int)$aFeaturedPost['PostID'];
-                $aPost = array('Permalink' => $aFeaturedPost['PostUri'], 'Link' => $iPostID);
-                $sPostLink = $this->genBlogLink('show_member_post', $aUser, '', $aPost);
+                $iPostID            = (int)$aFeaturedPost['PostID'];
+                $aPost              = array('Permalink' => $aFeaturedPost['PostUri'], 'Link' => $iPostID);
+                $sPostLink          = $this->genBlogLink('show_member_post', $aUser, '', $aPost);
                 $sFeaturedPostTitle = process_line_output($aFeaturedPost['PostCaption']);
 
                 $sFeatured .= <<<EOF
@@ -1809,7 +1816,7 @@ EOF;
         }
 
         $iBlogLimitChars = (int)getParam('max_blog_preview');
-        $sPostText = htmlspecialchars_adv(mb_substr(trim(strip_tags($this->aViewingPostInfo['PostText'])), 0,
+        $sPostText       = htmlspecialchars_adv(mb_substr(trim(strip_tags($this->aViewingPostInfo['PostText'])), 0,
             $iBlogLimitChars));
         $this->_oTemplate->setPageDescription($sPostText);
 
@@ -1830,21 +1837,21 @@ EOF;
     {
         $this->CheckLogged();
 
-        $sMainC = _t('_bx_blog_Manage_main');
-        $sAddC = _t('_bx_blog_Add');
-        $sManageC = _t('_bx_blog_Manage');
-        $sPendingC = _t('_bx_blog_pending_approval');
+        $sMainC           = _t('_bx_blog_Manage_main');
+        $sAddC            = _t('_bx_blog_Add');
+        $sManageC         = _t('_bx_blog_Manage');
+        $sPendingC        = _t('_bx_blog_pending_approval');
         $sAdministrationC = _t('_bx_blog_Administration');
-        $sMyBlogC = _t('_bx_blog_My_blog');
-        $sPendApprC = _t('_bx_blog_pending_approval');
-        $sMyPostsC = _t('_bx_blog_My_posts');
+        $sMyBlogC         = _t('_bx_blog_My_blog');
+        $sPendApprC       = _t('_bx_blog_pending_approval');
+        $sMyPostsC        = _t('_bx_blog_My_posts');
 
         $bUseFriendlyLinks = $this->isPermalinkEnabled();
-        $sLink = $this->genBlogFormUrl();
-        $sBlogMainLink = ($bUseFriendlyLinks) ? 'blogs/my_page/' : "{$sLink}?action=my_page";
-        $sBlogAddLink = ($bUseFriendlyLinks) ? 'blogs/my_page/add/' : "{$sLink}?action=my_page&mode=add";
-        $sBlogManageLink = ($bUseFriendlyLinks) ? 'blogs/my_page/manage/' : "{$sLink}?action=my_page&mode=manage";
-        $sBlogPendingLink = ($bUseFriendlyLinks) ? 'blogs/my_page/pending/' : "{$sLink}?action=my_page&mode=pending";
+        $sLink             = $this->genBlogFormUrl();
+        $sBlogMainLink     = ($bUseFriendlyLinks) ? 'blogs/my_page/' : "{$sLink}?action=my_page";
+        $sBlogAddLink      = ($bUseFriendlyLinks) ? 'blogs/my_page/add/' : "{$sLink}?action=my_page&mode=add";
+        $sBlogManageLink   = ($bUseFriendlyLinks) ? 'blogs/my_page/manage/' : "{$sLink}?action=my_page&mode=manage";
+        $sBlogPendingLink  = ($bUseFriendlyLinks) ? 'blogs/my_page/pending/' : "{$sLink}?action=my_page&mode=pending";
 
         if (bx_get('action_delete') && is_array(bx_get('bposts'))) {
             foreach (bx_get('bposts') as $iBPostID) {
@@ -1855,18 +1862,18 @@ EOF;
         require_once($this->_oConfig->getClassPath() . 'BxBlogsSearchUnit.php');
         $oTmpBlogSearch = new BxBlogsSearchUnit();
         $oTmpBlogSearch->PerformObligatoryInit($this, 4);
-        $oTmpBlogSearch->bShowCheckboxes = false;
-        $oTmpBlogSearch->aCurrent['paginate']['perPage'] = $this->_oConfig->getPerPage();
+        $oTmpBlogSearch->bShowCheckboxes                           = false;
+        $oTmpBlogSearch->aCurrent['paginate']['perPage']           = $this->_oConfig->getPerPage();
         $oTmpBlogSearch->aCurrent['restriction']['owner']['value'] = $this->_iVisitorID;
 
         $GLOBALS['oTopMenu']->setCurrentProfileID($this->_iVisitorID);
 
         if (!bx_get('ajax')) {
             $sMyBlogPostsVal = $oTmpBlogSearch->displayResultBlock();
-            $sMyPosts = ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) ? MsgBox(_t('_Empty')) : $sMyBlogPostsVal;
+            $sMyPosts        = ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) ? MsgBox(_t('_Empty')) : $sMyBlogPostsVal;
 
             $oTmpBlogSearch->aCurrent['paginate']['page_url'] = $sBlogMainLink;
-            $sMyPostsPagination = $oTmpBlogSearch->showPagination3();
+            $sMyPostsPagination                               = $oTmpBlogSearch->showPagination3();
         }
 
         $sMainTabClass = $sAddTabClass = $sManageTabClass = $sPendingTabClass = 0;
@@ -1874,7 +1881,7 @@ EOF;
             case 'add':
                 $sAddTabClass = 1;
 
-                $aBlogsRes = $this->_oDb->getBlogInfo($this->_iVisitorID);
+                $aBlogsRes    = $this->_oDb->getBlogInfo($this->_iVisitorID);
                 $sNewPostForm = (!$aBlogsRes) ? $this->GenCreateBlogForm(false) : $this->AddNewPostForm(0, false);
 
                 $sAdmContent = $sNewPostForm;
@@ -1884,12 +1891,13 @@ EOF;
                 $sManageTabClass = 1;
 
                 $oTmpBlogSearch->bShowCheckboxes = true;
-                $sBlogPostsVal = $oTmpBlogSearch->displayResultBlock();
-                $sActivePosts = ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) ? MsgBox(_t('_Empty')) : $sBlogPostsVal;
+                $sBlogPostsVal                   = $oTmpBlogSearch->displayResultBlock();
+                $sActivePosts                    = ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) ? MsgBox(_t('_Empty')) : $sBlogPostsVal;
 
                 $sManagePostsPagination = $oTmpBlogSearch->showPaginationAjax('bx_blogs_user_form', $sBlogManageLink);
 
-                $sAdmPanel = $oTmpBlogSearch->showAdminActionsPanel('bposts_box', array('action_delete' => '_Delete'),
+                $sAdmPanel         = $oTmpBlogSearch->showAdminActionsPanel('bposts_box',
+                    array('action_delete' => '_Delete'),
                     'bposts');
                 $sManagePostsUnits = <<<EOF
 <div id="bposts_box" class="bx-def-bc-padding">
@@ -1899,15 +1907,15 @@ EOF;
 {$sManagePostsPagination}
 {$sAdmPanel}
 EOF;
-                $sAjaxContent = $sManagePostsUnits;
-                $sAdmContent = '<form id="bx_blogs_user_form" method="post">' . $sManagePostsUnits . '</form>';
+                $sAjaxContent      = $sManagePostsUnits;
+                $sAdmContent       = '<form id="bx_blogs_user_form" method="post">' . $sManagePostsUnits . '</form>';
                 break;
             case 'pending':
                 $sPendingTabClass = 1;
 
                 $oTmpBlogSearch->aCurrent['restriction']['activeStatus']['value'] = 'disapproval';
-                $sDisPostsVal = $oTmpBlogSearch->displayResultBlock();
-                $sDisPostsVal = ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) ? MsgBox(_t('_Empty')) : $sDisPostsVal;
+                $sDisPostsVal                                                     = $oTmpBlogSearch->displayResultBlock();
+                $sDisPostsVal                                                     = ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) ? MsgBox(_t('_Empty')) : $sDisPostsVal;
 
                 $sPendingPostsPagination = $oTmpBlogSearch->showPaginationAjax('bx_blogs_pending', $sBlogPendingLink);
 
@@ -1918,8 +1926,8 @@ EOF;
 </div>
 $sPendingPostsPagination
 EOF;
-                $sAjaxContent = $sPendingPostsUnits;
-                $sAdmContent = '<div id="bx_blogs_pending">' . $sPendingPostsUnits . '</div>';
+                $sAjaxContent       = $sPendingPostsUnits;
+                $sAdmContent        = '<div id="bx_blogs_pending">' . $sPendingPostsUnits . '</div>';
                 break;
             case 'main':
             default:
@@ -1928,7 +1936,7 @@ EOF;
                 $iMyPostsCnt = $this->_oDb->getMemberPostsCnt($this->_iVisitorID);
                 $sAdmContent = '<div class="bx-def-font-large" style="text-align: center;">' . _t('_bx_blog_admin_box_desc',
                         $iMyPostsCnt, $sBlogManageLink, $sBlogAddLink) . '</div>';
-                $aVars = array('content' => $sAdmContent);
+                $aVars       = array('content' => $sAdmContent);
                 $sAdmContent = $this->_oTemplate->parseHtmlByName('default_padding.html', $aVars);
                 break;
         }
@@ -1974,18 +1982,18 @@ EOF;
             }
         }
 
-        $sPostCaptionC = _t('_Title');
-        $sPostTextC = _t('_Text');
+        $sPostCaptionC     = _t('_Title');
+        $sPostTextC        = _t('_Text');
         $sAssociatedImageC = _t('_associated_image');
-        $sAddBlogC = ($iPostID) ? _t('_Submit') : _t('_Add Post');
-        $sTagsC = _t('_Tags');
-        $sNewPostC = _t('_New Post');
-        $sEditPostC = _t('_bx_blog_Edit_post');
-        $sDelImgC = _t('_Delete image');
-        $sErrorC = _t('_Error Occured');
-        $sCaptionErrorC = _t('_bx_blog_Caption_error');
-        $sTextErrorC = _t('_bx_blog_Text_error');
-        $sTagsInfoC = _t('_sys_tags_note');
+        $sAddBlogC         = ($iPostID) ? _t('_Submit') : _t('_Add Post');
+        $sTagsC            = _t('_Tags');
+        $sNewPostC         = _t('_New Post');
+        $sEditPostC        = _t('_bx_blog_Edit_post');
+        $sDelImgC          = _t('_Delete image');
+        $sErrorC           = _t('_Error Occured');
+        $sCaptionErrorC    = _t('_bx_blog_Caption_error');
+        $sTextErrorC       = _t('_bx_blog_Text_error');
+        $sTagsInfoC        = _t('_sys_tags_note');
 
         $sLink = $this->genBlogFormUrl();
 
@@ -1994,9 +2002,9 @@ EOF;
         $oCategories = new BxDolCategories();
         $oCategories->getTagObjectConfig();
 
-        $aAllowView = $this->oPrivacy->getGroupChooser($this->_iVisitorID, 'blogs', 'view', array(),
+        $aAllowView    = $this->oPrivacy->getGroupChooser($this->_iVisitorID, 'blogs', 'view', array(),
             _t('_bx_blog_privacy_view'));
-        $aAllowRate = $this->oPrivacy->getGroupChooser($this->_iVisitorID, 'blogs', 'rate', array(),
+        $aAllowRate    = $this->oPrivacy->getGroupChooser($this->_iVisitorID, 'blogs', 'rate', array(),
             _t('_bx_blog_privacy_rate'));
         $aAllowComment = $this->oPrivacy->getGroupChooser($this->_iVisitorID, 'blogs', 'comment', array(),
             _t('_bx_blog_privacy_comment'));
@@ -2084,10 +2092,10 @@ EOF;
         );
 
         if ($iPostID > 0) {
-            $aBlogPost = $this->_oDb->getJustPostInfo($iPostID);
+            $aBlogPost    = $this->_oDb->getJustPostInfo($iPostID);
             $sPostCaption = $aBlogPost['PostCaption'];
-            $sPostText = $aBlogPost['PostText'];
-            $sPostTags = $aBlogPost['Tags'];
+            $sPostText    = $aBlogPost['PostText'];
+            $sPostTags    = $aBlogPost['Tags'];
             $sPostPicture = $aBlogPost['PostPhoto'];
             if ($sPostPicture != '') {
                 $sBlogsImagesUrl = BX_BLOGS_IMAGES_URL;
@@ -2098,7 +2106,7 @@ EOF;
 </div>
 EOF;
 
-                $aForm['inputs']['AssociatedImage']['type'] = 'custom';
+                $aForm['inputs']['AssociatedImage']['type']    = 'custom';
                 $aForm['inputs']['AssociatedImage']['content'] = $sPostPictureTag;
                 $aForm['inputs']['AssociatedImage']['caption'] = $sAssociatedImageC;
             }
@@ -2106,12 +2114,12 @@ EOF;
             $aCategories = explode(';', $aBlogPost['Categories']);
 
             $aForm['inputs']['PostCaption']['value'] = $sPostCaption;
-            $aForm['inputs']['PostText']['value'] = $sPostText;
-            $aForm['inputs']['Tags']['value'] = $sPostTags;
-            $aForm['inputs']['Categories']['value'] = $aCategories;
+            $aForm['inputs']['PostText']['value']    = $sPostText;
+            $aForm['inputs']['Tags']['value']        = $sPostTags;
+            $aForm['inputs']['Categories']['value']  = $aCategories;
 
-            $aForm['inputs']['allowView']['value'] = $aBlogPost['allowView'];
-            $aForm['inputs']['allowRate']['value'] = $aBlogPost['allowRate'];
+            $aForm['inputs']['allowView']['value']    = $aBlogPost['allowView'];
+            $aForm['inputs']['allowRate']['value']    = $aBlogPost['allowRate'];
             $aForm['inputs']['allowComment']['value'] = $aBlogPost['allowComment'];
 
             $aForm['inputs']['hidden_postid'] = array(
@@ -2143,9 +2151,9 @@ EOF;
         if ($oForm->isSubmittedAndValid()) {
             $this->CheckLogged();
 
-            $iOwnID = $this->_iVisitorID;
-            $sCurTime = time();
-            $sPostUri = uriGenerate(bx_get('PostCaption'), $this->_oConfig->sSQLPostsTable, 'PostUri');
+            $iOwnID           = $this->_iVisitorID;
+            $sCurTime         = time();
+            $sPostUri         = uriGenerate(bx_get('PostCaption'), $this->_oConfig->sSQLPostsTable, 'PostUri');
             $sAutoApprovalVal = (getParam('blogAutoApproval') == 'on') ? "approval" : "disapproval";
 
             $aValsAdd = array(
@@ -2195,7 +2203,7 @@ EOF;
                                 case IMAGETYPE_PNG:
 
                                     $sOriginalFilename = $_FILES['BlogPic']['name'][$i];
-                                    $sExt = strrchr($sOriginalFilename, '.');
+                                    $sExt              = strrchr($sOriginalFilename, '.');
 
                                     $sFileName = 'blog_' . $iBlogPostID . '_' . $i;
                                     @unlink($sFileName);
@@ -2258,7 +2266,7 @@ EOF;
             $sAddingForm = $oForm->getCode();
         }
 
-        $sCaption = ($iPostID) ? $sEditPostC : $sNewPostC;
+        $sCaption       = ($iPostID) ? $sEditPostC : $sNewPostC;
         $sAddingFormVal = '<div class="blogs-view bx-def-bc-padding">' . $sAddingForm . '</div>';
 
         return ($bBox) ? DesignBoxContent($sCaption,
@@ -2304,7 +2312,7 @@ EOF;
         $sRetHtml = '';
         if (($this->_iVisitorID == $aBlogsRes['OwnerID'] && $this->_iVisitorID > 0) || $this->bAdminMode == true) {
             $sCategoryCaptionC = _t('_Title');
-            $sErrorC = _t('_Error Occured');
+            $sErrorC           = _t('_Error Occured');
 
             $sLink = $this->genBlogFormUrl();
 
@@ -2388,11 +2396,11 @@ EOF;
         $this->CheckLogged();
         $iPostID = (int)bx_get('id');
 
-        $iPostOwnerID = $this->_oDb->getPostOwnerByID($iPostID);
+        $iPostOwnerID    = $this->_oDb->getPostOwnerByID($iPostID);
         $iFeaturedStatus = $this->_oDb->getFeaturedStatus($iPostID);
 
         if ((($this->_iVisitorID == $iPostOwnerID && $iPostOwnerID > 0) || $this->bAdminMode) && $iPostID > 0) {
-            $iNewStatus = ((int)$iFeaturedStatus == 1) ? '0' : '1';
+            $iNewStatus      = ((int)$iFeaturedStatus == 1) ? '0' : '1';
             $aUpdatingParams = array(
                 'postID' => $iPostID,
                 'status' => $iNewStatus
@@ -2420,18 +2428,18 @@ EOF;
 
         $bNoProfileMode = (false !== bx_get('ownerID') || false !== bx_get('blogOwnerName')) ? false : true;
 
-        $sRetHtml = '';
+        $sRetHtml     = '';
         $sSearchedTag = uri2title(process_db_input(bx_get('tagKey'), BX_TAGS_STRIP));
-        $iMemberID = $this->defineUserId();
+        $iMemberID    = $this->defineUserId();
 
-        $sTagsC = _t('_Tags');
+        $sTagsC   = _t('_Tags');
         $sNoBlogC = _t('_bx_blog_No_blogs_available');
 
         require_once($this->_oConfig->getClassPath() . 'BxBlogsSearchUnit.php');
         $oTmpBlogSearch = new BxBlogsSearchUnit($this);
         $oTmpBlogSearch->PerformObligatoryInit($this, 4);
         $oTmpBlogSearch->aCurrent['restriction']['tag2']['value'] = $sSearchedTag;
-        $oTmpBlogSearch->aCurrent['paginate']['perPage'] = $this->_oConfig->getPerPage();
+        $oTmpBlogSearch->aCurrent['paginate']['perPage']          = $this->_oConfig->getPerPage();
         if ($iMemberID > 0) {
             $oTmpBlogSearch->aCurrent['restriction']['owner']['value'] = $iMemberID;
         }
@@ -2462,7 +2470,7 @@ EOF;
 <div class="clear_both"></div>
 EOF;
                 } else {
-                    $sRightSect = $this->GenMemberDescrAndCat($aBlogsRes);
+                    $sRightSect  = $this->GenMemberDescrAndCat($aBlogsRes);
                     $sWidthClass = ($iMemberID > 0) ? 'cls_info_left' : 'cls_res_thumb';
 
                     $sRetHtml = $this->Templater($sContentSect, $sRightSect, $sWidthClass);
@@ -2485,7 +2493,7 @@ EOF;
     function GenBlogCalendar($isMiniMode = false, $iBlockID = 0, $sDynamicUrl = '')
     {
         $aDateParams = array();
-        $sDate = bx_get('date');
+        $sDate       = bx_get('date');
         if ($sDate) {
             $aDateParams = explode('/', $sDate);
         }
@@ -2531,7 +2539,7 @@ EOF;
             $oTmpBlogSearch = new BxBlogsSearchUnit($this);
             $oTmpBlogSearch->PerformObligatoryInit($this, $this->iPostViewType);
             $oTmpBlogSearch->aCurrent['paginate']['perPage'] = $this->_oConfig->getPerPage();
-            $oTmpBlogSearch->aCurrent['sorting'] = 'last';
+            $oTmpBlogSearch->aCurrent['sorting']             = 'last';
 
             $oTmpBlogSearch->aCurrent['restriction']['calendar-min'] = array(
                 'value'          => "UNIX_TIMESTAMP('{$iValue1}-{$iValue2}-{$iValue3} 00:00:00')",
@@ -2549,7 +2557,7 @@ EOF;
             $sCode = $oTmpBlogSearch->displayResultBlock();
             $sCode = ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) ? MsgBox(_t('_Empty')) : $sCode;
 
-            $sRequest = BX_DOL_URL_ROOT . 'modules/boonex/blogs/blogs.php?action=show_calendar_day&date=' . "{$iValue1}/{$iValue2}/{$iValue3}" . '&page={page}&per_page={per_page}';
+            $sRequest                                         = BX_DOL_URL_ROOT . 'modules/boonex/blogs/blogs.php?action=show_calendar_day&date=' . "{$iValue1}/{$iValue2}/{$iValue3}" . '&page={page}&per_page={per_page}';
             $oTmpBlogSearch->aCurrent['paginate']['page_url'] = $sRequest;
 
             $sPagination = $oTmpBlogSearch->showPagination3();
@@ -2578,20 +2586,20 @@ EOF;
             return $this->_oTemplate->displayAccessDenied();
         }
 
-        $sRetHtml = $sCreateForm = '';
-        $sActionsC = _t('_Actions');
+        $sRetHtml           = $sCreateForm = '';
+        $sActionsC          = _t('_Actions');
         $sPleaseCreateBlogC = _t('_bx_blog_Please_create_blog');
-        $sNoBlogC = _t('_bx_blog_No_blogs_available');
-        $sMyBlogC = _t('_bx_blog_My_blog');
-        $sNewBlogDescC = _t('_bx_blog_description');
-        $sErrorC = _t('_bx_blog_create_blog_form_error');
-        $sSubmitC = _t('_Submit');
+        $sNoBlogC           = _t('_bx_blog_No_blogs_available');
+        $sMyBlogC           = _t('_bx_blog_My_blog');
+        $sNewBlogDescC      = _t('_bx_blog_description');
+        $sErrorC            = _t('_bx_blog_create_blog_form_error');
+        $sSubmitC           = _t('_Submit');
 
         $sRetHtml .= MsgBox($sNoBlogC);
 
         if ($this->_iVisitorID || $this->isAdmin()) {
             $sRetHtml = MsgBox($sPleaseCreateBlogC);
-            $sLink = $this->genBlogFormUrl();
+            $sLink    = $this->genBlogFormUrl();
 
             $sAddingForm = '';
 
@@ -2643,17 +2651,17 @@ EOF;
             if ($oForm->isSubmittedAndValid()) {
                 $this->CheckLogged();
 
-                $iOwnID = $this->_iVisitorID;
+                $iOwnID    = $this->_iVisitorID;
                 $aBlogsRes = $this->_oDb->getBlogInfo($iOwnID);
                 if (!$aBlogsRes) {
                     $aValsAdd = array(
                         'OwnerID' => $iOwnID
                     );
-                    $iBlogID = $oForm->insert($aValsAdd);
+                    $iBlogID  = $oForm->insert($aValsAdd);
 
                     //return $this->GenMemberBlog($iOwnID, false);
                     $bUseFriendlyLinks = $this->isPermalinkEnabled();
-                    $sBlogAddLink = ($bUseFriendlyLinks)
+                    $sBlogAddLink      = ($bUseFriendlyLinks)
                         ? BX_DOL_URL_ROOT . 'blogs/my_page/add/'
                         : $this->genBlogFormUrl() . '?action=my_page&mode=add';
 
@@ -2667,7 +2675,7 @@ EOF;
                 $sAddingForm = $oForm->getCode();
             }
 
-            $aVars = array('content' => $sAddingForm);
+            $aVars       = array('content' => $sAddingForm);
             $sAddingForm = $this->_oTemplate->parseHtmlByName('default_padding.html', $aVars);
             $sCreateForm = ($bBox) ? DesignBoxContent($sActionsC, $sAddingForm, 1) : $sAddingForm;
         }
@@ -2679,11 +2687,11 @@ EOF;
 
     function GenAdminTabbedPage()
     {
-        $sTitleC = _t('_bx_blog_Administration');
-        $sPendingC = _t('_bx_blog_pending_approval');
+        $sTitleC    = _t('_bx_blog_Administration');
+        $sPendingC  = _t('_bx_blog_pending_approval');
         $sSettingsC = _t('_Settings');
 
-        $sPendingTab = $this->GenBlogAdminIndex();
+        $sPendingTab  = $this->GenBlogAdminIndex();
         $sSettingsTab = $this->getAdministrationSettings();
 
         $sContent = '';
@@ -2704,12 +2712,12 @@ EOF;
 
         $mixedResult = '';
         if (isset($_POST['save']) && isset($_POST['cat'])) {
-            $oSettings = new BxDolAdminSettings($iId);
+            $oSettings   = new BxDolAdminSettings($iId);
             $mixedResult = $oSettings->saveChanges($_POST);
         }
 
         $oSettings = new BxDolAdminSettings($iId);
-        $sResult = $oSettings->getForm();
+        $sResult   = $oSettings->getForm();
 
         if ($mixedResult !== true && !empty($mixedResult)) {
             $sResult = $mixedResult . $sResult;
@@ -2786,10 +2794,10 @@ EOF;
     {
         $iPostId = (int)$iPostId;
         if ($iPostId) {
-            $sViewingPostUri = $this->_oDb->getPostUriByID($iPostId);
-            $aViewingPost = array('Permalink' => $sViewingPostUri, 'Link' => $this->$iPostId);
+            $sViewingPostUri  = $this->_oDb->getPostUriByID($iPostId);
+            $aViewingPost     = array('Permalink' => $sViewingPostUri, 'Link' => $this->$iPostId);
             $sViewingPostLink = $this->genBlogLink('show_member_post', $aUser, '', $aViewingPost);
-            $sEntryUrl = $this->genBlogLink('show_member_post', $aUser, '', $aViewingPost, '', true);
+            $sEntryUrl        = $this->genBlogLink('show_member_post', $aUser, '', $aViewingPost, '', true);
 
             require_once(BX_DIRECTORY_PATH_INC . 'shared_sites.inc.php');
             header('Content-type:text/html;charset=utf-8');
@@ -2819,7 +2827,7 @@ EOF;
 
         if ($this->isPermalinkEnabled() && $iMemberId == 0 && bx_get('action') == 'show_member_post') {
             $sPostUri = process_db_input(bx_get('postUri'), BX_TAGS_STRIP);
-            $iPostID = $this->_oDb->getPostIDByUri($sPostUri);
+            $iPostID  = $this->_oDb->getPostIDByUri($sPostUri);
 
             $iMemberId = $this->_oDb->getPostOwnerByID($iPostID);
         }
@@ -2877,22 +2885,22 @@ EOF;
         $sTag = '',
         $bSubUrl = false
     ) {
-        $sKey = '';
+        $sKey     = '';
         $aService = array();
         if ($this->isPermalinkEnabled()) {
             $sKey = 'Permalink';
 
-            $aService['User'] = '';
+            $aService['User']     = '';
             $aService['Category'] = 'category/';
-            $aService['Post'] = '';
-            $aService['Tag'] = '';
+            $aService['Post']     = '';
+            $aService['Tag']      = '';
         } else {
             $sKey = 'Link';
 
-            $aService['User'] = 'ownerID=';
+            $aService['User']     = 'ownerID=';
             $aService['Category'] = 'category=';
-            $aService['Post'] = 'post_id=';
-            $aService['Tag'] = 'tagKey=';
+            $aService['Post']     = 'post_id=';
+            $aService['Tag']      = 'tagKey=';
         }
 
         $sMainLink = (!$bSubUrl) ? $this->genBlogFormUrl() : $this->genBlogSubUrl();
@@ -2928,10 +2936,10 @@ EOF;
         }
         $aFinal = array();
 
-        $aFinal['User'] = $aUser ? $aService['User'] . $aUser[$sKey] : '';
+        $aFinal['User']     = $aUser ? $aService['User'] . $aUser[$sKey] : '';
         $aFinal['Category'] = $aCategory ? $aService['Category'] . $aCategory[$sKey] : '';
-        $aFinal['Post'] = $aPost ? $aService['Post'] . $aPost[$sKey] : '';
-        $aFinal['Tag'] = strlen($sTag) > 0 ? $aService['Tag'] . $sTag : '';
+        $aFinal['Post']     = $aPost ? $aService['Post'] . $aPost[$sKey] : '';
+        $aFinal['Tag']      = strlen($sTag) > 0 ? $aService['Tag'] . $sTag : '';
 
         $sLink = $aAction[$sKey];
 
@@ -2960,7 +2968,7 @@ EOF;
             'member_section' => $sRightSect,
             'post_section'   => $sPostsSect
         );
-        $sRetHtml = $this->_oTemplate->parseHtmlByTemplateName('blog', $aBlogVariables);
+        $sRetHtml       = $this->_oTemplate->parseHtmlByTemplateName('blog', $aBlogVariables);
 
         return $sRetHtml;
     }
@@ -2977,8 +2985,8 @@ EOF;
             'type'    => 'blog',
             'orderby' => 'popular'
         );
-        $sLink = $this->isPermalinkEnabled() ? BX_DOL_URL_ROOT . 'blogs/' . 'tags' : BX_DOL_URL_ROOT . 'modules/boonex/blogs/blogs.php?action=tags';
-        $oTags = new BxTemplTagsModule($aParam, _t('_all'), $sLink);
+        $sLink  = $this->isPermalinkEnabled() ? BX_DOL_URL_ROOT . 'blogs/' . 'tags' : BX_DOL_URL_ROOT . 'modules/boonex/blogs/blogs.php?action=tags';
+        $oTags  = new BxTemplTagsModule($aParam, _t('_all'), $sLink);
 
         return $oTags->getCode();
     }
@@ -3012,13 +3020,14 @@ EOF;
         $oBlogSearch = new BxBlogsSearchUnit();
         $oBlogSearch->PerformObligatoryInit($this, 4);
         $oBlogSearch->aCurrent['paginate']['perPage'] = ($iPerPage > 0 ? $iPerPage : $this->_oConfig->getPerPage('index'));
-        $aVis = array(BX_DOL_PG_ALL);
+        $aVis                                         = array(BX_DOL_PG_ALL);
         if ($this->getUserId()) {
             $aVis[] = BX_DOL_PG_MEMBERS;
         }
         $oBlogSearch->aCurrent['restriction']['allow_view']['value'] = $aVis;
-        $sCode = $oBlogSearch->displayResultBlock();
-        $sPostPagination = $oBlogSearch->showPagination2(false, $this->genBlogLink('home'), $bShortPgn);
+        $sCode                                                       = $oBlogSearch->displayResultBlock();
+        $sPostPagination                                             = $oBlogSearch->showPagination2(false,
+            $this->genBlogLink('home'), $bShortPgn);
 
         if ($oBlogSearch->aCurrent['paginate']['totalNum'] > 0) {
             $sCodeBlock = $sCode;
@@ -3045,7 +3054,7 @@ EOF;
         require_once($this->_oConfig->getClassPath() . 'BxBlogsSearchUnit.php');
         $oBlogSearch = new BxBlogsSearchUnit();
         $oBlogSearch->PerformObligatoryInit($this, 4);
-        $oBlogSearch->aCurrent['paginate']['perPage'] = $this->_oConfig->getPerPage('profile');
+        $oBlogSearch->aCurrent['paginate']['perPage']           = $this->_oConfig->getPerPage('profile');
         $oBlogSearch->aCurrent['restriction']['owner']['value'] = $_iProfileID;
         //$oBlogSearch->aCurrent['restriction']['publicStatus']['value'] = 'public';
         $sCode = $oBlogSearch->displayResultBlock();
@@ -3068,25 +3077,25 @@ EOF;
      */
     function serviceBlogsRss()
     {
-        $iPID = (int)bx_get('pid');
+        $iPID      = (int)bx_get('pid');
         $aRssUnits = $this->_oDb->getMemberPostsRSS($iPID);
         if (is_array($aRssUnits) && count($aRssUnits) > 0) {
 
             foreach ($aRssUnits as $iUnitID => $aUnitInfo) {
                 $sPostLink = '';
-                $iPostID = (int)$aUnitInfo['UnitID'];
-                $aPost = array('Permalink' => $aUnitInfo['UnitUri'], 'Link' => $iPostID);
+                $iPostID   = (int)$aUnitInfo['UnitID'];
+                $aPost     = array('Permalink' => $aUnitInfo['UnitUri'], 'Link' => $iPostID);
                 $sPostLink = $this->genBlogLink('show_member_post', $aUser, '', $aPost);
 
                 $aRssUnits[$iUnitID]['UnitLink'] = $sPostLink;
 
-                $sFileName = $this->_oDb->getPostPhotoByID($iPostID);
-                $sPostPhoto = ($sFileName != '') ? BX_BLOGS_IMAGES_URL . 'big_' . $sFileName : '';
+                $sFileName                       = $this->_oDb->getPostPhotoByID($iPostID);
+                $sPostPhoto                      = ($sFileName != '') ? BX_BLOGS_IMAGES_URL . 'big_' . $sFileName : '';
                 $aRssUnits[$iUnitID]['UnitIcon'] = $sPostPhoto;
             }
 
             $sUnitTitleC = _t('_bx_blog_Blogs');
-            $sMainLink = 'rss_factory.php?action=blogs&amp;pid=' . $iPID;
+            $sMainLink   = 'rss_factory.php?action=blogs&amp;pid=' . $iPID;
 
             bx_import('BxDolRssFactory');
             $oRssFactory = new BxDolRssFactory();
@@ -3143,7 +3152,7 @@ EOF;
         }
 
         $oMemberMenu = bx_instance('BxDolMemberMenu');
-        $aLinkInfo = array(
+        $aLinkInfo   = array(
             'item_img_src' => 'book',
             'item_img_alt' => _t('_bx_blog_post'),
             'item_link'    => BX_DOL_URL_ROOT . (getParam('permalinks_blogs') == 'on' ? 'blogs/my_page/add/' : 'modules/boonex/blogs/blogs.php?action=my_page&mode=add'),
@@ -3185,7 +3194,7 @@ EOF;
 
     function serviceGetWallData()
     {
-        $sUri = $this->_oConfig->getUri();
+        $sUri  = $this->_oConfig->getUri();
         $sName = 'bx_' . $sUri;
 
         return array(
@@ -3243,7 +3252,7 @@ EOF;
         rsort($aObjectIds);
 
         $iDeleted = 0;
-        $aItems = array();
+        $aItems   = array();
         foreach ($aObjectIds as $iId) {
             $aItem = $this->_oDb->getPostInfo($iId);
             if (empty($aItem)) {
@@ -3285,7 +3294,8 @@ EOF;
             $aTmplItems = array();
             foreach ($aItems as $aItem) {
                 $oTmpBlogSearch = false;
-                $sPostUnit = $this->_GenPosts(5, 1, 'post', array('id' => $aItem['PostID']), 'last', $oTmpBlogSearch);
+                $sPostUnit      = $this->_GenPosts(5, 1, 'post', array('id' => $aItem['PostID']), 'last',
+                    $oTmpBlogSearch);
                 if ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) {
                     continue;
                 }
@@ -3306,11 +3316,11 @@ EOF;
         }
 
         //--- Single public event
-        $aItem = $aItems[0];
+        $aItem        = $aItems[0];
         $aItem['url'] = $this->genUrl($aItem['PostID'], $aItem['PostUri'], 'entry');
 
         $oTmpBlogSearch = false;
-        $sPostUnit = $this->_GenPosts(5, 1, 'post', array('id' => $aItem['PostID']), 'last', $oTmpBlogSearch);
+        $sPostUnit      = $this->_GenPosts(5, 1, 'post', array('id' => $aItem['PostID']), 'last', $oTmpBlogSearch);
         if ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) {
             return '';
         }
@@ -3333,7 +3343,7 @@ EOF;
 
     function serviceGetWallAddComment($aEvent)
     {
-        $iId = (int)$aEvent['object_id'];
+        $iId    = (int)$aEvent['object_id'];
         $iOwner = (int)$aEvent['owner_id'];
         $sOwner = $iOwner != 0 ? getNickName($iOwner) : _t('_Anonymous');
 
@@ -3359,8 +3369,9 @@ EOF;
         }
 
         $aComment = $oCmts->getCommentRow($iId);
-        if(empty($aComment) || !is_array($aComment))
-        	return array('perform_delete' => true);
+        if (empty($aComment) || !is_array($aComment)) {
+            return array('perform_delete' => true);
+        }
 
         $sCss = '';
         if ($aEvent['js_mode']) {
@@ -3370,7 +3381,7 @@ EOF;
         }
 
         $oTmpBlogSearch = false;
-        $sPostUnit = $this->_GenPosts(5, 1, 'post', array('id' => $aItem['PostID']), 'last', $oTmpBlogSearch);
+        $sPostUnit      = $this->_GenPosts(5, 1, 'post', array('id' => $aItem['PostID']), 'last', $oTmpBlogSearch);
         if ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) {
             return '';
         }
@@ -3399,7 +3410,7 @@ EOF;
      */
     function serviceGetWallPostComment($aEvent)
     {
-        $iId = (int)$aEvent['object_id'];
+        $iId    = (int)$aEvent['object_id'];
         $iOwner = (int)$aEvent['owner_id'];
         $sOwner = getNickName($iOwner);
 
@@ -3424,9 +3435,10 @@ EOF;
         }
 
         $aItem['url'] = $this->genUrl($aItem['ID'], $aItem['PostUri'], 'entry');
-        $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
-        if(empty($aComment) || !is_array($aComment))
-        	return array('perform_delete' => true);
+        $aComment     = $oCmts->getCommentRow((int)$aContent['comment_id']);
+        if (empty($aComment) || !is_array($aComment)) {
+            return array('perform_delete' => true);
+        }
 
         $sCss = '';
         if ($aEvent['js_mode']) {
@@ -3436,7 +3448,7 @@ EOF;
         }
 
         $oTmpBlogSearch = false;
-        $sPostUnit = $this->_GenPosts(5, 1, 'post', array('id' => $aItem['PostID']), 'last', $oTmpBlogSearch);
+        $sPostUnit      = $this->_GenPosts(5, 1, 'post', array('id' => $aItem['PostID']), 'last', $oTmpBlogSearch);
         if ($oTmpBlogSearch->aCurrent['paginate']['totalNum'] == 0) {
             return '';
         }
@@ -3460,7 +3472,7 @@ EOF;
 
     function serviceGetWallPostOutline($aEvent)
     {
-        $sPrefix = 'bx_' . $this->_oConfig->getUri();
+        $sPrefix  = 'bx_' . $this->_oConfig->getUri();
         $aProfile = getProfileInfo($aEvent['owner_id']);
         if (!$aProfile) {
             return '';
@@ -3470,13 +3482,13 @@ EOF;
             $aEvent['object_id']) : array($aEvent['object_id']);
         rsort($aObjectIds);
 
-        $iItems = count($aObjectIds);
+        $iItems      = count($aObjectIds);
         $iItemsLimit = 3;
         if ($iItems > $iItemsLimit) {
             $aObjectIds = array_slice($aObjectIds, 0, $iItemsLimit);
         }
 
-        $bSave = false;
+        $bSave    = false;
         $aContent = array();
         if (!empty($aEvent['content'])) {
             $aContent = unserialize($aEvent['content']);
@@ -3487,7 +3499,7 @@ EOF;
         }
 
         $iDeleted = 0;
-        $aItems = $aTmplItems = array();
+        $aItems   = $aTmplItems = array();
         foreach ($aObjectIds as $iId) {
             $aItem = $this->_oDb->getPostInfo($iId);
             if (empty($aItem)) {
@@ -3499,27 +3511,27 @@ EOF;
                     $aItem['thumb_file'] = '';
                     $aItem['thumb_dims'] = array();
                     if (!empty($aItem['PostPhoto'])) {
-                        $aItem['thumb_file'] = BX_BLOGS_IMAGES_URL . 'browse_' . $aItem['PostPhoto'];
+                        $aItem['thumb_file']      = BX_BLOGS_IMAGES_URL . 'browse_' . $aItem['PostPhoto'];
                         $aItem['thumb_file_path'] = BX_BLOGS_IMAGES_PATH . 'browse_' . $aItem['PostPhoto'];
                         if (!file_exists($aItem['thumb_file_path'])) {
-                            $aItem['thumb_file'] = BX_BLOGS_IMAGES_URL . 'big_' . $aItem['PostPhoto'];
+                            $aItem['thumb_file']      = BX_BLOGS_IMAGES_URL . 'big_' . $aItem['PostPhoto'];
                             $aItem['thumb_file_path'] = BX_BLOGS_IMAGES_PATH . 'big_' . $aItem['PostPhoto'];
                         }
 
                         if (!isset($aContent['idims'][$iId])) {
-                            $sPath = file_exists($aItem['thumb_file_path']) ? $aItem['thumb_file_path'] : $aItem['thumb_file'];
+                            $sPath                   = file_exists($aItem['thumb_file_path']) ? $aItem['thumb_file_path'] : $aItem['thumb_file'];
                             $aContent['idims'][$iId] = BxDolImageResize::instance()->getImageSize($sPath);
-                            $bSave = true;
+                            $bSave                   = true;
                         }
 
                         $aItem['thumb_dims'] = $aContent['idims'][$iId];
 
-                        $aItem['thumb_file_2x'] = BX_BLOGS_IMAGES_URL . 'orig_' . $aItem['PostPhoto'];
+                        $aItem['thumb_file_2x']      = BX_BLOGS_IMAGES_URL . 'orig_' . $aItem['PostPhoto'];
                         $aItem['thumb_file_2x_path'] = BX_BLOGS_IMAGES_PATH . 'orig_' . $aItem['PostPhoto'];
                     }
 
                     $aItem['PostUrl'] = $this->genUrl($aItem['PostID'], $aItem['PostUri'], 'entry');
-                    $aItems[] = $aItem;
+                    $aItems[]         = $aItem;
 
                     $aTmplItems[] = array(
                         'mod_prefix'       => $sPrefix,
@@ -3555,15 +3567,15 @@ EOF;
             $this->_oTemplate->addCss(array('wall_outline.css'));
         }
 
-        $iItems = count($aItems);
-        $iOwner = (int)$aEvent['owner_id'];
-        $sOwner = getNickName($iOwner);
+        $iItems     = count($aItems);
+        $iOwner     = (int)$aEvent['owner_id'];
+        $sOwner     = getNickName($iOwner);
         $sOwnerLink = getProfileLink($iOwner);
 
         //--- Grouped events
         $iItems = count($aItems);
         if ($iItems > 1) {
-            $sTmplName = 'wall_outline_grouped.html';
+            $sTmplName          = 'wall_outline_grouped.html';
             $aResult['content'] = $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
                     'mod_prefix'         => $sPrefix,
                     'mod_icon'           => 'book',
@@ -3580,10 +3592,10 @@ EOF;
         }
 
         //--- Single public event
-        $aItem = $aItems[0];
+        $aItem     = $aItems[0];
         $aTmplItem = $aTmplItems[0];
 
-        $sTmplName = empty($aItem['thumb_file']) ? 'modules/boonex/wall/|outline_item_text.html' : 'modules/boonex/wall/|outline_item_image.html';
+        $sTmplName          = empty($aItem['thumb_file']) ? 'modules/boonex/wall/|outline_item_text.html' : 'modules/boonex/wall/|outline_item_image.html';
         $aResult['content'] = $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array_merge($aTmplItem, array(
                 'mod_prefix'         => $sPrefix,
                 'mod_icon'           => 'book',
@@ -3658,28 +3670,28 @@ EOF;
             return $aRet;
         }
 
-        $sRecipientNickName = getNickName($aPostInfo['OwnerID']);
+        $sRecipientNickName    = getNickName($aPostInfo['OwnerID']);
         $sRecipientProfileLink = getProfileLink($aPostInfo['OwnerID']);
-        $sSenderNickName = $iSenderId ? getNickName($iSenderId) : _t('_Guest');
-        $sSenderProfileLink = $iSenderId ? getProfileLink($iSenderId) : 'javascript:void(0)';
-        $sCaption = $aPostInfo['PostCaption'];
-        $sEntryUrl = $this->genUrl($iObjectId, $aPostInfo['PostUri']);
+        $sSenderNickName       = $iSenderId ? getNickName($iSenderId) : _t('_Guest');
+        $sSenderProfileLink    = $iSenderId ? getProfileLink($iSenderId) : 'javascript:void(0)';
+        $sCaption              = $aPostInfo['PostCaption'];
+        $sEntryUrl             = $this->genUrl($iObjectId, $aPostInfo['PostUri']);
 
-        $sLangKey = '';
+        $sLangKey     = '';
         $iRecipientId = 0;
         switch ($sAction) {
             case 'create' :
-                $sLangKey = '_bx_blog_added_spy';
+                $sLangKey     = '_bx_blog_added_spy';
                 $iRecipientId = 0;
                 break;
 
             case 'rate' :
-                $sLangKey = '_bx_blog_rated_spy';
+                $sLangKey     = '_bx_blog_rated_spy';
                 $iRecipientId = $aPostInfo['OwnerID'];
                 break;
 
             case 'commentPost' :
-                $sLangKey = '_bx_blog_commented_spy';
+                $sLangKey     = '_bx_blog_commented_spy';
                 $iRecipientId = $aPostInfo['OwnerID'];
                 break;
         }

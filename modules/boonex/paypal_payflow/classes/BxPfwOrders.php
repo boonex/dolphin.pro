@@ -14,6 +14,6 @@ class BxPfwOrders extends BxPmtOrders
      */
     function __construct($iUserId, &$oDb, &$oConfig, &$oTemplate)
     {
-    	parent::__construct($iUserId, $oDb, $oConfig, $oTemplate);
+        parent::__construct($iUserId, $oDb, $oConfig, $oTemplate);
     }
 }

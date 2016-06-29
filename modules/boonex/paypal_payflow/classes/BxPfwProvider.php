@@ -8,7 +8,7 @@ require_once(BX_DIRECTORY_PATH_MODULES . 'boonex/payment/classes/BxPmtProvider.p
 
 class BxPfwProvider extends BxPmtProvider
 {
-	protected $_aConfig;
+    protected $_aConfig;
 
     /**
      * Constructor

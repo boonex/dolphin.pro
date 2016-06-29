@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_bx_videos_info_album' => 'Album info',
+    '_bx_videos_info_album' => 'Album info',
 
 );

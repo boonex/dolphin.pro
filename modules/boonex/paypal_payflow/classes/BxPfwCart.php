@@ -14,6 +14,6 @@ class BxPfwCart extends BxPmtCart
      */
     function __construct(&$oDb, &$oConfig, &$oTemplate)
     {
-    	parent::__construct($oDb, $oConfig, $oTemplate);
+        parent::__construct($oDb, $oConfig, $oTemplate);
     }
 }

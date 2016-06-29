@@ -8,7 +8,7 @@ require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolConfig.php');
 
 class BxPollConfig extends BxDolConfig
 {
-    var $sUploadPath ;
+    var $sUploadPath;
 
     var $iAlowMembersPolls;
 
@@ -38,21 +38,21 @@ class BxPollConfig extends BxDolConfig
         parent::__construct($aModule);
 
         // get allowed members polls;
-        $this -> iAlowMembersPolls =  getParam( 'enable_poll' );
+        $this->iAlowMembersPolls = getParam('enable_poll');
 
         // get allowed number of polls;
-        $this -> iAlowPollNumber =  getParam( 'profile_poll_num' );
+        $this->iAlowPollNumber = getParam('profile_poll_num');
 
         // chew poll's auto activation;
-        $this -> iAutoActivate = getParam( 'profile_poll_act' ) == 'on' ? 1 : 0;
+        $this->iAutoActivate = getParam('profile_poll_act') == 'on' ? 1 : 0;
 
-        $this -> iProfilePagePollsCount = getParam( 'profile_page_polls' );
-        $this -> iIndexPagePollsCount   = getParam( 'index_page_polls' );
+        $this->iProfilePagePollsCount = getParam('profile_page_polls');
+        $this->iIndexPagePollsCount   = getParam('index_page_polls');
 
         // define the table name ;
-        $this -> sTableName = $this -> getDbPrefix() . 'data';
+        $this->sTableName = $this->getDbPrefix() . 'data';
 
         // define the prefix ;
-        $this -> sTablePrefix = $this -> getDbPrefix();
+        $this->sTablePrefix = $this->getDbPrefix();
     }
 }

@@ -1,13 +1,13 @@
 <?php
+
 /**
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
-
 class BxDolRssFactory
 {
     // default constructor of factory pattern
-    function __construct() {}
+    function __construct() { }
 
     /*
     * params is:
@@ -23,11 +23,11 @@ class BxDolRssFactory
     function GenRssByData($aRssData, $sUnitTitleC, $sMainLink)
     {
         return $this->GenRssByCustomData($aRssData, $sUnitTitleC, $sMainLink, array(
-            'Link' => 'UnitLink',
-            'Guid' => 'UnitID',
-            'Title' => 'UnitTitle',
+            'Link'        => 'UnitLink',
+            'Guid'        => 'UnitID',
+            'Title'       => 'UnitTitle',
             'DateTimeUTS' => 'UnitDateTimeUTS',
-            'Desc' => 'UnitDesc',
+            'Desc'        => 'UnitDesc',
         ));
     }
 
@@ -48,29 +48,31 @@ class BxDolRssFactory
     {
         global $site;
 
-        $sUnits = '';
+        $sUnits   = '';
         $sRSSLast = '';
-        if (isset($aRssData[0]))
+        if (isset($aRssData[0])) {
             $sRSSLast = getLocaleDate($aRssData[0][$aFields['DateTimeUTS']], 6);
+        }
 
-        if ($iPID > 0)
+        if ($iPID > 0) {
             $aPIDOwnerInfo = getProfileInfo($iPID);
+        }
 
         $iUnitLimitChars = 2000;//(int)getParam('max_blog_preview');
         if ($aRssData) {
             foreach ($aRssData as $iUnitID => $aUnitInfo) {
-                $sUnitUrl = $aUnitInfo[$aFields['Link']];
+                $sUnitUrl  = $aUnitInfo[$aFields['Link']];
                 $sUnitGuid = $aUnitInfo[$aFields['Guid']];
 
                 $sUnitTitle = strmaxwordlen(strip_tags($aUnitInfo[$aFields['Title']]), 100);
-                $sUnitDate = getLocaleDate($aUnitInfo[$aFields['DateTimeUTS']], 6);
+                $sUnitDate  = getLocaleDate($aUnitInfo[$aFields['DateTimeUTS']], 6);
 
                 $sLinkMore = '';
-                if ( strlen( $aUnitInfo[$aFields['Desc']]) > $iUnitLimitChars ) {
-                    $sLinkMore = "... <a href=\"".$sUnitUrl."\">"._t('_Read more')."</a>";
+                if (strlen($aUnitInfo[$aFields['Desc']]) > $iUnitLimitChars) {
+                    $sLinkMore = "... <a href=\"" . $sUnitUrl . "\">" . _t('_Read more') . "</a>";
                 }
                 $sUnitDescVal = mb_substr(strip_tags($aUnitInfo[$aFields['Desc']]), 0, $iUnitLimitChars) . $sLinkMore;
-                $sUnitDesc = $sUnitDescVal;
+                $sUnitDesc    = $sUnitDescVal;
 
                 $sUnitRSSFeed .= "<item><title><![CDATA[{$sUnitTitle}]]></title><link><![CDATA[{$sUnitUrl}]]></link><guid><![CDATA[{$sUnitGuid}]]></guid><description><![CDATA[{$sUnitDesc}]]></description><pubDate>{$sUnitDate}</pubDate></item>";
             }
@@ -81,8 +83,9 @@ class BxDolRssFactory
             $sRSSTitle = _t('_RSS_Feed_Title_Profile', $aPIDOwnerInfo['NickName'], $sUnitTitleC);
         }
 
-        if(substr($sMainLink, 0, 7) != 'http://' && substr($sMainLink, 0, 8) != 'https://')
+        if (substr($sMainLink, 0, 7) != 'http://' && substr($sMainLink, 0, 8) != 'https://') {
             $sMainLink = BX_DOL_URL_ROOT . $sMainLink;
+        }
 
         $sRSSImage = '';
         if ($sImage) {

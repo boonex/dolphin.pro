@@ -69,12 +69,14 @@ class BxDolRequest
     public static function serviceExists($mixedModule, $sMethod, $sClass = "Module")
     {
         $oBxDolRequest = new self();
+
         return $oBxDolRequest->_methodExists($mixedModule, 'service', $sMethod, $sClass);
     }
 
     public static function actionExists($mixedModule, $sMethod, $sClass = "Module")
     {
         $oBxDolRequest = new self();
+
         return $oBxDolRequest->_methodExists($mixedModule, 'action', $sMethod, $sClass);
     }
 
@@ -144,10 +146,10 @@ class BxDolRequest
         $aModule = $mixedModule;
         if (is_string($mixedModule)) {
             $oModuleDb = new BxDolModuleDb();
-            $aModule = $oModuleDb->getModuleByUri($mixedModule);
+            $aModule   = $oModuleDb->getModuleByUri($mixedModule);
         }
 
-        if(empty($aModule)) {
+        if (empty($aModule)) {
             return false;
         }
 
@@ -169,9 +171,9 @@ class BxDolRequest
         global $_page;
         global $_page_cont;
 
-        $iIndex = 13;
-        $_page['name_index'] = $iIndex;
-        $_page['header'] = _t("_sys_request_" . $sType . "_not_found_cpt");
+        $iIndex                                = 13;
+        $_page['name_index']                   = $iIndex;
+        $_page['header']                       = _t("_sys_request_" . $sType . "_not_found_cpt");
         $_page_cont[$iIndex]['page_main_code'] = MsgBox(_t("_sys_request_" . $sType . "_not_found_cnt",
             htmlspecialchars_adv($sParam1), htmlspecialchars_adv($sParam2)));
         PageCode();

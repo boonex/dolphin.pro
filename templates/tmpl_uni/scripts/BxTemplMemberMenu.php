@@ -1,22 +1,22 @@
 <?php
 
-    /**
+/**
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-    bx_import('BxBaseMemberMenu');
+bx_import('BxBaseMemberMenu');
 
+/**
+ * @see BxDolMemberMenu;
+ */
+class BxTemplMemberMenu extends BxBaseMemberMenu
+{
     /**
-     * @see BxDolMemberMenu;
+     * Class constructor;
      */
-    class BxTemplMemberMenu extends BxBaseMemberMenu
+    function __construct()
     {
-        /**
-         * Class constructor;
-         */
-        function __construct()
-        {
-            parent::__construct();
-        }
+        parent::__construct();
     }
+}

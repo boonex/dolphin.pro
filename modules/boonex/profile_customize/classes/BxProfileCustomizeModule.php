@@ -26,9 +26,9 @@ function bx_profile_customize_import($sClassPostfix, $aModuleOverwright = array(
     $a = $aModuleOverwright ? $aModuleOverwright : $aModule;
     if (!$a || $a['uri'] != 'profile_customize') {
         $oMain = BxDolModule::getInstance('BxProfileCustomizeModule');
-        $a = $oMain->_aModule;
+        $a     = $oMain->_aModule;
     }
-    bx_import ($sClassPostfix, $a) ;
+    bx_import($sClassPostfix, $a);
 }
 
 /**
@@ -42,8 +42,9 @@ function bx_profile_customize_import($sClassPostfix, $aModuleOverwright = array(
  * Service methods:
  *
  * Get block for for customized page
+ *
  * @see BxProfileCustomizeModule::serviceGetCustomizeBlock
- * BxDolService::call('profile_customize', 'get_customize_block', array($sPage, $sTarget));
+ *      BxDolService::call('profile_customize', 'get_customize_block', array($sPage, $sTarget));
  *
  * Get custom styles for current profile page
  * @see BxProfileCustomizeModule::serviceGetProfileStyle
@@ -79,17 +80,18 @@ class BxProfileCustomizeModule extends BxDolModule
 
     function actionCustomizePage($sPage = '', $sTarget = '')
     {
-    	header('Content-Type: text/html; charset=utf-8');
+        header('Content-Type: text/html; charset=utf-8');
         echo $this->serviceGetCustomizeBlock($sPage, $sTarget);
     }
 
     function actionSave($isReset = '')
     {
-        if (!$this->iUserId)
+        if (!$this->iUserId) {
             return;
+        }
 
         if (isset($_POST['page']) && isset($_POST['trg'])) {
-            $sPage = process_db_input($_POST['page'], BX_TAGS_STRIP);
+            $sPage   = process_db_input($_POST['page'], BX_TAGS_STRIP);
             $sTarget = process_db_input($_POST['trg'], BX_TAGS_STRIP);
 
             unset($_POST['page']);
@@ -100,30 +102,36 @@ class BxProfileCustomizeModule extends BxDolModule
             if (!$isReset) {
                 if (!empty($aTmpStyle) && isset($aTmpStyle[$sPage][$sTarget])) {
                     foreach ($aTmpStyle[$sPage][$sTarget] as $sKey => $sValue) {
-                        if ($sKey != 'image')
+                        if ($sKey != 'image') {
                             unset($aTmpStyle[$sPage][$sTarget][$sKey]);
+                        }
                     }
                 }
                 $aVars = $_POST;
                 if (isset($_FILES['image'])) {
                     $sImage = $this->_addImage('image');
                     if (strlen($sImage) > 0) {
-                        if (isset($aTmpStyle[$sPage][$sTarget]['image']))
+                        if (isset($aTmpStyle[$sPage][$sTarget]['image'])) {
                             $this->_deleteImage($aTmpStyle[$sPage][$sTarget]['image']);
+                        }
 
                         $aTmpStyle[$sPage][$sTarget]['image'] = $sImage;
-                        if (!isset($aVars['useimage']))
+                        if (!isset($aVars['useimage'])) {
                             $aVars['useimage'] = 'on';
+                        }
                     }
                 }
 
                 foreach ($aVars as $sKey => $sValue) {
-                    if ($sValue != '' && $sValue != 'default' && $sValue != '-1')
+                    if ($sValue != '' && $sValue != 'default' && $sValue != '-1') {
                         $aTmpStyle[$sPage][$sTarget][$sKey] = process_db_input($sValue, BX_TAGS_STRIP);
+                    }
                 }
-            } else if (!empty($aTmpStyle) && isset($aTmpStyle[$sPage][$sTarget])) {
-                $this->_parseImages($aTmpStyle[$sPage][$sTarget], BX_PROFILE_CUSTOMIZE_IMAGES_DELETE);
-                unset($aTmpStyle[$sPage][$sTarget]);
+            } else {
+                if (!empty($aTmpStyle) && isset($aTmpStyle[$sPage][$sTarget])) {
+                    $this->_parseImages($aTmpStyle[$sPage][$sTarget], BX_PROFILE_CUSTOMIZE_IMAGES_DELETE);
+                    unset($aTmpStyle[$sPage][$sTarget]);
+                }
             }
 
             $this->_oDb->updateProfileTmpByUserId($this->iUserId, $aTmpStyle);
@@ -135,10 +143,11 @@ class BxProfileCustomizeModule extends BxDolModule
     {
         $iTheme = (int)$iTheme;
 
-        if (!$this->iUserId)
+        if (!$this->iUserId) {
             return '';
+        }
 
-        $sCss =  '<style type="text/css">';
+        $sCss = '<style type="text/css">';
         switch ($sAction) {
             case 'save':
                 $aStyles = $this->_oDb->getProfileByUserId($this->iUserId);
@@ -169,41 +178,46 @@ class BxProfileCustomizeModule extends BxDolModule
 
     function actionPublish($isSave = '')
     {
-        if (!$this->iUserId)
+        if (!$this->iUserId) {
             return;
+        }
 
         $sComplete = '';
 
         if ($isSave && isset($_POST['name_theme']) && $_POST['name_theme']) {
-            $sName = process_db_input($_POST['name_theme'], BX_TAGS_STRIP);
+            $sName  = process_db_input($_POST['name_theme'], BX_TAGS_STRIP);
             $aTheme = $this->_oDb->getThemeByName($sName);
 
             if (empty($aTheme)) {
-                $iThemeId = $this->_oDb->addTheme($sName, ($this->isAdmin() ? (int)$_POST['destination'] : $this->iUserId), $this->_getThemeFromTmp());
+                $iThemeId = $this->_oDb->addTheme($sName,
+                    ($this->isAdmin() ? (int)$_POST['destination'] : $this->iUserId), $this->_getThemeFromTmp());
 
                 if ($iThemeId != -1) {
                     $sThumb = 'thumbnail';
 
                     if (isset($_FILES[$sThumb]) && is_uploaded_file($_FILES[$sThumb]['tmp_name'])) {
                         if (strpos($_FILES[$sThumb]['type'], 'image') !== false) {
-                            $sDestDir = $this->_getImagesDir();
-                            $sExt = '.' . pathinfo($_FILES[$sThumb]['name'], PATHINFO_EXTENSION);
-                            $sTmpName = 'tmp_' . time() . $this->iUserId . $sExt;
+                            $sDestDir   = $this->_getImagesDir();
+                            $sExt       = '.' . pathinfo($_FILES[$sThumb]['name'], PATHINFO_EXTENSION);
+                            $sTmpName   = 'tmp_' . time() . $this->iUserId . $sExt;
                             $sThumbName = BX_PROFILE_CUSTOMIZE_THEME_PREFIX . $iThemeId . BX_PROFILE_CUSTOMIZE_THUMB_EXT;
 
-                            if (move_uploaded_file($_FILES[$sThumb]['tmp_name'],  $sDestDir . $sTmpName)) {
+                            if (move_uploaded_file($_FILES[$sThumb]['tmp_name'], $sDestDir . $sTmpName)) {
                                 imageResize($sDestDir . $sTmpName, $sDestDir . $sThumbName, 64, 64, true);
                                 unlink($sDestDir . $sTmpName);
                             }
-                        } else
+                        } else {
                             unlink($_FILES[$sThumb]['tmp_name']);
+                        }
                     }
 
                     $sComplete = _t('_bx_profile_customize_complete');
-                } else
+                } else {
                     $sComplete = _t('_bx_profile_customize_err_add_theme');
-            } else
+                }
+            } else {
                 $sComplete = sprintf(_t('_bx_profile_customize_err_already_exist'), $sName);
+            }
         }
 
         header('Content-Type: text/html; charset=utf-8');
@@ -214,10 +228,11 @@ class BxProfileCustomizeModule extends BxDolModule
     {
         $iThemeId = (int)$iThemeId;
 
-        if (!$this->iUserId)
+        if (!$this->iUserId) {
             return;
+        }
 
-        $sCss = '';
+        $sCss   = '';
         $aTheme = $this->_oDb->getThemeStyle($iThemeId);
 
         if (!empty($aTheme)) {
@@ -245,8 +260,9 @@ class BxProfileCustomizeModule extends BxDolModule
     {
         $iThemeId = (int)$iThemeId;
 
-        if (!$this->iUserId)
+        if (!$this->iUserId) {
             return;
+        }
 
         $this->_deleteTheme($iThemeId);
         echo $this->serviceGetCustomizeBlock('themes');
@@ -254,8 +270,9 @@ class BxProfileCustomizeModule extends BxDolModule
 
     function actionResetAll()
     {
-        if (!$this->iUserId)
+        if (!$this->iUserId) {
             return;
+        }
 
         $aStyles = $this->_oDb->getProfileByUserId($this->iUserId);
         if (!empty($aStyles)) {
@@ -288,7 +305,8 @@ class BxProfileCustomizeModule extends BxDolModule
         $this->_oTemplate->addAdminCss(array('forms_adv.css', 'main.css', 'admin.css'));
         $this->_oTemplate->addAdminJs(array('main.js'));
 
-        $this->_oTemplate->pageCodeAdmin (_t('_bx_profile_customize_administration'), $sType, $iUnitId, $this->_checkActions());
+        $this->_oTemplate->pageCodeAdmin(_t('_bx_profile_customize_administration'), $sType, $iUnitId,
+            $this->_checkActions());
     }
 
     /**
@@ -297,55 +315,62 @@ class BxProfileCustomizeModule extends BxDolModule
 
     function serviceGetCustomizeBlock($sPage = '', $sTarget = '')
     {
-        if (!$this->iUserId || !getParam('bx_profile_customize_enable'))
+        if (!$this->iUserId || !getParam('bx_profile_customize_enable')) {
             return '';
+        }
 
-        $sUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'customizepage/';
+        $sUrl       = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'customizepage/';
         $aMenuItems = array('themes', 'background', 'font', 'border');
-        $aTopMenu = array();
-        $aTargets = array();
+        $aTopMenu   = array();
+        $aTargets   = array();
 
-        if (!$sPage)
+        if (!$sPage) {
             $sPage = $aMenuItems[0];
+        }
 
         foreach ($aMenuItems as $sItem) {
             $aTopMenu[_t('_bx_profile_customize_page_' . $sItem)] = array(
-                'href' => $sUrl . $sItem,
+                'href'    => $sUrl . $sItem,
                 'dynamic' => true,
-                'active' => $sItem == $sPage
+                'active'  => $sItem == $sPage
             );
         }
 
         if (isset($this->_aCssMatch[$sPage])) {
-            if (!$sTarget)
+            if (!$sTarget) {
                 $sTarget = key($this->_aCssMatch[$sPage]);
+            }
 
             foreach ($this->_aCssMatch[$sPage] as $sKey => $aValues) {
                 $aTargets[] = array(
-                    'name' => _t($aValues['name']),
-                    'value' => $sUrl . $sPage . '/' . $sKey,
+                    'name'   => _t($aValues['name']),
+                    'value'  => $sUrl . $sPage . '/' . $sKey,
                     'select' => $sKey == $sTarget ? 'selected' : ''
                 );
             }
-        } else if ($sPage == 'themes') {
-            $aThemesTargets = array('my', 'shared');
+        } else {
+            if ($sPage == 'themes') {
+                $aThemesTargets = array('my', 'shared');
 
-            if (!$sTarget)
-                $sTarget = $aThemesTargets[0];
+                if (!$sTarget) {
+                    $sTarget = $aThemesTargets[0];
+                }
 
-            foreach ($aThemesTargets as $sValue) {
-                $aTargets[] = array(
-                    'name' => _t('_bx_profile_customize_page_themes_' . $sValue),
-                    'value' => $sUrl . $sPage . '/' . $sValue,
-                    'select' => $sValue == $sTarget ? 'selected' : ''
-                );
+                foreach ($aThemesTargets as $sValue) {
+                    $aTargets[] = array(
+                        'name'   => _t('_bx_profile_customize_page_themes_' . $sValue),
+                        'value'  => $sUrl . $sPage . '/' . $sValue,
+                        'select' => $sValue == $sTarget ? 'selected' : ''
+                    );
+                }
             }
         }
 
-        $aVars = array();
+        $aVars  = array();
         $aStyle = $this->_oDb->getProfileTmpByUserId($this->iUserId);
-        if (!empty($aStyle) && isset($aStyle[$sPage][$sTarget]))
+        if (!empty($aStyle) && isset($aStyle[$sPage][$sTarget])) {
             $aVars = $aStyle[$sPage][$sTarget];
+        }
 
         return $this->_oTemplate->profileCustomizeBlock($aTopMenu, $sPage, $aTargets, $sTarget, $aVars);
     }
@@ -354,8 +379,9 @@ class BxProfileCustomizeModule extends BxDolModule
     {
         $iUserId = (int)$iUserId;
 
-        if (!$iUserId || !getParam('bx_profile_customize_enable'))
+        if (!$iUserId || !getParam('bx_profile_customize_enable')) {
             return '';
+        }
 
         return $this->_getCssFromArray($this->_oDb->getProfileCssByUserId($iUserId));
     }
@@ -379,17 +405,22 @@ class BxProfileCustomizeModule extends BxDolModule
     {
         if (isset($_FILES[$sName]) && is_uploaded_file($_FILES[$sName]['tmp_name'])) {
             $sExt = pathinfo($_FILES[$sName]['name'], PATHINFO_EXTENSION);
-            if (strpos($_FILES[$sName]['type'], 'image') !== false && in_array($sExt, array ('gif', 'png', 'jpg', 'jpeg'))) {
+            if (strpos($_FILES[$sName]['type'], 'image') !== false && in_array($sExt,
+                    array('gif', 'png', 'jpg', 'jpeg'))
+            ) {
                 $sFileName = $this->_oDb->addImage($sExt);
                 if ($sFileName) {
                     $sDestDir = $this->_getImagesDir();
-                    if (move_uploaded_file($_FILES[$sName]['tmp_name'],  $sDestDir . $sFileName)) {
-                        imageResize($sDestDir . $sFileName, $sDestDir . BX_PROFILE_CUSTOMIZE_SMALL_PREFIX . $sFileName, 64, 64);
+                    if (move_uploaded_file($_FILES[$sName]['tmp_name'], $sDestDir . $sFileName)) {
+                        imageResize($sDestDir . $sFileName, $sDestDir . BX_PROFILE_CUSTOMIZE_SMALL_PREFIX . $sFileName,
+                            64, 64);
+
                         return $sFileName;
                     }
                 }
-            } else
+            } else {
                 unlink($_FILES[$sName]['tmp_name']);
+            }
         }
 
         return '';
@@ -399,46 +430,55 @@ class BxProfileCustomizeModule extends BxDolModule
     {
         if ($this->_oDb->deleteImage($sFileName)) {
             $sDestDir = $this->_getImagesDir();
-            if (file_exists($sDestDir . $sFileName))
+            if (file_exists($sDestDir . $sFileName)) {
                 unlink($sDestDir . $sFileName);
-            if (file_exists($sDestDir . BX_PROFILE_CUSTOMIZE_SMALL_PREFIX . $sFileName))
+            }
+            if (file_exists($sDestDir . BX_PROFILE_CUSTOMIZE_SMALL_PREFIX . $sFileName)) {
                 unlink($sDestDir . BX_PROFILE_CUSTOMIZE_SMALL_PREFIX . $sFileName);
+            }
         }
     }
 
     function _convertFormVarToTmpStyle($sPage, $sTarget, $aVars, &$aResult, $bFiles = false)
     {
         foreach ($aVars as $sKey => $sValue) {
-            if ($bFiles)
+            if ($bFiles) {
                 $sValue = $this->_addImage($sKey);
+            }
 
-            if ($sValue != '' && $sValue != 'default' && $sValue != '-1')
+            if ($sValue != '' && $sValue != 'default' && $sValue != '-1') {
                 $aResult[$sPage][$sTarget][$sKey] = $sValue;
+            }
         }
     }
 
     function _getCssFromArray($aTmpStyle)
     {
         $bPageBackgroundChanged = false;
-        $sCss = '';
+        $sCss                   = '';
 
-        if (empty($aTmpStyle))
+        if (empty($aTmpStyle)) {
             return '';
+        }
 
         foreach ($aTmpStyle as $sKey => $aValue) {
-            if (!isset($this->_aCssMatch[$sKey]))
+            if (!isset($this->_aCssMatch[$sKey])) {
                 continue;
+            }
 
             foreach ($aValue as $sValKey => $aParam) {
-                if (!isset($this->_aCssMatch[$sKey][$sValKey]['css_name']))
+                if (!isset($this->_aCssMatch[$sKey][$sValKey]['css_name'])) {
                     continue;
+                }
 
                 $sPartCss = $this->_aCssMatch[$sKey][$sValKey]['css_name'] . ' {';
 
                 $sMethod = '_compile' . ucfirst($sKey);
-                $s = method_exists($this, $sMethod) ? call_user_func_array(array($this, $sMethod), array($aParam)) : '';
-                if ('body' == $sValKey && 'background' == $sKey && '' != $s && 'background-image: none;' != $s)
+                $s       = method_exists($this, $sMethod) ? call_user_func_array(array($this, $sMethod),
+                    array($aParam)) : '';
+                if ('body' == $sValKey && 'background' == $sKey && '' != $s && 'background-image: none;' != $s) {
                     $bPageBackgroundChanged = true;
+                }
                 $sPartCss .= $s;
 
                 $sPartCss .= ' }';
@@ -446,8 +486,9 @@ class BxProfileCustomizeModule extends BxDolModule
             }
         }
 
-        if ($bPageBackgroundChanged)
+        if ($bPageBackgroundChanged) {
             $sCss .= ' html div.sys_root_bg {display:none;} ';
+        }
 
         return $sCss;
     }
@@ -456,8 +497,9 @@ class BxProfileCustomizeModule extends BxDolModule
     {
         $aTmpStyle = $this->_oDb->getProfileTmpByUserId($this->iUserId);
 
-        if (empty($aTmpStyle))
+        if (empty($aTmpStyle)) {
             return '';
+        }
 
         $this->_parseImages($aTmpStyle, BX_PROFILE_CUSTOMIZE_IMAGES_COPY);
 
@@ -466,8 +508,9 @@ class BxProfileCustomizeModule extends BxDolModule
 
     function _parseImages($aCss, $iOperation)
     {
-        if (empty($aCss))
+        if (empty($aCss)) {
             return;
+        }
 
         foreach ($aCss as $sKey => $mixedValue) {
             if (!is_array($mixedValue)) {
@@ -482,8 +525,9 @@ class BxProfileCustomizeModule extends BxDolModule
                             break;
                     }
                 }
-            } else
+            } else {
                 $this->_parseImages($mixedValue, $iOperation);
+            }
         }
     }
 
@@ -491,15 +535,18 @@ class BxProfileCustomizeModule extends BxDolModule
     {
         $aResult = array();
 
-        if (empty($aCss))
+        if (empty($aCss)) {
             return $aResult;
+        }
 
         foreach ($aCss as $sKey => $mixedValue) {
             if (!is_array($mixedValue)) {
-                if ($sKey == 'image')
+                if ($sKey == 'image') {
                     $aResult[] = $mixedValue;
-            } else
+                }
+            } else {
                 $aResult = array_merge($aResult, $this->_getImages($mixedValue));
+            }
         }
 
         return $aResult;
@@ -509,28 +556,32 @@ class BxProfileCustomizeModule extends BxDolModule
     {
         $aResult = array();
 
-        if (empty($aCss))
+        if (empty($aCss)) {
             return $aResult;
+        }
 
         foreach ($aCss as $sKey => $mixedValue) {
             if (!is_array($mixedValue)) {
                 if ($sKey == 'image') {
-                    $sExt = pathinfo($mixedValue, PATHINFO_EXTENSION);
+                    $sExt      = pathinfo($mixedValue, PATHINFO_EXTENSION);
                     $sFileName = $this->_oDb->addImage($sExt);
                     if ($sFileName) {
                         $sDestDir = $this->_getImagesDir();
-                        $oFile = fopen($sDestDir . $sFileName, 'w', false);
+                        $oFile    = fopen($sDestDir . $sFileName, 'w', false);
                         if ($oFile) {
                             fwrite($oFile, $oZip->GetData($aImages[$mixedValue]));
                             fclose($oFile);
-                            imageResize($sDestDir . $sFileName, $sDestDir . BX_PROFILE_CUSTOMIZE_SMALL_PREFIX . $sFileName, 64, 64);
+                            imageResize($sDestDir . $sFileName,
+                                $sDestDir . BX_PROFILE_CUSTOMIZE_SMALL_PREFIX . $sFileName, 64, 64);
                             $aResult[$sKey] = $sFileName;
                         }
                     }
-                } else
+                } else {
                     $aResult[$sKey] = $mixedValue;
-            } else
+                }
+            } else {
                 $aResult[$sKey] = $this->_importImages($mixedValue, $oZip, $aImages);
+            }
         }
 
         return $aResult;
@@ -546,14 +597,16 @@ class BxProfileCustomizeModule extends BxDolModule
     {
         $sResult = _t('_bx_profile_customize_err_delete_theme');
 
-        if (!$iThemeId)
+        if (!$iThemeId) {
             return $sResult;
+        }
 
         $aTheme = $this->_oDb->getThemeById($iThemeId);
         if (!empty($aTheme) && $this->_oDb->deleteTheme($iThemeId)) {
             $sFile = $this->_getImagesDir() . BX_PROFILE_CUSTOMIZE_THEME_PREFIX . $iThemeId . BX_PROFILE_CUSTOMIZE_THUMB_EXT;
-            if (file_exists($sFile))
+            if (file_exists($sFile)) {
                 unlink($sFile);
+            }
             $this->_parseImages(unserialize($aTheme['css']), BX_PROFILE_CUSTOMIZE_IMAGES_DELETE);
 
             $sResult = _t('_bx_profile_customize_delete_complete');
@@ -564,18 +617,22 @@ class BxProfileCustomizeModule extends BxDolModule
 
     function _checkActions()
     {
-        $sResult = '';
+        $sResult     = '';
         $sFileImport = 'theme_file';
 
         if ($_POST['theme']) {
-            if ($_POST['action_theme_export'])
+            if ($_POST['action_theme_export']) {
                 $this->_exportTheme($_POST['theme']);
+            }
 
-            if ($_POST['action_theme_delete'])
+            if ($_POST['action_theme_delete']) {
                 $sResult = $this->_deleteTheme($_POST['theme']);
-        } else if (isset($_FILES[$sFileImport]) && is_uploaded_file($_FILES[$sFileImport]['tmp_name'])) {
-            $sResult = $this->_importTheme($sFileImport);
-            unlink($_FILES[$sFileImport]['tmp_name']);
+            }
+        } else {
+            if (isset($_FILES[$sFileImport]) && is_uploaded_file($_FILES[$sFileImport]['tmp_name'])) {
+                $sResult = $this->_importTheme($sFileImport);
+                unlink($_FILES[$sFileImport]['tmp_name']);
+            }
         }
 
         return $sResult;
@@ -585,14 +642,15 @@ class BxProfileCustomizeModule extends BxDolModule
     {
         $aTheme = $this->_oDb->getThemeById($iThemeId);
 
-        if (empty($aTheme))
+        if (empty($aTheme)) {
             return;
+        }
 
         $sConf = "\$sThemeName = '{$aTheme['name']}';\n";
         $sConf .= "\$sThemeStyle = '{$aTheme['css']}';\n";
 
         $sImagesPath = $this->_getImagesDir();
-        $oZipFile = new zipfile();
+        $oZipFile    = new zipfile();
 
         $oZipFile->addFile($sConf, BX_PROFILE_CUSTOMIZE_THEME_CONF);
         $sFile = $sImagesPath . BX_PROFILE_CUSTOMIZE_THEME_PREFIX . $iThemeId . BX_PROFILE_CUSTOMIZE_THUMB_EXT;
@@ -618,42 +676,49 @@ class BxProfileCustomizeModule extends BxDolModule
 
     function _importTheme($sFileImport)
     {
-        $sResult = '';
+        $sResult  = '';
         $sDestDir = $this->_getImagesDir();
 
-        if (!$sFileImport)
+        if (!$sFileImport) {
             return $sResult;
+        }
 
-        if (pathinfo($_FILES[$sFileImport]['name'], PATHINFO_EXTENSION) != 'dfn')
+        if (pathinfo($_FILES[$sFileImport]['name'], PATHINFO_EXTENSION) != 'dfn') {
             return _t('_bx_profile_customize_err_format');
+        }
 
         $oUnZip = new SimpleUnzip($_FILES[$sFileImport]['tmp_name']);
         $aFiles = $this->_getZipFilesFromPath($oUnZip, '');
 
         // check exist 'conf.php'
-        if (!isset($aFiles[BX_PROFILE_CUSTOMIZE_THEME_CONF]))
+        if (!isset($aFiles[BX_PROFILE_CUSTOMIZE_THEME_CONF])) {
             return sprintf(_t('_bx_profile_customize_err_conf_php'), 'conf.php');
+        }
 
         eval($oUnZip->GetData($aFiles[BX_PROFILE_CUSTOMIZE_THEME_CONF]));
 
         // check parameters
-        if (!isset($sThemeName) || !isset($sThemeStyle))
+        if (!isset($sThemeName) || !isset($sThemeStyle)) {
             return _t('_bx_profile_customize_err_theme_parameters');
+        }
 
         // check exist theme
         $aTheme = $this->_oDb->getThemeByName($sThemeName);
-        if (!empty($aTheme))
+        if (!empty($aTheme)) {
             return sprintf(_t('_bx_profile_customize_err_already_exist'), $sThemeName);
+        }
 
-		$aStyle = unserialize($sThemeStyle);
+        $aStyle  = unserialize($sThemeStyle);
         $aImages = $this->_getZipFilesFromPath($oUnZip, 'images');
-        if(!empty($aImages))
+        if (!empty($aImages)) {
             $aStyle = $this->_importImages($aStyle, $oUnZip, $aImages);
+        }
 
         // insert in table
         $iThemeId = $this->_oDb->addTheme($sThemeName, 0, serialize($aStyle));
-        if ($iThemeId == -1)
+        if ($iThemeId == -1) {
             return _t('_bx_profile_customize_err_add_theme');
+        }
 
         // copy thumbnail
         if (isset($aFiles[BX_PROFILE_CUSTOMIZE_THEME_THUMB])) {
@@ -674,8 +739,9 @@ class BxProfileCustomizeModule extends BxDolModule
         $aFiles = array();
 
         for ($i = 0; $i < $oZipFile->Count(); $i++) {
-            if ($oZipFile->GetPath($i) == $sPath)
+            if ($oZipFile->GetPath($i) == $sPath) {
                 $aFiles[$oZipFile->GetName($i)] = $i;
+            }
         }
 
         return $aFiles;
@@ -686,21 +752,24 @@ class BxProfileCustomizeModule extends BxDolModule
         $sParams = '';
 
         foreach ($aParam as $sKey => $sValue) {
-            if (!$sValue)
+            if (!$sValue) {
                 continue;
+            }
 
             switch ($sKey) {
                 case 'color':
                     $sParams .= 'background-color: ' . $sValue . ';';
-                    if (!isset($aParam['image']))
+                    if (!isset($aParam['image'])) {
                         $sParams .= 'background-image: none;';
+                    }
                     break;
 
                 case 'image':
-                    if (isset($aParam['useimage']))
+                    if (isset($aParam['useimage'])) {
                         $sParams .= 'background-image: url(' . $this->_getImagesPath() . $sValue . ');';
-                    else
+                    } else {
                         $sParams .= 'background-image: none;';
+                    }
                     break;
 
                 case 'repeat':
@@ -721,8 +790,9 @@ class BxProfileCustomizeModule extends BxDolModule
         $sParams = '';
 
         foreach ($aParam as $sKey => $sValue) {
-            if ($sValue == '')
+            if ($sValue == '') {
                 continue;
+            }
 
             switch ($sKey) {
                 case 'size':
@@ -759,13 +829,13 @@ class BxProfileCustomizeModule extends BxDolModule
 
     function _compileBorder($aParam)
     {
-        $sParams = '';
+        $sParams     = '';
         $aProperties = array(
             'border'
         );
 
         if (isset($aParam['position']))
-            switch($aParam['position']) {
+            switch ($aParam['position']) {
                 case 'top':
                     $aProperties = array(
                         'border-top'
@@ -835,23 +905,27 @@ class BxProfileCustomizeModule extends BxDolModule
 
         foreach ($aParam as $sKey => $sValue) {
             $sProperty = '';
-            if ($sValue == '')
+            if ($sValue == '') {
                 continue;
+            }
 
             switch ($sKey) {
                 case 'size':
-                    foreach ($aProperties as $sVal)
+                    foreach ($aProperties as $sVal) {
                         $sParams .= $sVal . '-width: ' . $sValue . 'px;';
+                    }
                     break;
 
                 case 'color':
-                    foreach ($aProperties as $sVal)
+                    foreach ($aProperties as $sVal) {
                         $sParams .= $sVal . '-color: ' . $sValue . ';';
+                    }
                     break;
 
                 case 'style':
-                    foreach ($aProperties as $sVal)
+                    foreach ($aProperties as $sVal) {
                         $sParams .= $sVal . '-style: ' . $sValue . ';';
+                    }
                     break;
             }
         }

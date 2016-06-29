@@ -1,11 +1,11 @@
 <?php
 /***************************************************************************
-*
-* IMPORTANT: This is a commercial product made by BoonEx Ltd. and cannot be modified for other than personal usage.
-* This product cannot be redistributed for free or a fee without written permission from BoonEx Ltd.
-* This notice may not be removed from the source code.
-*
-***************************************************************************/
+ *
+ * IMPORTANT: This is a commercial product made by BoonEx Ltd. and cannot be modified for other than personal usage.
+ * This product cannot be redistributed for free or a fee without written permission from BoonEx Ltd.
+ * This notice may not be removed from the source code.
+ *
+ ***************************************************************************/
 
 /**
  * Refresh user's status.
@@ -15,9 +15,11 @@ function refreshIMUsers($iSndId, $iRspId)
     global $sModule;
 
     $iUpdateTime = (int)getSettingValue($sModule, "updateInterval");
-    if(empty($iUpdateTime)) $iUpdateTime = 5;
-    $iIdleTime = $iUpdateTime * 3;
-    $iDeleteTime = $iUpdateTime * 6;
+    if (empty($iUpdateTime)) {
+        $iUpdateTime = 5;
+    }
+    $iIdleTime    = $iUpdateTime * 3;
+    $iDeleteTime  = $iUpdateTime * 6;
     $iCurrentTime = time();
 
     //--- update user's online state ---//
@@ -34,13 +36,17 @@ function refreshIMUsers($iSndId, $iRspId)
 function addPend($iSndId, $iRspId, $sMsg)
 {
     $sQuery = "INSERT INTO `" . MODULE_DB_PREFIX . "Pendings`(`SenderID`, `RecipientID`, `Message`, `When`) VALUES('" . $iSndId . "', '" . $iRspId . "', '" . $sMsg . "', '" . time() . "')";
+
     return getResult($sQuery);
 }
 
 function getUserOnlineStatus($sUser, $sRecipient)
 {
     $sStatus = getValue("SELECT `Online` FROM `" . MODULE_DB_PREFIX . "Contacts` WHERE `SenderID`='" . $sUser . "' AND `RecipientID`='" . $sRecipient . "' LIMIT 1");
-    if(empty($sStatus)) $sStatus = USER_STATUS_OFFLINE;
+    if (empty($sStatus)) {
+        $sStatus = USER_STATUS_OFFLINE;
+    }
+
     return $sStatus;
 }
 

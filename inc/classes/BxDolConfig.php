@@ -15,6 +15,7 @@ bx_import('BxDolPermalinks');
  *
  *
  * Example of usage:
+ *
  * @see any module included in the default Dolphin's package.
  *
  *
@@ -32,7 +33,6 @@ bx_import('BxDolPermalinks');
  * no alerts available
  *
  */
-
 class BxDolConfig
 {
     var $_iId;
@@ -60,41 +60,47 @@ class BxDolConfig
      */
     function __construct($aModule)
     {
-        $this->_iId = empty($aModule['id']) ? 0 : (int)$aModule['id'];
-        $this->_sVendor = $aModule['vendor'];
+        $this->_iId          = empty($aModule['id']) ? 0 : (int)$aModule['id'];
+        $this->_sVendor      = $aModule['vendor'];
         $this->_sClassPrefix = $aModule['class_prefix'];
-        $this->_sDbPrefix = $aModule['db_prefix'];
+        $this->_sDbPrefix    = $aModule['db_prefix'];
 
         $this->_sDirectory = $aModule['path'];
-        $this->_sHomePath = BX_DIRECTORY_PATH_MODULES . $this->_sDirectory;
+        $this->_sHomePath  = BX_DIRECTORY_PATH_MODULES . $this->_sDirectory;
         $this->_sClassPath = $this->_sHomePath . 'classes/';
 
-        $this->_sUri = $aModule['uri'];
+        $this->_sUri     = $aModule['uri'];
         $this->_sHomeUrl = BX_DOL_URL_MODULES . $this->_sDirectory;
 
-        $oPermalinks = new BxDolPermalinks();
+        $oPermalinks     = new BxDolPermalinks();
         $this->_sBaseUri = $oPermalinks->permalink('modules/?r=' . $this->_sUri . '/');
     }
+
     function getId()
     {
         return $this->_iId;
     }
+
     function getClassPrefix()
     {
         return $this->_sClassPrefix;
     }
+
     function getDbPrefix()
     {
         return $this->_sDbPrefix;
     }
+
     function getHomePath()
     {
         return $this->_sHomePath;
     }
+
     function getClassPath()
     {
         return $this->_sClassPath;
     }
+
     /**
      * Get unique URI.
      *
@@ -104,17 +110,20 @@ class BxDolConfig
     {
         return $this->_sUri;
     }
+
     /**
      * Get base URI which depends on the Permalinks mechanism.
      *
      * example /modules/?r=module_uri or /m/module_uri
+     *
      * @return string with base URI.
      */
     function getBaseUri()
     {
         return $this->_sBaseUri;
-        
+
     }
+
     /**
      * Get full URL.
      *

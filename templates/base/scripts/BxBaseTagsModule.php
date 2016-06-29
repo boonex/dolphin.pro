@@ -16,9 +16,9 @@ class BxBaseTagsModule extends BxDolPageView
 
     function __construct($aParam, $sTitle, $sUrl)
     {
-        $this->_sPage = 'tags_module';
+        $this->_sPage  = 'tags_module';
         $this->_sTitle = $sTitle ? $sTitle : _t('_all_tags');
-        $this->_sUrl = $sUrl;
+        $this->_sUrl   = $sUrl;
         $this->_aParam = $aParam;
         parent::__construct($this->_sPage);
     }
@@ -30,9 +30,9 @@ class BxBaseTagsModule extends BxDolPageView
 
         return $oTags->display(
             array(
-                'type' => $this->_aParam['type'],
+                'type'    => $this->_aParam['type'],
                 'orderby' => 'recent',
-                'limit' => getParam('tags_show_limit')
+                'limit'   => getParam('tags_show_limit')
             ),
             $iBlockId, '', $this->_sUrl
         );
@@ -43,8 +43,9 @@ class BxBaseTagsModule extends BxDolPageView
         $oTags = new BxTemplTags();
         $oTags->getTagObjectConfig();
 
-        if (!isset($this->_aParam['pagination']))
+        if (!isset($this->_aParam['pagination'])) {
             $this->_aParam['pagination'] = getParam('tags_perpage_browse');
+        }
 
         return array(
             $oTags->display($this->_aParam, $iBlockId, '', $this->_sUrl),

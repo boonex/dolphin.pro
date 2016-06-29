@@ -8,26 +8,26 @@ require_once('../../../inc/header.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'design.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'profiles.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'utils.inc.php');
-require_once( BX_DIRECTORY_PATH_INC . 'admin_design.inc.php' );
-require_once( BX_DIRECTORY_PATH_INC . 'admin.inc.php' );
+require_once(BX_DIRECTORY_PATH_INC . 'admin_design.inc.php');
+require_once(BX_DIRECTORY_PATH_INC . 'admin.inc.php');
 
 //require_once( BX_DIRECTORY_PATH_MODULES . $aModule['path'] . '/classes/' . $aModule['class_prefix'] . 'Module.php');
 bx_import('BxDolModuleDb');
-require_once( BX_DIRECTORY_PATH_MODULES . 'boonex/blogs/classes/BxBlogsModule.php');
+require_once(BX_DIRECTORY_PATH_MODULES . 'boonex/blogs/classes/BxBlogsModule.php');
 
-$logged['admin'] = member_auth( 1, true, true );
+$logged['admin'] = member_auth(1, true, true);
 
 $oModuleDb = new BxDolModuleDb();
-$aModule = $oModuleDb->getModuleByUri('blogs');
+$aModule   = $oModuleDb->getModuleByUri('blogs');
 
-$oBlogs = new BxBlogsModule($aModule);
+$oBlogs       = new BxBlogsModule($aModule);
 $sHeaderValue = $oBlogs->GetHeaderString();
 
-$iNameIndex = 9;
-$_page = array(
-    'name_index' => $iNameIndex,
-    'css_name' => array('common.css', 'forms_adv.css', 'blogs_common.css', 'blogs.css'),
-    'header' => $sHeaderValue,
+$iNameIndex                                = 9;
+$_page                                     = array(
+    'name_index'  => $iNameIndex,
+    'css_name'    => array('common.css', 'forms_adv.css', 'blogs_common.css', 'blogs.css'),
+    'header'      => $sHeaderValue,
     'header_text' => $sHeaderValue
 );
 $_page_cont[$iNameIndex]['page_main_code'] = PageCompBlogs($oBlogs);
@@ -35,7 +35,7 @@ PageCodeAdmin();
 
 function PageCompBlogs($oBlogs)
 {
-    $sCss = $oBlogs->_oTemplate->addCss(array('blogs.css', 'blogs_common.css'), true);
+    $sCss     = $oBlogs->_oTemplate->addCss(array('blogs.css', 'blogs_common.css'), true);
     $sRetHtml = $sCss . $oBlogs->GenCommandForms();
 
     switch (bx_get('action')) {
@@ -84,7 +84,7 @@ function PageCompBlogs($oBlogs)
             break;
         case 'edit_blog':
             $sRetHtml .= $oBlogs->ActionEditBlog();
-            $iBlogID = (int)bx_get('EditBlogID');
+            $iBlogID  = (int)bx_get('EditBlogID');
             $iOwnerID = (int)bx_get('EOwnerID');
             $sRetHtml .= $oBlogs->GenMemberBlog($iOwnerID);
             break;
@@ -94,7 +94,7 @@ function PageCompBlogs($oBlogs)
             break;
         case 'del_img':
             $sRetHtml .= $oBlogs->ActionDelImg();
-            if (bx_get('mode')=='ajax') {
+            if (bx_get('mode') == 'ajax') {
                 exit;
             }
             $sRetHtml .= $oBlogs->GenPostPage();

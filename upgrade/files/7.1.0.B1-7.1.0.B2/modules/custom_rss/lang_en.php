@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_custom_rss' => 'Custom RSS',
+    '_sys_module_custom_rss' => 'Custom RSS',
 
 );

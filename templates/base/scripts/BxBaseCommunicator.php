@@ -1,687 +1,702 @@
 <?php
 
-    /**
+/**
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-    require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolCommunicator.php');
+require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolCommunicator.php');
 
-    class BxBaseCommunicator extends BxDolCommunicator
+class BxBaseCommunicator extends BxDolCommunicator
+{
+    // contain all needed templates for Html rendering ;
+    var $aUsedTemplates;
+
+    var $sMembersFlagExtension = '.gif';
+
+    /**
+     * Class constructor ;
+     *
+     * @param    : $aCommunicatorSettings (array)  - contain some necessary data ;
+     *                    [ member_id    ] (integer) - logged member's ID;
+     *                    [ communicator_mode ] (string) - page mode ;
+     *                    [ person_switcher ] (string) - switch the person mode - from me or to me ;
+     *                    [ sorting ] (string) - type of message's sort ;
+     *                    [ page ] (integer) - contain number of current page ;
+     *                    [ per_page ] (integer) - contain per page number for current page ;
+     *                    [ alert_page ] (integer) - contain number of current alert's page
+     */
+    function __construct($aCommunicatorSettings)
     {
-        // contain all needed templates for Html rendering ;
-        var $aUsedTemplates;
+        parent::__construct($aCommunicatorSettings);
 
-        var $sMembersFlagExtension   = '.gif';
+        //fill array with tamplates name;
+        $this->aUsedTemplates = array(
+            'communicator_page'          => 'communicator_page.html',
+            'communicator_page_fr'       => 'communicator_page_fr.html',
+            'communicator_settings'      => 'communicator_settings.html',
+            'communicator_settings_page' => 'communicator_page_top_settings.html',
+        );
+    }
 
-       /**
-        * Class constructor ;
-        *
-        * @param	: $aCommunicatorSettings (array)  - contain some necessary data ;
-        * 					[ member_id	] (integer) - logged member's ID;
-        * 					[ communicator_mode ] (string) - page mode ;
-        * 					[ person_switcher ] (string) - switch the person mode - from me or to me ;
-        * 					[ sorting ] (string) - type of message's sort ;
-        * 					[ page ] (integer) - contain number of current page ;
-        * 					[ per_page ] (integer) - contain per page number for current page ;
-        * 					[ alert_page ] (integer) - contain number of current alert's page
-        */
-        function __construct($aCommunicatorSettings)
-        {
-            parent::__construct($aCommunicatorSettings);
+    function getCss()
+    {
+        return array('communicator_page.css');
+    }
 
-            //fill array with tamplates name;
-            $this -> aUsedTemplates = array (
-                'communicator_page' => 'communicator_page.html',
-                'communicator_page_fr' => 'communicator_page_fr.html',
-                'communicator_settings' => 'communicator_settings.html',
-                'communicator_settings_page' => 'communicator_page_top_settings.html',
+    function getJs()
+    {
+        return array('communicator_page.js');
+    }
+
+    /**
+     * Function will draw the 'Connections' block;
+     */
+    function getBlockCode_Connections()
+    {
+        global $oSysTemplate;
+
+        // set default mode ;
+        if (!$this->aCommunicatorSettings['communicator_mode']) {
+            $this->aCommunicatorSettings['communicator_mode'] = 'friends_list';
+        }
+
+        // generate the top page toggle ellements ;
+        $aTopToggleItems = array(
+            'friends_list'     => _t('_sys_cnts_txt_frients'),
+            'hotlist_requests' => _t('_sys_cnts_txt_favorites'),
+            'blocks_requests'  => _t('_sys_cnts_txt_blocked')
+        );
+
+        $sRequest = BX_DOL_URL_ROOT . 'communicator.php?';
+        foreach ($aTopToggleItems AS $sKey => $sValue) {
+            $aTopToggleEllements[$sValue] = array(
+                'href'    => $sRequest . '&communicator_mode=' . $sKey . ($sKey != 'friends_list' ? '&person_switcher=from' : ''),
+                'dynamic' => true,
+                'active'  => ($this->aCommunicatorSettings['communicator_mode'] == $sKey),
             );
         }
 
-        function getCss()
-        {
-            return array('communicator_page.css');
+        // return processed html data;
+        $sOutputHtml = $this->getProcessingRows();
+
+        // return generated template ;
+        return array($sOutputHtml, $aTopToggleEllements, array(), true);
+    }
+
+    /**
+     * Function will draw the 'Friend Requests' block;
+     */
+    function getBlockCode_FriendRequests($bShowEmpty = true)
+    {
+        global $oSysTemplate;
+
+        // set default mode ;
+        $this->aCommunicatorSettings['communicator_mode'] = 'friends_requests';
+        $this->aCommunicatorSettings['person_switcher']   = 'to';
+
+        // return processed html data;
+        $sOutputHtml = $this->getProcessingRows($bShowEmpty);
+
+        $this->aCommunicatorSettings['communicator_mode'] = '';
+
+        if (empty($sOutputHtml)) {
+            return '';
         }
 
-        function getJs()
-        {
-            return array('communicator_page.js');
-        }
+        // return generated template ;
+        return array($sOutputHtml, array(), array(), true);
+    }
 
-        /**
-         * Function will draw the 'Connections' block;
-         */
-        function getBlockCode_Connections()
-        {
-            global $oSysTemplate;
+    /**
+     * Function will generate received rows ;
+     *
+     * @return  : Html presentation data ;
+     */
+    function getProcessingRows($bShowEmpty = true)
+    {
+        global $oSysTemplate, $site, $oFunctions;
 
-            // set default mode ;
-            if(!$this -> aCommunicatorSettings['communicator_mode'])
-                $this -> aCommunicatorSettings['communicator_mode'] = 'friends_list';
+        // ** init some needed variables ;
+        $sPageContent  = $sActionsList = $sSettings = '';
+        $bShowSettings = false;
+        $aRows         = array();
 
-            // generate the top page toggle ellements ;
-            $aTopToggleItems = array (
-                'friends_list' =>  _t('_sys_cnts_txt_frients'),
-                'hotlist_requests' => _t('_sys_cnts_txt_favorites'),
-                'blocks_requests' => _t('_sys_cnts_txt_blocked')
-            );
+        $sEmptyMessage  = '_Empty';
+        $sRowsTemplName = $this->aUsedTemplates['communicator_page'];
+        $sJsObject      = $this->_getJsObject();
 
-            $sRequest = BX_DOL_URL_ROOT . 'communicator.php?';
-            foreach( $aTopToggleItems AS $sKey => $sValue ) {
-                $aTopToggleEllements[$sValue] = array (
-                    'href' => $sRequest . '&communicator_mode=' . $sKey . ($sKey != 'friends_list' ? '&person_switcher=from' : ''),
-                    'dynamic' => true,
-                    'active' => ($this -> aCommunicatorSettings['communicator_mode'] == $sKey ),
+        // define the member's nickname;
+        $sMemberNickName = getNickName($this->aCommunicatorSettings['member_id']);
+
+        // all primary language's keys ;
+        $aLanguageKeys = array(
+            'author'      => _t('_Author'),
+            'type'        => _t('_Type'),
+            'date'        => _t('_Date'),
+            'click_sort'  => _t('_Click to sort'),
+            'from_me'     => _t('_From') . ' ' . $sMemberNickName,
+            'to_me'       => _t('_To') . ' ' . $sMemberNickName,
+            'accept'      => _t('_sys_cnts_btn_fr_accept'),
+            'reject'      => _t('_sys_cnts_btn_fr_reject'),
+            'delete'      => _t('_Delete'),
+            'back_invite' => _t('_Back Invite'),
+            'fave'        => _t('_sys_cnts_btn_fave'),
+            'visitor'     => _t('_Visitor'),
+            'unblock'     => _t('_Unblock'),
+            'block'       => _t('_Block'),
+            'select'      => _t('_Select'),
+            'all'         => _t('_All'),
+            'none'        => _t('_None'),
+            'read'        => _t('_Read'),
+            'unread'      => _t('_Unread'),
+        );
+
+        // get all requests from DB ;
+        switch ($this->aCommunicatorSettings['communicator_mode']) {
+            case 'friends_requests' :
+                $sEmptyMessage  = '_sys_cnts_msg_fr_empty';
+                $sRowsTemplName = $this->aUsedTemplates['communicator_page_fr'];
+
+                $aTypes = array(
+                    'from' => _t('_MEMBERS_INVITE_YOU_FRIENDLIST'),
+                    'to'   => _t('_MEMBERS_YOU_INVITED_FRIENDLIST')
                 );
-            }
+                $aRows  = $this->getRequests('sys_friend_list', $aTypes, ' AND `sys_friend_list`.`Check` = 0 ');
+                break;
 
-            // return processed html data;
-            $sOutputHtml = $this -> getProcessingRows();
+            case 'hotlist_requests' :
+                $aTypes = array
+                (
+                    'from' => _t('_MEMBERS_YOU_HOTLISTED'),
+                    'to'   => _t('_MEMBERS_YOU_HOTLISTED_BY')
+                );
+                $aRows  = $this->getRequests('sys_fave_list', $aTypes);
+                break;
 
-            // return generated template ;
-            return array($sOutputHtml, $aTopToggleEllements, array(), true);
+            case 'greeting_requests' :
+                $aTypes = array
+                (
+                    'from'         => _t('_MEMBERS_YOU_KISSED'),
+                    'to'           => _t('_MEMBERS_YOU_KISSED_BY'),
+                    'specific_key' => '_N times',
+                );
+                $aRows  = $this->getRequests('sys_greetings', $aTypes, null, 'Number');
+                break;
+
+            case 'blocks_requests' :
+                $aTypes = array
+                (
+                    'from' => _t('_MEMBERS_YOU_BLOCKLISTED'),
+                    'to'   => _t('_MEMBERS_YOU_BLOCKLISTED_BY'),
+                );
+                $aRows  = $this->getRequests('sys_block_list', $aTypes);
+                break;
+
+            case 'friends_list'  :
+                $aTypes = array
+                (
+                    'from' => _t('_Friend list'),
+                    'to'   => _t('_Friend list'),
+                );
+                $aRows  = $this->getRequests('sys_friend_list', $aTypes,
+                    ' AND `sys_friend_list`.`Check` = 1 OR ( `sys_friend_list`.`ID` = ' . $this->aCommunicatorSettings['member_id']
+                    . ' AND `sys_friend_list`.`Check` = 1 )');
+                break;
+
+            default :
+                $aTypes = array
+                (
+                    'from' => _t('_MEMBERS_INVITE_YOU_FRIENDLIST'),
+                    'to'   => _t('_MEMBERS_YOU_INVITED_FRIENDLIST')
+                );
+                $aRows  = $this->getRequests('sys_friend_list', $aTypes, ' AND `sys_friend_list`.`Check` = 0 ');
         }
 
-        /**
-         * Function will draw the 'Friend Requests' block;
-         */
-        function getBlockCode_FriendRequests($bShowEmpty = true)
-        {
-            global $oSysTemplate;
-
-            // set default mode ;
-            $this -> aCommunicatorSettings['communicator_mode'] = 'friends_requests';
-            $this -> aCommunicatorSettings['person_switcher'] = 'to';
-
-            // return processed html data;
-            $sOutputHtml = $this -> getProcessingRows($bShowEmpty);
-
-            $this -> aCommunicatorSettings['communicator_mode'] = '';
-
-            if(empty($sOutputHtml))
-                return '';
-
-            // return generated template ;
-            return array($sOutputHtml, array(), array(), true);
+        if (empty($aRows) && !$bShowEmpty) {
+            return '';
         }
 
-        /**
-         * Function will generate received rows ;
-         *
-         * @return  : Html presentation data ;
-         */
-        function getProcessingRows($bShowEmpty = true)
-        {
-            global $oSysTemplate, $site, $oFunctions ;
+        // ** Generate the page's pagination ;
 
-            // ** init some needed variables ;
-            $sPageContent = $sActionsList = $sSettings ='';
-            $bShowSettings = false;
-            $aRows = array();
+        // fill array with all necessary `get` parameters ;
+        $aNeededParameters = array('communicator_mode', 'person_switcher', 'sorting');
 
-            $sEmptyMessage = '_Empty';
-            $sRowsTemplName = $this -> aUsedTemplates['communicator_page'];
-            $sJsObject = $this->_getJsObject();
+        // collect the page's URL ;
+        $sRequest = BX_DOL_URL_ROOT . 'communicator.php?action=get_page';
 
-            // define the member's nickname;
-            $sMemberNickName  = getNickName($this -> aCommunicatorSettings['member_id']);
+        // add additional parameters ;
+        foreach ($aNeededParameters AS $sKey) {
+            $sRequest .= (array_key_exists($sKey, $this->aCommunicatorSettings) and $this->aCommunicatorSettings[$sKey])
+                ? '&' . $sKey . '=' . $this->aCommunicatorSettings[$sKey]
+                : null;
+        }
 
-            // all primary language's keys ;
-            $aLanguageKeys = array (
-                'author'      => _t( '_Author' ),
-                'type'        => _t( '_Type' ),
-                'date'        => _t( '_Date' ),
-                'click_sort'  => _t( '_Click to sort' ),
-                'from_me'     => _t( '_From' )   . ' ' . $sMemberNickName,
-                'to_me'       => _t( '_To' )     . ' ' . $sMemberNickName,
-                'accept'      => _t( '_sys_cnts_btn_fr_accept' ),
-                'reject'      => _t( '_sys_cnts_btn_fr_reject' ),
-                'delete'      => _t( '_Delete' ),
-                'back_invite' => _t( '_Back Invite' ),
-                'fave'        => _t( '_sys_cnts_btn_fave' ),
-                'visitor'     => _t( '_Visitor' ),
-                'unblock'     => _t( '_Unblock' ),
-                'block'       => _t( '_Block' ),
-                'select'      => _t( '_Select' ),
-                'all'         => _t( '_All' ),
-                'none'        => _t( '_None' ),
-                'read'        => _t( '_Read' ),
-                'unread'      => _t( '_Unread' ),
-            );
+        $sCuttedUrl = $sRequest;
+        $sRequest .= '&page={page}&per_page={per_page}';
 
-            // get all requests from DB ;
-            switch($this -> aCommunicatorSettings['communicator_mode']) {
-                case 'friends_requests' :
-                    $sEmptyMessage = '_sys_cnts_msg_fr_empty';
-                    $sRowsTemplName = $this -> aUsedTemplates['communicator_page_fr'];
+        // create  the pagination object ;
+        $oPaginate = new BxDolPaginate (
+            array(
+                'page_url' => $sRequest,
+                'count'    => $this->iTotalRequestsCount,
+                'per_page' => $this->aCommunicatorSettings['per_page'],
+                'sorting'  => $this->aCommunicatorSettings['sorting'],
+                'page'     => $this->aCommunicatorSettings['page'],
 
-                    $aTypes = array (
-                        'from'  => _t( '_MEMBERS_INVITE_YOU_FRIENDLIST' ),
-                        'to'    => _t( '_MEMBERS_YOU_INVITED_FRIENDLIST' )
-                    );
-                    $aRows = $this -> getRequests( 'sys_friend_list', $aTypes, ' AND `sys_friend_list`.`Check` = 0 ');
-                break;
+                'on_change_page'     => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".getPaginatePage('{$sRequest}')",
+                'on_change_per_page' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".getPage(this.value, '{$sCuttedUrl}')",
+            )
+        );
 
-                case 'hotlist_requests' :
-                    $aTypes = array
-                    (
-                        'from'  => _t( '_MEMBERS_YOU_HOTLISTED' ),
-                        'to'    => _t( '_MEMBERS_YOU_HOTLISTED_BY' )
-                    );
-                    $aRows = $this -> getRequests( 'sys_fave_list', $aTypes);
-                break;
+        $sPagination = $oPaginate->getPaginate();
 
-                case 'greeting_requests' :
-                    $aTypes = array
-                    (
-                        'from'          => _t( '_MEMBERS_YOU_KISSED' ),
-                        'to'            => _t( '_MEMBERS_YOU_KISSED_BY' ),
-                        'specific_key'  => '_N times',
-                    );
-                    $aRows = $this -> getRequests( 'sys_greetings', $aTypes, null, 'Number' );
-                break;
+        // process received requests;
+        if ($aRows) {
+            $iIndex = 1;
+            foreach ($aRows AS $iKey => $aItems) {
+                // if member not a visitor ;
+                if ($aItems['member_id']) {
+                    // ** some member's information ;
+                    $aProfileInfo = getProfileInfo($aItems['member_id']);
 
-                case 'blocks_requests' :
-                    $aTypes = array
-                    (
-                        'from'          => _t( '_MEMBERS_YOU_BLOCKLISTED' ),
-                        'to'            => _t( '_MEMBERS_YOU_BLOCKLISTED_BY' ),
-                    );
-                    $aRows = $this -> getRequests( 'sys_block_list', $aTypes );
-                break;
+                    // member's Icon ;
+                    $sMemberIcon = get_member_thumbnail($aProfileInfo['ID'], 'left',
+                        ($this->aCommunicatorSettings['communicator_mode'] != 'friends_requests'));
 
-               case 'friends_list'  :
-                    $aTypes = array
-                    (
-                        'from'  => _t( '_Friend list' ),
-                        'to'	=> _t( '_Friend list' ),
-                    );
-                    $aRows = $this -> getRequests( 'sys_friend_list', $aTypes,
-                        ' AND `sys_friend_list`.`Check` = 1 OR ( `sys_friend_list`.`ID` = ' . $this -> aCommunicatorSettings['member_id']
-                            . ' AND `sys_friend_list`.`Check` = 1 )' );
-                break;
+                    // member's profile location ;
+                    $sMemberLocation = getProfileLink($aProfileInfo['ID']);
 
-                default :
-                    $aTypes = array
-                    (
-                        'from'  => _t( '_MEMBERS_INVITE_YOU_FRIENDLIST' ),
-                        'to'    => _t( '_MEMBERS_YOU_INVITED_FRIENDLIST' )
-                    );
-                    $aRows = $this -> getRequests( 'sys_friend_list', $aTypes, ' AND `sys_friend_list`.`Check` = 0 ' );
-            }
+                    // member's nickname ;
+                    $sMemberNickName = getNickName($aProfileInfo['ID']);
 
-            if(empty($aRows) && !$bShowEmpty)
-                return '';
+                    // define the member's age ;
+                    $sMemberAge = ($aProfileInfo['DateOfBirth'] != "0000-00-00")
+                        ? _t("_y/o", age($aProfileInfo['DateOfBirth']))
+                        : null;
 
-            // ** Generate the page's pagination ;
+                    // define the member's country, sex, etc ... ;
+                    $sMemberCountry = $aProfileInfo['Country'];
+                    $sMemberFlag    = $site['flags'] . strtolower($sMemberCountry) . $this->sMembersFlagExtension;
+                    $sMemberSexImg  = $oFunctions->genSexIcon($aProfileInfo['Sex']);
 
-            // fill array with all necessary `get` parameters ;
-            $aNeededParameters = array( 'communicator_mode', 'person_switcher', 'sorting' );
-
-            // collect the page's URL ;
-            $sRequest = BX_DOL_URL_ROOT . 'communicator.php?action=get_page' ;
-
-            // add additional parameters ;
-            foreach( $aNeededParameters AS $sKey ) {
-                $sRequest .= ( array_key_exists($sKey, $this -> aCommunicatorSettings) and $this -> aCommunicatorSettings[$sKey] )
-                    ? '&' . $sKey . '=' . $this -> aCommunicatorSettings[$sKey]
-                    : null ;
-            }
-
-            $sCuttedUrl = $sRequest;
-            $sRequest   .=  '&page={page}&per_page={per_page}';
-
-            // create  the pagination object ;
-            $oPaginate = new BxDolPaginate (
-                array (
-                    'page_url'   => $sRequest,
-                    'count'      => $this -> iTotalRequestsCount,
-                    'per_page'   => $this -> aCommunicatorSettings['per_page'],
-                    'sorting'    => $this -> aCommunicatorSettings['sorting'],
-                    'page'               => $this -> aCommunicatorSettings['page'],
-
-                    'on_change_page'     => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".getPaginatePage('{$sRequest}')",
-                    'on_change_per_page' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".getPage(this.value, '{$sCuttedUrl}')",
-                )
-            );
-
-            $sPagination   = $oPaginate -> getPaginate();
-
-            // process received requests;
-            if ( $aRows ) {
-                $iIndex = 1;
-                foreach($aRows AS $iKey => $aItems ) {
-                    // if member not a visitor ;
-                    if ( $aItems['member_id'] ) {
-                        // ** some member's information ;
-                        $aProfileInfo    = getProfileInfo ($aItems['member_id']);
-
-                        // member's Icon ;
-                        $sMemberIcon = get_member_thumbnail($aProfileInfo['ID'], 'left', ($this -> aCommunicatorSettings['communicator_mode'] != 'friends_requests'));
-
-                        // member's profile location ;
-                        $sMemberLocation = getProfileLink ($aProfileInfo['ID']);
-
-                        // member's nickname ;
-                        $sMemberNickName  = getNickName($aProfileInfo['ID']);
-
-                        // define the member's age ;
-                        $sMemberAge = ( $aProfileInfo['DateOfBirth'] != "0000-00-00" )
-                            ? _t( "_y/o", age($aProfileInfo['DateOfBirth']) )
-                            : null;
-
-                        // define the member's country, sex, etc ... ;
-                        $sMemberCountry =  $aProfileInfo['Country'];
-                        $sMemberFlag    =  $site['flags'] . strtolower($sMemberCountry) . $this -> sMembersFlagExtension;
-                        $sMemberSexImg  =  $oFunctions -> genSexIcon($aProfileInfo['Sex']);
-
-                        if ( $sMemberCountry )
-                            $sMemberCountryFlag = '<img src="' . $sMemberFlag . '" alt="' . $sMemberCountry . '" />';
-
-                        $iMemberMutualFriends = getMutualFriendsCount($aItems['member_id'], getLoggedId());
-                    } else {
-                        // ** if it's a visitor
-
-                        // member's Icon ;
-                        $sMemberIcon        = $aLanguageKeys['visitor'];
-
-                        // member's profile location ;
-                        $sMemberLocation    = null;
-                        $sMemberSexImg      = null;
-                        $sMemberAge         = null;
-                        $sMemberCountryFlag = null;
-                        $sMemberCountry     = null;
+                    if ($sMemberCountry) {
+                        $sMemberCountryFlag = '<img src="' . $sMemberFlag . '" alt="' . $sMemberCountry . '" />';
                     }
 
-                    $aProcessedRows[] = array (
-                        'js_object' 	 => $sJsObject,
+                    $iMemberMutualFriends = getMutualFriendsCount($aItems['member_id'], getLoggedId());
+                } else {
+                    // ** if it's a visitor
 
-                        'row_value' => $aItems['member_id'],
-                        'member_icon' => $sMemberIcon,
-                        'member_nick_name' => $sMemberNickName,
+                    // member's Icon ;
+                    $sMemberIcon = $aLanguageKeys['visitor'];
 
-                        // define the profile page location ;
-                        'member_location' => $sMemberLocation ? '<a href="' . $sMemberLocation . '">' . $sMemberNickName . '</a>' : '',
-
-                        // define the member's sex ;
-                        'member_sex_img' => $sMemberSexImg ? ' <img src="' . $sMemberSexImg . '" alt="' . $aProfileInfo['Sex'] . '" />' : '',
-
-                        'member_age' => $sMemberAge,
-                        'member_flag' => $sMemberCountryFlag,
-                        'member_country' => $sMemberCountry,
-
-                        'member_mutual_friends' => _t('_sys_cnts_txt_mutual_friends', ($iMemberMutualFriends > 0 ? $iMemberMutualFriends : _t('_sys_cnts_txt_mf_no'))),
-
-                        'type' => $aItems['type'],
-                        'message_date' => $aItems['date'],
-                    );
-
-                    $iIndex++;
+                    // member's profile location ;
+                    $sMemberLocation    = null;
+                    $sMemberSexImg      = null;
+                    $sMemberAge         = null;
+                    $sMemberCountryFlag = null;
+                    $sMemberCountry     = null;
                 }
 
-                // init the sort toggle ellements ;
-                switch ( $this -> aCommunicatorSettings['sorting'] ) {
-                    case 'date' :
-                        $aSortToglleElements['date_sort_toggle'] = 'toggle_up';
+                $aProcessedRows[] = array(
+                    'js_object' => $sJsObject,
+
+                    'row_value'        => $aItems['member_id'],
+                    'member_icon'      => $sMemberIcon,
+                    'member_nick_name' => $sMemberNickName,
+
+                    // define the profile page location ;
+                    'member_location'  => $sMemberLocation ? '<a href="' . $sMemberLocation . '">' . $sMemberNickName . '</a>' : '',
+
+                    // define the member's sex ;
+                    'member_sex_img'   => $sMemberSexImg ? ' <img src="' . $sMemberSexImg . '" alt="' . $aProfileInfo['Sex'] . '" />' : '',
+
+                    'member_age'     => $sMemberAge,
+                    'member_flag'    => $sMemberCountryFlag,
+                    'member_country' => $sMemberCountry,
+
+                    'member_mutual_friends' => _t('_sys_cnts_txt_mutual_friends',
+                        ($iMemberMutualFriends > 0 ? $iMemberMutualFriends : _t('_sys_cnts_txt_mf_no'))),
+
+                    'type'         => $aItems['type'],
+                    'message_date' => $aItems['date'],
+                );
+
+                $iIndex++;
+            }
+
+            // init the sort toggle ellements ;
+            switch ($this->aCommunicatorSettings['sorting']) {
+                case 'date' :
+                    $aSortToglleElements['date_sort_toggle'] = 'toggle_up';
                     break;
-                    case 'date_desc' :
-                       $aSortToglleElements['date_sort_toggle'] = 'toggle_down';
+                case 'date_desc' :
+                    $aSortToglleElements['date_sort_toggle'] = 'toggle_down';
                     break;
-                    case 'author' :
-                        $aSortToglleElements['author_sort_toggle'] = 'toggle_up';
+                case 'author' :
+                    $aSortToglleElements['author_sort_toggle'] = 'toggle_up';
                     break;
-                    case 'author_desc' :
-                        $aSortToglleElements['author_sort_toggle'] = 'toggle_down';
+                case 'author_desc' :
+                    $aSortToglleElements['author_sort_toggle'] = 'toggle_down';
                     break;
-                }
+            }
 
-                // define the actions list for type of requests;
-                switch( $this -> aCommunicatorSettings['communicator_mode'] ) {
-                    case 'friends_requests':
-                        // define the person mode ;
-                        switch ($this -> aCommunicatorSettings['person_switcher']) {
-                            case 'to' :
-                                $aForm = array (
-                                    'form_attrs' => array (
-                                        'action' =>  null,
-                                        'method' => 'post',
-                                    ),
-
-                                    'params' => array (
-                                        'remove_form' => true,
-                                        'db' => array(
-                                            'submit_name' => 'do_submit', // some filed name with non empty value to determine if the for was submitted,
-                                        ),
-                                    ),
-
-                                    'inputs' => array(
-                                        'actions' => array(
-                                            'type' => 'input_set',
-                                            'colspan' => 'true',
-                                            0 => array (
-                                                'type'      => 'button',
-                                                'value'     => $aLanguageKeys['accept'],
-                                                'attrs'     => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'accept_friends_request', 'getProcessingRows')"),
-                                            ),
-                                            1 => array (
-                                                'type'      => 'button',
-                                                'value'     => $aLanguageKeys['reject'],
-                                                'attrs'     => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'reject_friends_request', 'getProcessingRows')"),
-                                            ),
-                                        )
-                                    )
-                                );
-
-                                $oForm = new BxTemplFormView($aForm);
-                                $sActionsList = $oForm -> getCode();
-                                break;
-
-                            case 'from' :
-                                $aForm = array (
-                                    'form_attrs' => array (
-                                        'action' =>  null,
-                                        'method' => 'post',
-                                    ),
-
-                                    'params' => array (
-                                        'remove_form' => true,
-                                        'db' => array(
-                                            'submit_name' => 'do_submit', // some filed name with non empty value to determine if the for was submitted,
-                                        ),
-                                    ),
-
-                                    'inputs' => array(
-                                        'actions' => array(
-                                            'type' => 'input_set',
-                                            'colspan' => 'true',
-                                            0 => array (
-                                                'type'      => 'button',
-                                                'value'     => $aLanguageKeys['back_invite'],
-                                                'attrs'     => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'delete_friends_request', 'getProcessingRows')"),
-                                            ),
-                                        )
-                                    )
-                                );
-
-                                $oForm = new BxTemplFormView($aForm);
-                                $sActionsList = $oForm -> getCode();
-                            break;
-                        }
-                        break;
-
-                    case 'hotlist_requests' :
-                        // define the person mode ;
-                        switch ($this -> aCommunicatorSettings['person_switcher']) {
-                            case 'to' :
-                                $aForm = array (
-                                    'form_attrs' => array (
-                                        'action' =>  null,
-                                        'method' => 'post',
-                                    ),
-
-                                    'params' => array (
-                                        'remove_form' => true,
-                                        'db' => array(
-                                            'submit_name' => 'do_submit', // some filed name with non empty value to determine if the for was submitted,
-                                        ),
-                                    ),
-
-                                    'inputs' => array(
-                                        'actions' => array(
-                                            'type' => 'input_set',
-                                            'colspan' => 'true',
-                                            0 => array (
-                                                'type'      => 'button',
-                                                'value'     => $aLanguageKeys['fave'],
-                                                'attrs'     => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'add_hotlist', 'getProcessingRows')"),
-                                            ),
-                                        )
-                                    )
-                                );
-
-                                $oForm = new BxTemplFormView($aForm);
-                                $sActionsList = $oForm -> getCode();
-                                break;
-
-                            case 'from' :
-                                $aForm = array (
-                                    'form_attrs' => array (
-                                        'action' =>  null,
-                                        'method' => 'post',
-                                    ),
-
-                                    'params' => array (
-                                        'remove_form' => true,
-                                        'db' => array(
-                                            'submit_name' => 'do_submit', // some filed name with non empty value to determine if the for was submitted,
-                                        ),
-                                    ),
-
-                                    'inputs' => array(
-                                        'actions' => array(
-                                            'type' => 'input_set',
-                                            'colspan' => 'true',
-                                            0 => array (
-                                                'type'      => 'button',
-                                                'value'     => $aLanguageKeys['delete'],
-                                                'attrs'     => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'delete_hotlisted', 'getProcessingRows')"),
-                                            ),
-                                        )
-                                    )
-                                );
-
-                                $oForm = new BxTemplFormView($aForm);
-                                $sActionsList = $oForm -> getCode();
-                                break;
-                        }
-                    break;
-
-                    case 'greeting_requests' :
-                        $aForm = array (
-                            'form_attrs' => array (
-                                'action' =>  null,
-                                'method' => 'post',
-                            ),
-
-                            'params' => array (
-                                'remove_form' => true,
-                                'db' => array(
-                                    'submit_name' => 'do_submit', // some filed name with non empty value to determine if the for was submitted,
+            // define the actions list for type of requests;
+            switch ($this->aCommunicatorSettings['communicator_mode']) {
+                case 'friends_requests':
+                    // define the person mode ;
+                    switch ($this->aCommunicatorSettings['person_switcher']) {
+                        case 'to' :
+                            $aForm = array(
+                                'form_attrs' => array(
+                                    'action' => null,
+                                    'method' => 'post',
                                 ),
-                            ),
 
-                            'inputs' => array(
-                                'actions' => array(
-                                    'type' => 'input_set',
-                                    'colspan' => 'true',
-                                    0 => array (
-                                        'type'      => 'button',
-                                        'value'     => $aLanguageKeys['delete'],
-                                        'attrs'     => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'delete_greetings', 'getProcessingRows')"),
+                                'params' => array(
+                                    'remove_form' => true,
+                                    'db'          => array(
+                                        'submit_name' => 'do_submit',
+                                        // some filed name with non empty value to determine if the for was submitted,
                                     ),
+                                ),
+
+                                'inputs' => array(
+                                    'actions' => array(
+                                        'type'    => 'input_set',
+                                        'colspan' => 'true',
+                                        0         => array(
+                                            'type'  => 'button',
+                                            'value' => $aLanguageKeys['accept'],
+                                            'attrs' => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'accept_friends_request', 'getProcessingRows')"),
+                                        ),
+                                        1         => array(
+                                            'type'  => 'button',
+                                            'value' => $aLanguageKeys['reject'],
+                                            'attrs' => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'reject_friends_request', 'getProcessingRows')"),
+                                        ),
+                                    )
                                 )
-                            )
-                        );
+                            );
 
-                        $oForm = new BxTemplFormView($aForm);
-                        $sActionsList = $oForm -> getCode();
-                        break;
+                            $oForm        = new BxTemplFormView($aForm);
+                            $sActionsList = $oForm->getCode();
+                            break;
 
-                    case 'blocks_requests' :
-                        // define the person mode ;
-                        switch ($this -> aCommunicatorSettings['person_switcher']) {
-                            case 'to' :
-                                $aForm = array (
-                                    'form_attrs' => array (
-                                        'action' =>  null,
-                                        'method' => 'post',
+                        case 'from' :
+                            $aForm = array(
+                                'form_attrs' => array(
+                                    'action' => null,
+                                    'method' => 'post',
+                                ),
+
+                                'params' => array(
+                                    'remove_form' => true,
+                                    'db'          => array(
+                                        'submit_name' => 'do_submit',
+                                        // some filed name with non empty value to determine if the for was submitted,
                                     ),
+                                ),
 
-                                    'params' => array (
-                                        'remove_form' => true,
-                                        'db' => array(
-                                            'submit_name' => 'do_submit', // some filed name with non empty value to determine if the for was submitted,
+                                'inputs' => array(
+                                    'actions' => array(
+                                        'type'    => 'input_set',
+                                        'colspan' => 'true',
+                                        0         => array(
+                                            'type'  => 'button',
+                                            'value' => $aLanguageKeys['back_invite'],
+                                            'attrs' => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'delete_friends_request', 'getProcessingRows')"),
                                         ),
-                                    ),
-
-                                    'inputs' => array(
-                                        'actions' => array(
-                                            'type' => 'input_set',
-                                            'colspan' => 'true',
-                                            0 => array (
-                                                'type'      => 'button',
-                                                'value'     => $aLanguageKeys['block'],
-                                                'attrs'     => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'block_unblocked', 'getProcessingRows')"),
-                                            ),
-                                        )
                                     )
-                                );
+                                )
+                            );
 
-                                $oForm = new BxTemplFormView($aForm);
-                                $sActionsList = $oForm -> getCode();
-                                break;
-
-                            case 'from' :
-                                $aForm = array (
-                                    'form_attrs' => array (
-                                        'action' =>  null,
-                                        'method' => 'post',
-                                    ),
-
-                                    'params' => array (
-                                        'remove_form' => true,
-                                        'db' => array(
-                                            'submit_name' => 'do_submit', // some filed name with non empty value to determine if the for was submitted,
-                                        ),
-                                    ),
-
-                                    'inputs' => array(
-                                        'actions' => array(
-                                            'type' => 'input_set',
-                                            'colspan' => 'true',
-                                            0 => array (
-                                                'type'      => 'button',
-                                                'value'     => $aLanguageKeys['unblock'],
-                                                'attrs'     => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'unblock_blocked', 'getProcessingRows')"),
-                                            ),
-                                        )
-                                    )
-                                );
-
-                                $oForm = new BxTemplFormView($aForm);
-                                $sActionsList = $oForm -> getCode();
-                                break;
-                        }
+                            $oForm        = new BxTemplFormView($aForm);
+                            $sActionsList = $oForm->getCode();
+                            break;
+                    }
                     break;
 
-                    case 'friends_list'  :
-                        $aForm = array (
-                        'form_attrs' => array (
-                            'action' =>  null,
+                case 'hotlist_requests' :
+                    // define the person mode ;
+                    switch ($this->aCommunicatorSettings['person_switcher']) {
+                        case 'to' :
+                            $aForm = array(
+                                'form_attrs' => array(
+                                    'action' => null,
+                                    'method' => 'post',
+                                ),
+
+                                'params' => array(
+                                    'remove_form' => true,
+                                    'db'          => array(
+                                        'submit_name' => 'do_submit',
+                                        // some filed name with non empty value to determine if the for was submitted,
+                                    ),
+                                ),
+
+                                'inputs' => array(
+                                    'actions' => array(
+                                        'type'    => 'input_set',
+                                        'colspan' => 'true',
+                                        0         => array(
+                                            'type'  => 'button',
+                                            'value' => $aLanguageKeys['fave'],
+                                            'attrs' => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'add_hotlist', 'getProcessingRows')"),
+                                        ),
+                                    )
+                                )
+                            );
+
+                            $oForm        = new BxTemplFormView($aForm);
+                            $sActionsList = $oForm->getCode();
+                            break;
+
+                        case 'from' :
+                            $aForm = array(
+                                'form_attrs' => array(
+                                    'action' => null,
+                                    'method' => 'post',
+                                ),
+
+                                'params' => array(
+                                    'remove_form' => true,
+                                    'db'          => array(
+                                        'submit_name' => 'do_submit',
+                                        // some filed name with non empty value to determine if the for was submitted,
+                                    ),
+                                ),
+
+                                'inputs' => array(
+                                    'actions' => array(
+                                        'type'    => 'input_set',
+                                        'colspan' => 'true',
+                                        0         => array(
+                                            'type'  => 'button',
+                                            'value' => $aLanguageKeys['delete'],
+                                            'attrs' => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'delete_hotlisted', 'getProcessingRows')"),
+                                        ),
+                                    )
+                                )
+                            );
+
+                            $oForm        = new BxTemplFormView($aForm);
+                            $sActionsList = $oForm->getCode();
+                            break;
+                    }
+                    break;
+
+                case 'greeting_requests' :
+                    $aForm = array(
+                        'form_attrs' => array(
+                            'action' => null,
                             'method' => 'post',
                         ),
 
-                        'params' => array (
+                        'params' => array(
                             'remove_form' => true,
-                            'db' => array(
-                                'submit_name' => 'do_submit', // some filed name with non empty value to determine if the for was submitted,
+                            'db'          => array(
+                                'submit_name' => 'do_submit',
+                                // some filed name with non empty value to determine if the for was submitted,
                             ),
                         ),
 
                         'inputs' => array(
                             'actions' => array(
-                                'type' => 'input_set',
+                                'type'    => 'input_set',
                                 'colspan' => 'true',
-                                0 => array (
-                                    'type'      => 'button',
-                                    'value'     => $aLanguageKeys['delete'],
-                                    'attrs'     => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'reject_friends_request', 'getProcessingRows')"),
+                                0         => array(
+                                    'type'  => 'button',
+                                    'value' => $aLanguageKeys['delete'],
+                                    'attrs' => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'delete_greetings', 'getProcessingRows')"),
                                 ),
                             )
                         )
                     );
 
-                    $oForm = new BxTemplFormView($aForm);
-                    $sActionsList = $oForm -> getCode();
+                    $oForm        = new BxTemplFormView($aForm);
+                    $sActionsList = $oForm->getCode();
                     break;
-                }
 
-                // processing the sort link ;
-                $sSortLink = getClearedParam('sorting', $sCuttedUrl) . '&page=' . $this -> aCommunicatorSettings['page']
-                                . '&per_page=' . $this -> aCommunicatorSettings['per_page'] ;
+                case 'blocks_requests' :
+                    // define the person mode ;
+                    switch ($this->aCommunicatorSettings['person_switcher']) {
+                        case 'to' :
+                            $aForm = array(
+                                'form_attrs' => array(
+                                    'action' => null,
+                                    'method' => 'post',
+                                ),
 
-                // fill array with template keys ;
-                $aTemplateKeys = array (
-                    'js_object' 	 => $sJsObject,
-                    'from_me'        => $aLanguageKeys['from_me'],
-                    'to_me'          => $aLanguageKeys['to_me'],
-                    'selected_from'  => ($this -> aCommunicatorSettings['person_switcher'] == 'from') ? 'checked="checked"' : null,
-                    'selected_to'    => ($this -> aCommunicatorSettings['person_switcher'] == 'to') ? 'checked="checked"' : null,
+                                'params' => array(
+                                    'remove_form' => true,
+                                    'db'          => array(
+                                        'submit_name' => 'do_submit',
+                                        // some filed name with non empty value to determine if the for was submitted,
+                                    ),
+                                ),
 
-                    'page_sort_url'  => $sSortLink,
-                    'sort_date'      => ( $this -> aCommunicatorSettings['sorting'] == 'date' )     ? 'date_desc'     : 'date',
-                    'sort_author'    => ( $this -> aCommunicatorSettings['sorting'] == 'author' )   ? 'author_desc'   : 'author',
+                                'inputs' => array(
+                                    'actions' => array(
+                                        'type'    => 'input_set',
+                                        'colspan' => 'true',
+                                        0         => array(
+                                            'type'  => 'button',
+                                            'value' => $aLanguageKeys['block'],
+                                            'attrs' => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'block_unblocked', 'getProcessingRows')"),
+                                        ),
+                                    )
+                                )
+                            );
 
-                    'date_sort_toggle_ellement'   => $aSortToglleElements['date_sort_toggle'],
-                    'author_sort_toggle_ellement' => $aSortToglleElements['author_sort_toggle'],
+                            $oForm        = new BxTemplFormView($aForm);
+                            $sActionsList = $oForm->getCode();
+                            break;
 
-                    'author'     => $aLanguageKeys['author'],
-                    'type'       => $aLanguageKeys['type'],
-                    'date'       => $aLanguageKeys['date'],
-                    'click_sort' => $aLanguageKeys['click_sort'],
+                        case 'from' :
+                            $aForm = array(
+                                'form_attrs' => array(
+                                    'action' => null,
+                                    'method' => 'post',
+                                ),
 
-                    // contain received processed rows ;
-                    'bx_repeat:rows'  => $aProcessedRows,
+                                'params' => array(
+                                    'remove_form' => true,
+                                    'db'          => array(
+                                        'submit_name' => 'do_submit',
+                                        // some filed name with non empty value to determine if the for was submitted,
+                                    ),
+                                ),
 
-                    // contain current actions ;
-                    'actions_list'    =>  $sActionsList,
+                                'inputs' => array(
+                                    'actions' => array(
+                                        'type'    => 'input_set',
+                                        'colspan' => 'true',
+                                        0         => array(
+                                            'type'  => 'button',
+                                            'value' => $aLanguageKeys['unblock'],
+                                            'attrs' => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'unblock_blocked', 'getProcessingRows')"),
+                                        ),
+                                    )
+                                )
+                            );
 
-                    'current_page'      => 'communicator.php',
-                    'select'            => $aLanguageKeys['select'],
-                    'all_messages'      => $aLanguageKeys['all'],
-                    'none_messages'     => $aLanguageKeys['none'],
-                    'read_messages'     => $aLanguageKeys['read'],
-                    'unread_messages'   => $aLanguageKeys['unread'],
+                            $oForm        = new BxTemplFormView($aForm);
+                            $sActionsList = $oForm->getCode();
+                            break;
+                    }
+                    break;
 
-                    'page_pagination' => $sPagination,
-                );
+                case 'friends_list'  :
+                    $aForm = array(
+                        'form_attrs' => array(
+                            'action' => null,
+                            'method' => 'post',
+                        ),
 
-                $sPageContent = $oSysTemplate -> parseHtmlByName($sRowsTemplName, $aTemplateKeys);
-            } else
-                $sPageContent = $oSysTemplate -> parseHtmlByName('default_margin.html', array(
-                    'content' => MsgBox(_t($sEmptyMessage))
-                ));
+                        'params' => array(
+                            'remove_form' => true,
+                            'db'          => array(
+                                'submit_name' => 'do_submit',
+                                // some filed name with non empty value to determine if the for was submitted,
+                            ),
+                        ),
 
-            // ** Process the final template ;
+                        'inputs' => array(
+                            'actions' => array(
+                                'type'    => 'input_set',
+                                'colspan' => 'true',
+                                0         => array(
+                                    'type'  => 'button',
+                                    'value' => $aLanguageKeys['delete'],
+                                    'attrs' => array('onclick' => "if ( typeof " . $sJsObject . " != 'undefined' ) " . $sJsObject . ".sendAction(this, 'communicator_container', 'reject_friends_request', 'getProcessingRows')"),
+                                ),
+                            )
+                        )
+                    );
 
-            // generate the page settings ;
-            if ($bShowSettings) {
-                 $aTemplateKeys = array (
-                     'js_object' => $sJsObject,
-                    'from_me'        => $aLanguageKeys['from_me'],
-                    'to_me'          => $aLanguageKeys['to_me'],
-                    'selected_from'  => ($this -> aCommunicatorSettings['person_switcher'] == 'from') ? 'checked="checked"' : null,
-                    'selected_to'    => ($this -> aCommunicatorSettings['person_switcher'] == 'to') ? 'checked="checked"' : null,
-                );
-
-                $sSettings = $oSysTemplate -> parseHtmlByName( $this -> aUsedTemplates['communicator_settings'], $aTemplateKeys );
+                    $oForm        = new BxTemplFormView($aForm);
+                    $sActionsList = $oForm->getCode();
+                    break;
             }
 
+            // processing the sort link ;
+            $sSortLink = getClearedParam('sorting', $sCuttedUrl) . '&page=' . $this->aCommunicatorSettings['page']
+                . '&per_page=' . $this->aCommunicatorSettings['per_page'];
+
             // fill array with template keys ;
-            $aTemplateKeys = array (
-                'js_object' => $sJsObject,
-                'current_page'             => 'communicator.php',
-                'communicator_mode'        => $this -> aCommunicatorSettings['communicator_mode'],
-                'communicator_person_mode' => $this -> aCommunicatorSettings['person_switcher'],
-                'error_message'            => bx_js_string(_t( '_Please, select at least one message' )),
-                'sure_message'             => bx_js_string(_t( '_Are_you_sure' )),
+            $aTemplateKeys = array(
+                'js_object'     => $sJsObject,
+                'from_me'       => $aLanguageKeys['from_me'],
+                'to_me'         => $aLanguageKeys['to_me'],
+                'selected_from' => ($this->aCommunicatorSettings['person_switcher'] == 'from') ? 'checked="checked"' : null,
+                'selected_to'   => ($this->aCommunicatorSettings['person_switcher'] == 'to') ? 'checked="checked"' : null,
 
-                'settings'       => $sSettings,
+                'page_sort_url' => $sSortLink,
+                'sort_date'     => ($this->aCommunicatorSettings['sorting'] == 'date') ? 'date_desc' : 'date',
+                'sort_author'   => ($this->aCommunicatorSettings['sorting'] == 'author') ? 'author_desc' : 'author',
 
-                'page_content'   => $sPageContent,
+                'date_sort_toggle_ellement'   => $aSortToglleElements['date_sort_toggle'],
+                'author_sort_toggle_ellement' => $aSortToglleElements['author_sort_toggle'],
+
+                'author'         => $aLanguageKeys['author'],
+                'type'           => $aLanguageKeys['type'],
+                'date'           => $aLanguageKeys['date'],
+                'click_sort'     => $aLanguageKeys['click_sort'],
+
+                // contain received processed rows ;
+                'bx_repeat:rows' => $aProcessedRows,
+
+                // contain current actions ;
+                'actions_list'   => $sActionsList,
+
+                'current_page'    => 'communicator.php',
+                'select'          => $aLanguageKeys['select'],
+                'all_messages'    => $aLanguageKeys['all'],
+                'none_messages'   => $aLanguageKeys['none'],
+                'read_messages'   => $aLanguageKeys['read'],
+                'unread_messages' => $aLanguageKeys['unread'],
+
+                'page_pagination' => $sPagination,
             );
 
-            return $oSysTemplate -> parseHtmlByName( $this -> aUsedTemplates['communicator_settings_page'], $aTemplateKeys );
+            $sPageContent = $oSysTemplate->parseHtmlByName($sRowsTemplName, $aTemplateKeys);
+        } else {
+            $sPageContent = $oSysTemplate->parseHtmlByName('default_margin.html', array(
+                'content' => MsgBox(_t($sEmptyMessage))
+            ));
         }
+
+        // ** Process the final template ;
+
+        // generate the page settings ;
+        if ($bShowSettings) {
+            $aTemplateKeys = array(
+                'js_object'     => $sJsObject,
+                'from_me'       => $aLanguageKeys['from_me'],
+                'to_me'         => $aLanguageKeys['to_me'],
+                'selected_from' => ($this->aCommunicatorSettings['person_switcher'] == 'from') ? 'checked="checked"' : null,
+                'selected_to'   => ($this->aCommunicatorSettings['person_switcher'] == 'to') ? 'checked="checked"' : null,
+            );
+
+            $sSettings = $oSysTemplate->parseHtmlByName($this->aUsedTemplates['communicator_settings'], $aTemplateKeys);
+        }
+
+        // fill array with template keys ;
+        $aTemplateKeys = array(
+            'js_object'                => $sJsObject,
+            'current_page'             => 'communicator.php',
+            'communicator_mode'        => $this->aCommunicatorSettings['communicator_mode'],
+            'communicator_person_mode' => $this->aCommunicatorSettings['person_switcher'],
+            'error_message'            => bx_js_string(_t('_Please, select at least one message')),
+            'sure_message'             => bx_js_string(_t('_Are_you_sure')),
+
+            'settings' => $sSettings,
+
+            'page_content' => $sPageContent,
+        );
+
+        return $oSysTemplate->parseHtmlByName($this->aUsedTemplates['communicator_settings_page'], $aTemplateKeys);
     }
+}

@@ -4,9 +4,10 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolCmtsQuery.php' );
+require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolCmtsQuery.php');
 
-define('BX_OLD_CMT_VOTES', 365*86400); // comment votes older than this number of seconds will be deleted automatically
+define('BX_OLD_CMT_VOTES',
+    365 * 86400); // comment votes older than this number of seconds will be deleted automatically
 
 /**
  * Comments for any content
@@ -102,14 +103,14 @@ class BxDolCmts
     var $bDynamic = false;
 
     var $_sSystem = 'profile';  // current comment system name
-    var $_aSystem = array ();   // current comments system array
-    var $_aCmtElements = array (); // comment submit form elements
+    var $_aSystem = array();   // current comments system array
+    var $_aCmtElements = array(); // comment submit form elements
     var $_oQuery = null;
     var $_sOrder = 'desc';
     var $_aMoodText = array(
         '-1' => '_sys_txt_cmt_mood_negative',
-        '0' => '_sys_txt_cmt_mood_neutral',
-        '1' => '_sys_txt_cmt_mood_positive',
+        '0'  => '_sys_txt_cmt_mood_neutral',
+        '1'  => '_sys_txt_cmt_mood_positive',
     );
 
     /**
@@ -117,26 +118,37 @@ class BxDolCmts
      * $sSystem - comments system name
      * $iId - obect id to be commented
      */
-    function __construct( $sSystem, $iId, $iInit = 1)
+    function __construct($sSystem, $iId, $iInit = 1)
     {
-        $this->_aCmtElements = array (
-            'CmtParent'	=> array ( 'reg' => '^[0-9]+$', 'msg' => str_replace('"', '\\"', trim(_t('_bad comment parent id'))) ),
-            'CmtText' 	=> array ( 'reg' => '^.{3,2048}$', 'msg' => str_replace('"', '\\"', trim(_t('_Please enter 3-2048 characters'))) ),
-            'CmtMood' 	=> array ( 'reg' => '^-?[0-9]?$', 'msg' => str_replace('"', '\\"', trim(_t('_You need to select the mood'))) ),
+        $this->_aCmtElements = array(
+            'CmtParent' => array(
+                'reg' => '^[0-9]+$',
+                'msg' => str_replace('"', '\\"', trim(_t('_bad comment parent id')))
+            ),
+            'CmtText'   => array(
+                'reg' => '^.{3,2048}$',
+                'msg' => str_replace('"', '\\"', trim(_t('_Please enter 3-2048 characters')))
+            ),
+            'CmtMood'   => array(
+                'reg' => '^-?[0-9]?$',
+                'msg' => str_replace('"', '\\"', trim(_t('_You need to select the mood')))
+            ),
         );
 
-        $this->_aSystems =& $this->getSystems ();
+        $this->_aSystems =& $this->getSystems();
 
         $this->_sSystem = $sSystem;
-        if (isset($this->_aSystems[$sSystem]))
+        if (isset($this->_aSystems[$sSystem])) {
             $this->_aSystem = $this->_aSystems[$sSystem];
-        else
+        } else {
             return;
+        }
 
         $this->_oQuery = new BxDolCmtsQuery($this->_aSystem);
 
-        if ($iInit)
+        if ($iInit) {
             $this->init($iId);
+        }
 
         $this->iGlobAllowHtml = (getParam("enable_tiny_in_comments") == "on") ? 1 : 0;
 
@@ -145,29 +157,32 @@ class BxDolCmts
 
     /**
      * get comments object instanse
-     * @param $sSys comments object name 
-     * @param $iId associated content id, where comments are postred in
+     *
+     * @param $sSys  comments object name
+     * @param $iId   associated content id, where comments are postred in
      * @param $iInit perform initialization
      * @return null on error, or ready to use class instance
-     */ 
-    static function getObjectInstance($sSys, $iId, $iInit = true) 
+     */
+    static function getObjectInstance($sSys, $iId, $iInit = true)
     {
-        $aSystems = self::getSystems ();
-        if (!isset($aSystems[$sSys]))
+        $aSystems = self::getSystems();
+        if (!isset($aSystems[$sSys])) {
             return null;
+        }
 
         bx_import('BxTemplCmtsView');
         $sClassName = 'BxTemplCmtsView';
         if ($aSystems[$sSys]['class_name']) {
-            require_once (BX_DIRECTORY_PATH_ROOT . $aSystems[$sSys]['class_file']);
-            $sClassName = $aSystems[$sSys]['class_name'];  
-        } 
+            require_once(BX_DIRECTORY_PATH_ROOT . $aSystems[$sSys]['class_file']);
+            $sClassName = $aSystems[$sSys]['class_name'];
+        }
 
         $oCmts = new $sClassName($sSys, $iId, $iInit);
+
         return $oCmts;
     }
 
-    public static function & getSystems ()
+    public static function & getSystems()
     {
         if (!isset($GLOBALS['bx_dol_cmts_systems'])) {
             $GLOBALS['bx_dol_cmts_systems'] = $GLOBALS['MySQL']->fromCache('sys_objects_cmts', 'getAllWithKey', '
@@ -198,38 +213,42 @@ class BxDolCmts
         return $GLOBALS['bx_dol_cmts_systems'];
     }
 
-    function init ($iId)
+    function init($iId)
     {
-        if(!$this->isEnabled()) 
-        	return;
+        if (!$this->isEnabled()) {
+            return;
+        }
 
-        if(empty($this->iId) && $iId)
+        if (empty($this->iId) && $iId) {
             $this->setId($iId);
+        }
     }
 
     /**
      * check if user can post/edit or delete own comments
      */
-    function checkAction ($iAction, $isPerformAction = false)
+    function checkAction($iAction, $isPerformAction = false)
     {
-        $iId = $this->_getAuthorId();
+        $iId       = $this->_getAuthorId();
         $check_res = checkAction($iId, $iAction, $isPerformAction);
+
         return $check_res[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
 
-    function checkActionErrorMsg ($iAction)
+    function checkActionErrorMsg($iAction)
     {
-        $iId = $this->_getAuthorId();
+        $iId       = $this->_getAuthorId();
         $check_res = checkAction($iId, $iAction);
+
         return $check_res[CHECK_ACTION_RESULT] != CHECK_ACTION_RESULT_ALLOWED ? $check_res[CHECK_ACTION_MESSAGE] : '';
     }
 
-    function getId ()
+    function getId()
     {
         return $this->_iId;
     }
 
-    function isEnabled ()
+    function isEnabled()
     {
         return isset($this->_aSystem['is_on']) && $this->_aSystem['is_on'];
     }
@@ -239,7 +258,7 @@ class BxDolCmts
         return $this->_sSystem;
     }
 
-    function getOrder ()
+    function getOrder()
     {
         return $this->_sOrder;
     }
@@ -247,48 +266,50 @@ class BxDolCmts
     /**
      * set id to operate with votes
      */
-    function setId ($iId)
+    function setId($iId)
     {
-        if ($iId == $this->getId()) return;
+        if ($iId == $this->getId()) {
+            return;
+        }
         $this->_iId = $iId;
     }
 
-    function getBaseUrl ()
+    function getBaseUrl()
     {
-    	return '';
+        return '';
     }
 
-    function isValidSystem ($sSystem)
+    function isValidSystem($sSystem)
     {
         return isset($this->_aSystems[$sSystem]);
     }
 
-    function isTagsAllowed ()
+    function isTagsAllowed()
     {
         return $this->_aSystem['allow_tags'];
     }
 
-    function isNl2br ()
+    function isNl2br()
     {
         return $this->_aSystem['nl2br'];
     }
 
-    function isRatable ()
+    function isRatable()
     {
         return $this->_aSystem['is_ratable'];
     }
 
-    function getAllowedEditTime ()
+    function getAllowedEditTime()
     {
         return $this->_aSystem['sec_to_edit'];
     }
 
-    function getPerView ()
+    function getPerView()
     {
         return $this->_aSystem['per_view'];
     }
 
-    function getSystemId ()
+    function getSystemId()
     {
         return $this->_aSystem['system_id'];
     }
@@ -296,114 +317,117 @@ class BxDolCmts
     /**
      * it is called on cron every day or similar period to clean old comment votes
      */
-    function maintenance ()
+    function maintenance()
     {
         $iDeletedRecords = 0;
         foreach ($this->_aSystems as $aSystem) {
-            if (!$aSystem['is_on'])
+            if (!$aSystem['is_on']) {
                 continue;
+            }
             $oQuery = new BxDolCmtsQuery($aSystem);
             $iDeletedRecords += $oQuery->maintenance();
             unset($oQuery);
         }
+
         return $iDeletedRecords;
     }
 
     /** comments functions
      *********************************************/
 
-    function getCommentsArray ($iCmtParentId, $sCmtOrder, $iStart = 0, $iCount = -1)
+    function getCommentsArray($iCmtParentId, $sCmtOrder, $iStart = 0, $iCount = -1)
     {
-        return $this->_oQuery->getComments ($this->getId(), $iCmtParentId, $this->_getAuthorId(), $sCmtOrder, $iStart, $iCount);
+        return $this->_oQuery->getComments($this->getId(), $iCmtParentId, $this->_getAuthorId(), $sCmtOrder, $iStart,
+            $iCount);
     }
 
-    function getCommentRow ($iCmtId)
+    function getCommentRow($iCmtId)
     {
-        return $this->_oQuery->getComment ($this->getId(), $iCmtId, $this->_getAuthorId());
+        return $this->_oQuery->getComment($this->getId(), $iCmtId, $this->_getAuthorId());
     }
 
-    function onObjectDelete ($iObjectId = 0)
+    function onObjectDelete($iObjectId = 0)
     {
-        return $this->_oQuery->deleteObjectComments ($iObjectId ? $iObjectId : $this->getId());
+        return $this->_oQuery->deleteObjectComments($iObjectId ? $iObjectId : $this->getId());
     }
 
     // delete all profiles comments in all systems, if some replies exist, set this comment to anonymous
 
-    function onAuthorDelete ($iAuthorId)
+    function onAuthorDelete($iAuthorId)
     {
-        for ( reset($this->_aSystems) ; list ($sSystem, $aSystem) = each ($this->_aSystems) ; ) {
+        for (reset($this->_aSystems); list ($sSystem, $aSystem) = each($this->_aSystems);) {
             $oQuery = new BxDolCmtsQuery($aSystem);
-            $oQuery->deleteAuthorComments ($iAuthorId);
+            $oQuery->deleteAuthorComments($iAuthorId);
         }
+
         return true;
     }
 
-    function getCommentsTableName ()
+    function getCommentsTableName()
     {
-        return $this->_oQuery->getTableName ();
+        return $this->_oQuery->getTableName();
     }
 
-    function getObjectCommentsCount ($iObjectId = 0)
+    function getObjectCommentsCount($iObjectId = 0)
     {
-        return $this->_oQuery->getObjectCommentsCount ($iObjectId ? $iObjectId : $this->getId());
+        return $this->_oQuery->getObjectCommentsCount($iObjectId ? $iObjectId : $this->getId());
     }
 
     /** permissions functions
-
-    *********************************************/
+     *********************************************/
 
     // is rate comment allowed
-    function isRateAllowed ($isPerformAction = false)
-    { 
-        return $this->checkAction (ACTION_ID_COMMENTS_VOTE, $isPerformAction); 
+    function isRateAllowed($isPerformAction = false)
+    {
+        return $this->checkAction(ACTION_ID_COMMENTS_VOTE, $isPerformAction);
     }
 
-    function msgErrRateAllowed ()
-    { 
+    function msgErrRateAllowed()
+    {
         return $this->checkActionErrorMsg(ACTION_ID_COMMENTS_VOTE);
     }
 
     // is post comment allowed
-    function isPostReplyAllowed ($isPerformAction = false)
+    function isPostReplyAllowed($isPerformAction = false)
     {
-        return $this->checkAction (ACTION_ID_COMMENTS_POST, $isPerformAction);
+        return $this->checkAction(ACTION_ID_COMMENTS_POST, $isPerformAction);
     }
 
-    function msgErrPostReplyAllowed ()
+    function msgErrPostReplyAllowed()
     {
         return $this->checkActionErrorMsg(ACTION_ID_COMMENTS_POST);
     }
 
     // is edit own comment allowed
-    function isEditAllowed ($isPerformAction = false)
+    function isEditAllowed($isPerformAction = false)
     {
-        return $this->checkAction (ACTION_ID_COMMENTS_EDIT_OWN, $isPerformAction);
+        return $this->checkAction(ACTION_ID_COMMENTS_EDIT_OWN, $isPerformAction);
     }
 
-    function msgErrEditAllowed ()
+    function msgErrEditAllowed()
     {
-        return $this->checkActionErrorMsg (ACTION_ID_COMMENTS_EDIT_OWN);
+        return $this->checkActionErrorMsg(ACTION_ID_COMMENTS_EDIT_OWN);
     }
 
     // is removing own comment allowed
-    function isRemoveAllowed ($isPerformAction = false)
+    function isRemoveAllowed($isPerformAction = false)
     {
-        return $this->checkAction (ACTION_ID_COMMENTS_REMOVE_OWN, $isPerformAction);
+        return $this->checkAction(ACTION_ID_COMMENTS_REMOVE_OWN, $isPerformAction);
     }
 
-    function msgErrRemoveAllowed ()
+    function msgErrRemoveAllowed()
     {
         return $this->checkActionErrorMsg(ACTION_ID_COMMENTS_REMOVE_OWN);
     }
 
     // is edit any comment allowed
-    function isEditAllowedAll ()
+    function isEditAllowedAll()
     {
         return isAdmin() ? true : false;
     }
 
     // is removing any comment allowed
-    function isRemoveAllowedAll ()
+    function isRemoveAllowedAll()
     {
         return isAdmin() ? true : false;
     }
@@ -411,83 +435,94 @@ class BxDolCmts
     /**
      * actions functions
      */
-    function actionPaginateGet ()
+    function actionPaginateGet()
     {
-        if (!$this->isEnabled())
-           return '';
+        if (!$this->isEnabled()) {
+            return '';
+        }
 
-        $iCmtStart = isset($_REQUEST['CmtStart']) ? (int)$_REQUEST['CmtStart'] : 0;
-        $iCmtPerPage= isset($_REQUEST['CmtPerPage']) ? (int)$_REQUEST['CmtPerPage'] : $this->getPerView();
+        $iCmtStart   = isset($_REQUEST['CmtStart']) ? (int)$_REQUEST['CmtStart'] : 0;
+        $iCmtPerPage = isset($_REQUEST['CmtPerPage']) ? (int)$_REQUEST['CmtPerPage'] : $this->getPerView();
 
         return $this->getPaginate($iCmtStart, $iCmtPerPage);
     }
 
-    function actionFormGet ()
+    function actionFormGet()
     {
-        if (!$this->isEnabled())
-           return '';
+        if (!$this->isEnabled()) {
+            return '';
+        }
 
-        $sCmtType = isset($_REQUEST['CmtType']) ? $_REQUEST['CmtType'] : 'reply';
-        $iCmtParentId= isset($_REQUEST['CmtParent']) ? (int)$_REQUEST['CmtParent'] : 0;
+        $sCmtType     = isset($_REQUEST['CmtType']) ? $_REQUEST['CmtType'] : 'reply';
+        $iCmtParentId = isset($_REQUEST['CmtParent']) ? (int)$_REQUEST['CmtParent'] : 0;
 
         return $this->getForm($sCmtType, $iCmtParentId);
     }
 
-    function actionCmtsGet ()
+    function actionCmtsGet()
     {
-        if (!$this->isEnabled())
-           return '';
+        if (!$this->isEnabled()) {
+            return '';
+        }
 
         $iCmtParentId = (int)$_REQUEST['CmtParent'];
-        $sCmtOrder = isset($_REQUEST['CmtOrder']) ? $_REQUEST['CmtOrder'] : $this->_sOrder;
-        $iCmtStart = isset($_REQUEST['CmtStart']) ? (int)$_REQUEST['CmtStart'] : 0;
-        $iCmtPerPage= isset($_REQUEST['CmtPerPage']) ? (int)$_REQUEST['CmtPerPage'] : -1;
+        $sCmtOrder    = isset($_REQUEST['CmtOrder']) ? $_REQUEST['CmtOrder'] : $this->_sOrder;
+        $iCmtStart    = isset($_REQUEST['CmtStart']) ? (int)$_REQUEST['CmtStart'] : 0;
+        $iCmtPerPage  = isset($_REQUEST['CmtPerPage']) ? (int)$_REQUEST['CmtPerPage'] : -1;
 
         return $this->getComments($iCmtParentId, $sCmtOrder, $iCmtStart, $iCmtPerPage);
     }
 
-    function actionCmtGet ()
+    function actionCmtGet()
     {
-        if (!$this->isEnabled())
-           return '';
+        if (!$this->isEnabled()) {
+            return '';
+        }
 
         $iCmtId = (int)$_REQUEST['Cmt'];
-        return $this->getComment ($iCmtId, (isset($_REQUEST['Type']) ? $_REQUEST['Type'] : 'new'));
+
+        return $this->getComment($iCmtId, (isset($_REQUEST['Type']) ? $_REQUEST['Type'] : 'new'));
     }
 
     function actionCmtPost()
     {
-        if(!$this->isEnabled())
-        	return '';
+        if (!$this->isEnabled()) {
+            return '';
+        }
 
-        if(!$this->isPostReplyAllowed())
-        	return $this->msgErrPostReplyAllowed();
+        if (!$this->isPostReplyAllowed()) {
+            return $this->msgErrPostReplyAllowed();
+        }
 
         $iCmtObjectId = (int)$this->getId();
         $iCmtParentId = (int)$_REQUEST['CmtParent'];
         $iCmtAuthorId = $this->_getAuthorId();
 
-        if ($this->_isSpam($_REQUEST['CmtText']))
+        if ($this->_isSpam($_REQUEST['CmtText'])) {
             return sprintf(_t("_sys_spam_detected"), BX_DOL_URL_ROOT . 'contact.php');
+        }
 
-        $sText = $this->_prepareTextForSave ($_REQUEST['CmtText']);
+        $sText = $this->_prepareTextForSave($_REQUEST['CmtText']);
 
         $iMood = (int)$_REQUEST['CmtMood'];
 
-        $iCmtNewId = $this->_oQuery->addComment ($iCmtObjectId, $iCmtParentId, $iCmtAuthorId, $sText, $iMood);
+        $iCmtNewId = $this->_oQuery->addComment($iCmtObjectId, $iCmtParentId, $iCmtAuthorId, $sText, $iMood);
 
-        if(false === $iCmtNewId)
+        if (false === $iCmtNewId) {
             return '';
+        }
 
         $this->_triggerComment();
 
         $this->isPostReplyAllowed(true);
 
         bx_import('BxDolAlerts');
-        $oZ = new BxDolAlerts($this->_sSystem, 'commentPost', $iCmtObjectId, $iCmtAuthorId, array('comment_id' => $iCmtNewId, 'comment_author_id' => $iCmtAuthorId));
+        $oZ = new BxDolAlerts($this->_sSystem, 'commentPost', $iCmtObjectId, $iCmtAuthorId,
+            array('comment_id' => $iCmtNewId, 'comment_author_id' => $iCmtAuthorId));
         $oZ->alert();
 
-        $oZ = new BxDolAlerts('comment', 'add', $iCmtNewId, $iCmtAuthorId, array('object_system' => $this->_sSystem, 'object_id' => $iCmtObjectId));
+        $oZ = new BxDolAlerts('comment', 'add', $iCmtNewId, $iCmtAuthorId,
+            array('object_system' => $this->_sSystem, 'object_id' => $iCmtObjectId));
         $oZ->alert();
 
         return $iCmtNewId;
@@ -495,39 +530,47 @@ class BxDolCmts
 
     // returns error string on error, or empty string on success
 
-    function actionCmtRemove ()
+    function actionCmtRemove()
     {
-        if(!$this->isEnabled())
-        	return '';
+        if (!$this->isEnabled()) {
+            return '';
+        }
 
-        $iCmtId = (int)$_REQUEST['Cmt'];
+        $iCmtId    = (int)$_REQUEST['Cmt'];
         $iObjectId = (int)$this->getId();
         $iAuthorId = $this->_getAuthorId();
 
-        $aCmt = $this->_oQuery->getCommentSimple ($iObjectId, $iCmtId);
-        if(!$aCmt)
-			return _t('_No such comment');
+        $aCmt = $this->_oQuery->getCommentSimple($iObjectId, $iCmtId);
+        if (!$aCmt) {
+            return _t('_No such comment');
+        }
 
-        if($aCmt['cmt_replies'] > 0)
-			return _t('_Can not delete comments with replies');
+        if ($aCmt['cmt_replies'] > 0) {
+            return _t('_Can not delete comments with replies');
+        }
 
         $isRemoveAllowed = $this->isRemoveAllowedAll() || ($aCmt['cmt_author_id'] == $iAuthorId && $this->isRemoveAllowed());
-        if (!$isRemoveAllowed && $aCmt['cmt_secs_ago'] > ($this->getAllowedEditTime()+20))
+        if (!$isRemoveAllowed && $aCmt['cmt_secs_ago'] > ($this->getAllowedEditTime() + 20)) {
             return $aCmt['cmt_author_id'] == $iAuthorId && !$this->isRemoveAllowed() ? strip_tags($this->msgErrRemoveAllowed()) : _t('_Access denied');
+        }
 
-        if (!$this->_oQuery->removeComment ($iObjectId, $aCmt['cmt_id'], $aCmt['cmt_parent_id']))
+        if (!$this->_oQuery->removeComment($iObjectId, $aCmt['cmt_id'], $aCmt['cmt_parent_id'])) {
             return _t('_Database Error');
+        }
 
         $this->_triggerComment();
 
-        if ($aCmt['cmt_author_id'] == $iAuthorId)
-           $this->isRemoveAllowed(true);
+        if ($aCmt['cmt_author_id'] == $iAuthorId) {
+            $this->isRemoveAllowed(true);
+        }
 
         bx_import('BxDolAlerts');
-        $oZ = new BxDolAlerts($this->_sSystem, 'commentRemoved', $iObjectId, $iAuthorId, array('comment_id' => $aCmt['cmt_id'], 'comment_author_id' => $aCmt['cmt_author_id']));
+        $oZ = new BxDolAlerts($this->_sSystem, 'commentRemoved', $iObjectId, $iAuthorId,
+            array('comment_id' => $aCmt['cmt_id'], 'comment_author_id' => $aCmt['cmt_author_id']));
         $oZ->alert();
 
-        $oZ = new BxDolAlerts('comment', 'delete', $aCmt['cmt_id'], $iAuthorId, array('object_system' => $this->_sSystem, 'object_id' => $iObjectId));
+        $oZ = new BxDolAlerts('comment', 'delete', $aCmt['cmt_id'], $iAuthorId,
+            array('object_system' => $this->_sSystem, 'object_id' => $iObjectId));
         $oZ->alert();
 
         return '';
@@ -535,150 +578,183 @@ class BxDolCmts
 
     // returns string with "err" prefix on error, or string with html form on success
 
-    function actionCmtEdit ()
+    function actionCmtEdit()
     {
-        if (!$this->isEnabled()) return '';
+        if (!$this->isEnabled()) {
+            return '';
+        }
 
         $iCmtId = (int)$_REQUEST['Cmt'];
-        $aCmt = $this->_oQuery->getCommentSimple ($this->getId(), $iCmtId);
+        $aCmt   = $this->_oQuery->getCommentSimple($this->getId(), $iCmtId);
 
-        if (!$aCmt)
-            return 'err'._t('_No such comment');
+        if (!$aCmt) {
+            return 'err' . _t('_No such comment');
+        }
 
         $isEditAllowed = $this->isEditAllowedAll() || ($aCmt['cmt_author_id'] == $this->_getAuthorId() && $this->isEditAllowed());
-        if (!$isEditAllowed && $aCmt['cmt_secs_ago'] > ($this->getAllowedEditTime()+20))
+        if (!$isEditAllowed && $aCmt['cmt_secs_ago'] > ($this->getAllowedEditTime() + 20)) {
             return 'err' . ($aCmt['cmt_author_id'] == $this->_getAuthorId() && !$this->isEditAllowed() ? strip_tags($this->msgErrEditAllowed()) : _t('_Access denied'));
+        }
 
-        return $this->_getFormBox ('edit', array('id' => $iCmtId, 'parent_id' => $aCmt['cmt_parent_id'], 'text' => $aCmt['cmt_text']));
+        return $this->_getFormBox('edit',
+            array('id' => $iCmtId, 'parent_id' => $aCmt['cmt_parent_id'], 'text' => $aCmt['cmt_text']));
     }
 
     function actionCmtEditSubmit()
     {
-        if (!$this->isEnabled()) return '{}';
+        if (!$this->isEnabled()) {
+            return '{}';
+        }
 
         $iCmtId = (int)$_REQUEST['Cmt'];
 
-        if ($this->_isSpam($_REQUEST['CmtText']))
+        if ($this->_isSpam($_REQUEST['CmtText'])) {
             return json_encode(array('err' => sprintf(_t("_sys_spam_detected"), BX_DOL_URL_ROOT . 'contact.php')));
+        }
 
-		$iObjectId = $this->getId();
+        $iObjectId = $this->getId();
         $iAuthorId = $this->_getAuthorId();
 
-        $sText = $this->_prepareTextForSave ($_REQUEST['CmtText']);
-		$sTextRet = stripslashes($sText);
+        $sText    = $this->_prepareTextForSave($_REQUEST['CmtText']);
+        $sTextRet = stripslashes($sText);
 
         $iCmtMood = (int)$_REQUEST['CmtMood'];
 
-        $aCmt = $this->_oQuery->getCommentSimple ($iObjectId, $iCmtId);
-        if(!$aCmt)
+        $aCmt = $this->_oQuery->getCommentSimple($iObjectId, $iCmtId);
+        if (!$aCmt) {
             return '{}';
+        }
 
         $isEditAllowed = $this->isEditAllowedAll() || ($aCmt['cmt_author_id'] == $iAuthorId && $this->isEditAllowed());
 
-        if (!$isEditAllowed && $aCmt['cmt_secs_ago'] > ($this->getAllowedEditTime()+20))
+        if (!$isEditAllowed && $aCmt['cmt_secs_ago'] > ($this->getAllowedEditTime() + 20)) {
             return '{}';
+        }
 
-        if (($sTextRet != $aCmt['cmt_text'] || $iCmtMood != $aCmt['cmt_mood']) && $this->_oQuery->updateComment ($iObjectId, $aCmt['cmt_id'], $sText, $iCmtMood)) {
-            if ($aCmt['cmt_author_id'] == $iAuthorId)
-               $this->isEditAllowed(true);
+        if (($sTextRet != $aCmt['cmt_text'] || $iCmtMood != $aCmt['cmt_mood']) && $this->_oQuery->updateComment($iObjectId,
+                $aCmt['cmt_id'], $sText, $iCmtMood)
+        ) {
+            if ($aCmt['cmt_author_id'] == $iAuthorId) {
+                $this->isEditAllowed(true);
+            }
 
             bx_import('BxDolAlerts');
-            $oZ = new BxDolAlerts($this->_sSystem, 'commentUpdated', $iObjectId, $iAuthorId, array('comment_id' => $aCmt['cmt_id'], 'comment_author_id' => $aCmt['cmt_author_id']));
+            $oZ = new BxDolAlerts($this->_sSystem, 'commentUpdated', $iObjectId, $iAuthorId,
+                array('comment_id' => $aCmt['cmt_id'], 'comment_author_id' => $aCmt['cmt_author_id']));
             $oZ->alert();
 
-			$oZ = new BxDolAlerts('comment', 'change', $aCmt['cmt_id'], $iAuthorId, array('object_system' => $this->_sSystem, 'object_id' => $iObjectId));
-			$oZ->alert();
+            $oZ = new BxDolAlerts('comment', 'change', $aCmt['cmt_id'], $iAuthorId,
+                array('object_system' => $this->_sSystem, 'object_id' => $iObjectId));
+            $oZ->alert();
         }
 
         $aCmt = $this->_oQuery->getCommentSimple($iObjectId, $iCmtId);
 
-        return json_encode(array('text' => $aCmt['cmt_text'], 'mood' => $aCmt['cmt_mood'], 'mood_text' => _t($this->_aMoodText[$aCmt['cmt_mood']])));
+        return json_encode(array(
+            'text'      => $aCmt['cmt_text'],
+            'mood'      => $aCmt['cmt_mood'],
+            'mood_text' => _t($this->_aMoodText[$aCmt['cmt_mood']])
+        ));
     }
 
-    function actionCmtRate ()
+    function actionCmtRate()
     {
-        if (!$this->isEnabled()) return _t('_Error occured');
-        if (!$this->isRatable()) return _t('_Error occured');
-        if (!$this->isRateAllowed()) return strip_tags($this->msgErrRateAllowed());
+        if (!$this->isEnabled()) {
+            return _t('_Error occured');
+        }
+        if (!$this->isRatable()) {
+            return _t('_Error occured');
+        }
+        if (!$this->isRateAllowed()) {
+            return strip_tags($this->msgErrRateAllowed());
+        }
 
         $iCmtId = (int)$_REQUEST['Cmt'];
-        $iRate = (int)$_REQUEST['Rate'];
+        $iRate  = (int)$_REQUEST['Rate'];
 
-        if($iRate >= 1)
+        if ($iRate >= 1) {
             $iRate = 1;
-        elseif($iRate <= -1)
+        } elseif ($iRate <= -1) {
             $iRate = -1;
-        else
+        } else {
             return _t('_Error occured');
+        }
 
-        if(!$this->_oQuery->rateComment($this->getSystemId(), $iCmtId, $iRate, $this->_getAuthorId(), $this->_getAuthorIp()))
+        if (!$this->_oQuery->rateComment($this->getSystemId(), $iCmtId, $iRate, $this->_getAuthorId(),
+            $this->_getAuthorIp())
+        ) {
             return _t('_Duplicate vote');
+        }
 
-        $aCmt = $this->_oQuery->getCommentSimple ($this->getId(), $iCmtId);
+        $aCmt = $this->_oQuery->getCommentSimple($this->getId(), $iCmtId);
 
         $this->isRateAllowed(true);
 
         bx_import('BxDolAlerts');
-        $oZ = new BxDolAlerts($this->_sSystem, 'commentRated', $this->getId(), $this->_getAuthorId(), array('comment_id' => $iCmtId, 'comment_author_id' => $aCmt['cmt_author_id'], 'rate' => $iRate));
-        $oZ->alert();        
+        $oZ = new BxDolAlerts($this->_sSystem, 'commentRated', $this->getId(), $this->_getAuthorId(),
+            array('comment_id' => $iCmtId, 'comment_author_id' => $aCmt['cmt_author_id'], 'rate' => $iRate));
+        $oZ->alert();
 
         return '';
     }
 
     /** private functions
-    *********************************************/
+     *********************************************/
 
-    function _getAuthorId ()
+    function _getAuthorId()
     {
         return isMember() ? (int)$_COOKIE['memberID'] : 0;
     }
 
-    function _getAuthorPassword ()
+    function _getAuthorPassword()
     {
         return isMember() ? $_COOKIE['memberPassword'] : "";
     }
 
-    function _getAuthorIp ()
+    function _getAuthorIp()
     {
         return getVisitorIP();
     }
 
-    function _prepareTextForEdit ($s)
+    function _prepareTextForEdit($s)
     {
-        if ($this->isNl2br())
+        if ($this->isNl2br()) {
             return str_replace(array('<br />', '&shy;'), '', $s);
+        }
+
         return $s;
     }
 
-    function _prepareTextForSave ($s)
+    function _prepareTextForSave($s)
     {
         if ($this->iGlobAllowHtml || $this->isTagsAllowed()) {
             $iTagsAction = BX_TAGS_VALIDATE;
-        } 
-        elseif (!$this->iGlobAllowHtml && $this->isNl2br()) {
-            $s = WordWrapStr($s);
+        } elseif (!$this->iGlobAllowHtml && $this->isNl2br()) {
+            $s           = WordWrapStr($s);
             $iTagsAction = BX_TAGS_STRIP_AND_NL2BR;
-        } 
-        else {
+        } else {
             $iTagsAction = BX_TAGS_STRIP;
         }
 
         return process_db_input($s, $iTagsAction);
     }
 
-    function _prepareTextForOutput ($s)
+    function _prepareTextForOutput($s)
     {
-    	return 0 === strpos($s, '<iframe') ? $s : bx_linkify_html($s, 'class="' . BX_DOL_LINK_CLASS . '"');
+        return 0 === strpos($s, '<iframe') ? $s : bx_linkify_html($s, 'class="' . BX_DOL_LINK_CLASS . '"');
     }
 
     function _triggerComment()
     {
-        if (!$this->_aSystem['trigger_table'])
+        if (!$this->_aSystem['trigger_table']) {
             return false;
+        }
         $iId = $this->getId();
-        if (!$iId)
+        if (!$iId) {
             return false;
-        $iCount = $this->_oQuery->getObjectCommentsCount ($iId);
+        }
+        $iCount = $this->_oQuery->getObjectCommentsCount($iId);
+
         return $this->_oQuery->updateTriggerTable($iId, $iCount);
     }
 
@@ -689,11 +765,12 @@ class BxDolCmts
 
     function _getAnchor($iId)
     {
-    	$aReplacement = array(
-    		' ' => '-',
-    		'_' => '-'
-    	);
+        $aReplacement = array(
+            ' ' => '-',
+            '_' => '-'
+        );
 
-    	return str_replace(array_keys($aReplacement), array_values($aReplacement), $this->_sSystem . '-' . $this->getId() . '-' . $iId);
+        return str_replace(array_keys($aReplacement), array_values($aReplacement),
+            $this->_sSystem . '-' . $this->getId() . '-' . $iId);
     }
 }

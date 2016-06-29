@@ -26,54 +26,58 @@ class BxProfilerModule extends BxDolModule
         parent::__construct($aModule);
     }
 
-    function actionHome ()
+    function actionHome()
     {
         $this->_oTemplate->pageStart();
         echo $this->_aModule['title'];
         $this->_oTemplate->pageCode($this->_aModule['title']);
     }
 
-    function actionAdministration ()
+    function actionAdministration()
     {
         if (!$this->isAdmin()) {
-            $this->_oTemplate->displayAccessDenied ();
+            $this->_oTemplate->displayAccessDenied();
+
             return;
         }
 
         $this->_oTemplate->pageStart();
 
         $iId = $this->_oDb->getSettingsCategory();
-        if(empty($iId)) {
+        if (empty($iId)) {
             echo MsgBox(_t('_sys_request_page_not_found_cpt'));
-            $this->_oTemplate->pageCodeAdmin (_t('_bx_profiler_administration'));
+            $this->_oTemplate->pageCodeAdmin(_t('_bx_profiler_administration'));
+
             return;
         }
 
         bx_import('BxDolAdminSettings');
 
         $mixedResult = '';
-        if(isset($_POST['save']) && isset($_POST['cat'])) {
-            $oSettings = new BxDolAdminSettings($iId);
+        if (isset($_POST['save']) && isset($_POST['cat'])) {
+            $oSettings   = new BxDolAdminSettings($iId);
             $mixedResult = $oSettings->saveChanges($_POST);
         }
 
         $oSettings = new BxDolAdminSettings($iId);
-        $sResult = $oSettings->getForm();
+        $sResult   = $oSettings->getForm();
 
-        if($mixedResult !== true && !empty($mixedResult))
+        if ($mixedResult !== true && !empty($mixedResult)) {
             $sResult = $mixedResult . $sResult;
+        }
 
-        $aVars = array (
+        $aVars = array(
             'content' => $sResult,
         );
-        echo $this->_oTemplate->adminBlock ($this->_oTemplate->parseHtmlByName('default_padding', $aVars), _t('_bx_profiler_administration'));
+        echo $this->_oTemplate->adminBlock($this->_oTemplate->parseHtmlByName('default_padding', $aVars),
+            _t('_bx_profiler_administration'));
 
-        $this->_oTemplate->addCssAdmin ('main.css');
-        $this->_oTemplate->addCssAdmin ('forms_adv.css');
-        $this->_oTemplate->pageCodeAdmin (_t('_bx_profiler_administration'));
+        $this->_oTemplate->addCssAdmin('main.css');
+        $this->_oTemplate->addCssAdmin('forms_adv.css');
+        $this->_oTemplate->pageCodeAdmin(_t('_bx_profiler_administration'));
     }
 
-    function isAdmin ()
+    function isAdmin()
     {
         return $GLOBALS['logged']['admin'];
     }

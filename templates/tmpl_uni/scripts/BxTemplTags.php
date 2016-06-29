@@ -9,7 +9,7 @@ require_once(BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseTags.php');
 
 class BxTemplTags extends BxBaseTags
 {
-    function __construct ()
+    function __construct()
     {
         parent::__construct();
     }

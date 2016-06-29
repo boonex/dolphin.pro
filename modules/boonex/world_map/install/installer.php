@@ -19,26 +19,29 @@ class BxWmapInstaller extends BxDolInstaller
 
         if ($aResult['result']) {
 
-            BxDolService::call('wmap', 'part_install', array('profiles', array(
-                'part' => 'profiles',
-                'title' => '_Profiles',
-                'title_singular' => '_Profile',
-                'icon' => 'map_marker_profiles.png',
-                'icon_site' => 'user',
-                'join_table' => 'Profiles',
-                'join_where' => "AND `p`.`Status` = 'Active'",
-                'join_field_id' => 'ID',
-                'join_field_country' => 'Country',
-                'join_field_city' => 'City',
-                'join_field_state' => '',
-                'join_field_zip' => 'zip',
-                'join_field_address' => '',
-                'join_field_title' => 'NickName',
-                'join_field_uri' => 'ID',
-                'join_field_author' => 'ID',
-                'join_field_privacy' => 'allow_view_to',
-                'permalink' => 'profile.php?ID=',
-            )));
+            BxDolService::call('wmap', 'part_install', array(
+                'profiles',
+                array(
+                    'part'               => 'profiles',
+                    'title'              => '_Profiles',
+                    'title_singular'     => '_Profile',
+                    'icon'               => 'map_marker_profiles.png',
+                    'icon_site'          => 'user',
+                    'join_table'         => 'Profiles',
+                    'join_where'         => "AND `p`.`Status` = 'Active'",
+                    'join_field_id'      => 'ID',
+                    'join_field_country' => 'Country',
+                    'join_field_city'    => 'City',
+                    'join_field_state'   => '',
+                    'join_field_zip'     => 'zip',
+                    'join_field_address' => '',
+                    'join_field_title'   => 'NickName',
+                    'join_field_uri'     => 'ID',
+                    'join_field_author'  => 'ID',
+                    'join_field_privacy' => 'allow_view_to',
+                    'permalink'          => 'profile.php?ID=',
+                )
+            ));
 
         }
 

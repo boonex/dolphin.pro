@@ -21,8 +21,9 @@ class BxDolCacheMemcache extends BxDolCache
 
         if (class_exists('Memcache')) {
             $this->oMemcache = new Memcache();
-            if (!$this->oMemcache->connect (getParam('sys_cache_memcache_host'), getParam('sys_cache_memcache_port')))
+            if (!$this->oMemcache->connect(getParam('sys_cache_memcache_host'), getParam('sys_cache_memcache_port'))) {
                 $this->oMemcache = null;
+            }
         }
     }
 
@@ -36,15 +37,16 @@ class BxDolCacheMemcache extends BxDolCache
     function getData($sKey, $iTTL = false)
     {
         $mixedData = $this->oMemcache->get($sKey);
+
         return false === $mixedData ? null : $mixedData;
     }
 
     /**
      * Save data in cache server
      *
-     * @param  string  $sKey      - file name
-     * @param  mixed   $mixedData - the data to be cached in the file
-     * @param  int     $iTTL      - time to live
+     * @param  string $sKey      - file name
+     * @param  mixed  $mixedData - the data to be cached in the file
+     * @param  int    $iTTL      - time to live
      * @return boolean result of operation.
      */
     function setData($sKey, $mixedData, $iTTL = false)
@@ -61,11 +63,13 @@ class BxDolCacheMemcache extends BxDolCache
     function delData($sKey)
     {
         $this->oMemcache->delete($sKey);
+
         return true;
     }
 
     /**
      * Check if memcache is available
+     *
      * @return boolean
      */
     function isAvailable()
@@ -75,6 +79,7 @@ class BxDolCacheMemcache extends BxDolCache
 
     /**
      * Check if memcache extension is loaded
+     *
      * @return boolean
      */
     function isInstalled()
@@ -84,9 +89,10 @@ class BxDolCacheMemcache extends BxDolCache
 
     /**
      * remove all data from cache by key prefix
+     *
      * @return true on success
      */
-    function removeAllByPrefix ($s)
+    function removeAllByPrefix($s)
     {
         // not implemented for current cache
         return false;
@@ -95,7 +101,7 @@ class BxDolCacheMemcache extends BxDolCache
     /**
      * get size of cached data by name prefix
      */
-    function getSizeByPrefix ($s)
+    function getSizeByPrefix($s)
     {
         // not implemented for current cache
         return false;

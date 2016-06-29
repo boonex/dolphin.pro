@@ -3,43 +3,44 @@
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
-
 // parent object for all pages classes
 
 class ThingPage extends Thing
 {
 
-// public functions
+    // public functions
 
     /**
      * constructor
      */
-    function __construct ()
+    function __construct()
     {
     }
 
-    function getLangs ()
+    function getLangs()
     {
         global $gConf;
 
-        $a = array ();
+        $a = array();
         if (isset($gConf['dir']['langs'])) {
             $d = dir($gConf['dir']['langs']);
-            while (FALSE !== ($entry = $d->read())) {
-                if ($entry[0] == '.')
+            while (false !== ($entry = $d->read())) {
+                if ($entry[0] == '.') {
                     continue;
+                }
                 $a[] = substr($entry, 0, 2);
             }
         }
+
         return $a;
     }
 
-    function getLangsXml ()
+    function getLangsXml()
     {
         return '<langs>' . array2xml($this->getLangs(), 'lang') . '</langs>';
     }
 
-    function getUrlsXml ()
+    function getUrlsXml()
     {
         global $gConf;
 
@@ -59,7 +60,7 @@ class ThingPage extends Thing
         return $ret;
     }
 
-    function addHeaderFooter (&$li, $content)
+    function addHeaderFooter(&$li, $content)
     {
         global $gConf, $l;
         global $glBeforeContent;
@@ -70,14 +71,14 @@ class ThingPage extends Thing
 
         $ret .= "<root>\n";
 
-                                                                                                                                                                                                                        $l('JHJldCAuPSAnPGRpc2FibGVfYm9vbmV4X2Zvb3RlcnM+JyAuICFnZXRQYXJhbSgnZW5hYmxlX2RvbHBoaW5fZm9vdGVyJykgLiAnPC9kaXNhYmxlX2Jvb25leF9mb290ZXJzPic7');
+        $l('JHJldCAuPSAnPGRpc2FibGVfYm9vbmV4X2Zvb3RlcnM+JyAuICFnZXRQYXJhbSgnZW5hYmxlX2RvbHBoaW5fZm9vdGVyJykgLiAnPC9kaXNhYmxlX2Jvb25leF9mb290ZXJzPic7');
 
         $ret .= '<index_begin><![CDATA[' . $GLOBALS['glIndexBegin'] . ']]></index_begin>';
         $ret .= '<index_end><![CDATA[' . $GLOBALS['glIndexEnd'] . ']]></index_end>';
-        
-        $ret .= '<before_content><![CDATA['.$glBeforeContent.']]></before_content>';
-        $ret .= '<after_content><![CDATA['.$glAfterContent.']]></after_content>';
-        $ret .= '<add_to_head_section><![CDATA['.$glAddToHeadSection.']]></add_to_head_section>';
+
+        $ret .= '<before_content><![CDATA[' . $glBeforeContent . ']]></before_content>';
+        $ret .= '<after_content><![CDATA[' . $glAfterContent . ']]></after_content>';
+        $ret .= '<add_to_head_section><![CDATA[' . $glAddToHeadSection . ']]></add_to_head_section>';
 
         $ret .= "<min_point>{$gConf['min_point']}</min_point>\n";
 
@@ -86,19 +87,20 @@ class ThingPage extends Thing
         $ret .= "<title>" . (isset($gConf['title']) && $gConf['title'] ? $gConf['title'] : $gConf['def_title']) . "</title>\n";
 
         $integration_xml = '';
-        @include ($gConf['dir']['base'] . 'integrations/' . BX_ORCA_INTEGRATION . '/xml.php');
+        @include($gConf['dir']['base'] . 'integrations/' . BX_ORCA_INTEGRATION . '/xml.php');
         $ret .= $integration_xml;
 
-        $ret .= $this->getUrlsXml ();
+        $ret .= $this->getUrlsXml();
 
         if (is_array($li)) {
             $ret .= "<logininfo>";
-            reset ($li);
-            while (list($k,$v) = each($li)) {
-                if ('role' == $k)
-                    encode_post_text ($v);
-                elseif ('profile_title' == $k)
-                    encode_post_text ($v);
+            reset($li);
+            while (list($k, $v) = each($li)) {
+                if ('role' == $k) {
+                    encode_post_text($v);
+                } elseif ('profile_title' == $k) {
+                    encode_post_text($v);
+                }
                 $ret .= "<$k>$v</$k>";
             }
             $ret .= "</logininfo>";
@@ -122,80 +124,89 @@ class ThingPage extends Thing
     /**
      * returns page XML
      */
-    function getPageXML (&$li)
+    function getPageXML(&$li)
     {
-        return $this->addHeaderFooter ($li, $this->content);
+        return $this->addHeaderFooter($li, $this->content);
     }
 
     /**
      * write cache to a file
-     *	@param $fn	filename to write to
-     *	@param $s	string to write
+     *
+     * @param $fn    filename to write to
+     * @param $s     string to write
      */
-    function cacheWrite ($fn, $s)
+    function cacheWrite($fn, $s)
     {
         global $gConf;
 
-        if (!$gConf['cache']['on']) return;
+        if (!$gConf['cache']['on']) {
+            return;
+        }
 
-        $f = fopen ($gConf['dir']['xmlcache'] . $fn, "w");
+        $f = fopen($gConf['dir']['xmlcache'] . $fn, "w");
 
         if (!$f) {
             $mk = new Mistake ();
-            $mk->log ("ThingPage::readCache - can not open file({$gConf['dir']['xmlcache']}$fn) for writing");
-            $mk->displayError ("[L[Site is unavailable]]");
+            $mk->log("ThingPage::readCache - can not open file({$gConf['dir']['xmlcache']}$fn) for writing");
+            $mk->displayError("[L[Site is unavailable]]");
         }
 
-        fwrite ($f, $s);
+        fwrite($f, $s);
 
-        fclose ($f);
+        fclose($f);
     }
 
     /**
      * read cache from a file
-     *	@param $fn		filename to read from
-     *	@param return	string from a file
+     *
+     * @param $fn        filename to read from
+     * @param return     string from a file
      */
-    function cacheRead ($fn)
+    function cacheRead($fn)
     {
         global $gConf;
 
-        $f = fopen ($gConf['dir']['xmlcache'] . $fn, "r");
+        $f = fopen($gConf['dir']['xmlcache'] . $fn, "r");
 
         if (!$f) {
             $mk = new Mistake ();
-            $mk->log ("ThingPage::readCache - can not open file({$gConf['dir']['xmlcache']}$fn) for reading");
-            $mk->displayError ("[L[Site is unavailable]]");
+            $mk->log("ThingPage::readCache - can not open file({$gConf['dir']['xmlcache']}$fn) for reading");
+            $mk->displayError("[L[Site is unavailable]]");
         }
 
         $s = '';
-        while ($st = fread ($f, 1024)) $s .= $st;
+        while ($st = fread($f, 1024)) {
+            $s .= $st;
+        }
 
-        fclose ($f);
+        fclose($f);
 
         return $s;
     }
 
     /**
      * check if cache is available
-     *	@param $fn		filename to check
-     *	@param return	true if cache is available
+     *
+     * @param $fn        filename to check
+     * @param return     true if cache is available
      */
-    function cacheExists ($fn)
+    function cacheExists($fn)
     {
         global $gConf;
-        return file_exists ($gConf['dir']['xmlcache'] . $fn);
+
+        return file_exists($gConf['dir']['xmlcache'] . $fn);
     }
 
     /**
      * check if cache is enabled
      */
-    function cacheEnabled ()
+    function cacheEnabled()
     {
         global $gConf;
+
         return $gConf['cache']['on'];
     }
 
-// private functions
+    // private functions
 
 }

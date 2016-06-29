@@ -11,16 +11,16 @@ class BxVideosDb extends BxDolFilesDb
     /*
      * Constructor.
      */
-    function __construct (&$oConfig)
+    function __construct(&$oConfig)
     {
         parent::__construct($oConfig);
-        $this->aFileFields['medExt'] = 'Video';
+        $this->aFileFields['medExt']    = 'Video';
         $this->aFileFields['medSource'] = 'Source';
-        $this->sFileTable = 'RayVideoFiles';
-        $this->sFavoriteTable = 'bx_videos_favorites';
+        $this->sFileTable               = 'RayVideoFiles';
+        $this->sFavoriteTable           = 'bx_videos_favorites';
     }
 
-    function getSettingsCategory ()
+    function getSettingsCategory()
     {
         return (int)$this->getOne("SELECT `ID` FROM `sys_options_cats` WHERE `name` = 'Videos' LIMIT 1");
     }
