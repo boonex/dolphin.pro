@@ -9,7 +9,7 @@
 
 function secureCheckWidgetName($sWidget)
 {
-    return preg_match("^([0-9A-Za-z_]+)$", $sWidget);
+    return preg_match("/^([0-9A-Za-z_]+)$/i", $sWidget);
 }
 
 /**
