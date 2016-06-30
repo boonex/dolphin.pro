@@ -2508,7 +2508,7 @@ EOF;
 
     function uriCheckUniq($s, $sTable, $sField)
     {
-        return !$this->fdb->getOne("SELECT 1 FROM $sTable WHERE $sField = '$s' LIMIT 1");
+        return !$this->fdb->getOne("SELECT 1 FROM $sTable WHERE $sField = ? LIMIT 1", [$s]);
     }
 
     function setTitle($s)

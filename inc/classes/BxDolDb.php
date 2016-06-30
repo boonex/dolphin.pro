@@ -167,20 +167,22 @@ class BxDolDb
                 $oStmt = $this->link->query($sQuery);
             }
         } catch (PDOException $e) {
-            // check if this is not a replay call already
-            // check if the error is about mysql server going away/disconnecting
+            // check if this is not a replay call already, if it is, than we will skip this block
+            // and also check if the error is about mysql server going away/disconnecting
             if (!$bReplaying && (stripos($e->getMessage(), 'gone away') !== false)) {
                 // reconnect to db
                 $this->disconnect();
                 $this->connect();
 
-                // lets retry after reconnecting by
-                // replaying the call with the flag
+                // lets retry after reconnecting by replaying
+                // the call with the replay arg set to true
                 return $this->res($sQuery, $aBindings, true);
             }
 
-            // if still failed, we will throw the exception and
-            // let the system handle it like a boss
+            // this was a replay call and it failed again OR
+            // the error was not about mysql disconnecting.
+            // We will throw the exception and let
+            // the system handle it like a boss
             throw $e;
         }
 

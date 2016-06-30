@@ -60,7 +60,7 @@ if (!$gConf['lang'] || !preg_match("/^[a-z]{2}$/",
         $gConf['lang']) || !file_exists($path . 'layout/base_' . $gConf['lang'])
 ) {
     if (function_exists('db_value')) {
-        $gConf['lang'] = db_value("SELECT `VALUE` FROM `sys_options` WHERE `Name` = 'lang_default' LIMIT 1");
+        $gConf['lang'] = db_value("SELECT `VALUE` FROM `sys_options` WHERE `Name` = ? LIMIT 1", ['lang_default']);
     } else {
         $gConf['lang'] = 'en';
     }

@@ -91,9 +91,9 @@ class DbAdmin extends BxDb
     {
         $a = $this->getAll("SELECT `post_id`, `user` FROM " . TF_FORUM_POST . " WHERE `forum_id` = '$forum_id'");
         foreach ($a as $r) {
-            $this->query("DELETE FROM " . TF_FORUM_VOTE . " WHERE `post_id` = '{$r['post_id']}'");
-            $this->query("DELETE FROM " . TF_FORUM_REPORT . " WHERE `post_id` = '{$r['post_id']}'");
-            $this->query("UPDATE " . TF_FORUM_USER_STAT . " SET `posts` = `posts` - 1 WHERE `user` = '{$r['user']}' AND `posts` > 0");
+            $this->query("DELETE FROM " . TF_FORUM_VOTE . " WHERE `post_id` = ?", [$r['post_id']]);
+            $this->query("DELETE FROM " . TF_FORUM_REPORT . " WHERE `post_id` = ?", [$r['post_id']]);
+            $this->query("UPDATE " . TF_FORUM_USER_STAT . " SET `posts` = `posts` - 1 WHERE `user` = ? AND `posts` > 0", [$r['user']]);
         }
 
         return $this->query("DELETE FROM " . TF_FORUM_POST . " WHERE `forum_id` = ?", [$forum_id]);

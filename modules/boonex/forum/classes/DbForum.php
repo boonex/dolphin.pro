@@ -1052,11 +1052,11 @@ class DbForum extends BxDb
         }
 
         foreach ($aTables2Field as $sTable => $sField) {
-            $iAffectedRows += $this->query("UPDATE `" . $gConf['db']['prefix'] . $sTable . "` SET `" . $sField . "` = '" . $this->escape($sUserNew) . "' WHERE `" . $sField . "` = ?",
-                [$sUserOld]);
+            $iAffectedRows += $this->query("UPDATE `" . $gConf['db']['prefix'] . $sTable . "` SET `" . $sField . "` = ? WHERE `" . $sField . "` = ?",
+                [$sUserNew, $sUserOld]);
         }
-        $iAffectedRows += $this->query("UPDATE `" . $gConf['db']['prefix'] . "forum_topic` SET `last_post_user` = '" . $this->escape($sUserNew) . "' WHERE `last_post_user` = ?",
-            [$sUserOld]);
+        $iAffectedRows += $this->query("UPDATE `" . $gConf['db']['prefix'] . "forum_topic` SET `last_post_user` = ? WHERE `last_post_user` = ?",
+            [$sUserNew, $sUserOld]);
 
         return $iAffectedRows;
     }
