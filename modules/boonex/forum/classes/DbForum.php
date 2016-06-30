@@ -216,9 +216,9 @@ class DbForum extends BxDb
         return $this->_getTopicsNumWithCondition(" AND `topic_hidden` = '0' ");
     }
 
-    function _getTopicsNumWithCondition($sWhere = '')
+    function _getTopicsNumWithCondition($sWhere = '', $aBindings = [])
     {
-        return $this->getOne("SELECT COUNT(`topic_id`) FROM " . TF_FORUM_TOPIC . " WHERE 1 $sWhere");
+        return $this->getOne("SELECT COUNT(`topic_id`) FROM " . TF_FORUM_TOPIC . " WHERE 1 $sWhere", $aBindings);
     }
 
     function getTopics($f, $start)
