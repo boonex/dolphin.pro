@@ -8,7 +8,7 @@ bx_import('BxDolPageView');
 
 class BxPfwPageCart extends BxDolPageView
 {
-	protected $_oMain;
+    protected $_oMain;
 
     function __construct(&$oMain)
     {
@@ -20,7 +20,7 @@ class BxPfwPageCart extends BxDolPageView
         $GLOBALS['oTopMenu']->setCustomVar('sys_payment_module_uri', $this->_oMain->_oConfig->getUri());
     }
 
-	function getBlockCode_Featured()
+    function getBlockCode_Featured()
     {
         return $this->_oMain->getCartContent(BX_PMT_ADMINISTRATOR_ID);
     }

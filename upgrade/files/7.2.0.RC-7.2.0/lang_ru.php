@@ -2,13 +2,13 @@
 
 $aLangContent = array(
 
-  // ================ CHANGED KEYS ================
+    // ================ CHANGED KEYS ================
 
-  '_adm_license_trial_copy_login_text' => 'Это пробная копия Дельфина. <a href="http://www.boonex.com/start" target="_blank">Получить лицензию у BoonEx.</a>',
-  '_adm_license_note_unregistered' => '<a href="http://www.boonex.com/start"><b>Приобрести лицензию</b></a> для удаления ссылок от BoonEx и предупреждений для пробной версии.',
-  '_adm_license_popup_note' => 'Пробная копия! <b><a href="http://www.boonex.com/start">Получить лицензию</a></b> и зарегистрировать:',
-  '_adm_page_cpt_settings_basic' => 'Основные настройки',
-  '_adm_txt_dashboard_help' => '
+    '_adm_license_trial_copy_login_text' => 'Это пробная копия Дельфина. <a href="http://www.boonex.com/start" target="_blank">Получить лицензию у BoonEx.</a>',
+    '_adm_license_note_unregistered'     => '<a href="http://www.boonex.com/start"><b>Приобрести лицензию</b></a> для удаления ссылок от BoonEx и предупреждений для пробной версии.',
+    '_adm_license_popup_note'            => 'Пробная копия! <b><a href="http://www.boonex.com/start">Получить лицензию</a></b> и зарегистрировать:',
+    '_adm_page_cpt_settings_basic'       => 'Основные настройки',
+    '_adm_txt_dashboard_help'            => '
 <ol class="adm-ds-help bx-def-font-large">
     <li>
         Как изменить логотип сайта на собственный
@@ -56,6 +56,6 @@ $aLangContent = array(
         Зарегистрируйте свою лицензию <a href="{0}license.php">здесь</a>
     </li>
 </ol>',
-  '_sys_sm_join_or_login' => 'Регистрация/Вход',
+    '_sys_sm_join_or_login'              => 'Регистрация/Вход',
 
 );

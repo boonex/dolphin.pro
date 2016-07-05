@@ -2,9 +2,9 @@
 
 $aLangContent = array(
 
-  // ================ CHANGED KEYS ==================
+    // ================ CHANGED KEYS ==================
 
-  '_bx_smtp_help_text' => '
+    '_bx_smtp_help_text' => '
         <b>SMTP authentication </b> - most SMTP servers requires SMTP authentication, most probably you need to enable it.
         <br />
         <b>SMTP server name</b> - is it better to send mail from your site SMTP server, so it is probably the name of your site or localhost.

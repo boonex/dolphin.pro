@@ -10,6 +10,7 @@ bx_import('BxDolModuleDb');
 class BxPmtDb extends BxDolModuleDb
 {
     var $_oConfig;
+
     /*
      * Constructor.
      */
@@ -20,14 +21,14 @@ class BxPmtDb extends BxDolModuleDb
         $this->_oConfig = &$oConfig;
     }
 
-	function insertData($aData)
+    function insertData($aData)
     {
-		$this->query("INSERT IGNORE INTO `" . $this->_sPrefix . "modules` (`uri`) VALUES('" . $aData['uri'] . "')");
+        $this->query("INSERT IGNORE INTO `" . $this->_sPrefix . "modules` (`uri`) VALUES('" . $aData['uri'] . "')");
     }
 
     function deleteData($aData)
     {
-    	$this->query("DELETE FROM `" . $this->_sPrefix . "modules` WHERE `uri`='" . $aData['uri'] . "' LIMIT 1");
+        $this->query("DELETE FROM `" . $this->_sPrefix . "modules` WHERE `uri`='" . $aData['uri'] . "' LIMIT 1");
     }
 
     /**
@@ -56,6 +57,7 @@ class BxPmtDb extends BxDolModuleDb
 
         return $this->getAll($sSql);
     }
+
     function getFormData($iUserId)
     {
         $sSql = "SELECT
@@ -66,9 +68,11 @@ class BxPmtDb extends BxDolModuleDb
 
         return $this->getAllWithKey($sSql, 'option_id', [$iUserId]);
     }
+
     function updateOption($iUserId, $iOptionId, $sValue)
     {
         $sSql = "REPLACE INTO `" . $this->_sPrefix . "user_values` SET `user_id`='" . $iUserId . "', `option_id`='" . $iOptionId . "', `value`='" . $sValue . "'";
+
         return $this->query($sSql);
     }
 
@@ -79,43 +83,49 @@ class BxPmtDb extends BxDolModuleDb
     {
         return $this->getOne("SELECT `items` FROM `" . $this->_sPrefix . "cart` WHERE `client_id`='" . $iId . "' LIMIT 1");
     }
+
     function setCartItems($iId, $sItems)
     {
         $sItems = trim($sItems, ":");
-        if(empty($sItems))
+        if (empty($sItems)) {
             $sSql = "DELETE FROM `" . $this->_sPrefix . "cart` WHERE `client_id`='" . $iId . "' LIMIT 1";
-        else
+        } else {
             $sSql = "REPLACE INTO `" . $this->_sPrefix . "cart` SET `client_id`='" . $iId . "', `items`='" . $sItems . "'";
+        }
 
         return $this->query($sSql);
     }
+
     function getVendorId($sUsername)
     {
-        if(empty($sUsername))
-           return BX_PMT_EMPTY_ID;
+        if (empty($sUsername)) {
+            return BX_PMT_EMPTY_ID;
+        }
 
         return (int)$this->getOne("SELECT `ID` FROM `Profiles` WHERE `NickName`='" . $sUsername . "' LIMIT 1");
     }
+
     function getVendorInfoProfile($iId)
     {
         $sCurrencyCode = $this->_oConfig->getCurrencyCode();
         $sCurrencySign = $this->_oConfig->getCurrencySign();
 
-        if($iId == BX_PMT_ADMINISTRATOR_ID) {
+        if ($iId == BX_PMT_ADMINISTRATOR_ID) {
             $iSiteId = $this->_oConfig->getSiteId();
+
             return array(
-                'id' => BX_PMT_ADMINISTRATOR_ID,
-                'username' => BX_PMT_ADMINISTRATOR_USERNAME,
-                'profile_name' => getNickName($iSiteId),
-                'profile_icon' => get_member_icon($iSiteId),
-                'profile_url' => getProfileLink($iSiteId),
-                'status' => 'Active',
+                'id'            => BX_PMT_ADMINISTRATOR_ID,
+                'username'      => BX_PMT_ADMINISTRATOR_USERNAME,
+                'profile_name'  => getNickName($iSiteId),
+                'profile_icon'  => get_member_icon($iSiteId),
+                'profile_url'   => getProfileLink($iSiteId),
+                'status'        => 'Active',
                 'currency_code' => $sCurrencyCode,
                 'currency_sign' => $sCurrencySign
             );
         }
 
-        $sSql = "SELECT
+        $sSql    = "SELECT
                `tp`.`ID` AS `id`,
                `tp`.`NickName` AS `username`,
                '' AS `profile_name`,
@@ -128,48 +138,53 @@ class BxPmtDb extends BxDolModuleDb
             LIMIT 1";
         $aVendor = $this->getRow($sSql, [$iId]);
 
-        if(!empty($aVendor)) {
+        if (!empty($aVendor)) {
             $aVendor['profile_name'] = getNickName($aVendor['id']);
             $aVendor['profile_icon'] = get_member_icon($aVendor['id']);
-            $aVendor['profile_url'] = getProfileLink($aVendor['id']);
+            $aVendor['profile_url']  = getProfileLink($aVendor['id']);
         }
 
         return $aVendor;
     }
+
     function getVendorInfoProviders($iId, $sProvider = '')
     {
         $aResult = array();
 
         //--- Get specified payment provider if it's available ---//
-        if(!empty($sProvider)) {
+        if (!empty($sProvider)) {
             $aProvider = $this->getProviders($sProvider);
-            $aOptions = $this->getOptions($iId, $aProvider['id']);
+            $aOptions  = $this->getOptions($iId, $aProvider['id']);
 
-            if(isset($aOptions[$aProvider['option_prefix'] . 'active']) && $aOptions[$aProvider['option_prefix'] . 'active']['value'] == 'on') {
+            if (isset($aOptions[$aProvider['option_prefix'] . 'active']) && $aOptions[$aProvider['option_prefix'] . 'active']['value'] == 'on') {
                 $aProvider['options'] = $aOptions;
-                $aResult = $aProvider;
+                $aResult              = $aProvider;
             }
-        }
-        //--- Get all available payment providers ---//
-        else{
+        } //--- Get all available payment providers ---//
+        else {
             $aProviders = $this->getProviders();
-            $aOptions = $this->getOptions($iId);
+            $aOptions   = $this->getOptions($iId);
 
-            foreach($aProviders as $aProvider)
-               if(isset($aOptions[$aProvider['option_prefix'] . 'active']) && $aOptions[$aProvider['option_prefix'] . 'active']['value'] == 'on') {
-                   foreach($aOptions as $sName => $aOption)
-                       if(strpos($sName, $aProvider['option_prefix']) !== false)
-                           $aProvider['options'][$sName] = $aOption;
-                   $aResult[] = $aProvider;
-               }
+            foreach ($aProviders as $aProvider) {
+                if (isset($aOptions[$aProvider['option_prefix'] . 'active']) && $aOptions[$aProvider['option_prefix'] . 'active']['value'] == 'on') {
+                    foreach ($aOptions as $sName => $aOption) {
+                        if (strpos($sName, $aProvider['option_prefix']) !== false) {
+                            $aProvider['options'][$sName] = $aOption;
+                        }
+                    }
+                    $aResult[] = $aProvider;
+                }
+            }
         }
 
         return $aResult;
     }
+
     function getFirstAdminId()
     {
         return (int)$this->getOne("SELECT `ID` FROM `Profiles` WHERE `Role`&" . BX_DOL_ROLE_ADMIN . " AND `Status`='Active' ORDER BY `ID` ASC LIMIT 1");
     }
+
     function getAdminsIds()
     {
         return $this->getColumn("SELECT `ID` FROM `Profiles` WHERE `Role`&" . BX_DOL_ROLE_ADMIN . " AND `Status`='Active' ORDER BY `ID` ASC");
@@ -181,10 +196,10 @@ class BxPmtDb extends BxDolModuleDb
     function getProviders($sName = '')
     {
         $sWhereClause = "1";
-        $aBindings = [];
+        $aBindings    = [];
         if (!empty($sName)) {
             $sWhereClause = "`tp`.`name`= ?";
-            $aBindings = [$sName];
+            $aBindings    = [$sName];
         }
 
         $sSql = "SELECT
@@ -198,15 +213,18 @@ class BxPmtDb extends BxDolModuleDb
                 `tp`.`class_file` AS `class_file`
             FROM `" . $this->_sPrefix . "providers` AS `tp`
             WHERE " . $sWhereClause;
+
         return !empty($sName) ? $this->getRow($sSql, $aBindings) : $this->getAll($sSql, $aBindings);
     }
+
     function getOptions($iUserId = BX_PMT_EMPTY_ID, $iProviderId = 0)
     {
-        if($iUserId == BX_PMT_EMPTY_ID && empty($iProviderId))
-           return $this->getAll("SELECT `id`, `name`, `type` FROM `" . $this->_sPrefix . "providers_options`");
+        if ($iUserId == BX_PMT_EMPTY_ID && empty($iProviderId)) {
+            return $this->getAll("SELECT `id`, `name`, `type` FROM `" . $this->_sPrefix . "providers_options`");
+        }
 
         $sWhereAddon = "";
-        $aBindings = [];
+        $aBindings   = [];
         if (!empty($iProviderId)) {
             $sWhereAddon = " AND `tpo`.`provider_id`= ? ";
             $aBindings[] = $iProviderId;
@@ -229,10 +247,10 @@ class BxPmtDb extends BxDolModuleDb
 
         $sMethodName = 'getRow';
         $aBindings   = [];
-        switch($aParams['type']) {
+        switch ($aParams['type']) {
             case 'id':
                 $sWhereClause = " AND `id`= ? ";
-                $aBindings[] = $aParams['id'];
+                $aBindings[]  = $aParams['id'];
                 break;
         }
         $sSql = "SELECT
@@ -252,14 +270,16 @@ class BxPmtDb extends BxDolModuleDb
                 FROM `" . $this->_sPrefix . "transactions_pending`
                 WHERE 1 " . $sWhereClause . "
                 LIMIT 1";
+
         return $this->$sMethodName($sSql, $aBindings);
     }
-    
+
     function insertPending($iClientId, $sProviderName, $aCartInfo)
     {
         $sItems = "";
-        foreach($aCartInfo['items'] as $aItem)
+        foreach ($aCartInfo['items'] as $aItem) {
             $sItems .= $aCartInfo['vendor_id'] . '_' . $aItem['module_id'] . '_' . $aItem['id'] . '_' . $aItem['quantity'] . ':';
+        }
 
         $sSql = "INSERT INTO `" . $this->_sPrefix . "transactions_pending` SET
                     `client_id`='" . $iClientId . "',
@@ -271,55 +291,65 @@ class BxPmtDb extends BxDolModuleDb
 
         return (int)$this->query($sSql) > 0 ? $this->lastId() : 0;
     }
+
     function updatePending($iId, $aValues)
     {
         $sUpdateClause = "";
-        foreach($aValues as $sName => $sValue)
+        foreach ($aValues as $sName => $sValue) {
             $sUpdateClause .= "`" . $sName . "`='" . $sValue . "', ";
+        }
 
         $sSql = "UPDATE `" . $this->_sPrefix . "transactions_pending`
                 SET " . $sUpdateClause . "`reported`='0'
                 WHERE `id`='" . $iId . "'";
+
         return (int)$this->query($sSql) > 0;
     }
+
     function insertTransaction($aInfo)
     {
         $sSetClause = "";
-        foreach($aInfo as $sKey => $sValue)
+        foreach ($aInfo as $sKey => $sValue) {
             $sSetClause .= "`" . $sKey . "`='" . $sValue . "', ";
+        }
 
         return $this->query("INSERT INTO `" . $this->_sPrefix . "transactions` SET " . $sSetClause . "`date`=UNIX_TIMESTAMP(), `reported`='0'");
     }
-	function updateTransaction($iId, $aValues)
+
+    function updateTransaction($iId, $aValues)
     {
         $sUpdateClause = "";
-        foreach($aValues as $sName => $sValue)
+        foreach ($aValues as $sName => $sValue) {
             $sUpdateClause .= "`" . $sName . "`='" . $sValue . "', ";
-		$sUpdateClause = substr($sUpdateClause, 0, -2);
+        }
+        $sUpdateClause = substr($sUpdateClause, 0, -2);
 
         $sSql = "UPDATE `" . $this->_sPrefix . "transactions`
                 SET " . $sUpdateClause . "
                 WHERE `id`='" . $iId . "'";
+
         return (int)$this->query($sSql) > 0;
     }
+
     function getProcessed($aParams)
     {
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
-        $sMethodName = 'getRow';
+        $sMethodName  = 'getRow';
         $sWhereClause = "";
-        switch($aParams['type']) {
+        switch ($aParams['type']) {
             case 'id':
                 $sWhereClause = " AND `tt`.`id`='" . $aParams['id'] . "'";
                 break;
             case 'order_id':
-                $sMethodName = 'getAll';
+                $sMethodName  = 'getAll';
                 $sWhereClause = " AND `tt`.`order_id`='" . $aParams['order_id'] . "'";
                 break;
             case 'mixed':
                 $sMethodName = 'getAll';
-                foreach($aParams['conditions'] as $sKey => $sValue)
+                foreach ($aParams['conditions'] as $sKey => $sValue) {
                     $sWhereClause .= " AND `tt`.`" . $sKey . "`='" . $sValue . "'";
+                }
                 break;
 
         }
@@ -342,16 +372,20 @@ class BxPmtDb extends BxDolModuleDb
 
         return $this->$sMethodName($sSql);
     }
+
     function getHistory($aParams)
     {
         return $this->getProcessed($aParams);
     }
+
     //--- Order Administration ---//
     function userExists($sName)
     {
         $iId = (int)$this->getOne("SELECT `ID` FROM `Profiles` WHERE `NickName`='" . $sName . "' LIMIT 1");
+
         return $iId > 0 ? $iId : false;
     }
+
     function getModules()
     {
         $sSql = "SELECT
@@ -364,15 +398,17 @@ class BxPmtDb extends BxDolModuleDb
 
         return $this->getAll($sSql);
     }
+
     function getPendingOrders($aParams)
     {
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
         $sFilterAddon = "";
-        if(!empty($aParams['filter']))
+        if (!empty($aParams['filter'])) {
             $sFilterAddon = " AND (DATE_FORMAT(FROM_UNIXTIME(`ttp`.`date`), '" . $sDateFormat . "') LIKE '%" . $aParams['filter'] . "%' OR `tp`.`NickName` LIKE '%" . $aParams['filter'] . "%' OR `ttp`.`order` LIKE '%" . $aParams['filter'] . "%')";
+        }
 
-        $sSql = "SELECT
+        $sSql    = "SELECT
                `ttp`.`id` AS `id`,
                `ttp`.`order` AS `order`,
                `ttp`.`amount` AS `amount`,
@@ -389,24 +425,28 @@ class BxPmtDb extends BxDolModuleDb
            LIMIT " . $aParams['start'] . ", " . $aParams['per_page'];
         $aOrders = $this->getAll($sSql);
 
-        foreach($aOrders as $iKey => $aOrder) {
-            $aProducts = BxPmtCart::items2array($aOrder['items']);
+        foreach ($aOrders as $iKey => $aOrder) {
+            $aProducts                  = BxPmtCart::items2array($aOrder['items']);
             $aOrders[$iKey]['products'] = count($aProducts);
 
             $iItems = 0;
-            foreach($aProducts as $aProduct)
+            foreach ($aProducts as $aProduct) {
                 $iItems += (int)$aProduct['item_count'];
+            }
             $aOrders[$iKey]['items'] = $iItems;
         }
+
         return $aOrders;
     }
+
     function getPendingOrdersCount($aParams)
     {
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
         $sFilterAddon = "";
-        if(!empty($aParams['filter']))
+        if (!empty($aParams['filter'])) {
             $sFilterAddon = " AND (DATE_FORMAT(FROM_UNIXTIME(`ttp`.`date`), '" . $sDateFormat . "') LIKE '%" . $aParams['filter'] . "%' OR `tp`.`NickName` LIKE '%" . $aParams['filter'] . "%' OR `ttp`.`order` LIKE '%" . $aParams['filter'] . "%')";
+        }
 
         $sSql = "SELECT
                COUNT(`ttp`.`id`)
@@ -414,15 +454,18 @@ class BxPmtDb extends BxDolModuleDb
            LEFT JOIN `Profiles` AS `tp` ON `ttp`.`client_id`=`tp`.`ID`
            WHERE `ttp`.`seller_id`='" . $aParams['seller_id'] . "' AND (ISNULL(`ttp`.`order`) OR (NOT ISNULL(`ttp`.`order`) AND `ttp`.`error_code`<>'1')) " . $sFilterAddon . "
            LIMIT 1";
+
         return (int)$this->getOne($sSql);
     }
+
     function getProcessedOrders($aParams)
     {
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
         $sFilterAddon = "";
-        if(!empty($aParams['filter']))
+        if (!empty($aParams['filter'])) {
             $sFilterAddon = " AND (DATE_FORMAT(FROM_UNIXTIME(`tt`.`date`), '" . $sDateFormat . "') LIKE '%" . $aParams['filter'] . "%' OR `tt`.`order_id` LIKE '%" . $aParams['filter'] . "%' OR `tp`.`NickName` LIKE '%" . $aParams['filter'] . "%' OR `ttp`.`order` LIKE '%" . $aParams['filter'] . "%')";
+        }
 
         $sSql = "SELECT
                `tt`.`id` AS `id`,
@@ -444,13 +487,15 @@ class BxPmtDb extends BxDolModuleDb
 
         return $this->getAll($sSql);
     }
+
     function getProcessedOrdersCount($aParams)
     {
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
         $sFilterAddon = "";
-        if(!empty($aParams['filter']))
+        if (!empty($aParams['filter'])) {
             $sFilterAddon = " AND (DATE_FORMAT(FROM_UNIXTIME(`tt`.`date`), '" . $sDateFormat . "') LIKE '%" . $aParams['filter'] . "%' OR `tt`.`order_id` LIKE '%" . $aParams['filter'] . "%' OR `tp`.`NickName` LIKE '%" . $aParams['filter'] . "%' OR `ttp`.`order` LIKE '%" . $aParams['filter'] . "%')";
+        }
 
         $sSql = "SELECT
                COUNT(`tt`.`id`)
@@ -462,13 +507,15 @@ class BxPmtDb extends BxDolModuleDb
 
         return (int)$this->getOne($sSql);
     }
+
     function getHistoryOrders($aParams)
     {
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
         $sFilterAddon = $aParams['seller_id'] != BX_PMT_EMPTY_ID ? " AND `tt`.`seller_id`='" . $aParams['seller_id'] . "'" : " AND `tt`.`seller_id`<>'" . BX_PMT_ADMINISTRATOR_ID . "'";
-        if(!empty($aParams['filter']))
+        if (!empty($aParams['filter'])) {
             $sFilterAddon = " AND (DATE_FORMAT(FROM_UNIXTIME(`tt`.`date`), '" . $sDateFormat . "') LIKE '%" . $aParams['filter'] . "%' OR `tt`.`order_id` LIKE '%" . $aParams['filter'] . "%' OR `tp`.`NickName` LIKE '%" . $aParams['filter'] . "%' OR `ttp`.`order` LIKE '%" . $aParams['filter'] . "%')";
+        }
 
         $sSql = "SELECT
                `tt`.`id` AS `id`,
@@ -490,13 +537,15 @@ class BxPmtDb extends BxDolModuleDb
 
         return $this->getAll($sSql);
     }
+
     function getHistoryOrdersCount($aParams)
     {
         $sDateFormat = $this->_oConfig->getDateFormat('orders');
 
         $sFilterAddon = !empty($aParams['seller_id']) ? " AND `tt`.`seller_id`='" . $aParams['seller_id'] . "'" : " AND `tt`.`seller_id`<>'-1'";
-        if(!empty($aParams['filter']))
+        if (!empty($aParams['filter'])) {
             $sFilterAddon = " AND (DATE_FORMAT(FROM_UNIXTIME(`tt`.`date`), '" . $sDateFormat . "') LIKE '%" . $aParams['filter'] . "%' OR `tt`.`order_id` LIKE '%" . $aParams['filter'] . "%' OR `tp`.`NickName` LIKE '%" . $aParams['filter'] . "%' OR `ttp`.`order` LIKE '%" . $aParams['filter'] . "%')";
+        }
 
         $sSql = "SELECT
                COUNT(`tt`.`id`)
@@ -508,29 +557,42 @@ class BxPmtDb extends BxDolModuleDb
 
         return (int)$this->getOne($sSql);
     }
+
     function reportPendingOrders($aOrders)
     {
-        $mixedResult = $this->query("UPDATE `" . $this->_sPrefix . "transactions_pending` SET `reported`=`reported`+'1' WHERE `id` IN ('" . implode("','", $aOrders) . "')");
+        $mixedResult = $this->query("UPDATE `" . $this->_sPrefix . "transactions_pending` SET `reported`=`reported`+'1' WHERE `id` IN ('" . implode("','",
+                $aOrders) . "')");
+
         return (int)$mixedResult > 0;
     }
+
     function reportProcessedOrders($aOrders)
     {
-        $mixedResult = $this->query("UPDATE `" . $this->_sPrefix . "transactions` SET `reported`=`reported`+'1' WHERE `id` IN ('" . implode("','", $aOrders) . "')");
+        $mixedResult = $this->query("UPDATE `" . $this->_sPrefix . "transactions` SET `reported`=`reported`+'1' WHERE `id` IN ('" . implode("','",
+                $aOrders) . "')");
+
         return (int)$mixedResult > 0;
     }
+
     function cancelPendingOrders($aOrders)
     {
-        $mixedResult = $this->query("DELETE FROM `" . $this->_sPrefix . "transactions_pending` WHERE `id` IN ('" . implode("','", $aOrders) . "')");
+        $mixedResult = $this->query("DELETE FROM `" . $this->_sPrefix . "transactions_pending` WHERE `id` IN ('" . implode("','",
+                $aOrders) . "')");
+
         return (int)$mixedResult > 0;
     }
+
     function cancelProcessedOrders($aOrders)
     {
-        $mixedResult = $this->query("DELETE FROM `" . $this->_sPrefix . "transactions` WHERE `id` IN ('" . implode("','", $aOrders) . "')");
+        $mixedResult = $this->query("DELETE FROM `" . $this->_sPrefix . "transactions` WHERE `id` IN ('" . implode("','",
+                $aOrders) . "')");
+
         return (int)$mixedResult > 0;
     }
+
     function onProfileDelete($iId)
     {
-    	$this->query("DELETE FROM `bx_pmt_cart` WHERE `client_id`='" . $iId . "'");
-    	$this->query("DELETE FROM `bx_pmt_user_values` WHERE `user_id`='" . $iId . "'");
+        $this->query("DELETE FROM `bx_pmt_cart` WHERE `client_id`='" . $iId . "'");
+        $this->query("DELETE FROM `bx_pmt_user_values` WHERE `user_id`='" . $iId . "'");
     }
 }

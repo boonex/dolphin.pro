@@ -13,7 +13,6 @@ require_once(BX_DIRECTORY_PATH_INC . 'profiles.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'design.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'admin_design.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'utils.inc.php');
-require_once(BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php');
 
 bx_import('BxDolAdminSettings');
 bx_import('BxTemplSearchResult');
@@ -35,8 +34,7 @@ if (isset($_POST['save']) && isset($_POST['cat'])) {
             [$_POST['templ_name'], 0, 1]);
     }
 
-    $oJson = new Services_JSON();
-    echo $oJson->encode(array('subject' => $aTranslation['subject'], 'body' => $aTranslation['body']));
+    echo json_encode(array('subject' => $aTranslation['subject'], 'body' => $aTranslation['body']));
     exit;
 }
 

@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ CHANGED KEYS ==================
+    // ================ CHANGED KEYS ==================
 
-  '_wall_pc_view_index' => 'Обзор',
+    '_wall_pc_view_index' => 'Обзор',
 
 );

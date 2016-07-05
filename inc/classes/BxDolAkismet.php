@@ -19,9 +19,9 @@ class BxDolAkismet
     {
         $sKey = getParam('sys_akismet_api_key');
         if ($sKey) {
-            require_once (BX_DIRECTORY_PATH_PLUGINS . 'akismet/Akismet.class.php');
+            require_once(BX_DIRECTORY_PATH_PLUGINS . 'akismet/Akismet.class.php');
             $this->oAkismet = new Akismet(BX_DOL_URL_ROOT, $sKey);
-            $aProfile = getProfileInfo($iProfileID);
+            $aProfile       = getProfileInfo($iProfileID);
             if ($aProfile) {
                 $this->oAkismet->setCommentAuthor($aProfile['NickName']);
                 $this->oAkismet->setCommentAuthorEmail($aProfile['Email']);
@@ -30,21 +30,23 @@ class BxDolAkismet
         }
     }
 
-    public function isSpam ($s, $sPermalink = false)
+    public function isSpam($s, $sPermalink = false)
     {
-        if (!$this->oAkismet)
+        if (!$this->oAkismet) {
             return false;
+        }
 
         $this->oAkismet->setCommentContent($s);
-        if ($sPermalink)
+        if ($sPermalink) {
             $this->oAkismet->setPermalink($sPermalink);
+        }
 
         return $this->oAkismet->isCommentSpam();
     }
 
-    public function onPositiveDetection ($sExtraData = '')
+    public function onPositiveDetection($sExtraData = '')
     {
         $o = bx_instance('BxDolDNSBlacklists');
-        $o->onPositiveDetection (getVisitorIP(), $sExtraData, 'akismet');
+        $o->onPositiveDetection(getVisitorIP(), $sExtraData, 'akismet');
     }
 }

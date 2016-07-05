@@ -10,6 +10,7 @@ class BxFilesConfig extends BxDolFilesConfig
 {
     var $_oDb;
     var $_aMimeTypes;
+
     /**
      * Constructor
      */
@@ -17,15 +18,15 @@ class BxFilesConfig extends BxDolFilesConfig
     {
         parent::__construct($aModule);
 
-        $this->aFilesConfig = array (
+        $this->aFilesConfig = array(
             'original' => array('postfix' => '_{ext}'),
         );
 
         $this->aGlParams = array(
-            'auto_activation' => 'bx_files_activation',
-            'mode_top_index' => 'bx_files_mode_index',
+            'auto_activation'       => 'bx_files_activation',
+            'mode_top_index'        => 'bx_files_mode_index',
             'category_auto_approve' => 'category_auto_activation_bx_files',
-            'browse_width' => 'bx_files_thumb_width',
+            'browse_width'          => 'bx_files_thumb_width',
         );
 
         $this->_aMimeTypes = array();
@@ -42,8 +43,9 @@ class BxFilesConfig extends BxDolFilesConfig
 
     function getMimeTypeIcon($sType)
     {
-        if(isset($this->_aMimeTypes[$sType]))
+        if (isset($this->_aMimeTypes[$sType])) {
             return $this->_aMimeTypes[$sType];
+        }
 
         return 'default.png';
     }

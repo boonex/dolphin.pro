@@ -13,42 +13,51 @@ class BxSoundsSearch extends BxTemplSearchResultSharedMedia
     {
         parent::__construct('BxSoundsModule');
         $this->aConstants['linksTempl'] = array(
-            'home' => 'home',
-            'file' => 'view/{uri}',
-            'category' => 'browse/category/{uri}',
-            'browseAll' => 'browse/',
+            'home'          => 'home',
+            'file'          => 'view/{uri}',
+            'category'      => 'browse/category/{uri}',
+            'browseAll'     => 'browse/',
             'browseUserAll' => 'albums/browse/owner/{uri}',
-            'browseAllTop' => 'browse/top',
-            'tag' => 'browse/tag/{uri}',
-            'album' => 'browse/album/{uri}',
-            'add' => 'browse/my/add'
+            'browseAllTop'  => 'browse/top',
+            'tag'           => 'browse/tag/{uri}',
+            'album'         => 'browse/album/{uri}',
+            'add'           => 'browse/my/add'
         );
         // main part of aCurrent settings, usual most unique part of every module
         $aMain = array(
-            'name' => 'bx_sounds',
+            'name'  => 'bx_sounds',
             'title' => '_bx_sounds',
             'table' => 'RayMp3Files'
         );
 
-        $this->aCurrent = array_merge($aMain, $this->aCurrent);
-        $this->aCurrent['ownFields'][] = 'Listens';
+        $this->aCurrent                 = array_merge($aMain, $this->aCurrent);
+        $this->aCurrent['ownFields'][]  = 'Listens';
         $this->aCurrent['rss']['title'] = _t('_bx_sounds');
 
         $this->aAddPartsConfig['favorite']['table'] = 'bx_sounds_favorites';
-        $this->oModule = BxDolModule::getInstance('BxSoundsModule');
-        $this->oTemplate = &$this->oModule->_oTemplate;
-        $this->aConstants['filesUrl'] = $this->oModule->_oConfig->getFilesUrl();
-        $this->aConstants['filesDir'] = $this->oModule->_oConfig->getFilesPath();
-        $this->aConstants['filesInAlbumCover'] = 12;
-        $this->aConstants['picPostfix'] = $this->oModule->_oConfig->aFilePostfix;
+        $this->oModule                              = BxDolModule::getInstance('BxSoundsModule');
+        $this->oTemplate                            = &$this->oModule->_oTemplate;
+        $this->aConstants['filesUrl']               = $this->oModule->_oConfig->getFilesUrl();
+        $this->aConstants['filesDir']               = $this->oModule->_oConfig->getFilesPath();
+        $this->aConstants['filesInAlbumCover']      = 12;
+        $this->aConstants['picPostfix']             = $this->oModule->_oConfig->aFilePostfix;
 
         $this->aCurrent['restriction']['albumType']['value'] = $this->aCurrent['name'];
 
         switch ($sParamName) {
             case 'calendar':
-                $this->aCurrent['restriction']['calendar-min'] = array('value' => "UNIX_TIMESTAMP('{$sParamValue}-{$sParamValue1}-{$sParamValue2} 00:00:00')", 'field' => 'Date', 'operator' => '>=', 'no_quote_value' => true);
-                $this->aCurrent['restriction']['calendar-max'] = array('value' => "UNIX_TIMESTAMP('{$sParamValue}-{$sParamValue1}-{$sParamValue2} 23:59:59')", 'field' => 'Date', 'operator' => '<=', 'no_quote_value' => true);
-                $this->aCurrent['title'] = _t('_bx_sounds_caption_browse_by_day') . sprintf("%04u-%02u-%02u", $sParamValue, $sParamValue1, $sParamValue2);
+                $this->aCurrent['restriction']['calendar-min'] = array('value'          => "UNIX_TIMESTAMP('{$sParamValue}-{$sParamValue1}-{$sParamValue2} 00:00:00')",
+                                                                       'field'          => 'Date',
+                                                                       'operator'       => '>=',
+                                                                       'no_quote_value' => true
+                );
+                $this->aCurrent['restriction']['calendar-max'] = array('value'          => "UNIX_TIMESTAMP('{$sParamValue}-{$sParamValue1}-{$sParamValue2} 23:59:59')",
+                                                                       'field'          => 'Date',
+                                                                       'operator'       => '<=',
+                                                                       'no_quote_value' => true
+                );
+                $this->aCurrent['title']                       = _t('_bx_sounds_caption_browse_by_day') . sprintf("%04u-%02u-%02u",
+                        $sParamValue, $sParamValue1, $sParamValue2);
                 break;
             case 'top':
                 $this->aCurrent['sorting'] = 'top';
@@ -58,85 +67,99 @@ class BxSoundsSearch extends BxTemplSearchResultSharedMedia
                 break;
             case 'featured':
                 $this->aCurrent['restriction']['featured'] = array(
-                    'value'=>'1', 'field'=>'Featured', 'operator'=>'=', 'paramName'=>'bx_sounds_mode'
+                    'value'     => '1',
+                    'field'     => 'Featured',
+                    'operator'  => '=',
+                    'paramName' => 'bx_sounds_mode'
                 );
                 break;
             case 'favorited':
                 if (isset($this->aAddPartsConfig['favorite']) && !empty($this->aAddPartsConfig['favorite']) && getLoggedId() != 0) {
-                    $this->aCurrent['join']['favorite'] = $this->aAddPartsConfig['favorite'];
+                    $this->aCurrent['join']['favorite']   = $this->aAddPartsConfig['favorite'];
                     $this->aCurrent['restriction']['fav'] = array(
-                        'value' => getLoggedId(),
-                        'field' => $this->aAddPartsConfig['favorite']['userField'],
+                        'value'    => getLoggedId(),
+                        'field'    => $this->aAddPartsConfig['favorite']['userField'],
                         'operator' => '=',
-                        'table' => $this->aAddPartsConfig['favorite']['table']
+                        'table'    => $this->aAddPartsConfig['favorite']['table']
                     );
                 }
                 break;
             case 'album':
-                $this->aCurrent['sorting'] = 'album_order';
+                $this->aCurrent['sorting']              = 'album_order';
                 $this->aCurrent['restriction']['album'] = array(
-                    'value'=>'', 'field'=>'Uri', 'operator'=>'=', 'paramName'=>'albumUri', 'table'=>'sys_albums'
+                    'value'     => '',
+                    'field'     => 'Uri',
+                    'operator'  => '=',
+                    'paramName' => 'albumUri',
+                    'table'     => 'sys_albums'
                 );
                 if ($sParamValue1 == 'owner' && strlen($sParamValue2) > 0) {
                     $this->aCurrent['restriction']['owner'] = array(
-                        'value'=>$sParamValue2, 'field'=>'NickName', 'operator'=>'=', 'paramName'=>'ownerName', 'table' => 'Profiles'
+                        'value'     => $sParamValue2,
+                        'field'     => 'NickName',
+                        'operator'  => '=',
+                        'paramName' => 'ownerName',
+                        'table'     => 'Profiles'
                     );
                 }
                 break;
         }
     }
 
-    function _getPseud ()
+    function _getPseud()
     {
         return array(
-            'id' => 'ID',
-            'title' => 'Title',
-            'date' => 'Date',
-            'size' => 'Time',
-            'uri' => 'Uri',
-            'ownerId' => 'Owner',
+            'id'        => 'ID',
+            'title'     => 'Title',
+            'date'      => 'Date',
+            'size'      => 'Time',
+            'uri'       => 'Uri',
+            'ownerId'   => 'Owner',
             'ownerName' => 'NickName',
-            'view' => 'Listens',
-            'voteTime' => 'gal_date'
+            'view'      => 'Listens',
+            'voteTime'  => 'gal_date'
         );
     }
 
-    function getImgUrl ($iId, $sImgType = 'browse')
+    function getImgUrl($iId, $sImgType = 'browse')
     {
-    	$sImgUrl = parent::getImgUrl($iId, $sImgType);
-		if(empty($sImgUrl))
-			$sImgUrl = $this->aConstants['filesUrl'] . 'default.png';
+        $sImgUrl = parent::getImgUrl($iId, $sImgType);
+        if (empty($sImgUrl)) {
+            $sImgUrl = $this->aConstants['filesUrl'] . 'default.png';
+        }
 
         return $sImgUrl;
     }
 
-    function getImgPath ($iId, $sType = 'browse')
+    function getImgPath($iId, $sType = 'browse')
     {
         $iId = (int)$iId;
-        if (!isset($this->aConstants['picPostfix'][$sType]))
+        if (!isset($this->aConstants['picPostfix'][$sType])) {
             $sType = 'browse';
+        }
 
         $s = $this->aConstants['filesDir'] . $iId . $this->aConstants['picPostfix'][$sType];
-        if (!file_exists($s) && isset($this->oModule->_oConfig->aFilePostfix[$sType]['fallback']))
+        if (!file_exists($s) && isset($this->oModule->_oConfig->aFilePostfix[$sType]['fallback'])) {
             $s = $this->aConstants['filesDir'] . $this->oModule->_oConfig->aFilePostfix[$sType]['fallback'];
-        
+        }
+
         return $s;
     }
 
-    function serviceGetFileUrl ($iId, $sImgType = 'browse')
+    function serviceGetFileUrl($iId, $sImgType = 'browse')
     {
         return $this->getImgUrl($iId, $sImgType);
     }
 
-    function serviceGetSoundConcept ($aSound)
+    function serviceGetSoundConcept($aSound)
     {
         return $this->oTemplate->getFileConcept($aSound['ID'], $aSound);
     }
 
     function serviceGetEntry($iId, $sType)
     {
-        $iId = (int)$iId;
-        $sqlQuery = "SELECT
+        $iId        = (int)$iId;
+        $sqlQuery   = "SELECT
                 a.`ID` as `id`,
                 a.`Title` as `title`,
                 a.`Description` as `description`,
@@ -154,28 +177,30 @@ class BxSoundsSearch extends BxTemplSearchResultSharedMedia
             LEFT JOIN `sys_albums` as c ON c.`ID`=b.`id_album`
             WHERE a.`ID`='$iId' AND c.`Type`='bx_sounds'";
         $aImageInfo = db_arr($sqlQuery);
-        if(empty($aImageInfo) || !is_array($aImageInfo))
+        if (empty($aImageInfo) || !is_array($aImageInfo)) {
             return array();
+        }
 
         $sFileName = $this->getImgUrl($iId, $sType);
         $sFilePath = $this->getImgPath($iId, $sType);
-        $sUrl = $this->getCurrentUrl('file', $iId, $aImageInfo['uri']);
+        $sUrl      = $this->getCurrentUrl('file', $iId, $aImageInfo['uri']);
+
         return array(
-        	'id' => $aImageInfo['id'],
-            'file' => $sFileName,
-            'file_path' => $sFilePath,
-            'title' => $aImageInfo['title'],
-            'owner' => $aImageInfo['owner'],
-            'description' => $aImageInfo['description'],
-            'width' => (int)$this->oModule->_oConfig->getGlParam($sType . '_width') + 2 * 2,
-            'height' => (int)$this->oModule->_oConfig->getGlParam($sType . '_height') + 2 * 2,
-            'url' => $sUrl,
-            'rate' => $aImageInfo['rate'],
-            'rate_count' => $aImageInfo['rate_count'],
+            'id'             => $aImageInfo['id'],
+            'file'           => $sFileName,
+            'file_path'      => $sFilePath,
+            'title'          => $aImageInfo['title'],
+            'owner'          => $aImageInfo['owner'],
+            'description'    => $aImageInfo['description'],
+            'width'          => (int)$this->oModule->_oConfig->getGlParam($sType . '_width') + 2 * 2,
+            'height'         => (int)$this->oModule->_oConfig->getGlParam($sType . '_height') + 2 * 2,
+            'url'            => $sUrl,
+            'rate'           => $aImageInfo['rate'],
+            'rate_count'     => $aImageInfo['rate_count'],
             'comments_count' => $aImageInfo['comments_count'],
-            'views_count' => $aImageInfo['views_count'],
-            'status' => $aImageInfo['status'],
-            'album_id' => $aImageInfo['album_id']
+            'views_count'    => $aImageInfo['views_count'],
+            'status'         => $aImageInfo['status'],
+            'album_id'       => $aImageInfo['album_id']
         );
     }
 
@@ -184,7 +209,7 @@ class BxSoundsSearch extends BxTemplSearchResultSharedMedia
         return $this->serviceGetEntry($iId, $sType);
     }
 
-	function serviceGetSoundArray($iId, $sType)
+    function serviceGetSoundArray($iId, $sType)
     {
         return $this->serviceGetEntry($iId, $sType);
     }
@@ -194,37 +219,42 @@ class BxSoundsSearch extends BxTemplSearchResultSharedMedia
         return $this->serviceGetEntry($iId, $sType);
     }
 
-    function serviceGetFilesInCat ($iId, $sCategory = '')
+    function serviceGetFilesInCat($iId, $sCategory = '')
     {
         $aFiles = $this->getFilesInCatArray($iId, $sCategory);
         foreach ($aFiles as $k => $aRow) {
             $aFiles[$k]['thumb'] = $this->getImgUrl($aRow['id'], 'browse');
-            $aFiles[$k]['file'] = $this->getImgUrl($aRow['id'], 'file');
+            $aFiles[$k]['file']  = $this->getImgUrl($aRow['id'], 'file');
         }
+
         return $aFiles;
     }
 
-    function serviceGetFilesInAlbum ($iAlbumId, $isCheckPrivacy = false, $iViewer = 0, $aLimits = array())
+    function serviceGetFilesInAlbum($iAlbumId, $isCheckPrivacy = false, $iViewer = 0, $aLimits = array())
     {
-        if (!$iViewer)
+        if (!$iViewer) {
             $iViewer = $this->oModule->_iProfileId;
-        if ($isCheckPrivacy && !$this->oModule->oAlbumPrivacy->check('album_view', (int)$iAlbumId, $iViewer))
+        }
+        if ($isCheckPrivacy && !$this->oModule->oAlbumPrivacy->check('album_view', (int)$iAlbumId, $iViewer)) {
             return array();
+        }
         $aFiles = $this->getFilesInAlbumArray($iAlbumId, $aLimits);
         foreach ($aFiles as $k => $aRow) {
             $aFiles[$k]['thumb'] = $this->getImgUrl($aRow['id'], 'browse');
-            $aFiles[$k]['file'] = $this->getImgUrl($aRow['id'], 'file');
+            $aFiles[$k]['file']  = $this->getImgUrl($aRow['id'], 'file');
         }
+
         return $aFiles;
     }
 
-    function serviceGetAllProfileSounds ($iProfId, $aLimits = array())
+    function serviceGetAllProfileSounds($iProfId, $aLimits = array())
     {
         $aFiles = $this->getProfileFiles($iProfId, $aLimits);
         foreach ($aFiles as $k => $aRow) {
             $aFiles[$k]['thumb'] = $this->getImgUrl($aRow['id'], 'browse');
-            $aFiles[$k]['file'] = $this->getImgUrl($aRow['id'], 'file');
+            $aFiles[$k]['file']  = $this->getImgUrl($aRow['id'], 'file');
         }
+
         return $aFiles;
     }
 
@@ -246,36 +276,40 @@ class BxSoundsSearch extends BxTemplSearchResultSharedMedia
 
     function serviceProfileSoundBlock($iProfileId)
     {
-        if(!$this->checkMemAction($iProfileId, 'view'))
+        if (!$this->checkMemAction($iProfileId, 'view')) {
             return '';
-        $aVars = array (
-            'title' => false,
-            'prefix' => 'id' . time() . '_' . rand(1, 999999),
-            'default_height' => 350,
-            'bx_repeat:sounds' => array (),
-            'bx_repeat:icons' => array (),
+        }
+        $aVars = array(
+            'title'            => false,
+            'prefix'           => 'id' . time() . '_' . rand(1, 999999),
+            'default_height'   => 350,
+            'bx_repeat:sounds' => array(),
+            'bx_repeat:icons'  => array(),
         );
 
         $aFiles = $this->serviceGetProfileAlbumFiles($iProfileId);
-        foreach($aFiles as $aFile) {
-            $aVars['bx_repeat:sounds'][] = array (
+        foreach ($aFiles as $aFile) {
+            $aVars['bx_repeat:sounds'][] = array(
                 'style' => false === $aVars['title'] ? '' : 'display:none;',
-                'id' => $aFile['id'],
+                'id'    => $aFile['id'],
                 'sound' => $this->oTemplate->getFileConcept($aFile['id']),
             );
-            $aVars['bx_repeat:icons'][] = array (
-                'id' => $aFile['id'],
+            $aVars['bx_repeat:icons'][]  = array(
+                'id'       => $aFile['id'],
                 'icon_url' => $aFile['file'],
-                'title' => $aFile['title'],
+                'title'    => $aFile['title'],
             );
-            if (false === $aVars['title'])
+            if (false === $aVars['title']) {
                 $aVars['title'] = $aFile['title'];
+            }
         }
 
-        if (!$aVars['bx_repeat:icons'])
+        if (!$aVars['bx_repeat:icons']) {
             return '';
+        }
 
         $this->oTemplate->addCss('entry_view.css');
+
         return $this->oTemplate->parseHtmlByName('entry_view_block_sounds.html', $aVars);
     }
 
@@ -294,6 +328,7 @@ class BxSoundsSearch extends BxTemplSearchResultSharedMedia
             default:
                 $aSql = parent::getAlterOrder();
         }
+
         return $aSql;
     }
 }

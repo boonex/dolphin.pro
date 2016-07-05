@@ -11,7 +11,7 @@ bx_import('BxDolSiteMaps');
  */
 class BxDolSiteMapsSystem extends BxDolSiteMaps
 {
-    protected $_aPages = array (
+    protected $_aPages = array(
         array('page' => 'about_us.php'),
         array('page' => 'advice.php'),
         array('page' => 'contact.php'),
@@ -30,17 +30,17 @@ class BxDolSiteMapsSystem extends BxDolSiteMaps
         parent::__construct($aSystem);
     }
 
-    protected function _genUrl ($a)
+    protected function _genUrl($a)
     {
         return BX_DOL_URL_ROOT . $a['page'];
     }
 
-    protected function _getCount ()
+    protected function _getCount()
     {
         return count($this->_aPages);
     }
 
-    protected function _getRecords ($iStart)
+    protected function _getRecords($iStart)
     {
         return array_slice($this->_aPages, $iStart, BX_SITE_MAPS_URLS_PER_FILE);
     }

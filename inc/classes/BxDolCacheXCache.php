@@ -19,22 +19,25 @@ class BxDolCacheXCache extends BxDolCache
      */
     function getData($sKey, $iTTL = false)
     {
-        if (!xcache_isset($sKey))
+        if (!xcache_isset($sKey)) {
             return null;
+        }
 
         return xcache_get($sKey);
     }
+
     /**
      * Save data in shared memory cache
      *
-     * @param  string  $sKey      - file name
-     * @param  mixed   $mixedData - the data to be cached in the file
-     * @param  int     $iTTL      - time to live
+     * @param  string $sKey      - file name
+     * @param  mixed  $mixedData - the data to be cached in the file
+     * @param  int    $iTTL      - time to live
      * @return boolean result of operation.
      */
     function setData($sKey, $mixedData, $iTTL = false)
     {
         $bResult = xcache_set($sKey, $mixedData, false === $iTTL ? $this->iTTL : $iTTL);
+
         return $bResult;
     }
 
@@ -46,14 +49,16 @@ class BxDolCacheXCache extends BxDolCache
      */
     function delData($sKey)
     {
-        if (!xcache_isset($sKey))
+        if (!xcache_isset($sKey)) {
             return true;
+        }
 
         return xcache_unset($sKey);
     }
 
     /**
      * Check if xcache functions are available
+     *
      * @return boolean
      */
     function isAvailable()
@@ -63,6 +68,7 @@ class BxDolCacheXCache extends BxDolCache
 
     /**
      * Check if xcache extension is loaded
+     *
      * @return boolean
      */
     function isInstalled()
@@ -72,17 +78,18 @@ class BxDolCacheXCache extends BxDolCache
 
     /**
      * remove all data from cache by key prefix
+     *
      * @return true on success
      */
-    function removeAllByPrefix ($s)
+    function removeAllByPrefix($s)
     {
-        return xcache_unset_by_prefix ($s);
+        return xcache_unset_by_prefix($s);
     }
 
     /**
      * get size of cached data by name prefix
      */
-    function getSizeByPrefix ($s)
+    function getSizeByPrefix($s)
     {
         // not implemented for current cache
         return false;

@@ -9,18 +9,19 @@ require_once(BX_DIRECTORY_PATH_ROOT . 'upgrade/classes/BxDolUpgradeController.ph
 require_once(BX_DIRECTORY_PATH_ROOT . 'upgrade/classes/BxDolUpgradeUtil.php');
 require_once(BX_DIRECTORY_PATH_ROOT . 'upgrade/classes/BxDolUpgradeDb.php');
 
-define ('BX_UPGRADE_DIR_UPGRADES', BX_DIRECTORY_PATH_ROOT . 'upgrade/files/');
-define ('BX_UPGRADE_DIR_TEMPLATES', BX_DIRECTORY_PATH_ROOT . 'upgrade/templates/');
+define('BX_UPGRADE_DIR_UPGRADES', BX_DIRECTORY_PATH_ROOT . 'upgrade/files/');
+define('BX_UPGRADE_DIR_TEMPLATES', BX_DIRECTORY_PATH_ROOT . 'upgrade/templates/');
 
 $sFolder = $_REQUEST['folder'];
 
-include (BX_UPGRADE_DIR_TEMPLATES . '_header.php');
+include(BX_UPGRADE_DIR_TEMPLATES . '_header.php');
 
 $oController = new BxDolUpgradeController ();
 
-if (!$sFolder)
+if (!$sFolder) {
     $oController->showAvailableUpgrades();
-else
+} else {
     $oController->runUpgrade($sFolder);
+}
 
-include (BX_UPGRADE_DIR_TEMPLATES . '_footer.php');
+include(BX_UPGRADE_DIR_TEMPLATES . '_footer.php');

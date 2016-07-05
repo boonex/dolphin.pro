@@ -18,20 +18,27 @@ class BxAdsSiteMaps extends BxDolSiteMaps
     {
         parent::__construct($aSystem);
 
-        $this->_aQueryParts = array (
-            'fields' => "`ID`, `EntryUri`, `DateTime`", // fields list
-            'field_date' => "DateTime", // date field name
-            'field_date_type' => "timestamp", // date field type
-            'table' => "`bx_ads_main`", // table name
-            'join' => "", // join SQL part
-            'where' => "AND `Status` = 'active' AND `AllowView` = '" . BX_DOL_PG_ALL . "'", // SQL condition, without WHERE
-            'order' => " `DateTime` ASC ", // SQL order, without ORDER BY
+        $this->_aQueryParts = array(
+            'fields'          => "`ID`, `EntryUri`, `DateTime`",
+            // fields list
+            'field_date'      => "DateTime",
+            // date field name
+            'field_date_type' => "timestamp",
+            // date field type
+            'table'           => "`bx_ads_main`",
+            // table name
+            'join'            => "",
+            // join SQL part
+            'where'           => "AND `Status` = 'active' AND `AllowView` = '" . BX_DOL_PG_ALL . "'",
+            // SQL condition, without WHERE
+            'order'           => " `DateTime` ASC ",
+            // SQL order, without ORDER BY
         );
 
         $this->_oModule = BxDolModule::getInstance('BxAdsModule');
     }
 
-    protected function _genUrl ($a)
+    protected function _genUrl($a)
     {
         return $this->_oModule->genUrl($a['ID'], $a['EntryUri']);
     }

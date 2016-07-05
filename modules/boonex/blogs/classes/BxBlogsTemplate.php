@@ -16,7 +16,14 @@ class BxBlogsTemplate extends BxDolModuleTemplate
     {
         parent::__construct($oConfig, $oDb);
 
-        $this->_aTemplates = array('blog_unit', 'blog', 'blogpost_unit', 'admin_page', 'blogpost_unit_mobile', 'browse_unit_private_mobile');
+        $this->_aTemplates = array(
+            'blog_unit',
+            'blog',
+            'blogpost_unit',
+            'admin_page',
+            'blogpost_unit_mobile',
+            'browse_unit_private_mobile'
+        );
     }
 
     function loadTemplates()

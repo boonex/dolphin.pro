@@ -18,6 +18,7 @@ class BxH5avInstaller extends BxDolInstaller
     function uninstall($aParams)
     {
         $aResult = parent::uninstall($aParams);
+
         return $aResult;
     }
 

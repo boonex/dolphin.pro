@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_simple_messenger_me' => 'Me',
+    '_simple_messenger_me' => 'Me',
 
 );

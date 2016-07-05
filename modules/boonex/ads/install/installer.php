@@ -17,14 +17,17 @@ class BxAdsInstaller extends BxDolInstaller
     {
         $aResult = parent::install($aParams);
 
-        if (!$aResult['result'])
+        if (!$aResult['result']) {
             return $aResult;
+        }
 
-        if (BxDolRequest::serviceExists('wall', 'update_handlers'))
+        if (BxDolRequest::serviceExists('wall', 'update_handlers')) {
             BxDolService::call('wall', 'update_handlers', array($this->_aConfig['home_uri'], true));
+        }
 
-        if (BxDolRequest::serviceExists('spy', 'update_handlers'))
+        if (BxDolRequest::serviceExists('spy', 'update_handlers')) {
             BxDolService::call('spy', 'update_handlers', array($this->_aConfig['home_uri'], true));
+        }
 
         BxDolService::call('ads', 'map_install');
 
@@ -33,16 +36,19 @@ class BxAdsInstaller extends BxDolInstaller
 
     function uninstall($aParams)
     {
-        if (BxDolRequest::serviceExists('wall', 'update_handlers'))
+        if (BxDolRequest::serviceExists('wall', 'update_handlers')) {
             BxDolService::call('wall', 'update_handlers', array($this->_aConfig['home_uri'], false));
+        }
 
-        if (BxDolRequest::serviceExists('spy', 'update_handlers'))
+        if (BxDolRequest::serviceExists('spy', 'update_handlers')) {
             BxDolService::call('spy', 'update_handlers', array($this->_aConfig['home_uri'], false));
+        }
 
         $aResult = parent::uninstall($aParams);
 
-        if ($aResult['result'] && BxDolModule::getInstance('BxWmapModule'))
+        if ($aResult['result'] && BxDolModule::getInstance('BxWmapModule')) {
             BxDolService::call('wmap', 'part_uninstall', array('ads'));
+        }
 
         return $aResult;
     }

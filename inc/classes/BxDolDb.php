@@ -106,7 +106,8 @@ class BxDolDb
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode=""',
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false
+                PDO::ATTR_EMULATE_PREPARES   => false,
+                PDO::ATTR_PERSISTENT         => true
             ]
         );
     }
@@ -133,7 +134,7 @@ class BxDolDb
 
     public function getLink()
     {
-    	return $this->link;
+        return $this->link;
     }
 
     /**
@@ -166,20 +167,22 @@ class BxDolDb
                 $oStmt = $this->link->query($sQuery);
             }
         } catch (PDOException $e) {
-            // check if this is not a replay call already
-            // check if the error is about mysql server going away/disconnecting
+            // check if this is not a replay call already, if it is, than we will skip this block
+            // and also check if the error is about mysql server going away/disconnecting
             if (!$bReplaying && (stripos($e->getMessage(), 'gone away') !== false)) {
                 // reconnect to db
                 $this->disconnect();
                 $this->connect();
 
-                // lets retry after reconnecting by
-                // replaying the call with the flag
+                // lets retry after reconnecting by replaying
+                // the call with the replay arg set to true
                 return $this->res($sQuery, $aBindings, true);
             }
 
-            // if still failed, we will throw the exception and
-            // let the system handle it like a boss
+            // this was a replay call and it failed again OR
+            // the error was not about mysql disconnecting.
+            // We will throw the exception and let
+            // the system handle it like a boss
             throw $e;
         }
 
@@ -438,7 +441,7 @@ class BxDolDb
 
     /**
      * Retuns last insert id
-     * 
+     *
      * @return string
      */
     public function lastId()
@@ -562,12 +565,12 @@ class BxDolDb
     {
         if (array_key_exists($sName, $GLOBALS['gl_db_cache'])) {
             return $GLOBALS['gl_db_cache'][$sName];
-
         }
 
         $aArgs = func_get_args();
         array_shift($aArgs); // shift $sName
         array_shift($aArgs); // shift $sFunc
+
         // pass other function parameters as database function parameters
         $GLOBALS['gl_db_cache'][$sName] = call_user_func_array(array($this, $sFunc), $aArgs);
 

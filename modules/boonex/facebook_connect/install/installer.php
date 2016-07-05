@@ -5,29 +5,29 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-    require_once(BX_DIRECTORY_PATH_CLASSES . "BxDolInstaller.php");
+require_once(BX_DIRECTORY_PATH_CLASSES . "BxDolInstaller.php");
 
-    class BxFaceBookConnectInstaller extends BxDolInstaller
+class BxFaceBookConnectInstaller extends BxDolInstaller
+{
+    function __construct(&$aConfig)
     {
-        function __construct(&$aConfig)
-        {
-            parent::__construct($aConfig);
-        }
+        parent::__construct($aConfig);
+    }
 
-        function actionCheckRequirements()
-        {
-            $bError = version_compare(PHP_VERSION, '5.4.0') >= 0
-                ? BX_DOL_INSTALLER_SUCCESS
-                : BX_DOL_INSTALLER_FAILED;
+    function actionCheckRequirements()
+    {
+        $bError = version_compare(PHP_VERSION, '5.4.0') >= 0
+            ? BX_DOL_INSTALLER_SUCCESS
+            : BX_DOL_INSTALLER_FAILED;
 
-            return $bError;
-        }
+        return $bError;
+    }
 
-        function actionCheckRequirementsFailed()
-        {
-            return '
+    function actionCheckRequirementsFailed()
+    {
+        return '
             <div style="border:1px solid red; padding:10px;">
                 <u>PHP 5.4</u> or higher is required!
             </div>';
-        }
     }
+}

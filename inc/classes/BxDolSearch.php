@@ -34,21 +34,20 @@ bx_import('BxTemplVotingView');
  * no alerts available
  *
  */
-
 class BxDolSearch
 {
     var $aClasses = array(); // array of all search classes
-    var $aChoice  = array(); // array of current search classes which were choosen in search area
+    var $aChoice = array(); // array of current search classes which were choosen in search area
 
     /**
      * Constructor
      * $aChoice - array of choosen classes (will take a part only existing in `sys_objects_search` table)
      */
 
-    function __construct ($aChoice = '')
+    function __construct($aChoice = '')
     {
         $this->aClasses = $GLOBALS['MySQL']->fromCache('sys_objects_search', 'getAllWithKey',
-           'SELECT `ID` as `id`,
+            'SELECT `ID` as `id`,
                    `Title` as `title`,
                    `ClassName` as `class`,
                    `ClassPath` as `file`,
@@ -58,8 +57,9 @@ class BxDolSearch
 
         if (is_array($aChoice) && !empty($aChoice)) {
             foreach ($aChoice as $sValue) {
-                if (isset($this->aClasses[$sValue]))
+                if (isset($this->aClasses[$sValue])) {
                     $this->aChoice[$sValue] = $this->aClasses[$sValue];
+                }
             }
         } else {
             $this->aChoice = $this->aClasses;
@@ -70,23 +70,25 @@ class BxDolSearch
      * create units for all classes and calling their processing methods
      */
 
-    function response ()
+    function response()
     {
         foreach ($this->aChoice as $sKey => $aValue) {
             if (!class_exists($aValue['class'])) {
                 $sClassPath = str_replace('{tmpl}', $GLOBALS['oSysTemplate']->getCode(), $aValue['file']);
                 require_once(BX_DIRECTORY_PATH_ROOT . $sClassPath);
             }
-            $oEx = new $aValue['class']();
+            $oEx     = new $aValue['class']();
             $oEx->id = $aValue['id'];
             $sCode .= $oEx->processing();
         }
+
         return $sCode;
     }
 
-    function getEmptyResult ()
+    function getEmptyResult()
     {
         $sKey = _t('_Empty');
+
         return DesignBoxContent($sKey, MsgBox($sKey), 1);
     }
 
@@ -215,10 +217,11 @@ class BxDolSearchResult
      * filling identificator field
      */
 
-    function __construct ()
+    function __construct()
     {
-        if (isset($this->aPseud['id']))
+        if (isset($this->aPseud['id'])) {
             $this->aCurrent['ident'] = $this->aPseud['id'];
+        }
     }
 
     /*
@@ -226,14 +229,16 @@ class BxDolSearchResult
      * @return html code
      */
 
-    function processing ()
+    function processing()
     {
         $sCode = $this->displayResultBlock();
         if ($this->aCurrent['paginate']['totalNum'] > 0) {
             $sPaginate = $this->showPagination();
-            $sCode = $this->displaySearchBox($sCode, $sPaginate);
-        } else
+            $sCode     = $this->displaySearchBox($sCode, $sPaginate);
+        } else {
             $sCode = '';
+        }
+
         return $sCode;
     }
 
@@ -242,7 +247,7 @@ class BxDolSearchResult
      * @return html code
      */
 
-    function displayResultBlock ()
+    function displayResultBlock()
     {
         $aData = $this->getSearchData();
         if (count($aData) > 0) {
@@ -251,6 +256,7 @@ class BxDolSearchResult
                 $sCode .= $this->displaySearchUnit($aValue);
             }
         }
+
         return $sCode;
     }
 
@@ -259,7 +265,7 @@ class BxDolSearchResult
      * no return result
      */
 
-    function addCustomParts ()
+    function addCustomParts()
     {
     }
 
@@ -267,16 +273,17 @@ class BxDolSearchResult
      * Get array for rss output
      */
 
-    function rss ()
+    function rss()
     {
-        if (!isset($this->aCurrent['rss']['fields']) || !isset($this->aCurrent['rss']['link']))
+        if (!isset($this->aCurrent['rss']['fields']) || !isset($this->aCurrent['rss']['link'])) {
             return '';
+        }
 
         $aData = $this->getSearchData();
-        $f = &$this->aCurrent['rss']['fields'];
+        $f     = &$this->aCurrent['rss']['fields'];
         if ($aData) {
             foreach ($aData as $k => $a) {
-                $aData[$k][$f['Link']] = $this->getRssUnitLink ($a);
+                $aData[$k][$f['Link']] = $this->getRssUnitLink($a);
             }
         }
 
@@ -297,7 +304,7 @@ class BxDolSearchResult
      * Return rss unit link (redeclared)
      */
 
-    function getRssUnitLink (&$a)
+    function getRssUnitLink(&$a)
     {
         // override this functions to return permalink to rss unit
     }
@@ -311,12 +318,13 @@ class BxDolSearchResult
      * return $sqlUnit sql code and unsetting elements from aPseud field
      */
 
-    function setFieldUnit ($sFieldName, $sTableName, $sOperator = '', $bRenameMode = true)
+    function setFieldUnit($sFieldName, $sTableName, $sOperator = '', $bRenameMode = true)
     {
         if (strlen($sOperator) > 0) {
-            $sqlUnit  = "$sOperator(`$sTableName`.`$sFieldName`)";
-        } else
-            $sqlUnit  = "`$sTableName`.`$sFieldName`";
+            $sqlUnit = "$sOperator(`$sTableName`.`$sFieldName`)";
+        } else {
+            $sqlUnit = "`$sTableName`.`$sFieldName`";
+        }
 
         if (isset($this->aPseud) && $bRenameMode !== false) {
             $sKey = array_search($sFieldName, $this->aPseud);
@@ -325,6 +333,7 @@ class BxDolSearchResult
                 unset($this->aPseud[$sKey]);
             }
         }
+
         return $sqlUnit . ', ';
     }
 
@@ -334,7 +343,7 @@ class BxDolSearchResult
      * return html code
      */
 
-    function displaySearchUnit ($aData)
+    function displaySearchUnit($aData)
     {
     }
 
@@ -345,7 +354,7 @@ class BxDolSearchResult
      * return html code
      */
 
-    function displaySearchBox ($sCode, $sPaginate = '')
+    function displaySearchBox($sCode, $sPaginate = '')
     {
     }
 
@@ -353,7 +362,7 @@ class BxDolSearchResult
      * Get html code of pagination
      */
 
-    function showPagination ()
+    function showPagination()
     {
     }
 
@@ -362,12 +371,13 @@ class BxDolSearchResult
      * return array with data
      */
 
-    function getSearchData ()
+    function getSearchData()
     {
         $this->aPseud = $this->_getPseud();
         $this->setConditionParams();
         if ($this->aCurrent['paginate']['totalNum'] > 0) {
             $aData = $this->getSearchDataByParams();
+
             return $aData;
         }
     }
@@ -378,28 +388,31 @@ class BxDolSearchResult
      * return array with joinFields, ownFields, groupBy and join elements
      */
 
-    function getJoins ($bRenameMode = true)
+    function getJoins($bRenameMode = true)
     {
         $aSql = array();
         // joinFields & join
         if (isset($this->aCurrent['join']) && is_array($this->aCurrent['join'])) {
-            $aSql = array('join'=>'', 'ownFields'=>'', 'joinFields'=>'', 'groupBy'=>'');
+            $aSql = array('join' => '', 'ownFields' => '', 'joinFields' => '', 'groupBy' => '');
             foreach ($this->aCurrent['join'] as $sKey => $aValue) {
                 if (is_array($aValue['joinFields'])) {
                     foreach ($aValue['joinFields'] as $sValue) {
-                        $aSql['joinFields'] .= $this->setFieldUnit($sValue, $aValue['table'], isset($aValue['operator']) ? $aValue['operator'] : null, $bRenameMode);
+                        $aSql['joinFields'] .= $this->setFieldUnit($sValue, $aValue['table'],
+                            isset($aValue['operator']) ? $aValue['operator'] : null, $bRenameMode);
                     }
                 }
                 // group by
-                if (isset($aValue['groupTable']))
-                    $aSql['groupBy'] =  "GROUP BY `{$aValue['groupTable']}`.`{$aValue['groupField']}`, ";
+                if (isset($aValue['groupTable'])) {
+                    $aSql['groupBy'] = "GROUP BY `{$aValue['groupTable']}`.`{$aValue['groupField']}`, ";
+                }
                 $sOn = isset($aValue['mainTable']) ? $aValue['mainTable'] : $this->aCurrent['table'];
                 $aSql['join'] .= " {$aValue['type']} JOIN `{$aValue['table']}` ON `{$aValue['table']}`.`{$aValue['onField']}`=`$sOn`.`{$aValue['mainField']}`";
                 $aSql['ownFields'] .= $this->setFieldUnit($aValue['mainField'], $sOn, '', $bRenameMode);
             }
             $aSql['joinFields'] = trim($aSql['joinFields'], ', ');
-            $aSql['groupBy'] = trim($aSql['groupBy'], ', ');
+            $aSql['groupBy']    = trim($aSql['groupBy'], ', ');
         }
+
         return $aSql;
     }
 
@@ -409,9 +422,9 @@ class BxDolSearchResult
      * return $aData multivariate array
      */
 
-    function getSearchDataByParams ($aParams = '')
+    function getSearchDataByParams($aParams = '')
     {
-        $aSql = array('ownFields'=>'', 'joinFields'=>'', 'order'=>'');
+        $aSql = array('ownFields' => '', 'joinFields' => '', 'order' => '');
 
         // searchFields
         foreach ($this->aCurrent['ownFields'] as $sValue) {
@@ -422,10 +435,11 @@ class BxDolSearchResult
         if (!empty($aJoins)) {
             $aSql['ownFields'] .= $aJoins['ownFields'];
             $aSql['joinFields'] .= $aJoins['joinFields'];
-            $aSql['join'] = $aJoins['join'];
+            $aSql['join']    = $aJoins['join'];
             $aSql['groupBy'] = $aJoins['groupBy'];
-        } else
+        } else {
             $aSql['ownFields'] = trim($aSql['ownFields'], ', ');
+        }
         // from
         $aSql['from'] = " FROM `{$this->aCurrent['table']}`";
 
@@ -439,20 +453,23 @@ class BxDolSearchResult
         $this->setSorting();
 
         $aSort = $this->getSorting($this->aCurrent['sorting']);
-        foreach ($aSort as $sKey => $sValue)
+        foreach ($aSort as $sKey => $sValue) {
             $aSql[$sKey] .= $sValue;
+        }
 
         // rate part
         $aRate = $this->getRatePart();
         if (is_array($aRate)) {
-            foreach ($aRate as $sKey => $sValue)
-               $aSql[$sKey] .= $sValue;
+            foreach ($aRate as $sKey => $sValue) {
+                $aSql[$sKey] .= $sValue;
+            }
         }
 
         // execution
         $sqlQuery = "SELECT {$aSql['ownFields']} {$aSql['joinFields']} {$aSql['from']} {$aSql['join']} {$aSql['where']} {$aSql['groupBy']} {$aSql['order']} {$aSql['limit']}";
         //echoDbg($sqlQuery);
         $aRes = db_res_assoc_arr($sqlQuery);
+
         return $aRes;
     }
 
@@ -462,35 +479,38 @@ class BxDolSearchResult
 
     function setConditionParams()
     {
-        $aWhere = array();
+        $aWhere   = array();
         $aWhere[] = '1';
 
         $sKeyword = bx_get('keyword');
-        if ($sKeyword !== false)
+        if ($sKeyword !== false) {
             $this->aCurrent['restriction']['keyword'] = array(
-                'value' => process_db_input($sKeyword, BX_TAGS_STRIP),
-                'field' => '',
+                'value'    => process_db_input($sKeyword, BX_TAGS_STRIP),
+                'field'    => '',
                 'operator' => 'against'
             );
+        }
 
         if (isset($_GET['ownerName'])) {
             $sName = process_db_input($_GET['ownerName'], BX_TAGS_STRIP);
             $iUser = (int)db_value("SELECT `ID` FROM `Profiles` WHERE `NickName`='$sName'");
             $GLOBALS['oTopMenu']->setCurrentProfileID($iUser);
-        } elseif (isset($_GET['userID']))
+        } elseif (isset($_GET['userID'])) {
             $iUser = (int)$_GET['userID'];
+        }
 
-        if (!empty($iUser))
+        if (!empty($iUser)) {
             $this->aCurrent['restriction']['owner']['value'] = $iUser;
+        }
 
         $iTotalNum = $this->getCount();
         if ($iTotalNum > 0) {
             $this->aCurrent['paginate']['totalNum'] = $iTotalNum;
             $this->setPaginate();
-            $this->aCurrent['paginate']['totalPages'] = ceil( $iTotalNum / $this->aCurrent['paginate']['perPage'] );
+            $this->aCurrent['paginate']['totalPages'] = ceil($iTotalNum / $this->aCurrent['paginate']['perPage']);
         } else {
-           $this->aCurrent['paginate']['totalNum'] = 0;
-           $this->aCurrent['paginate']['totalPages'] = 0;
+            $this->aCurrent['paginate']['totalNum']   = 0;
+            $this->aCurrent['paginate']['totalPages'] = 0;
         }
     }
 
@@ -499,10 +519,11 @@ class BxDolSearchResult
     * return number of all found records
     */
 
-    function getCount ()
+    function getCount()
     {
-        $aJoins = $this->getJoins(false);
-        $sqlQuery =  "SELECT COUNT(*) FROM `{$this->aCurrent['table']}` {$aJoins['join']} " . $this->getRestriction() . " {$aJoins['groupBy']}";
+        $aJoins   = $this->getJoins(false);
+        $sqlQuery = "SELECT COUNT(*) FROM `{$this->aCurrent['table']}` {$aJoins['join']} " . $this->getRestriction() . " {$aJoins['groupBy']}";
+
         return (int)db_value($sqlQuery);
     }
 
@@ -511,7 +532,7 @@ class BxDolSearchResult
      * return $sqlWhere sql code of query for WHERE part
      */
 
-    function getRestriction ()
+    function getRestriction()
     {
         $sqlWhere = '';
         if (isset($this->aCurrent['restriction'])) {
@@ -519,33 +540,36 @@ class BxDolSearchResult
             foreach ($this->aCurrent['restriction'] as $sKey => $aValue) {
                 $sqlCondition = '';
                 if (isset($aValue['operator']) && !empty($aValue['value'])) {
-                   $sFieldTable = isset($aValue['table']) ? $aValue['table'] : $this->aCurrent['table'];
-                   $sqlCondition = "`{$sFieldTable}`.`{$aValue['field']}` ";
-                   if (!isset($aValue['no_quote_value']))
-                       $aValue['value'] = process_db_input($aValue['value'], BX_TAGS_STRIP);
-                   switch ($aValue['operator']) {
-                       case 'against':
-                            $aCond = isset($aValue['field']) && strlen($aValue['field']) > 0 ? $aValue['field'] : $this->aCurrent['searchFields'];
+                    $sFieldTable  = isset($aValue['table']) ? $aValue['table'] : $this->aCurrent['table'];
+                    $sqlCondition = "`{$sFieldTable}`.`{$aValue['field']}` ";
+                    if (!isset($aValue['no_quote_value'])) {
+                        $aValue['value'] = process_db_input($aValue['value'], BX_TAGS_STRIP);
+                    }
+                    switch ($aValue['operator']) {
+                        case 'against':
+                            $aCond        = isset($aValue['field']) && strlen($aValue['field']) > 0 ? $aValue['field'] : $this->aCurrent['searchFields'];
                             $sqlCondition = !empty($aCond) ? $this->getSearchFieldsCond($aCond, $aValue['value']) : "";
                             break;
-                       case 'like':
+                        case 'like':
                             $sqlCondition .= "LIKE '%" . $aValue['value'] . "%'";
                             break;
-                       case 'in':
-                       case 'not in':
+                        case 'in':
+                        case 'not in':
                             $sValuesString = $this->getMultiValues($aValue['value']);
-                            $sqlCondition .= strtoupper($aValue['operator']) . '('.$sValuesString.')';
+                            $sqlCondition .= strtoupper($aValue['operator']) . '(' . $sValuesString . ')';
                             break;
-                       default:
-                               $sqlCondition .= $aValue['operator'] . (isset($aValue['no_quote_value']) && $aValue['no_quote_value'] ?  $aValue['value'] : "'" . $aValue['value'] . "'");
-                       break;
+                        default:
+                            $sqlCondition .= $aValue['operator'] . (isset($aValue['no_quote_value']) && $aValue['no_quote_value'] ? $aValue['value'] : "'" . $aValue['value'] . "'");
+                            break;
                     }
                 }
-                if (strlen($sqlCondition) > 0)
+                if (strlen($sqlCondition) > 0) {
                     $aWhere[] = $sqlCondition;
+                }
             }
-            $sqlWhere .= "WHERE ". implode(' AND ', $aWhere);
+            $sqlWhere .= "WHERE " . implode(' AND ', $aWhere);
         }
+
         return $sqlWhere;
     }
 
@@ -554,13 +578,14 @@ class BxDolSearchResult
      * return $sqlFrom code for limit part pf query
      */
 
-    function getLimit ()
+    function getLimit()
     {
         if (isset($this->aCurrent['paginate'])) {
-            $sqlFrom = ( $this->aCurrent['paginate']['page'] - 1 ) * $this->aCurrent['paginate']['perPage'];
-            $sqlTo = $this->aCurrent['paginate']['perPage'];
-            if ($sqlTo > 0)
-                return 'LIMIT ' . $sqlFrom .', '.$sqlTo;
+            $sqlFrom = ($this->aCurrent['paginate']['page'] - 1) * $this->aCurrent['paginate']['perPage'];
+            $sqlTo   = $this->aCurrent['paginate']['perPage'];
+            if ($sqlTo > 0) {
+                return 'LIMIT ' . $sqlFrom . ', ' . $sqlTo;
+            }
         }
     }
 
@@ -568,7 +593,7 @@ class BxDolSearchResult
      * Set sorting field of class
      */
 
-    function setSorting ()
+    function setSorting()
     {
         $this->aCurrent['sorting'] = isset($_GET[$this->aCurrent['name'] . '_mode']) ? $_GET[$this->aCurrent['name'] . '_mode'] : $this->aCurrent['sorting'];
     }
@@ -578,11 +603,12 @@ class BxDolSearchResult
      * @param string $sSortType sorting type
      * return array with sql elements order and ownFields
      */
-    function getSorting ($sSortType = 'last')
+    function getSorting($sSortType = 'last')
     {
         $aOverride = $this->getAlterOrder();
-        if (is_array($aOverride) && !empty($aOverride))
+        if (is_array($aOverride) && !empty($aOverride)) {
             return $aOverride;
+        }
 
         $aSql = array();
         switch ($sSortType) {
@@ -590,13 +616,14 @@ class BxDolSearchResult
                 $aSql['order'] = "ORDER BY RAND()";
                 break;
             case 'top':
-                $sHow = "DESC";
+                $sHow          = "DESC";
                 $aSql['order'] = "ORDER BY `Rate` $sHow, `RateCount` $sHow, `date` $sHow";
                 break;
             case 'score':
                 if (is_array($this->aCurrent['restriction']['keyword'])) {
                     $aSql['order'] = "ORDER BY `score` DESC";
-                    $aSql['ownFields'] .= $this->getSearchFieldsCond($this->aCurrent['searchFields'], $this->aCurrent['restriction']['keyword']['value'], 'score'). ', ';
+                    $aSql['ownFields'] .= $this->getSearchFieldsCond($this->aCurrent['searchFields'],
+                            $this->aCurrent['restriction']['keyword']['value'], 'score') . ', ';
                 }
                 break;
             case 'voteTime':
@@ -608,6 +635,7 @@ class BxDolSearchResult
             default:
                 $aSql['order'] = "ORDER BY `date` DESC";
         }
+
         return $aSql;
     }
 
@@ -616,7 +644,7 @@ class BxDolSearchResult
      * return array of sql elements
      */
 
-    function getAlterOrder ()
+    function getAlterOrder()
     {
         return array();
     }
@@ -626,18 +654,20 @@ class BxDolSearchResult
      * forcePage is need for setting most important number of current page
      */
 
-    function setPaginate ()
+    function setPaginate()
     {
         $this->aCurrent['paginate']['perPage'] = (isset($_GET['per_page']) && (int)$_GET['per_page'] != 0) ? (int)$_GET['per_page'] : $this->aCurrent['paginate']['perPage'];
-        if (empty($this->aCurrent['paginate']['perPage']))
+        if (empty($this->aCurrent['paginate']['perPage'])) {
             $this->aCurrent['paginate']['perPage'] = 10;
+        }
 
         $this->aCurrent['paginate']['page'] = isset($this->aCurrent['paginate']['forcePage'])
             ? (int)$this->aCurrent['paginate']['forcePage']
             : (empty($_GET['page']) ? 1 : (int)$_GET['page']);
 
-        if ($this->aCurrent['paginate']['page'] < 1)
+        if ($this->aCurrent['paginate']['page'] < 1) {
             $this->aCurrent['paginate']['page'] = 1;
+        }
     }
 
     /*
@@ -648,34 +678,37 @@ class BxDolSearchResult
      * return sql code of WHERE part in query
      */
 
-    function getSearchFieldsCond ($aFields, $sKeyword, $sPseud = '')
+    function getSearchFieldsCond($aFields, $sKeyword, $sPseud = '')
     {
         if (strlen($sKeyword) > 0) {
-           $bLike = getParam('useLikeOperator');
-           $aSql = array(
-              'function' => 'MATCH',
-              'operator' => 'AGAINST',
-              'word' => $sKeyword
-           );
-           if ($bLike == 'on') {
-               $aSql = array(
-                  'function' => 'CONCAT',
-                  'operator' => 'LIKE',
-                  'word' => '%' . preg_replace('/\s+/', '%', $sKeyword) . '%'
-               );
-           }
-           $sqlWhere = " {$aSql['function']}(";
-           if (is_array($aFields)) {
-               foreach ($aFields as $sValue)
+            $bLike = getParam('useLikeOperator');
+            $aSql  = array(
+                'function' => 'MATCH',
+                'operator' => 'AGAINST',
+                'word'     => $sKeyword
+            );
+            if ($bLike == 'on') {
+                $aSql = array(
+                    'function' => 'CONCAT',
+                    'operator' => 'LIKE',
+                    'word'     => '%' . preg_replace('/\s+/', '%', $sKeyword) . '%'
+                );
+            }
+            $sqlWhere = " {$aSql['function']}(";
+            if (is_array($aFields)) {
+                foreach ($aFields as $sValue) {
                     $sqlWhere .= "`{$this->aCurrent['table']}`.`$sValue`, ";
-           } else
-              $sqlWhere .= "`{$this->aCurrent['table']}`.`$aFields`";
-           $sqlWhere = trim($sqlWhere, ', ') . ") {$aSql['operator']} ('{$aSql['word']}')";
+                }
+            } else {
+                $sqlWhere .= "`{$this->aCurrent['table']}`.`$aFields`";
+            }
+            $sqlWhere = trim($sqlWhere, ', ') . ") {$aSql['operator']} ('{$aSql['word']}')";
 
-           if (strlen($sPseud) > 0)
-                   $sqlWhere .= " as `$sPseud`";
+            if (strlen($sPseud) > 0) {
+                $sqlWhere .= " as `$sPseud`";
+            }
 
-           return $sqlWhere;
+            return $sqlWhere;
         }
     }
 
@@ -685,20 +718,22 @@ class BxDolSearchResult
      * return sql code for field with operator IN (NOT IN)
      */
 
-    function getMultiValues ($aValues)
+    function getMultiValues($aValues)
     {
         $sqlPart = is_array($aValues) ? implode("','", $aValues) : $aValues;
-        return "'".$sqlPart."'";
+
+        return "'" . $sqlPart . "'";
     }
 
     /*
      * Generate rate object if it wasn't created yet
      */
 
-    function getRatePart ()
+    function getRatePart()
     {
-        if ($this->iRate == 1)
-           $this->oRate = new BxTemplVotingView($this->aCurrent['name'], 0, 0);
+        if ($this->iRate == 1) {
+            $this->oRate = new BxTemplVotingView($this->aCurrent['name'], 0, 0);
+        }
     }
 
     /*
@@ -706,7 +741,7 @@ class BxDolSearchResult
      */
 
     // system method for filling aPseud array
-    function _getPseud ()
+    function _getPseud()
     {
     }
 }

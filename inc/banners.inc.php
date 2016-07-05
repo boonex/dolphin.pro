@@ -16,7 +16,7 @@ function banner_put_nv($Position, $Track = 1)
 
     $query = "SELECT * FROM `sys_banners` WHERE `Active` <> 0 AND `campaign_start` <= NOW() AND `campaign_end` >= NOW() ";
 
-    switch($Position) {
+    switch ($Position) {
         case 1:
         case 2:
         case 3:
@@ -29,10 +29,11 @@ function banner_put_nv($Position, $Track = 1)
 
     $query .= "ORDER BY RAND() LIMIT 1";
 
-    $arr = db_arr( $query );
+    $arr = db_arr($query);
 
-    if ( empty($arr[0]) )
+    if (empty($arr[0])) {
         return '';
+    }
 
     switch ($Position) {
         case 2:
@@ -49,10 +50,10 @@ function banner_put_nv($Position, $Track = 1)
 
     $sLinkWrapper = $arr['Url'] ? "<a target=\"_blank\" href=\"{$bann_click_url}?{$arr['ID']}\" onmouseout=\"ce()\" onfocus=\"ss('{$arr['Url']}')\" onmouseover=\"return ss('{$arr['Url']}')\">{$arr['Text']}</a><br />" : $arr['Text'];
 
-    if( $Position == 2 || $Position == 3 ) {
+    if ($Position == 2 || $Position == 3) {
         $sPosition = ($Position == 2) ? "left:" : "right:";
 
-$out .= <<<EOF
+        $out .= <<<EOF
 <div style="position:relative; margin:0; padding:0; width:1px; height:1px">
     <div style="position:absolute; {$sPosition}{$hshift}px; top:{$vshift}px; z-index:60">
         {$sLinkWrapper}
@@ -72,11 +73,12 @@ EOF;
 EOF;
     }
 
-    if ( $Track ) {
-        db_res("INSERT INTO `sys_banners_shows` SET `ID` = {$arr['ID']}, `Date` = '".time()."', `IP` = '". $_SERVER['REMOTE_ADDR'] ."'", 0);
+    if ($Track) {
+        db_res("INSERT INTO `sys_banners_shows` SET `ID` = {$arr['ID']}, `Date` = '" . time() . "', `IP` = '" . $_SERVER['REMOTE_ADDR'] . "'",
+            0);
     }
 
-    switch($Position) {
+    switch ($Position) {
         /*case 1:
             $out = '' . $out . '';
             break;*/
@@ -90,6 +92,7 @@ EOF;
             $out = '' . $out . '';
             break;*/
     }
+
     return $out;
 }
 
@@ -97,21 +100,23 @@ function banner_put($ID = 0, $Track = 1)
 {
     global $bann_click_url;
 
-    if ( !$ID ) {
+    if (!$ID) {
         // Get only banners that are active and for which promotion period has not expired.
         $bann_arr = db_arr("SELECT `ID`, `Url`, `Text` FROM `sys_banners` WHERE `Active` <> 0 AND `campaign_start` <= NOW() AND `campaign_end` >= NOW() ORDER BY RAND() LIMIT 1");
     } else {
         $bann_arr = db_arr("SELECT `ID`, `Url`, `Text` FROM `sys_banners` WHERE `ID` = $ID LIMIT 1");
     }
-    if ( !$bann_arr )
+    if (!$bann_arr) {
         return "";
+    }
 
-    if ( $Track ) {
-        db_res("INSERT INTO `sys_banners_shows` SET `ID` = {$bann_arr['ID']}, `Date` = '".time()."', `IP` = '". $_SERVER['REMOTE_ADDR']. "'", 0);
+    if ($Track) {
+        db_res("INSERT INTO `sys_banners_shows` SET `ID` = {$bann_arr['ID']}, `Date` = '" . time() . "', `IP` = '" . $_SERVER['REMOTE_ADDR'] . "'",
+            0);
     }
 
     $bann_arr['Text'] = html_entity_decode($bann_arr['Text']);
-    $sOutputCode = $bann_arr['Url'] ? "<a target=\"_blank\" href=\"{$bann_click_url}?{$bann_arr['ID']}\" onmouseout=\"ce()\" onfocus=\"ss('{$bann_arr['Url']}')\" onmouseover=\"return ss('{$bann_arr['Url']}')\">{$bann_arr['Text']}</a>" : $bann_arr['Text'];
+    $sOutputCode      = $bann_arr['Url'] ? "<a target=\"_blank\" href=\"{$bann_click_url}?{$bann_arr['ID']}\" onmouseout=\"ce()\" onfocus=\"ss('{$bann_arr['Url']}')\" onmouseover=\"return ss('{$bann_arr['Url']}')\">{$bann_arr['Text']}</a>" : $bann_arr['Text'];
 
     return $sOutputCode;
 }

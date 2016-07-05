@@ -401,7 +401,7 @@ function RedirectCode($ActionURL, $Params = null, $Method = "get", $Title = 'Red
     </form>
     <script type="text/javascript">
         <!--
-        document.forms['RedirectForm'].submit();
+        document.forms[ 'RedirectForm' ].submit();
         -->
     </script>
     </body>

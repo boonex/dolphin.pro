@@ -10,18 +10,18 @@ require_once(BX_DIRECTORY_PATH_INC . 'profiles.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'utils.inc.php');
 
 //require_once( BX_DIRECTORY_PATH_MODULES . $aModule['path'] . '/classes/' . $aModule['class_prefix'] . 'Module.php');
-require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolModuleDb.php');
-require_once( BX_DIRECTORY_PATH_MODULES . 'boonex/blogs/classes/BxBlogsModule.php');
+require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolModuleDb.php');
+require_once(BX_DIRECTORY_PATH_MODULES . 'boonex/blogs/classes/BxBlogsModule.php');
 
 // --------------- page variables and login
-$_page['name_index']	= 49;
+$_page['name_index'] = 49;
 
 check_logged();
 
 $oModuleDb = new BxDolModuleDb();
-$aModule = $oModuleDb->getModuleByUri('blogs');
+$aModule   = $oModuleDb->getModuleByUri('blogs');
 
-$oBlogs = new BxBlogsModule($aModule);
+$oBlogs       = new BxBlogsModule($aModule);
 $sHeaderValue = $oBlogs->GetHeaderString();
 
 if ('mobile' == bx_get('action')) {
@@ -29,7 +29,7 @@ if ('mobile' == bx_get('action')) {
     exit;
 }
 
-$_ni = $_page['name_index'];
+$_ni                                = $_page['name_index'];
 $_page_cont[$_ni]['page_main_code'] = PageCompBlogs($oBlogs);
 
 $oBlogs->_oTemplate->setPageTitle($sHeaderValue);
@@ -49,10 +49,12 @@ function PageCompBlogs($oBlogs)
         case 'show_admin_blog':
             $sRetHtml .= $oBlogs->GenMemberBlog(0);
             break;
-        case 'show_member_blog':                        
-            if (isset($_SERVER['REQUEST_URI']) && false !== strpos($_SERVER['REQUEST_URI'], '/member_posts/')) { 
+        case 'show_member_blog':
+            if (isset($_SERVER['REQUEST_URI']) && false !== strpos($_SERVER['REQUEST_URI'], '/member_posts/')) {
                 // redirect from old page to the new one
-                $s = $oBlogs->genBlogLink('show_member_blog_home', array('Permalink' => getUsername((int)bx_get('ownerID')), 'Link' => (int)bx_get('ownerID')), '', '', '', true);
+                $s = $oBlogs->genBlogLink('show_member_blog_home',
+                    array('Permalink' => getUsername((int)bx_get('ownerID')), 'Link' => (int)bx_get('ownerID')), '', '',
+                    '', true);
                 header("HTTP/1.1 301 Moved Permanently");
                 header('Location:' . $s);
                 exit;
@@ -97,7 +99,7 @@ function PageCompBlogs($oBlogs)
             break;
         case 'edit_blog':
             $sRetHtml .= $oBlogs->ActionEditBlog();
-            $iBlogID = (int)bx_get('EditBlogID');
+            $iBlogID  = (int)bx_get('EditBlogID');
             $iOwnerID = (int)bx_get('EOwnerID');
             $sRetHtml .= $oBlogs->GenMemberBlog($iOwnerID);
             break;
@@ -107,7 +109,7 @@ function PageCompBlogs($oBlogs)
             break;
         case 'del_img':
             $sRetHtml .= $oBlogs->ActionDelImg();
-            if (bx_get('mode')=='ajax') {
+            if (bx_get('mode') == 'ajax') {
                 exit;
             }
             $sRetHtml .= $oBlogs->GenPostPage();
@@ -145,8 +147,9 @@ function PageCompBlogs($oBlogs)
 
 if ($oBlogs->_iVisitorID) {
     $sVisitorNickname = getUsername($oBlogs->_iVisitorID);
-    $sVisitorBlogLink = $oBlogs->genBlogLink('show_member_blog_home', array('Permalink'=>$sVisitorNickname, 'Link'=>$oBlogs->_iVisitorID), '', '', '', true);
-    $aOpt = array('only_menu' => 1, 'blog_owner_link' => $sVisitorBlogLink);
+    $sVisitorBlogLink = $oBlogs->genBlogLink('show_member_blog_home',
+        array('Permalink' => $sVisitorNickname, 'Link' => $oBlogs->_iVisitorID), '', '', '', true);
+    $aOpt             = array('only_menu' => 1, 'blog_owner_link' => $sVisitorBlogLink);
     $GLOBALS['oTopMenu']->setCustomSubActions($aOpt, 'bx_blogs', true);
 }
 

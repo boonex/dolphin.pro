@@ -4,7 +4,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import ('BxTemplProfileView');
+bx_import('BxTemplProfileView');
 
 class BxDolProfileInfoPageView extends BxTemplProfileView
 {
@@ -17,16 +17,16 @@ class BxDolProfileInfoPageView extends BxTemplProfileView
     /**
      * Class constructor ;
      */
-    function __construct( $sPageName, &$aMemberInfo )
+    function __construct($sPageName, &$aMemberInfo)
     {
         global $site, $dir;
 
-        $this->oProfileGen = new BxBaseProfileGenerator( $aMemberInfo['ID'] );
-        $this->aConfSite = $site;
-        $this->aConfDir  = $dir;
+        $this->oProfileGen = new BxBaseProfileGenerator($aMemberInfo['ID']);
+        $this->aConfSite   = $site;
+        $this->aConfDir    = $dir;
         parent::__construct($sPageName);
 
-        $this->iMemberID  = getLoggedId();
+        $this->iMemberID   = getLoggedId();
         $this->aMemberInfo = &$aMemberInfo;
     }
 
@@ -37,7 +37,7 @@ class BxDolProfileInfoPageView extends BxTemplProfileView
      */
     function getBlockCode_GeneralInfo($iBlockID)
     {
-        return $this -> getBlockCode_PFBlock($iBlockID, 17);
+        return $this->getBlockCode_PFBlock($iBlockID, 17);
     }
 
     /**
@@ -47,7 +47,7 @@ class BxDolProfileInfoPageView extends BxTemplProfileView
      */
     function getBlockCode_AdditionalInfo($iBlockID)
     {
-        return $this -> getBlockCode_PFBlock($iBlockID, 20);
+        return $this->getBlockCode_PFBlock($iBlockID, 20);
     }
 
 }

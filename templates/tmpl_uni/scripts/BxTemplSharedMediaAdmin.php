@@ -1,6 +1,6 @@
 <?php
 
-require_once( BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseSharedMediaAdmin.php' );
+require_once(BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseSharedMediaAdmin.php');
 
 class BxTemplSharedMediaAdmin extends BxBaseSharedMediaAdmin
 {

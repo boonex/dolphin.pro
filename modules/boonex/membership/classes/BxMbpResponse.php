@@ -4,41 +4,45 @@
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
-
 class BxMbpResponse extends BxDolAlertsResponse
 {
-	var $_oModule;
+    var $_oModule;
 
-	function response(&$oAlert)
-	{
-		$sMethod = 'processAlert' . str_replace(' ', '', ucwords(str_replace(array('_', '-'), array(' ', ' '), $oAlert->sUnit . '_' . $oAlert->sAction)));
-    	if(!method_exists($this, $sMethod))
-    		return;
+    function response(&$oAlert)
+    {
+        $sMethod = 'processAlert' . str_replace(' ', '',
+                ucwords(str_replace(array('_', '-'), array(' ', ' '), $oAlert->sUnit . '_' . $oAlert->sAction)));
+        if (!method_exists($this, $sMethod)) {
+            return;
+        }
 
-		$this->_oModule = BxDolModule::getInstance('BxMbpModule');
+        $this->_oModule = BxDolModule::getInstance('BxMbpModule');
 
-    	$this->$sMethod($oAlert);
-	}
-	
-	protected function processAlertSystemPageOutput(&$oAlert)
-	{
-		if($oAlert->aExtras['page_name'] != 'join')
-			return;
+        $this->$sMethod($oAlert);
+    }
 
-		if(!$this->_oModule->_oConfig->isDisableFreeJoin())
-			return;
+    protected function processAlertSystemPageOutput(&$oAlert)
+    {
+        if ($oAlert->aExtras['page_name'] != 'join') {
+            return;
+        }
 
-		bx_import('PageJoin', $this->_oModule->_aModule);
-		$oPage = new BxMbpPageJoin($this->_oModule);
+        if (!$this->_oModule->_oConfig->isDisableFreeJoin()) {
+            return;
+        }
 
-		$oAlert->aExtras['page_code'] = $oPage->getCode();
-	}
+        bx_import('PageJoin', $this->_oModule->_aModule);
+        $oPage = new BxMbpPageJoin($this->_oModule);
 
-	protected function processAlertProfileShowJoinForm(&$oAlert)
-	{
-		if(!$this->_oModule->_oConfig->isDisableFreeJoin())
-			return;
+        $oAlert->aExtras['page_code'] = $oPage->getCode();
+    }
 
-		list($oAlert->aExtras['sCode']) = $this->_oModule->getSelectLevelBlock(true);
-	}
+    protected function processAlertProfileShowJoinForm(&$oAlert)
+    {
+        if (!$this->_oModule->_oConfig->isDisableFreeJoin()) {
+            return;
+        }
+
+        list($oAlert->aExtras['sCode']) = $this->_oModule->getSelectLevelBlock(true);
+    }
 }

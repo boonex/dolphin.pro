@@ -8,23 +8,23 @@ bx_import('BxDolProfileFields');
 
 class BxGroupsFormSearch extends BxTemplFormView
 {
-    function __construct ()
+    function __construct()
     {
         bx_import('BxDolCategories');
         $oCategories = new BxDolCategories();
-        $oCategories->getTagObjectConfig ();
+        $oCategories->getTagObjectConfig();
         $aCategories = $oCategories->getCategoriesList('bx_groups', (int)$iProfileId, true);
 
         $aCustomForm = array(
 
             'form_attrs' => array(
-                'name'     => 'form_search_groups',
-                'action'   => '',
-                'method'   => 'get',
+                'name'   => 'form_search_groups',
+                'action' => '',
+                'method' => 'get',
             ),
 
-            'params' => array (
-                'db' => array(
+            'params' => array(
+                'db'   => array(
                     'submit_name' => 'submit_form',
                 ),
                 'csrf' => array(
@@ -33,43 +33,43 @@ class BxGroupsFormSearch extends BxTemplFormView
             ),
 
             'inputs' => array(
-                'Keyword' => array(
-                    'type' => 'text',
-                    'name' => 'Keyword',
-                    'caption' => _t('_bx_groups_form_caption_keyword'),
+                'Keyword'  => array(
+                    'type'     => 'text',
+                    'name'     => 'Keyword',
+                    'caption'  => _t('_bx_groups_form_caption_keyword'),
                     'required' => true,
-                    'checker' => array (
-                        'func' => 'length',
-                        'params' => array(3,100),
-                        'error' => _t ('_bx_groups_form_err_keyword'),
+                    'checker'  => array(
+                        'func'   => 'length',
+                        'params' => array(3, 100),
+                        'error'  => _t('_bx_groups_form_err_keyword'),
                     ),
-                    'db' => array (
+                    'db'       => array(
                         'pass' => 'Xss',
                     ),
                 ),
                 'Category' => array(
-                    'type' => 'select_box',
-                    'name' => 'Category',
-                    'caption' => _t('_bx_groups_form_caption_category'),
-                    'values' => $aCategories,
+                    'type'     => 'select_box',
+                    'name'     => 'Category',
+                    'caption'  => _t('_bx_groups_form_caption_category'),
+                    'values'   => $aCategories,
                     'required' => true,
-                    'checker' => array (
-                        'func' => 'avail',
-                        'error' => _t ('_bx_groups_form_err_category'),
+                    'checker'  => array(
+                        'func'  => 'avail',
+                        'error' => _t('_bx_groups_form_err_category'),
                     ),
-                    'db' => array (
+                    'db'       => array(
                         'pass' => 'Xss',
                     ),
                 ),
-                'Submit' => array (
-                    'type' => 'submit',
-                    'name' => 'submit_form',
-                    'value' => _t('_Submit'),
+                'Submit'   => array(
+                    'type'    => 'submit',
+                    'name'    => 'submit_form',
+                    'value'   => _t('_Submit'),
                     'colspan' => true,
                 ),
             ),
         );
 
-        parent::__construct ($aCustomForm);
+        parent::__construct($aCustomForm);
     }
 }

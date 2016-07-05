@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_russian' => 'Russian Language',
+    '_sys_module_russian' => 'Russian Language',
 
 );

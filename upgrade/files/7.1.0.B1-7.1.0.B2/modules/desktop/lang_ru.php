@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_desktop' => 'Desktop App',
+    '_sys_module_desktop' => 'Desktop App',
 
 );

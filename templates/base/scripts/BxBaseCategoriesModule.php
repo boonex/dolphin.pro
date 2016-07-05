@@ -16,9 +16,9 @@ class BxBaseCategoriesModule extends BxDolPageView
 
     function __construct($aParam, $sTitle, $sUrl)
     {
-        $this->_sPage = 'categ_module';
+        $this->_sPage  = 'categ_module';
         $this->_sTitle = $sTitle ? $sTitle : _t('_categ_users');
-        $this->_sUrl = $sUrl;
+        $this->_sUrl   = $sUrl;
         $this->_aParam = $aParam;
         parent::__construct($this->_sPage);
     }
@@ -28,7 +28,7 @@ class BxBaseCategoriesModule extends BxDolPageView
         $oCateg = new BxBaseCategories();
         $oCateg->getTagObjectConfig();
         $aParam = array(
-            'type' => $this->_aParam['type'],
+            'type'   => $this->_aParam['type'],
             'common' => true
         );
 

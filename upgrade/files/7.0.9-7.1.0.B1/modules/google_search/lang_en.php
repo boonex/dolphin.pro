@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ CHANGED KEYS ==================
+    // ================ CHANGED KEYS ==================
 
-  '_bx_gsearch_administration' => 'Google Site Search',
+    '_bx_gsearch_administration' => 'Google Site Search',
 
 );

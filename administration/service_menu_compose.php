@@ -5,21 +5,19 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-define ('BX_SECURITY_EXCEPTIONS', true);
-$aBxSecurityExceptions = array ();
+define('BX_SECURITY_EXCEPTIONS', true);
+$aBxSecurityExceptions   = array();
 $aBxSecurityExceptions[] = 'POST.Link';
 $aBxSecurityExceptions[] = 'REQUEST.Link';
 
-require_once( '../inc/header.inc.php' );
-require_once( BX_DIRECTORY_PATH_INC . 'profiles.inc.php' );
-require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
-require_once( BX_DIRECTORY_PATH_INC . 'admin_design.inc.php' );
-require_once( BX_DIRECTORY_PATH_INC . 'utils.inc.php' );
-require_once( BX_DIRECTORY_PATH_INC . 'languages.inc.php' );
+require_once('../inc/header.inc.php');
+require_once(BX_DIRECTORY_PATH_INC . 'profiles.inc.php');
+require_once(BX_DIRECTORY_PATH_INC . 'design.inc.php');
+require_once(BX_DIRECTORY_PATH_INC . 'admin_design.inc.php');
+require_once(BX_DIRECTORY_PATH_INC . 'utils.inc.php');
+require_once(BX_DIRECTORY_PATH_INC . 'languages.inc.php');
 
-require_once( BX_DIRECTORY_PATH_PLUGINS . 'Services_JSON.php' );
-
- // Check if administrator is logged in.  If not display login form.
+// Check if administrator is logged in.  If not display login form.
 $logged['admin'] = member_auth(1, true, true);
 
 $GLOBALS['oAdmTemplate']->addJsTranslation(array(
@@ -33,79 +31,83 @@ $oMenu = new BxDolMenuService();
 $sResponce = null;
 
 // ** FOR 'AJAX' REQUESTS ;
-if(bx_get('action') !== false) {
-    switch(bx_get('action')) {
+if (bx_get('action') !== false) {
+    switch (bx_get('action')) {
         case 'edit_form':
             $id = (int)bx_get('id');
 
             header('Content-Type: text/html; charset=utf-8');
 
-            $aItem = db_assoc_arr( "SELECT * FROM `" . $oMenu->sDbTable . "` WHERE `ID` = $id", 0 );
+            $aItem     = db_assoc_arr("SELECT * FROM `" . $oMenu->sDbTable . "` WHERE `ID` = $id", 0);
             $sResponce = ($aItem) ? showEditForm($aItem) : echoMenuEditMsg('Error', 'red');
             break;
         case 'create_item':
             $sResponce = createNewElement($_POST['type'], (int)$_POST['source']);
             break;
         case 'deactivate_item':
-            $res = db_res( "UPDATE `" . $oMenu->sDbTable . "` SET `Active`='0' WHERE `ID`=" . (int)bx_get('id') );
-            $sResponce =  db_affected_rows($res);
+            $res       = db_res("UPDATE `" . $oMenu->sDbTable . "` SET `Active`='0' WHERE `ID`=" . (int)bx_get('id'));
+            $sResponce = db_affected_rows($res);
             break;
         case 'save_item':
             $id = (int)$_POST['id'];
-            if(!$id) {
-                $sResponce = echoMenuEditMsg( 'Error', 'red' );
+            if (!$id) {
+                $sResponce = echoMenuEditMsg('Error', 'red');
                 break;
             }
 
             $aItemFields = array('Name', 'Caption', 'Icon', 'Link', 'Script', 'Target');
 
             $aItem = array();
-            foreach($aItemFields as $field)
+            foreach ($aItemFields as $field) {
                 $aItem[$field] = isset($_POST[$field]) ? $_POST[$field] : null;
+            }
 
             $aVis = array();
-            if( (int)$_POST['Visible_non'] )
+            if ((int)$_POST['Visible_non']) {
                 $aVis[] = 'non';
-            if( (int)$_POST['Visible_memb'] )
+            }
+            if ((int)$_POST['Visible_memb']) {
                 $aVis[] = 'memb';
+            }
 
-            $aItem['Visible'] = implode( ',', $aVis );
-            $aItem['Target'] = $_POST['Target'] == '_blank' ? '_blank' : '';
+            $aItem['Visible'] = implode(',', $aVis);
+            $aItem['Target']  = $_POST['Target'] == '_blank' ? '_blank' : '';
 
             $aResult = saveItem($id, $aItem);
-            updateLangFile( $_POST['Caption'], $_POST['LangCaption'] );
+            updateLangFile($_POST['Caption'], $_POST['LangCaption']);
 
             $aResult['message'] = MsgBox($aResult['message']);
-            $oJson = new Services_JSON();
-            echo $oJson->encode($aResult);
+            echo json_encode($aResult);
             exit;
 
             break;
 
         case 'delete_item':
             $id = (int)$_POST['id'];
-            if( !$id ) {
+            if (!$id) {
                 $sResponce = 'Item ID is not specified';
             } else {
-                $aItem = db_arr( "SELECT `Deletable` FROM `" . $oMenu->sDbTable . "` WHERE `ID` = $id" );
-                if( !$aItem ) {
+                $aItem = db_arr("SELECT `Deletable` FROM `" . $oMenu->sDbTable . "` WHERE `ID` = $id");
+                if (!$aItem) {
                     $sResponce = 'Item not found';
-                } else if( !(int)$aItem['Deletable'] ) {
-                    $sResponce = 'Item is non-deletable';
                 } else {
-                    $res = db_res( "DELETE FROM `" . $oMenu->sDbTable . "` WHERE `ID` = $id" );
-                    $sResponce = ( db_affected_rows($res) ) ? 'OK' : 'Couldn\'t delete the item';
+                    if (!(int)$aItem['Deletable']) {
+                        $sResponce = 'Item is non-deletable';
+                    } else {
+                        $res       = db_res("DELETE FROM `" . $oMenu->sDbTable . "` WHERE `ID` = $id");
+                        $sResponce = (db_affected_rows($res)) ? 'OK' : 'Couldn\'t delete the item';
+                    }
                 }
             }
             break;
 
         case 'save_orders':
-            saveOrders( bx_get('top'), bx_get('custom'));
+            saveOrders(bx_get('top'), bx_get('custom'));
             $sResponce = 'OK';
             break;
     }
 
-    $oMenu -> compile();
+    $oMenu->compile();
     echo $sResponce;
     exit;
 }
@@ -115,7 +117,7 @@ $sTopQuery = "SELECT `ID`, `Name`, `Movable` FROM `" . $oMenu->sDbTable . "`	WHE
 $rTopItems = db_res($sTopQuery);
 
 $sAllQuery = "SELECT `ID`, `Name` FROM `" . $oMenu->sDbTable . "` WHERE `Clonable`='1' OR (`Clonable`='0' AND `Active`='0') ORDER BY `Name`";
-$rAllItems = db_res( $sAllQuery );
+$rAllItems = db_res($sAllQuery);
 
 $sComposerInit = "
     <script type=\"text/javascript\">
@@ -143,129 +145,129 @@ $sComposerInit = "
 ";
 
 $iIndex = 0;
-while(($aTopItem = $rTopItems->fetch()) !== false) {
+while (($aTopItem = $rTopItems->fetch()) !== false) {
     $sComposerInit .= "
 
-        aTopItems[$iIndex] = [{$aTopItem['ID']}, '" . addslashes( $aTopItem['Name'] ) . "', {$aTopItem['Movable']}];
+        aTopItems[$iIndex] = [{$aTopItem['ID']}, '" . addslashes($aTopItem['Name']) . "', {$aTopItem['Movable']}];
         aCustomItems[$iIndex] = {};";
 
     $iIndex++;
 }
 
 $sComposerInit .= "\n";
-while(($aAllItem = $rAllItems->fetch()) !== false) {
+while (($aAllItem = $rAllItems->fetch()) !== false) {
     $sComposerInit .= "
-        aAllItems['{$aAllItem['ID']} '] = '" . bx_js_string( $aAllItem['Name'],  BX_ESCAPE_STR_APOS ) . "';";
+        aAllItems['{$aAllItem['ID']} '] = '" . bx_js_string($aAllItem['Name'], BX_ESCAPE_STR_APOS) . "';";
 }
-    $sComposerInit .= "
+$sComposerInit .= "
     </script>
 ";
 
 $iNameIndex = 12;
-$_page = array(
+$_page      = array(
     'name_index' => $iNameIndex,
-    'css_name' => array('menu_compose.css', 'forms_adv.css'),
-    'js_name' => array('menu_compose.js', 'BxDolMenu.js'),
-    'header' => _t('_adm_smbuilder_page_title')
+    'css_name'   => array('menu_compose.css', 'forms_adv.css'),
+    'js_name'    => array('menu_compose.js', 'BxDolMenu.js'),
+    'header'     => _t('_adm_smbuilder_page_title')
 );
 
 $sContent = $GLOBALS['oAdmTemplate']->parseHtmlByName('menu_compose.html', array(
     'extra_js' => $sComposerInit
 ));
 
-$_page_cont[$iNameIndex]['controls'] = '';
+$_page_cont[$iNameIndex]['controls']       = '';
 $_page_cont[$iNameIndex]['page_main_code'] = DesignBoxAdmin(_t('_adm_smbuilder_box_title'), $sContent);
 
 PageCodeAdmin();
 
-function showEditForm( $aItem )
+function showEditForm($aItem)
 {
     $aForm = array(
         'form_attrs' => array(
-            'id' => 'formItemEdit',
-            'name' => 'formItemEdit',
-            'action' => $GLOBALS['site']['url_admin'] . 'bottom_menu_compose.php',
-            'method' => 'post',
+            'id'      => 'formItemEdit',
+            'name'    => 'formItemEdit',
+            'action'  => $GLOBALS['site']['url_admin'] . 'bottom_menu_compose.php',
+            'method'  => 'post',
             'enctype' => 'multipart/form-data',
         ),
-        'inputs' => array (
-            'Name' => array(
-                'type' => 'text',
-                'name' => 'Name',
+        'inputs'     => array(
+            'Name'        => array(
+                'type'    => 'text',
+                'name'    => 'Name',
                 'caption' => _t('_adm_mbuilder_System_Name'),
-                'value' => $aItem['Name'],
-                'attrs' => array()
+                'value'   => $aItem['Name'],
+                'attrs'   => array()
             ),
-            'Caption' => array(
-                'type' => 'text',
-                'name' => 'Caption',
+            'Caption'     => array(
+                'type'    => 'text',
+                'name'    => 'Caption',
                 'caption' => _t('_adm_mbuilder_Language_Key'),
-                'value' => $aItem['Caption'],
-                'attrs' => array()
+                'value'   => $aItem['Caption'],
+                'attrs'   => array()
             ),
             'LangCaption' => array(
-                'type' => 'text',
-                'name' => 'LangCaption',
+                'type'    => 'text',
+                'name'    => 'LangCaption',
                 'caption' => _t('_adm_mbuilder_Default_Name'),
-                'value' => _t( $aItem['Caption'] ),
-                'attrs' => array()
+                'value'   => _t($aItem['Caption']),
+                'attrs'   => array()
             ),
-            'Link' => array(
-                'type' => 'text',
-                'name' => 'Link',
+            'Link'        => array(
+                'type'    => 'text',
+                'name'    => 'Link',
                 'caption' => _t('_URL'),
-                'value' => htmlspecialchars_adv( $aItem['Link'] ),
-                'attrs' => array()
+                'value'   => htmlspecialchars_adv($aItem['Link']),
+                'attrs'   => array()
             ),
-            'Script' => array(
-                'type' => 'text',
-                'name' => 'Script',
+            'Script'      => array(
+                'type'    => 'text',
+                'name'    => 'Script',
                 'caption' => _t('_adm_mbuilder_script'),
-                'value' => htmlspecialchars_adv( $aItem['Script'] ),
-                'attrs' => array()
+                'value'   => htmlspecialchars_adv($aItem['Script']),
+                'attrs'   => array()
             ),
-            'Icon' => array(
-                'type' => 'text',
-                'name' => 'Icon',
+            'Icon'        => array(
+                'type'    => 'text',
+                'name'    => 'Icon',
                 'caption' => _t('_adm_mbuilder_icon'),
-                'value' => htmlspecialchars_adv( $aItem['Icon'] ),
-                'attrs' => array()
+                'value'   => htmlspecialchars_adv($aItem['Icon']),
+                'attrs'   => array()
             ),
-            'Target' => array(
-                'type' => 'radio_set',
-                'name' => 'Target',
+            'Target'      => array(
+                'type'    => 'radio_set',
+                'name'    => 'Target',
                 'caption' => _t('_adm_mbuilder_Target_Window'),
-                'value' => $aItem['Target'] == '_blank' ? '_blank' : '_self',
-                'values' => array(
-                    '_self' => _t('_adm_mbuilder_Same'),
+                'value'   => $aItem['Target'] == '_blank' ? '_blank' : '_self',
+                'values'  => array(
+                    '_self'  => _t('_adm_mbuilder_Same'),
                     '_blank' => _t('_adm_mbuilder_New')
                 ),
-                'attrs' => array()
+                'attrs'   => array()
             ),
-            'Visible' => array(
-                'type' => 'checkbox_set',
-                'name' => 'Visible',
+            'Visible'     => array(
+                'type'    => 'checkbox_set',
+                'name'    => 'Visible',
                 'caption' => _t('_adm_mbuilder_Visible_for'),
-                'value' => array(),
-                'values' => array(
-                    'non' => _t('_Guest'),
+                'value'   => array(),
+                'values'  => array(
+                    'non'  => _t('_Guest'),
                     'memb' => _t('_Member')
                 ),
-                'attrs' => array()
+                'attrs'   => array()
             ),
-            'submit' => array(
+            'submit'      => array(
                 'type' => 'input_set',
                 array(
-                    'type' => 'button',
-                    'name' => 'save',
+                    'type'  => 'button',
+                    'name'  => 'save',
                     'value' => _t('_Save Changes'), //if( $aItem['Editable'] )
                     'attrs' => array(
                         'onclick' => 'javascript:saveItem(' . $aItem['ID'] . ');'
                     )
                 ),
                 array(
-                    'type' => 'button',
-                    'name' => 'delete',
+                    'type'  => 'button',
+                    'name'  => 'delete',
                     'value' => _t('_Delete'), //if( $aItem['Deletable'] )
                     'attrs' => array(
                         'onclick' => 'javascript:deleteItem(' . $aItem['ID'] . ');'
@@ -275,51 +277,58 @@ function showEditForm( $aItem )
         )
     );
 
-    foreach($aForm['inputs'] as $sKey => $aInput)
-        if(in_array($aInput['type'], array('text', 'checkbox')) && !$aItem['Editable'])
+    foreach ($aForm['inputs'] as $sKey => $aInput) {
+        if (in_array($aInput['type'], array('text', 'checkbox')) && !$aItem['Editable']) {
             $aForm['inputs'][$sKey]['attrs']['disabled'] = "disabled";
+        }
+    }
 
-    if(strpos($aItem['Visible'], 'non') !== false)
+    if (strpos($aItem['Visible'], 'non') !== false) {
         $aForm['inputs']['Visible']['value'][] = 'non';
-    if(strpos($aItem['Visible'], 'memb') !== false)
+    }
+    if (strpos($aItem['Visible'], 'memb') !== false) {
         $aForm['inputs']['Visible']['value'][] = 'memb';
+    }
 
     $oForm = new BxTemplFormView($aForm);
-    return PopupBox('mmc_edit_popup', _t('_adm_mbuilder_edit_item'), $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html', array('content' => $oForm->getCode() . LoadingBox('formItemEditLoading'))));
+
+    return PopupBox('mmc_edit_popup', _t('_adm_mbuilder_edit_item'),
+        $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html',
+            array('content' => $oForm->getCode() . LoadingBox('formItemEditLoading'))));
 }
 
 /**
- * @description : function will create new menu items ;
- * @param 		: $type (string) - type of ellement ;
- * @param 		: $source (integer) - menu's ID;
- * @return 		: ID of created menu item ;
-*/
-function createNewElement( $type, $source)
+ * @description   : function will create new menu items ;
+ * @param         : $type (string) - type of ellement ;
+ * @param         : $source (integer) - menu's ID;
+ * @return        : ID of created menu item ;
+ */
+function createNewElement($type, $source)
 {
     global $oMenu;
 
-    if( $source ) {
-        $sourceActive = db_value( "SELECT `Active` FROM `" . $oMenu->sDbTable . "` WHERE `ID`=$source" );
-        if( !$sourceActive ) {
+    if ($source) {
+        $sourceActive = db_value("SELECT `Active` FROM `" . $oMenu->sDbTable . "` WHERE `ID`=$source");
+        if (!$sourceActive) {
             //convert to active
-            db_res( "UPDATE `" . $oMenu->sDbTable . "` SET `Active`='1' WHERE `ID`=$source" );
+            db_res("UPDATE `" . $oMenu->sDbTable . "` SET `Active`='1' WHERE `ID`=$source");
             $newID = $source;
         } else {
             //create from source
-            db_res( "INSERT INTO `" . $oMenu->sDbTable . "`(`Name`, `Caption`, `Icon`, `Link`, `Script`, `Target`, `Visible`, `Movable`, `Clonable`, `Editable`, `Deletable`)
-                    SELECT `Name`, `Caption`, `Icon`, `Link`, `Script`, `Target`, `Visible`, `Movable`, '0', `Editable`, '1' FROM `" . $oMenu->sDbTable . "` WHERE `ID`=$source" );
+            db_res("INSERT INTO `" . $oMenu->sDbTable . "`(`Name`, `Caption`, `Icon`, `Link`, `Script`, `Target`, `Visible`, `Movable`, `Clonable`, `Editable`, `Deletable`)
+                    SELECT `Name`, `Caption`, `Icon`, `Link`, `Script`, `Target`, `Visible`, `Movable`, '0', `Editable`, '1' FROM `" . $oMenu->sDbTable . "` WHERE `ID`=$source");
             $newID = db_last_id();
         }
     } else {
         //create new
-        db_res( "INSERT INTO `" . $oMenu->sDbTable . "` (`Name`) VALUES ('NEW ITEM')" );
+        db_res("INSERT INTO `" . $oMenu->sDbTable . "` (`Name`) VALUES ('NEW ITEM')");
         $newID = db_last_id();
     }
 
     return $newID;
 }
 
-function echoMenuEditMsg( $text, $color = 'black' )
+function echoMenuEditMsg($text, $color = 'black')
 {
     return <<<HTML
         <div style="color:{$color};text-align:center;">{$text}</div>
@@ -327,81 +336,85 @@ HTML;
 }
 
 /**
- * @description : function will save all changes into menu items ;
- * @param		: $id (integer) - ID of menu items ;
- * @param		: $aItem (array) - all needed POST variables ;
- * @param		: $sMenuSection (string) - position of menu ;
- * @return		: Html presentation data (Answer code);
-*/
-function saveItem( $id, $aItem)
+ * @description   : function will save all changes into menu items ;
+ * @param         : $id (integer) - ID of menu items ;
+ * @param         : $aItem (array) - all needed POST variables ;
+ * @param         : $sMenuSection (string) - position of menu ;
+ * @return        : Html presentation data (Answer code);
+ */
+function saveItem($id, $aItem)
 {
     global $oMenu, $oMenu;
 
-    $aOldItem = db_arr( "SELECT * FROM `" . $oMenu->sDbTable . "` WHERE `ID` = $id" );
+    $aOldItem = db_arr("SELECT * FROM `" . $oMenu->sDbTable . "` WHERE `ID` = $id");
 
-    if(!$aOldItem) {
-        return array( 'code' => 2, 'message' => _t('_adm_mbuilder_Item_not_found') );
+    if (!$aOldItem) {
+        return array('code' => 2, 'message' => _t('_adm_mbuilder_Item_not_found'));
     }
 
-    if( (int) $aOldItem['Editable'] != 1 ) {
-        return array('code' => 3, 'message' => _t('_adm_mbuilder_Item_is_non_editable') );
+    if ((int)$aOldItem['Editable'] != 1) {
+        return array('code' => 3, 'message' => _t('_adm_mbuilder_Item_is_non_editable'));
     }
 
     $sQuerySet = '';
-    foreach( $aItem as $field => $value )
-        $sQuerySet .= ", `$field`='" . process_db_input( $value ) ."'";
+    foreach ($aItem as $field => $value) {
+        $sQuerySet .= ", `$field`='" . process_db_input($value) . "'";
+    }
 
-    $sQuerySet = substr( $sQuerySet, 1 );
+    $sQuerySet = substr($sQuerySet, 1);
 
     $sQuery = "UPDATE `" . $oMenu->sDbTable . "` SET $sQuerySet WHERE `ID` = $id";
-    db_res( $sQuery );
+    db_res($sQuery);
 
-    $oMenu -> compile();
+    $oMenu->compile();
+
     return array('code' => 0, 'message' => _t('_Saved'), 'timer' => 3);
 }
 
-function updateLangFile( $key, $string )
+function updateLangFile($key, $string)
 {
-    $key = preg_replace( '|\{([^\}]+)\}|', '', $key);
-    if (!$key)
+    $key = preg_replace('|\{([^\}]+)\}|', '', $key);
+    if (!$key) {
         return;
+    }
 
-    $langName = getParam( 'lang_default' );
-    $langID = db_value( "SELECT `ID` FROM `sys_localization_languages` WHERE `Name` = '" . addslashes( $langName ) . "'" );
+    $langName = getParam('lang_default');
+    $langID   = db_value("SELECT `ID` FROM `sys_localization_languages` WHERE `Name` = '" . addslashes($langName) . "'");
 
-    $keyID = db_value( "SELECT `ID` FROM `sys_localization_keys` WHERE `Key` = '" . process_db_input( $key ) . "'" );
-    if( $keyID ) {
-        db_res( "UPDATE `sys_localization_strings` SET `String` = '" .process_db_input( $string ) . "' WHERE `IDKey`=$keyID AND `IDLanguage`=$langID" );
+    $keyID = db_value("SELECT `ID` FROM `sys_localization_keys` WHERE `Key` = '" . process_db_input($key) . "'");
+    if ($keyID) {
+        db_res("UPDATE `sys_localization_strings` SET `String` = '" . process_db_input($string) . "' WHERE `IDKey`=$keyID AND `IDLanguage`=$langID");
     } else {
-        db_res( "INSERT INTO `sys_localization_keys` SET `IDCategory` = 2, `Key` = '" . process_db_input( $key ) . "'" );
-        db_res( "INSERT INTO `sys_localization_strings` SET `IDKey` = " . db_last_id() . ", `IDLanguage` = $langID, `String` = '" .process_db_input( $string ) . "'" );
+        db_res("INSERT INTO `sys_localization_keys` SET `IDCategory` = 2, `Key` = '" . process_db_input($key) . "'");
+        db_res("INSERT INTO `sys_localization_strings` SET `IDKey` = " . db_last_id() . ", `IDLanguage` = $langID, `String` = '" . process_db_input($string) . "'");
     }
 
     compileLanguage($langID);
 }
 
 /**
- * @description : function will save menu orders ;
- * @param		: $sTop ( string ) - current menu ellement ;
- * @param		: $aCustom ( array ) - all mrnu items ;
- * @param		: $sMenuSection (string) - position of menu ;
-*/
-function saveOrders( $sTop, $aCustom)
+ * @description  : function will save menu orders ;
+ * @param        : $sTop ( string ) - current menu ellement ;
+ * @param        : $aCustom ( array ) - all mrnu items ;
+ * @param        : $sMenuSection (string) - position of menu ;
+ */
+function saveOrders($sTop, $aCustom)
 {
     global $oMenu;
 
     db_res("UPDATE `" . $oMenu->sDbTable . "` SET `Order`='0' WHERE 1");
 
-    $sTop = trim($sTop, ' ,');
+    $sTop    = trim($sTop, ' ,');
     $aTopIDs = explode(',', $sTop);
 
-    foreach($aTopIDs as $iOrd => $iID) {
+    foreach ($aTopIDs as $iOrd => $iID) {
         $iID = trim($iID, ' ,');
         $iID = (int)$iID;
 
-        if(!$iID)
+        if (!$iID) {
             continue;
+        }
 
-        db_res("UPDATE `" . $oMenu->sDbTable . "` SET `Order`='" . $iOrd . "' WHERE `ID`='" . $iID ."'");
+        db_res("UPDATE `" . $oMenu->sDbTable . "` SET `Order`='" . $iOrd . "' WHERE `ID`='" . $iID . "'");
     }
 }

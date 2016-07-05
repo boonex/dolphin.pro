@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ CHANGED KEYS ==================
+    // ================ CHANGED KEYS ==================
 
-  '_bx_spy_admin' => 'Settings',
+    '_bx_spy_admin' => 'Settings',
 
 );

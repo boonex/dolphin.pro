@@ -2,12 +2,12 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_chat' => 'Чат',
+    '_sys_module_chat' => 'Чат',
 
-  // ================ CHANGED KEYS ==================
+    // ================ CHANGED KEYS ==================
 
-  '_chat_home_top_menu_sitem' => 'Главная',
+    '_chat_home_top_menu_sitem' => 'Главная',
 
 );

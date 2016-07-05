@@ -20,11 +20,12 @@ class BxDolTextCmts extends BxTemplCmtsView
 
     function getBaseUrl()
     {
-    	$aEntry = $this->_oModule->_oDb->getEntries(array('sample_type' => 'id', 'id' => $this->getId()));
-    	if(empty($aEntry) || !is_array($aEntry))
-    		return '';
+        $aEntry = $this->_oModule->_oDb->getEntries(array('sample_type' => 'id', 'id' => $this->getId()));
+        if (empty($aEntry) || !is_array($aEntry)) {
+            return '';
+        }
 
-    	return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'view/' . $aEntry['uri']; 
+        return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'view/' . $aEntry['uri'];
     }
 
     /**
@@ -34,8 +35,8 @@ class BxDolTextCmts extends BxTemplCmtsView
     {
         return array(
             'cmt_actions' => $this->getActions(0, $sType),
-            'cmt_object' => $this->getId(),
-            'cmt_addon' => $this->getCmtsInit()
+            'cmt_object'  => $this->getId(),
+            'cmt_addon'   => $this->getCmtsInit()
         );
     }
 }

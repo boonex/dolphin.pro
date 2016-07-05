@@ -12,47 +12,9 @@
  */
 class BxDbConnect
 {
-    var $bPrintLog;
-
-    var $bConnected;
-
-    function __construct()
-    {
-    }
-
-    function connect()
-    {
-//        if ($this->bConnected) {
-//            return;
-//        }
-//        $dbHost = strlen($this->iPort) ? $this->sHost . ":" . $this->iPort : $this->sHost;
-//        $dbHost .= strlen($this->iSocket) ? ":" . $this->iSocket : "";
-//        @$this->rLink = mysql_connect($dbHost, $this->sUser, $this->sPassword);
-//        if ($this->rLink) {
-//            $this->bConnected = true;
-//        } else {
-//            $this->bConnected = false;
-//        }
-//        @mysql_select_db($this->sDb, $this->rLink);
-//        mysql_query("SET NAMES 'utf8'", $this->rLink);
-//        mysql_query("SET @@local.wait_timeout=9000;", $this->rLink);
-//        mysql_query("SET @@local.interactive_timeout=9000;", $this->rLink);
-    }
-
-    function disconnect()
-    {
-        $this->bConnected = false;
-    }
-
-    function reconnect()
-    {
-//        $this->disconnect();
-//        $this->connect();
-    }
-
     function getResult($sQuery)
     {
-        return BxDolDb::getInstance()->query($sQuery);
+        return BxDolDb::getInstance()->res($sQuery);
     }
 
     function getArray($sQuery)
@@ -79,7 +41,6 @@ class BxDbConnect
 
 global $oDb;
 $oDb = new BxDbConnect();
-//$oDb->connect();
 
 /*
  * Interface functions are needed to simplify the useing of BxDbConnect class.

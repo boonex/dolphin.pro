@@ -17,19 +17,22 @@ class BxWallInstaller extends BxDolInstaller
     {
         $aResult = parent::install($aParams);
 
-        if ($aResult['result'])
+        if ($aResult['result']) {
             BxDolService::call($this->_aConfig['home_uri'], 'update_handlers');
+        }
 
-		if($aResult['result'] && BxDolRequest::serviceExists('spy', 'update_handlers'))
+        if ($aResult['result'] && BxDolRequest::serviceExists('spy', 'update_handlers')) {
             BxDolService::call('spy', 'update_handlers', array($this->_aConfig['home_uri'], true));
+        }
 
         return $aResult;
     }
 
-	function uninstall($aParams)
+    function uninstall($aParams)
     {
-        if(BxDolRequest::serviceExists('spy', 'update_handlers'))
+        if (BxDolRequest::serviceExists('spy', 'update_handlers')) {
             BxDolService::call('spy', 'update_handlers', array($this->_aConfig['home_uri'], false));
+        }
 
         return parent::uninstall($aParams);
     }

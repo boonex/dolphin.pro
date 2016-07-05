@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_adm_cache_support' => 'Cache Support',
+    '_sys_adm_cache_support' => 'Cache Support',
 
 );

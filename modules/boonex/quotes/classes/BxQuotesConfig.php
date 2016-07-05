@@ -9,8 +9,8 @@ require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolConfig.php');
 class BxQuotesConfig extends BxDolConfig
 {
     /**
-    * Constructor
-    */
+     * Constructor
+     */
     function __construct($aModule)
     {
         parent::__construct($aModule);

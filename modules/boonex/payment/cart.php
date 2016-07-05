@@ -21,10 +21,12 @@ class BxPmtCartPage extends BxDolPageView
         $GLOBALS['oTopMenu']->setCurrentProfileID($this->_oPayments->_iUserId);
         $GLOBALS['oTopMenu']->setCustomVar('sys_payment_module_uri', $this->_oPayments->_oConfig->getUri());
     }
+
     function getBlockCode_Featured()
     {
         return $this->_oPayments->getCartContent(BX_PMT_ADMINISTRATOR_ID);
     }
+
     function getBlockCode_Common()
     {
         return $this->_oPayments->getCartContent(BX_PMT_EMPTY_ID);
@@ -35,14 +37,14 @@ global $_page;
 global $_page_cont;
 global $logged;
 
-$iIndex = 1;
-$_page['name_index']	= $iIndex;
-$_page['css_name']		= array();
+$iIndex              = 1;
+$_page['name_index'] = $iIndex;
+$_page['css_name']   = array();
 
 check_logged();
 
-$oPayments = new BxPmtModule($aModule);
-$oCartPage = new BxPmtCartPage($oPayments);
+$oPayments                             = new BxPmtModule($aModule);
+$oCartPage                             = new BxPmtCartPage($oPayments);
 $_page_cont[$iIndex]['page_main_code'] = $oCartPage->getCode();
 
 $oPayments->_oTemplate->addJsTranslation(array(

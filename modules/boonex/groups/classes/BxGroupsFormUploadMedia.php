@@ -4,25 +4,27 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_groups_import ('FormEdit');
+bx_groups_import('FormEdit');
 
 class BxGroupsFormUploadMedia extends BxGroupsFormEdit
 {
-    function __construct ($oMain, $iProfileId, $iEntryId, &$aDataEntry, $sMedia, $aMediaFields)
+    function __construct($oMain, $iProfileId, $iEntryId, &$aDataEntry, $sMedia, $aMediaFields)
     {
-        parent::__construct ($oMain, $iProfileId, $iEntryId, $aDataEntry);
+        parent::__construct($oMain, $iProfileId, $iEntryId, $aDataEntry);
 
         foreach ($this->_aMedia as $k => $a) {
-            if ($k == $sMedia)
+            if ($k == $sMedia) {
                 continue;
+            }
             unset($this->_aMedia[$k]);
         }
 
         array_push($aMediaFields, 'Submit', 'id');
 
         foreach ($this->aInputs as $k => $a) {
-            if (in_array($k, $aMediaFields))
+            if (in_array($k, $aMediaFields)) {
                 continue;
+            }
             unset($this->aInputs[$k]);
         }
     }

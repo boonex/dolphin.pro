@@ -35,6 +35,12 @@ class BxDolExceptionHandler
      */
     protected function render(Throwable $e, $bFullMsg = false)
     {
+        if ((php_sapi_name() === 'cli')) {
+            // don't render errors when invoking from cli
+            // they should get an email for errors
+            return;
+        }
+
         ob_start();
 
         ?>

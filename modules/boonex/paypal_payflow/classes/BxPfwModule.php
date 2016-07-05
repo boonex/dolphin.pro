@@ -24,7 +24,7 @@ class BxPfwModule extends BxPmtModule
     {
         parent::__construct($aModule);
 
-		$this->_oTemplate->init($this);
+        $this->_oTemplate->init($this);
     }
 
     /**
@@ -36,16 +36,16 @@ class BxPfwModule extends BxPmtModule
      */
     function actionCart()
     {
-    	$this->_oTemplate->addJsTranslation(array(
-		    $this->_sLangsPrefix . 'err_nothing_selected'
-		));
+        $this->_oTemplate->addJsTranslation(array(
+            $this->_sLangsPrefix . 'err_nothing_selected'
+        ));
 
-    	bx_import('PageCart', $this->_aModule);
-    	$oPage = new BxPfwPageCart($this);
+        bx_import('PageCart', $this->_aModule);
+        $oPage = new BxPfwPageCart($this);
 
-    	$aParams = array(
-            'index' => 1,
-            'title' => array(
+        $aParams = array(
+            'index'   => 1,
+            'title'   => array(
                 'page' => _t($this->_sLangsPrefix . 'pcpt_view_cart')
             ),
             'content' => array(
@@ -55,44 +55,44 @@ class BxPfwModule extends BxPmtModule
         $this->_oTemplate->getPageCode($aParams);
     }
 
-	function actionHistory($sType = '')
+    function actionHistory($sType = '')
     {
-    	bx_import('PageHistory', $this->_aModule);
-    	$oPage = new BxPfwPageHistory($sType, $this);
+        bx_import('PageHistory', $this->_aModule);
+        $oPage = new BxPfwPageHistory($sType, $this);
 
-    	$aParams = array(
-            'index' => 2,
-            'css' => array('orders.css', '_orders.css'),
-    		'js' => array('orders.js', '_orders.js'),
-            'title' => array(
+        $aParams = array(
+            'index'   => 2,
+            'css'     => array('orders.css', '_orders.css'),
+            'js'      => array('orders.js', '_orders.js'),
+            'title'   => array(
                 'page' => _t($this->_sLangsPrefix . 'pcpt_cart_history')
             ),
             'content' => array(
                 'page_main_code' => $oPage->getCode(),
-            	'more_code' => $this->getMoreWindow(),
-				'js_code' => $this->_oTemplate->getJsCode('orders', true)
+                'more_code'      => $this->getMoreWindow(),
+                'js_code'        => $this->_oTemplate->getJsCode('orders', true)
             )
         );
         $this->_oTemplate->getPageCode($aParams);
     }
 
-	function actionOrders($sType = '')
+    function actionOrders($sType = '')
     {
-    	bx_import('PageOrders', $this->_aModule);
-    	$oPage = new BxPfwPageOrders($sType, $this);
+        bx_import('PageOrders', $this->_aModule);
+        $oPage = new BxPfwPageOrders($sType, $this);
 
-    	$aParams = array(
-            'index' => 3,
-            'css' => array('orders.css', '_orders.css'),
-    		'js' => array('orders.js', '_orders.js'),
-            'title' => array(
+        $aParams = array(
+            'index'   => 3,
+            'css'     => array('orders.css', '_orders.css'),
+            'js'      => array('orders.js', '_orders.js'),
+            'title'   => array(
                 'page' => _t($this->_sLangsPrefix . 'pcpt_view_orders')
             ),
             'content' => array(
-                'page_main_code' => $oPage->getCode(),
-            	'more_code' => $this->getMoreWindow(),
-				'manual_order_code' => $this->getManualOrderWindow(),
-				'js_code' => $this->_oTemplate->getJsCode('orders', true)
+                'page_main_code'    => $oPage->getCode(),
+                'more_code'         => $this->getMoreWindow(),
+                'manual_order_code' => $this->getManualOrderWindow(),
+                'js_code'           => $this->_oTemplate->getJsCode('orders', true)
             )
         );
         $this->_oTemplate->getPageCode($aParams);
@@ -100,12 +100,12 @@ class BxPfwModule extends BxPmtModule
 
     function actionDetails()
     {
-    	bx_import('PageDetails', $this->_aModule);
-    	$oPage = new BxPfwPageDetails($this);
+        bx_import('PageDetails', $this->_aModule);
+        $oPage = new BxPfwPageDetails($this);
 
-    	$aParams = array(
-            'index' => 4,
-            'title' => array(
+        $aParams = array(
+            'index'   => 4,
+            'title'   => array(
                 'page' => _t($this->_sLangsPrefix . 'pcpt_details')
             ),
             'content' => array(
@@ -115,7 +115,7 @@ class BxPfwModule extends BxPmtModule
         $this->_oTemplate->getPageCode($aParams);
     }
 
-	function actionAdmin($sName = '')
+    function actionAdmin($sName = '')
     {
         $GLOBALS['iAdminPage'] = 1;
         require_once(BX_DIRECTORY_PATH_INC . 'admin_design.inc.php');
@@ -123,7 +123,7 @@ class BxPfwModule extends BxPmtModule
         $sUri = $this->_oConfig->getUri();
 
         check_logged();
-        if(!@isAdmin()) {
+        if (!@isAdmin()) {
             send_headers_page_changed();
             login_form("", 1);
             exit;
@@ -131,31 +131,34 @@ class BxPfwModule extends BxPmtModule
 
         //--- Process actions ---//
         $mixedResultSettings = '';
-        if(isset($_POST['save']) && isset($_POST['cat'])) {
+        if (isset($_POST['save']) && isset($_POST['cat'])) {
             $mixedResultSettings = $this->setSettings($_POST);
         }
         //--- Process actions ---//
 
-		$aDetailsBox = $this->getDetailsForm(BX_PMT_ADMINISTRATOR_ID);
-		$aPendingOrdersBox = $this->getOrdersBlock(BX_PMT_ORDERS_TYPE_PENDING, BX_PMT_ADMINISTRATOR_ID);
-		$aProcessedOrdersBox = $this->getOrdersBlock(BX_PMT_ORDERS_TYPE_PROCESSED, BX_PMT_ADMINISTRATOR_ID);
-		$aSubscriptionOrdersBox = $this->getOrdersBlock(BX_PMT_ORDERS_TYPE_SUBSCRIPTION, BX_PMT_ADMINISTRATOR_ID);
+        $aDetailsBox            = $this->getDetailsForm(BX_PMT_ADMINISTRATOR_ID);
+        $aPendingOrdersBox      = $this->getOrdersBlock(BX_PMT_ORDERS_TYPE_PENDING, BX_PMT_ADMINISTRATOR_ID);
+        $aProcessedOrdersBox    = $this->getOrdersBlock(BX_PMT_ORDERS_TYPE_PROCESSED, BX_PMT_ADMINISTRATOR_ID);
+        $aSubscriptionOrdersBox = $this->getOrdersBlock(BX_PMT_ORDERS_TYPE_SUBSCRIPTION, BX_PMT_ADMINISTRATOR_ID);
 
-		$sContent = ''; 
-		$sContent .= $this->_oTemplate->getJsCode('orders', true);
-        $sContent .= DesignBoxAdmin(_t($this->_sLangsPrefix . 'bcpt_settings'), $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html', array('content' => $this->getSettingsForm($mixedResultSettings))));
-        $sContent .= DesignBoxAdmin(_t($this->_sLangsPrefix . 'bcpt_details'), $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html', array('content' => $aDetailsBox[0])));
+        $sContent = '';
+        $sContent .= $this->_oTemplate->getJsCode('orders', true);
+        $sContent .= DesignBoxAdmin(_t($this->_sLangsPrefix . 'bcpt_settings'),
+            $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html',
+                array('content' => $this->getSettingsForm($mixedResultSettings))));
+        $sContent .= DesignBoxAdmin(_t($this->_sLangsPrefix . 'bcpt_details'),
+            $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html', array('content' => $aDetailsBox[0])));
         $sContent .= DesignBoxAdmin(_t($this->_sLangsPrefix . 'bcpt_pending_orders'), $aPendingOrdersBox[0]);
-		$sContent .= DesignBoxAdmin(_t($this->_sLangsPrefix . 'bcpt_processed_orders'), $aProcessedOrdersBox[0]);
-		$sContent .= DesignBoxAdmin(_t($this->_sLangsPrefix . 'bcpt_subscription_orders'), $aSubscriptionOrdersBox[0]);
-		$sContent .= $this->getMoreWindow();
-		$sContent .= $this->getManualOrderWindow();
+        $sContent .= DesignBoxAdmin(_t($this->_sLangsPrefix . 'bcpt_processed_orders'), $aProcessedOrdersBox[0]);
+        $sContent .= DesignBoxAdmin(_t($this->_sLangsPrefix . 'bcpt_subscription_orders'), $aSubscriptionOrdersBox[0]);
+        $sContent .= $this->getMoreWindow();
+        $sContent .= $this->getManualOrderWindow();
 
-		$this->_oTemplate->addAdminJs(array('orders.js', '_orders.js'));
-		$this->_oTemplate->addAdminCss(array('orders.css', '_orders.css'));
+        $this->_oTemplate->addAdminJs(array('orders.js', '_orders.js'));
+        $this->_oTemplate->addAdminCss(array('orders.css', '_orders.css'));
 
         $aParams = array(
-            'title' => array(
+            'title'   => array(
                 'page' => _t($this->_sLangsPrefix . 'pcpt_administration')
             ),
             'content' => array(
@@ -165,148 +168,168 @@ class BxPfwModule extends BxPmtModule
         $this->_oTemplate->getPageCodeAdmin($aParams);
     }
 
-	/**
+    /**
      * Action Methods: PayFlow Integration
-     * Perform payment confirmation for Express Checkout 
+     * Perform payment confirmation for Express Checkout
      */
-	function actionConfirm($sProvider, $iVendorId)
-	{
-		$sToken = bx_get('token');
-		$sPayerId = bx_get('PayerID');
-		if($sToken === false || $sPayerId === false) {
-			$this->_oTemplate->getPageCodeError($this->_sLangsPrefix . 'err_wrong_data');
-			return;
-		}
+    function actionConfirm($sProvider, $iVendorId)
+    {
+        $sToken   = bx_get('token');
+        $sPayerId = bx_get('PayerID');
+        if ($sToken === false || $sPayerId === false) {
+            $this->_oTemplate->getPageCodeError($this->_sLangsPrefix . 'err_wrong_data');
 
-		$sToken = process_db_input($sToken, BX_TAGS_STRIP);
-		$sPayerId = process_db_input($sPayerId, BX_TAGS_STRIP);
+            return;
+        }
 
-		$oProvider = $this->_getProvider($sProvider, $iVendorId);
-		if(is_string($oProvider)) {
-			$this->_oTemplate->getPageCodeError($oProvider);
-			return;
-		}
+        $sToken   = process_db_input($sToken, BX_TAGS_STRIP);
+        $sPayerId = process_db_input($sPayerId, BX_TAGS_STRIP);
 
-		$aOrderInfo = $oProvider->confirmCheckout($sToken, $sPayerId);
-		if($aOrderInfo === false) {
-			$this->_oTemplate->getPageCodeError($this->_sLangsPrefix . 'err_unknown');
-        	return;
-		}
+        $oProvider = $this->_getProvider($sProvider, $iVendorId);
+        if (is_string($oProvider)) {
+            $this->_oTemplate->getPageCodeError($oProvider);
 
-		$iPendingId = (int)$aOrderInfo['CUSTOM'];
-    	$aPending = $this->_oDb->getPending(array('type' => 'id', 'id' => $iPendingId));
-        if(empty($aPending) || !is_array($aPending)) {
-        	$this->getPageCodeError($this->_sLangsPrefix . 'wrong_data');
-        	return;
+            return;
+        }
+
+        $aOrderInfo = $oProvider->confirmCheckout($sToken, $sPayerId);
+        if ($aOrderInfo === false) {
+            $this->_oTemplate->getPageCodeError($this->_sLangsPrefix . 'err_unknown');
+
+            return;
+        }
+
+        $iPendingId = (int)$aOrderInfo['CUSTOM'];
+        $aPending   = $this->_oDb->getPending(array('type' => 'id', 'id' => $iPendingId));
+        if (empty($aPending) || !is_array($aPending)) {
+            $this->getPageCodeError($this->_sLangsPrefix . 'wrong_data');
+
+            return;
         }
 
         $aCartInfo = $this->_oCart->getInfo((int)$aPending['client_id'], $iVendorId, $aPending['items']);
-		$this->_oTemplate->displayConfirmPage($sProvider, $iVendorId, $aOrderInfo, $aCartInfo);
-	}
+        $this->_oTemplate->displayConfirmPage($sProvider, $iVendorId, $aOrderInfo, $aCartInfo);
+    }
 
-	/**
-	 * Currently is used with errors returned from Hosted Checkout Pages.
-	 */
-	function actionResponse($sProvider, $iVendorId)
-	{
-		$oProvider = $this->_getProvider($sProvider, $iVendorId);
-		if(is_string($oProvider)) {
-			$this->_oTemplate->getPageCodeError($oProvider);
-			return;
-		}
+    /**
+     * Currently is used with errors returned from Hosted Checkout Pages.
+     */
+    function actionResponse($sProvider, $iVendorId)
+    {
+        $oProvider = $this->_getProvider($sProvider, $iVendorId);
+        if (is_string($oProvider)) {
+            $this->_oTemplate->getPageCodeError($oProvider);
 
-		$aResult = $oProvider->processResponse($_REQUEST);
+            return;
+        }
 
-		$sMethod = 'getPageCodeResponse';
-		$sMessage = $this->_sLangsPrefix . 'msg_successfully_done';
-		if((int)$aResult['code'] != 0) {
-			$sMethod = 'getPageCodeError';
-			$sMessage = $this->_sLangsPrefix . 'err_unknown';
-		}
+        $aResult = $oProvider->processResponse($_REQUEST);
 
-		$this->_oTemplate->$sMethod($sMessage);
-		return;
-	}
+        $sMethod  = 'getPageCodeResponse';
+        $sMessage = $this->_sLangsPrefix . 'msg_successfully_done';
+        if ((int)$aResult['code'] != 0) {
+            $sMethod  = 'getPageCodeError';
+            $sMessage = $this->_sLangsPrefix . 'err_unknown';
+        }
 
-	/**
-	 * Subscription related actions
-	 */
-	function actionCancelSubscription()
-	{
-		$iId = (int)bx_get('id');
-		$sType = process_db_input(bx_get('type'), BX_TAGS_STRIP);
+        $this->_oTemplate->$sMethod($sMessage);
 
-		if(empty($iId) || empty($sType) || !in_array($sType, array(BX_PMT_ORDERS_TYPE_SUBSCRIPTION, BX_PMT_ORDERS_TYPE_HISTORY)))
-			return $this->_onResultJson(array('code' => 1, 'message' => '_bx_pfw_err_wrong_data'));
+        return;
+    }
 
-		$aOrder = $this->_oDb->getProcessed(array('type' => 'id', 'id' => $iId));
-		if(empty($aOrder))
-			return $this->_onResultJson(array('code' => 1, 'message' => '_bx_pfw_err_wrong_data'));
+    /**
+     * Subscription related actions
+     */
+    function actionCancelSubscription()
+    {
+        $iId   = (int)bx_get('id');
+        $sType = process_db_input(bx_get('type'), BX_TAGS_STRIP);
 
-		if(!isAdmin() && (int)$aOrder['client_id'] != getLoggedId())
-			return $this->_onResultJson(array('code' => 2, 'message' => '_bx_pfw_err_not_allowed'));
+        if (empty($iId) || empty($sType) || !in_array($sType,
+                array(BX_PMT_ORDERS_TYPE_SUBSCRIPTION, BX_PMT_ORDERS_TYPE_HISTORY))
+        ) {
+            return $this->_onResultJson(array('code' => 1, 'message' => '_bx_pfw_err_wrong_data'));
+        }
 
-		$oProvider = $this->_getProvider($aOrder['provider'], $aOrder['seller_id']);
-		if(is_string($oProvider))
-			return $this->_onResultJson(array('code' => 3, 'message' => $oProvider));
+        $aOrder = $this->_oDb->getProcessed(array('type' => 'id', 'id' => $iId));
+        if (empty($aOrder)) {
+            return $this->_onResultJson(array('code' => 1, 'message' => '_bx_pfw_err_wrong_data'));
+        }
 
-		if(!$oProvider->cancelSubscription($aOrder))
-			return $this->_onResultJson(array('code' => 4, 'message' => '_bx_pfw_err_unknown'));
+        if (!isAdmin() && (int)$aOrder['client_id'] != getLoggedId()) {
+            return $this->_onResultJson(array('code' => 2, 'message' => '_bx_pfw_err_not_allowed'));
+        }
 
-		return $this->_onResultJson(array('code' => 0, 'message' => '_bx_pfw_msg_subscription_canceled'));
-	}
+        $oProvider = $this->_getProvider($aOrder['provider'], $aOrder['seller_id']);
+        if (is_string($oProvider)) {
+            return $this->_onResultJson(array('code' => 3, 'message' => $oProvider));
+        }
+
+        if (!$oProvider->cancelSubscription($aOrder)) {
+            return $this->_onResultJson(array('code' => 4, 'message' => '_bx_pfw_err_unknown'));
+        }
+
+        return $this->_onResultJson(array('code' => 0, 'message' => '_bx_pfw_msg_subscription_canceled'));
+    }
 
     /**
      * Service Methods
      */
-	function serviceProlongSubscription($sOrderId)
-	{
-		$aOrder = $this->_oDb->getProcessed(array('type' => 'order_id', 'order_id' => $sOrderId));
-		if(empty($aOrder))
-			return array('code' => 1, 'message' => '_bx_pfw_err_wrong_data');
+    function serviceProlongSubscription($sOrderId)
+    {
+        $aOrder = $this->_oDb->getProcessed(array('type' => 'order_id', 'order_id' => $sOrderId));
+        if (empty($aOrder)) {
+            return array('code' => 1, 'message' => '_bx_pfw_err_wrong_data');
+        }
 
-		$oProvider = $this->_getProvider($aOrder['provider'], $aOrder['seller_id']);
-		if(is_string($oProvider))
-			return array('code' => 2, 'message' => $oProvider);
+        $oProvider = $this->_getProvider($aOrder['provider'], $aOrder['seller_id']);
+        if (is_string($oProvider)) {
+            return array('code' => 2, 'message' => $oProvider);
+        }
 
-		if(!method_exists($oProvider, 'prolongSubscription'))
-			return array('code' => 3, 'message' => '_bx_pfw_err_not_available');
+        if (!method_exists($oProvider, 'prolongSubscription')) {
+            return array('code' => 3, 'message' => '_bx_pfw_err_not_available');
+        }
 
-		$aResult = $oProvider->prolongSubscription($aOrder);
-		if($aResult['code'] != 0)
-			return $aResult;
+        $aResult = $oProvider->prolongSubscription($aOrder);
+        if ($aResult['code'] != 0) {
+            return $aResult;
+        }
 
-		//--- Register payment by pending in associated modules
-		$this->_oCart->updateInfo($aResult['pending_id']);
+        //--- Register payment by pending in associated modules
+        $this->_oCart->updateInfo($aResult['pending_id']);
 
-		return $aResult;
-	}
+        return $aResult;
+    }
 
-	/**
+    /**
      * Protected Methods
      */
-	protected function _getProvider($sProvider, $iVendorId)
-	{
-		if($iVendorId == BX_PMT_EMPTY_ID)
-			return $this->_sLangsPrefix . 'err_unknown_vendor';
+    protected function _getProvider($sProvider, $iVendorId)
+    {
+        if ($iVendorId == BX_PMT_EMPTY_ID) {
+            return $this->_sLangsPrefix . 'err_unknown_vendor';
+        }
 
-        $aProvider = $this->_oDb->getVendorInfoProviders($iVendorId, $sProvider);
+        $aProvider  = $this->_oDb->getVendorInfoProviders($iVendorId, $sProvider);
         $sClassPath = !empty($aProvider['class_file']) ? BX_DIRECTORY_PATH_ROOT . $aProvider['class_file'] : $this->_oConfig->getClassPath() . $aProvider['class_name'] . '.php';
-        if(empty($aProvider) || !file_exists($sClassPath))
-        	return $this->_sLangsPrefix . 'err_incorrect_provider';
+        if (empty($aProvider) || !file_exists($sClassPath)) {
+            return $this->_sLangsPrefix . 'err_incorrect_provider';
+        }
 
         require_once($sClassPath);
+
         return new $aProvider['class_name']($this->_oDb, $this->_oConfig, $aProvider);
-	}
-	
-	protected function _onResultJson($aResult)
+    }
+
+    protected function _onResultJson($aResult)
     {
-        $oJson = new Services_JSON();
+        if (isset($aResult['message'])) {
+            $aResult['message'] = _t($aResult['message']);
+        }
 
-        if(isset($aResult['message']))
-        	$aResult['message'] = _t($aResult['message']);
+        header('Content-Type:text/javascript; charset=utf-8');
 
-		header('Content-Type:text/javascript; charset=utf-8');
-        return $oJson->encode($aResult);
+        return json_encode($aResult);
     }
 }

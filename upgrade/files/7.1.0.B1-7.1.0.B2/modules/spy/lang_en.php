@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_spy' => 'Spy',
+    '_sys_module_spy' => 'Spy',
 
 );

@@ -19,15 +19,16 @@ class BxDolTextCalendar extends BxTemplCalendar
     {
         parent::__construct($iYear, $iMonth);
 
-        $this->_oDb = &$oDb;
+        $this->_oDb     = &$oDb;
         $this->_oConfig = &$oConfig;
 
         $this->sCssPrefix = '';
     }
+
     /**
      * return records for current month
      */
-    function getData ()
+    function getData()
     {
         return $this->_oDb->getByMonth($this->iYear, $this->iMonth, $this->iNextYear, $this->iNextMonth);
     }
@@ -35,37 +36,41 @@ class BxDolTextCalendar extends BxTemplCalendar
     /**
      * return html for data unit for some day.
      */
-    function getUnit (&$aData)
+    function getUnit(&$aData)
     {
         $sUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/' . $aData['uri'];
+
         return '<div class="' . $this->sCssPrefix . '-calendar-unit"><a href="' . $sUrl . '" title="' . $aData['caption'] . '">' . $aData['caption'] . '</a></div>';
     }
 
     /**
      * return base calendar url
      */
-    function getBaseUri ()
+    function getBaseUri()
     {
         return BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . "calendar/";
     }
 
-    function getBrowseUri ()
+    function getBrowseUri()
     {
         return BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'calendar/';
     }
 
-    function getEntriesNames ()
+    function getEntriesNames()
     {
         $sModuleUri = $this->_oConfig->getUri();
+
         return array(_t('_' . $sModuleUri . '_entry_single'), _t('_' . $sModuleUri . '_entry_plural'));
     }
 
-    function getMonthUrl ($isNextMoths, $isMiniMode = false)
+    function getMonthUrl($isNextMoths, $isMiniMode = false)
     {
-        if ($isMiniMode && $this->iBlockID && $this->sDynamicUrl)
-            return "javascript:loadDynamicBlock('" . $this->iBlockID . "', '" . bx_append_url_params($this->sDynamicUrl, 'date=' . ($isNextMoths ? "{$this->iNextYear}/{$this->iNextMonth}" : "{$this->iPrevYear}/{$this->iPrevMonth}")) . "');";
-        else
-            return parent::getMonthUrl ($isNextMoths, $isMiniMode);
+        if ($isMiniMode && $this->iBlockID && $this->sDynamicUrl) {
+            return "javascript:loadDynamicBlock('" . $this->iBlockID . "', '" . bx_append_url_params($this->sDynamicUrl,
+                'date=' . ($isNextMoths ? "{$this->iNextYear}/{$this->iNextMonth}" : "{$this->iPrevYear}/{$this->iPrevMonth}")) . "');";
+        } else {
+            return parent::getMonthUrl($isNextMoths, $isMiniMode);
+        }
     }
 
     function setBlockId($iBlockID)

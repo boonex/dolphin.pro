@@ -4,7 +4,6 @@
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
-
 class BxDolAlbums
 {
     var $sAlbumTable;
@@ -16,306 +15,358 @@ class BxDolAlbums
 
     function __construct($sType, $iOwnerId = 0)
     {
-        $this->iOwnerId = (int)$iOwnerId;
-        $this->sType = process_db_input($sType, BX_TAGS_STRIP);
-        $this->sAlbumTable = 'sys_albums';
+        $this->iOwnerId           = (int)$iOwnerId;
+        $this->sType              = process_db_input($sType, BX_TAGS_STRIP);
+        $this->sAlbumTable        = 'sys_albums';
         $this->sAlbumObjectsTable = 'sys_albums_objects';
-        $this->aAlbumFields = array('ID', 'Caption', 'Uri', 'Location', 'Description', 'Type', 'Owner', 'Status', 'Date', 'AllowAlbumView', 'ObjCount', 'LastObjId');
-        $this->sAlbumCoverParam = 'sys_make_album_cover_last';
+        $this->aAlbumFields       = array(
+            'ID',
+            'Caption',
+            'Uri',
+            'Location',
+            'Description',
+            'Type',
+            'Owner',
+            'Status',
+            'Date',
+            'AllowAlbumView',
+            'ObjCount',
+            'LastObjId'
+        );
+        $this->sAlbumCoverParam   = 'sys_make_album_cover_last';
     }
 
     public static function getAbumName($sName, $iUserId)
     {
-    	$aReplacement = array(
-			'{nickname}' => getUsername($iUserId),
-    		'{fullname}' => getNickName($iUserId)
-    	);
+        $aReplacement = array(
+            '{nickname}' => getUsername($iUserId),
+            '{fullname}' => getNickName($iUserId)
+        );
 
-    	return str_replace(array_keys($aReplacement), array_values($aReplacement), $sName);
+        return str_replace(array_keys($aReplacement), array_values($aReplacement), $sName);
     }
 
     public static function getAbumUri($sName, $iUserId)
     {
-    	return uriFilter(BxDolAlbums::getAbumName($sName, $iUserId));
+        return uriFilter(BxDolAlbums::getAbumName($sName, $iUserId));
     }
 
     // inner methods
-    function _getSqlPart ($aFields = array(), $sBound = ', ', $bUseEmptyValues = false)
+    function _getSqlPart($aFields = array(), $sBound = ', ', $bUseEmptyValues = false)
     {
         $sqlBody = "";
-        foreach ($aFields as $sKey => $sValue) {    
+        foreach ($aFields as $sKey => $sValue) {
             if (in_array($sKey, $this->aAlbumFields) && ($bUseEmptyValues || strlen($sValue))) {
-            	switch($sKey) {
-            		case 'description':
-            		case 'Description':
-            			$sValue = process_db_input($sValue, BX_TAGS_STRIP_AND_NL2BR);
-            			break;
+                switch ($sKey) {
+                    case 'description':
+                    case 'Description':
+                        $sValue = process_db_input($sValue, BX_TAGS_STRIP_AND_NL2BR);
+                        break;
 
-            		default:
-            			$sValue = process_db_input($sValue, BX_TAGS_STRIP);
-            			break;
-            	}
+                    default:
+                        $sValue = process_db_input($sValue, BX_TAGS_STRIP);
+                        break;
+                }
 
                 $sqlBody .= "`{$this->sAlbumTable}`.`{$sKey}` = '$sValue'" . $sBound;
             }
         }
+
         return trim($sqlBody, $sBound);
     }
 
     function _getSqlSpec($aData)
     {
         $aRes = array(
-            'vis' => '',
+            'vis'   => '',
             'empty' => '',
-            'def' => ''
+            'def'   => ''
         );
-        if (isset($aData['allow_view']) && is_array($aData['allow_view']))
-            $aRes['vis'] = " AND `{$this->sAlbumTable}`.`AllowAlbumView` IN (" . implode(',', $aData['allow_view']) . ")";
-        if (isset($aData['hide_default']) && $aData['hide_default'] === TRUE)
+        if (isset($aData['allow_view']) && is_array($aData['allow_view'])) {
+            $aRes['vis'] = " AND `{$this->sAlbumTable}`.`AllowAlbumView` IN (" . implode(',',
+                    $aData['allow_view']) . ")";
+        }
+        if (isset($aData['hide_default']) && $aData['hide_default'] === true) {
             $aRes['def'] = " AND `{$this->sAlbumTable}`.`AllowAlbumView` <> " . BX_DOL_PG_HIDDEN;
-        if (!isset($aData['show_empty']) || $aData['show_empty'] === FALSE) {
-            if (!isset($aData['obj_count']['min']))
+        }
+        if (!isset($aData['show_empty']) || $aData['show_empty'] === false) {
+            if (!isset($aData['obj_count']['min'])) {
                 $aData['obj_count']['min'] = 0;
+            }
         }
         if (isset($aData['obj_count'])) {
-            if (!is_array($aData['obj_count']))
+            if (!is_array($aData['obj_count'])) {
                 $aData['obj_count']['min'] = (int)$aData['obj_count'];
-            $sqlObjMain = " AND `{$this->sAlbumTable}`.`ObjCount`";
-            $sqlMin = isset($aData['obj_count']['min']) ? "$sqlObjMain > " . (int)$aData['obj_count']['min'] : "";
-            $sqlMax = isset($aData['obj_count']['max']) ? "$sqlObjMain < " . (int)$aData['obj_count']['max'] : "";
+            }
+            $sqlObjMain    = " AND `{$this->sAlbumTable}`.`ObjCount`";
+            $sqlMin        = isset($aData['obj_count']['min']) ? "$sqlObjMain > " . (int)$aData['obj_count']['min'] : "";
+            $sqlMax        = isset($aData['obj_count']['max']) ? "$sqlObjMain < " . (int)$aData['obj_count']['max'] : "";
             $aRes['empty'] = "$sqlObjMain $sqlMin $sqlMax";
         }
+
         return $aRes;
     }
 
     // album methods
-    function addAlbum ($aData = array(), $bCheck = true)
+    function addAlbum($aData = array(), $bCheck = true)
     {
         if ($bCheck) {
             $iCheck = $this->_checkAlbumExistence($aData);
-            if ($iCheck != 0)
+            if ($iCheck != 0) {
                 return $iCheck;
+            }
         }
         $iOwner = (int)$aData['owner'];
 
         if (isset($aData['AllowAlbumView'])) {
             $iAllowAlbumView = (int)$aData['AllowAlbumView'];
-        }
-        elseif (strpos($aData['caption'], getUsername($iOwner)) !== false) {
+        } elseif (strpos($aData['caption'], getUsername($iOwner)) !== false) {
             bx_import('BxDolPrivacyQuery');
-            $oPrivacy = new BxDolPrivacyQuery();
+            $oPrivacy        = new BxDolPrivacyQuery();
             $iAllowAlbumView = $oPrivacy->getDefaultValueModule(str_replace('bx_', '', $this->sType), 'album_view');
-            if (!$iAllowAlbumView)
+            if (!$iAllowAlbumView) {
                 $iAllowAlbumView = BX_DOL_PG_ALL;
-        } 
-        else {
+            }
+        } else {
             $iAllowAlbumView = BX_DOL_PG_NOBODY;
         }
 
-        $aFields = array(
-            'Caption' => $aData['caption'],
-            'Uri' => $this->getCorrectUri($aData['caption'], $iOwner, $bCheck),
-            'Location' => $aData['location'],
-            'Description' => $aData['description'],
-            'AllowAlbumView' =>  $iAllowAlbumView,
-            'Type' => $this->sType,
-            'Owner' => $iOwner,
-            'Status' => 'active',
-            'Date' => time(),
-            'LastObjId' => isset($aData['lastObjId']) ? (int)$aData['last_obj'] : 0
+        $aFields  = array(
+            'Caption'        => $aData['caption'],
+            'Uri'            => $this->getCorrectUri($aData['caption'], $iOwner, $bCheck),
+            'Location'       => $aData['location'],
+            'Description'    => $aData['description'],
+            'AllowAlbumView' => $iAllowAlbumView,
+            'Type'           => $this->sType,
+            'Owner'          => $iOwner,
+            'Status'         => 'active',
+            'Date'           => time(),
+            'LastObjId'      => isset($aData['lastObjId']) ? (int)$aData['last_obj'] : 0
         );
         $sqlBegin = "";
-        $sqlCond = "";
-        $sqlBody = $this->_getSqlPart($aFields);
+        $sqlCond  = "";
+        $sqlBody  = $this->_getSqlPart($aFields);
         $sqlBegin = "INSERT INTO ";
         $sqlQuery = "$sqlBegin `{$this->sAlbumTable}` SET $sqlBody $sqlCond";
         $GLOBALS['MySQL']->res($sqlQuery);
+
         return $GLOBALS['MySQL']->lastId();
     }
 
-    function getCorrectUri ($sCaption, $iOwnerId = 0, $bCheck = true)
+    function getCorrectUri($sCaption, $iOwnerId = 0, $bCheck = true)
     {
         $sUri = uriFilter($sCaption);
-        if (!$sUri) $sUri = '-';
-        if (!$bCheck) return $sUri;
-        if ($this->checkUriUniq($sUri, $iOwnerId)) return $sUri;
-        if (get_mb_len($sUri) > 240)
-            $sUri = get_mb_substr ($sUri, 0, 240);
-        $sUri .= '-' . date('Y-m-d');
-        if ($this->checkUriUniq($sUri, $iOwnerId)) return $sUri;
-        for ($i = 0; $i < 999; ++$i) {
-            if ($this->checkUriUniq($sUri . '-' . $i, $iOwnerId))
-                return ($sUri . '-' . $i);
+        if (!$sUri) {
+            $sUri = '-';
         }
+        if (!$bCheck) {
+            return $sUri;
+        }
+        if ($this->checkUriUniq($sUri, $iOwnerId)) {
+            return $sUri;
+        }
+        if (get_mb_len($sUri) > 240) {
+            $sUri = get_mb_substr($sUri, 0, 240);
+        }
+        $sUri .= '-' . date('Y-m-d');
+        if ($this->checkUriUniq($sUri, $iOwnerId)) {
+            return $sUri;
+        }
+        for ($i = 0; $i < 999; ++$i) {
+            if ($this->checkUriUniq($sUri . '-' . $i, $iOwnerId)) {
+                return ($sUri . '-' . $i);
+            }
+        }
+
         return time();
     }
 
-    function checkUriUniq ($sUri, $iOwnerId)
+    function checkUriUniq($sUri, $iOwnerId)
     {
-        $sUri = process_db_input($sUri, BX_TAGS_STRIP);
+        $sUri     = process_db_input($sUri, BX_TAGS_STRIP);
         $iOwnerId = (int)$iOwnerId;
-        return !$GLOBALS['MySQL']->getRow("SELECT 1 FROM $this->sAlbumTable WHERE `Uri` = ? AND `Owner` = ? AND `Type` = ? LIMIT 1", [$sUri, $iOwnerId, $this->sType]);
+
+        return !$GLOBALS['MySQL']->getRow("SELECT 1 FROM $this->sAlbumTable WHERE `Uri` = ? AND `Owner` = ? AND `Type` = ? LIMIT 1",
+            [$sUri, $iOwnerId, $this->sType]);
     }
 
-    function updateAlbum ($mixedIdent, $aData)
+    function updateAlbum($mixedIdent, $aData)
     {
-        $sqlWhere = "`Uri` = '" . process_db_input($mixedIdent, BX_TAGS_STRIP) . "'";
-        $sqlBody = $this->_getSqlPart($aData, ', ', true);
-        $sValue = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
+        $sqlWhere    = "`Uri` = '" . process_db_input($mixedIdent, BX_TAGS_STRIP) . "'";
+        $sqlBody     = $this->_getSqlPart($aData, ', ', true);
+        $sValue      = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
         $sqlWhereAdd = " AND `Owner` = '$sValue'";
-        $sqlQuery = "UPDATE `{$this->sAlbumTable}` SET $sqlBody WHERE $sqlWhere $sqlWhereAdd LIMIT 1";
+        $sqlQuery    = "UPDATE `{$this->sAlbumTable}` SET $sqlBody WHERE $sqlWhere $sqlWhereAdd LIMIT 1";
+
         return $GLOBALS['MySQL']->res($sqlQuery);
     }
-    function updateAlbumById ($iId, $aData)
+
+    function updateAlbumById($iId, $aData)
     {
-        $sqlWhere = "`ID` = '" . (int)$iId . "'";
-        $sqlBody = $this->_getSqlPart($aData, ', ', true);
-        $sValue = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
+        $sqlWhere    = "`ID` = '" . (int)$iId . "'";
+        $sqlBody     = $this->_getSqlPart($aData, ', ', true);
+        $sValue      = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
         $sqlWhereAdd = " AND `Owner` = '$sValue'";
-        $sqlQuery = "UPDATE `{$this->sAlbumTable}` SET $sqlBody WHERE $sqlWhere $sqlWhereAdd LIMIT 1";
+        $sqlQuery    = "UPDATE `{$this->sAlbumTable}` SET $sqlBody WHERE $sqlWhere $sqlWhereAdd LIMIT 1";
+
         return $GLOBALS['MySQL']->res($sqlQuery);
     }
-    function removeAlbum ($iAlbumId)
+
+    function removeAlbum($iAlbumId)
     {
         $iAlbumId = (int)$iAlbumId;
-        $aObj = $this->getAlbumObjList($iAlbumId);
+        $aObj     = $this->getAlbumObjList($iAlbumId);
         $this->removeObject($iAlbumId, $aObj);
         $sqlQuery = "DELETE FROM `{$this->sAlbumTable}` WHERE `ID`='$iAlbumId'";
         $GLOBALS['MySQL']->res($sqlQuery);
     }
 
-    function _checkAlbumExistence ($aData)
+    function _checkAlbumExistence($aData)
     {
-        $aFields = array(
+        $aFields  = array(
             'Caption' => $aData['caption'],
-            'Type' => $this->sType,
-            'Owner' => (int)$aData['owner'],
+            'Type'    => $this->sType,
+            'Owner'   => (int)$aData['owner'],
         );
-        $sqlBody = $this->_getSqlPart($aFields, ' AND');
+        $sqlBody  = $this->_getSqlPart($aFields, ' AND');
         $sqlQuery = "SELECT `ID` FROM {$this->sAlbumTable} WHERE $sqlBody";
+
         return (int)$GLOBALS['MySQL']->getOne($sqlQuery);
     }
 
-    function getAlbumObjList ($mixedAlbum)
+    function getAlbumObjList($mixedAlbum)
     {
         $sqlJoin = "";
-        if ((int)$mixedAlbum > 0)
+        if ((int)$mixedAlbum > 0) {
             $sqlWhere = "`id_album`='" . (int)$mixedAlbum . "'";
-        else {
-            $sqlJoin = "LEFT JOIN `sys_albums` ON `sys_albums_objects`.`id_album` = `sys_albums`.`ID`";
+        } else {
+            $sqlJoin  = "LEFT JOIN `sys_albums` ON `sys_albums_objects`.`id_album` = `sys_albums`.`ID`";
             $sqlWhere = "`sys_albums`.`Uri` = '" . process_db_input($mixedAlbum, BX_TAGS_STRIP) . "'";
         }
         $sqlQuery = "SELECT `id_object` FROM `{$this->sAlbumObjectsTable}` $sqlJoin WHERE $sqlWhere";
+
         return $GLOBALS['MySQL']->getPairs($sqlQuery, 'id_object', 'id_object');
     }
 
-    function getAlbumCoverFiles ($iAlbumId, $aJoin = array(), $aJoinCond = array(), $iLimit = 4)
+    function getAlbumCoverFiles($iAlbumId, $aJoin = array(), $aJoinCond = array(), $iLimit = 4)
     {
-        $iAlbumId = (int)$iAlbumId;
-        $iLimit = (int)$iLimit;
-        $sqlWhere = "`id_album`='$iAlbumId'";
+        $iAlbumId     = (int)$iAlbumId;
+        $iLimit       = (int)$iLimit;
+        $sqlWhere     = "`id_album`='$iAlbumId'";
         $sqlAddFields = '';
         if (is_array($aJoin)) {
             $sqlJoin = "INNER JOIN `{$aJoin['table']}` ON `{$aJoin['table']}`.`{$aJoin['field']}`=`{$this->sAlbumObjectsTable}`.`id_object`";
             if (is_array($aJoinCond)) {
-                foreach ($aJoinCond as $aValue)
+                foreach ($aJoinCond as $aValue) {
                     $sqlWhere .= " AND `{$aJoin['table']}`.`{$aValue['field']}`='{$aValue['value']}'";
+                }
             }
-            if (is_array($aJoin['fields_list']))
+            if (is_array($aJoin['fields_list'])) {
                 $sqlAddFields = ", `" . implode("`, `", $aJoin['fields_list']) . "`";
+            }
         }
         $sqlQuery = "SELECT `id_object` $sqlAddFields FROM `{$this->sAlbumObjectsTable}` $sqlJoin WHERE $sqlWhere ORDER BY `obj_order`, `id_object` DESC LIMIT $iLimit";
+
         return $GLOBALS['MySQL']->getAll($sqlQuery);
     }
 
-    function getAlbumList ($aData = array(), $iPage = 1, $iPerPage = 10, $bSimple = false)
+    function getAlbumList($aData = array(), $iPage = 1, $iPerPage = 10, $bSimple = false)
     {
         $aFields = array(
-            'Type' => $this->sType,
-            'Status' => !isset($aData['status']) ? 'active' : $aData['status'],
-            'Caption' => isset($aData['caption']) ? $aData['caption']: '',
+            'Type'    => $this->sType,
+            'Status'  => !isset($aData['status']) ? 'active' : $aData['status'],
+            'Caption' => isset($aData['caption']) ? $aData['caption'] : '',
         );
-        if ($aFields['Status'] == 'any')
+        if ($aFields['Status'] == 'any') {
             unset($aFields['Status']);
+        }
         if (isset($aData['owner']) && strlen($aData['owner']) > 0) {
             if ((int)$aData['owner'] == 0) {
-                $iUserId = getID($aData['owner']);
+                $iUserId          = getID($aData['owner']);
                 $aFields['Owner'] = $iUserId > 0 ? $iUserId : '';
-            } else
+            } else {
                 $aFields['Owner'] = (int)$aData['owner'];
+            }
         }
 
         $aSqlSpec = $this->_getSqlSpec($aData);
 
         $sqlLimit = "";
         if (!$bSimple) {
-            $iPage = (int)$iPage;
+            $iPage    = (int)$iPage;
             $iPerPage = (int)$iPerPage;
-            if ($iPage < 1)
+            if ($iPage < 1) {
                 $iPage = 1;
-            if ($iPerPage < 1)
+            }
+            if ($iPerPage < 1) {
                 $iPerPage = 10;
+            }
 
             $sqlLimit = "LIMIT " . ($iPage - 1) * $iPerPage . ", " . $iPerPage;
         }
 
-        $sqlJoin = "";
+        $sqlJoin      = "";
         $sqlJoinWhere = "";
         if (isset($aData['ownerStatus'])) {
-            $sqlJoin = "LEFT JOIN `Profiles` ON `Profiles`.`ID`=`{$this->sAlbumTable}`.`Owner`";
+            $sqlJoin      = "LEFT JOIN `Profiles` ON `Profiles`.`ID`=`{$this->sAlbumTable}`.`Owner`";
             $sqlJoinWhere = "AND `Profiles`.`Status` ";
-            if (is_array($aData['ownerStatus']))
+            if (is_array($aData['ownerStatus'])) {
                 $sqlJoinWhere .= "NOT IN ('" . implode("','", $aData['ownerStatus']) . "')";
-            else
+            } else {
                 $sqlJoinWhere .= "<> '{$aData['ownerStatus']}'";
+            }
         }
 
         $sqlBegin = "SELECT `{$this->sAlbumTable}`.* FROM `{$this->sAlbumTable}` $sqlJoin";
         $sqlCond  = "WHERE " . $this->_getSqlPart($aFields, ' AND ');
         $sqlOrder = "ORDER BY `{$this->sAlbumTable}`.`Date` DESC";
         $sqlQuery = "$sqlBegin $sqlCond {$aSqlSpec['vis']} {$aSqlSpec['def']} {$aSqlSpec['empty']} $sqlJoinWhere $sqlOrder $sqlLimit";
+
         return $GLOBALS['MySQL']->getAll($sqlQuery);
     }
 
-    function getAlbumCount ($aData = array())
+    function getAlbumCount($aData = array())
     {
         $aFields = array(
-            'Type' => $this->sType,
+            'Type'   => $this->sType,
             'Status' => !isset($aData['status']) ? 'active' : $aData['status'],
         );
         if (isset($aData['owner']) && strlen($aData['owner']) > 0) {
             if ((int)$aData['owner'] == 0) {
-                $iUserId = getID($aData['owner']);
+                $iUserId          = getID($aData['owner']);
                 $aFields['Owner'] = $iUserId > 0 ? $iUserId : '';
-            } else
+            } else {
                 $aFields['Owner'] = (int)$aData['owner'];
+            }
         }
         $aSqlSpec = $this->_getSqlSpec($aData);
 
-        $sqlJoin = "";
+        $sqlJoin      = "";
         $sqlJoinWhere = "";
         if (isset($aData['ownerStatus'])) {
-            $sqlJoin = "LEFT JOIN `Profiles` ON `Profiles`.`ID`=`{$this->sAlbumTable}`.`Owner`";
+            $sqlJoin      = "LEFT JOIN `Profiles` ON `Profiles`.`ID`=`{$this->sAlbumTable}`.`Owner`";
             $sqlJoinWhere = "AND `Profiles`.`Status` ";
-            if (is_array($aData['ownerStatus']))
+            if (is_array($aData['ownerStatus'])) {
                 $sqlJoinWhere .= "NOT IN ('" . implode("','", $aData['ownerStatus']) . "')";
-            else
+            } else {
                 $sqlJoinWhere .= "<> '{$aData['ownerStatus']}'";
+            }
         }
 
         $sqlBegin = "SELECT COUNT(*) FROM `{$this->sAlbumTable}` $sqlJoin";
         $sqlCond  = "WHERE " . $this->_getSqlPart($aFields, ' AND ');
         $sqlQuery = "$sqlBegin $sqlCond {$aSqlSpec['vis']} {$aSqlSpec['def']} {$aSqlSpec['empty']} $sqlJoinWhere";
+
         return $GLOBALS['MySQL']->getOne($sqlQuery);
     }
 
-    function getAlbumInfo ($aIdent = array(), $aFields = array())
+    function getAlbumInfo($aIdent = array(), $aFields = array())
     {
         $sqlCondition = "`{$this->sAlbumTable}`.`Type`= ?";
-        $aBindings = [$this->sType];
-        $aParams = array();
+        $aBindings    = [$this->sType];
+        $aParams      = array();
         // TODO: need dynamic pdo bindings
-        foreach($aIdent as $sKey => $sValue) {
+        foreach ($aIdent as $sKey => $sValue) {
             switch (strtolower($sKey)) {
                 case 'fileuri':
                     $aParams['Uri'] = $sValue;
@@ -331,39 +382,44 @@ class BxDolAlbums
             }
         }
         $aParams['Type'] = $this->sType;
-        if (count($aFields) == 0)
+        if (count($aFields) == 0) {
             $aFields = $this->aAlbumFields;
+        }
         $sqlCondition = $this->_getSqlPart($aParams, ' AND ');
         foreach ($aFields as $sValue) {
-            if (in_array($sValue, $this->aAlbumFields))
+            if (in_array($sValue, $this->aAlbumFields)) {
                 $sqlFields .= "`{$this->sAlbumTable}`.`$sValue`, ";
+            }
         }
         $sqlFields = trim($sqlFields, ', ');
-        $sqlQuery = "SELECT $sqlFields FROM `{$this->sAlbumTable}` WHERE $sqlCondition LIMIT 1";
+        $sqlQuery  = "SELECT $sqlFields FROM `{$this->sAlbumTable}` WHERE $sqlCondition LIMIT 1";
+
         return $GLOBALS['MySQL']->getRow($sqlQuery);
     }
 
-    function getAlbumName ($iAlbumId)
+    function getAlbumName($iAlbumId)
     {
         $aValue = $this->getAlbumInfo(array('fileId' => (int)$iAlbumId), array('Caption'));
+
         return $aValue['Caption'];
     }
 
-    function getAlbumDefaultName ()
+    function getAlbumDefaultName()
     {
         return getParam('sys_album_default_name');
     }
 
     // album's objects methods
-    function addObject ($iAlbumId, $mixedObj, $bUpdateCount = true)
+    function addObject($iAlbumId, $mixedObj, $bUpdateCount = true)
     {
         $iAlbumId = (int)$iAlbumId;
-        if ($iAlbumId == 0)
+        if ($iAlbumId == 0) {
             return;
-        $sqlFields = "`id_album`, `id_object`";
-        $sqlBody = "";
+        }
+        $sqlFields  = "`id_album`, `id_object`";
+        $sqlBody    = "";
         $iLastObjId = $this->getLastObj($iAlbumId);
-        $iCount = 0;
+        $iCount     = 0;
         if (is_array($mixedObj)) {
             foreach ($mixedObj as $iValue) {
                 $iValue = (int)$iValue;
@@ -371,53 +427,59 @@ class BxDolAlbums
                 $iCount++;
             }
         } else {
-            $iValue = (int)$mixedObj;
+            $iValue  = (int)$mixedObj;
             $sqlBody = "('$iAlbumId', '$iValue')";
             $iCount++;
         }
         $sqlQuery = "INSERT INTO `{$this->sAlbumObjectsTable}` ($sqlFields) VALUES " . trim($sqlBody, ', ');
-        $iRes = $GLOBALS['MySQL']->query($sqlQuery);
+        $iRes     = $GLOBALS['MySQL']->query($sqlQuery);
 
         if ($bUpdateCount) {
             $this->updateObjCounter($iAlbumId, $iCount);
-            if ($iLastObjId == 0)
+            if ($iLastObjId == 0) {
                 $this->updateLastObj($iAlbumId, $iValue);
-            elseif ($iLastObjId !=0 && getParam($this->sAlbumCoverParam) == 'on')
+            } elseif ($iLastObjId != 0 && getParam($this->sAlbumCoverParam) == 'on') {
                 $this->updateLastObj($iAlbumId, $iValue);
+            }
         }
+
         return $iRes;
     }
 
-    function moveObject ($iAlbumId, $iNewAlbumId, $mixedObj)
+    function moveObject($iAlbumId, $iNewAlbumId, $mixedObj)
     {
-        $iAlbumId = (int)$iAlbumId;
+        $iAlbumId    = (int)$iAlbumId;
         $iNewAlbumId = (int)$iNewAlbumId;
-        $sqlBody = "";
-        $iLastObjId = $this->getLastObj($iAlbumId);
+        $sqlBody     = "";
+        $iLastObjId  = $this->getLastObj($iAlbumId);
         if (!empty($mixedObj)) {
             $iCount = 0;
             if (is_array($mixedObj)) {
-                if (in_array($iLastObjId, $mixedObj))
+                if (in_array($iLastObjId, $mixedObj)) {
                     $bUpdateLastObj = true;
+                }
                 foreach ($mixedObj as $iValue) {
                     $iValue = (int)$iValue;
                     $sqlBody .= "'$iValue', ";
                     $iCount++;
                 }
             } else {
-                $iValue = (int)$mixedObj;
+                $iValue  = (int)$mixedObj;
                 $sqlBody = "'$iValue'";
                 $iCount++;
-                if ($iValue == $iLastObjId)
+                if ($iValue == $iLastObjId) {
                     $bUpdateLastObj = true;
+                }
             }
             $sqlQuery = "UPDATE `{$this->sAlbumObjectsTable}`, `{$this->sAlbumTable}`
                             SET `{$this->sAlbumObjectsTable}`.`id_album` = $iNewAlbumId
                          WHERE `{$this->sAlbumObjectsTable}`.`id_album`=`{$this->sAlbumTable}`.`ID`
-                         AND `{$this->sAlbumTable}`.`Type` = '$this->sType' AND `{$this->sAlbumObjectsTable}`.`id_object` IN (".trim($sqlBody, ', ').")";
+                         AND `{$this->sAlbumTable}`.`Type` = '$this->sType' AND `{$this->sAlbumObjectsTable}`.`id_object` IN (" . trim($sqlBody,
+                    ', ') . ")";
             $GLOBALS['MySQL']->res($sqlQuery);
-            if ($bUpdateLastObj)
+            if ($bUpdateLastObj) {
                 $this->updateLastObj($iAlbumId);
+            }
             $this->updateLastObj($iNewAlbumId);
 
             $sqlQuery = "UPDATE `{$this->sAlbumTable}` SET `ObjCount` = CASE
@@ -428,62 +490,69 @@ class BxDolAlbums
         }
     }
 
-    function removeObject ($iAlbumId, $mixedObj, $bUpdateCount = true)
+    function removeObject($iAlbumId, $mixedObj, $bUpdateCount = true)
     {
-        $iAlbumId = (int)$iAlbumId;
-        $sqlBody = "";
+        $iAlbumId   = (int)$iAlbumId;
+        $sqlBody    = "";
         $iLastObjId = $this->getLastObj($iAlbumId);
-        $iCount = 0;
+        $iCount     = 0;
         if (!empty($mixedObj)) {
             if (is_array($mixedObj)) {
-                if (in_array($iLastObjId, $mixedObj))
+                if (in_array($iLastObjId, $mixedObj)) {
                     $bUpdateLastObj = true;
+                }
                 foreach ($mixedObj as $iValue) {
                     $iValue = (int)$iValue;
                     $sqlBody .= "'$iValue', ";
                     $iCount++;
                 }
             } else {
-                $iValue = (int)$mixedObj;
+                $iValue  = (int)$mixedObj;
                 $sqlBody = "'$iValue'";
-                if ($iValue == $iLastObjId)
+                if ($iValue == $iLastObjId) {
                     $bUpdateLastObj = true;
+                }
                 $iCount++;
             }
             $sqlQuery = "DELETE `{$this->sAlbumObjectsTable}`
                             FROM `{$this->sAlbumObjectsTable}`, `{$this->sAlbumTable}`
                          WHERE `{$this->sAlbumObjectsTable}`.`id_album`=`{$this->sAlbumTable}`.`ID`
-                         AND `{$this->sAlbumTable}`.`Type` = '$this->sType' AND `{$this->sAlbumObjectsTable}`.`id_object` IN (".trim($sqlBody, ', ').")";
+                         AND `{$this->sAlbumTable}`.`Type` = '$this->sType' AND `{$this->sAlbumObjectsTable}`.`id_object` IN (" . trim($sqlBody,
+                    ', ') . ")";
             $GLOBALS['MySQL']->res($sqlQuery);
-            if ($bUpdateLastObj)
+            if ($bUpdateLastObj) {
                 $this->updateLastObj($iAlbumId);
-            if ($bUpdateCount)
+            }
+            if ($bUpdateCount) {
                 $this->updateObjCounter($iAlbumId, $iCount, false);
+            }
         }
     }
 
-    function removeObjectTotal ($iObj, $bUpdateCounter = true)
+    function removeObjectTotal($iObj, $bUpdateCounter = true)
     {
-            $iObj = (int)$iObj;
-            $sqlQuery = "SELECT `id_album` as `ID`, `ObjCount`, `LastObjId`
+        $iObj      = (int)$iObj;
+        $sqlQuery  = "SELECT `id_album` as `ID`, `ObjCount`, `LastObjId`
                          FROM `{$this->sAlbumObjectsTable}`
                          LEFT JOIN `{$this->sAlbumTable}` ON `{$this->sAlbumTable}`.`ID` = `{$this->sAlbumObjectsTable}`.`id_album`
                          WHERE `id_object` = ? AND `$this->sAlbumTable`.`Type` = ?";
-            $aInfo = $GLOBALS['MySQL']->getRow($sqlQuery, [$iObj, $this->sType]);
-            $sqlDelete = "DELETE FROM `{$this->sAlbumObjectsTable}` WHERE `id_album`='{$aInfo['ID']}' AND `id_object`='$iObj' LIMIT 1";
-            $GLOBALS['MySQL']->res($sqlDelete);
-            if ($aInfo['ObjCount'] > 0 && $bUpdateCounter)
-                $this->updateObjCounter($aInfo['ID'], 1, false);
-            if ($aInfo['LastObjId'] == $iObj)
-                $this->updateLastObj($aInfo['ID']);
+        $aInfo     = $GLOBALS['MySQL']->getRow($sqlQuery, [$iObj, $this->sType]);
+        $sqlDelete = "DELETE FROM `{$this->sAlbumObjectsTable}` WHERE `id_album`='{$aInfo['ID']}' AND `id_object`='$iObj' LIMIT 1";
+        $GLOBALS['MySQL']->res($sqlDelete);
+        if ($aInfo['ObjCount'] > 0 && $bUpdateCounter) {
+            $this->updateObjCounter($aInfo['ID'], 1, false);
+        }
+        if ($aInfo['LastObjId'] == $iObj) {
+            $this->updateLastObj($aInfo['ID']);
+        }
     }
 
-    function sortObjects ($sAlbumUri, $aSort = array())
+    function sortObjects($sAlbumUri, $aSort = array())
     {
-        $aAlbumInfo = $this->getAlbumInfo(array('fileUri' => $sAlbumUri, 'owner' => $this->iOwnerId), array('ID'));
-        $sqlBegin = "UPDATE `{$this->sAlbumObjectsTable}` SET `obj_order` = ";
+        $aAlbumInfo   = $this->getAlbumInfo(array('fileUri' => $sAlbumUri, 'owner' => $this->iOwnerId), array('ID'));
+        $sqlBegin     = "UPDATE `{$this->sAlbumObjectsTable}` SET `obj_order` = ";
         $sqlAlbumPart = " `id_album`='{$aAlbumInfo['ID']}'";
-        $iNum = is_array($aSort) ? count($aSort) : 0;
+        $iNum         = is_array($aSort) ? count($aSort) : 0;
         if ($iNum > 0) {
             $sqlBegin .= " CASE ";
             $sqlWhere = "WHERE `id_object` IN (";
@@ -493,127 +562,137 @@ class BxDolAlbums
                 $sqlWhere .= "$iElem, ";
             }
             $sqlQuery = $sqlBegin . " END " . trim($sqlWhere, ', ') . ") AND $sqlAlbumPart";
-        } else
+        } else {
             $sqlQuery = $sqlBegin . " `id_object` WHERE $sqlAlbumPart";
+        }
         $GLOBALS['MySQL']->query($sqlQuery);
     }
 
-    function updateLastObj ($iAlbumId, $iObjId = 0)
+    function updateLastObj($iAlbumId, $iObjId = 0)
     {
         $iAlbumId = (int)$iAlbumId;
-        $iObjId = (int)$iObjId;
+        $iObjId   = (int)$iObjId;
         if ($iObjId == 0) {
             $sqlQuery = "SELECT MAX(`id_object`) FROM `{$this->sAlbumObjectsTable}` WHERE `id_album` = '{$iAlbumId}'";
-            $iObjId = (int)db_value($sqlQuery);
+            $iObjId   = (int)db_value($sqlQuery);
         }
         $sqlQuery = "UPDATE `{$this->sAlbumTable}` SET `LastObjId`='$iObjId' WHERE `ID`='{$iAlbumId}'";
+
         return $GLOBALS['MySQL']->query($sqlQuery);
     }
 
-    function updateLastObjById ($iObjId)
+    function updateLastObjById($iObjId)
     {
-        $iObjId = (int)$iObjId;
+        $iObjId   = (int)$iObjId;
         $sqlQuery = "UPDATE `{$this->sAlbumTable}`, `{$this->sAlbumObjectsTable}`
                      SET `LastObjId` = $iObjId
                      WHERE `{$this->sAlbumTable}`.`ID`=`{$this->sAlbumObjectsTable}`.`id_album`
                      AND `{$this->sAlbumObjectsTable}`.`id_object`=$iObjId
                      AND `{$this->sAlbumTable}`.`Type`='{$this->sType}'";
+
         return $GLOBALS['MySQL']->query($sqlQuery);
     }
 
-    function getLastObj ($iAlbumId)
+    function getLastObj($iAlbumId)
     {
         $iAlbumId = (int)$iAlbumId;
         $sqlQuery = "SELECT `LastObjId` FROM `{$this->sAlbumTable}` WHERE `ID`='{$iAlbumId}' AND `Type`='{$this->sType}'";
+
         return $GLOBALS['MySQL']->getOne($sqlQuery);
     }
 
     // calculate closest object in album for current element
-    function getClosestObj ($iAlbumId, $iObjectId, $sType = 'next', $iOrder = 0, $aExcludeIds = array())
+    function getClosestObj($iAlbumId, $iObjectId, $sType = 'next', $iOrder = 0, $aExcludeIds = array())
     {
-        $iAlbumId = (int)$iAlbumId;
+        $iAlbumId  = (int)$iAlbumId;
         $iObjectId = (int)$iObjectId;
-        $iOrder = (int)$iOrder;
-        $sType = strip_tags($sType);
-        $bOrder = true;
+        $iOrder    = (int)$iOrder;
+        $sType     = strip_tags($sType);
+        $bOrder    = true;
         if ($iOrder == 0) {
             $sqlCheck = "SELECT COUNT(*) FROM `$this->sAlbumObjectsTable` WHERE `id_album`=$iAlbumId AND `obj_order`>0";
-            $iCheck = (int)db_value($sqlCheck);
-            $bOrder = $iCheck > 0 ? true : false;
+            $iCheck   = (int)db_value($sqlCheck);
+            $bOrder   = $iCheck > 0 ? true : false;
         }
 
         if ($iOrder == 0 && !$bOrder) {
             $sqlField = "id_object";
             $sqlValue = $iObjectId;
-            $sKey = 'prev';
+            $sKey     = 'prev';
         } else {
             $sqlField = "obj_order";
             $sqlValue = $iOrder;
-            $sKey = 'next';
+            $sKey     = 'next';
         }
 
         if ($sType == $sKey) {
-            $sSign = ">";
+            $sSign   = ">";
             $sqlType = "ASC";
         } else {
-            $sSign = "<";
+            $sSign   = "<";
             $sqlType = "DESC";
         }
 
         $sqlIds = "";
-        if (is_array($aExcludeIds) && !empty($aExcludeIds))
+        if (is_array($aExcludeIds) && !empty($aExcludeIds)) {
             $sqlIds = "AND `id_object` NOT IN ('" . implode("','", $aExcludeIds) . "')";
+        }
 
         $sqlQuery = "SELECT `id_object` FROM `$this->sAlbumObjectsTable`
                      WHERE `id_album`=$iAlbumId AND `$sqlField`$sSign $sqlValue $sqlIds
                      ORDER BY `$sqlField` $sqlType LIMIT 1";
+
         return (int)db_value($sqlQuery);
     }
 
-    function getObjCount ($aIdent)
+    function getObjCount($aIdent)
     {
         $aInfo = $this->getAlbumInfo($aIdent, array('ObjCount'));
+
         return $aInfo['ObjCount'];
     }
 
-    function getObjTotalCount ($aData = array())
+    function getObjTotalCount($aData = array())
     {
         $aFields = array(
-            'Type' => $this->sType,
+            'Type'   => $this->sType,
             'Status' => !isset($aData['status']) ? 'active' : $aData['status'],
         );
         if (isset($aData['owner'])) {
             if ((int)$aData['owner'] == 0) {
-                $iUserId = getID($aData['owner']);
+                $iUserId          = getID($aData['owner']);
                 $aFields['Owner'] = $iUserId > 0 ? $iUserId : '';
-            } else
+            } else {
                 $aFields['Owner'] = (int)$aData['owner'];
+            }
         }
         $sqlQuery = "SELECT SUM(`ObjCount`) FROM `{$this->sAlbumTable}` WHERE " . $this->_getSqlPart($aFields, ' AND ');
+
         return (int)$GLOBALS['MySQL']->getOne($sqlQuery);
     }
 
-    function calcObjCount ($iAlbumId)
+    function calcObjCount($iAlbumId)
     {
         $iAlbumId = (int)$iAlbumId;
         $sqlQuery = "SELECT COUNT(*) FROM `{$this->sAlbumObjectsTable}` WHERE `id_album`='$iAlbumId'";
+
         return $GLOBALS['MySQL']->getOne($sqlQuery);
     }
 
-    function updateObjCounter ($iAlbumId, $iNumber, $bIncrease = true)
+    function updateObjCounter($iAlbumId, $iNumber, $bIncrease = true)
     {
-        $iAlbumId = (int)$iAlbumId;
-        $iNumber = (int)$iNumber;
+        $iAlbumId  = (int)$iAlbumId;
+        $iNumber   = (int)$iNumber;
         $sOperator = $bIncrease ? '+' : '-';
-        $sqlQuery = "UPDATE `{$this->sAlbumTable}` SET `ObjCount`=`ObjCount` $sOperator $iNumber WHERE `ID`='{$iAlbumId}'";
+        $sqlQuery  = "UPDATE `{$this->sAlbumTable}` SET `ObjCount`=`ObjCount` $sOperator $iNumber WHERE `ID`='{$iAlbumId}'";
         $GLOBALS['MySQL']->res($sqlQuery);
     }
 
-    function updateObjCounterById ($iObjId, $bIncrease = true)
+    function updateObjCounterById($iObjId, $bIncrease = true)
     {
-        $iObjId = (int)$iObjId;
+        $iObjId    = (int)$iObjId;
         $sOperator = $bIncrease ? '+' : '-';
-        $sqlQuery = "UPDATE `{$this->sAlbumTable}`, `{$this->sAlbumObjectsTable}`
+        $sqlQuery  = "UPDATE `{$this->sAlbumTable}`, `{$this->sAlbumObjectsTable}`
                      SET `ObjCount` = `ObjCount` $sOperator 1
                      WHERE `{$this->sAlbumTable}`.`ID`=`{$this->sAlbumObjectsTable}`.`id_album`
                      AND `{$this->sAlbumObjectsTable}`.`id_object`=$iObjId

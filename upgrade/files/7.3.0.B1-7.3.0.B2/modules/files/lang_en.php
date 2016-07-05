@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_bx_files_info_album' => 'Folder info',
+    '_bx_files_info_album' => 'Folder info',
 
 );

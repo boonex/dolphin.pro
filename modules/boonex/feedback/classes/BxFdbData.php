@@ -13,7 +13,7 @@ class BxFdbData extends BxDolTextData
         parent::__construct($oModule);
 
         $this->_aForm['params']['db']['table'] = $this->_oModule->_oDb->getPrefix() . 'entries';
-        $this->_aForm['form_attrs']['action'] = BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'post/';
+        $this->_aForm['form_attrs']['action']  = BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'post/';
 
         $this->_aForm['inputs']['content']['html'] = 2;
         unset($this->_aForm['inputs']['snippet']);

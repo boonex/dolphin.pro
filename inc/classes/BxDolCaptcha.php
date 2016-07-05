@@ -7,9 +7,9 @@
 bx_import('BxDolCaptchaQuery');
 
 /**
- * @page objects
+ * @page    objects
  * @section captcha CAPTCHA
- * @ref BxDolCaptcha
+ * @ref     BxDolCaptcha
  */
 
 /**
@@ -57,6 +57,7 @@ class BxDolCaptcha
 
     /**
      * Constructor
+     *
      * @param $aObject array of captcha options
      */
     public function __construct($aObject)
@@ -67,42 +68,50 @@ class BxDolCaptcha
 
     /**
      * Get captcha object instance by object name
+     *
      * @param $sObject object name
      * @return object instance or false on error
      */
     static public function getObjectInstance($sObject = false)
     {
-        if (!$sObject)
+        if (!$sObject) {
             $sObject = getParam('sys_captcha_default');
+        }
 
-        if (isset($GLOBALS['bxDolClasses']['BxDolCaptcha!'.$sObject]))
-            return $GLOBALS['bxDolClasses']['BxDolCaptcha!'.$sObject];
+        if (isset($GLOBALS['bxDolClasses']['BxDolCaptcha!' . $sObject])) {
+            return $GLOBALS['bxDolClasses']['BxDolCaptcha!' . $sObject];
+        }
 
         $aObject = BxDolCaptchaQuery::getCaptchaObject($sObject);
-        if (!$aObject || !is_array($aObject))
+        if (!$aObject || !is_array($aObject)) {
             return false;
+        }
 
-        if (empty($aObject['override_class_name']))
+        if (empty($aObject['override_class_name'])) {
             return false;
+        }
 
         $sClass = $aObject['override_class_name'];
-        if (!empty($aObject['override_class_file']))
+        if (!empty($aObject['override_class_file'])) {
             require_once(BX_DIRECTORY_PATH_ROOT . $aObject['override_class_file']);
-        else
+        } else {
             bx_import($sClass);
+        }
 
         $o = new $sClass($aObject);
-        if (!$o->isAvailable())
+        if (!$o->isAvailable()) {
             return false;
+        }
 
-        return ($GLOBALS['bxDolClasses']['BxDolCaptcha!'.$sObject] = $o);
+        return ($GLOBALS['bxDolClasses']['BxDolCaptcha!' . $sObject] = $o);
     }
 
     /**
      * Display captcha.
+     *
      * @param $bDynamicMode - is AJAX mode or not, if true then HTML code with captcha is loaded dynamically.
      */
-    public function display ($bDynamicMode = false)
+    public function display($bDynamicMode = false)
     {
         // override this function in particular class
     }
@@ -110,7 +119,7 @@ class BxDolCaptcha
     /**
      * Check captcha.
      */
-    public function check ()
+    public function check()
     {
         // override this function in particular class
     }
@@ -118,7 +127,7 @@ class BxDolCaptcha
     /**
      * Return text entered by user
      */
-    public function getUserResponse ()
+    public function getUserResponse()
     {
         // override this function in particular class
     }
@@ -126,7 +135,7 @@ class BxDolCaptcha
     /**
      * Check if captcha is available, like all API keys are specified.
      */
-    public function isAvailable ()
+    public function isAvailable()
     {
         // override this function in particular class
     }

@@ -36,37 +36,38 @@ require_once('BxNewsData.php');
  * Service methods:
  *
  * Get post block.
- * @see BxNewsModule::servicePostBlock
- * BxDolService::call('news', 'post_block');
+ *
+ * @see  BxNewsModule::servicePostBlock
+ *       BxDolService::call('news', 'post_block');
  * @note is needed for internal usage.
  *
  * Get edit block.
- * @see BxNewsModule::serviceEditBlock
+ * @see  BxNewsModule::serviceEditBlock
  * BxDolService::call('news', 'edit_block', array($mixed));
  * @note is needed for internal usage.
  *
  * Get administration block.
- * @see BxNewsModule::serviceAdminBlock
+ * @see  BxNewsModule::serviceAdminBlock
  * BxDolService::call('news', 'admin_block', array($iStart, $iPerPage, $sFilterValue));
  * @note is needed for internal usage.
  *
  * Get block with all news ordered by the time of posting.
- * @see BxNewsModule::serviceArchiveBlock
+ * @see  BxNewsModule::serviceArchiveBlock
  * BxDolService::call('news', 'archive_block', array($iStart, $iPerPage));
  * @note is needed for internal usage.
  *
  * Get block with news marked as featured.
- * @see BxNewsModule::serviceFeaturedBlock
+ * @see  BxNewsModule::serviceFeaturedBlock
  * BxDolService::call('news', 'featured_block', array($iStart, $iPerPage));
  * @note is needed for internal usage.
  *
  * Get block with news ordered by their rating.
- * @see BxNewsModule::serviceTopRatedBlock
+ * @see  BxNewsModule::serviceTopRatedBlock
  * BxDolService::call('news', 'top_rated_block', array($iStart, $iPerPage));
  * @note is needed for internal usage.
  *
  * Get block with all news ordered by their popularity(number of views).
- * @see BxNewsModule::servicePopularBlock
+ * @see  BxNewsModule::servicePopularBlock
  * BxDolService::call('news', 'popular_block', array($iStart, $iPerPage));
  * @note is needed for internal usage.
  *
@@ -136,23 +137,29 @@ class BxNewsModule extends BxDolTextModule
     {
         return new BxNewsCalendar($iYear, $iMonth, $this->_oDb, $this->_oConfig);
     }
+
     function _createObjectCmts($iId)
     {
         return new BxNewsCmts($this->_oConfig->getCommentsSystemName(), $iId);
     }
+
     function _createObjectVoting($iId)
     {
         return new BxNewsVoting($this->_oConfig->getVotesSystemName(), $iId);
     }
+
     function _isDeleteAllowed($bPerform = false)
     {
-        if(!isLogged())
+        if (!isLogged()) {
             return false;
+        }
 
-        if(isAdmin())
+        if (isAdmin()) {
             return true;
+        }
 
         $aCheckResult = checkAction(getLoggedId(), ACTION_ID_NEWS_DELETE, $bPerform);
+
         return $aCheckResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
 }

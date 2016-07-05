@@ -4,13 +4,13 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import ('BxTemplCalendar');
+bx_import('BxTemplCalendar');
 
 class BxAdsCalendar extends BxTemplCalendar
 {
     var $oAdsModule;
 
-    function __construct ($iYear, $iMonth, &$oModule)
+    function __construct($iYear, $iMonth, &$oModule)
     {
         parent::__construct($iYear, $iMonth);
         $this->oAdsModule = &$oModule;
@@ -29,7 +29,7 @@ class BxAdsCalendar extends BxTemplCalendar
      *  WHERE `Date` >= UNIX_TIMESTAMP('{$this->iYear}-{$this->iMonth}-1') AND `Date` < UNIX_TIMESTAMP('{$this->iNextYear}-{$this->iNextMonth}-1') AND `Status` = 'approved'");
      *
      */
-    function getData ()
+    function getData()
     {
         return $this->oAdsModule->_oDb->getAdsByMonth($this->iYear, $this->iMonth, $this->iNextYear, $this->iNextMonth);
     }
@@ -40,17 +40,17 @@ class BxAdsCalendar extends BxTemplCalendar
      * so if your base url is /m/some_module/calendar/, it will be transormed to
      * /m/some_module/calendar/YEAR/MONTH, like /m/some_module/calendar/2009/3
      */
-    function getBaseUri ()
+    function getBaseUri()
     {
         return $this->oAdsModule->_oConfig->sCurrBrowsedFile . "?action=show_calendar&date=";
     }
 
-    function getBrowseUri ()
+    function getBrowseUri()
     {
         return $this->oAdsModule->_oConfig->sCurrBrowsedFile . "?action=show_calendar_ads&date=";
     }
 
-    function getEntriesNames ()
+    function getEntriesNames()
     {
         return array(_t('_bx_ads_Ad'), _t('_bx_ads_Ads'));
     }

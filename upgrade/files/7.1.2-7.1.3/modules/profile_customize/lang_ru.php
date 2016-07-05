@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_bx_profile_customize_destination' => 'Назначение',
+    '_bx_profile_customize_destination' => 'Назначение',
 
 );

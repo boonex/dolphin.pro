@@ -7,7 +7,7 @@
  *******************************************************************************/
 
 $aPathInfo = pathinfo(__FILE__);
-require_once ($aPathInfo['dirname'] . '/../base/config.php');
+require_once($aPathInfo['dirname'] . '/../base/config.php');
 
-$gConf['url']['base'] = $site['url'] . 'forum/events/';	// base url
+$gConf['url']['base']  = $site['url'] . 'forum/events/';    // base url
 $gConf['db']['prefix'] = 'bx_events_'; // tables names prefix

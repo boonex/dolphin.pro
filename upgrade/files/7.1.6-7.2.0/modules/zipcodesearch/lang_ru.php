@@ -2,9 +2,9 @@
 
 $aLangContent = array(
 
-  // ================ CHANGED KEYS ================
+    // ================ CHANGED KEYS ================
 
-  '_bx_zip_help_text' => '
+    '_bx_zip_help_text' => '
 <p>
 Поиск от <b>Geonames</b> является безплатным сервисом геокодирования, и максимальный радиус поиска всегда ограничен 30 км.
 Чтобы использовать этот сервис нужно <a href="http://www.geonames.org/login" target="_blank">зарегистрироваться на сайте www.geonames.org</a>, 

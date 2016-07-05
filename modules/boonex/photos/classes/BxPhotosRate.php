@@ -18,12 +18,12 @@ class BxPhotosRate extends BxDolFilesRate
 
     function getRateFile(&$aData)
     {
-        $aImg = $this->oMedia->serviceGetPhotoArray($aData[0]['id'], 'file');
+        $aImg      = $this->oMedia->serviceGetPhotoArray($aData[0]['id'], 'file');
         $iImgWidth = (int)getParam($this->sType . '_file_width');
 
         $aFile = array(
-            'fileBody' => $aImg['file'],
-            'infoWidth' => $iImgWidth > 0 ? $iImgWidth + 2: ''
+            'fileBody'  => $aImg['file'],
+            'infoWidth' => $iImgWidth > 0 ? $iImgWidth + 2 : ''
         );
 
         return $this->oMedia->oTemplate->parseHtmlByName('rate_object_file.html', $aFile);

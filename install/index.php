@@ -38,7 +38,8 @@ switch ($last) {
 $aErrors   = array();
 $aErrors[] = (ini_get('register_globals') == 0) ? '' : '<font color="red">register_globals is On (warning, you should have this param in the Off state, or your site will be unsafe)</font>';
 $aErrors[] = (ini_get('safe_mode') == 0) ? '' : '<font color="red">safe_mode is On, disable it</font>';
-$aErrors[] = (version_compare(PHP_VERSION, '5.4.0', '<')) ? '<font color="red">PHP version too old, please update to PHP 5.4.0 at least</font>' : '';
+$aErrors[] = (version_compare(PHP_VERSION, '5.4.0',
+    '<')) ? '<font color="red">PHP version too old, please update to PHP 5.4.0 at least</font>' : '';
 $aErrors[] = (ini_get('short_open_tag') == 0 && version_compare(phpversion(), "5.4",
         "<") == 1) ? '<font color="red">short_open_tag is Off (must be On!)<b>Warning!</b> Dolphin cannot work without <b>short_open_tag</b>.</font>' : '';
 $aErrors[] = (ini_get('allow_url_include') == 0) ? '' : '<font color="red">allow_url_include is On (warning, you should have this param in the Off state, or your site will be unsafe)</font>';
@@ -1265,17 +1266,17 @@ function RunSQL($sAdminName, $sAdminPassword)
     $aDbConf['passwd'] = $_POST['db_password'];
     $aDbConf['db']     = $_POST['db_name'];
 
-//    $aDbConf['host'] .= ($aDbConf['port'] ? ":{$aDbConf['port']}" : '') . ($aDbConf['sock'] ? ":{$aDbConf['sock']}" : '');
-//
-//    $pass     = true;
+    //    $aDbConf['host'] .= ($aDbConf['port'] ? ":{$aDbConf['port']}" : '') . ($aDbConf['sock'] ? ":{$aDbConf['sock']}" : '');
+    //
+    //    $pass     = true;
     $errorMes = '';
     $filename = $_POST['sql_file'];
 
-//    $vLink = @mysql_connect($aDbConf['host'], $aDbConf['user'], $aDbConf['passwd']);
+    //    $vLink = @mysql_connect($aDbConf['host'], $aDbConf['user'], $aDbConf['passwd']);
 
     try {
         $sSocketOrHost = ($aDbConf['sock']) ? "unix_socket={$aDbConf['sock']}" : "host={$aDbConf['host']};port={$aDbConf['port']}";
-        $vLink = new PDO(
+        $vLink         = new PDO(
             "mysql:{$sSocketOrHost};dbname={$aDbConf['db']};charset=utf8",
             $aDbConf['user'],
             $aDbConf['passwd'],
@@ -1348,7 +1349,7 @@ function RunSQL($sAdminName, $sAdminPassword)
     fclose($f);
 
     $enable_gd_value = extension_loaded('gd') ? 'on' : '';
-    $ret = '';
+    $ret             = '';
 
     try {
         $stmt = $vLink->prepare("UPDATE `sys_options` SET `VALUE`= ? WHERE `Name`= ?");
@@ -1412,7 +1413,7 @@ function CheckSQLParams()
 
     try {
         $sSocketOrHost = ($aDbConf['sock']) ? "unix_socket={$aDbConf['sock']}" : "host={$aDbConf['host']};port={$aDbConf['port']}";
-        $vLink = new PDO(
+        $vLink         = new PDO(
             "mysql:{$sSocketOrHost};dbname={$aDbConf['db']};charset=utf8",
             $aDbConf['user'],
             $aDbConf['passwd'],

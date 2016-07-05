@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ CHANGED KEYS ==================
+    // ================ CHANGED KEYS ==================
 
-  '_bx_poll_tags_premoderation' => 'Polls',
+    '_bx_poll_tags_premoderation' => 'Polls',
 
 );

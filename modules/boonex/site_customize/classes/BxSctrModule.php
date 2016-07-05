@@ -24,9 +24,9 @@ function bx_sctr_import($sClassPostfix, $aModuleOverwright = array())
     $a = $aModuleOverwright ? $aModuleOverwright : $aModule;
     if (!$a || $a['uri'] != 'site_customize') {
         $oMain = BxDolModule::getInstance('BxSctrModule');
-        $a = $oMain->_aModule;
+        $a     = $oMain->_aModule;
     }
-    bx_import ($sClassPostfix, $a) ;
+    bx_import($sClassPostfix, $a);
 }
 
 /**
@@ -40,8 +40,9 @@ function bx_sctr_import($sClassPostfix, $aModuleOverwright = array())
  * Service methods:
  *
  * Get block for for customized page
+ *
  * @see BxSctrModule::serviceGetCustomizeBlock
- * BxDolService::call('profile_customize', 'get_customize_block', array($sPage, $sTarget));
+ *      BxDolService::call('profile_customize', 'get_customize_block', array($sPage, $sTarget));
  *
  * Get custom styles for current profile page
  * @see BxSctrModule::serviceGetProfileStyle
@@ -60,7 +61,7 @@ function bx_sctr_import($sClassPostfix, $aModuleOverwright = array())
  */
 class BxSctrModule extends BxDolModule
 {
-	var $iUserId;
+    var $iUserId;
     var $_aCssMatch;
 
     /**
@@ -79,31 +80,34 @@ class BxSctrModule extends BxDolModule
 
     function actionCustomizePage($sPage = '', $sTarget = '')
     {
-    	$this->_oConfig->cancelSession();
+        $this->_oConfig->cancelSession();
 
-    	header('Content-Type: text/html; charset=utf-8');
+        header('Content-Type: text/html; charset=utf-8');
         echo $this->_getCustomizeBlock($sPage, $sTarget);
     }
 
     function actionOpen($iOpen)
     {
-    	if (!$this->iUserId)
+        if (!$this->iUserId) {
             return;
+        }
 
-		if((int)$iOpen != 0)
-			$this->_oConfig->doOpen();
-		else 
-			$this->_oConfig->doClose();
+        if ((int)$iOpen != 0) {
+            $this->_oConfig->doOpen();
+        } else {
+            $this->_oConfig->doClose();
+        }
     }
 
     function actionSave($isReset = '')
     {
-        if (!$this->iUserId)
+        if (!$this->iUserId) {
             return;
+        }
 
-		$sPage = $sTarget = '';
+        $sPage = $sTarget = '';
         if (isset($_POST['page']) && isset($_POST['trg'])) {
-            $sPage = process_db_input($_POST['page'], BX_TAGS_STRIP);
+            $sPage   = process_db_input($_POST['page'], BX_TAGS_STRIP);
             $sTarget = process_db_input($_POST['trg'], BX_TAGS_STRIP);
 
             unset($_POST['page']);
@@ -114,92 +118,103 @@ class BxSctrModule extends BxDolModule
             if (!$isReset) {
                 if (!empty($aTmpStyle) && isset($aTmpStyle[$sPage][$sTarget])) {
                     foreach ($aTmpStyle[$sPage][$sTarget] as $sKey => $sValue) {
-                        if ($sKey != 'image')
+                        if ($sKey != 'image') {
                             unset($aTmpStyle[$sPage][$sTarget][$sKey]);
+                        }
                     }
                 }
                 $aVars = $_POST;
                 if (isset($_FILES['image'])) {
                     $sImage = $this->_addImage('image');
                     if (strlen($sImage) > 0) {
-                        if (isset($aTmpStyle[$sPage][$sTarget]['image']))
+                        if (isset($aTmpStyle[$sPage][$sTarget]['image'])) {
                             $this->_deleteImage($aTmpStyle[$sPage][$sTarget]['image']);
+                        }
 
                         $aTmpStyle[$sPage][$sTarget]['image'] = $sImage;
-                        if (!isset($aVars['useimage']))
+                        if (!isset($aVars['useimage'])) {
                             $aVars['useimage'] = 'on';
+                        }
                     }
                 }
 
                 foreach ($aVars as $sKey => $sValue) {
-                    if ($sValue != '' && $sValue != 'default' && $sValue != '-1')
+                    if ($sValue != '' && $sValue != 'default' && $sValue != '-1') {
                         $aTmpStyle[$sPage][$sTarget][$sKey] = process_db_input($sValue, BX_TAGS_STRIP);
+                    }
                 }
-            }
-            else if(!empty($aTmpStyle) && isset($aTmpStyle[$sPage][$sTarget])) {
-                $this->_parseImages($aTmpStyle[$sPage][$sTarget], BX_SCTR_IMAGES_DELETE);
-                unset($aTmpStyle[$sPage][$sTarget]);
+            } else {
+                if (!empty($aTmpStyle) && isset($aTmpStyle[$sPage][$sTarget])) {
+                    $this->_parseImages($aTmpStyle[$sPage][$sTarget], BX_SCTR_IMAGES_DELETE);
+                    unset($aTmpStyle[$sPage][$sTarget]);
+                }
             }
 
             $this->_oDb->updateSiteTmp($aTmpStyle);
         }
 
-    	if(isset($_POST['action']) && !empty($_POST['action'])) {
-			$sAction = process_db_input($_POST['action'], BX_TAGS_STRIP);
+        if (isset($_POST['action']) && !empty($_POST['action'])) {
+            $sAction = process_db_input($_POST['action'], BX_TAGS_STRIP);
             unset($_POST['action']);
 
             $iTheme = 0;
-            if(isset($_POST['theme']) && !empty($_POST['theme'])) {
-            	$iTheme = (int)$_POST['theme'];
-            	unset($_POST['theme']);
-			}
+            if (isset($_POST['theme']) && !empty($_POST['theme'])) {
+                $iTheme = (int)$_POST['theme'];
+                unset($_POST['theme']);
+            }
 
-            if($sAction == 'reset')
-            	$this->_oConfig->setSessionData(array($sPage, $sTarget, 0, ''));
-			else
-            	$this->_oConfig->setSessionData(array($sPage, $sTarget, $iTheme, $sAction));
-		}
+            if ($sAction == 'reset') {
+                $this->_oConfig->setSessionData(array($sPage, $sTarget, 0, ''));
+            } else {
+                $this->_oConfig->setSessionData(array($sPage, $sTarget, $iTheme, $sAction));
+            }
+        }
 
         echo 'Ok';
     }
 
     function actionPublish($isSave = '')
     {
-        if (!$this->iUserId)
+        if (!$this->iUserId) {
             return;
+        }
 
         $sComplete = '';
 
         if ($isSave && isset($_POST['name_theme']) && $_POST['name_theme']) {
-            $sName = process_db_input($_POST['name_theme'], BX_TAGS_STRIP);
+            $sName  = process_db_input($_POST['name_theme'], BX_TAGS_STRIP);
             $aTheme = $this->_oDb->getThemeByName($sName);
 
             if (empty($aTheme)) {
-                $iThemeId = $this->_oDb->addTheme($sName, ($this->isAdmin() ? 0 : $this->iUserId), $this->_getThemeFromTmp());
+                $iThemeId = $this->_oDb->addTheme($sName, ($this->isAdmin() ? 0 : $this->iUserId),
+                    $this->_getThemeFromTmp());
 
                 if ($iThemeId != -1) {
                     $sThumb = 'thumbnail';
 
                     if (isset($_FILES[$sThumb]) && is_uploaded_file($_FILES[$sThumb]['tmp_name'])) {
                         if (strpos($_FILES[$sThumb]['type'], 'image') !== false) {
-                            $sDestDir = $this->_getImagesDir();
-                            $sExt = '.' . pathinfo($_FILES[$sThumb]['name'], PATHINFO_EXTENSION);
-                            $sTmpName = 'tmp_' . time() . $this->iUserId . $sExt;
+                            $sDestDir   = $this->_getImagesDir();
+                            $sExt       = '.' . pathinfo($_FILES[$sThumb]['name'], PATHINFO_EXTENSION);
+                            $sTmpName   = 'tmp_' . time() . $this->iUserId . $sExt;
                             $sThumbName = BX_SCTR_THEME_PREFIX . $iThemeId . BX_SCTR_THUMB_EXT;
 
-                            if (move_uploaded_file($_FILES[$sThumb]['tmp_name'],  $sDestDir . $sTmpName)) {
+                            if (move_uploaded_file($_FILES[$sThumb]['tmp_name'], $sDestDir . $sTmpName)) {
                                 imageResize($sDestDir . $sTmpName, $sDestDir . $sThumbName, 64, 64, true);
                                 unlink($sDestDir . $sTmpName);
                             }
-                        } else
+                        } else {
                             unlink($_FILES[$sThumb]['tmp_name']);
+                        }
                     }
 
                     $sComplete = _t('_bx_sctr_complete');
-                } else
+                } else {
                     $sComplete = _t('_bx_sctr_err_add_theme');
-            } else
+                }
+            } else {
                 $sComplete = sprintf(_t('_bx_sctr_err_already_exist'), $sName);
+            }
         }
 
         header('Content-Type: text/html; charset=utf-8');
@@ -210,10 +225,11 @@ class BxSctrModule extends BxDolModule
     {
         $iThemeId = (int)$iThemeId;
 
-        if (!$this->iUserId)
+        if (!$this->iUserId) {
             return;
+        }
 
-        $sCss = '';
+        $sCss   = '';
         $aTheme = $this->_oDb->getThemeStyle($iThemeId);
 
         if (!empty($aTheme)) {
@@ -235,8 +251,9 @@ class BxSctrModule extends BxDolModule
 
     function actionDeleteTheme($iThemeId)
     {
-        if(!$this->iUserId)
+        if (!$this->iUserId) {
             return;
+        }
 
         $this->_deleteTheme((int)$iThemeId);
 
@@ -246,8 +263,9 @@ class BxSctrModule extends BxDolModule
 
     function actionResetAll()
     {
-        if (!$this->iUserId)
+        if (!$this->iUserId) {
             return;
+        }
 
         $aStyles = $this->_oDb->getSite();
         if (!empty($aStyles)) {
@@ -273,7 +291,7 @@ class BxSctrModule extends BxDolModule
         $this->_oTemplate->addAdminCss(array('forms_adv.css', 'main.css', 'admin.css'));
         $this->_oTemplate->addAdminJs(array('main.js'));
 
-        $this->_oTemplate->pageCodeAdmin (_t('_bx_sctr_administration'), $sType, $iUnitId, $this->_checkActions());
+        $this->_oTemplate->pageCodeAdmin(_t('_bx_sctr_administration'), $sType, $iUnitId, $this->_checkActions());
     }
 
     /**
@@ -281,31 +299,34 @@ class BxSctrModule extends BxDolModule
      */
     function serviceGetCustomizeButton()
     {
-    	return isAdmin() && $this->_oConfig->isEnabled() ? 'oBxSctrMain.showBlock();' : '';
+        return isAdmin() && $this->_oConfig->isEnabled() ? 'oBxSctrMain.showBlock();' : '';
     }
+
     function serviceGetCustomizeBlock($sPage = '', $sTarget = '')
     {
-    	if(!$this->_oConfig->isEnabled())
-    		return '';
+        if (!$this->_oConfig->isEnabled()) {
+            return '';
+        }
 
-    	return $this->_oTemplate->parseHtmlByName('customize_block_wrp.html', array(
-    		'name_id' => 'site_customize',
-    		'bx_if:hide' => array(
-        		'condition' => !$this->_oConfig->isOpen(),
-        		'content' => array()
-        	),
-    		'content' => $this->_getCustomizeBlock($sPage, $sTarget)
-    	));
+        return $this->_oTemplate->parseHtmlByName('customize_block_wrp.html', array(
+            'name_id'    => 'site_customize',
+            'bx_if:hide' => array(
+                'condition' => !$this->_oConfig->isOpen(),
+                'content'   => array()
+            ),
+            'content'    => $this->_getCustomizeBlock($sPage, $sTarget)
+        ));
     }
 
     function serviceGetSiteStyle()
     {
-    	if(!$this->_oConfig->isEnabled())
-    		return '';
+        if (!$this->_oConfig->isEnabled()) {
+            return '';
+        }
 
-		list($sPage, $sTarget, $iTheme, $sAction) = $this->_oConfig->getSessionData();
+        list($sPage, $sTarget, $iTheme, $sAction) = $this->_oConfig->getSessionData();
 
-		$sCss = '';
+        $sCss = '';
         switch ($sAction) {
             case 'save':
                 $aStyles = $this->_oDb->getSite();
@@ -331,7 +352,7 @@ class BxSctrModule extends BxDolModule
                 $sCss .= $this->_getCssFromArray($this->_oDb->getSiteCss());
         }
 
-        return '<style type="text/css">' . $sCss . '</style>'; 
+        return '<style type="text/css">' . $sCss . '</style>';
     }
 
     function isAdmin()
@@ -353,17 +374,19 @@ class BxSctrModule extends BxDolModule
     {
         if (isset($_FILES[$sName]) && is_uploaded_file($_FILES[$sName]['tmp_name'])) {
             if (strpos($_FILES[$sName]['type'], 'image') !== false) {
-                $sExt = pathinfo($_FILES[$sName]['name'], PATHINFO_EXTENSION);
+                $sExt      = pathinfo($_FILES[$sName]['name'], PATHINFO_EXTENSION);
                 $sFileName = $this->_oDb->addImage($sExt);
                 if ($sFileName) {
                     $sDestDir = $this->_getImagesDir();
-                    if (move_uploaded_file($_FILES[$sName]['tmp_name'],  $sDestDir . $sFileName)) {
+                    if (move_uploaded_file($_FILES[$sName]['tmp_name'], $sDestDir . $sFileName)) {
                         imageResize($sDestDir . $sFileName, $sDestDir . BX_SCTR_SMALL_PREFIX . $sFileName, 64, 64);
+
                         return $sFileName;
                     }
                 }
-            } else
+            } else {
                 unlink($_FILES[$sName]['tmp_name']);
+            }
         }
 
         return '';
@@ -373,46 +396,55 @@ class BxSctrModule extends BxDolModule
     {
         if ($this->_oDb->deleteImage($sFileName)) {
             $sDestDir = $this->_getImagesDir();
-            if (file_exists($sDestDir . $sFileName))
+            if (file_exists($sDestDir . $sFileName)) {
                 unlink($sDestDir . $sFileName);
-            if (file_exists($sDestDir . BX_SCTR_SMALL_PREFIX . $sFileName))
+            }
+            if (file_exists($sDestDir . BX_SCTR_SMALL_PREFIX . $sFileName)) {
                 unlink($sDestDir . BX_SCTR_SMALL_PREFIX . $sFileName);
+            }
         }
     }
 
     function _convertFormVarToTmpStyle($sPage, $sTarget, $aVars, &$aResult, $bFiles = false)
     {
         foreach ($aVars as $sKey => $sValue) {
-            if ($bFiles)
+            if ($bFiles) {
                 $sValue = $this->_addImage($sKey);
+            }
 
-            if ($sValue != '' && $sValue != 'default' && $sValue != '-1')
+            if ($sValue != '' && $sValue != 'default' && $sValue != '-1') {
                 $aResult[$sPage][$sTarget][$sKey] = $sValue;
+            }
         }
     }
 
     function _getCssFromArray($aTmpStyle)
     {
         $bPageBackgroundChanged = false;
-        $sCss = '';
+        $sCss                   = '';
 
-        if (empty($aTmpStyle))
+        if (empty($aTmpStyle)) {
             return '';
+        }
 
         foreach ($aTmpStyle as $sKey => $aValue) {
-            if (!isset($this->_aCssMatch[$sKey]))
+            if (!isset($this->_aCssMatch[$sKey])) {
                 continue;
+            }
 
             foreach ($aValue as $sValKey => $aParam) {
-                if (!isset($this->_aCssMatch[$sKey][$sValKey]['css_name']))
+                if (!isset($this->_aCssMatch[$sKey][$sValKey]['css_name'])) {
                     continue;
+                }
 
                 $sPartCss = $this->_aCssMatch[$sKey][$sValKey]['css_name'] . ' {';
 
                 $sMethod = '_compile' . ucfirst($sKey);
-                $s = method_exists($this, $sMethod) ? call_user_func_array(array($this, $sMethod), array($aParam)) : '';
-                if ('bgbody' == $sValKey && 'background' == $sKey && '' != $s && 'background-image: none;' != $s)
+                $s       = method_exists($this, $sMethod) ? call_user_func_array(array($this, $sMethod),
+                    array($aParam)) : '';
+                if ('bgbody' == $sValKey && 'background' == $sKey && '' != $s && 'background-image: none;' != $s) {
                     $bPageBackgroundChanged = true;
+                }
                 $sPartCss .= $s;
 
                 $sPartCss .= ' }';
@@ -420,8 +452,9 @@ class BxSctrModule extends BxDolModule
             }
         }
 
-        if ($bPageBackgroundChanged)
+        if ($bPageBackgroundChanged) {
             $sCss .= ' html div.sys_root_bg {display:none;} ';
+        }
 
         return $sCss;
     }
@@ -430,8 +463,9 @@ class BxSctrModule extends BxDolModule
     {
         $aTmpStyle = $this->_oDb->getSiteTmp();
 
-        if (empty($aTmpStyle))
+        if (empty($aTmpStyle)) {
             return '';
+        }
 
         $this->_parseImages($aTmpStyle, BX_SCTR_IMAGES_COPY);
 
@@ -440,8 +474,9 @@ class BxSctrModule extends BxDolModule
 
     function _parseImages($aCss, $iOperation)
     {
-        if (empty($aCss))
+        if (empty($aCss)) {
             return;
+        }
 
         foreach ($aCss as $sKey => $mixedValue) {
             if (!is_array($mixedValue)) {
@@ -456,8 +491,9 @@ class BxSctrModule extends BxDolModule
                             break;
                     }
                 }
-            } else
+            } else {
                 $this->_parseImages($mixedValue, $iOperation);
+            }
         }
     }
 
@@ -465,15 +501,18 @@ class BxSctrModule extends BxDolModule
     {
         $aResult = array();
 
-        if (empty($aCss))
+        if (empty($aCss)) {
             return $aResult;
+        }
 
         foreach ($aCss as $sKey => $mixedValue) {
             if (!is_array($mixedValue)) {
-                if ($sKey == 'image')
+                if ($sKey == 'image') {
                     $aResult[] = $mixedValue;
-            } else
+                }
+            } else {
                 $aResult = array_merge($aResult, $this->_getImages($mixedValue));
+            }
         }
 
         return $aResult;
@@ -483,17 +522,18 @@ class BxSctrModule extends BxDolModule
     {
         $aResult = array();
 
-        if (empty($aCss))
+        if (empty($aCss)) {
             return $aResult;
+        }
 
         foreach ($aCss as $sKey => $mixedValue) {
             if (!is_array($mixedValue)) {
                 if ($sKey == 'image') {
-                    $sExt = pathinfo($mixedValue, PATHINFO_EXTENSION);
+                    $sExt      = pathinfo($mixedValue, PATHINFO_EXTENSION);
                     $sFileName = $this->_oDb->addImage($sExt);
                     if ($sFileName) {
                         $sDestDir = $this->_getImagesDir();
-                        $oFile = fopen($sDestDir . $sFileName, 'w', false);
+                        $oFile    = fopen($sDestDir . $sFileName, 'w', false);
                         if ($oFile) {
                             fwrite($oFile, $oZip->GetData($aImages[$mixedValue]));
                             fclose($oFile);
@@ -501,10 +541,12 @@ class BxSctrModule extends BxDolModule
                             $aResult[$sKey] = $sFileName;
                         }
                     }
-                } else
+                } else {
                     $aResult[$sKey] = $mixedValue;
-            } else
+                }
+            } else {
                 $aResult[$sKey] = $this->_importImages($mixedValue, $oZip, $aImages);
+            }
         }
 
         return $aResult;
@@ -520,14 +562,16 @@ class BxSctrModule extends BxDolModule
     {
         $sResult = _t('_bx_sctr_err_delete_theme');
 
-        if (!$iThemeId)
+        if (!$iThemeId) {
             return $sResult;
+        }
 
         $aTheme = $this->_oDb->getThemeById($iThemeId);
         if (!empty($aTheme) && $this->_oDb->deleteTheme($iThemeId)) {
             $sFile = $this->_getImagesDir() . BX_SCTR_THEME_PREFIX . $iThemeId . BX_SCTR_THUMB_EXT;
-            if (file_exists($sFile))
+            if (file_exists($sFile)) {
                 unlink($sFile);
+            }
             $this->_parseImages(unserialize($aTheme['css']), BX_SCTR_IMAGES_DELETE);
 
             $sResult = _t('_bx_sctr_delete_complete');
@@ -538,18 +582,22 @@ class BxSctrModule extends BxDolModule
 
     function _checkActions()
     {
-        $sResult = '';
+        $sResult     = '';
         $sFileImport = 'theme_file';
 
         if ($_POST['theme']) {
-            if ($_POST['action_theme_export'])
+            if ($_POST['action_theme_export']) {
                 $this->_exportTheme($_POST['theme']);
+            }
 
-            if ($_POST['action_theme_delete'])
+            if ($_POST['action_theme_delete']) {
                 $sResult = $this->_deleteTheme($_POST['theme']);
-        } else if (isset($_FILES[$sFileImport]) && is_uploaded_file($_FILES[$sFileImport]['tmp_name'])) {
-            $sResult = $this->_importTheme($sFileImport);
-            unlink($_FILES[$sFileImport]['tmp_name']);
+            }
+        } else {
+            if (isset($_FILES[$sFileImport]) && is_uploaded_file($_FILES[$sFileImport]['tmp_name'])) {
+                $sResult = $this->_importTheme($sFileImport);
+                unlink($_FILES[$sFileImport]['tmp_name']);
+            }
         }
 
         return $sResult;
@@ -559,14 +607,15 @@ class BxSctrModule extends BxDolModule
     {
         $aTheme = $this->_oDb->getThemeById($iThemeId);
 
-        if (empty($aTheme))
+        if (empty($aTheme)) {
             return;
+        }
 
         $sConf = "\$sThemeName = '{$aTheme['name']}';\n";
         $sConf .= "\$sThemeStyle = '{$aTheme['css']}';\n";
 
         $sImagesPath = $this->_getImagesDir();
-        $oZipFile = new zipfile();
+        $oZipFile    = new zipfile();
 
         $oZipFile->addFile($sConf, BX_SCTR_THEME_CONF);
         $sFile = $sImagesPath . BX_SCTR_THEME_PREFIX . $iThemeId . BX_SCTR_THUMB_EXT;
@@ -591,43 +640,50 @@ class BxSctrModule extends BxDolModule
 
     function _importTheme($sFileImport)
     {
-        $sResult = '';
+        $sResult  = '';
         $sDestDir = $this->_getImagesDir();
 
-        if (!$sFileImport)
+        if (!$sFileImport) {
             return $sResult;
+        }
 
-        if (pathinfo($_FILES[$sFileImport]['name'], PATHINFO_EXTENSION) != 'dfn')
+        if (pathinfo($_FILES[$sFileImport]['name'], PATHINFO_EXTENSION) != 'dfn') {
             return _t('_bx_sctr_err_format');
+        }
 
         $oUnZip = new SimpleUnzip($_FILES[$sFileImport]['tmp_name']);
         $aFiles = $this->_getZipFilesFromPath($oUnZip, '');
 
         // check exist 'conf.php'
-        if (!isset($aFiles[BX_SCTR_THEME_CONF]))
+        if (!isset($aFiles[BX_SCTR_THEME_CONF])) {
             return sprintf(_t('_bx_sctr_err_conf_php'), 'conf.php');
+        }
 
         eval($oUnZip->GetData($aFiles[BX_SCTR_THEME_CONF]));
 
         // check parameters
-        if (!isset($sThemeName) || !isset($sThemeStyle))
+        if (!isset($sThemeName) || !isset($sThemeStyle)) {
             return _t('_bx_sctr_err_theme_parameters');
+        }
 
         // check exist theme
         $aTheme = $this->_oDb->getThemeByName($sThemeName);
-        if (!empty($aTheme))
+        if (!empty($aTheme)) {
             return sprintf(_t('_bx_sctr_err_already_exist'), $sThemeName);
+        }
 
         $aImages = $this->_getZipFilesFromPath($oUnZip, 'images');
-        if (!empty($aImages))
+        if (!empty($aImages)) {
             $sStyle = serialize($this->_importImages(unserialize($sThemeStyle), $oUnZip, $aImages));
-        else
+        } else {
             $sStyle = '';
+        }
 
         // insert in table
         $iThemeId = $this->_oDb->addTheme($sThemeName, 0, $sStyle);
-        if ($iThemeId == -1)
+        if ($iThemeId == -1) {
             return _t('_bx_sctr_err_add_theme');
+        }
 
         // copy thumbnail
         if (isset($aFiles[BX_SCTR_THEME_THUMB])) {
@@ -648,8 +704,9 @@ class BxSctrModule extends BxDolModule
         $aFiles = array();
 
         for ($i = 0; $i < $oZipFile->Count(); $i++) {
-            if ($oZipFile->GetPath($i) == $sPath)
+            if ($oZipFile->GetPath($i) == $sPath) {
                 $aFiles[$oZipFile->GetName($i)] = $i;
+            }
         }
 
         return $aFiles;
@@ -660,21 +717,24 @@ class BxSctrModule extends BxDolModule
         $sParams = '';
 
         foreach ($aParam as $sKey => $sValue) {
-            if (!$sValue)
+            if (!$sValue) {
                 continue;
+            }
 
             switch ($sKey) {
                 case 'color':
                     $sParams .= 'background-color: ' . $sValue . ';';
-                    if (!isset($aParam['image']))
+                    if (!isset($aParam['image'])) {
                         $sParams .= 'background-image: none;';
+                    }
                     break;
 
                 case 'image':
-                    if (isset($aParam['useimage']))
+                    if (isset($aParam['useimage'])) {
                         $sParams .= 'background-image: url(' . $this->_getImagesPath() . $sValue . ');';
-                    else
+                    } else {
                         $sParams .= 'background-image: none;';
+                    }
                     break;
 
                 case 'repeat':
@@ -695,8 +755,9 @@ class BxSctrModule extends BxDolModule
         $sParams = '';
 
         foreach ($aParam as $sKey => $sValue) {
-            if ($sValue == '')
+            if ($sValue == '') {
                 continue;
+            }
 
             switch ($sKey) {
                 case 'size':
@@ -733,13 +794,13 @@ class BxSctrModule extends BxDolModule
 
     function _compileBorder($aParam)
     {
-        $sParams = '';
+        $sParams     = '';
         $aProperties = array(
             'border'
         );
 
         if (isset($aParam['position']))
-            switch($aParam['position']) {
+            switch ($aParam['position']) {
                 case 'top':
                     $aProperties = array(
                         'border-top'
@@ -809,23 +870,27 @@ class BxSctrModule extends BxDolModule
 
         foreach ($aParam as $sKey => $sValue) {
             $sProperty = '';
-            if ($sValue == '')
+            if ($sValue == '') {
                 continue;
+            }
 
             switch ($sKey) {
                 case 'size':
-                    foreach ($aProperties as $sVal)
+                    foreach ($aProperties as $sVal) {
                         $sParams .= $sVal . '-width: ' . $sValue . 'px;';
+                    }
                     break;
 
                 case 'color':
-                    foreach ($aProperties as $sVal)
+                    foreach ($aProperties as $sVal) {
                         $sParams .= $sVal . '-color: ' . $sValue . ';';
+                    }
                     break;
 
                 case 'style':
-                    foreach ($aProperties as $sVal)
+                    foreach ($aProperties as $sVal) {
                         $sParams .= $sVal . '-style: ' . $sValue . ';';
+                    }
                     break;
             }
         }
@@ -833,52 +898,58 @@ class BxSctrModule extends BxDolModule
         return $sParams;
     }
 
-	function _getCustomizeBlock($sPage = '', $sTarget = '')
+    function _getCustomizeBlock($sPage = '', $sTarget = '')
     {
-        if (!$this->iUserId || !isAdmin($this->iUserId) || !getParam('bx_sctr_enable'))
+        if (!$this->iUserId || !isAdmin($this->iUserId) || !getParam('bx_sctr_enable')) {
             return '';
+        }
 
-        $sUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'customizepage/';
+        $sUrl       = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'customizepage/';
         $aMenuItems = array('themes', 'background', 'font', 'border');
-        $aTopMenu = array();
-        $aTargets = array();
+        $aTopMenu   = array();
+        $aTargets   = array();
 
         list($sSesPage, $sSesTarget, $iSesTheme, $sSesAction) = $this->_oConfig->getSessionData();
-        if($sPage == '' && !empty($sSesPage))
-        	$sPage = $sSesPage;
+        if ($sPage == '' && !empty($sSesPage)) {
+            $sPage = $sSesPage;
+        }
 
-        if($sTarget == '' && !empty($sSesTarget))
-        	$sTarget = $sSesTarget;
+        if ($sTarget == '' && !empty($sSesTarget)) {
+            $sTarget = $sSesTarget;
+        }
 
-        if (!$sPage)
+        if (!$sPage) {
             $sPage = $aMenuItems[0];
+        }
 
         foreach ($aMenuItems as $sItem) {
             $aTopMenu[_t('_bx_sctr_page_' . $sItem)] = array(
-                'href' => $sUrl . $sItem,
+                'href'    => $sUrl . $sItem,
                 'dynamic' => true,
-                'active' => $sItem == $sPage
+                'active'  => $sItem == $sPage
             );
         }
 
         $aTargets = array();
         if (isset($this->_aCssMatch[$sPage])) {
-            if (!$sTarget)
+            if (!$sTarget) {
                 $sTarget = key($this->_aCssMatch[$sPage]);
+            }
 
             foreach ($this->_aCssMatch[$sPage] as $sKey => $aValues) {
                 $aTargets[] = array(
-                    'name' => _t($aValues['name']),
-                    'value' => $sUrl . $sPage . '/' . $sKey,
+                    'name'   => _t($aValues['name']),
+                    'value'  => $sUrl . $sPage . '/' . $sKey,
                     'select' => $sKey == $sTarget ? 'selected' : ''
                 );
             }
         }
 
-        $aVars = array();
+        $aVars  = array();
         $aStyle = $this->_oDb->getSiteTmp();
-        if (!empty($aStyle) && isset($aStyle[$sPage][$sTarget]))
+        if (!empty($aStyle) && isset($aStyle[$sPage][$sTarget])) {
             $aVars = $aStyle[$sPage][$sTarget];
+        }
 
         return $this->_oTemplate->profileCustomizeBlock($aTopMenu, $sPage, $aTargets, $sTarget, $aVars);
     }

@@ -21,10 +21,10 @@ class BxSitesPageView extends BxDolTwigPageView
         parent::__construct('bx_sites_view', $oSites, $aSite);
 
         $this->_oSites = &$oSites;
-        $this->_aSite = $aSite;
+        $this->_aSite  = $aSite;
 
         $this->_oTemplate = $oSites->_oTemplate;
-        $this->_oConfig = $oSites->_oConfig;
+        $this->_oConfig   = $oSites->_oConfig;
     }
 
     function getBlockCode_ViewActions()
@@ -32,28 +32,29 @@ class BxSitesPageView extends BxDolTwigPageView
         global $oFunctions;
 
         if ($this->_oSites->iOwnerId || $this->_oSites->isAdmin()) {
-        	$sCode = '';
+            $sCode = '';
 
             $aInfo = array(
-                'iViewer' => $this->_oSites->iOwnerId,
-                'ownerID' => (int)$this->_aSite['ownerid'],
-                'ID' => (int)$this->_aSite['id'],
-                'TitleEdit' => $this->_oSites->isAllowedEdit($this->_aSite) ? _t('_bx_sites_action_title_edit') : '',
-                'TitleDelete' => $this->_oSites->isAllowedDelete($this->_aSite) ? _t('_bx_sites_action_title_delete') : '',
-                'TitleShare' => $this->_oSites->isAllowedShare($this->_aSite) ? _t('_Share') : '',
+                'iViewer'       => $this->_oSites->iOwnerId,
+                'ownerID'       => (int)$this->_aSite['ownerid'],
+                'ID'            => (int)$this->_aSite['id'],
+                'TitleEdit'     => $this->_oSites->isAllowedEdit($this->_aSite) ? _t('_bx_sites_action_title_edit') : '',
+                'TitleDelete'   => $this->_oSites->isAllowedDelete($this->_aSite) ? _t('_bx_sites_action_title_delete') : '',
+                'TitleShare'    => $this->_oSites->isAllowedShare($this->_aSite) ? _t('_Share') : '',
                 'AddToFeatured' => ($this->_oSites->isAllowedMarkAsFeatured($this->_aSite) && (int)$this->_aSite['allowView'] == BX_DOL_PG_ALL) ?
-                                    ((int)$this->_aSite['featured'] == 1  ? _t('_bx_sites_action_remove_from_featured') : _t('_bx_sites_action_add_to_featured')) : ''
+                    ((int)$this->_aSite['featured'] == 1 ? _t('_bx_sites_action_remove_from_featured') : _t('_bx_sites_action_add_to_featured')) : ''
             );
 
             $oSubscription = BxDolSubscription::getInstance();
-            $aButton = $oSubscription->getButton($this->_oSites->iOwnerId, 'bx_sites', '', $this->_aSite['id']);
-			$sCode .= $oSubscription->getData();
+            $aButton       = $oSubscription->getButton($this->_oSites->iOwnerId, 'bx_sites', '', $this->_aSite['id']);
+            $sCode .= $oSubscription->getData();
 
-            $aInfo['sbs_sites_title'] = $aButton['title'];
+            $aInfo['sbs_sites_title']  = $aButton['title'];
             $aInfo['sbs_sites_script'] = $aButton['script'];
 
-            if (!$aInfo['TitleEdit'] && !$aInfo['TitleDelete'] && !$aInfo['TitleShare'] && !$aInfo['AddToFeatured'] && !$aInfo['sbs_sites_title'])
+            if (!$aInfo['TitleEdit'] && !$aInfo['TitleDelete'] && !$aInfo['TitleShare'] && !$aInfo['AddToFeatured'] && !$aInfo['sbs_sites_title']) {
                 return '';
+            }
 
             if ($aInfo['TitleShare']) {
                 $sUrlSharePopup = BX_DOL_URL_ROOT . $this->_oSites->_oConfig->getBaseUri() . "share_popup/" . $this->_aSite['id'];
@@ -77,16 +78,18 @@ EOF;
             }
 
             $aInfo['repostCpt'] = $aInfo['repostScript'] = '';
-	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
-				$sCode .= BxDolService::call('wall', 'get_repost_js_script');
+            if (BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+                $sCode .= BxDolService::call('wall', 'get_repost_js_script');
 
-				$aInfo['repostCpt'] = _t('_Repost');
-				$aInfo['repostScript'] = BxDolService::call('wall', 'get_repost_js_click', array($this->_oSites->iOwnerId, 'bx_sites', 'add', (int)$this->_aSite['id']));
-			}
+                $aInfo['repostCpt']    = _t('_Repost');
+                $aInfo['repostScript'] = BxDolService::call('wall', 'get_repost_js_click',
+                    array($this->_oSites->iOwnerId, 'bx_sites', 'add', (int)$this->_aSite['id']));
+            }
 
             $aCodeActions = $oFunctions->genObjectsActions($aInfo, 'bx_sites');
-            if(empty($aCodeActions))
-            	return '';
+            if (empty($aCodeActions)) {
+                return '';
+            }
 
             return $sCode . $aCodeActions;
         }
@@ -97,6 +100,7 @@ EOF;
     function getBlockCode_ViewInformation()
     {
         $sContent = $this->_oTemplate->blockInformation($this->_aSite);
+
         return array($sContent, array(), array(), false);
     }
 
@@ -104,14 +108,13 @@ EOF;
     {
         $sSiteUrl = $this->_aSite['url'];
 
-        $aFile = BxDolService::call('photos', 'get_photo_array', array($this->_aSite['photo'], 'file'), 'Search');
+        $aFile  = BxDolService::call('photos', 'get_photo_array', array($this->_aSite['photo'], 'file'), 'Search');
         $sImage = $aFile['no_image'] ? '' : $aFile['file'];
 
         // BEGIN STW INTEGRATION
         if (getParam('bx_sites_account_type') != 'No Automated Screenshots') {
             if ($sImage == '') {
-                $aSTWOptions = array(
-                );
+                $aSTWOptions = array();
 
                 bx_sites_import('STW');
                 $sThumbHTML = getThumbnailHTML($sSiteUrl, $aSTWOptions, false, false);
@@ -121,36 +124,38 @@ EOF;
 
         $sVote = '';
 
-        if (strncasecmp($sSiteUrl, 'http://', 7) != 0 && strncasecmp($sSiteUrl, 'https://', 8) != 0)
+        if (strncasecmp($sSiteUrl, 'http://', 7) != 0 && strncasecmp($sSiteUrl, 'https://', 8) != 0) {
             $sSiteUrl = 'http://' . $sSiteUrl;
+        }
 
         if ($this->_oConfig->isVotesAllowed() &&
             $this->_oSites->oPrivacy->check('rate',
-            $this->_aSite['id'], $this->_oSites->iOwnerId))
-        {
+                $this->_aSite['id'], $this->_oSites->iOwnerId)
+        ) {
             bx_import('BxTemplVotingView');
             $oVotingView = new BxTemplVotingView('bx_sites', $this->_aSite['id']);
 
-            if ($oVotingView->isEnabled())
+            if ($oVotingView->isEnabled()) {
                 $sVote = $oVotingView->getBigVoting();
+            }
         }
 
         $sContent = $this->_oTemplate->parseHtmlByName('view_image.html', array(
-            'title' => $this->_aSite['title'],
-            'site_url' => $sSiteUrl,
-            'site_url_view' => $this->_aSite['url'],
+            'title'              => $this->_aSite['title'],
+            'site_url'           => $sSiteUrl,
+            'site_url_view'      => $this->_aSite['url'],
             // BEGIN STW INTEGRATION
-            'bx_if:is_image' => array(
+            'bx_if:is_image'     => array(
                 'condition' => $sThumbHTML == false,
-                'content' => array('image' => $sImage ? $sImage : $this->_oTemplate->getImageUrl('no-image-thumb.png'))
+                'content'   => array('image' => $sImage ? $sImage : $this->_oTemplate->getImageUrl('no-image-thumb.png'))
             ),
             'bx_if:is_thumbhtml' => array(
                 'condition' => $sThumbHTML != '',
-                'content' => array('thumbhtml' => $sThumbHTML)
+                'content'   => array('thumbhtml' => $sThumbHTML)
             ),
             // END STW INTEGRATION
-            'vote' => $sVote,
-            'view_count' => $this->_aSite['views']
+            'vote'               => $sVote,
+            'view_count'         => $this->_aSite['views']
         ));
 
         return array($sContent, array(), array(), false);
@@ -167,11 +172,14 @@ EOF;
 
     function getBlockCode_ViewComments()
     {
-        if ($this->_oConfig->isCommentsAllowed() && $this->_oSites->oPrivacy->check('comments', $this->_aSite['id'], $this->_oSites->iOwnerId)) {
-        	$o = new BxSitesCmts('bx_sites', $this->_aSite['id']);
+        if ($this->_oConfig->isCommentsAllowed() && $this->_oSites->oPrivacy->check('comments', $this->_aSite['id'],
+                $this->_oSites->iOwnerId)
+        ) {
+            $o = new BxSitesCmts('bx_sites', $this->_aSite['id']);
 
-            if ($o->isEnabled())
+            if ($o->isEnabled()) {
                 return $o->getCommentsFirst();
+            }
         }
 
         return '';

@@ -11,9 +11,11 @@ define('BX_AVATAR_TABLE_PREFIX', 'bx_avatar_');
 /*
  * Avatar module Data
  */
+
 class BxAvaDb extends BxDolModuleDb
 {
     var $_oConfig;
+
     /*
      * Constructor.
      */
@@ -24,52 +26,64 @@ class BxAvaDb extends BxDolModuleDb
         $this->_oConfig = $oConfig;
     }
 
-    function updateProfile ($iAvatar, $iOwner, $isAdmin)
+    function updateProfile($iAvatar, $iOwner, $isAdmin)
     {
-        if (-1 == $iAvatar)
-            $iAvatar = (int)$this->getOne ("SELECT `id` FROM `" . BX_AVATAR_TABLE_PREFIX . "images` WHERE `author_id` = $iOwner LIMIT 1");
+        if (-1 == $iAvatar) {
+            $iAvatar = (int)$this->getOne("SELECT `id` FROM `" . BX_AVATAR_TABLE_PREFIX . "images` WHERE `author_id` = $iOwner LIMIT 1");
+        }
 
-        if ((int)$iOwner)
+        if ((int)$iOwner) {
             return $this->query("UPDATE `Profiles` SET `Avatar` = '$iAvatar' WHERE `ID` = " . (int)$iOwner);
-        else
+        } else {
             return false;
+        }
     }
 
-    function getCurrentAvatar ($iOwner, $isAdmin)
+    function getCurrentAvatar($iOwner, $isAdmin)
     {
-        if ((int)$iOwner)
+        if ((int)$iOwner) {
             return $this->getOne("SELECT `Avatar` FROM `Profiles` WHERE `ID` = " . (int)$iOwner);
-        else
+        } else {
             return 0;
+        }
     }
 
-    function getAvatarByIdAndOwner ($iId, $iOwner, $isAdmin)
+    function getAvatarByIdAndOwner($iId, $iOwner, $isAdmin)
     {
         $sWhere = '';
-        if (!$isAdmin)
+        if (!$isAdmin) {
             $sWhere = " AND `author_id` = '$iOwner' ";
-        return $this->getRow ("SELECT * FROM `" . BX_AVATAR_TABLE_PREFIX . "images` WHERE `id` = ? $sWhere LIMIT 1", [$iId]);
+        }
+
+        return $this->getRow("SELECT * FROM `" . BX_AVATAR_TABLE_PREFIX . "images` WHERE `id` = ? $sWhere LIMIT 1",
+            [$iId]);
     }
 
     function getAvatarsByAuthor($iProfileId)
     {
-        return $this->getPairs ("SELECT `id` FROM `" . BX_AVATAR_TABLE_PREFIX . "images` WHERE `author_id` = '$iProfileId'", 'id', 'id');
+        return $this->getPairs("SELECT `id` FROM `" . BX_AVATAR_TABLE_PREFIX . "images` WHERE `author_id` = '$iProfileId'",
+            'id', 'id');
     }
 
     function addAvatar($iProfileId)
     {
-        if (!$this->query ("INSERT INTO `" . BX_AVATAR_TABLE_PREFIX . "images` SET `author_id` = '$iProfileId'"))
+        if (!$this->query("INSERT INTO `" . BX_AVATAR_TABLE_PREFIX . "images` SET `author_id` = '$iProfileId'")) {
             return false;
+        }
+
         return $this->lastId();
     }
 
-    function deleteAvatarByIdAndOwner ($iId, $iOwner, $isAdmin)
+    function deleteAvatarByIdAndOwner($iId, $iOwner, $isAdmin)
     {
         $sWhere = '';
-        if (!$isAdmin)
+        if (!$isAdmin) {
             $sWhere = " AND `author_id` = '$iOwner' ";
-        if (!($iRet = $this->query ("DELETE FROM `" . BX_AVATAR_TABLE_PREFIX . "images` WHERE `id` = $iId $sWhere LIMIT 1")))
+        }
+        if (!($iRet = $this->query("DELETE FROM `" . BX_AVATAR_TABLE_PREFIX . "images` WHERE `id` = $iId $sWhere LIMIT 1"))) {
             return false;
+        }
+
         return true;
     }
 

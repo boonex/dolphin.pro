@@ -7,7 +7,7 @@
 $sLangCategory = 'BooneEx Profiler';
 
 $aLangContent = array(
-    '_sys_module_profiler' => 'Profiler',
-    '_bx_profiler' => 'Profiler',
+    '_sys_module_profiler'        => 'Profiler',
+    '_bx_profiler'                => 'Profiler',
     '_bx_profiler_administration' => 'Profiler',
 );

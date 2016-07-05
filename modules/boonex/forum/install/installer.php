@@ -6,9 +6,9 @@
 
 require_once(BX_DIRECTORY_PATH_CLASSES . "BxDolInstaller.php");
 
-function is_compiled_template ($s)
+function is_compiled_template($s)
 {
-    return preg_match ('/\/[a-z]+_[a-z]+$/', $s);
+    return preg_match('/\/[a-z]+_[a-z]+$/', $s);
 }
 
 class BxOrcaInstaller extends BxDolInstaller
@@ -29,38 +29,39 @@ class BxOrcaInstaller extends BxDolInstaller
 
         $sPath = BX_DIRECTORY_PATH_MODULES . 'boonex/forum/';
 
-        $a = $this->_read_in_dir ("{$sPath}cachejs/", 'is_file');
+        $a = $this->_read_in_dir("{$sPath}cachejs/", 'is_file');
         array_walk($a, array($this, '_unlink'));
 
-        $a = $this->_read_in_dir ("{$sPath}classes/", 'is_dir');
+        $a = $this->_read_in_dir("{$sPath}classes/", 'is_dir');
         array_walk($a, array($this, '_rmdir_rf'));
 
-        $a = $this->_read_in_dir ("{$sPath}conf/", 'is_file');
+        $a = $this->_read_in_dir("{$sPath}conf/", 'is_file');
         array_walk($a, array($this, '_unlink'));
 
-        $a = $this->_read_in_dir ("{$sPath}js/", 'is_dir');
+        $a = $this->_read_in_dir("{$sPath}js/", 'is_dir');
         array_walk($a, array($this, '_rmdir_rf'));
 
-        $a = $this->_read_in_dir ("{$sPath}log/", 'is_file');
+        $a = $this->_read_in_dir("{$sPath}log/", 'is_file');
         array_walk($a, array($this, '_unlink'));
 
-        $a = $this->_read_in_dir ("{$sPath}layout/", 'is_compiled_template');
+        $a = $this->_read_in_dir("{$sPath}layout/", 'is_compiled_template');
         array_walk($a, array($this, '_rmdir_rf'));
 
         return $ret;
     }
 
-    function _read_in_dir ($sDir, $sFunc)
+    function _read_in_dir($sDir, $sFunc)
     {
-        $aRet = array ();
+        $aRet = array();
         if ($h = opendir($sDir)) {
             while (false !== ($sFile = readdir($h))) {
-                if ($sFile != '.' && $sFile != '..' && $sFile[0] != '.' && $sFunc($sDir.$sFile)) {
-                    $aRet[] = $sDir.$sFile;
+                if ($sFile != '.' && $sFile != '..' && $sFile[0] != '.' && $sFunc($sDir . $sFile)) {
+                    $aRet[] = $sDir . $sFile;
                 }
             }
             closedir($h);
         }
+
         return $aRet;
     }
 
@@ -69,9 +70,14 @@ class BxOrcaInstaller extends BxDolInstaller
         if ($dirHandle = opendir($dirname)) {
             chdir($dirname);
             while ($file = readdir($dirHandle)) {
-                if ($file == '.' || $file == '..') continue;
-                if (is_dir($file)) $this->_rmdir_rf($file);
-                else unlink($file);
+                if ($file == '.' || $file == '..') {
+                    continue;
+                }
+                if (is_dir($file)) {
+                    $this->_rmdir_rf($file);
+                } else {
+                    unlink($file);
+                }
             }
             chdir('..');
             closedir($dirHandle);
@@ -81,10 +87,10 @@ class BxOrcaInstaller extends BxDolInstaller
 
     function _unlink($s)
     {
-        unlink ($s);
+        unlink($s);
     }
 
-    function actionCheckRequirements ()
+    function actionCheckRequirements()
     {
         $iErrors = 0;
         if (((int)phpversion()) >= 5) { // PHP 5
@@ -93,10 +99,11 @@ class BxOrcaInstaller extends BxDolInstaller
             $iErrors += (function_exists('domxml_xslt_stylesheet_file')) ? 0 : 1;
             $iErrors += (function_exists('xslt_create')) ? 0 : 1;
         }
+
         return array('code' => !$iErrors ? BX_DOL_INSTALLER_SUCCESS : BX_DOL_INSTALLER_FAILED, 'content' => '');
     }
 
-    function actionCheckRequirementsFailed ()
+    function actionCheckRequirementsFailed()
     {
         return '
             <div style="border:1px solid red; padding:10px;">

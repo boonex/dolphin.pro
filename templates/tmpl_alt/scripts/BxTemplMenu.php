@@ -8,13 +8,13 @@
 bx_import('BxBaseMenu');
 
 /**
-* @see BxBaseMenu;
-*/
+ * @see BxBaseMenu;
+ */
 class BxTemplMenu extends BxBaseMenu
 {
     /**
-    * Class constructor;
-    */
+     * Class constructor;
+     */
     function __construct()
     {
         parent::__construct();

@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-  // ================ ADDED KEYS ==================
+    // ================ ADDED KEYS ==================
 
-  '_sys_module_h5av' => 'HTML5 Audio/Video Player',
+    '_sys_module_h5av' => 'HTML5 Audio/Video Player',
 
 );
