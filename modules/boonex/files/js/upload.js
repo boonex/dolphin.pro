@@ -12,9 +12,7 @@ function BxFileUpload(oOptions) {
 }
 
 BxFileUpload.prototype.genSendFileInfoForm = function(iMID, sForm) {
-	sAcceptingIframe = '<iframe name="upload_file_info_frame_' + iMID + '" style="display: none;"></iframe>';
-	sFormInfo = '<div style="padding:5px;" id="send_file_info_'+iMID+'">' + sForm + sAcceptingIframe + '</div>';
-	$(sFormInfo).appendTo('#file_accepted_files_block').addWebForms();
+	$(sForm).appendTo('#file_accepted_files_block').addWebForms();
 	this.changeContinueButtonStatus();
 }
 

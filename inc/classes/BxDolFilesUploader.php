@@ -176,7 +176,7 @@ class BxDolFilesUploader extends BxDolTemplate
                 });
             </script>
               __form__
-            <div id="__upload_type___accepted_files_block" class="bx-def-margin-top" style="background-color:#ffdada;"></div>
+            <div id="__upload_type___accepted_files_block"></div>
 
             <div id="__upload_type___success_message" style="display:none;">__box_upl_succ__</div>
             <div id="__upload_type___failed_file_message" style="display:none;">__box_upl_file_err__</div>
@@ -697,7 +697,7 @@ class BxDolFilesUploader extends BxDolTemplate
                 'header2' => array(
                     'type' => 'block_header',
                     'caption' => $sCaptionVal,
-                    'collapsable' => true
+                    'collapsable' => false
                 ),
                 'title' => array(
                     'type' => 'text',
@@ -783,10 +783,13 @@ class BxDolFilesUploader extends BxDolTemplate
         );
 
         $oForm = new BxTemplFormView($aForm);
-        $sForm = $oForm->getCode();
-        $sFormSafeJS = str_replace(array("'", "\r", "\n"), array("\'"), $sForm);
+        $sForm = $this->parseHtmlByName('uploader_regular_info.html', array(
+        	'id' => $iFileID,
+        	'form' => $oForm->getCode()
+        ));
+        $sForm = str_replace(array("'", "\r", "\n"), array("\'"), $sForm);
 
-        return "<script src='" . BX_DOL_URL_ROOT . "inc/js/jquery.webForms.js' type='text/javascript' language='javascript'></script><script type='text/javascript'>parent." . $this->_sJsPostObject . ".genSendFileInfoForm('" . $iFileID . "', '" . $sFormSafeJS . "'); parent." . $this->_sJsPostObject . "._loading(false);</script>";
+        return "<script src='" . BX_DOL_URL_ROOT . "inc/js/jquery.webForms.js' type='text/javascript' language='javascript'></script><script type='text/javascript'>parent." . $this->_sJsPostObject . ".genSendFileInfoForm('" . $iFileID . "', '" . $sForm . "'); parent." . $this->_sJsPostObject . "._loading(false);</script>";
     }
 
     // method for checking album existense and adding object there
