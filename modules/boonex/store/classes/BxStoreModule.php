@@ -808,6 +808,9 @@ class BxStoreModule extends BxDolTwigModule
 
     function isCustomer($aItem)
     {
+    	if($aItem['price_range'] == 'Free')
+    		return true;
+
         return $this->_oDb->isCustomer($this->_iProfileId, $aItem['id']);
     }
 
