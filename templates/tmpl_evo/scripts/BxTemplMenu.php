@@ -45,7 +45,7 @@ class BxTemplMenu extends BxBaseMenu
     	$aSelected = $this->aTopMenu[$iSelected];
 
     	return $GLOBALS['oSysTemplate']->parseHtmlByName('navigation_menu_sub_header_submenu.html', array(
-    		'link' => $aSelected['Link'],
+    		'link' => $this->replaceMetas($aSelected['Link']),
     		'onclick' => 'javascript:return oBxEvoTopMenu.showSubmenuSubmenu(this);',
     		'caption' => _t($aSelected['Caption']),
     		'submenu' => $sSubItems
