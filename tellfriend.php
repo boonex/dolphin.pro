@@ -145,32 +145,33 @@ function SendTellFriend($iSenderID = 0)
 {
     global $profileID;
 
-    $sSenderName  = clear_xss(bx_get('sender_name'));
     $sSenderEmail = clear_xss(bx_get('sender_email'));
-    if (strlen(trim($sSenderEmail)) <= 0) {
+    if(strlen(trim($sSenderEmail)) <= 0)
         return 0;
-    }
+
+	$sSenderName = clear_xss(bx_get('sender_name'));
+    $sSenderLink = $iSenderID != 0 ? getProfileLink($iSenderID) : BX_DOL_URL_ROOT;
 
     $sRecipientEmail = clear_xss(bx_get('recipient_email'));
-    if (strlen(trim($sRecipientEmail)) <= 0) {
+    if(strlen(trim($sRecipientEmail)) <= 0)
         return 0;
-    }
 
-    $sLinkAdd       = $iSenderID > 0 ? 'idFriend=' . $iSenderID : '';
+    $sLinkAdd = $iSenderID > 0 ? 'idFriend=' . $iSenderID : '';
     $rEmailTemplate = new BxDolEmailTemplates();
     if ($profileID) {
         $aTemplate = $rEmailTemplate->getTemplate('t_TellFriendProfile', getLoggedId());
         $Link      = getProfileLink($profileID, $sLinkAdd);
-    } else {
+    }
+	else {
         $aTemplate = $rEmailTemplate->getTemplate('t_TellFriend', getLoggedId());
         $Link      = BX_DOL_URL_ROOT;
-        if (strlen($sLinkAdd) > 0) {
+        if (strlen($sLinkAdd) > 0)
             $Link .= '?' . $sLinkAdd;
-        }
     }
 
     return sendMail($sRecipientEmail, $aTemplate['Subject'], $aTemplate['Body'], '', array(
-        'Link'     => $Link,
-        'FromName' => $sSenderName
+        'Link' => $Link,
+        'SenderName' => $sSenderName,
+    	'SenderLink' => $sSenderLink
     ));
 }
