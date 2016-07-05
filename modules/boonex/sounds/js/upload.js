@@ -30,9 +30,7 @@ function BxSoundUpload(oOptions) {
 
 BxSoundUpload.prototype.genSendFileInfoForm = function(iMID, sForm) {
     if (iMID > 0 && sForm != '') {
-    	sAcceptingIframe = '<iframe name="upload_file_info_frame_' + iMID + '" style="display: none;"></iframe>';
-    	sFormInfo = '<div style="padding:5px;" id="send_file_info_'+iMID+'">' + sForm + sAcceptingIframe + '</div>';
-    	$(sFormInfo).appendTo('#sound_accepted_files_block').addWebForms();
+    	$(sForm).appendTo('#sound_accepted_files_block').addWebForms();
     	this.changeContinueButtonStatus();
     }
 }
