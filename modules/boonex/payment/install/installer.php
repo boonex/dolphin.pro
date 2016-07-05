@@ -25,6 +25,9 @@ class BxPmtInstaller extends BxDolInstaller
             setParam($this->_sParamDefaultPayment, $this->_aConfig['home_uri']);
         }
 
+        if($aResult['result'])
+            BxDolService::call($this->_aConfig['home_uri'], 'update_dependent_modules');
+
         return $aResult;
     }
 
