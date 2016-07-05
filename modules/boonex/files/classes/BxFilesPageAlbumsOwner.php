@@ -12,4 +12,13 @@ class BxFilesPageAlbumsOwner extends BxDolFilesPageAlbumsOwner
     {
         parent::__construct('bx_files_albums_owner', $oShared, $aParams);
     }
+
+    function getBlockCode_Favorited ($aParams = array())
+    {
+    	list($sCode, $aTopMenu, $aBottomMenu) = parent::getBlockCode_Favorited(array(
+    		'unit_css_class' => false
+    	));
+
+    	return array($sCode, $aTopMenu, $aBottomMenu, '');
+    }
 }

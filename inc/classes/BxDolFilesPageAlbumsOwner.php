@@ -53,13 +53,15 @@ class BxDolFilesPageAlbumsOwner extends BxDolPageView
         return $aCode;
     }
 
-    function getBlockCode_Favorited()
+    function getBlockCode_Favorited($aParams = array())
     {
         $sEmpty = MsgBox(_t('_Empty'));
 
         if ($this->iOwnerId == 0) {
             return $sEmpty;
         }
+
+		$sUnitCssClass = isset($aParams['unit_css_class']) ? $aParams['unit_css_class'] : '.sys_file_search_unit';
 
         $oSearch = $this->getSearchObject();
         $oSearch->clearFilters(array('activeStatus', 'allow_view', 'album_status', 'albumType', 'ownerStatus'),
@@ -74,10 +76,12 @@ class BxDolFilesPageAlbumsOwner extends BxDolPageView
             );
         }
         $oSearch->aCurrent['paginate']['perPage'] = (int)$this->oConfig->getGlParam('number_top');
-        $sCode                                    = $oSearch->displayResultBlock();
-        $sCode                                    = $GLOBALS['oFunctions']->centerContent($sCode,
-            '.sys_file_search_unit');
-        if ($oSearch->aCurrent['paginate']['totalNum'] > 0) {
+
+        $sCode = $oSearch->displayResultBlock();
+        if(!empty($sUnitCssClass))
+        	$sCode = $GLOBALS['oFunctions']->centerContent($sCode, $sUnitCssClass);
+
+        if($oSearch->aCurrent['paginate']['totalNum'] > 0) {
             $oSearch->aConstants['linksTempl']['favorited'] = 'browse/favorited';
 
             $aBottomMenu = $oSearch->getBottomMenu('favorited', 0, '');
