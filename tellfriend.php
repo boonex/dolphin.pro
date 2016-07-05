@@ -142,10 +142,12 @@ function SendTellFriend($iSenderID = 0)
 {
     global $profileID;
 
-    $sSenderName  = clear_xss(bx_get('sender_name'));
     $sSenderEmail = clear_xss(bx_get('sender_email'));
     if(strlen(trim($sSenderEmail)) <= 0)
         return 0;
+
+	$sSenderName = clear_xss(bx_get('sender_name'));
+    $sSenderLink = $iSenderID != 0 ? getProfileLink($iSenderID) : BX_DOL_URL_ROOT;
 
     $sRecipientEmail   = clear_xss(bx_get('recipient_email'));
     if(strlen(trim($sRecipientEmail)) <= 0)
@@ -166,6 +168,7 @@ function SendTellFriend($iSenderID = 0)
 
     return sendMail($sRecipientEmail, $aTemplate['Subject'], $aTemplate['Body'], '', array(
         'Link' => $Link,
-        'FromName' => $sSenderName
+        'SenderName' => $sSenderName,
+    	'SenderLink' => $sSenderLink
     ));
 }
