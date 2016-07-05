@@ -252,7 +252,7 @@ class BxDolProfilesController
             'Email'    => $aMember['Email'],
         ));
 
-        return sendMail($GLOBALS['site']['email'], $aTemplate['Subject'], $aTemplate['Body']);
+        return sendMail($GLOBALS['site']['email'], $aTemplate['subject'], $aTemplate['body']);
     }
 
     function updateProfile($iMemberID, $aData)
