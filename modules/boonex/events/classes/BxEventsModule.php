@@ -916,10 +916,11 @@ class BxEventsModule extends BxDolTwigModule
         if (!$aEvent['EventMembershipFilter']) {
             return true;
         }
+
         require_once(BX_DIRECTORY_PATH_INC . 'membership_levels.inc.php');
         $aMemebrshipInfo = getMemberMembershipInfo($this->_iProfileId);
 
-        return $aEvent['EventMembershipFilter'] == $aMemebrshipInfo['ID'] && $aMemebrshipInfo['DateStarts'] < time() && $aMemebrshipInfo['DateExpires'] > time() ? true : false;
+        return $aEvent['EventMembershipFilter'] == $aMemebrshipInfo['ID'];
     }
 
     function isAllowedSendInvitation(&$aEvent)
