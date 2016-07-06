@@ -70,7 +70,7 @@ INSERT INTO `sys_options_cats` (`name`, `menu_order`) VALUES ('World Map General
 SET @iCategId = (SELECT LAST_INSERT_ID());
 SET @sMapKey = (SELECT `VALUE` FROM `sys_options` WHERE `Name` = 'bx_map_key' LIMIT 1);
 INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `err_text`, `order_in_kateg`, `AvailableValues`) VALUES
-('bx_wmap_key', @sMapKey, @iCategId, 'Google Maps API key (optional)', 'digit', '', '', '0', ''),
+('bx_wmap_key', @sMapKey, @iCategId, 'Google Maps API key', 'digit', '', '', '0', ''),
 ('bx_wmap_permalinks', 'on', 26, 'Enable friendly permalinks in World Map module', 'checkbox', '', '', '0', '');
 
 -- settings default map locations
