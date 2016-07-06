@@ -220,12 +220,14 @@ function MemberSendVKiss($member, $recipient, $isCheckVisitorGreeting = true)
             0);
     }
 
-    // If success then perform actions
-    if ($result) {
-        checkAction($member['ID'], ACTION_ID_SEND_VKISS, true);
-    } else {
-        return 1;
-    }
+    if(!$result)
+		return 1;
+
+	// If success then perform actions
+	checkAction( $member['ID'], ACTION_ID_SEND_VKISS, true );
+
+	$oAlert = new BxDolAlerts('greeting', 'add', 0, $member['ID'], array('Recipient' => $recipient['ID']));
+	$oAlert->alert();
 
     return 0;
 }
