@@ -60,7 +60,7 @@ class BxSitesFormAdd extends BxTemplFormView
                     'required' => true,
                     'checker'  => array(
                         'func'   => 'length',
-                        'params' => array(1, 100),
+                        'params' => array(1, 255),
                         'error'  => _t('_bx_sites_form_field_err'),
                     ),
                     'db'       => array(
@@ -105,7 +105,7 @@ class BxSitesFormAdd extends BxTemplFormView
                     'required' => true,
                     'checker'  => array(
                         'func'   => 'length',
-                        'params' => array(1, 100),
+                        'params' => array(1, 255),
                         'error'  => _t('_bx_sites_form_field_err'),
                     ),
                     'db'       => array(
