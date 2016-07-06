@@ -527,26 +527,31 @@ class BxDolFilesModule extends BxDolModule
                 $aValues = array();
                 array_pop($aManageArray);
                 foreach ($aManageArray as $sKey) {
-                    if ($sKey != 'Categories') {
+                    if ($sKey != 'Categories')
                         $aValues[$sKey] = $_POST[$sKey];
-                    } else {
+                    else
                         $aValues[$sKey] = implode(CATEGORIES_DIVIDER, $_POST[$sKey]);
-                    }
                 }
-                if ($this->_oDb->updateData($iFileId, $aValues)) {
-                    $sType = $this->_oConfig->getMainPrefix();
-                    bx_import('BxDolCategories');
-                    $oTag = new BxDolTags();
-                    $oTag->reparseObjTags($sType, $iFileId);
-                    $oCateg = new BxDolCategories();
-                    $oCateg->reparseObjTags($sType, $iFileId);
+				if ($this->_oDb->updateData($iFileId, $aValues)) {
+					$sType = $this->_oConfig->getMainPrefix();
 
-                    $sCode = $GLOBALS['oFunctions']->msgBox(_t($sLangPref . '_save_success'), 3,
-                        'window.location="' . $sUrlPref . 'view/' . $aInfo['medUri'] . '";');
-                } else {
+					bx_import('BxDolCategories');
+					$oTag = new BxDolTags();
+					$oTag->reparseObjTags($sType, $iFileId);
+
+					$oCateg = new BxDolCategories();
+					$oCateg->reparseObjTags($sType, $iFileId);
+
+					$oAlert = new BxDolAlerts($sType, 'change', $iFileId, $this->_iProfileId, array('Info' => $this->_oDb->getFileInfo(array('fileId' => $iFileId), false, $aManageArray)));
+					$oAlert->alert();
+
+					$sCode = $GLOBALS['oFunctions']->msgBox(_t($sLangPref . '_save_success'), 3, 'window.location="' . $sUrlPref . 'view/' . $aInfo['medUri'] . '";');
+
+                } 
+				else
                     $sCode = $GLOBALS['oFunctions']->msgBox(_t('_sys_save_nothing'));
-                }
-            } else {
+            }
+			else {
                 $sCode = $this->_oTemplate->parseHtmlByName('default_padding.html',
                     array('content' => $oForm->getCode()));
                 $sCode = $this->_oTemplate->parseHtmlByName('popup.html',
