@@ -12,6 +12,10 @@ class BxFaceBookConnectInstaller extends BxDolInstaller
     function __construct(&$aConfig)
     {
         parent::__construct($aConfig);
+
+		$this->_aActions['check_requirements'] = array(
+			'title' => 'Check requirements:',
+		);
     }
 
     function actionCheckRequirements()
