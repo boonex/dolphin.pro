@@ -73,7 +73,7 @@ class BxShoutBoxDb extends BxDolModuleDb
                     `IP` = {$iIP}
             ";
 
-        $this->query($sQuery);
+        return (int)$this->query($sQuery) > 0 ? $this->lastId() : false;
     }
 
     /**

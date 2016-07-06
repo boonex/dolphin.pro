@@ -44,6 +44,8 @@ bx_import('BxDolModule');
  */
 class BxShoutBoxModule extends BxDolModule
 {
+	var $sModuleName;
+
     // contain some module information ;
     var $aModuleInfo;
 
@@ -78,6 +80,7 @@ class BxShoutBoxModule extends BxDolModule
 
         // prepare the location link ;
         $this->sPathToModule = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri();
+		$this->sModuleName   = 'bx_' . $aModule['uri'];
         $this->aModuleInfo   = $aModule;
         $this->iMemberId     = getLoggedId();
         $this->_aObjects     = $this->_oDb->getShoutboxObjects();
@@ -102,8 +105,11 @@ class BxShoutBoxModule extends BxDolModule
 
             if ($sMessage) {
                 // create new message;
-                $this->_oDb->writeMessage($sObject, $iHandler, $sMessage
-                    , $this->iMemberId, sprintf("%u", ip2long(getVisitorIP())));
+                $iMessage = $this->_oDb->writeMessage($sObject, $iHandler, $sMessage, $this->iMemberId, sprintf("%u", ip2long(getVisitorIP())));
+				if($iMessage !== false) {
+					$oAlert = new BxDolAlerts($this -> sModuleName, 'add', $iMessage, $this -> iMemberId, array('Object' => $sObject, 'Message' => $sMessage));
+					$oAlert->alert();
+				}
 
                 if (1 == rand(1, 10) && $this->_oConfig->iAllowedMessagesCount) { // "sometimes" delete old messages
                     // delete superfluous messages;
