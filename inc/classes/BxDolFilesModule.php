@@ -479,11 +479,16 @@ class BxDolFilesModule extends BxDolModule
                     }
                     if ($this->_oDb->updateData($iFileId, $aValues)) {
                         $sType = $this->_oConfig->getMainPrefix();
+
                         bx_import('BxDolCategories');
                         $oTag = new BxDolTags();
                         $oTag->reparseObjTags($sType, $iFileId);
+
                         $oCateg = new BxDolCategories();
                         $oCateg->reparseObjTags($sType, $iFileId);
+
+                        $oAlert = new BxDolAlerts($sType, 'change', $iFileId, $this->_iProfileId, array('Info' => $this->_oDb->getFileInfo(array('fileId' => $iFileId), false, $aManageArray)));
+        				$oAlert->alert();
 
                         $sCode = $GLOBALS['oFunctions']->msgBox(_t($sLangPref . '_save_success'), 3, 'window.location="' . $sUrlPref . 'view/' . $aInfo['medUri'] . '";');
                     } else
