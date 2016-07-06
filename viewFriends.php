@@ -36,6 +36,9 @@
     $_page['header_text'] 	= $sPageCaption;
     $_ni = $_page['name_index'];
 
+    // check profile membership, status, privacy and if it is exists
+    bx_check_profile_visibility($iProfileId, getLoggedId());
+
     // generate page
     if(isset($_GET['per_page']))
         $iPerPage = (int) $_GET['per_page'];
