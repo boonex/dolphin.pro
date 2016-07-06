@@ -347,6 +347,10 @@ class BxEventsSearchResult extends BxDolTwigSearchResult
             $aSql['order'] = " ORDER BY `EventStart` ASC";
 
             return $aSql;
+        } elseif ($this->aCurrent['sorting'] == 'past') {
+            $aSql = array();
+            $aSql['order'] = " ORDER BY `EventEnd` DESC";
+            return $aSql;
         } elseif ($this->aCurrent['sorting'] == 'top') {
             $aSql          = array();
             $aSql['order'] = " ORDER BY `bx_events_main`.`Rate` DESC, `bx_events_main`.`RateCount` DESC";
