@@ -506,6 +506,7 @@ class BxWmapModule extends BxDolModule
             'save_data_url' => BX_DOL_URL_MODULES . "?r=wmap/save_data/$iEntryId/{parts}/{zoom}/{map_type}/{lat}/{lng}/{instance}/{address}/{country}/{ts}",
             'save_location_url' => '',
             'shadow_url' => '',
+            'key' => getParam('bx_wmap_key'),
         );
         $sMap = $this->_oTemplate->parseHtmlByName('map', $aVars);
 
@@ -578,6 +579,7 @@ class BxWmapModule extends BxDolModule
             'save_location_url' => $this->isAdmin() ? BX_DOL_URL_MODULES . "?r=wmap/save_location_{$sSaveLocationSuffix}/{zoom}/{map_type}/{lat}/{lng}" : '',
             'shadow_url' => $this->_oTemplate->getIconUrl ('flag_icon_shadow.png'),
             'lang' => bx_lang_name(),
+            'key' => getParam('bx_wmap_key'),
         );
         $sMap = $this->_oTemplate->parseHtmlByName('map', $aVars);
 
@@ -642,6 +644,7 @@ class BxWmapModule extends BxDolModule
                 'save_location_url' => '',
                 'shadow_url' => '',
                 'lang' => bx_lang_name(),
+                'key' => getParam('bx_wmap_key'),
             );
             $this->_oTemplate->addJs ($this->_sProto . '://www.google.com/jsapi?key=' . getParam('bx_wmap_key'));
             $this->_oTemplate->addJs ('BxWmap.js');
