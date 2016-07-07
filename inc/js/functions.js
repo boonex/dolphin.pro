@@ -507,7 +507,7 @@ function addBookmark( title, url )
 	if (url == undefined)
 		url = top.location.href;
 		
-	if (window.sidebar) // firefox
+	if (window.sidebar && typeof window.sidebar.addPanel == "function") // firefox
 		window.sidebar.addPanel(title, url, '');
 	else if(window.opera && window.print) // opera
 	{
@@ -520,7 +520,7 @@ function addBookmark( title, url )
 	else if(document.all) // ie
 		window.external.AddFavorite(url, title);
 	else if (navigator.appName=="Netscape") //Netscape
-		alert( 'To bookmark this site press "Ctrl+D".' );
+		alert( 'Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != - 1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this page.' );
 	else
 		alert( 'Your browser doesn\'t support this feature' );
 }
