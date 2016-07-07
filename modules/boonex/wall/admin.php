@@ -16,12 +16,12 @@ global $logged;
 
 check_logged();
 
-$iIndex              = 9;
+$iIndex = 9;
 $_page['name_index'] = $iIndex;
-$_page['header']     = _t('_wall_pc_admin');
-$_page['css_name']   = array('forms_adv.css');
+$_page['header'] = _t('_wall_pc_admin');
+$_page['css_name'] = array('forms_adv.css');
 
-if (!@isAdmin()) {
+if(!@isAdmin()) {
     send_headers_page_changed();
     login_form("", 1);
     exit;
@@ -31,13 +31,10 @@ $oWall = new BxWallModule($aModule);
 
 //--- Process actions ---//
 $mixedResultSettings = '';
-if (isset($_POST['save']) && isset($_POST['cat'])) {
+if(isset($_POST['save']) && isset($_POST['cat']))
     $mixedResultSettings = $oWall->setSettings($_POST);
-}
 //--- Process actions ---//
 
-$_page_cont[$iIndex]['page_main_code'] = DesignBoxAdmin(_t('_wall_bc_settings'),
-    $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html',
-        array('content' => $oWall->getSettingsForm($mixedResultSettings))));
+$_page_cont[$iIndex]['page_main_code'] = DesignBoxAdmin(_t('_wall_bc_settings'), $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html', array('content' => $oWall->getSettingsForm($mixedResultSettings))));
 
 PageCodeAdmin();

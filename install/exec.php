@@ -1,10 +1,9 @@
 <?php
 
-if (!empty($_POST['phpinfo'])) {
-    phpinfo();
-} elseif (!empty($_POST['gdinfo'])) {
-    echo '<pre>' . print_r(gd_info(), true) . '</pre>';
-}
+    if (!empty($_POST['phpinfo']))
+        phpinfo();
+    elseif (!empty($_POST['gdinfo']))
+        echo '<pre>' . print_r(gd_info(), true) . '</pre>';
 
 ?>
 <center>

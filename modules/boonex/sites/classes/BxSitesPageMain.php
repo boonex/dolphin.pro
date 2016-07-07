@@ -17,10 +17,10 @@ class BxSitesPageMain extends BxDolTwigPageMain
     {
         parent::__construct('bx_sites_main', $oSites);
 
-        $this->_oSites    = &$oSites;
+        $this->_oSites = &$oSites;
         $this->_oTemplate = $oSites->_oTemplate;
-        $this->_oConfig   = $oSites->_oConfig;
-        $this->_oDb       = $oSites->_oDb;
+        $this->_oConfig = $oSites->_oConfig;
+        $this->_oDb = $oSites->_oDb;
     }
 
     function getBlockCode_ViewFeature()
@@ -28,11 +28,10 @@ class BxSitesPageMain extends BxDolTwigPageMain
         bx_sites_import('SearchResult');
         $oSearchResult = new BxSitesSearchResult('featuredshort');
 
-        if ($s = $oSearchResult->displayResultBlock(true, true)) {
+        if ($s = $oSearchResult->displayResultBlock(true, true))
             return $s;
-        } else {
+        else
             return '';
-        }
     }
 
     function getBlockCode_ViewRecent()
@@ -40,11 +39,10 @@ class BxSitesPageMain extends BxDolTwigPageMain
         bx_sites_import('SearchResult');
         $oSearchResult = new BxSitesSearchResult('featuredlast');
 
-        if ($s = $oSearchResult->displayResultBlock()) {
+        if ($s = $oSearchResult->displayResultBlock())
             return $s;
-        } else {
+        else
             return '';
-        }
     }
 
     function getBlockCode_ViewAll()
@@ -57,17 +55,16 @@ class BxSitesPageMain extends BxDolTwigPageMain
                 $s,
                 array(
                     _t('RSS') => array(
-                        'href'   => $this->_oConfig->getBaseUri() . 'browse/all?rss=1',
+                        'href' => $this->_oConfig->getBaseUri() . 'browse/all?rss=1',
                         'target' => '_blank',
-                        'icon'   => 'rss',
+                        'icon' => 'rss',
                     )
                 ),
                 array(),
                 true
             );
-        } else {
+        } else
             return MsgBox(_t('_Empty'));
-        }
     }
 
 }

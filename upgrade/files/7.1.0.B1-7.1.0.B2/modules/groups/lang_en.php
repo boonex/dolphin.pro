@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_groups' => 'Groups',
+  '_sys_module_groups' => 'Groups',
 
 );

@@ -40,22 +40,22 @@ class BxBlogsConfig extends BxDolConfig
 
         $this->_iAnimationSpeed = 'normal';
 
-        $this->sUserExFile      = 'blogs.php';
-        $this->sAdminExFile     = 'post_mod_blog.php';
+        $this->sUserExFile = 'blogs.php';
+        $this->sAdminExFile = 'post_mod_blog.php';
         $this->sUserExPermalink = 'blogs/';
 
         $this->iTopTagsCnt = 20;
 
-        $this->iPerPageElements        = (int)getParam('blog_step');
-        $this->iPerPageElementsHome    = (int)getParam('max_blogs_on_home');
+        $this->iPerPageElements = (int)getParam('blog_step');
+        $this->iPerPageElementsHome = (int)getParam('max_blogs_on_home');
         $this->iPerPageElementsProfile = (int)getParam('max_blogs_on_profile');
-        $this->iPerPageElementsIndex   = (int)getParam('max_blogs_on_index');
+        $this->iPerPageElementsIndex = (int)getParam('max_blogs_on_index');
 
         $this->sSQLCategoriesTable = 'sys_categories';
-        $this->sSQLPostsTable      = 'bx_blogs_posts';
-        $this->sSQLBlogsTable      = 'bx_blogs_main';
+        $this->sSQLPostsTable = 'bx_blogs_posts';
+        $this->sSQLBlogsTable = 'bx_blogs_main';
 
-        $this->_sCommentSystemName = $this->_sRateSystemName = $this->_sViewSystemName = 'bx_blogs';
+        $this->_sCommentSystemName = $this -> _sRateSystemName = $this -> _sViewSystemName = 'bx_blogs';
     }
 
     function getRateSystemName()
@@ -77,7 +77,7 @@ class BxBlogsConfig extends BxDolConfig
     {
         $iResult = 10;
 
-        switch ($sType) {
+        switch($sType) {
             case 'index':
                 $iResult = $this->iPerPageElementsIndex;
                 break;

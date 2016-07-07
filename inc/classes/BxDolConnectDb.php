@@ -14,9 +14,9 @@ class BxDolConnectDb extends BxDolModuleDb
     {
         parent::__construct($oConfig);
 
-        $this->sTablePrefix = $oConfig->getDbPrefix();
+        $this -> sTablePrefix = $oConfig -> getDbPrefix();
     }
-
+    
     /**
      * Check remote profile id
      *
@@ -25,28 +25,26 @@ class BxDolConnectDb extends BxDolModuleDb
      */
     function getProfileId($iRemoteId)
     {
-        $iRemoteId = (int)$iRemoteId;
+        $iRemoteId = (int) $iRemoteId;
 
         $sQuery = "SELECT `local_profile` FROM `{$this -> sTablePrefix}accounts` WHERE `remote_profile` = '{$iRemoteId}' LIMIT 1";
-
-        return $this->getOne($sQuery);
+        return $this -> getOne($sQuery);
     }
 
     /**
      * Save new remote ID
      *
      * @param $iProfileId integer
-     * @param $iRemoteId  integer
+     * @param $iRemoteId integer
      * @return bool
      */
     function saveRemoteId($iProfileId, $iRemoteId)
     {
-        $iRemoteId  = (int)$iRemoteId;
-        $iProfileId = (int)$iProfileId;
+        $iRemoteId = (int) $iRemoteId;
+        $iProfileId = (int) $iProfileId;
 
         $sQuery = "REPLACE INTO `{$this -> sTablePrefix}accounts` SET `local_profile` = {$iProfileId}, `remote_profile` = '{$iRemoteId}'";
-
-        return $this->query($sQuery);
+        return $this -> query($sQuery);
     }
 
     /**
@@ -57,28 +55,26 @@ class BxDolConnectDb extends BxDolModuleDb
      */
     function deleteRemoteAccount($iProfileId)
     {
-        $iProfileId = (int)$iProfileId;
+        $iProfileId = (int) $iProfileId;
 
         $sQuery = "DELETE FROM `{$this -> sTablePrefix}accounts` WHERE `local_profile` = {$iProfileId}";
-
-        return $this->query($sQuery);
+        return $this -> query($sQuery);
     }
 
     /**
      * Make as friends
      *
-     * @param $iMemberId  integer
+     * @param $iMemberId integer
      * @param $iProfileId intger
      * @return void
      */
     function makeFriend($iMemberId, $iProfileId)
     {
-        $iMemberId  = (int)$iMemberId;
-        $iProfileId = (int)$iProfileId;
+        $iMemberId = (int) $iMemberId;
+        $iProfileId = (int) $iProfileId;
 
         $sQuery = "INSERT INTO `sys_friend_list` SET `ID` = '{$iMemberId}', `Profile` = '{$iProfileId}', `Check` = 1";
-
-        return $this->query($sQuery);
+        return $this -> query($sQuery);
     }
 
     /**
@@ -92,16 +88,16 @@ class BxDolConnectDb extends BxDolModuleDb
         $sFields = null;
 
         // procces all recived fields;
-        foreach ($aProfileFields as $sKey => $mValue) {
+        foreach($aProfileFields as $sKey => $mValue) {
             $mValue = process_db_input($mValue, BX_TAGS_VALIDATE, BX_SLASHES_AUTO);
-            $sKey   = process_db_input($sKey, BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+            $sKey = process_db_input($sKey, BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
             $sFields .= "`{$sKey}` = '{$mValue}', ";
         }
 
-        $sFields = preg_replace('/,$/', '', trim($sFields));
+        $sFields = preg_replace( '/,$/', '', trim($sFields) );
 
         $sQuery = "INSERT INTO `Profiles` SET {$sFields}";
-        $this->query($sQuery);
+        $this -> query($sQuery);
 
         return db_last_id();
     }
@@ -116,11 +112,10 @@ class BxDolConnectDb extends BxDolModuleDb
     function updateProfileStatus($iProfileId, $sStatus)
     {
         $iProfileId = (int)$iProfileId;
-        $sStatus    = process_db_input($sStatus);
-
+        $sStatus	= process_db_input($sStatus);
+        
         $sQuery = "UPDATE `Profiles` SET `Status` = '{$sStatus}' WHERE `ID` = {$iProfileId}";
-
-        return $this->query($sQuery);
+        return $this -> query($sQuery);
     }
 
     /**
@@ -134,8 +129,7 @@ class BxDolConnectDb extends BxDolModuleDb
         $sFieldName = process_db_input($sFieldName);
 
         $sQuery = "SELECT `ID` FROM `sys_profile_fields` WHERE `Name` = '{$sFieldName}' LIMIT 1";
-
-        return $this->getOne($sQuery) ? true : false;
+        return $this -> getOne($sQuery) ? true : false;
     }
 
     /**
@@ -149,8 +143,7 @@ class BxDolConnectDb extends BxDolModuleDb
         $sEmail = process_db_input($sEmail, BX_TAGS_STRIP, BX_SLASHES_AUTO);
 
         $sQuery = "SELECT `ID` FROM `Profiles` WHERE `Email` = '{$sEmail}'";
-
-        return $this->getOne($sQuery);
+        return $this -> getOne($sQuery);
     }
 
     /**
@@ -162,8 +155,7 @@ class BxDolConnectDb extends BxDolModuleDb
     function getCountryCode($sCountry)
     {
         $sCountry = process_db_input($sCountry);
-        $sQuery   = "SELECT `ISO2` FROM `sys_countries` WHERE `Country` = '{$sCountry}' LIMIT 1";
-
-        return $this->getOne($sQuery);
+        $sQuery = "SELECT `ISO2` FROM `sys_countries` WHERE `Country` = '{$sCountry}' LIMIT 1";
+        return $this -> getOne($sQuery);
     }
 }

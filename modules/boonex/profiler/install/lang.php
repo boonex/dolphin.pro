@@ -6,4 +6,5 @@
 
 $sLangCategory = 'Profiler';
 
-$aLangContent = array();
+$aLangContent = array(
+);

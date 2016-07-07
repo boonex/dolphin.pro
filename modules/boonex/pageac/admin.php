@@ -11,11 +11,11 @@ bx_import('Module', $aModule);
 global $_page;
 global $_page_cont;
 
-$iIndex              = 9;
+$iIndex = 9;
 $_page['name_index'] = $iIndex;
-$_page['header']     = _t('_bx_pageac');
+$_page['header'] = _t('_bx_pageac');
 
-if (!@isAdmin()) {
+if(!@isAdmin()) {
     send_headers_page_changed();
     login_form("", 1);
     exit;

@@ -15,10 +15,10 @@ class BxAvaPageMain extends BxDolPageView
 
     function __construct(&$oMain)
     {
-        $this->_oMain     = &$oMain;
+        $this->_oMain = &$oMain;
         $this->_oTemplate = $oMain->_oTemplate;
-        $this->_oConfig   = $oMain->_oConfig;
-        $this->_oDb       = $oMain->_oDb;
+        $this->_oConfig = $oMain->_oConfig;
+        $this->_oDb = $oMain->_oDb;
 
         parent::__construct('bx_avatar_main');
 
@@ -27,17 +27,16 @@ class BxAvaPageMain extends BxDolPageView
 
     function getBlockCode_Tight()
     {
-        $aMyAvatars = array();
-        $aVars      = array(
-            'my_avatars'                    => $this->_oMain->serviceGetMyAvatars($this->_oMain->_iProfileId),
-            'bx_if:is_site_avatars_enabled' => array(
+        $aMyAvatars = array ();
+        $aVars = array (
+            'my_avatars' => $this->_oMain->serviceGetMyAvatars ($this->_oMain->_iProfileId),
+            'bx_if:is_site_avatars_enabled' => array (
                 'condition' => 'on' == getParam('bx_avatar_site_avatars'),
-                'content'   => array(
-                    'site_avatars' => getParam('bx_avatar_site_avatars') ? $this->_oMain->serviceGetSiteAvatars(0) : _t('_Empty'),
+                'content' => array (
+                    'site_avatars' => getParam('bx_avatar_site_avatars') ? $this->_oMain->serviceGetSiteAvatars (0) : _t('_Empty'),
                 ),
             ),
         );
-
         return array($this->_oTemplate->parseHtmlByName('block_tight', $aVars), array(), array(), false);
     }
 
@@ -46,33 +45,32 @@ class BxAvaPageMain extends BxDolPageView
         $sUploadErr = '';
 
         if (isset($_FILES['image'])) {
-            $sUploadErr = $this->_oMain->_uploadImage() ? '' : _t('_bx_ava_upload_error');
-            if (!$sUploadErr) {
+            $sUploadErr = $this->_oMain->_uploadImage () ? '' : _t('_bx_ava_upload_error');
+            if (!$sUploadErr)
                 send_headers_page_changed();
-            }
         }
 
-        $aVars = array(
-            'avatar'                             => $GLOBALS['oFunctions']->getMemberThumbnail($this->_oMain->_iProfileId),
-            'bx_if:allow_upload'                 => array(
+        $aVars = array (
+            'avatar' => $GLOBALS['oFunctions']->getMemberThumbnail ($this->_oMain->_iProfileId),
+            'bx_if:allow_upload' => array (
                 'condition' => $this->_oMain->isAllowedAdd(),
-                'content'   => array(
-                    'action'       => $this->_oConfig->getBaseUri(),
+                'content' => array (
+                    'action' => $this->_oConfig->getBaseUri(),
                     'upload_error' => $sUploadErr,
                 ),
             ),
-            'bx_if:allow_crop'                   => array(
+            'bx_if:allow_crop' => array (
                 'condition' => $this->_oMain->isAllowedAdd(),
-                'content'   => array(
-                    'crop_tool' => $this->_oMain->serviceCropTool(array(
+                'content' => array (
+                    'crop_tool' => $this->_oMain->serviceCropTool (array (
                         'dir_image' => BX_AVA_DIR_TMP . $this->_oMain->_iProfileId . BX_AVA_EXT,
                         'url_image' => BX_AVA_URL_TMP . $this->_oMain->_iProfileId . BX_AVA_EXT . '?' . time(),
                     )),
                 ),
             ),
-            'bx_if:display_premoderation_notice' => array(
+            'bx_if:display_premoderation_notice' => array (
                 'condition' => getParam('autoApproval_ifProfile') != 'on',
-                'content'   => array(),
+                'content' => array (),
             ),
         );
 

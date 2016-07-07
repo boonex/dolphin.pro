@@ -4,20 +4,20 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once('inc/header.inc.php');
-require_once(BX_DIRECTORY_PATH_INC . 'design.inc.php');
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolRssFactory.php');
+require_once( 'inc/header.inc.php' );
+require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
+require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolRssFactory.php' );
 
 function actionRSS()
 {
-    $sType   = process_db_input($_REQUEST['action'], BX_TAGS_STRIP);
+    $sType = process_db_input($_REQUEST['action'], BX_TAGS_STRIP);
     $iLength = (int)$_REQUEST['length'];
 
-    if (strncmp($sType, 'sys_', 4) == 0) {
+    if(strncmp($sType, 'sys_', 4) == 0) {
         $aRssTitle = '';
-        $aRssData  = array();
+        $aRssData = array();
 
-        switch ($sType) {
+        switch($sType) {
             case 'sys_stats':
                 $aRssTitle = getParam('site_title');
 
@@ -33,13 +33,13 @@ function actionRSS()
                         $iNum = strlen($aStat['query']) > 0 ? db_value($aStat['query']) : 0;
 
                         $aRssData[] = array(
-                            'UnitID'          => $sKey,
-                            'OwnerID'         => '',
-                            'UnitTitle'       => $iNum . ' ' . _t('_' . $aStat['capt']),
-                            'UnitLink'        => strlen($aStat['link']) > 0 ? BX_DOL_URL_ROOT . $aStat['link'] : '',
-                            'UnitDesc'        => '',
-                            'UnitDateTimeUTS' => 0,
-                            'UnitIcon'        => ''
+                           'UnitID' => $sKey,
+                           'OwnerID' => '',
+                           'UnitTitle' => $iNum . ' ' . _t('_' . $aStat['capt']),
+                           'UnitLink' => strlen($aStat['link']) > 0 ? BX_DOL_URL_ROOT . $aStat['link'] : '',
+                           'UnitDesc' => '',
+                           'UnitDateTimeUTS' => 0,
+                           'UnitIcon' => ''
                         );
                     }
                 }
@@ -48,32 +48,30 @@ function actionRSS()
             case 'sys_members':
                 $aRssTitle = getParam('site_title');
 
-                $iLength  = $iLength != 0 ? $iLength : 33;
+                $iLength = $iLength != 0 ? $iLength : 33;
                 $aMembers = $GLOBALS['MySQL']->getAll("SELECT *, UNIX_TIMESTAMP(`DateReg`) AS `DateRegUTS` FROM `Profiles` WHERE 1 AND (`Couple`='0' OR `Couple`>`ID`) AND `Status`='Active' ORDER BY `DateReg` DESC LIMIT " . $iLength);
-                foreach ($aMembers as $aMember) {
+                foreach($aMembers as $aMember) {
                     $aRssData[] = array(
-                        'UnitID'          => '',
-                        'OwnerID'         => '',
-                        'UnitTitle'       => $aMember['NickName'],
-                        'UnitLink'        => getProfileLink($aMember['ID']),
-                        'UnitDesc'        => $GLOBALS['oFunctions']->getMemberAvatar($aMember['ID']),
-                        'UnitDateTimeUTS' => $aMember['DateRegUTS'],
-                        'UnitIcon'        => ''
+                       'UnitID' => '',
+                       'OwnerID' => '',
+                       'UnitTitle' => $aMember['NickName'],
+                       'UnitLink' => getProfileLink($aMember['ID']),
+                       'UnitDesc' => $GLOBALS['oFunctions']->getMemberAvatar($aMember['ID']),
+                       'UnitDateTimeUTS' => $aMember['DateRegUTS'],
+                       'UnitIcon' => ''
                     );
                 }
                 break;
 
             case 'sys_news':
                 echo BxDolService::call('news', 'news_rss', array($iLength));
-
                 return;
         }
 
         $oRss = new BxDolRssFactory();
         echo $oRss->GenRssByData($aRssData, $aRssTitle, '');
-    } else {
+    } else
         BxDolService::call($sType, $sType . '_rss', array());
-    }
 }
 
 actionRSS();

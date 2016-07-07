@@ -24,15 +24,12 @@ class BxAdsDb extends BxDolDb
     function getCategoryNameByID($iID)
     {
         $sNameSQL = "SELECT `Name` FROM `{$this->_oConfig->sSQLCatTable}` WHERE `ID` = '{$iID}'";
-
         return $this->getOne($sNameSQL);
     }
-
     function getCategoryNameByUri($sUri)
     {
         $sSafeUri = process_db_input($sUri);
         $sNameSQL = "SELECT `Name` FROM `{$this->_oConfig->sSQLCatTable}` WHERE `CEntryUri` = '{$sSafeUri}'";
-
         return $this->getOne($sNameSQL);
     }
 
@@ -45,13 +42,11 @@ class BxAdsDb extends BxDolDb
             WHERE `{$this->_oConfig->sSQLSubcatTable}`.`ID` = ?
             LIMIT 1
         ";
-
         return $this->getRow($sNamesSQL, [$iID]);
     }
-
     function getCatSubCatNameBySubCatUri($sUri)
     {
-        $sSafeUri  = process_db_input($sUri);
+        $sSafeUri = process_db_input($sUri);
         $sNamesSQL = "
             SELECT `{$this->_oConfig->sSQLCatTable}`.`Name` , `{$this->_oConfig->sSQLSubcatTable}`.`NameSub`
             FROM `{$this->_oConfig->sSQLCatTable}`
@@ -59,7 +54,6 @@ class BxAdsDb extends BxDolDb
             WHERE `{$this->_oConfig->sSQLSubcatTable}`.`SEntryUri` = ?
             LIMIT 1
         ";
-
         return $this->getRow($sNamesSQL, [$sSafeUri]);
     }
 
@@ -68,29 +62,26 @@ class BxAdsDb extends BxDolDb
         $sMemberAdsSQL = "
             SELECT `ID` FROM `{$this->_oConfig->sSQLPostsTable}` WHERE `IDProfile` = '{$iMemberID}'
         ";
-        $vDelSQL       = db_res($sMemberAdsSQL);
-
+        $vDelSQL = db_res($sMemberAdsSQL);
         return $vDelSQL;
     }
 
-    function getMemberAdsCnt($iMemberID, $sStatus = '', $bTimeCheck = false)
+    function getMemberAdsCnt($iMemberID, $sStatus = '', $bTimeCheck = FALSE)
     {
-        $sStatus = $sStatus ? " AND`Status`='" . process_db_input($sStatus, BX_TAGS_STRIP) . "'" : "";
-        if ($bTimeCheck) {
-            $this->_oConfig->bAdminMode = false;
-        }
-        $sTimeRestriction = ($this->_oConfig->bAdminMode == true)
-            ? ''
-            : "AND UNIX_TIMESTAMP() - `{$this->_oConfig->sSQLPostsTable}`.`LifeTime`*24*60*60 < `{$this->_oConfig->sSQLPostsTable}`.`DateTime`";
+            $sStatus = $sStatus ? " AND`Status`='" . process_db_input($sStatus, BX_TAGS_STRIP) . "'" : "";
+            if ($bTimeCheck)
+                $this->_oConfig->bAdminMode = FALSE;
+            $sTimeRestriction = ($this->_oConfig->bAdminMode == true)
+                ? ''
+                : "AND UNIX_TIMESTAMP() - `{$this->_oConfig->sSQLPostsTable}`.`LifeTime`*24*60*60 < `{$this->_oConfig->sSQLPostsTable}`.`DateTime`";
 
-        $sMemberAdsSQL = "
+            $sMemberAdsSQL = "
                 SELECT COUNT(*) FROM `{$this->_oConfig->sSQLPostsTable}` WHERE `IDProfile` = '{$iMemberID}'
                             {$sStatus}
                 {$sTimeRestriction}
             ";
-
-        return (int)db_value($sMemberAdsSQL);
-    }
+            return (int)db_value($sMemberAdsSQL);
+        }
 
     function getOwnerOfAd($iID)
     {
@@ -99,7 +90,6 @@ class BxAdsDb extends BxDolDb
             FROM `{$this->_oConfig->sSQLPostsTable}`
             WHERE `ID`='{$iID}'
         ";
-
         return (int)$this->getOne($sOwnerSQL);
     }
 
@@ -110,7 +100,6 @@ class BxAdsDb extends BxDolDb
             FROM `{$this->_oConfig->sSQLPostsTable}`
             WHERE `ID`='{$iID}'
         ";
-
         return $this->getOne($sMediaSQL);
     }
 
@@ -121,7 +110,6 @@ class BxAdsDb extends BxDolDb
             FROM `{$this->_oConfig->sSQLPostsMediaTable}`
             WHERE `MediaID` = '{$iID}'
         ";
-
         return $this->getOne($sFileSQL);
     }
 
@@ -132,7 +120,6 @@ class BxAdsDb extends BxDolDb
             WHERE `MediaID` = '{$iMedId}'
             LIMIT 1
         ";
-
         return $this->query($sDeleteMediaSQL);
     }
 
@@ -143,14 +130,12 @@ class BxAdsDb extends BxDolDb
             WHERE `ID` = '{$iID}'
             LIMIT 1
         ";
-
         return $this->query($sDeleteSQL);
     }
 
     function getMediaInfo($iMedId)
     {
         $sMediaSQL = "SELECT * FROM `{$this->_oConfig->sSQLPostsMediaTable}` WHERE `MediaID` = ?";
-
         return $this->getRow($sMediaSQL, [$iMedId]);
     }
 
@@ -165,7 +150,6 @@ class BxAdsDb extends BxDolDb
             WHERE `{$this->_oConfig->sSQLSubcatTable}`.`ID` = ?
             LIMIT 1
         ";
-
         return $this->getRow($sSQL, [$iSubCatID]);
     }
 
@@ -176,13 +160,12 @@ class BxAdsDb extends BxDolDb
      */
     function getAllCatsInfo()
     {
-        $sSQL    = "
+        $sSQL = "
             SELECT *
             FROM `{$this->_oConfig->sSQLCatTable}`
             ORDER BY `{$this->_oConfig->sSQLCatTable}`.`Name` ASC
         ";
         $vSqlRes = db_res($sSQL);
-
         return $vSqlRes;
     }
 
@@ -193,7 +176,6 @@ class BxAdsDb extends BxDolDb
             WHERE `IDClassified` = '{$iID}'
             ORDER BY `{$this->_oConfig->sSQLSubcatTable}`.`NameSub` ASC
         ";
-
         return db_res($sSQL);
     }
 
@@ -222,26 +204,23 @@ class BxAdsDb extends BxDolDb
             INNER JOIN `{$this->_oConfig->sSQLPostsTable}` ON `{$this->_oConfig->sSQLSubcatTable}`.`ID` = `{$this->_oConfig->sSQLPostsTable}`.`IDClassifiedsSubs`
             WHERE `{$this->_oConfig->sSQLCatTable}`.`ID` = '{$iID}'
         ";
-
         return (int)$this->getOne($sAdsCntSQL);
     }
 
     function insertMedia($iMemberID, $sBaseName, $sExt)
     {
-        $sQuery  = "INSERT INTO `{$this->_oConfig->sSQLPostsMediaTable}` SET
+        $sQuery = "INSERT INTO `{$this->_oConfig->sSQLPostsMediaTable}` SET
                     `MediaProfileID`='{$iMemberID}',
                     `MediaType`='photo',
                     `MediaFile`='{$sBaseName}{$sExt}',
                     `MediaDate`=UNIX_TIMESTAMP()";
         $vSqlRes = $this->query($sQuery);
-
         return $vSqlRes ? $this->lastId() : false;
     }
 
     function getFeaturedStatus($iID)
     {
         $sFeaturedStatusSQL = "SELECT `Featured` FROM `{$this->_oConfig->sSQLPostsTable}` WHERE `ID`='{$iID}'";
-
         return (int)$this->getOne($sFeaturedStatusSQL);
     }
 
@@ -252,7 +231,6 @@ class BxAdsDb extends BxDolDb
             `Featured`='{$iStatus}'
             WHERE `ID`='{$iID}'
         ";
-
         return $this->query($sUpdateAdFeatureSQL);
     }
 
@@ -280,16 +258,16 @@ class BxAdsDb extends BxDolDb
     /**
      * SQL Get all Advertisement data, units take into mind LifeDate of Adv
      *
-     * @param $iClsID
-     * @param $sAddon - string addon of Limits (for pagination)
-     * @param $bSub   - present that current ID is SubCategory
+      * @param $iClsID
+      * @param $sAddon - string addon of Limits (for pagination)
+      * @param $bSub - present that current ID is SubCategory
      * @return SQL data
      */
     function getAdsByDate($iCatSubcatID, $sLimitAddon, $bSub = false)
     {
-        $sWhereAdd        = ($bSub) ? "`{$this->_oConfig->sSQLSubcatTable}`" : "`{$this->_oConfig->sSQLCatTable}`";
+        $sWhereAdd = ($bSub) ? "`{$this->_oConfig->sSQLSubcatTable}`" : "`{$this->_oConfig->sSQLCatTable}`";
         $sTimeRestriction = ($this->_oConfig->bAdminMode == true) ? '' : "AND UNIX_TIMESTAMP() - `{$this->_oConfig->sSQLPostsTable}`.`LifeTime`*24*60*60 < `{$this->_oConfig->sSQLPostsTable}`.`DateTime`";
-        $sSQL             = "
+        $sSQL = "
             SELECT `{$this->_oConfig->sSQLPostsTable}`.* , `{$this->_oConfig->sSQLCatTable}`.`Name`, `{$this->_oConfig->sSQLCatTable}`.`Description`, `{$this->_oConfig->sSQLCatTable}`.`Unit1`, `{$this->_oConfig->sSQLCatTable}`.`Unit2`, (UNIX_TIMESTAMP() - `{$this->_oConfig->sSQLPostsTable}`.`DateTime`) AS 'sec',
             `{$this->_oConfig->sSQLPostsTable}`.`DateTime` AS 'DateTime_UTS'
             FROM `{$this->_oConfig->sSQLPostsTable}`
@@ -298,18 +276,17 @@ class BxAdsDb extends BxDolDb
             WHERE {$sWhereAdd}.`ID` = '{$iCatSubcatID}'
             {$sTimeRestriction}
             ORDER BY `{$this->_oConfig->sSQLPostsTable}`.`DateTime` DESC
-        " . $sLimitAddon;
+        ".$sLimitAddon;
 
-        $vSqlRes = db_res($sSQL);
-
+        $vSqlRes = db_res ($sSQL);
         return $vSqlRes;
     }
 
     function getAdsByDateCnt($iCatSubcatID, $bSub = false)
     {
-        $sWhereAdd        = ($bSub) ? "`{$this->_oConfig->sSQLSubcatTable}`" : "`{$this->_oConfig->sSQLCatTable}`";
+        $sWhereAdd = ($bSub) ? "`{$this->_oConfig->sSQLSubcatTable}`" : "`{$this->_oConfig->sSQLCatTable}`";
         $sTimeRestriction = ($this->_oConfig->bAdminMode == true) ? '' : "AND UNIX_TIMESTAMP() - `{$this->_oConfig->sSQLPostsTable}`.`LifeTime`*24*60*60 < `{$this->_oConfig->sSQLPostsTable}`.`DateTime`";
-        $sSQL             = "
+        $sSQL = "
             SELECT COUNT(`{$this->_oConfig->sSQLPostsTable}`.`ID`) AS 'Cnt'
             FROM `{$this->_oConfig->sSQLPostsTable}`
             INNER JOIN `{$this->_oConfig->sSQLSubcatTable}` ON `{$this->_oConfig->sSQLPostsTable}`.`IDClassifiedsSubs` = `{$this->_oConfig->sSQLSubcatTable}`.`ID`
@@ -342,7 +319,6 @@ class BxAdsDb extends BxDolDb
 
         return $this->getOne($sSQL);
     }
-
     function getAdSubjectByUri($sUri)
     {
         $sSQL = "
@@ -371,7 +347,6 @@ class BxAdsDb extends BxDolDb
         ";
 
         $aRssUnits = $this->getAll($sUnitsSQL);
-
         return $aRssUnits;
     }
 
@@ -390,12 +365,10 @@ class BxAdsDb extends BxDolDb
         $sSQL = "
             UPDATE `{$this->_oConfig->sSQLPostsTable}` SET `Media` = '{$sValue}' WHERE `{$this->_oConfig->sSQLPostsTable}`.`ID` = {$iPostID} LIMIT 1
         ";
-
         return $this->query($sSQL);
     }
 
-    function getSubsNameIDCountAdsByAdID($iCategoryID)
-    { //for tree
+    function getSubsNameIDCountAdsByAdID($iCategoryID) { //for tree
         $sSubsSQL = "
             SELECT `{$this->_oConfig->sSQLSubcatTable}`.`ID`, `{$this->_oConfig->sSQLSubcatTable}`.`NameSub` AS `Name`,
             `{$this->_oConfig->sSQLSubcatTable}`.`SEntryUri`,
@@ -406,7 +379,6 @@ class BxAdsDb extends BxDolDb
             WHERE `{$this->_oConfig->sSQLSubcatTable}`.`IDClassified`='{$iCategoryID}'
             GROUP BY `Name`
         ";
-
         return db_res($sSubsSQL);
     }
 
@@ -416,7 +388,7 @@ class BxAdsDb extends BxDolDb
             ? ''
             : "AND UNIX_TIMESTAMP() - `{$this->_oConfig->sSQLPostsTable}`.`LifeTime`*24*60*60 < `{$this->_oConfig->sSQLPostsTable}`.`DateTime`";
 
-        return $this->getAll("
+        return $this->getAll ("
             SELECT `{$this->_oConfig->sSQLPostsTable}`.*, DAYOFMONTH(FROM_UNIXTIME(`{$this->_oConfig->sSQLPostsTable}`.`DateTime`)) AS `Day`
             FROM `{$this->_oConfig->sSQLPostsTable}`
             WHERE
@@ -437,7 +409,6 @@ class BxAdsDb extends BxDolDb
         $sSQL = "
             DELETE FROM `{$this->_oConfig->sSQLCatTable}` WHERE `{$this->_oConfig->sSQLCatTable}`.`ID` = {$iID}
         ";
-
         return $this->query($sSQL);
     }
 
@@ -446,21 +417,16 @@ class BxAdsDb extends BxDolDb
         $sSQL = "
             DELETE FROM `{$this->_oConfig->sSQLSubcatTable}` WHERE `{$this->_oConfig->sSQLSubcatTable}`.`ID` = {$iID}
         ";
-
         return $this->query($sSQL);
     }
-
     function getSubcatInfo($iID)
     {
         $sSQL = "SELECT * FROM `{$this->_oConfig->sSQLSubcatTable}` WHERE `ID` = {$iID}";
-
         return $this->getAll($sSQL);
     }
-
     function getCatInfo($iID)
     {
         $sSQL = "SELECT * FROM `{$this->_oConfig->sSQLCatTable}` WHERE `ID` = {$iID}";
-
         return $this->getAll($sSQL);
     }
 }

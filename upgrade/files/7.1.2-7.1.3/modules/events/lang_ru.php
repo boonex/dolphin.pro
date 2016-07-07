@@ -1,3 +1,7 @@
 <?php
 
-$aLangContent = array();
+$aLangContent = array(
+
+
+  
+);

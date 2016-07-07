@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_smtpmailer' => 'SMTP Mailer',
+  '_sys_module_smtpmailer' => 'SMTP Mailer',
 
 );

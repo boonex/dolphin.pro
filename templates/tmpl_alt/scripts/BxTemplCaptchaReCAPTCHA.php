@@ -7,8 +7,8 @@ bx_import('BxBaseCaptchaReCAPTCHA');
  */
 class BxTemplCaptchaReCAPTCHA extends BxBaseCaptchaReCAPTCHA
 {
-    public function __construct($aObject, $oTemplate = false)
+    public function __construct ($aObject, $oTemplate = false)
     {
-        parent::__construct($aObject, $oTemplate);
+        parent::__construct ($aObject, $oTemplate);
     }
 }

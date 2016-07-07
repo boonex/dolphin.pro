@@ -18,22 +18,20 @@ class BxFilesTemplate extends BxDolFilesTemplate
         parent::__construct($oConfig, $oDb);
     }
 
-    function getFileViewArea($aInfo)
+    function getFileViewArea ($aInfo)
     {
     }
 
-    function getBasicFileInfoForm(&$aInfo, $sUrlPref = '')
+    function getBasicFileInfoForm (&$aInfo, $sUrlPref = '')
     {
         $aForm = parent::getBasicFileInfoForm($aInfo, $sUrlPref);
 
-        if (!empty($aInfo['albumCaption']) && !empty($aInfo['albumUri'])) {
+        if(!empty($aInfo['albumCaption']) && !empty($aInfo['albumUri']))
             $aForm['album'] = array(
-                'type'    => 'value',
-                'value'   => getLink($aInfo['albumCaption'],
-                    $sUrlPref . 'browse/album/' . $aInfo['albumUri'] . '/owner/' . getUsername($aInfo['medProfId'])),
+                'type' => 'value',
+                'value' => getLink($aInfo['albumCaption'], $sUrlPref . 'browse/album/' . $aInfo['albumUri'] . '/owner/' . getUsername($aInfo['medProfId'])),
                 'caption' => _t('_bx_files_album')
             );
-        }
 
         return $aForm;
     }

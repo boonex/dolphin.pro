@@ -5,10 +5,10 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolVotingQuery.php');
+require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolVotingQuery.php' );
 
-define('BX_PERIOD_PER_VOTE', 7 * 86400);
-define('BX_OLD_VOTES', 365 * 86400); // votes older than this number of seconds will be deleted automatically
+define( 'BX_PERIOD_PER_VOTE', 7 * 86400 );
+define( 'BX_OLD_VOTES', 365*86400 ); // votes older than this number of seconds will be deleted automatically
 
 /**
  * Votings for any content
@@ -88,62 +88,58 @@ define('BX_OLD_VOTES', 365 * 86400); // votes older than this number of seconds 
  */
 class BxDolVoting
 {
-    var $_iId = 0;    // item id to be rated
+    var $_iId = 0;	// item id to be rated
     var $_iCount = 0; // number of votes
     var $_fRate = 0; // average rate
     var $_sSystem = 'profile'; // current rating system name
 
-    var $_aSystem = array(); // current rating system array
+    var $_aSystem = array (); // current rating system array
 
     var $_oQuery = null;
 
     /**
      * Constructor
      */
-    function __construct($sSystem, $iId, $iInit = 1)
+    function __construct( $sSystem, $iId, $iInit = 1)
     {
         $this->_aSystems =& $this->getSystems();
 
         $this->_sSystem = $sSystem;
-        if (isset($this->_aSystems[$sSystem])) {
+        if (isset($this->_aSystems[$sSystem]))
             $this->_aSystem = $this->_aSystems[$sSystem];
-        } else {
+        else
             return;
-        }
 
         $this->_oQuery = new BxDolVotingQuery($this->_aSystem);
 
-        if ($iInit) {
+        if ($iInit)
             $this->init($iId);
-        }
     }
 
-    /**
+	/**
      * get voting object instanse
-     *
-     * @param $sSys  voting object name
-     * @param $iId   associated content id
+     * @param $sSys voting object name 
+     * @param $iId associated content id
      * @param $iInit perform initialization
      * @return null on error, or ready to use class instance
-     */
-    static function getObjectInstance($sSys, $iId, $iInit = true)
+     */ 
+    static function getObjectInstance($sSys, $iId, $iInit = true) 
     {
-        $aSystems = self::getSystems();
-        if (!isset($aSystems[$sSys])) {
+        $aSystems = self::getSystems ();
+        if (!isset($aSystems[$sSys]))
             return null;
-        }
 
         bx_import('BxTemplVotingView');
         $sClassName = 'BxTemplVotingView';
         if ($aSystems[$sSys]['override_class_name']) {
-            require_once(BX_DIRECTORY_PATH_ROOT . $aSystems[$sSys]['override_class_file']);
-            $sClassName = $aSystems[$sSys]['override_class_name'];
-        }
+            require_once (BX_DIRECTORY_PATH_ROOT . $aSystems[$sSys]['override_class_file']);
+            $sClassName = $aSystems[$sSys]['override_class_name'];  
+        } 
 
         return new $sClassName($sSys, $iId, $iInit);
     }
 
-    public static function & getSystems()
+    public static function & getSystems ()
     {
         if (isset($GLOBALS['bx_dol_voting_systems'])) {
             return $GLOBALS['bx_dol_voting_systems'];
@@ -161,128 +157,109 @@ class BxDolVoting
             $rResult = db_res($sQuery);
 
             $GLOBALS['bx_dol_voting_systems'] = array();
-            while ($aRow = $rResult->fetch()) {
+            while( $aRow = $rResult ->fetch() ) {
                 $GLOBALS['bx_dol_voting_systems'][$aRow['ObjectName']] = array
                 (
-                    'table_rating' => $aRow['TableRating'],
-                    'table_track'  => $aRow['TableTrack'],
-                    'row_prefix'   => $aRow['RowPrefix'],
-                    'max_votes'    => $aRow['MaxVotes'],
-                    'post_name'    => $aRow['PostName'],
-                    'is_duplicate' => is_int($aRow['IsDuplicate']) ? $aRow['IsDuplicate'] : constant($aRow['IsDuplicate']),
-                    'is_on'        => $aRow['IsOn'],
+                    'table_rating'	=> $aRow['TableRating'],
+                    'table_track'	=> $aRow['TableTrack'],
+                    'row_prefix'	=> $aRow['RowPrefix'],
+                    'max_votes'		=> $aRow['MaxVotes'],
+                    'post_name'		=> $aRow['PostName'],
+                    'is_duplicate'	=> is_int($aRow['IsDuplicate']) ? $aRow['IsDuplicate'] : constant($aRow['IsDuplicate']),
+                    'is_on'			=> $aRow['IsOn'],
 
-                    'className' => $aRow['className'],
-                    'classFile' => $aRow['classFile'],
+                    'className'     => $aRow['className'],
+                    'classFile'     => $aRow['classFile'],
 
-                    'trigger_table'            => $aRow['TriggerTable'],
-                    // table with field to update on every rating change
-                    'trigger_field_rate'       => $aRow['TriggerFieldRate'],
-                    // table field name with rating
-                    'trigger_field_rate_count' => $aRow['TriggerFieldRateCount'],
-                    // table field name with rating count
-                    'trigger_field_id'         => $aRow['TriggerFieldId'],
-                    // table field name with object id
+                    'trigger_table'            => $aRow['TriggerTable'], // table with field to update on every rating change
+                    'trigger_field_rate'       => $aRow['TriggerFieldRate'], // table field name with rating
+                    'trigger_field_rate_count' => $aRow['TriggerFieldRateCount'], // table field name with rating count
+                    'trigger_field_id'         => $aRow['TriggerFieldId'], // table field name with object id
 
-                    'override_class_name' => $aRow['OverrideClassName'],
-                    // new class to override
-                    'override_class_file' => $aRow['OverrideClassFile'],
-                    // class file path
+                    'override_class_name' => $aRow['OverrideClassName'], // new class to override
+                    'override_class_file' => $aRow['OverrideClassFile'], // class file path
                 );
             }
 
             // write data into cache file
 
             $oCache = $GLOBALS['MySQL']->getDbCacheObject();
-            $oCache->setData($GLOBALS['MySQL']->genDbCacheKey('sys_objects_vote'), $GLOBALS['bx_dol_voting_systems']);
+            $oCache->setData ($GLOBALS['MySQL']->genDbCacheKey('sys_objects_vote'), $GLOBALS['bx_dol_voting_systems']);
         }
 
         return $GLOBALS['bx_dol_voting_systems'];
     }
 
-    function init($iId)
+    function init ($iId)
     {
-        if (!$iId) {
-            $iId = $this->_iId;
-        }
+        if(!$iId)
+			$iId = $this->_iId;
 
-        if (!$this->isEnabled()) {
-            return;
-        }
+        if(!$this->isEnabled())
+        	return;
 
-        if (!$this->_iId && $iId) {
+        if (!$this->_iId && $iId)
             $this->setId($iId);
-        }
     }
 
-    function initVotes()
+    function initVotes ()
     {
-        if (!$this->isEnabled() || !$this->_oQuery) {
-            return;
-        }
+        if(!$this->isEnabled() || !$this->_oQuery)
+			return;
 
-        $aVote = $this->_oQuery->getVote($this->getId());
-        if (empty($aVote) || !is_array($aVote)) {
-            return;
-        }
+        $aVote = $this->_oQuery->getVote ($this->getId());
+        if(empty($aVote) || !is_array($aVote))
+        	return;
 
         $this->_iCount = $aVote['count'];
-        $this->_fRate  = $aVote['rate'];
+        $this->_fRate = $aVote['rate'];
     }
 
-    function makeVote($iVote)
+    function makeVote ($iVote)
     {
-        if (!$this->isEnabled() || $this->isDublicateVote() || !$this->checkAction()) {
-            return false;
-        }
+        if(!$this->isEnabled() || $this->isDublicateVote() || !$this->checkAction())
+        	return false;
 
-        if ($this->_sSystem == 'profile' && $this->getId() == getLoggedId()) {
+        if($this->_sSystem == 'profile' && $this->getId() == getLoggedId())
             return false;
-        }
 
         $sVoterIdentification = isLogged() ? getLoggedId() : getVisitorIP();
-        if (!$this->_oQuery->putVote($this->getId(), $sVoterIdentification, $iVote)) {
-            return false;
-        }
+        if(!$this->_oQuery->putVote ($this->getId(), $sVoterIdentification, $iVote))
+        	return false;
 
-        $this->checkAction(true);
-        $this->_triggerVote();
+		$this->checkAction(true);
+		$this->_triggerVote();
 
-        $oZ = new BxDolAlerts($this->_sSystem, 'rate', $this->getId(), getLoggedId(), array('rate' => $iVote));
-        $oZ->alert();
+		$oZ = new BxDolAlerts($this->_sSystem, 'rate', $this->getId(), getLoggedId(), array ('rate' => $iVote));
+		$oZ->alert();
 
-        return true;
+		return true;
     }
 
-    function checkAction($bPerformAction = false)
+    function checkAction ($bPerformAction = false)
     {
-        if (isset($this->_checkActionResult)) {
+        if (isset($this->_checkActionResult))
             return $this->_checkActionResult;
-        }
 
-        $iId     = getLoggedId();
+        $iId = getLoggedId();
         $aResult = checkAction($iId, ACTION_ID_VOTE, $bPerformAction);
-
         return ($this->_checkActionResult = ($aResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED));
     }
 
-    function isDublicateVote()
+    function isDublicateVote ()
     {
-        if (!$this->isEnabled()) {
-            return false;
-        }
+        if (!$this->isEnabled()) return false;
 
         $sVoterIdentification = isLogged() ? getLoggedId() : getVisitorIP();
-
-        return $this->_oQuery->isDublicateVote($this->getId(), $sVoterIdentification);
+        return $this->_oQuery->isDublicateVote ($this->getId(), $sVoterIdentification);
     }
 
-    function getId()
+    function getId ()
     {
         return $this->_iId;
     }
 
-    function isEnabled()
+    function isEnabled ()
     {
         return $this->_aSystem['is_on'];
     }
@@ -310,121 +287,103 @@ class BxDolVoting
     /**
      * set id to operate with votes
      */
-    function setId($iId)
+    function setId ($iId)
     {
-        if ($iId == $this->getId()) {
-            return;
-        }
+        if ($iId == $this->getId()) return;
         $this->_iId = $iId;
         $this->initVotes();
     }
 
-    function getSqlParts($sMailTable, $sMailField)
+    function getSqlParts ($sMailTable, $sMailField)
     {
-        if ($this->isEnabled()) {
-            return $this->_oQuery->getSqlParts($sMailTable, $sMailField);
-        } else {
+        if ($this->isEnabled())
+            return $this->_oQuery->getSqlParts ($sMailTable, $sMailField);
+        else
             return array();
-        }
     }
 
-    function isValidSystem($sSystem)
+    function isValidSystem ($sSystem)
     {
         return isset($this->_aSystems[$sSystem]);
     }
 
-    function deleteVotings($iId)
+    function deleteVotings ($iId)
     {
-        if (!(int)$iId) {
-            return false;
-        }
-        $this->_oQuery->deleteVotings($iId);
-
+        if (!(int)$iId) return false;
+        $this->_oQuery->deleteVotings ($iId);
         return true;
     }
 
-    function getTopVotedItem($iDays, $sJoinTable = '', $sJoinField = '', $sWhere = '')
+    function getTopVotedItem ($iDays, $sJoinTable = '', $sJoinField = '', $sWhere = '')
     {
-        return $this->_oQuery->getTopVotedItem($iDays, $sJoinTable, $sJoinField, $sWhere);
+        return $this->_oQuery->getTopVotedItem ($iDays, $sJoinTable, $sJoinField, $sWhere);
     }
 
-    function getVotedItems($sIp)
+    function getVotedItems ($sIp)
     {
-        return $this->_oQuery->getVotedItems($sIp);
+        return $this->_oQuery->getVotedItems ($sIp);
     }
 
     /**
      * it is called on cron every day or similar period to clean old votes
      */
-    function maintenance()
+    function maintenance ()
     {
         $iDeletedRecords = 0;
         foreach ($this->_aSystems as $aSystem) {
-            if (!$aSystem['is_on']) {
+            if (!$aSystem['is_on'])
                 continue;
-            }
             $sPre = $aSystem['row_prefix'];
             $iDeletedRecords += $GLOBALS['MySQL']->query("DELETE FROM `{$aSystem['table_track']}` WHERE `{$sPre}date` < DATE_SUB(NOW(), INTERVAL " . BX_OLD_VOTES . " SECOND)");
             $GLOBALS['MySQL']->query("OPTIMIZE TABLE `{$aSystem['table_track']}`");
         }
-
         return $iDeletedRecords;
     }
 
     public function actionVote()
     {
-        if (!$this->isEnabled()) {
-            return '{}';
-        }
+    	if(!$this->isEnabled())
+			return '{}';
 
         $iResult = $this->_getVoteResult();
-        if ($iResult === false) {
-            return '{}';
-        }
+        if($iResult === false) 
+        	return '{}';
+        
+		if(!$this->makeVote($iResult))
+        	return '{}';
 
-        if (!$this->makeVote($iResult)) {
-            return '{}';
-        }
-
-        $this->initVotes();
+		$this->initVotes();
         echo json_encode(array('rate' => $this->getVoteRate(), 'count' => $this->getVoteCount()));
     }
 
-    protected function _getVoteResult()
+    protected function _getVoteResult ()
     {
-        if (strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') != 0 || bx_get($this->_aSystem['post_name']) === false) {
-            return false;
-        }
+        if(strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') != 0 || bx_get($this->_aSystem['post_name']) === false)
+			return false;
 
         $iVote = (int)bx_get($this->_aSystem['post_name']);
-        if (!$iVote) {
-            return false;
-        }
+        if(!$iVote)
+			return false;
 
-        if ($iVote > $this->getMaxVote()) {
-            $iVote = $this->getMaxVote();
-        }
+        if($iVote > $this->getMaxVote())
+			$iVote = $this->getMaxVote();
 
-        if ($iVote < 1) {
-            $iVote = 1;
-        }
+        if($iVote < 1)
+			$iVote = 1;
 
         return $iVote;
     }
 
     protected function _triggerVote()
     {
-        if (!$this->_aSystem['trigger_table']) {
+        if (!$this->_aSystem['trigger_table'])
             return false;
-        }
         $iId = $this->getId();
-        if (!$iId) {
+        if (!$iId)
             return false;
-        }
-        $this->initVotes();
+        $this->initVotes ();
         $iCount = $this->getVoteCount();
-        $fRate  = $this->getVoteRate();
-
+        $fRate = $this->getVoteRate();
         return $this->_oQuery->updateTriggerTable($iId, $fRate, $iCount);
     }
 }

@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_h5av' => 'HTML5 Видео Проигрыватель',
+  '_sys_module_h5av' => 'HTML5 Видео Проигрыватель',
 
 );

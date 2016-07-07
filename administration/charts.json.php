@@ -24,16 +24,16 @@ function bx_charts_get_json($sObject, $sFrom, $sTo)
 {
     $aObject = $GLOBALS['MySQL']->getRow("SELECT * FROM `sys_objects_charts` WHERE `object` = ? AND `active` = ?", [$sObject, 1]);
     if (!$aObject)
-        {return json_encode(array('error' => _t('_Error Occured')));}
+        return json_encode(array('error' => _t('_Error Occured')));
 
     $iFrom = bx_charts_get_ts($sFrom);
     $iTo = bx_charts_get_ts($sTo, true);
     if (!$iFrom || !$iTo)
-        {return json_encode(array('error' => _t('_Error Occured')));}
+        return json_encode(array('error' => _t('_Error Occured')));
 
     $aData = bx_charts_get_data($aObject, $iFrom, $iTo);
     if (!$aData)
-        {return json_encode(array('error' => _t('_Empty')));}
+        return json_encode(array('error' => _t('_Empty')));
 
     $aRet = array (
         'title' => _t($aObject['title']),
@@ -52,7 +52,7 @@ function bx_charts_get_ts($s, $isNowIfError = false)
 {
     $a = explode('-', $s); // YYYY-MM-DD
     if (!$a || empty($a[0]) || empty($a[1]) || empty($a[2]) || !(int)$a[0] || !(int)$a[1] || !(int)$a[2])
-        {return $isNowIfError ? time() : false;}
+        return $isNowIfError ? time() : false;
     return mktime(0, 0, 0, $a[1], $a[2], $a[0]);
 }
 
@@ -74,15 +74,15 @@ function bx_charts_get_data($aObject, $iFrom, $iTo)
         'to' => $aObject['field_date_dt'] ? bx_charts_get_dt_from_ts($iTo) . ' 23:59:59' : $iTo + 24*3600 - 1,
     );
     foreach ($a as $k => $v)
-      {$sQuery = str_replace('{'.$k.'}', $v, $sQuery);}
+      $sQuery = str_replace('{'.$k.'}', $v, $sQuery);
 
     // get data
     if ($aObject['column_date'] >= 0)
-        {$aData = $GLOBALS['MySQL']->getAllWithKey($sQuery, $aObject['column_date'], PDO::FETCH_NUM);}
+        $aData = $GLOBALS['MySQL']->getAllWithKey($sQuery, $aObject['column_date'], PDO::FETCH_NUM);
     else
-        {$aData = $GLOBALS['MySQL']->getAll($sQuery, PDO::FETCH_NUM);}
+        $aData = $GLOBALS['MySQL']->getAll($sQuery, PDO::FETCH_NUM);
     if (!$aData)
-        {return false;}
+        return false;
 
     // fill in missed days and convert values to numbers
     if ($aObject['column_date'] >= 0) {
@@ -99,9 +99,9 @@ function bx_charts_get_data($aObject, $iFrom, $iTo)
     } 
     else {
         foreach ($aData as $k => $v)
-            {foreach ($aData[$k] as $kk => $vv)
-                {if ($kk > 0)
-                    {$aData[$k][$kk] = (int)$aData[$k][$kk];}}}
+            foreach ($aData[$k] as $kk => $vv)
+                if ($kk > 0)
+                    $aData[$k][$kk] = (int)$aData[$k][$kk];
     }
 
     // return values only

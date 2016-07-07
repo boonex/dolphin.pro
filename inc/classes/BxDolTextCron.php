@@ -22,8 +22,8 @@ class BxDolTextCron extends BxDolCron
     function processing()
     {
         $aIds = array();
-        if ($this->_oModule->_oDb->publish($aIds)) {
-            foreach ($aIds as $iId) {
+        if($this->_oModule->_oDb->publish($aIds))
+            foreach($aIds as $iId) {
                 //--- Entry -> Publish for Alerts Engine ---//
                 $oAlert = new BxDolAlerts($this->_oModule->_oConfig->getAlertsSystemName(), 'publish', $iId);
                 $oAlert->alert();
@@ -39,6 +39,5 @@ class BxDolTextCron extends BxDolCron
                 $oCategories->reparseObjTags($this->_oModule->_oConfig->getCategoriesSystemName(), $iId);
                 //--- Reparse Global Categories ---//
             }
-        }
     }
 }

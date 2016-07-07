@@ -28,13 +28,12 @@ require_once($sModuleIncPath . "customFunctions.inc.php");
 
 class BxDolVideoDeleteResponse extends BxDolAlertsResponse
 {
-    function response($oAlert)
+    function response ($oAlert)
     {
         global $sFilesPath;
         global $sModule;
 
-        if ($oAlert->sAction == "commentRemoved") {
+        if($oAlert->sAction == "commentRemoved")
             deleteFileByCommentId($oAlert->aExtras['comment_id']);
-        }
     }
 }

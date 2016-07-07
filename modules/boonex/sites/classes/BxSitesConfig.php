@@ -28,12 +28,12 @@ class BxSitesConfig extends BxDolConfig
     {
         $this->_oDb = &$oDb;
 
-        $this->_bAutoapprove        = $this->_oDb->getParam('bx_sites_autoapproval') == 'on';
-        $this->_bComments           = $this->_oDb->getParam('bx_sites_comments') == 'on';
+        $this->_bAutoapprove = $this->_oDb->getParam('bx_sites_autoapproval') == 'on';
+        $this->_bComments = $this->_oDb->getParam('bx_sites_comments') == 'on';
         $this->_sCommentsSystemName = "bx_sites";
-        $this->_bVotes              = $this->_oDb->getParam('bx_sites_votes') == 'on';
-        $this->_sVotesSystemName    = "bx_sites";
-        $this->_iPerPage            = (int)$this->_oDb->getParam('bx_sites_per_page');
+        $this->_bVotes = $this->_oDb->getParam('bx_sites_votes') == 'on';
+        $this->_sVotesSystemName = "bx_sites";
+        $this->_iPerPage = (int)$this->_oDb->getParam('bx_sites_per_page');
     }
 
     function isAutoapprove()

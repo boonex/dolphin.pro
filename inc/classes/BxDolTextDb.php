@@ -16,23 +16,22 @@ class BxDolTextDb extends BxDolModuleDb
 
         $this->_oConfig = &$oConfig;
     }
-
     /**
      * Get entries.
      */
     function getEntries($aParams = array())
     {
-        $sMethod       = 'getAll';
+        $sMethod = 'getAll';
         $sSelectClause = $sWhereClause = $sOrderClause = $sLimitClause = "";
-        switch ($aParams['sample_type']) {
+        switch($aParams['sample_type']) {
             case 'id':
-                $sMethod      = 'getRow';
+                $sMethod = 'getRow';
                 $sWhereClause = " AND `te`.`id`='" . $aParams['id'] . "'";
                 $sOrderClause = "`te`.`when` DESC";
                 $sLimitClause = "LIMIT 1";
                 break;
             case 'uri':
-                $sMethod      = 'getRow';
+                $sMethod = 'getRow';
                 $sWhereClause = " AND `te`.`uri`='" . $aParams['uri'] . "'";
                 $sOrderClause = "`te`.`when` DESC";
                 $sLimitClause = "LIMIT 1";
@@ -77,7 +76,7 @@ class BxDolTextDb extends BxDolModuleDb
                 $sOrderClause = "`te`.`when` DESC";
                 break;
         }
-        $sSql    = "SELECT
+        $sSql = "SELECT
                    " . $sSelectClause . "
                    `te`.`id` AS `id`,
                    `te`.`caption` AS `caption`,
@@ -101,65 +100,53 @@ class BxDolTextDb extends BxDolModuleDb
                 ORDER BY " . $sOrderClause . " " . $sLimitClause;
         $aResult = $this->$sMethod($sSql);
 
-        if (!in_array($aParams['sample_type'], array('id', 'uri', 'view'))) {
+        if(!in_array($aParams['sample_type'], array('id', 'uri', 'view'))) {
             $iSnippetLen = $this->_oConfig->getSnippetLength();
 
-            for ($i = 0; $i < count($aResult); $i++) {
-                $aResult[$i]['content'] = mb_substr(str_replace(array('&nbsp;', '&lt;', '&gt;'), array(' ', '', ''),
-                    strip_tags($aResult[$i]['snippet'])), 0, $iSnippetLen);
-            }
+            for($i = 0; $i < count($aResult); $i++)
+                $aResult[$i]['content'] = mb_substr(str_replace(array('&nbsp;', '&lt;', '&gt;'), array(' ', '', ''), strip_tags($aResult[$i]['snippet'])), 0, $iSnippetLen);
         }
 
         return $aResult;
     }
-
     /**
      * Delete entries.
      *
-     * @param  integer /array $mixed ID or an array of ID-s.
+     * @param  integer/array $mixed ID or an array of ID-s.
      * @return boolean       result of operation.
      */
     function deleteEntries($mixed)
     {
-        if (!is_array($mixed)) {
+        if(!is_array($mixed))
             $mixed = array($mixed);
-        }
 
         $sSql = "DELETE FROM `" . $this->_sPrefix . "entries` WHERE `id` IN ('" . implode("', '", $mixed) . "')";
-
         return $this->query($sSql) > 0;
     }
-
     /**
      * Update entries.
      *
-     * @param        integer  /array $mixed   ID or an array of ID-s.
-     * @param  array $aValues key/value pears to be saved in the DB.
+     * @param  integer/array $mixed   ID or an array of ID-s.
+     * @param  array         $aValues key/value pears to be saved in the DB.
      * @return boolean       result of operation.
      */
     function updateEntry($mixed, $aValues)
     {
-        if (!is_array($mixed)) {
+        if(!is_array($mixed))
             $mixed = array($mixed);
-        }
 
         $sSql = "";
-        foreach ($aValues as $sKey => $sValue) {
-            $sSql .= "`" . $sKey . "`='" . $sValue . "', ";
-        }
-        $sSql = "UPDATE `" . $this->_sPrefix . "entries` SET " . substr($sSql, 0,
-                -2) . " WHERE `id` IN ('" . implode("', '", $mixed) . "')";
-
+        foreach($aValues as $sKey => $sValue)
+           $sSql .= "`" . $sKey . "`='" . $sValue . "', ";
+        $sSql = "UPDATE `" . $this->_sPrefix . "entries` SET " . substr($sSql, 0, -2) . " WHERE `id` IN ('" . implode("', '", $mixed) . "')";
         return $this->query($sSql) > 0;
     }
-
     function getCount($aParams = array())
     {
-        if (!isset($aParams['sample_type'])) {
+        if(!isset($aParams['sample_type']))
             $aParams['sample_type'] = '';
-        }
 
-        switch ($aParams['sample_type']) {
+        switch($aParams['sample_type']) {
             case 'featured':
                 $sWhereClause = "`status`='" . BX_TD_STATUS_ACTIVE . "' AND `featured`='1'";
                 break;
@@ -171,10 +158,8 @@ class BxDolTextDb extends BxDolModuleDb
                 break;
         }
         $sSql = "SELECT COUNT(`id`) FROM `" . $this->_sPrefix . "entries` WHERE " . $sWhereClause . " LIMIT 1";
-
         return (int)$this->getOne($sSql);
     }
-
     function getByMonth($iYear, $iMonth, $iNextYear, $iNextMonth)
     {
         $sSql = "SELECT
@@ -182,22 +167,18 @@ class BxDolTextDb extends BxDolModuleDb
                DAYOFMONTH(FROM_UNIXTIME(`when`)) AS `Day`
             FROM `" . $this->_sPrefix . "entries`
             WHERE `when` >= UNIX_TIMESTAMP('" . $iYear . "-" . $iMonth . "-1') AND `when` < UNIX_TIMESTAMP('" . $iNextYear . "-" . $iNextMonth . "-1') AND `status` = '0'";
-
         return $this->getAll($sSql);
     }
-
     function publish(&$aIds)
     {
         $aIds = $this->getColumn("SELECT
                 `id`
             FROM `" . $this->_sPrefix . "entries`
             WHERE `status`='" . BX_TD_STATUS_PENDING . "' AND `when`<=UNIX_TIMESTAMP()");
-        if (empty($aIds)) {
+        if(empty($aIds))
             return false;
-        }
 
         $iStatus = $this->_oConfig->isAutoapprove() ? BX_TD_STATUS_ACTIVE : BX_TD_STATUS_INACTIVE;
-
         return (int)$this->query("UPDATE `" . $this->_sPrefix . "entries`
             SET `status`='" . $iStatus . "'
             WHERE `id` IN ('" . implode("','", $aIds) . "')") > 0;

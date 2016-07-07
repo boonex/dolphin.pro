@@ -39,13 +39,9 @@ class BxDolCronVideo extends BxDolCron
         global $sFilesPath;
 
         $iFilesCount = getSettingValue($sModule, "processCount");
-        if (!is_numeric($iFilesCount)) {
-            $iFilesCount = 2;
-        }
+        if(!is_numeric($iFilesCount)) $iFilesCount = 2;
         $iFailedTimeout = getSettingValue($sModule, "failedTimeout");
-        if (!is_numeric($iFailedTimeout)) {
-            $iFailedTimeout = 1;
-        }
+        if(!is_numeric($iFailedTimeout)) $iFailedTimeout = 1;
         $iFailedTimeout *= 86400;
         $sDbPrefix = DB_PREFIX . ucfirst($sModule);
 
@@ -53,28 +49,24 @@ class BxDolCronVideo extends BxDolCron
 
         do {
             //remove all tokens older than 10 minutes
-            if (!getResult("DELETE FROM `" . $sDbPrefix . "Tokens` WHERE `Date`<'" . ($iCurrentTime - 600) . "'")) {
+            if (!getResult("DELETE FROM `" . $sDbPrefix . "Tokens` WHERE `Date`<'" . ($iCurrentTime - 600). "'"))
                 break;
-            }
 
-            if (!getResult("UPDATE `" . $sDbPrefix . "Files` SET `Date`='" . $iCurrentTime . "', `Status`='" . STATUS_FAILED . "' WHERE `Status`='" . STATUS_PROCESSING . "' AND `Date`<'" . ($iCurrentTime - $iFailedTimeout) . "'")) {
+            if (!getResult("UPDATE `" . $sDbPrefix . "Files` SET `Date`='" . $iCurrentTime . "', `Status`='" . STATUS_FAILED . "' WHERE `Status`='" . STATUS_PROCESSING . "' AND `Date`<'" . ($iCurrentTime - $iFailedTimeout) . "'"))
                 break;
-            }
             $rResult = getResult("SELECT * FROM `" . $sDbPrefix . "Files` WHERE `Status`='" . STATUS_PENDING . "' ORDER BY `ID` LIMIT " . $iFilesCount);
-            if (!$rResult) {
+            if (!$rResult)
                 break;
-            }
-            for ($i = 0; $i < $rResult->rowCount(); $i++) {
+            for($i=0; $i<$rResult->rowCount(); $i++) {
                 $aFile = $rResult->fetch();
-                if (convertVideo($aFile['ID'])) {
+                if(convertVideo($aFile['ID'])) {
                     $sType = 'bx_videos';
                     //album counter & cover update
-                    if (getSettingValue($sModule, "autoApprove") == TRUE_VAL) {
+                    if(getSettingValue($sModule, "autoApprove") == TRUE_VAL) {
                         $oAlbum = new BxDolAlbums($sType);
                         $oAlbum->updateObjCounterById($aFile['ID']);
-                        if (getParam($oAlbum->sAlbumCoverParam) == 'on') {
+                        if (getParam($oAlbum->sAlbumCoverParam) == 'on')
                             $oAlbum->updateLastObjById($aFile['ID']);
-                        }
                     }
                     //tags & categories parsing
                     $oTag = new BxDolTags();
@@ -82,12 +74,10 @@ class BxDolCronVideo extends BxDolCron
 
                     $oCateg = new BxDolCategories($aFile['Owner']);
                     $oCateg->reparseObjTags($sType, $aFile['ID']);
-                } else {
-                    if (!getResult("UPDATE `" . $sDbPrefix . "Files` SET `Status`='" . STATUS_FAILED . "' WHERE `ID`='" . $aFile['ID'] . "'")) {
+                } else
+                    if(!getResult("UPDATE `" . $sDbPrefix . "Files` SET `Status`='" . STATUS_FAILED . "' WHERE `ID`='" . $aFile['ID'] . "'"))
                         break;
-                    }
-                }
             }
-        } while (false);
+        } while(false);
     }
 }

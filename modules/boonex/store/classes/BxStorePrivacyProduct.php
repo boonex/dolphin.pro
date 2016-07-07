@@ -30,11 +30,9 @@ class BxStorePrivacyProduct extends BxDolPrivacy
     function isDynamicGroupMember($mixedGroupId, $iObjectOwnerId, $iViewerId, $iObjectId)
     {
         if ('c' == $mixedGroupId) { // customers only
-            $aDataEntry = array('id' => $iObjectId, 'author_id' => $iObjectOwnerId);
-
-            return $this->oModule->isCustomer($aDataEntry);
+            $aDataEntry = array ('id' => $iObjectId, 'author_id' => $iObjectOwnerId);
+            return $this->oModule->isCustomer ($aDataEntry);
         }
-
         return false;
     }
 }

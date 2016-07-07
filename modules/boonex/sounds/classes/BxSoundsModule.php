@@ -9,21 +9,20 @@ define('PROFILE_SOUND_CATEGORY', 'Profile sounds');
 
 class BxSoundsModule extends BxDolFilesModule
 {
-    function __construct(&$aModule)
+    function __construct (&$aModule)
     {
         parent::__construct($aModule);
 
         // add more sections for administration
         $this->aSectionsAdmin['processing'] = array('exclude_btns' => 'all');
-        $this->aSectionsAdmin['failed']     = array(
+        $this->aSectionsAdmin['failed'] = array(
             'exclude_btns' => array('activate', 'deactivate', 'featured', 'unfeatured')
         );
     }
-
+    
     function actionGetFile($iFileId)
     {
-        $aInfo = $this->_oDb->getFileInfo(array('fileId' => (int)$iFileId), false,
-            array('medID', 'medProfId', 'medUri', 'albumId', 'Approved'));
+        $aInfo = $this->_oDb->getFileInfo(array('fileId'=>(int)$iFileId), false, array('medID', 'medProfId', 'medUri', 'albumId', 'Approved'));
 
         if ($aInfo && $this->isAllowedDownload($aInfo)) {
 
@@ -48,45 +47,41 @@ class BxSoundsModule extends BxDolFilesModule
         }
     }
 
-    function serviceGetProfileCat()
+    function serviceGetProfileCat ()
     {
         return PROFILE_SOUND_CATEGORY;
     }
 
-    function serviceGetMemberMenuItem()
+    function serviceGetMemberMenuItem ()
     {
-        return parent::serviceGetMemberMenuItem('music');
+        return parent::serviceGetMemberMenuItem ('music');
+    }
+    function serviceGetMemberMenuItemAddContent ()
+    {
+        return parent::serviceGetMemberMenuItemAddContent ('music');
     }
 
-    function serviceGetMemberMenuItemAddContent()
-    {
-        return parent::serviceGetMemberMenuItemAddContent('music');
-    }
-
-    function getEmbedCode($iFileId)
+    function getEmbedCode ($iFileId)
     {
         return $this->_oTemplate->getEmbedCode($iFileId);
     }
 
-    function isAllowedShare(&$aDataEntry)
+	function isAllowedShare(&$aDataEntry)
     {
-        if ($aDataEntry['AllowAlbumView'] != BX_DOL_PG_ALL) {
-            return false;
-        }
+    	if($aDataEntry['AllowAlbumView'] != BX_DOL_PG_ALL)
+    		return false;
 
         return true;
     }
-
-    function isAllowedDownload(&$aFile, $isPerformAction = false)
+    
+    function isAllowedDownload (&$aFile, $isPerformAction = false)
     {
-        if (getSettingValue('mp3', "save") != TRUE_VAL) {
+        if (getSettingValue('mp3', "save") != TRUE_VAL)
             return false;
-        }
-
         return $this->isAllowedView($aFile, $isPerformAction);
     }
 
-    function serviceGetWallPost($aEvent)
+	function serviceGetWallPost($aEvent)
     {
         return $this->getWallPost($aEvent, 'music');
     }

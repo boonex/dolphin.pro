@@ -2,13 +2,13 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_block_title_forum_feed' => 'Форум',
+  '_sys_block_title_forum_feed' => 'Форум',
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_adm_txt_langs_languages_add' => 'Добавить язык',
-    '__Kyrgyzstan'                 => 'Кыргызстан',
+  '_adm_txt_langs_languages_add' => 'Добавить язык',
+  '__Kyrgyzstan' => 'Кыргызстан',
 
 );

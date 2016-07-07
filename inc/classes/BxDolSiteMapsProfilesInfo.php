@@ -16,25 +16,18 @@ class BxDolSiteMapsProfilesInfo extends BxDolSiteMaps
     {
         parent::__construct($aSystem);
 
-        $this->_aQueryParts = array(
-            'fields'          => "`ID`, `DateLastEdit`",
-            // fields list
-            'field_date'      => "DateLastEdit",
-            // date field name
-            'field_date_type' => "datetime",
-            // date field type (or timestamp)
-            'table'           => "`Profiles`",
-            // table name
-            'join'            => "",
-            // join SQL part
-            'where'           => "AND `Profiles`.`Status` = 'Active' AND `allow_view_to` = '" . BX_DOL_PG_ALL . "' AND (`Profiles`.`Couple` = 0 OR `Profiles`.`Couple` > `Profiles`.`ID`)",
-            // SQL condition, without WHERE
-            'order'           => " `DateLastNav` ASC ",
-            // SQL order, without ORDER BY
+        $this->_aQueryParts = array (
+            'fields' => "`ID`, `DateLastEdit`", // fields list
+            'field_date' => "DateLastEdit", // date field name
+            'field_date_type' => "datetime", // date field type (or timestamp)
+            'table' => "`Profiles`", // table name
+            'join' => "", // join SQL part
+            'where' => "AND `Profiles`.`Status` = 'Active' AND `allow_view_to` = '" . BX_DOL_PG_ALL . "' AND (`Profiles`.`Couple` = 0 OR `Profiles`.`Couple` > `Profiles`.`ID`)", // SQL condition, without WHERE
+            'order' => " `DateLastNav` ASC ", // SQL order, without ORDER BY
         );
     }
 
-    protected function _genUrl($a)
+    protected function _genUrl ($a)
     {
         return BX_DOL_URL_ROOT . 'profile_info.php?ID=' . $a['ID'];
     }

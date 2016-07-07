@@ -9,7 +9,7 @@ bx_import('BxTemplCmtsView');
 
 class BxDolFilesCmts extends BxTemplCmtsView
 {
-    var $_oModule;
+	var $_oModule;
 
     function __construct($sSystem, $iId, $iInit = 1)
     {
@@ -18,13 +18,12 @@ class BxDolFilesCmts extends BxTemplCmtsView
         $this->_oModule = null;
     }
 
-    function getBaseUrl()
+	function getBaseUrl()
     {
-        $aEntry = $this->_oModule->_oDb->getFileInfo(array('fileId' => $this->getId()), true);
-        if (empty($aEntry) || !is_array($aEntry)) {
-            return '';
-        }
+    	$aEntry = $this->_oModule->_oDb->getFileInfo(array('fileId' => $this->getId()), true);
+    	if(empty($aEntry) || !is_array($aEntry))
+    		return '';
 
-        return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'view/' . $aEntry['medUri'];
+    	return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'view/' . $aEntry['medUri']; 
     }
 }

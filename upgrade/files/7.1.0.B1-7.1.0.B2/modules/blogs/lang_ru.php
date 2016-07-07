@@ -2,13 +2,13 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_blogs'                        => 'Блоги',
-    '_mma_blog_posts_comments_delete_and_edit' => 'Блоги: удалять и редактировать комментарии',
+  '_sys_module_blogs' => 'Блоги',
+  '_mma_blog_posts_comments_delete_and_edit' => 'Блоги: удалять и редактировать комментарии',
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_blog_Blogs_Home' => 'Главная',
+  '_bx_blog_Blogs_Home' => 'Главная',
 
 );

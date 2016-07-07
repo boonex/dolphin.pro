@@ -14,9 +14,9 @@ class BxDolFilesCalendar extends BxTemplCalendar
     function __construct($iYear, $iMonth, &$oDb, &$oTemplate, &$oConfig)
     {
         parent::__construct($iYear, $iMonth);
-        $this->oDb       = &$oDb;
+        $this->oDb = &$oDb;
         $this->oTemplate = &$oTemplate;
-        $this->oConfig   = &$oConfig;
+        $this->oConfig = &$oConfig;
     }
 
     function getData()

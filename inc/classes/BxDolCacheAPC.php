@@ -27,26 +27,24 @@ class BxDolCacheAPC extends BxDolCache
      */
     function getData($sKey, $iTTL = false)
     {
-        $isSucess  = false;
-        $mixedData = apc_fetch($sKey, $isSucess);
-        if (!$isSucess) {
+        $isSucess = false;
+        $mixedData = apc_fetch ($sKey, $isSucess);
+        if (!$isSucess)
             return null;
-        }
 
         return $mixedData;
     }
-
     /**
      * Save data in shared memory cache
      *
-     * @param  string $sKey      - file name
-     * @param  mixed  $mixedData - the data to be cached in the file
-     * @param  int    $iTTL      - time to live
+     * @param  string  $sKey      - file name
+     * @param  mixed   $mixedData - the data to be cached in the file
+     * @param  int     $iTTL      - time to live
      * @return boolean result of operation.
      */
     function setData($sKey, $mixedData, $iTTL = false)
     {
-        return apc_store($sKey, $mixedData, false === $iTTL ? $this->iTTL : $iTTL);
+        return apc_store ($sKey, $mixedData, false === $iTTL ? $this->iTTL : $iTTL);
     }
 
     /**
@@ -58,17 +56,15 @@ class BxDolCacheAPC extends BxDolCache
     function delData($sKey)
     {
         $isSucess = false;
-        apc_fetch($sKey, $isSucess);
-        if (!$isSucess) {
+        apc_fetch ($sKey, $isSucess);
+        if (!$isSucess)
             return true;
-        }
 
         return apc_delete($sKey);
     }
 
     /**
      * Check if apc cache functions are available
-     *
      * @return boolean
      */
     function isAvailable()
@@ -78,7 +74,6 @@ class BxDolCacheAPC extends BxDolCache
 
     /**
      * Check if apc extension is loaded
-     *
      * @return boolean
      */
     function isInstalled()
@@ -88,42 +83,37 @@ class BxDolCacheAPC extends BxDolCache
 
     /**
      * remove all data from cache by key prefix
-     *
      * @return true on success
      */
-    function removeAllByPrefix($s)
+    function removeAllByPrefix ($s)
     {
-        $l     = strlen($s);
+        $l = strlen($s);
         $aKeys = apc_cache_info('user');
         if (isset($aKeys['cache_list']) && is_array($aKeys['cache_list'])) {
             foreach ($aKeys['cache_list'] as $r) {
                 $sKey = $r['info'];
-                if (0 == strncmp($sKey, $s, $l)) {
+                if (0 == strncmp($sKey, $s, $l))
                     $this->delData($sKey);
-                }
             }
         }
-
         return true;
     }
 
     /**
      * get size of cached data by name prefix
      */
-    function getSizeByPrefix($s)
+    function getSizeByPrefix ($s)
     {
         $iSize = 0;
-        $l     = strlen($s);
+        $l = strlen($s);
         $aKeys = apc_cache_info('user');
         if (isset($aKeys['cache_list']) && is_array($aKeys['cache_list'])) {
             foreach ($aKeys['cache_list'] as $r) {
                 $sKey = $r['info'];
-                if (0 == strncmp($sKey, $s, $l)) {
+                if (0 == strncmp($sKey, $s, $l))
                     $iSize += $r['mem_size'];
-                }
             }
         }
-
         return $iSize;
     }
 }

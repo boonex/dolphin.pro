@@ -2,10 +2,10 @@
 
 $aLangContent = array(
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_zip_administration' => 'ZIP Search',
-    '_bx_zip_help_text'      => '
+  '_bx_zip_administration' => 'ZIP Search',
+  '_bx_zip_help_text' => '
 <p>
 Search powered by <b>Geonames</b> is a free geocoding service and the maximum search radius is always limited to 30km.
 </p>
@@ -21,11 +21,11 @@ You need to drag "Country" and "Location" fields, at least. Please remove any ot
 </p>
 ',
 
-    // ================ DELETED KEYS (commented because processed via SQL file) ==================
+  // ================ DELETED KEYS (commented because processed via SQL file) ==================
 
-    /*
-    '_bx_zip_search_block_caption' => 'ZIP Codes Search',
-    '_bx_zip_search_form_caption' => 'ZIP Codes Search',
-    */
+  /*
+  '_bx_zip_search_block_caption' => 'ZIP Codes Search',
+  '_bx_zip_search_form_caption' => 'ZIP Codes Search',
+  */
 
 );

@@ -2,12 +2,12 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_forum' => 'Форум',
+  '_sys_module_forum' => 'Форум',
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_forum_menu_home' => 'Главная',
+  '_bx_forum_menu_home' => 'Главная',
 
 );

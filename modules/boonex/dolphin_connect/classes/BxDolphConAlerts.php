@@ -11,6 +11,6 @@ class BxDolphConAlerts extends BxDolConnectAlerts
     function __construct()
     {
         parent::__construct();
-        $this->oModule = BxDolModule::getInstance('BxDolphConModule');
+        $this -> oModule = BxDolModule::getInstance('BxDolphConModule');
     }
 }

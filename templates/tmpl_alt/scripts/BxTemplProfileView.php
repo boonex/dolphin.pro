@@ -1,6 +1,6 @@
 <?php
 
-require_once(BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseProfileView.php');
+require_once( BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseProfileView.php' );
 
 class BxTemplProfileView extends BxBaseProfileView
 {

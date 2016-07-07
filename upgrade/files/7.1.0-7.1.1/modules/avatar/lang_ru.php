@@ -2,9 +2,9 @@
 
 $aLangContent = array(
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_ava_block_tight'    => 'Выберите аватары',
-    '_bx_ava_manage_avatars' => 'Управление аватарами',
+  '_bx_ava_block_tight' => 'Выберите аватары',
+  '_bx_ava_manage_avatars' => 'Управление аватарами',
 
 );

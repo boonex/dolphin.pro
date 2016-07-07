@@ -13,9 +13,9 @@ class BxSitesCalendar extends BxTemplCalendar
     function __construct($iYear, $iMonth, $oSites)
     {
         parent::__construct($iYear, $iMonth);
-        $this->_oDb       = $oSites->_oDb;
+        $this->_oDb = $oSites->_oDb;
         $this->_oTemplate = $oSites->_oTemplate;
-        $this->_oConfig   = $oSites->_oConfig;
+        $this->_oConfig = $oSites->_oConfig;
     }
 
     /**
@@ -47,12 +47,12 @@ class BxSitesCalendar extends BxTemplCalendar
         return BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . "calendar/";
     }
 
-    function getBrowseUri()
+    function getBrowseUri ()
     {
         return BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . "browse/calendar/";
     }
 
-    function getEntriesNames()
+    function getEntriesNames ()
     {
         return array(_t('_bx_sites_single'), _t('_bx_sites_plural'));
     }

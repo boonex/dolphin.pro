@@ -2,12 +2,12 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_events' => 'События',
+  '_sys_module_events' => 'События',
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_events_menu_main' => 'Главная',
+  '_bx_events_menu_main' => 'Главная',
 
 );

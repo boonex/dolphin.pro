@@ -8,7 +8,7 @@ bx_import("BxDolInstaller");
 
 class BxPmtInstaller extends BxDolInstaller
 {
-    protected $_sParamDefaultPayment;
+	protected $_sParamDefaultPayment;
 
     function __construct($aConfig)
     {
@@ -17,13 +17,12 @@ class BxPmtInstaller extends BxDolInstaller
         $this->_sParamDefaultPayment = 'sys_default_payment';
     }
 
-    function install($aParams)
+	function install($aParams)
     {
         $aResult = parent::install($aParams);
 
-        if ($aResult['result'] && getParam($this->_sParamDefaultPayment) == '') {
-            setParam($this->_sParamDefaultPayment, $this->_aConfig['home_uri']);
-        }
+        if($aResult['result'] && getParam($this->_sParamDefaultPayment) == '')
+        	setParam($this->_sParamDefaultPayment, $this->_aConfig['home_uri']);
 
         if($aResult['result'])
             BxDolService::call($this->_aConfig['home_uri'], 'update_dependent_modules');
@@ -31,13 +30,12 @@ class BxPmtInstaller extends BxDolInstaller
         return $aResult;
     }
 
-    function uninstall($aParams)
+	function uninstall($aParams)
     {
         $aResult = parent::uninstall($aParams);
 
-        if ($aResult['result'] && getParam($this->_sParamDefaultPayment) == $this->_aConfig['home_uri']) {
-            setParam($this->_sParamDefaultPayment, '');
-        }
+        if($aResult['result'] && getParam($this->_sParamDefaultPayment) == $this->_aConfig['home_uri'])
+        	setParam($this->_sParamDefaultPayment, '');
 
         return $aResult;
     }

@@ -1,4 +1,3 @@
 <?php
-function fb() { }
-
+function fb() {}
 define('FIREPHP_TABLE', 0);

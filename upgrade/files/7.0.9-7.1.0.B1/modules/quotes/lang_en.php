@@ -2,14 +2,14 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_bx_quotes_bcaption_quotes' => 'Quotes',
-    '_bx_quotes_ss'              => 'Quotes',
-    '_bx_quotes_ss_adm_stats'    => 'Pending Quotes',
+  '_bx_quotes_bcaption_quotes' => 'Quotes',
+  '_bx_quotes_ss' => 'Quotes',
+  '_bx_quotes_ss_adm_stats' => 'Pending Quotes',
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_adm_page_cpt_quotes' => 'Quotes',
+  '_adm_page_cpt_quotes' => 'Quotes',
 
 );

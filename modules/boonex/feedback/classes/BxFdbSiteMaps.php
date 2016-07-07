@@ -18,20 +18,20 @@ class BxFdbSiteMaps extends BxDolSiteMaps
     {
         parent::__construct($aSystem);
 
-        $this->_aQueryParts = array(
-            'fields'          => "`id`, `uri`, `date`", // fields list
-            'field_date'      => "date", // date field name
+        $this->_aQueryParts = array (
+            'fields' => "`id`, `uri`, `date`", // fields list
+            'field_date' => "date", // date field name
             'field_date_type' => "timestamp", // date field type
-            'table'           => "`bx_fdb_entries`", // table name
-            'join'            => "", // join SQL part
-            'where'           => "AND `status` = '" . BX_TD_STATUS_ACTIVE . "'", // SQL condition, without WHERE
-            'order'           => " `date` ASC ", // SQL order, without ORDER BY
+            'table' => "`bx_fdb_entries`", // table name
+            'join' => "", // join SQL part
+            'where' => "AND `status` = '" . BX_TD_STATUS_ACTIVE . "'", // SQL condition, without WHERE
+            'order' => " `date` ASC ", // SQL order, without ORDER BY
         );
 
         $this->_oModule = BxDolModule::getInstance('BxFdbModule');
     }
 
-    protected function _genUrl($a)
+    protected function _genUrl ($a)
     {
         return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'view/' . $a['uri'];
     }

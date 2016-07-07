@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_ava_cropping_tool' => 'Инструмент обрезки аватара',
+  '_bx_ava_cropping_tool' => 'Инструмент обрезки аватара',
 
 );

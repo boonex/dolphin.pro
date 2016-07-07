@@ -8,18 +8,18 @@ bx_import('BxDolPageView');
 
 class BxMbpPageMy extends BxDolPageView
 {
-    var $_oObject;
+	var $_oObject;
 
     function __construct(&$oObject)
     {
-        parent::__construct('bx_mbp_my_membership');
+    	parent::__construct('bx_mbp_my_membership');
 
-        $this->_oObject = $oObject;
+    	$this->_oObject = $oObject;
 
-        $GLOBALS['oTopMenu']->setCurrentProfileID($this->_oObject->getUserId());
+    	$GLOBALS['oTopMenu']->setCurrentProfileID($this->_oObject->getUserId());
     }
 
-    function getBlockCode_Current()
+	function getBlockCode_Current()
     {
         return $this->_oObject->getCurrentLevelBlock();
     }

@@ -8,7 +8,7 @@ bx_import('BxDolPageView');
 
 class BxPfwPageOrders extends BxDolPageView
 {
-    protected $_oMain;
+	protected $_oMain;
     protected $_sType;
 
     function __construct($sType, &$oMain)
@@ -22,11 +22,10 @@ class BxPfwPageOrders extends BxDolPageView
         $GLOBALS['oTopMenu']->setCustomVar('sys_payment_module_uri', $this->_oMain->_oConfig->getUri());
     }
 
-    function getBlockCode_Orders()
+	function getBlockCode_Orders()
     {
-        if (empty($this->_sType)) {
+        if(empty($this->_sType))
             $this->_sType = BX_PMT_ORDERS_TYPE_PROCESSED;
-        }
 
         return $this->_oMain->getOrdersBlock($this->_sType);
     }

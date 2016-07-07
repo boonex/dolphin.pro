@@ -14,35 +14,33 @@ class BxGSearchPageMain extends BxDolPageView
     function __construct(&$oModule)
     {
         $this->_oTemplate = $oModule->_oTemplate;
-        $this->_oConfig   = $oModule->_oConfig;
+        $this->_oConfig = $oModule->_oConfig;
         parent::__construct('bx_gsearch');
     }
 
     function getBlockCode_SearchForm()
     {
-        $aVars = array(
+        $aVars = array (
             'suffix' => 'adv',
-            'empty'  => MsgBox(_t('_Empty')),
+            'empty' => MsgBox(_t('_Empty')),
         );
-
         return array($this->_oTemplate->parseHtmlByName('search_form', $aVars));
     }
 
     function getBlockCode_SearchResults()
     {
         $sProto = bx_proto();
-        $this->_oTemplate->addJs($sProto . '://www.google.com/jsapi');
+        $this->_oTemplate->addJs ($sProto . '://www.google.com/jsapi');
 
-        $a     = parse_url($GLOBALS['site']['url']);
-        $aVars = array(
-            'is_image_search'      => 'on' == getParam('bx_gsearch_separate_images') ? 1 : 0,
-            'is_tabbed_search'     => 'on' == getParam('bx_gsearch_separate_tabbed') ? 1 : 0,
-            'domain'               => $a['host'],
-            'keyword'              => str_replace('"', '\\"', stripslashes($_GET['keyword'])),
-            'suffix'               => 'adv',
+        $a = parse_url ($GLOBALS['site']['url']);
+        $aVars = array (
+            'is_image_search' => 'on' == getParam('bx_gsearch_separate_images') ? 1 : 0,
+            'is_tabbed_search' => 'on' == getParam('bx_gsearch_separate_tabbed') ? 1 : 0,
+            'domain' => $a['host'],
+            'keyword' => str_replace('"', '\\"', stripslashes($_GET['keyword'])),
+            'suffix' => 'adv',
             'separate_search_form' => 1,
         );
-
         return array($this->_oTemplate->parseHtmlByName('search', $aVars));
     }
 }

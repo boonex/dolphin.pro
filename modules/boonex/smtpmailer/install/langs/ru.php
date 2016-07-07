@@ -7,18 +7,18 @@
 $sLangCategory = 'SMTP Mailer';
 
 $aLangContent = array(
-    '_sys_module_smtpmailer'  => 'SMTP почтовик',
+    '_sys_module_smtpmailer' => 'SMTP почтовик',
     '_bx_smtp_administration' => 'SMTP почтовик',
-    '_bx_smtp'                => 'SMTP почтовик',
-    '_bx_smtp_tester'         => 'SMTP почтовик: тестирование',
-    '_bx_smtp_recipient'      => 'Получатель',
-    '_bx_smtp_subject'        => 'Тема',
-    '_bx_smtp_body'           => 'Текст',
-    '_bx_smtp_is_html'        => 'В формате HTML?',
-    '_bx_smtp_send_ok'        => 'Письмо было успешно отправлено',
-    '_bx_smtp_send_fail'      => 'Письмо отправить не удалось',
-    '_bx_smtp_help'           => 'Помощь',
-    '_bx_smtp_help_text'      => '
+    '_bx_smtp' => 'SMTP почтовик',
+    '_bx_smtp_tester' => 'SMTP почтовик: тестирование',
+    '_bx_smtp_recipient' => 'Получатель',
+    '_bx_smtp_subject' => 'Тема',
+    '_bx_smtp_body' => 'Текст',
+    '_bx_smtp_is_html' => 'В формате HTML?',
+    '_bx_smtp_send_ok' => 'Письмо было успешно отправлено',
+    '_bx_smtp_send_fail' => 'Письмо отправить не удалось',
+    '_bx_smtp_help' => 'Помощь',
+    '_bx_smtp_help_text' => '
         <b>SMTP-аутентификация </b> - большинство SMTP-серверов требует SMTP-аутентификацию, скорее всего, вам нужно активировать ее.
         <br />
         <b>Название SMTP-сервера</b> - лучше отправлять почту с SMTP-сервера вашего сайта, так что укажите название вашего сайта или локального компьютера.

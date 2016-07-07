@@ -4,15 +4,15 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-function bx_sites_import($sClassPostfix, $aModuleOverwright = array())
+function bx_sites_import ($sClassPostfix, $aModuleOverwright = array())
 {
     global $aModule;
     $a = $aModuleOverwright ? $aModuleOverwright : $aModule;
     if (!$a || $a['uri'] != 'sites') {
         $oMain = BxDolModule::getInstance('BxSitesModule');
-        $a     = $oMain->_aModule;
+        $a = $oMain->_aModule;
     }
-    bx_import($sClassPostfix, $a);
+    bx_import ($sClassPostfix, $a) ;
 
 }
 
@@ -110,24 +110,24 @@ class BxSitesModule extends BxDolTwigModule
     {
         parent::__construct($aModule);
         $this->_oConfig->init($this->_oDb);
-        $this->oPrivacy            = new BxSitesPrivacy($this);
-        $this->iOwnerId            = isLogged() ? getLoggedId() : 0;
+        $this->oPrivacy = new BxSitesPrivacy($this);
+        $this->iOwnerId = isLogged() ? getLoggedId() : 0;
         $GLOBALS['oBxSitesModule'] = &$this;
 
         // BEGIN STW INTEGRATION
-        $this->sHomeUrl   = $this->_oConfig->getHomeUrl();
-        $this->sHomePath  = $this->_oConfig->getHomePath();
+        $this->sHomeUrl = $this->_oConfig->getHomeUrl();
+        $this->sHomePath = $this->_oConfig->getHomePath();
         $this->sModuleUrl = BX_DOL_Url_ROOT . $this->_oConfig->getBaseUri();
 
-        $sThumbSuffix     = 'data/images/thumbs/';
-        $this->sThumbPath = $this->sHomePath . $sThumbSuffix;
-        $this->sThumbUrl  = $this->sHomeUrl . $sThumbSuffix;
+        $sThumbSuffix = 'data/images/thumbs/';
+        $this->sThumbPath = $this->sHomePath.$sThumbSuffix;
+        $this->sThumbUrl = $this->sHomeUrl.$sThumbSuffix;
         // END STW INTEGRATION
     }
 
     function actionHome()
     {
-        bx_sites_import('PageMain');
+        bx_sites_import ('PageMain');
         $oPage = new BxSitesPageMain ($this);
         $this->_oTemplate->addCss(array('main.css', 'block_percent.css'));
         $this->_oTemplate->pageStart();
@@ -148,8 +148,7 @@ class BxSitesModule extends BxDolTwigModule
     {
         $iSiteId = (int)$iSiteId;
         if (!($aSite = $this->_oDb->getSiteById($iSiteId))) {
-            $this->_oTemplate->displayPageNotFound(_t('_bx_sites_action_title_delete'));
-
+            $this->_oTemplate->displayPageNotFound (_t('_bx_sites_action_title_delete'));
             return;
         }
 
@@ -175,14 +174,12 @@ class BxSitesModule extends BxDolTwigModule
         $iSiteId = (int)$iSiteId;
 
         if (!($aSite = $this->_oDb->getSiteById($iSiteId))) {
-            $this->_oTemplate->displayPageNotFound(_t('_bx_site_caption_edit'));
-
+            $this->_oTemplate->displayPageNotFound (_t('_bx_site_caption_edit'));
             return;
         }
 
         if (!$this->isAllowedEdit($aSite)) {
-            $this->_oTemplate->displayAccessDenied(_t('_bx_site_caption_edit'));
-
+            $this->_oTemplate->displayAccessDenied (_t('_bx_site_caption_edit'));
             return;
         }
 
@@ -192,24 +189,23 @@ class BxSitesModule extends BxDolTwigModule
 
         $this->_oTemplate->addCss(array('main.css'));
 
-        if ($oForm->isSubmittedAndValid()) {
-            $sStatus     = $this->_oDb->getParam('bx_sites_autoapproval') == 'on' || $this->isAdmin() ? 'approved' : 'pending';
+        if ($oForm->isSubmittedAndValid ()) {
+            $sStatus = $this->_oDb->getParam('bx_sites_autoapproval') == 'on' || $this->isAdmin() ? 'approved' : 'pending';
             $sCategories = implode(';', array_unique(explode(';', $oForm->getCleanValue('categories'))));
             unset($oForm->aInputs['categories']);
-            $aValsAdd = array(
-                'photo'      => $oForm->checkUploadPhoto(),
+            $aValsAdd = array (
+                'photo' => $oForm->checkUploadPhoto(),
                 'categories' => $sCategories,
-                'status'     => $sStatus
+                'status' => $sStatus
             );
 
             if ($oForm->update($iSiteId, $aValsAdd)) {
                 $this->isAllowedEdit($aSite, true);
                 $this->onSiteChanged($iSiteId, $sStatus);
-                if ($sStatus == 'approved') {
+                if ($sStatus == 'approved')
                     header('Location:' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/' . $aSite['entryUri']);
-                } else {
+                else
                     header('Location:' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri());
-                }
             } else {
                 $this->_oTemplate->pageStart();
                 echo MsgBox(_t('_bx_sites_err_edit_site'));
@@ -229,30 +225,26 @@ class BxSitesModule extends BxDolTwigModule
         $aSite = is_numeric($mixedVar) ? $this->_oDb->getSiteById((int)$mixedVar) : $this->_oDb->getSiteByEntryUri(process_db_input($mixedVar));
 
         if (empty($aSite)) {
-            $this->_oTemplate->displayPageNotFound(_t('_bx_sites'));
-
+            $this->_oTemplate->displayPageNotFound (_t('_bx_sites'));
             return;
         }
 
         if (!$this->isAllowedView($aSite)) {
             $this->_oTemplate->displayAccessDenied($aSite['title']);
-
             return;
         }
 
-        if ($aSite['status'] == 'pending' && !$this->isAdmin() && !($aSite['ownerid'] == $this->iOwnerId && $aEvent['ownerid'])) {
+        if ($aSite['status'] == 'pending' && !$this->isAdmin() && !($aSite['ownerid'] == $this->iOwnerId && $aEvent['ownerid']))  {
             $this->_oTemplate->displayAccessDenied($aSite['title']);
-
             return;
         }
 
         if ($aSite['Status'] == 'pending') {
             $this->_oTemplate->displayPendingApproval($aSite['title']);
-
             return;
         }
 
-        bx_sites_import('PageView');
+        bx_sites_import ('PageView');
         $oPage = new BxSitesPageView ($this, $aSite);
         $this->_oTemplate->addJsTranslation(array('_Are_you_sure'));
         $this->_oTemplate->addCss(array('main.css', 'cmts.css'));
@@ -266,7 +258,7 @@ class BxSitesModule extends BxDolTwigModule
         ));
         $this->_oTemplate->pageCode($aSite['title'], false, false);
 
-        bx_import('BxDolViews');
+        bx_import ('BxDolViews');
         new BxDolViews('bx_sites', $aSite['id']);
 
         $this->isAllowedView($aSite, true);
@@ -277,8 +269,7 @@ class BxSitesModule extends BxDolTwigModule
         $iSiteId = (int)$iSiteId;
 
         if (!($aSite = $this->_oDb->getSiteById($iSiteId))) {
-            $this->_oTemplate->displayPageNotFound(_t('_bx_sites_featured_top_menu_sitem'));
-
+            $this->_oTemplate->displayPageNotFound (_t('_bx_sites_featured_top_menu_sitem'));
             return;
         }
 
@@ -318,24 +309,22 @@ class BxSitesModule extends BxDolTwigModule
     {
         if (!$this->isAllowedSearch()) {
             $this->_oTemplate->displayAccessDenied(_t('_bx_sites_caption_browse_search'), false);
-
             return;
         }
 
-        bx_sites_import('FormSearch');
+        bx_sites_import ('FormSearch');
         $oForm = new BxSitesFormSearch($this->_oConfig);
         $oForm->initChecker();
 
         $this->_oTemplate->addCss(array('main.css'));
 
-        if ($oForm->isSubmittedAndValid()) {
+        if ($oForm->isSubmittedAndValid ()) {
 
             bx_sites_import('SearchResult');
             $o = new BxSitesSearchResult('search', $oForm->getCleanValue('Keyword'));
 
             if ($o->isError) {
-                $this->_oTemplate->displayPageNotFound(_t('_bx_sites_caption_browse_search'));
-
+                $this->_oTemplate->displayPageNotFound (_t('_bx_sites_caption_browse_search'));
                 return;
             }
 
@@ -343,8 +332,7 @@ class BxSitesModule extends BxDolTwigModule
                 $this->_oTemplate->pageStart();
                 echo $s;
             } else {
-                $this->_oTemplate->displayNoData(_t('_bx_sites_caption_browse_search'));
-
+                $this->_oTemplate->displayNoData (_t('_bx_sites_caption_browse_search'));
                 return;
             }
 
@@ -353,7 +341,7 @@ class BxSitesModule extends BxDolTwigModule
 
         } else {
             $this->_oTemplate->pageStart();
-            echo $oForm->getCode();
+            echo $oForm->getCode ();
             $this->_oTemplate->pageCode(_t('_bx_sites_caption_browse_search'));
         }
     }
@@ -365,33 +353,30 @@ class BxSitesModule extends BxDolTwigModule
         if (('user' == $sMode || 'my' == $sMode) && $this->iOwnerId > 0) {
             $aProfile = getProfileInfo($this->iOwnerId);
             if (0 == strcasecmp($sValue, $aProfile['NickName']) || 'my' == $sMode) {
-                $this->browseMy($aProfile, process_db_input($sValue));
-
+                $this->browseMy ($aProfile, process_db_input($sValue));
                 return;
             }
         }
 
         if (!$this->isAllowedBrowse() || ('my' == $sMode && $this->iOwnerId == 0)) {
             $this->_oTemplate->displayAccessDenied(_t('_bx_sites'), $bAjaxMode);
-
             return;
         }
 
-        bx_sites_import('SearchResult');
+        bx_sites_import ('SearchResult');
         $o = new BxSitesSearchResult(
-            process_db_input($sMode),
-            process_db_input($sValue),
-            process_db_input($sValue2),
-            process_db_input($sValue3)
-        );
+                process_db_input($sMode),
+                process_db_input($sValue),
+                process_db_input($sValue2),
+                process_db_input($sValue3)
+            );
 
         if ($o->isError) {
             $this->_oTemplate->displayNoData($o->aCurrent['title'], $bAjaxMode);
-
             return;
         }
 
-        if (bx_get('rss') !== false && bx_get('rss')) {
+        if(bx_get('rss') !== false && bx_get('rss')) {
             echo $o->rss();
             exit;
         }
@@ -403,31 +388,27 @@ class BxSitesModule extends BxDolTwigModule
                 $this->_oTemplate->pageStart();
                 echo $s;
                 $this->_oTemplate->pageCode($o->aCurrent['title'], false, false);
-            } else {
+            } else
                 echo $s;
-            }
-        } else {
+        } else
             $this->_oTemplate->displayNoData($o->aCurrent['title'], $bAjaxMode);
-        }
     }
 
-    function actionDeleteProfileSites($iProfileId)
+    function actionDeleteProfileSites ($iProfileId)
     {
         $iProfileId = (int)$iProfileId;
 
-        if (!$iProfileId || !defined('BX_SITES_ON_PROFILE_DELETE')) {
+        if (!$iProfileId || !defined('BX_SITES_ON_PROFILE_DELETE'))
             return;
-        }
 
         $aSites = $this->_oDb->getSitesByAuthor($iProfileId);
-        foreach ($aSites as $aSiteRow) {
+        foreach ($aSites as $aSiteRow)
             $this->deleteSite($aSiteRow['id']);
-        }
     }
 
-    function actionSharePopup($iSiteId)
+    function actionSharePopup ($iSiteId)
     {
-        parent::_actionSharePopup($iSiteId, _t('_bx_sites_caption_share_site'), true);
+        parent::_actionSharePopup ($iSiteId, _t('_bx_sites_caption_share_site'), true);
     }
 
     function actionIndex()
@@ -443,53 +424,49 @@ class BxSitesModule extends BxDolTwigModule
     function actionAdministration($sUrl = '')
     {
         if (!$this->isAdmin()) {
-            $this->_oTemplate->displayAccessDenied(_t('_bx_sites'));
-
+            $this->_oTemplate->displayAccessDenied (_t('_bx_sites'));
             return;
         }
 
         $aMenu = array(
-            'home'          => array(
+            'home' => array(
                 'title' => _t('_bx_sites_pending_approval'),
-                'href'  => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'administration/home',
-                '_func' => array('name' => '_actionAdministrationManage', 'params' => array(false)),
+                'href' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'administration/home',
+                '_func' => array ('name' => '_actionAdministrationManage', 'params' => array(false)),
             ),
             'admin_entries' => array(
                 'title' => _t('_bx_sites_administration_admin_sites'),
-                'href'  => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'administration/admin_entries',
-                '_func' => array('name' => '_actionAdministrationManage', 'params' => array(true)),
+                'href' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'administration/admin_entries',
+                '_func' => array ('name' => '_actionAdministrationManage', 'params' => array(true)),
             ),
-            'add'           => array(
+            'add' => array(
                 'title' => _t('_bx_sites_administration_add_site'),
-                'href'  => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'administration/add',
-                '_func' => array('name' => '_actionAdministrationAdd', 'params' => array()),
+                'href' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'administration/add',
+                '_func' => array ('name' => '_actionAdministrationAdd', 'params' => array()),
             ),
-            'settings'      => array(
+            'settings' => array(
                 'title' => _t('_bx_sites_administration_settings'),
-                'href'  => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'administration/settings',
-                '_func' => array('name' => '_actionAdministrationSettings', 'params' => array()),
+                'href' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'administration/settings',
+                '_func' => array ('name' => '_actionAdministrationSettings', 'params' => array()),
             ),
         );
 
-        if (empty($aMenu[$sUrl])) {
+        if (empty($aMenu[$sUrl]))
             $sUrl = 'home';
-        }
 
         $aMenu[$sUrl]['active'] = 1;
-        $sContent               = call_user_func_array(array($this, $aMenu[$sUrl]['_func']['name']),
-            $aMenu[$sUrl]['_func']['params']);
+        $sContent = call_user_func_array(array($this, $aMenu[$sUrl]['_func']['name']), $aMenu[$sUrl]['_func']['params']);
 
         $this->_oTemplate->pageStart();
-        echo $this->_oTemplate->adminBlock($sContent, _t('_bx_sites_administration'), $aMenu);
+        echo $this->_oTemplate->adminBlock ($sContent, _t('_bx_sites_administration'), $aMenu);
         $this->_oTemplate->addCssAdmin(array('forms_adv.css', 'main.css', 'twig.css'));
-        $this->_oTemplate->pageCodeAdmin(_t('_bx_sites_administration'));
+        $this->_oTemplate->pageCodeAdmin (_t('_bx_sites_administration'));
     }
 
     function actionAdd()
     {
         if (!$this->isAllowedAdd()) {
             $this->_oTemplate->displayAccessDenied(_t('_bx_sites'));
-
             return;
         }
 
@@ -503,13 +480,13 @@ class BxSitesModule extends BxDolTwigModule
     {
         bx_import('BxTemplTagsModule');
         $aParam = array(
-            'type'    => 'bx_sites',
+            'type' => 'bx_sites',
             'orderby' => 'popular'
-        );
-        $oTags  = new BxTemplTagsModule($aParam, '', BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'tags');
-        $this->_oTemplate->pageStart();
-        echo $oTags->getCode();
-        $this->_oTemplate->pageCode(_t('_bx_sites_caption_browse_tags'), false, false);
+            );
+            $oTags = new BxTemplTagsModule($aParam, '', BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'tags');
+            $this->_oTemplate->pageStart();
+            echo $oTags->getCode();
+            $this->_oTemplate->pageCode(_t('_bx_sites_caption_browse_tags'), false, false);
     }
 
     function actionCategories()
@@ -517,12 +494,11 @@ class BxSitesModule extends BxDolTwigModule
         bx_import('BxTemplCategoriesModule');
         $aParam = array(
             'type' => 'bx_sites'
-        );
-        $oCateg = new BxTemplCategoriesModule($aParam, '',
-            BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'categories');
-        $this->_oTemplate->pageStart();
-        echo $oCateg->getCode();
-        $this->_oTemplate->pageCode(_t('_bx_sites_caption_browse_categories'), false, false);
+            );
+            $oCateg = new BxTemplCategoriesModule($aParam, '', BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'categories');
+            $this->_oTemplate->pageStart();
+            echo $oCateg->getCode();
+            $this->_oTemplate->pageCode(_t('_bx_sites_caption_browse_categories'), false, false);
     }
 
     /**
@@ -538,7 +514,7 @@ class BxSitesModule extends BxDolTwigModule
         return $this->_getSitesProfile($sNickName);
     }
 
-    function serviceGetSubscriptionParams($sAction, $iEntryId)
+    function serviceGetSubscriptionParams ($sAction, $iEntryId)
     {
         $aDataEntry = $this->_oDb->getSiteById($iEntryId);
         if (empty($aDataEntry) || $aDataEntry['status'] != 'approved') {
@@ -550,55 +526,46 @@ class BxSitesModule extends BxDolTwigModule
         );
 
         $sActionName = isset($aActionList[$sAction]) ? ' (' . _t($aActionList[$sAction]) . ')' : '';
-
-        return array(
-            'skip'     => false,
-            'template' => array(
+        return array (
+            'skip' => false,
+            'template' => array (
                 'Subscription' => $aDataEntry['title'] . $sActionName,
-                'ViewLink'     => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/' . $aDataEntry['entryUri'],
+                'ViewLink' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/' . $aDataEntry['entryUri'],
             ),
         );
     }
 
-    function serviceGetWallPost($aEvent)
+    function serviceGetWallPost ($aEvent)
     {
-        if (!($aProfile = getProfileInfo($aEvent['owner_id']))) {
+        if (!($aProfile = getProfileInfo($aEvent['owner_id'])))
             return '';
-        }
 
-        $aObjectIds = strpos($aEvent['object_id'], ',') !== false ? explode(',',
-            $aEvent['object_id']) : array($aEvent['object_id']);
+        $aObjectIds = strpos($aEvent['object_id'], ',') !== false ? explode(',', $aEvent['object_id']) : array($aEvent['object_id']);
         rsort($aObjectIds);
 
         $iDeleted = 0;
-        $aItems   = array();
-        foreach ($aObjectIds as $iId) {
+        $aItems = array();
+        foreach($aObjectIds as $iId) {
             $aItem = $this->_oDb->getSiteById($iId);
-            if (empty($aItem)) {
+            if(empty($aItem))
                 $iDeleted++;
-            } else {
-                if ($aItem['status'] == 'approved' && $this->oPrivacy->check('view', $aItem['id'], $this->iOwnerId)) {
-                    $aItems[] = $aItem;
-                }
-            }
+            else if($aItem['status'] == 'approved' && $this->oPrivacy->check('view', $aItem['id'], $this->iOwnerId))
+                $aItems[] = $aItem;
         }
 
-        if ($iDeleted == count($aObjectIds)) {
+        if($iDeleted == count($aObjectIds))
             return array('perform_delete' => true);
-        }
 
-        if (empty($aItems)) {
+        if(empty($aItems))
             return '';
-        }
 
-        $sCss       = '';
+        $sCss = '';
         $sCssPrefix = str_replace('_', '-', $this->_sPrefix);
-        $sBaseUrl   = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
-        if ($aEvent['js_mode']) {
+        $sBaseUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
+        if($aEvent['js_mode'])
             $sCss = $this->_oTemplate->addCss(array('wall_post.css', 'main.css', 'twig.css'), true);
-        } else {
+        else
             $this->_oTemplate->addCss(array('wall_post.css', 'main.css', 'twig.css'));
-        }
 
         $iItems = count($aItems);
         $iOwner = (int)$aEvent['owner_id'];
@@ -608,30 +575,27 @@ class BxSitesModule extends BxDolTwigModule
         $oVoting = new BxTemplVotingView ('bx_sites', 0, 0);
 
         //--- Grouped events
-        if ($iItems > 1) {
-            if ($iItems > 4) {
+        if($iItems > 1) {
+            if($iItems > 4)
                 $aItems = array_slice($aItems, 0, 4);
-            }
 
             $aTmplItems = array();
-            foreach ($aItems as $aItem) {
+            foreach($aItems as $aItem)
                 $aTmplItems[] = array(
-                    'unit' => $this->_oTemplate->unit($aItem, 'unit_wall', $oVoting),
+                    'unit' => $this->_oTemplate->unit ($aItem, 'unit_wall', $oVoting),
                 );
-            }
 
             return array(
-                'title'       => _t('_bx_sites_wall_added_new_title_items', $sOwner, $iItems),
+                'title' => _t('_bx_sites_wall_added_new_title_items', $sOwner, $iItems),
                 'description' => '',
-                'content'     => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_post_twig_grouped.html',
-                        array(
-                            'mod_prefix'      => $sCssPrefix,
-                            'mod_icon'        => 'link',
-                            'cpt_user_name'   => $sOwner,
-                            'cpt_added_new'   => _t('_bx_sites_wall_added_new_items', $iItems),
-                            'bx_repeat:items' => $aTmplItems,
-                            'post_id'         => $aEvent['id']
-                        ))
+                'content' => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_post_twig_grouped.html', array(
+	            	'mod_prefix' => $sCssPrefix,
+					'mod_icon' => 'link',
+	                'cpt_user_name' => $sOwner,
+	                'cpt_added_new' => _t('_bx_sites_wall_added_new_items', $iItems),
+	                'bx_repeat:items' => $aTmplItems,
+	                'post_id' => $aEvent['id']
+	            ))
             );
         }
 
@@ -639,230 +603,201 @@ class BxSitesModule extends BxDolTwigModule
         $sTxtWallObject = _t('_bx_sites_wall_object');
 
         $aItem = $aItems[0];
-
         return array(
-            'title'       => _t('_bx_sites_wall_added_new_title', $sOwner, $sTxtWallObject),
+            'title' => _t('_bx_sites_wall_added_new_title', $sOwner, $sTxtWallObject),
             'description' => $aItem['description'],
-            'content'     => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_post_twig.html',
-                    array(
-                        'mod_prefix'    => $sCssPrefix,
-                        'mod_icon'      => 'link',
-                        'cpt_user_name' => $sOwner,
-                        'cpt_added_new' => _t('_bx_sites_wall_added_new'),
-                        'cpt_object'    => $sTxtWallObject,
-                        'cpt_item_url'  => $sBaseUrl . $aItem['entryUri'],
-                        'post_id'       => $aEvent['id'],
-                        'content'       => $this->_oTemplate->unit($aItem, 'unit_wall', $oVoting),
-                    ))
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_post_twig.html', array(
+        		'mod_prefix' => $sCssPrefix,
+				'mod_icon' => 'link',
+                'cpt_user_name' => $sOwner,
+                'cpt_added_new' => _t('_bx_sites_wall_added_new'),
+                'cpt_object' => $sTxtWallObject,
+                'cpt_item_url' => $sBaseUrl . $aItem['entryUri'],
+                'post_id' => $aEvent['id'],
+                'content' => $this->_oTemplate->unit ($aItem, 'unit_wall', $oVoting),
+	        ))
         );
     }
 
     function serviceGetWallPostOutline($aEvent)
     {
-        $sIcon    = 'link';
+        $sIcon = 'link';
         $sBaseUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
 
         $aOwner = db_assoc_arr("SELECT `ID` AS `id`, `NickName` AS `username` FROM `Profiles` WHERE `ID`='" . (int)$aEvent['owner_id'] . "' LIMIT 1");
 
-        $aObjectIds = strpos($aEvent['object_id'], ',') !== false ? explode(',',
-            $aEvent['object_id']) : array($aEvent['object_id']);
+        $aObjectIds = strpos($aEvent['object_id'], ',') !== false ? explode(',', $aEvent['object_id']) : array($aEvent['object_id']);
         rsort($aObjectIds);
 
-        $iItems      = count($aObjectIds);
+        $iItems = count($aObjectIds);
         $iItemsLimit = 3;
-        if ($iItems > $iItemsLimit) {
+        if($iItems > $iItemsLimit)
             $aObjectIds = array_slice($aObjectIds, 0, $iItemsLimit);
-        }
 
         $aContent = array();
-        if (!empty($aEvent['content'])) {
+        if(!empty($aEvent['content']))
             $aContent = unserialize($aEvent['content']);
-        }
 
         $iDeleted = 0;
-        $aItems   = $aTmplItems = array();
-        foreach ($aObjectIds as $iId) {
+        $aItems = $aTmplItems = array();
+        foreach($aObjectIds as $iId) {
             $aItem = $this->_oDb->getSiteById($iId);
-            if (empty($aItem)) {
+            if(empty($aItem))
                 $iDeleted++;
-            } else {
-                if ($aItem['status'] == 'approved' && $this->oPrivacy->check('view', $aItem['id'], $this->iOwnerId)) {
-                    $aItem['thumb_file'] = '';
-                    if ($aItem[$this->_oDb->_sFieldThumb]) {
-                        $aImage              = BxDolService::call('photos', 'get_entry',
-                            array($aItem[$this->_oDb->_sFieldThumb], 'browse'), 'Search');
-                        $aItem['thumb_file'] = $aImage['no_image'] || empty($aImage) ? '' : $aImage['file'];
-                    }
-
-                    $aItem[$this->_oDb->_sFieldUri] = $sBaseUrl . $aItem[$this->_oDb->_sFieldUri];
-                    $aItem['url']                   = strncasecmp($aItem['url'], 'http://',
-                        7) != 0 && strncasecmp($aItem['url'], 'https://',
-                        8) != 0 ? 'http://' . $aItem['url'] : $aItem['url'];
-                    $aItems[]                       = $aItem;
-
-                    // BEGIN STW INTEGRATION
-                    if ($aItem['thumb_file'] == '' && getParam('bx_sites_account_type') != 'No Automated Screenshots') {
-                        bx_sites_import('STW');
-                        $sThumbHTML = getThumbnailHTML($aItem['url'], array());
-                    }
-                    // END STW INTEGRATION
-
-                    $aTmplItems[] = array(
-                        'mod_prefix'         => $this->_sPrefix,
-                        'item_title'         => $aItem[$this->_oDb->_sFieldTitle],
-                        // BEGIN STW INTEGRATION
-                        'bx_if:is_image'     => array(
-                            'condition' => $sThumbHTML == false,
-                            'content'   => array(
-                                'item_page' => $aItem[$this->_oDb->_sFieldUri],
-                                'image'     => $aImage['file'] ? $aImage['file'] : $this->_oTemplate->getImageUrl('no-image-thumb.png')
-                            )
-                        ),
-                        'bx_if:is_thumbhtml' => array(
-                            'condition' => $sThumbHTML != '',
-                            'content'   => array(
-                                'item_page' => $aItem[$this->_oDb->_sFieldUri],
-                                'thumbhtml' => $sThumbHTML
-                            )
-                        ),
-                        // END STW INTEGRATION
-                    );
+            else if($aItem['status'] == 'approved' && $this->oPrivacy->check('view', $aItem['id'], $this->iOwnerId)) {
+                $aItem['thumb_file'] = '';
+                if($aItem[$this->_oDb->_sFieldThumb]) {
+                    $aImage = BxDolService::call('photos', 'get_entry', array($aItem[$this->_oDb->_sFieldThumb], 'browse'), 'Search');
+                    $aItem['thumb_file'] = $aImage['no_image'] || empty($aImage) ? '' : $aImage['file'];
                 }
+
+                $aItem[$this->_oDb->_sFieldUri] = $sBaseUrl . $aItem[$this->_oDb->_sFieldUri];
+                $aItem['url'] = strncasecmp($aItem['url'], 'http://', 7) != 0 && strncasecmp($aItem['url'], 'https://', 8) != 0 ? 'http://' . $aItem['url'] : $aItem['url'];
+                $aItems[] = $aItem;
+
+                // BEGIN STW INTEGRATION
+                if ($aItem['thumb_file'] == '' && getParam('bx_sites_account_type') != 'No Automated Screenshots') {
+                    bx_sites_import('STW');
+                    $sThumbHTML = getThumbnailHTML($aItem['url'], array());
+                }
+                // END STW INTEGRATION
+
+                $aTmplItems[] = array(
+                    'mod_prefix' => $this->_sPrefix,
+                    'item_title' => $aItem[$this->_oDb->_sFieldTitle],
+                    // BEGIN STW INTEGRATION
+                    'bx_if:is_image' => array(
+                        'condition' => $sThumbHTML == false,
+                        'content' => array('item_page' => $aItem[$this->_oDb->_sFieldUri], 'image' => $aImage['file'] ? $aImage['file'] : $this->_oTemplate->getImageUrl('no-image-thumb.png'))
+                    ),
+                    'bx_if:is_thumbhtml' => array(
+                        'condition' => $sThumbHTML != '',
+                        'content' => array('item_page' => $aItem[$this->_oDb->_sFieldUri], 'thumbhtml' => $sThumbHTML)
+                    ),
+                    // END STW INTEGRATION
+                );
             }
         }
 
-        if ($iDeleted == count($aObjectIds)) {
+        if($iDeleted == count($aObjectIds))
             return array('perform_delete' => true);
-        }
 
-        if (empty($aOwner) || empty($aItems)) {
+        if(empty($aOwner) || empty($aItems))
             return "";
-        }
 
         $sCss = '';
-        if ($aEvent['js_mode']) {
+        if($aEvent['js_mode'])
             $sCss = $this->_oTemplate->addCss(array('wall_outline.css'), true);
-        } else {
+        else
             $this->_oTemplate->addCss(array('wall_outline.css'));
-        }
 
-        $aResult    = array();
-        $iOwner     = (int)$aEvent['owner_id'];
-        $sOwner     = getNickName($iOwner);
+        $aResult = array();
+        $iOwner = (int)$aEvent['owner_id'];
+        $sOwner = getNickName($iOwner);
         $sOwnerLink = getProfileLink($iOwner);
 
         //--- Grouped events
         $iItems = count($aItems);
-        if ($iItems > 1) {
+        if($iItems > 1) {
             $aResult['content'] = $sCss . $this->_oTemplate->parseHtmlByName('wall_outline_grouped.html', array(
-                    'mod_prefix'          => $this->_sPrefix,
-                    'mod_icon'            => $sIcon,
-                    'user_name'           => $sOwner,
-                    'user_link'           => $sOwnerLink,
-                    'bx_repeat:items'     => $aTmplItems,
-                    'album_url'           => '',
-                    'album_title'         => '',
-                    'album_description'   => '',
-                    'album_comments'      => 0 ? _t('_wall_n_comments', 0) : _t('_wall_no_comments'),
-                    'album_comments_link' => '',
-                    'post_id'             => $aEvent['id'],
-                    'post_ago'            => $aEvent['ago']
-                ));
+                'mod_prefix' => $this->_sPrefix,
+                'mod_icon' => $sIcon,
+                'user_name' => $sOwner,
+                'user_link' => $sOwnerLink,
+                'bx_repeat:items' => $aTmplItems,
+                'album_url' => '',
+                'album_title' => '',
+                'album_description' => '',
+                'album_comments' => 0 ? _t('_wall_n_comments', 0) : _t('_wall_no_comments'),
+                'album_comments_link' => '',
+                'post_id' => $aEvent['id'],
+                'post_ago' => $aEvent['ago']
+            ));
 
             return $aResult;
         }
 
         //--- Single public event
-        $aItem     = $aItems[0];
+        $aItem = $aItems[0];
         $aTmplItem = $aTmplItems[0];
 
-        $aResult['content'] = $sCss . $this->_oTemplate->parseHtmlByName('wall_outline.html',
-                array_merge($aTmplItem, array(
-                    'mod_prefix'          => $this->_sPrefix,
-                    'mod_icon'            => $sIcon,
-                    'user_name'           => $sOwner,
-                    'user_link'           => $sOwnerLink,
-                    'item_page'           => $aItem[$this->_oDb->_sFieldUri],
-                    'item_title'          => $aItem[$this->_oDb->_sFieldTitle],
-                    'item_description'    => $this->_formatSnippetText($aItem, 200),
-                    'item_site_url'       => $aItem['url'],
-                    'item_site_url_title' => $this->_oTemplate->_getDomain($aItem['url']),
-                    'item_comments'       => (int)$aItem['commentsCount'] > 0 ? _t('_wall_n_comments',
-                        $aItem['commentsCount']) : _t('_wall_no_comments'),
-                    'item_comments_link'  => $aItem[$this->_oDb->_sFieldUri] . '#cmta-' . $this->_sPrefix . '-' . $aItem['id'],
-                    'post_id'             => $aEvent['id'],
-                    'post_ago'            => $aEvent['ago']
-                )));
+        $aResult['content'] =  $sCss . $this->_oTemplate->parseHtmlByName('wall_outline.html', array_merge($aTmplItem, array(
+            'mod_prefix' => $this->_sPrefix,
+            'mod_icon' => $sIcon,
+            'user_name' => $sOwner,
+            'user_link' => $sOwnerLink,
+            'item_page' => $aItem[$this->_oDb->_sFieldUri],
+            'item_title' => $aItem[$this->_oDb->_sFieldTitle],
+            'item_description' => $this->_formatSnippetText($aItem, 200),
+            'item_site_url' => $aItem['url'],
+            'item_site_url_title' => $this->_oTemplate->_getDomain($aItem['url']),
+            'item_comments' => (int)$aItem['commentsCount'] > 0 ? _t('_wall_n_comments', $aItem['commentsCount']) : _t('_wall_no_comments'),
+            'item_comments_link' => $aItem[$this->_oDb->_sFieldUri] . '#cmta-' . $this->_sPrefix . '-' . $aItem['id'],
+            'post_id' => $aEvent['id'],
+            'post_ago' => $aEvent['ago']
+        )));
 
         return $aResult;
     }
 
-    function serviceGetWallAddComment($aEvent)
+	function serviceGetWallAddComment($aEvent)
     {
-        $iId    = (int)$aEvent['object_id'];
+        $iId = (int)$aEvent['object_id'];
         $iOwner = (int)$aEvent['owner_id'];
         $sOwner = $iOwner != 0 ? getNickName($iOwner) : _t('_Anonymous');
 
         $aContent = unserialize($aEvent['content']);
-        if (empty($aContent) || empty($aContent['object_id'])) {
+        if(empty($aContent) || empty($aContent['object_id']))
             return '';
-        }
 
-        $iItem = (int)$aContent['object_id'];
+		$iItem = (int)$aContent['object_id'];
         $aItem = $this->_oDb->getSiteById($iItem);
-        if (empty($aItem) || !is_array($aItem)) {
-            return array('perform_delete' => true);
-        }
+        if(empty($aItem) || !is_array($aItem))
+        	return array('perform_delete' => true);
 
-        if (!$this->oPrivacy->check('view', $iItem, $this->iOwnerId)) {
+        if(!$this->oPrivacy->check('view', $iItem, $this->iOwnerId))
             return;
-        }
 
         bx_import('Cmts', $this->_aModule);
         $oCmts = new BxSitesCmts('bx_sites', $iItem);
-        if (!$oCmts->isEnabled()) {
+        if(!$oCmts->isEnabled())
             return '';
-        }
 
         $aComment = $oCmts->getCommentRow($iId);
-        if (empty($aComment) || !is_array($aComment)) {
-            return array('perform_delete' => true);
-        }
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sImage = '';
-        if ($aItem['photo']) {
-            $a      = array('ID' => $aItem['id'], 'Avatar' => $aItem['photo']);
+        if($aItem['photo']) {
+            $a = array('ID' => $aItem['id'], 'Avatar' => $aItem['photo']);
             $aImage = BxDolService::call('photos', 'get_image', array($a, 'browse'), 'Search');
             $sImage = $aImage['no_image'] ? '' : $aImage['file'];
         }
 
-        $sCss       = '';
+        $sCss = '';
         $sCssPrefix = str_replace('_', '-', $this->_sPrefix);
-        $sBaseUrl   = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
-        if ($aEvent['js_mode']) {
+        $sBaseUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
+        if($aEvent['js_mode'])
             $sCss = $this->_oTemplate->addCss(array('wall_post.css', 'main.css', 'twig.css'), true);
-        } else {
+        else
             $this->_oTemplate->addCss(array('wall_post.css', 'main.css', 'twig.css'));
-        }
 
         bx_import('BxTemplVotingView');
         $oVoting = new BxTemplVotingView ('bx_sites', 0, 0);
 
         $sTextWallObject = _t('_bx_sites_wall_object');
-
         return array(
-            'title'       => _t('_bx_sites_wall_added_new_title_comment', $sOwner, $sTextWallObject),
+            'title' => _t('_bx_sites_wall_added_new_title_comment', $sOwner, $sTextWallObject),
             'description' => $aComment['cmt_text'],
-            'content'     => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_comment.html',
-                    array(
-                        'mod_prefix'       => $sCssPrefix,
-                        'cpt_user_name'    => $sOwner,
-                        'cpt_added_new'    => _t('_bx_sites_wall_added_new_comment'),
-                        'cpt_object'       => $sTextWallObject,
-                        'cpt_item_url'     => $sBaseUrl . $aItem['entryUri'],
-                        'cnt_comment_text' => $aComment['cmt_text'],
-                        'snippet'          => $this->_oTemplate->unit($aItem, 'unit_wall', $oVoting),
-                    ))
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_comment.html', array(
+        		'mod_prefix' => $sCssPrefix,
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_sites_wall_added_new_comment'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $sBaseUrl . $aItem['entryUri'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'snippet' => $this->_oTemplate->unit ($aItem, 'unit_wall', $oVoting),
+	        ))
         );
     }
 
@@ -871,105 +806,73 @@ class BxSitesModule extends BxDolTwigModule
      */
     function serviceGetWallPostComment($aEvent)
     {
-        $iId    = (int)$aEvent['object_id'];
+        $iId = (int)$aEvent['object_id'];
         $iOwner = (int)$aEvent['owner_id'];
         $sOwner = getNickName($iOwner);
 
         $aItem = $this->_oDb->getSiteById($iId);
-        if (empty($aItem) || !is_array($aItem)) {
-            return array('perform_delete' => true);
-        }
+        if(empty($aItem) || !is_array($aItem))
+        	return array('perform_delete' => true);
 
-        if (!$this->oPrivacy->check('view', $iId, $this->iOwnerId)) {
+        if(!$this->oPrivacy->check('view', $iId, $this->iOwnerId))
             return;
-        }
 
         $aContent = unserialize($aEvent['content']);
-        if (empty($aContent) || !isset($aContent['comment_id'])) {
+        if(empty($aContent) || !isset($aContent['comment_id']))
             return '';
-        }
 
         bx_import('Cmts', $this->_aModule);
         $oCmts = new BxSitesCmts('bx_sites', $iId);
-        if (!$oCmts->isEnabled()) {
+        if(!$oCmts->isEnabled())
             return '';
-        }
 
         $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
-        if (empty($aComment) || !is_array($aComment)) {
-            return array('perform_delete' => true);
-        }
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sImage = '';
-        if ($aItem['photo']) {
-            $a      = array('ID' => $aItem['id'], 'Avatar' => $aItem['photo']);
+        if($aItem['photo']) {
+            $a = array('ID' => $aItem['id'], 'Avatar' => $aItem['photo']);
             $aImage = BxDolService::call('photos', 'get_image', array($a, 'browse'), 'Search');
             $sImage = $aImage['no_image'] ? '' : $aImage['file'];
         }
 
-        $sCss     = '';
+        $sCss = '';
         $sBaseUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/';
-        if ($aEvent['js_mode']) {
+        if($aEvent['js_mode'])
             $sCss = $this->_oTemplate->addCss(array('wall_post.css', 'main.css', 'twig.css'), true);
-        } else {
+        else
             $this->_oTemplate->addCss(array('wall_post.css', 'main.css', 'twig.css'));
-        }
 
         bx_import('BxTemplVotingView');
         $oVoting = new BxTemplVotingView ('bx_sites', 0, 0);
 
         $sTextWallObject = _t('_bx_sites_wall_object');
-
         return array(
-            'title'       => _t('_bx_sites_wall_added_new_title_comment', $sOwner, $sTextWallObject),
+            'title' => _t('_bx_sites_wall_added_new_title_comment', $sOwner, $sTextWallObject),
             'description' => $aComment['cmt_text'],
-            'content'     => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_comment.html',
-                    array(
-                        'mod_prefix'       => str_replace('_', '-', $this->_sPrefix),
-                        'cpt_user_name'    => $sOwner,
-                        'cpt_added_new'    => _t('_bx_sites_wall_added_new_comment'),
-                        'cpt_object'       => $sTextWallObject,
-                        'cpt_item_url'     => $sBaseUrl . $aItem['entryUri'],
-                        'cnt_comment_text' => $aComment['cmt_text'],
-                        'snippet'          => $this->_oTemplate->unit($aItem, 'unit_wall', $oVoting),
-                    ))
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('modules/boonex/wall/|timeline_comment.html', array(
+        		'mod_prefix' => str_replace('_', '-', $this->_sPrefix),
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_sites_wall_added_new_comment'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $sBaseUrl . $aItem['entryUri'],
+	            'cnt_comment_text' => $aComment['cmt_text'],
+	            'snippet' => $this->_oTemplate->unit ($aItem, 'unit_wall', $oVoting),
+	        ))
         );
     }
 
-    function serviceGetSpyData()
+    function serviceGetSpyData ()
     {
         return array(
             'handlers' => array(
-                array(
-                    'alert_unit'    => 'bx_sites',
-                    'alert_action'  => 'add',
-                    'module_uri'    => 'sites',
-                    'module_class'  => 'Module',
-                    'module_method' => 'get_spy_post'
-                ),
-                array(
-                    'alert_unit'    => 'bx_sites',
-                    'alert_action'  => 'change',
-                    'module_uri'    => 'sites',
-                    'module_class'  => 'Module',
-                    'module_method' => 'get_spy_post'
-                ),
-                array(
-                    'alert_unit'    => 'bx_sites',
-                    'alert_action'  => 'rate',
-                    'module_uri'    => 'sites',
-                    'module_class'  => 'Module',
-                    'module_method' => 'get_spy_post'
-                ),
-                array(
-                    'alert_unit'    => 'bx_sites',
-                    'alert_action'  => 'commentPost',
-                    'module_uri'    => 'sites',
-                    'module_class'  => 'Module',
-                    'module_method' => 'get_spy_post'
-                )
+                array('alert_unit' => 'bx_sites', 'alert_action' => 'add', 'module_uri' => 'sites', 'module_class' => 'Module', 'module_method' => 'get_spy_post'),
+                array('alert_unit' => 'bx_sites', 'alert_action' => 'change', 'module_uri' => 'sites', 'module_class' => 'Module', 'module_method' => 'get_spy_post'),
+                array('alert_unit' => 'bx_sites', 'alert_action' => 'rate', 'module_uri' => 'sites', 'module_class' => 'Module', 'module_method' => 'get_spy_post'),
+                array('alert_unit' => 'bx_sites', 'alert_action' => 'commentPost', 'module_uri' => 'sites', 'module_class' => 'Module', 'module_method' => 'get_spy_post')
             ),
-            'alerts'   => array(
+            'alerts' => array(
                 array('unit' => 'bx_sites', 'action' => 'add'),
                 array('unit' => 'bx_sites', 'action' => 'change'),
                 array('unit' => 'bx_sites', 'action' => 'rate'),
@@ -984,25 +887,24 @@ class BxSitesModule extends BxDolTwigModule
     {
         $aRet = array();
 
-        switch ($sAction) {
+        switch($sAction) {
             case 'add' :
             case 'change' :
             case 'rate' :
             case 'commentPost' :
                 $aSite = $this->_oDb->getSiteById($iObjectId);
-                if (!empty($aSite)) {
+                if (!empty($aSite))
                     $aRet = array(
-                        'lang_key'     => '_bx_sites_poll_' . $sAction,
-                        'params'       => array(
+                        'lang_key'  => '_bx_sites_poll_' . $sAction,
+                        'params'    => array(
                             'profile_link' => $iSenderId ? getProfileLink($iSenderId) : 'javascript:void(0)',
                             'profile_nick' => $iSenderId ? getNickName($iSenderId) : _t('_Guest'),
-                            'site_url'     => !empty($aSite) ? $this->_oConfig->getBaseUri() . 'view/' . $aSite['entryUri'] : '',
+                            'site_url' => !empty($aSite) ? $this->_oConfig->getBaseUri() . 'view/' . $aSite['entryUri'] : '',
                             'site_caption' => !empty($aSite) ? $aSite['title'] : ''
                         ),
                         'recipient_id' => $aSite['ownerid'],
-                        'spy_type'     => 'content_activity',
+                        'spy_type' => 'content_activity',
                     );
-                }
                 break;
 
         }
@@ -1010,28 +912,25 @@ class BxSitesModule extends BxDolTwigModule
         return $aRet;
     }
 
-    function serviceGetMemberMenuItem()
+    function serviceGetMemberMenuItem ()
     {
-        return parent::_serviceGetMemberMenuItem(_t('_bx_sites'), _t('_bx_sites'), 'link');
+        return parent::_serviceGetMemberMenuItem (_t('_bx_sites'), _t('_bx_sites'), 'link');
     }
 
-    function serviceGetMemberMenuItemAddContent()
+    function serviceGetMemberMenuItemAddContent ()
     {
-        if (!$this->isAllowedAdd()) {
+        if (!$this->isAllowedAdd())
             return '';
-        }
-
-        return parent::_serviceGetMemberMenuItem(_t('_bx_sites_site'), _t('_bx_sites_site'), 'link', false, 'add');
+        return parent::_serviceGetMemberMenuItem (_t('_bx_sites_site'), _t('_bx_sites_site'), 'link', false, 'add');
     }
 
     function browseMy($aProfile, $sValue = '')
     {
-        bx_sites_import('PageProfile');
-        if (strlen($sValue)) {
+        bx_sites_import ('PageProfile');
+        if (strlen($sValue))
             $sTitle = _t('_bx_sites_caption_browse_' . $sValue);
-        } else {
+        else
             $sTitle = _t('_bx_sites_caption_browse_my');
-        }
         $oPage = new BxSitesPageProfile($this, $aProfile, $sValue);
         $this->_oTemplate->addCss(array('main.css'));
         $this->_oTemplate->pageStart();
@@ -1046,97 +945,80 @@ class BxSitesModule extends BxDolTwigModule
 
     function isAllowedEdit($aSite, $isPerformAction = false)
     {
-        if ($this->isAdmin() || ($GLOBALS['logged']['member'] && $aSite['ownerid'] == $this->iOwnerId && isProfileActive($this->iOwnerId))) {
+        if ($this->isAdmin() || ($GLOBALS['logged']['member'] && $aSite['ownerid'] == $this->iOwnerId && isProfileActive($this->iOwnerId)))
             return true;
-        }
         $this->_defineActions();
         $aCheck = checkAction($this->iOwnerId, BX_SITES_EDIT_ANY_SITE, $isPerformAction);
-
         return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
 
-    function isAllowedAdd($isPerformAction = false)
+    function isAllowedAdd ($isPerformAction = false)
     {
-        if ($this->isAdmin()) {
+        if ($this->isAdmin())
             return true;
-        }
-        if (!$GLOBALS['logged']['member']) {
+        if (!$GLOBALS['logged']['member'])
             return false;
-        }
         $this->_defineActions();
         $aCheck = checkAction($this->iOwnerId, BX_SITES_ADD, $isPerformAction);
-
         return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
 
     function isAllowedMarkAsFeatured($aSite, $isPerformAction = false)
     {
-        if ($this->isAdmin()) {
+        if ($this->isAdmin())
             return true;
-        }
         $this->_defineActions();
         $aCheck = checkAction($this->iOwnerId, BX_SITES_MARK_AS_FEATURED, $isPerformAction);
-
         return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
 
     function isAllowedDelete(&$aSite, $isPerformAction = false)
     {
-        if ($this->isAdmin() || ($GLOBALS['logged']['member'] && $aSite['ownerid'] == $this->iOwnerId && isProfileActive($this->iOwnerId))) {
+        if ($this->isAdmin() || ($GLOBALS['logged']['member'] && $aSite['ownerid'] == $this->iOwnerId && isProfileActive($this->iOwnerId)))
             return true;
-        }
         $this->_defineActions();
         $aCheck = checkAction($this->iOwnerId, BX_SITES_DELETE_ANY_SITE, $isPerformAction);
-
         return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
 
     function isAllowedShare(&$aDataEntry)
     {
-        if ($aDataEntry['allowView'] != BX_DOL_PG_ALL) {
-            return false;
-        }
+    	if($aDataEntry['allowView'] != BX_DOL_PG_ALL)
+    		return false;
 
         return true;
     }
 
-    function isAllowedView($aSite, $isPerformAction = false)
+    function isAllowedView ($aSite, $isPerformAction = false)
     {
         // admin and owner always have access
-        if ($this->isAdmin() || $aSite['ownerid'] == $this->iOwnerId) {
+        if ($this->isAdmin() || $aSite['ownerid'] == $this->iOwnerId)
             return true;
-        }
 
         // check admin acl
         $this->_defineActions();
         $aCheck = checkAction($this->iOwnerId, BX_SITES_VIEW, $isPerformAction);
-        if ($aCheck[CHECK_ACTION_RESULT] != CHECK_ACTION_RESULT_ALLOWED) {
+        if ($aCheck[CHECK_ACTION_RESULT] != CHECK_ACTION_RESULT_ALLOWED)
             return false;
-        }
 
         // check user group
         return $this->oPrivacy->check('view', $aSite['id'], $this->iOwnerId);
     }
 
-    function isAllowedBrowse($isPerformAction = false)
+    function isAllowedBrowse ($isPerformAction = false)
     {
-        if ($this->isAdmin()) {
-            return true;
-        }
+        if ($this->isAdmin()) return true;
         $this->_defineActions();
         $aCheck = checkAction($this->iOwnerId, BX_SITES_BROWSE, $isPerformAction);
-
         return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
 
-    function isAllowedSearch($isPerformAction = false)
+    function isAllowedSearch ($isPerformAction = false)
     {
-        if ($this->isAdmin()) {
+        if ($this->isAdmin())
             return true;
-        }
         $this->_defineActions();
         $aCheck = checkAction($this->iOwnerId, BX_SITES_SEARCH, $isPerformAction);
-
         return $aCheck[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
 
@@ -1145,9 +1027,8 @@ class BxSitesModule extends BxDolTwigModule
         $aSite = $this->_oDb->getSiteById($iSiteId);
 
         if (count($aSite) > 0 && $this->_oDb->deleteSiteById($iSiteId)) {
-            if ($aSite['photo'] != 0) {
+            if ($aSite['photo'] != 0)
                 BxDolService::call('photos', 'remove_object', array($aSite['photo']), 'Module');
-            }
 
             // BEGIN STW INTEGRATION
             bx_sites_import('STW');
@@ -1186,13 +1067,11 @@ class BxSitesModule extends BxDolTwigModule
 
     function clearSiteThumbCache()
     {
-        if (!($rHandler = opendir($this->sThumbPath))) {
+        if (!($rHandler = opendir($this->sThumbPath)))
             return 0;
-        }
 
-        while (($sFile = readdir($rHandler)) !== false) {
+        while (($sFile = readdir($rHandler)) !== false)
             @unlink($this->sThumbPath . $sFile);
-        }
 
         closedir($rHandler);
 
@@ -1207,30 +1086,21 @@ class BxSitesModule extends BxDolTwigModule
         $this->onSiteChanged($iSiteId, $sStatus);
     }
 
-    function _defineActions()
+    function _defineActions ()
     {
-        defineMembershipActions(array(
-            'sites view',
-            'sites browse',
-            'sites search',
-            'sites add',
-            'sites edit any site',
-            'sites delete any site',
-            'sites mark as featured',
-            'sites approve'
-        ));
+        defineMembershipActions(array('sites view', 'sites browse', 'sites search', 'sites add', 'sites edit any site', 'sites delete any site', 'sites mark as featured', 'sites approve'));
     }
 
     // ================================== tags/cats reparse functions
 
-    function reparseTags($iSiteId)
+    function reparseTags ($iSiteId)
     {
         bx_import('BxDolTags');
         $o = new BxDolTags ();
         $o->reparseObjTags('bx_sites', $iSiteId);
     }
 
-    function reparseCategories($iSiteId)
+    function reparseCategories ($iSiteId)
     {
         bx_import('BxDolCategories');
         $o = new BxDolCategories ();
@@ -1239,11 +1109,11 @@ class BxSitesModule extends BxDolTwigModule
 
     // ================================== events
 
-    function onSiteCreate($iSiteId, $sStatus)
+    function onSiteCreate ($iSiteId, $sStatus)
     {
         if ('approved' == $sStatus) {
-            $this->reparseTags($iSiteId);
-            $this->reparseCategories($iSiteId);
+            $this->reparseTags ($iSiteId);
+            $this->reparseCategories ($iSiteId);
         }
 
         bx_import('BxDolAlerts');
@@ -1251,40 +1121,40 @@ class BxSitesModule extends BxDolTwigModule
         $oAlert->alert();
     }
 
-    function onSiteChanged($iSiteId, $sStatus)
+    function onSiteChanged ($iSiteId, $sStatus)
     {
-        $this->reparseTags($iSiteId);
-        $this->reparseCategories($iSiteId);
+        $this->reparseTags ($iSiteId);
+        $this->reparseCategories ($iSiteId);
 
         bx_import('BxDolAlerts');
         $oAlert = new BxDolAlerts('bx_sites', 'change', $iSiteId, $this->iOwnerId, array('Status' => $sStatus));
         $oAlert->alert();
     }
 
-    function onSiteDeleted($iSiteId)
+    function onSiteDeleted ($iSiteId)
     {
         // delete associated tags and categories
-        $this->reparseTags($iSiteId);
-        $this->reparseCategories($iSiteId);
+        $this->reparseTags ($iSiteId);
+        $this->reparseCategories ($iSiteId);
 
         // delete sites votings
         bx_import('BxDolVoting');
         $oVotingProfile = new BxDolVoting ('bx_sites', 0, 0);
-        $oVotingProfile->deleteVotings($iSiteId);
+        $oVotingProfile->deleteVotings ($iSiteId);
 
         // delete sites comments
         bx_import('BxDolCmts');
         $oCmts = new BxDolCmts ('bx_sites', $iSiteId);
-        $oCmts->onObjectDelete();
+        $oCmts->onObjectDelete ();
 
         // delete views
-        bx_import('BxDolViews');
+        bx_import ('BxDolViews');
         $oViews = new BxDolViews('bx_sites', $iSiteId, false);
         $oViews->onObjectDelete($iSiteId);
 
         //delete all subscriptions
-        $oSubscription = BxDolSubscription::getInstance();
-        $oSubscription->unsubscribe(array('type' => 'object_id', 'unit' => 'bx_sites', 'object_id' => $iSiteId));
+		$oSubscription = BxDolSubscription::getInstance();
+		$oSubscription->unsubscribe(array('type' => 'object_id', 'unit' => 'bx_sites', 'object_id' => $iSiteId));
 
         // arise alert
         bx_import('BxDolAlerts');
@@ -1292,7 +1162,7 @@ class BxSitesModule extends BxDolTwigModule
         $oAlert->alert();
     }
 
-    function onSiteMarkAsFeatured($aSite)
+    function onSiteMarkAsFeatured ($aSite)
     {
         // arise alert
         bx_import('BxDolAlerts');
@@ -1305,57 +1175,49 @@ class BxSitesModule extends BxDolTwigModule
     function _actionAdministrationManage($isAdminEntries)
     {
         if ($_POST['action_activate'] && is_array($_POST['entry'])) {
-            foreach ($_POST['entry'] as $iSiteId) {
+            foreach ($_POST['entry'] as $iSiteId)
                 $this->setStatusSite($iSiteId, 'approved');
-            }
         } elseif ($_POST['action_delete'] && is_array($_POST['entry'])) {
-            foreach ($_POST['entry'] as $iSiteId) {
+            foreach ($_POST['entry'] as $iSiteId)
                 $this->deleteSite($iSiteId);
-            }
         }
         // refresh sites thumbnail
-        if ($_POST['action_refresh_thumb'] && is_array($_POST['entry'])) {
-            foreach ($_POST['entry'] as $iSiteId) {
+        if ($_POST['action_refresh_thumb'] && is_array($_POST['entry']))
+            foreach ($_POST['entry'] as $iSiteId)
                 $this->refreshSiteThumb($iSiteId);
-            }
-        }
 
         $aButtons = array(
             'action_delete' => '_bx_sites_admin_delete',
-        );
+            );
 
         if (getParam('bx_sites_redo') == 'on' && getParam('bx_sites_account_type') == 'Enabled') {
             $aButtons['action_refresh_thumb'] = '_bx_sites_admin_refresh_thumb';
         }
 
-        if (!$isAdminEntries) {
+            if (!$isAdminEntries)
             $aButtons['action_activate'] = '_bx_sites_admin_activate';
-        }
 
-        $sForm = $this->_manageSites($isAdminEntries ? 'admin' : 'adminpending', '', $aButtons);
-
-        return $this->_oTemplate->parseHtmlByName('my_sites_manage.html', array('form' => $sForm));
+            $sForm = $this->_manageSites($isAdminEntries ? 'admin' : 'adminpending', '', $aButtons);
+            return $this->_oTemplate->parseHtmlByName('my_sites_manage.html', array('form' => $sForm));
     }
 
     function _actionAdministrationAdd()
     {
-        return $GLOBALS['oSysTemplate']->parseHtmlByName('default_padding.html',
-            array('content' => $this->_addSiteForm()));
+        return $GLOBALS['oSysTemplate']->parseHtmlByName('default_padding.html', array('content' => $this->_addSiteForm()));
     }
 
     function _actionAdministrationSettings()
     {
         $iId = $this->_oDb->getSettingsCategory();
 
-        if (empty($iId)) {
+        if(empty($iId))
             return MsgBox(_t('_sys_request_page_not_found_cpt'));
-        }
 
         bx_import('BxDolAdminSettings');
 
         $mixedResult = '';
-        if (isset($_POST['save']) && isset($_POST['cat'])) {
-            $oSettings   = new BxDolAdminSettings($iId);
+        if(isset($_POST['save']) && isset($_POST['cat'])) {
+            $oSettings = new BxDolAdminSettings($iId);
             $mixedResult = $oSettings->saveChanges($_POST);
         }
 
@@ -1377,31 +1239,30 @@ class BxSitesModule extends BxDolTwigModule
         }
 
         $oSettings = new BxDolAdminSettings($iId);
-        $sForm     = $oSettings->getForm();
+        $sForm = $oSettings->getForm();
 
         $aAccInfo = $this->_oDb->getAccountInfo(getParam('bx_sites_key_id'));
-        $aVars    = array(
-            'actual_url'        => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'administration/settings',
-            'response_status'   => $aResponse['stw_response_status'] == 'Success' ? 1 : 0,
-            'account_level'     => $aAccInfo['account_level'] != 0 ? $aAccInfo['account_level'] : 0,
-            'inside_pages'      => $aAccInfo['inside_pages'] == 1 ? 1 : 0,
-            'custom_size'       => $aAccInfo['custom_size'] == 1 ? 1 : 0,
-            'full_length'       => $aAccInfo['full_length'] == 1 ? 1 : 0,
-            'refresh_ondemand'  => $aAccInfo['refresh_ondemand'] == 1 ? 1 : 0,
-            'custom_delay'      => $aAccInfo['custom_delay'] == 1 ? 1 : 0,
-            'custom_quality'    => $aAccInfo['custom_quality'] == 1 ? 1 : 0,
+        $aVars = array (
+            'actual_url' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'administration/settings',
+            'response_status' => $aResponse['stw_response_status'] == 'Success' ? 1 : 0,
+            'account_level' => $aAccInfo['account_level'] != 0 ? $aAccInfo['account_level'] : 0,
+            'inside_pages' => $aAccInfo['inside_pages'] == 1 ? 1 : 0,
+            'custom_size' => $aAccInfo['custom_size'] == 1 ? 1 : 0,
+            'full_length' => $aAccInfo['full_length'] == 1 ? 1 : 0,
+            'refresh_ondemand' => $aAccInfo['refresh_ondemand'] == 1 ? 1 : 0,
+            'custom_delay' => $aAccInfo['custom_delay'] == 1 ? 1 : 0,
+            'custom_quality' => $aAccInfo['custom_quality'] == 1 ? 1 : 0,
             'custom_resolution' => $aAccInfo['custom_resolution'] == 1 ? 1 : 0,
-            'custom_messages'   => $aAccInfo['custom_messages'] == 1 ? 1 : 0,
+            'custom_messages' => $aAccInfo['custom_messages'] == 1 ? 1 : 0,
         );
-        $sCode    = $this->_oTemplate->parseHtmlByName('settings_info.html', $aVars);
+        $sCode = $this->_oTemplate->parseHtmlByName('settings_info.html', $aVars);
 
         $sResult = $sCodeSTW;
-        if ($mixedResult !== true && !empty($mixedResult)) {
+        if($mixedResult !== true && !empty($mixedResult))
             $sResult .= $mixedResult;
-        }
         $sResult .= $sCode . $sForm;
 
-        $aVars = array(
+        $aVars = array (
             'content' => $sResult
         );
 
@@ -1411,31 +1272,29 @@ class BxSitesModule extends BxDolTwigModule
     function _addSiteForm()
     {
         bx_sites_import('FormAdd');
-        $oForm   = new BxSitesFormAdd($this);
+        $oForm = new BxSitesFormAdd($this);
         $sMsgBox = '';
 
         if (isset($_POST['url'])) {
             if (isset($_POST['title'])) {
                 $aParam = array('url' => process_pass_data($_POST['url']));
-                if (isset($_POST['thumbnail_html'])) {
+                if (isset($_POST['thumbnail_html']))
                     $this->_addThumbToForm($_POST['thumbnail_html'], $aParam);
-                }
                 $oForm = new BxSitesFormAdd($this, $aParam);
                 $oForm->initChecker();
                 if ($oForm->isSubmittedAndValid()) {
                     $sCategories = implode(';', array_unique(explode(';', $oForm->getCleanValue('categories'))));
-                    $sEntryUri   = getEntryUri($_POST['title']);
+                    $sEntryUri = getEntryUri($_POST['title']);
                     unset($oForm->aInputs['categories']);
-                    $aValsAdd = array(
-                        'date'       => time(),
-                        'entryUri'   => $oForm->generateUri(),
-                        'status'     => $this->_oConfig->_bAutoapprove || $this->isAdmin() ? 'approved' : 'pending',
+                    $aValsAdd = array (
+                        'date' => time(),
+                        'entryUri' => $oForm->generateUri(),
+                        'status' => $this -> _oConfig -> _bAutoapprove || $this->isAdmin() ? 'approved' : 'pending',
                         'categories' => $sCategories
                     );
 
-                    if (isset($_FILES['photo']['tmp_name']) && $_FILES['photo']['tmp_name']) {
+                    if (isset($_FILES['photo']['tmp_name']) && $_FILES['photo']['tmp_name'])
                         $aValsAdd['photo'] = $oForm->uploadPhoto($_FILES['photo']['tmp_name']);
-                    }
 
                     $aValsAdd['ownerid'] = $this->iOwnerId;
 
@@ -1443,48 +1302,45 @@ class BxSitesModule extends BxDolTwigModule
                         $this->isAllowedAdd(true);
                         $this->onSiteCreate($iSiteId, $aValsAdd['status']);
                         header('Location:' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'browse/my');
-                    } else {
+                    } else
                         $sMsgBox = MsgBox(_t('_bx_sites_error_occured'));
-                    }
                 }
             } else {
                 $oForm->initChecker();
                 if ($oForm->isSubmittedAndValid()) {
-                    $sUrl     = process_pass_data($_POST['url']);
-                    $sUrlFull = strncasecmp($sUrl, 'http://', 7) != 0 && strncasecmp($sUrl, 'https://',
-                        8) != 0 ? 'http://' . $sUrl : $sUrl;
-                    $aSite    = $this->_oDb->getSiteByUrl($sUrl);
+                    $sUrl = process_pass_data($_POST['url']);
+                    $sUrlFull = strncasecmp($sUrl, 'http://', 7) != 0 && strncasecmp($sUrl, 'https://', 8) != 0 ? 'http://' . $sUrl : $sUrl;
+                    $aSite = $this->_oDb->getSiteByUrl($sUrl);
 
                     if (count($aSite) == 0) {
                         $aInfo = getSiteInfo($sUrlFull);
 
                         if (!empty($aInfo)) {
                             $aParam = array(
-                                'url'         => $sUrl,
-                                'title'       => $aInfo['title'],
+                                'url' => $sUrl,
+                                'title' => $aInfo['title'],
                                 'description' => $aInfo['description']
                             );
 
                             // BEGIN STW INTEGRATION
                             if (getParam('bx_sites_account_type') != 'No Automated Screenshots') {
-                                $aSTWOptions = array();
+                                $aSTWOptions = array(
+                                );
 
                                 bx_sites_import('STW');
                                 $sThumbHTML = getThumbnailHTML($sUrlFull, $aSTWOptions, false, false);
-                                if ($sThumbHTML) {
+                                if ($sThumbHTML)
                                     $this->_addThumbToForm($sThumbHTML, $aParam);
-                                }
                             }
                             // END STW INTEGRATION
 
                             $oForm = new BxSitesFormAdd($this, $aParam);
                         } else {
-                            $sMsgBox                        = MsgBox(_t('_bx_sites_site_link_error'));
+                            $sMsgBox = MsgBox(_t('_bx_sites_site_link_error'));
                             $oForm->aInputs['url']['value'] = $sUrl;
                         }
-                    } else {
+                    } else
                         header('Location:' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/' . $aSite['entryUri']);
-                    }
                 }
             }
         }
@@ -1496,7 +1352,7 @@ class BxSitesModule extends BxDolTwigModule
 
     function _addThumbToForm($sThumbHTML, &$aParam)
     {
-        $aParam['thumbnail']      = process_pass_data($sThumbHTML);
+        $aParam['thumbnail'] = process_pass_data($sThumbHTML);
         $aParam['thumbnail_html'] = process_pass_data($sThumbHTML);
     }
 
@@ -1523,21 +1379,20 @@ class BxSitesModule extends BxDolTwigModule
     function _manageSites($sMode, $sValue, $aButtons)
     {
         bx_sites_import('SearchResult');
-        $oSearchResult                = new BxSitesSearchResult($sMode, $sValue);
+        $oSearchResult = new BxSitesSearchResult($sMode, $sValue);
         $oSearchResult->sUnitTemplate = 'unit_admin';
-        $sActionsPanel                = '';
+        $sActionsPanel = '';
 
         $sFormName = 'manageSitesForm';
 
-        if ($sContent = $oSearchResult->displayResultBlock(true)) {
-            $sActionsPanel = $oSearchResult->showAdminActionsPanel($sFormName, $aButtons);
-        } else {
-            $sContent = MsgBox(_t('_Empty'));
-        }
+        if ($sContent = $oSearchResult->displayResultBlock(true))
+        $sActionsPanel = $oSearchResult->showAdminActionsPanel($sFormName, $aButtons);
+        else
+        $sContent = MsgBox(_t('_Empty'));
 
         $aVars = array(
-            'form_name'     => $sFormName,
-            'content'       => $sContent,
+            'form_name' => $sFormName,
+            'content' => $sContent,
             'actions_panel' => $sActionsPanel
         );
 

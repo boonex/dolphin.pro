@@ -16,35 +16,33 @@ class BxSitesPageHon extends BxDolPageView
     {
         parent::__construct('bx_sites_hon');
 
-        $this->_oSites    = &$oSites;
+        $this->_oSites = &$oSites;
         $this->_oTemplate = $oSites->_oTemplate;
-        $this->_oDb       = $oSites->_oDb;
+        $this->_oDb = $oSites->_oDb;
     }
 
     function getBlockCode_ViewPreviously()
     {
         bx_sites_import('SearchResult');
-        $oSearchResult                = new BxSitesSearchResult('hon_prev_rate');
+        $oSearchResult = new BxSitesSearchResult('hon_prev_rate');
         $oSearchResult->sUnitTemplate = 'block_prev_hon';
 
-        if ($s = $oSearchResult->displayResultBlock()) {
+        if ($s = $oSearchResult->displayResultBlock())
             return $s;
-        } else {
+        else
             return MsgBox(_t('_Empty'));
-        }
     }
 
     function getBlockCode_ViewRate()
     {
         bx_sites_import('SearchResult');
-        $oSearchResult                = new BxSitesSearchResult('hon_rate');
-        $oSearchResult->sUnitName     = 'hon';
+        $oSearchResult = new BxSitesSearchResult('hon_rate');
+        $oSearchResult->sUnitName = 'hon';
         $oSearchResult->sUnitTemplate = 'block_hon';
 
-        if ($s = $oSearchResult->displayResultBlock()) {
+        if ($s = $oSearchResult->displayResultBlock())
             return $s;
-        } else {
+        else
             return MsgBox(_t('_Empty'));
-        }
     }
 }

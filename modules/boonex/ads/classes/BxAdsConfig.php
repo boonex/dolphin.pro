@@ -36,10 +36,10 @@ class BxAdsConfig extends BxDolConfig
 
         $this->sSpacerPath = getTemplateIcon('spacer.gif');
 
-        $this->sSQLPostsTable      = 'bx_ads_main';
+        $this->sSQLPostsTable = 'bx_ads_main';
         $this->sSQLPostsMediaTable = 'bx_ads_main_media';
-        $this->sSQLCatTable        = 'bx_ads_category';
-        $this->sSQLSubcatTable     = 'bx_ads_category_subs';
+        $this->sSQLCatTable = 'bx_ads_category';
+        $this->sSQLSubcatTable = 'bx_ads_category_subs';
 
         $this->_sCommentSystemName = "ads";
     }

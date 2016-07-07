@@ -4,13 +4,13 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxTemplCalendar');
+bx_import ('BxTemplCalendar');
 
 class BxDolProfilesCalendar extends BxTemplCalendar
 {
     var $sMode = 'dor';
 
-    function __construct($iYear, $iMonth)
+    function __construct ($iYear, $iMonth)
     {
         parent::__construct($iYear, $iMonth);
     }
@@ -33,11 +33,11 @@ class BxDolProfilesCalendar extends BxTemplCalendar
      *  WHERE `Date` >= UNIX_TIMESTAMP('{$this->iYear}-{$this->iMonth}-1') AND `Date` < UNIX_TIMESTAMP('{$this->iNextYear}-{$this->iNextMonth}-1') AND `Status` = 'approved'");
      *
      */
-    function getData()
+    function getData ()
     {
-        switch ($this->sMode) {
+        switch($this->sMode) {
             case 'dor':
-                return db_res_assoc_arr("
+                return db_res_assoc_arr ("
                     SELECT `Profiles`.*, DAYOFMONTH(`Profiles`.`DateReg`) AS `Day`
                     FROM `Profiles`
                     WHERE
@@ -47,8 +47,7 @@ class BxDolProfilesCalendar extends BxTemplCalendar
                 ");
             case 'dob':
                 $aWhere[] = "MONTH(`DateOfBirth`) = MONTH(CURDATE()) AND DAY(`DateOfBirth`) = DAY(CURDATE())";
-
-                return db_res_assoc_arr("
+                return db_res_assoc_arr ("
                     SELECT `Profiles`.*, DAYOFMONTH(`DateOfBirth`) AS `Day`
                     FROM `Profiles`
                     WHERE
@@ -71,7 +70,7 @@ class BxDolProfilesCalendar extends BxTemplCalendar
         $iProfileID = (int)$aData['ID'];
 
         $sName = getNickName($iProfileID);
-        $sUrl  = getProfileLink($iProfileID);
+        $sUrl = getProfileLink($iProfileID);
 
         return <<<EOF
 <div style="width:95%;">
@@ -86,19 +85,18 @@ EOF;
      * so if your base url is /m/some_module/calendar/, it will be transormed to
      * /m/some_module/calendar/YEAR/MONTH, like /m/some_module/calendar/2009/3
      */
-    function getBaseUri()
+    function getBaseUri ()
     {
-        $sPossibleMode = (isset($_REQUEST['mode']) && $_REQUEST['mode'] != '') ? '&mode=' . $_REQUEST['mode'] : '';
-
+        $sPossibleMode = (isset($_REQUEST['mode']) && $_REQUEST['mode']!='') ? '&mode=' . $_REQUEST['mode'] : '';
         return BX_DOL_URL_ROOT . "calendar.php?{$sPossibleMode}&date=";
     }
 
-    function getBrowseUri()
+    function getBrowseUri ()
     {
-        return BX_DOL_URL_ROOT . "calendar.php?action=browse&date=";
+        return BX_DOL_URL_ROOT .  "calendar.php?action=browse&date=";
     }
 
-    function getEntriesNames()
+    function getEntriesNames ()
     {
         return array(_t('_sys_profile'), _t('_sys_profiles'));
     }

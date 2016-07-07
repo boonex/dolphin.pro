@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_events_tab_upcoming' => 'Ближайшие',
-
+  '_bx_events_tab_upcoming' => 'Ближайшие',
+  
 );

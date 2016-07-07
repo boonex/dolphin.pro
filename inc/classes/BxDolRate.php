@@ -15,25 +15,23 @@ class BxDolRate extends BxDolPageView
     var $iViewer;
     // array of headers for rate page
     var $aPageCaption = array();
-
     function __construct($sType)
     {
         parent::__construct($sType . '_rate');
 
-        $this->sType   = $sType;
+        $this->sType = $sType;
         $this->iViewer = getLoggedId();
     }
 
-    function getVotedItems()
+    function getVotedItems ()
     {
-        $ip          = getVisitorIP();
-        $oDolVoting  = new BxDolVoting($this->sType, 0, 0);
-        $aVotedItems = $oDolVoting->getVotedItems($ip);
-
-        return $this->reviewArray($aVotedItems, $oDolVoting->_aSystem['row_prefix'] . 'id');
+        $ip = getVisitorIP();
+        $oDolVoting = new BxDolVoting($this->sType, 0, 0);
+        $aVotedItems = $oDolVoting->getVotedItems ($ip);
+        return $this->reviewArray($aVotedItems, $oDolVoting->_aSystem['row_prefix'].'id');
     }
 
-    function reviewArray($aFiles, $sKey = '')
+    function reviewArray ($aFiles, $sKey = '')
     {
         $aList = array();
         if (is_array($aFiles)) {
@@ -41,17 +39,16 @@ class BxDolRate extends BxDolPageView
                 $aList[$iKey] = $aValue[$sKey];
             }
         }
-
         return $aList;
     }
 
     //get array or previous rated objects
-    function getRatedSet()
+    function getRatedSet ()
     {
     }
 
     //get array or previous rated objects
-    function getRateObject()
+    function getRateObject ()
     {
     }
 }

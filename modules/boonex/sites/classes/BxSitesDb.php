@@ -5,7 +5,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolModuleDb.php');
+require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolModuleDb.php' );
 
 define('BX_SITES_TABLE_PREFIX', 'bx_sites');
 
@@ -27,41 +27,39 @@ class BxSitesDb extends BxDolModuleDb
     {
         parent::__construct();
 
-        $this->_oConfig     = $oConfig;
-        $this->sTablePrefix = $oConfig->getDbPrefix();
+        $this->_oConfig = $oConfig;
+          $this->sTablePrefix = $oConfig->getDbPrefix();
     }
 
     function getMembershipActions()
     {
         $sSql = "SELECT `ID` AS `id`, `Name` AS `name` FROM `sys_acl_actions` WHERE `Name`='use sites'";
-
         return $this->getAll($sSql);
     }
 
     function getSiteById($iSiteId)
     {
-        return $this->getRow("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `id` = ? LIMIT 1", [$iSiteId]);
+        return $this->getRow ("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `id` = ? LIMIT 1", [$iSiteId]);
     }
 
-    function getEntryByIdAndOwner($iSiteId, $iUnusedParam = 0, $bUnusedParam = true)
+    function getEntryByIdAndOwner ($iSiteId, $iUnusedParam = 0, $bUnusedParam = true)
     {
         return $this->getSiteById($iSiteId);
     }
 
     function getSiteByEntryUri($sEntryUri)
     {
-        return $this->getRow("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `entryUri` = ? LIMIT 1",
-            [$sEntryUri]);
+        return $this->getRow ("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `entryUri` = ? LIMIT 1", [$sEntryUri]);
     }
 
     function getSiteLatest()
     {
-        return $this->getRow("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` ORDER BY `date` DESC LIMIT 1");
+        return $this->getRow ("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` ORDER BY `date` DESC LIMIT 1");
     }
 
     function getSiteByUrl($sUrl)
     {
-        return $this->getRow("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `url` = ? LIMIT 1", [$sUrl]);
+        return $this->getRow ("SELECT * FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `url` = ? LIMIT 1", [$sUrl]);
     }
 
     function getSites()
@@ -76,7 +74,7 @@ class BxSitesDb extends BxDolModuleDb
 
     function markFeatured($iSiteId)
     {
-        return $this->query("UPDATE `" . BX_SITES_TABLE_PREFIX . "_main` SET `featured` = (`featured` - 1)*(`featured` - 1) WHERE `id` = $iSiteId LIMIT 1");
+        return $this->query ("UPDATE `" . BX_SITES_TABLE_PREFIX . "_main` SET `featured` = (`featured` - 1)*(`featured` - 1) WHERE `id` = $iSiteId LIMIT 1");
     }
 
     function deleteSiteById($iSiteId)
@@ -86,7 +84,7 @@ class BxSitesDb extends BxDolModuleDb
 
     function getProfileIdByNickName($sNick)
     {
-        return $this->getOne("SELECT `ID` FROM `Profiles` WHERE `NickName` = '$sNick' LIMIT 1");
+        return $this->getOne ("SELECT `ID` FROM `Profiles` WHERE `NickName` = '$sNick' LIMIT 1");
     }
 
     function getSitesByMonth($iYear, $iMonth, $iNextYear, $iNextMonth)
@@ -108,7 +106,7 @@ class BxSitesDb extends BxDolModuleDb
 
     function getCountByOwnerAndStatus($iOwnerId, $sStatus)
     {
-        return $this->getOne("SELECT count(*) FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `status` = '$sStatus' AND `ownerid` = $iOwnerId");
+        return $this->getOne ("SELECT count(*) FROM `" . BX_SITES_TABLE_PREFIX . "_main` WHERE `status` = '$sStatus' AND `ownerid` = $iOwnerId");
     }
 
     // BEGIN STW INTEGRATION
@@ -116,9 +114,9 @@ class BxSitesDb extends BxDolModuleDb
     function addRequest($aSTWArgs, $aResponse, $sHash)
     {
         $iTimestamp = time();
-        $aSTWArgs   = process_db_input($aSTWArgs);
-        $aResponse  = process_db_input($aResponse);
-        $sQuery     = "UPDATE `{$this->sTablePrefix}stw_requests` SET `timestamp` = '" . process_db_input($iTimestamp) . "', `capturedon` = '" . $aResponse['stw_last_captured'] . "', `invalid` = '" . $aResponse['invalid'] . "',
+        $aSTWArgs = process_db_input($aSTWArgs);
+        $aResponse = process_db_input($aResponse);
+        $sQuery = "UPDATE `{$this->sTablePrefix}stw_requests` SET `timestamp` = '" . process_db_input($iTimestamp) . "', `capturedon` = '" . $aResponse['stw_last_captured'] . "', `invalid` = '" . $aResponse['invalid'] . "',
             `stwerrcode` = '" . $aResponse['stw_response_code'] . "', `error` = '" . $aResponse['error'] . "', `errcode` = '" . $aResponse['stw_response_status'] . "' WHERE `hash` = '" . process_db_input($sHash) . "'";
         if ($this->query($sQuery) == 0) { // doesn't exist
             $this->res("INSERT INTO `{$this->sTablePrefix}stw_requests` SET `domain` = '" . $aSTWArgs['stwurl'] . "', `timestamp` = '" . process_db_input($iTimestamp) . "', `capturedon` = '" . $aResponse['stw_last_captured'] . "',
@@ -131,8 +129,8 @@ class BxSitesDb extends BxDolModuleDb
     function addAccountInfo($sKeyID, $aResponse)
     {
         $iTimestamp = time();
-        $aResponse  = process_db_input($aResponse);
-        $sQuery     = "UPDATE `{$this->sTablePrefix}stwacc_info` SET `account_level` = '" . $aResponse['stw_account_level'] . "', `inside_pages` = '" . $aResponse['stw_inside_pages'] . "', `custom_size` = '" . $aResponse['stw_custom_size'] . "',
+        $aResponse = process_db_input($aResponse);
+        $sQuery = "UPDATE `{$this->sTablePrefix}stwacc_info` SET `account_level` = '" . $aResponse['stw_account_level'] . "', `inside_pages` = '" . $aResponse['stw_inside_pages'] . "', `custom_size` = '" . $aResponse['stw_custom_size'] . "',
             `full_length` = '" . $aResponse['stw_full_length'] . "', `refresh_ondemand` = '" . $aResponse['stw_refresh_ondemand'] . "', `custom_delay` = '" . $aResponse['stw_custom_delay'] . "', `custom_quality` = '" . $aResponse['stw_custom_quality'] . "',
             `custom_resolution` = '" . $aResponse['stw_custom_resolution'] . "', `custom_messages` = '" . $aResponse['stw_custom_messages'] . "', `timestamp` = '" . process_db_input($iTimestamp) . "' WHERE `key_id` = '" . process_db_input($sKeyID) . "'";
         if ($this->query($sQuery) == 0) { // doesn't exist

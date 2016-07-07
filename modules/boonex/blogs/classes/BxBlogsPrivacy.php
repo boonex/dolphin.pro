@@ -10,19 +10,19 @@ bx_import('BxDolPrivacy');
 class BxBlogsPrivacy extends BxDolPrivacy
 {
     /**
-     * Constructor
-     */
+    * Constructor
+    */
     function __construct(&$oModule)
     {
         parent::__construct('bx_blogs_posts', 'PostID', 'OwnerID');
     }
 
     /**
-     * Get database field name for action.
-     *
-     * @param string $sAction action name.
-     * @return string with field name.
-     */
+    * Get database field name for action.
+    *
+    * @param string $sAction action name.
+    * @return string with field name.
+    */
     function getFieldAction($sAction)
     {
         return 'allow' . str_replace(' ', '', ucwords(str_replace('_', ' ', $sAction)));

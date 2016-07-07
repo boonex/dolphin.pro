@@ -8,7 +8,7 @@ bx_import('BxDolFilesPageHome');
 
 class BxSoundsPageHome extends BxDolFilesPageHome
 {
-    function __construct(&$oShared)
+    function __construct (&$oShared)
     {
         parent::__construct($oShared);
     }

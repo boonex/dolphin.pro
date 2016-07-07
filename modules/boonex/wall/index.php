@@ -17,51 +17,41 @@ class BxWallPage extends BxTemplProfileView
     function __construct($sOwner, &$oWall)
     {
         $this->_sOwner = $sOwner;
-        $this->_oWall  = &$oWall;
+        $this->_oWall = &$oWall;
 
         $this->oProfileGen = new BxBaseProfileGenerator(getId($sOwner, 0));
-        $this->aConfSite   = $GLOBALS['site'];
-        $this->aConfDir    = $GLOBALS['dir'];
+        $this->aConfSite = $GLOBALS['site'];
+        $this->aConfDir  = $GLOBALS['dir'];
         parent::__construct('wall');
     }
-
     function getBlockCode_Post()
     {
-        $sResult = '';
+    	$sResult = '';
 
-        if (!empty($this->_sOwner)) {
+        if(!empty($this->_sOwner))
             $sResult = $this->_oWall->servicePostBlockProfileTimeline($this->_sOwner, 'username');
-        } else {
-            if (isLogged()) {
-                $sResult = $this->_oWall->servicePostBlockProfileTimeline(getLoggedId());
-            }
-        }
+		else if(isLogged())
+			$sResult = $this->_oWall->servicePostBlockProfileTimeline(getLoggedId());
 
-        return !empty($sResult) ? $sResult : MsgBox(_t('_wall_msg_no_results'));
+		return !empty($sResult) ? $sResult : MsgBox(_t('_wall_msg_no_results'));
     }
-
     function getBlockCode_View()
     {
-        $sResult = '';
+    	$sResult = '';
 
-        if (!empty($this->_sOwner)) {
+        if(!empty($this->_sOwner))
             $sResult = $this->_oWall->serviceViewBlockProfileTimeline($this->_sOwner, -1, -1, '', '', 'username');
-        } else {
-            if (isLogged()) {
-                $sResult = $this->_oWall->serviceViewBlockProfileTimeline(getLoggedId());
-            }
-        }
+        else if(isLogged())
+            $sResult = $this->_oWall->serviceViewBlockProfileTimeline(getLoggedId());
 
         return !empty($sResult) ? $sResult : MsgBox(_t('_wall_msg_no_results'));
     }
-
     function getCode()
     {
-        if (!empty($this->_sOwner)) {
+        if(!empty($this->_sOwner)) {
             $aOwner = $this->_oWall->_oDb->getUser($this->_sOwner, 'username');
-            if ((int)$aOwner['id'] == 0) {
+            if((int)$aOwner['id'] == 0)
                 return MsgBox(_t('_wall_msg_page_not_found'));
-            }
         }
 
         return parent::getCode();
@@ -71,18 +61,17 @@ class BxWallPage extends BxTemplProfileView
 global $_page;
 global $_page_cont;
 
-$iIndex              = 1;
+$iIndex = 1;
 $_page['name_index'] = $iIndex;
-$_page['css_name']   = 'cmts.css';
-$_page['js_name']    = 'BxDolCmts.js';
-$_page['header']     = _t('_wall_page_caption');
+$_page['css_name'] = 'cmts.css';
+$_page['js_name'] = 'BxDolCmts.js';
+$_page['header'] = _t('_wall_page_caption');
 
-$oSubscription                         = BxDolSubscription::getInstance();
-$oWall                                 = new BxWallModule($aModule);
-$sOwnerUsername                        = isset($aRequest[0]) ? process_db_input($aRequest[0], BX_TAGS_STRIP) : '';
-$oWallPage                             = new BxWallPage($sOwnerUsername, $oWall);
+$oSubscription = BxDolSubscription::getInstance();
+$oWall = new BxWallModule($aModule);
+$sOwnerUsername = isset($aRequest[0]) ? process_db_input($aRequest[0], BX_TAGS_STRIP) : '';
+$oWallPage = new BxWallPage($sOwnerUsername, $oWall);
 $_page_cont[$iIndex]['page_main_code'] = $oSubscription->getData() . $oWallPage->getCode();
 
-$oWall->_oTemplate->setPageTitle((!empty($sOwnerUsername) ? _t('_wall_page_caption',
-    ucfirst($sOwnerUsername)) : _t('_wall_page_caption_my')));
+$oWall->_oTemplate->setPageTitle((!empty($sOwnerUsername) ? _t('_wall_page_caption', ucfirst($sOwnerUsername)) : _t('_wall_page_caption_my')) );
 PageCode($oWall->_oTemplate);

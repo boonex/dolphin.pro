@@ -5,7 +5,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolDb.php');
+require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolDb.php' );
 
 class BxCRSSDb extends BxDolDb
 {
@@ -34,7 +34,6 @@ class BxCRSSDb extends BxDolDb
                 `Description`='{$sNewDesc}',
                 `Status`='{$sStatus}'
             ";
-
             return $this->query($sRSSSQL);
         }
     }
@@ -51,7 +50,6 @@ class BxCRSSDb extends BxDolDb
                 WHERE
                 `ProfileID`='{$_iProfileID}' AND `ID`='{$iOldID}'
             ";
-
             return $this->query($sRSSSQL);
         }
     }
@@ -63,7 +61,6 @@ class BxCRSSDb extends BxDolDb
                 DELETE FROM `bx_crss_main`
                 WHERE `ProfileID`='{$_iProfileID}' AND `ID`='{$iOldID}'
             ";
-
             return $this->query($sRSSSQL);
         }
     }
@@ -75,9 +72,9 @@ class BxCRSSDb extends BxDolDb
         $aRSSInfos = array();
 
         $aRSSInfo = $this->getFirstRow($sMemberRSSSQL);
-        while ($aRSSInfo) {
+        while($aRSSInfo) {
             $aRSSInfos[] = $aRSSInfo;
-            $aRSSInfo    = $this->getNextRow();
+            $aRSSInfo = $this->getNextRow();
         }
 
         return $aRSSInfos;
@@ -90,9 +87,9 @@ class BxCRSSDb extends BxDolDb
         $aRSSInfos = array();
 
         $aRSSInfo = $this->getFirstRow($sMemberRSSSQL);
-        while ($aRSSInfo) {
+        while($aRSSInfo) {
             $aRSSInfos[] = $aRSSInfo;
-            $aRSSInfo    = $this->getNextRow();
+            $aRSSInfo = $this->getNextRow();
         }
 
         return $aRSSInfos;

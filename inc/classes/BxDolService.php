@@ -32,23 +32,20 @@ class BxDolService
     {
         $oDb = new BxDolModuleDb();
 
-        if (is_string($mixed)) {
+        if(is_string($mixed))
             $aModule = $oDb->getModuleByUri($mixed);
-        } else {
+        else
             $aModule = $oDb->getModuleById($mixed);
-        }
 
         return empty($aModule) ? '' : BxDolRequest::processAsService($aModule, $sMethod, $aParams, $sClass);
     }
 
     public static function callArray($a)
     {
-        if (!isset($a['module']) || !isset($a['method'])) {
+        if (!isset($a['module']) || !isset($a['method']))
             return false;
-        }
 
-        return self::call($a['module'], $a['method'], isset($a['params']) ? $a['params'] : array(),
-            isset($a['class']) ? $a['class'] : 'Module');
+        return self::call($a['module'], $a['method'], isset($a['params']) ? $a['params'] : array(), isset($a['class']) ? $a['class'] : 'Module');
     }
 
 }

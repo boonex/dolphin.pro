@@ -28,8 +28,7 @@ class BxOAuthDb extends BxDolModuleDb
 
     function getSavedProfile($iProfileId)
     {
-        return $this->getOne("SELECT `user_id` FROM `bx_oauth_refresh_tokens` WHERE `user_id` = ? LIMIT 1",
-            [$iProfileId]);
+        return $this->getOne("SELECT `user_id` FROM `bx_oauth_refresh_tokens` WHERE `user_id` = ? LIMIT 1", [$iProfileId]);
     }
 
     function getSettingsCategory()
@@ -38,9 +37,8 @@ class BxOAuthDb extends BxDolModuleDb
     }
 
     function deleteClients($aClients)
-    {
-        foreach ($aClients as $sClientId) {
+    {        
+        foreach ($aClients as $sClientId)
             $this->query("DELETE FROM `bx_oauth_clients` WHERE `client_id` = '" . process_db_input($sClientId) . "'");
-        }
     }
 }

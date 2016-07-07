@@ -19,52 +19,44 @@ class BxEventsCmts extends BxTemplCmtsView
     function getMain()
     {
         $aPathInfo = pathinfo(__FILE__);
-        require_once($aPathInfo['dirname'] . '/BxEventsSearchResult.php');
-
+        require_once ($aPathInfo['dirname'] . '/BxEventsSearchResult.php');
         return (new BxEventsSearchResult())->getMain();
     }
 
     function getBaseUrl()
     {
-        $oMain  = $this->getMain();
-        $aEntry = $oMain->_oDb->getEntryById($this->getId());
-        if (empty($aEntry) || !is_array($aEntry)) {
-            return '';
-        }
+    	$oMain = $this->getMain();
+    	$aEntry = $oMain->_oDb->getEntryById($this->getId());
+    	if(empty($aEntry) || !is_array($aEntry))
+    		return '';
 
-        return BX_DOL_URL_ROOT . $oMain->_oConfig->getBaseUri() . 'view/' . $aEntry['EntryUri'];
+    	return BX_DOL_URL_ROOT . $oMain->_oConfig->getBaseUri() . 'view/' . $aEntry['EntryUri']; 
     }
 
-    function isPostReplyAllowed()
+    function isPostReplyAllowed ()
     {
-        if (!parent::isPostReplyAllowed()) {
+        if (!parent::isPostReplyAllowed())
             return false;
-        }
-        $oMain  = $this->getMain();
-        $aEvent = $oMain->_oDb->getEntryByIdAndOwner($this->getId(), 0, true);
-
+        $oMain = $this->getMain();
+        $aEvent = $oMain->_oDb->getEntryByIdAndOwner($this->getId (), 0, true);
         return $oMain->isAllowedComments($aEvent);
     }
 
-    function isEditAllowedAll()
+    function isEditAllowedAll ()
     {
-        $oMain  = $this->getMain();
-        $aEvent = $oMain->_oDb->getEntryByIdAndOwner($this->getId(), 0, true);
-        if ($oMain->isAllowedCreatorCommentsDeleteAndEdit($aEvent)) {
+        $oMain = $this->getMain();
+        $aEvent = $oMain->_oDb->getEntryByIdAndOwner($this->getId (), 0, true);
+        if ($oMain->isAllowedCreatorCommentsDeleteAndEdit ($aEvent))
             return true;
-        }
-
-        return parent::isEditAllowedAll();
+        return parent::isEditAllowedAll ();
     }
 
-    function isRemoveAllowedAll()
+    function isRemoveAllowedAll ()
     {
-        $oMain  = $this->getMain();
-        $aEvent = $oMain->_oDb->getEntryByIdAndOwner($this->getId(), 0, true);
-        if ($oMain->isAllowedCreatorCommentsDeleteAndEdit($aEvent)) {
+        $oMain = $this->getMain();
+        $aEvent = $oMain->_oDb->getEntryByIdAndOwner($this->getId (), 0, true);
+        if ($oMain->isAllowedCreatorCommentsDeleteAndEdit ($aEvent))
             return true;
-        }
-
-        return parent::isRemoveAllowedAll();
+        return parent::isRemoveAllowedAll ();
     }
 }

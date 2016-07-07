@@ -906,7 +906,7 @@ EOF;
 </script>
 EOF;
 
-            $vSubs = $this->_oDb->getSubsNameIDCountAdsByAdID($iCategoryID);
+            $vSubs     = $this->_oDb->getSubsNameIDCountAdsByAdID($iCategoryID);
             while ($aSub = $vSubs->fetch()) {
                 $iSubID   = (int)$aSub['ID'];
                 $iSubName = $aSub['Name'];
@@ -1775,8 +1775,8 @@ EOF;
             );
 
             $aActionKeys['repostCpt'] = $aActionKeys['repostScript'] = '';
-            if (BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
-                $sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
+	        if(BxDolRequest::serviceExists('wall', 'get_repost_js_click')) {
+	        	$sSubsAddon .= BxDolService::call('wall', 'get_repost_js_script');
 
                 $aActionKeys['repostCpt']    = _t('_Repost');
                 $aActionKeys['repostScript'] = BxDolService::call('wall', 'get_repost_js_click',
@@ -3709,9 +3709,8 @@ EOF;
         }
 
         $aComment = $oCmts->getCommentRow($iId);
-        if (empty($aComment) || !is_array($aComment)) {
-            return array('perform_delete' => true);
-        }
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sCss = '';
         if ($aEvent['js_mode']) {
@@ -3769,10 +3768,9 @@ EOF;
         }
 
         $aItem['url'] = $this->genUrl($aItem['ID'], $aItem['EntryUri'], 'entry');
-        $aComment     = $oCmts->getCommentRow((int)$aContent['comment_id']);
-        if (empty($aComment) || !is_array($aComment)) {
-            return array('perform_delete' => true);
-        }
+        $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
+        if(empty($aComment) || !is_array($aComment))
+        	return array('perform_delete' => true);
 
         $sCss = '';
         if ($aEvent['js_mode']) {

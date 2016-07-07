@@ -2,12 +2,12 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_board' => 'Доски',
+  '_sys_module_board' => 'Доски',
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_board_home_top_menu_sitem' => 'Главная',
+  '_board_home_top_menu_sitem' => 'Главная',
 
 );

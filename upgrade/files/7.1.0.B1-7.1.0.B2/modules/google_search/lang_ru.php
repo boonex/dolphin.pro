@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_google_search' => 'Поиск по сайту от Google',
+  '_sys_module_google_search' => 'Поиск по сайту от Google',
 
 );

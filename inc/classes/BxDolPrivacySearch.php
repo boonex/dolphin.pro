@@ -10,20 +10,20 @@ class BxDolPrivacySearch extends BxTemplSearchResultText
 {
     var $_sSearchUnitTmpl;
     var $aCurrent = array(
-        'name'         => 'ps_search',
-        'title'        => '_ps_search_object',
-        'table'        => 'Profiles',
-        'ownFields'    => array('ID', 'DateReg'),
+        'name' => 'ps_search',
+        'title' => '_ps_search_object',
+        'table' => 'Profiles',
+        'ownFields' => array('ID', 'DateReg'),
         'searchFields' => array('NickName', 'City', 'DescriptionMe', 'Tags'),
-        'restriction'  => array(
-            'active'  => array('value' => 'Active', 'field' => 'Status', 'operator' => '='),
-            'owner'   => array('value' => '', 'field' => 'ID', 'operator' => '!='),
+        'restriction' => array(
+            'active' => array('value' => 'Active', 'field' => 'Status', 'operator' => '='),
+            'owner' => array('value' => '', 'field' => 'ID', 'operator' => '!='),
             'keyword' => array('value' => '', 'field' => '', 'operator' => 'against')
         ),
-        'paginate'     => array(
-            'totalNum'   => 0,
+        'paginate' => array(
+            'totalNum' => 0,
             'totalPages' => 0,
-            'perPage'    => 1000000
+            'perPage' => 1000000
         )
     );
 
@@ -33,7 +33,7 @@ class BxDolPrivacySearch extends BxTemplSearchResultText
 
         global $oSysTemplate;
 
-        $this->aCurrent['restriction']['owner']['value']   = $iOwnerId;
+        $this->aCurrent['restriction']['owner']['value'] = $iOwnerId;
         $this->aCurrent['restriction']['keyword']['value'] = process_db_input($sValue, BX_TAGS_STRIP);
 
         $this->_sSearchUnitTmpl = $oSysTemplate->getHtml('ps_search_unit.html');
@@ -44,8 +44,8 @@ class BxDolPrivacySearch extends BxTemplSearchResultText
         global $oSysTemplate;
 
         return $oSysTemplate->parseHtmlByContent($this->_sSearchUnitTmpl, array(
-            'action'           => 'add',
-            'member_id'        => $aData['id'],
+            'action' => 'add',
+            'member_id' => $aData['id'],
             'member_thumbnail' => get_member_thumbnail($aData['id'], 'none', true)
         ));
     }
@@ -54,17 +54,15 @@ class BxDolPrivacySearch extends BxTemplSearchResultText
     {
         $sResult = parent::displayResultBlock();
 
-        if (empty($sResult)) {
+        if(empty($sResult))
             $sResult = MsgBox(_t('_Empty'));
-        }
 
         return $sResult;
     }
-
-    function _getPseud()
+    function _getPseud ()
     {
         return array(
-            'id'   => 'ID',
+            'id' => 'ID',
             'date' => 'DateReg'
         );
     }
