@@ -351,13 +351,20 @@ switch ($action) {
         break;
 
     default:
+        $isMarker = true;
         if (!isset($_GET['start'])) {
             $o = new BxDolOrcaForumsHome();
             $s = $o->getCode();
+            $isMarker = false !== strpos($s, $o->sMarker);
             list($GLOBALS['glBeforeContent'], $GLOBALS['glAfterContent']) = explode($o->sMarker, $s);
         }
-        transCheck($f->getRecentTopicsXML(true, (int)$_GET['start']), $gConf['dir']['xsl'] . 'recent_topics_main.xsl',
-            $_GET['debug'] ? 0 : 1);
+        if ($isMarker) {
+            $sXml = $f->getRecentTopicsXML(true, (int)$_GET['start']);
+        } else {
+            $li = $f->_getLoginInfo ();
+            $sXml = $f->addHeaderFooter ($li, "");
+        }
+        transCheck($sXml, $gConf['dir']['xsl'] . 'recent_topics_main.xsl', $_GET['debug'] ? 0 : 1);
         break;
 
     case 'goto':
