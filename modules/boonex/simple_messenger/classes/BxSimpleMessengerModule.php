@@ -57,6 +57,8 @@
     {
         var $sHomeUrl;
 
+        var $sModuleName;
+
         // contain some module information ;
         var $aModuleInfo;
 
@@ -91,6 +93,9 @@
             parent::BxDolModule($aModule);
 
             $this -> sHomeUrl    = $this ->_oConfig -> _sHomeUrl;
+
+            $this -> sModuleName 	= 'bx_' . $aModule['uri'];
+            
             $this -> aModuleInfo = $aModule;
 
             $this -> iLoggedMemberId = getLoggedId();
@@ -170,7 +175,11 @@
                         // write received message ;
                         if ( getProfileInfo($iRecipientId) ) {
 
-                            $oObject -> _oDb -> createMessage($oObject -> iLoggedMemberId, $iRecipientId, $sMessage);
+                            $iMessage = $oObject -> _oDb -> createMessage($oObject -> iLoggedMemberId, $iRecipientId, $sMessage);
+                            if($iMessage !== false) {
+                            	$oAlert = new BxDolAlerts($oObject -> sModuleName, 'add', $iMessage, $oObject -> iLoggedMemberId, array('RecipientId' => $iRecipientId, 'Message' => $sMessage));
+        						$oAlert->alert();
+                            }
 
                             // check save chat history ;
                             if ( !$oObject -> aCoreSettings['save_chat_history'] ) {

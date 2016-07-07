@@ -12,6 +12,10 @@
         function BxFaceBookConnectInstaller(&$aConfig)
         {
             parent::BxDolInstaller($aConfig);
+
+            $this->_aActions['check_requirements'] = array(
+				'title' => 'Check requirements:',
+			);
         }
 
         function actionCheckRequirements()

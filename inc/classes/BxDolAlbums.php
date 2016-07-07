@@ -114,9 +114,10 @@ class BxDolAlbums extends BxDolMistake
             $iAllowAlbumView = BX_DOL_PG_NOBODY;
         }
 
-        $aFields = array(
+        $sUri = $this->getCorrectUri($aData['caption'], $iOwner, $bCheck);
+        $GLOBALS['MySQL']->res("INSERT INTO  `{$this->sAlbumTable}` SET " . $this->_getSqlPart(array(
             'Caption' => $aData['caption'],
-            'Uri' => $this->getCorrectUri($aData['caption'], $iOwner, $bCheck),
+            'Uri' => $sUri,
             'Location' => $aData['location'],
             'Description' => $aData['description'],
             'AllowAlbumView' =>  $iAllowAlbumView,
@@ -125,14 +126,18 @@ class BxDolAlbums extends BxDolMistake
             'Status' => 'active',
             'Date' => time(),
             'LastObjId' => isset($aData['lastObjId']) ? (int)$aData['last_obj'] : 0
-        );
-        $sqlBegin = "";
-        $sqlCond = "";
-        $sqlBody = $this->_getSqlPart($aFields);
-        $sqlBegin = "INSERT INTO ";
-        $sqlQuery = "$sqlBegin `{$this->sAlbumTable}` SET $sqlBody $sqlCond";
-        $GLOBALS['MySQL']->res($sqlQuery);
-        return $GLOBALS['MySQL']->lastId();
+        )));
+
+        $iResult = $GLOBALS['MySQL']->lastId();
+        if($iResult > 0) {
+        	$oAlert = new BxDolAlerts('album', 'add', $iResult, $iOwner, array('Type' => $this->sType, 'Uri' => $sUri));
+			$oAlert->alert();
+
+			$oAlert = new BxDolAlerts($this->sType, 'addAlbum', $iResult, $iOwner, array('Uri' => $sUri));
+			$oAlert->alert();
+        }
+        
+        return $iResult;
     }
 
     function getCorrectUri ($sCaption, $iOwnerId = 0, $bCheck = true)
@@ -161,29 +166,67 @@ class BxDolAlbums extends BxDolMistake
 
     function updateAlbum ($mixedIdent, $aData)
     {
-        $sqlWhere = "`Uri` = '" . process_db_input($mixedIdent, BX_TAGS_STRIP) . "'";
-        $sqlBody = $this->_getSqlPart($aData, ', ', true);
-        $sValue = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
-        $sqlWhereAdd = " AND `Owner` = '$sValue'";
-        $sqlQuery = "UPDATE `{$this->sAlbumTable}` SET $sqlBody WHERE $sqlWhere $sqlWhereAdd LIMIT 1";
-        return $GLOBALS['MySQL']->res($sqlQuery);
+    	$sUri = process_db_input($mixedIdent, BX_TAGS_STRIP);
+    	$iOwner = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
+    	$aAlbum = $this->getAlbumInfo(array('fileUri' => $sUri, 'owner' => $iOwner), array('ID', 'Uri', 'Type'));
+    	
+        return $this->_updateAlbum($aAlbum, $aData);
     }
+
     function updateAlbumById ($iId, $aData)
     {
-        $sqlWhere = "`ID` = '" . (int)$iId . "'";
-        $sqlBody = $this->_getSqlPart($aData, ', ', true);
-        $sValue = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
-        $sqlWhereAdd = " AND `Owner` = '$sValue'";
-        $sqlQuery = "UPDATE `{$this->sAlbumTable}` SET $sqlBody WHERE $sqlWhere $sqlWhereAdd LIMIT 1";
-        return $GLOBALS['MySQL']->res($sqlQuery);
+    	$iId = (int)$iId;
+    	$iOwner = (int)$aData['Owner'] ? (int)$aData['Owner'] : $this->iOwnerId;
+    	$aAlbum = $this->getAlbumInfo(array('fileid' => $iId, 'owner' => $iOwner), array('ID', 'Uri', 'Type'));
+
+        return $this->_updateAlbum($aAlbum, $aData);
     }
+
+	function _updateAlbum ($aAlbum, $aData)
+    {
+    	if(empty($aAlbum) || !is_array($aAlbum))
+    		return false;
+
+    	$sSetClause = $this->_getSqlPart($aData, ', ', true);
+    	$sWhereClause = "`ID` = '" . $aAlbum['ID'] . "'";
+
+        $mixedResult = $GLOBALS['MySQL']->res("UPDATE `{$this->sAlbumTable}` SET " . $sSetClause . " WHERE " . $sWhereClause . " LIMIT 1");
+        if((int)$mixedResult > 0) {
+        	$iUserId = getLoggedId();
+
+        	$oAlert = new BxDolAlerts('album', 'change', $aAlbum['ID'], $iUserId, array('Type' => $aAlbum['Type'], 'Uri' => $aAlbum['Uri']));
+			$oAlert->alert();
+
+			$oAlert = new BxDolAlerts($aAlbum['Type'], 'changeAlbum', $aAlbum['ID'], $iUserId, array('Uri' => $aAlbum['Uri']));
+			$oAlert->alert();
+        }
+
+        return $mixedResult;
+    }
+
     function removeAlbum ($iAlbumId)
     {
         $iAlbumId = (int)$iAlbumId;
+
         $aObj = $this->getAlbumObjList($iAlbumId);
         $this->removeObject($iAlbumId, $aObj);
-        $sqlQuery = "DELETE FROM `{$this->sAlbumTable}` WHERE `ID`='$iAlbumId'";
-        $GLOBALS['MySQL']->res($sqlQuery);
+
+        $aAlbum = $this->getAlbumInfo(array('fileid' => $iAlbumId), array('ID', 'Uri', 'Type'));
+        if(empty($aAlbum) || !is_array($aAlbum))
+        	return true;
+
+        $mixedResult = $GLOBALS['MySQL']->res("DELETE FROM `{$this->sAlbumTable}` WHERE `ID`='" . $iAlbumId . "'");
+        if((int)$mixedResult > 0) {
+        	$iUserId = getLoggedId();
+
+        	$oAlert = new BxDolAlerts('album', 'delete', $iAlbumId, $iUserId, array('Type' => $aAlbum['Type'], 'Uri' => $aAlbum['Uri']));
+			$oAlert->alert();
+
+			$oAlert = new BxDolAlerts($aAlbum['Type'], 'deleteAlbum', $iAlbumId, $iUserId, array('Uri' => $aAlbum['Uri']));
+			$oAlert->alert();
+        }
+
+        return $mixedResult;
     }
 
     function _checkAlbumExistence ($aData)

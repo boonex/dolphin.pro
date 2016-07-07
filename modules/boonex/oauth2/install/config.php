@@ -30,6 +30,7 @@ $aConfig = array(
      */
     'install' => array(
         'show_introduction' => 0,
+    	'check_requirements' => 1,
         'change_permissions' => 0,
         'execute_sql' => 1,
         'update_languages' => 1,

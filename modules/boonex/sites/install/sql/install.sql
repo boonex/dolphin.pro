@@ -2,7 +2,7 @@
 -- create tables
 CREATE TABLE IF NOT EXISTS `[db_prefix]main` (
   `id` int(10) unsigned NOT NULL auto_increment,
-  `url` varchar(100) NOT NULL,
+  `url` varchar(255) NOT NULL,
   `title` varchar(100) NOT NULL,
   `entryUri` varchar(255) NOT NULL,
   `description` text NOT NULL default '',

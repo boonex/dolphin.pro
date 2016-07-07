@@ -37,7 +37,7 @@
             // Create our Application instance.
             $this -> oFacebook = null;
 
-            if ($this -> _oConfig -> mApiID) {
+            if (!empty($this -> _oConfig -> mApiID) && !empty($this -> _oConfig -> mApiSecret)) {
                 session_start();
                 $this -> oFacebook = new Facebook\Facebook(array(
                     'app_id'  => $this -> _oConfig -> mApiID,
