@@ -8,9 +8,9 @@ require_once($sIncPath . "functions.inc.php");
 require_once($sIncPath . "apiFunctions.inc.php");
 require_once($sIncPath . "xml.inc.php");
 
-$aPathParts  = explode("/", $_SERVER['PHP_SELF']);
+$aPathParts = explode("/", $_SERVER['PHP_SELF']);
 $iPartsCount = count($aPathParts);
-$aResult     = getExtraFiles($aPathParts[$iPartsCount - 3], $aPathParts[$iPartsCount - 2]);
-$sFile       = $aResult['current'] . "." . $aResult['extension'];
+$aResult = getExtraFiles($aPathParts[$iPartsCount-3], $aPathParts[$iPartsCount-2]);
+$sFile = $aResult['current'] . "." . $aResult['extension'];
 
 readfile($sFile);

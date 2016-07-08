@@ -7,18 +7,18 @@
 $sLangCategory = 'SMTP Mailer';
 
 $aLangContent = array(
-    '_sys_module_smtpmailer'  => 'SMTP Mailer',
+    '_sys_module_smtpmailer' => 'SMTP Mailer',
     '_bx_smtp_administration' => 'SMTP Mailer',
-    '_bx_smtp'                => 'SMTP Mailer',
-    '_bx_smtp_tester'         => 'SMTP Mailer Tester',
-    '_bx_smtp_recipient'      => 'Recipient',
-    '_bx_smtp_subject'        => 'Subject',
-    '_bx_smtp_body'           => 'Body',
-    '_bx_smtp_is_html'        => 'Is HTML?',
-    '_bx_smtp_send_ok'        => 'Mail has been successfully sent',
-    '_bx_smtp_send_fail'      => 'Mail send failed',
-    '_bx_smtp_help'           => 'Help',
-    '_bx_smtp_help_text'      => '
+    '_bx_smtp' => 'SMTP Mailer',
+    '_bx_smtp_tester' => 'SMTP Mailer Tester',
+    '_bx_smtp_recipient' => 'Recipient',
+    '_bx_smtp_subject' => 'Subject',
+    '_bx_smtp_body' => 'Body',
+    '_bx_smtp_is_html' => 'Is HTML?',
+    '_bx_smtp_send_ok' => 'Mail has been successfully sent',
+    '_bx_smtp_send_fail' => 'Mail send failed',
+    '_bx_smtp_help' => 'Help',
+    '_bx_smtp_help_text' => '
         <b>SMTP authentication </b> - most SMTP servers requires SMTP authentication, most probably you need to enable it.
         <br />
         <b>SMTP server name</b> - is it better to send mail from your site SMTP server, so it is probably the name of your site or localhost.

@@ -2,13 +2,13 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_sounds' => 'Аудио',
+  '_sys_module_sounds' => 'Аудио',
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_sounds_home'          => 'Главная',
-    '_bx_sounds_top_menu_home' => 'Главная',
+  '_bx_sounds_home' => 'Главная',
+  '_bx_sounds_top_menu_home' => 'Главная',
 
 );

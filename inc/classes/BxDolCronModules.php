@@ -16,42 +16,39 @@ class BxDolCronModules extends BxDolCron
         parent::__construct();
     }
 
-    function processing()
+	function processing()
     {
-        $oModules = new BxDolModuleDb();
+    	$oModules = new BxDolModuleDb();
         $aModules = $oModules->getModules();
 
         $aResult = array();
-        foreach ($aModules as $aModule) {
-            $aCheckInfo = BxDolInstallerUi::checkForUpdates($aModule);
-            if (isset($aCheckInfo['version'])) {
-                $aResult[] = _t('_adm_txt_modules_update_text_ext', $aModule['title'], $aCheckInfo['version']);
-            }
+        foreach($aModules as $aModule) {
+        	$aCheckInfo = BxDolInstallerUi::checkForUpdates($aModule);
+        	if(isset($aCheckInfo['version']))
+        		$aResult[] = _t('_adm_txt_modules_update_text_ext', $aModule['title'], $aCheckInfo['version']);
         }
-        if (empty($aResult)) {
-            return;
-        }
+        if(empty($aResult))
+        	return;
 
-        $aAdmins = $GLOBALS['MySQL']->getAll("SELECT * FROM `Profiles` WHERE `Role`&" . BX_DOL_ROLE_ADMIN . "<>0 AND `EmailNotify`='1'");
-        if (empty($aAdmins)) {
-            return;
-        }
+    	$aAdmins = $GLOBALS['MySQL']->getAll("SELECT * FROM `Profiles` WHERE `Role`&" . BX_DOL_ROLE_ADMIN . "<>0 AND `EmailNotify`='1'");
+        if(empty($aAdmins))
+        	return; 
 
-        $oEmailTemplate = new BxDolEmailTemplates();
-        $sMessage       = implode('<br />', $aResult);
+		$oEmailTemplate = new BxDolEmailTemplates();
+        $sMessage = implode('<br />', $aResult);
 
-        foreach ($aAdmins as $aAdmin) {
-            $aTemplate = $oEmailTemplate->getTemplate('t_ModulesUpdates', $aAdmin['ID']);
+		foreach($aAdmins as $aAdmin) {
+        	$aTemplate = $oEmailTemplate->getTemplate('t_ModulesUpdates', $aAdmin['ID']);
 
-            sendMail(
-                $aAdmin['Email'],
-                $aTemplate['Subject'],
-                $aTemplate['Body'],
-                $aAdmin['ID'],
-                array(
-                    'MessageText' => $sMessage
-                )
-            );
-        }
+			sendMail(
+				$aAdmin['Email'], 
+		        $aTemplate['Subject'], 
+		        $aTemplate['Body'], 
+		        $aAdmin['ID'], 
+		        array(
+		        	'MessageText' => $sMessage
+				)
+			);
+		}
     }
 }

@@ -4,9 +4,8 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolRequest.php');
-if (empty($aRequest[0]) || $aRequest[0] == 'index' || $aRequest[0] == 'admin') {
+require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolRequest.php' );
+if(empty($aRequest[0]) || $aRequest[0] == 'index' || $aRequest[0] == 'admin')
     BxDolRequest::processAsFile($aModule, $aRequest);
-} else {
+else
     echo BxDolRequest::processAsAction($aModule, $aRequest);
-}

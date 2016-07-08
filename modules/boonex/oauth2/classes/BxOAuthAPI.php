@@ -10,9 +10,9 @@ class BxOAuthAPI extends Thing
 {
     protected $_oModule;
     protected $_oDb;
-    public $aAction2Scope = array(
-        'me'      => 'basic',
-        'user'    => 'basic',
+    public $aAction2Scope = array (
+        'me' => 'basic',
+        'user' => 'basic',
         'friends' => 'basic',
         'service' => 'basic', // service
     );
@@ -20,19 +20,18 @@ class BxOAuthAPI extends Thing
     function __construct($oModule)
     {
         $this->_oModule = $oModule;
-        $this->_oDb     = $oModule->_oDb;
+        $this->_oDb = $oModule->_oDb;
     }
-
+    
     function me($aToken)
     {
         // {"access_token":"ed3cc95a337b6abca37b329ee8ce2ca62b4120cb","client_id":"test","user_id":"37","expires":1449277891,"scope":"basic"}
-
+        
         if (!($aProfileInfo = getProfileInfo($aToken['user_id']))) {
             $this->errorOutput('404', 'not_found', 'Profile was not found');
-
             return;
         }
-
+    
         $this->output($this->_prepareProfileArray($aProfileInfo, false));
     }
 
@@ -42,14 +41,12 @@ class BxOAuthAPI extends Thing
 
         if ($iProfileId == $aToken['user_id']) {
             $this->me($aToken);
-
             return;
         }
 
-        if (!($aProfileInfo = $this->_getProfileInfoWithAccessChecking($iProfileId))) {
+        if (!($aProfileInfo = $this->_getProfileInfoWithAccessChecking($iProfileId)))
             return;
-        }
-
+        
         $this->output($this->_prepareProfileArray($aProfileInfo, !isAdmin($aToken['user_id'])));
     }
 
@@ -57,9 +54,8 @@ class BxOAuthAPI extends Thing
     {
         $iProfileId = (int)bx_get('id');
 
-        if (!($aProfileInfo = $this->_getProfileInfoWithAccessChecking($iProfileId))) {
+        if (!($aProfileInfo = $this->_getProfileInfoWithAccessChecking($iProfileId)))
             return;
-        }
 
         $this->output(array(
             'user_id' => $iProfileId,
@@ -67,44 +63,39 @@ class BxOAuthAPI extends Thing
         ));
     }
 
-    function service($aToken)
+    function service($aToken) 
     {
         if (!isAdmin($aToken['user_id'])) {
             $this->errorOutput(403, 'access_denied', 'Only admin can access service endpoint');
-
             return false;
         }
 
         bx_login($aToken['user_id'], false, false);
 
-        $sUri    = bx_get('uri');
+        $sUri = bx_get('uri');
         $sMethod = bx_get('method');
 
-        if (!($aParams = bx_get('params'))) {
+        if (!($aParams = bx_get('params')))
             $aParams = array();
-        } elseif (is_string($aParams) && preg_match('/^a:[\d+]:\{/', $aParams)) {
+        elseif (is_string($aParams) && preg_match('/^a:[\d+]:\{/', $aParams))
             $aParams = @unserialize($aParams);
-        }
-        if (!is_array($aParams)) {
+        if (!is_array($aParams))
             $aParams = array($aParams);
-        }
 
-        if (!($sClass = bx_get('class'))) {
+        if (!($sClass = bx_get('class')))
             $sClass = 'Module';
-        }
 
         if (!BxDolRequest::serviceExists($sUri, $sMethod, $sClass)) {
             $this->errorOutput(404, 'not_found', 'Service was not found');
-
             return false;
         }
 
         $mixedRet = BxDolService::call($sUri, $sMethod, $aParams, $sClass);
 
         $this->output(array(
-            'uri'    => $sUri,
+            'uri' => $sUri,
             'method' => $sMethod,
-            'data'   => $mixedRet,
+            'data' => $mixedRet,
         ));
     }
 
@@ -122,24 +113,22 @@ class BxOAuthAPI extends Thing
         $oReponse->send();
     }
 
-    protected function _getProfileInfoWithAccessChecking($iProfileId)
+    protected function _getProfileInfoWithAccessChecking ($iProfileId) 
     {
         if (!($aProfileInfo = getProfileInfo($iProfileId))) {
             $this->errorOutput('404', 'not_found', 'Profile was not found');
-
             return false;
         }
-
+        
         if (!bx_check_profile_visibility($iProfileId, $aToken['user_id'], true)) {
             $this->errorOutput(403, 'access_denied', 'You have no rights to view this user info');
-
             return false;
         }
 
         return $aProfileInfo;
     }
 
-    protected function _prepareProfileArray($aProfileInfo, $bPublicFieldsOnly = true)
+    protected function _prepareProfileArray ($aProfileInfo, $bPublicFieldsOnly = true) 
     {
         $aProfileInfo['id'] = $aProfileInfo['ID'];
 
@@ -147,7 +136,8 @@ class BxOAuthAPI extends Thing
             $aProfileInfo = array(
                 'id' => $aProfileInfo['id'],
             );
-        } else {
+        } 
+        else {
             unset($aProfileInfo['Password']);
             unset($aProfileInfo['Salt']);
             unset($aProfileInfo['LangID']);
@@ -167,14 +157,12 @@ class BxOAuthAPI extends Thing
 
         $aProfileInfo['profile_display_name'] = $aProfileInfo['name'] = $GLOBALS['oFunctions']->getUserTitle($aProfileInfo['id']);
         $aProfileInfo['profile_display_info'] = $GLOBALS['oFunctions']->getUserInfo($aProfileInfo['id']);
-        $aProfileInfo['profile_link']         = getProfileLink($aProfileInfo['id']);
+        $aProfileInfo['profile_link'] = getProfileLink($aProfileInfo['id']);
 
-        if (BxDolRequest::serviceExists('photos', 'profile_photo', 'Search')) {
-            $aProfileInfo['picture'] = BxDolService::call('photos', 'profile_photo', array($aProfileInfo['id'], 'file'),
-                'Search');
-        } else {
+        if (BxDolRequest::serviceExists('photos', 'profile_photo', 'Search'))
+            $aProfileInfo['picture'] = BxDolService::call('photos', 'profile_photo', array($aProfileInfo['id'], 'file'), 'Search');
+        else
             $aProfileInfo['picture'] = $GLOBALS['oFunctions']->getMemberAvatar($aProfileInfo['id']);
-        }
 
         return $aProfileInfo;
     }

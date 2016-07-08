@@ -5,7 +5,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolDb.php');
+require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolDb.php' );
 
 class BxBlogsDb extends BxDolDb
 {
@@ -24,7 +24,6 @@ class BxBlogsDb extends BxDolDb
     function getMembershipActions()
     {
         $sSql = "SELECT `ID` AS `id`, `Name` AS `name` FROM `sys_acl_actions` WHERE `Name`='use blog' OR `Name`='view blog'";
-
         return $this->getAll($sSql);
     }
 
@@ -35,7 +34,6 @@ class BxBlogsDb extends BxDolDb
             FROM `{$this->_oConfig->sSQLPostsTable}`
             WHERE `PostID`='{$iPostID}'
         ";
-
         return $this->getOne($sSQL);
     }
 
@@ -46,7 +44,6 @@ class BxBlogsDb extends BxDolDb
             FROM `{$this->_oConfig->sSQLPostsTable}`
             WHERE `PostID`= ?
         ";
-
         return $this->getRow($sSQL, [$iPostID]);
     }
 
@@ -57,7 +54,6 @@ class BxBlogsDb extends BxDolDb
             FROM `{$this->_oConfig->sSQLPostsTable}`
             WHERE `PostUri`='{$sPostUri}'
         ";
-
         return $this->getOne($sSQL);
     }
 
@@ -69,7 +65,6 @@ class BxBlogsDb extends BxDolDb
             INNER JOIN `{$this->_oConfig->sSQLPostsTable}` ON `{$this->_oConfig->sSQLPostsTable}`.`OwnerID` = `{$this->_oConfig->sSQLBlogsTable}`.`OwnerID`
             WHERE {$sStatusFilter}
         ";
-
         return $this->getOne($sBlogsSQL);
     }
 
@@ -85,7 +80,6 @@ class BxBlogsDb extends BxDolDb
             {$sqlLimit}
         ";
         $vBlogsRes = db_res($sBlogsSQL);
-
         return $vBlogsRes;
     }
 
@@ -101,8 +95,7 @@ class BxBlogsDb extends BxDolDb
             {$sqlLimit}
         ";
 
-        $vBlogsRes = db_res($sBlogsSQL);
-
+        $vBlogsRes = db_res( $sBlogsSQL );
         return $vBlogsRes;
     }
 
@@ -110,7 +103,7 @@ class BxBlogsDb extends BxDolDb
     {
         $sCategJoin = $sCategFilter = '';
         if ($sCategoryName != '') {
-            $sCategJoin   = "
+            $sCategJoin = "
                 LEFT JOIN `{$this->_oConfig->sSQLCategoriesTable}` ON `{$this->_oConfig->sSQLCategoriesTable}`.`ID` = `{$this->_oConfig->sSQLPostsTable}`.`PostID`
             ";
             $sCategFilter = "
@@ -128,8 +121,7 @@ class BxBlogsDb extends BxDolDb
                 {$sCategFilter}
                 {$sStatusFilter}
         ";
-        $vTags     = db_res($sPostsSQL);
-
+        $vTags = db_res($sPostsSQL);
         return $vTags;
     }
 
@@ -137,14 +129,14 @@ class BxBlogsDb extends BxDolDb
     {
         $sCategJoin = $sCategFilter = '';
         if ($sCategoryName != '') {
-            $sCategJoin   = "
+            $sCategJoin = "
                 LEFT JOIN `{$this->_oConfig->sSQLCategoriesTable}` ON `{$this->_oConfig->sSQLCategoriesTable}`.`ID` = `{$this->_oConfig->sSQLPostsTable}`.`PostID`
             ";
             $sCategFilter = "
                 AND `{$this->_oConfig->sSQLCategoriesTable}`.`Category` = '{$sCategoryName}' AND `{$this->_oConfig->sSQLCategoriesTable}`.`Type`='bx_blogs'
             ";
         }
-        $sPostsSQL   = "
+        $sPostsSQL = "
             SELECT
                 `PostID`
             FROM `{$this->_oConfig->sSQLPostsTable}`
@@ -161,13 +153,12 @@ class BxBlogsDb extends BxDolDb
         while ($aPost = $vPostsInCat->fetch()) {
             $aPosts[] = (int)$aPost['PostID'];
         }
-
         return $aPosts;
     }
 
     function getPostsCntInCategory($sCategoryName, $sStatusFilter, $iOwnerID)
     {
-        $sCategJoin   = "
+        $sCategJoin = "
             LEFT JOIN `{$this->_oConfig->sSQLCategoriesTable}` ON `{$this->_oConfig->sSQLCategoriesTable}`.`ID` = `{$this->_oConfig->sSQLPostsTable}`.`PostID`
         ";
         $sCategFilter = "
@@ -185,20 +176,18 @@ class BxBlogsDb extends BxDolDb
         ";
 
         $iCountCatPost = (int)$this->getOne($sCountPostCatSQL);
-
         return $iCountCatPost;
     }
 
     function getFeaturedPosts($iMemberID)
     {
-        $sFeaturedSQL   = "
+        $sFeaturedSQL = "
             SELECT `{$this->_oConfig->sSQLPostsTable}`.*
             FROM `{$this->_oConfig->sSQLPostsTable}`
             WHERE `{$this->_oConfig->sSQLPostsTable}`.`OwnerID` = {$iMemberID} AND `{$this->_oConfig->sSQLPostsTable}`.`Featured`='1'
             ORDER BY `PostDate` DESC
         ";
         $vFeaturedPosts = db_res($sFeaturedSQL);
-
         return $vFeaturedPosts;
     }
 
@@ -209,7 +198,6 @@ class BxBlogsDb extends BxDolDb
             SET `PostStatus`='{$sStatus}'
             WHERE `PostID`='{$iPostID}'
             LIMIT 1";
-
         return $this->query($sUpdateSQL);
     }
 
@@ -231,8 +219,7 @@ class BxBlogsDb extends BxDolDb
             FROM `{$this->_oConfig->sSQLPostsTable}`
             WHERE `PostID`='{$iPostID}'
         ";
-        $iOwnerID      = $this->getOne($sCheckPostSQL);
-
+        $iOwnerID = $this->getOne($sCheckPostSQL);
         return $iOwnerID;
     }
 
@@ -243,16 +230,14 @@ class BxBlogsDb extends BxDolDb
             FROM `{$this->_oConfig->sSQLBlogsTable}`
             WHERE `ID`='{$iBlogID}'
         ";
-        $iOwnerID  = $this->getOne($sCheckSQL);
-
+        $iOwnerID = $this->getOne($sCheckSQL);
         return $iOwnerID;
     }
 
     function getPostPhotoByID($iPostID)
     {
         $sPhotosSQL = "SELECT `PostPhoto` FROM `{$this->_oConfig->sSQLPostsTable}` WHERE `PostID` = '{$iPostID}' LIMIT 1";
-        $sFileName  = $this->getOne($sPhotosSQL);
-
+        $sFileName = $this->getOne($sPhotosSQL);
         return $sFileName;
     }
 
@@ -265,7 +250,6 @@ class BxBlogsDb extends BxDolDb
         ";
 
         $vSqlRes = db_res($sUpdateSQL);
-
         return $vSqlRes;
     }
 
@@ -273,23 +257,19 @@ class BxBlogsDb extends BxDolDb
     {
         $sDelSQL = "DELETE FROM `{$this->_oConfig->sSQLPostsTable}` WHERE `{$this->_oConfig->sSQLPostsTable}`.`PostID` = '{$iPostID}' LIMIT 1";
         $vSqlRes = db_res($sDelSQL);
-
         return $vSqlRes;
     }
 
     function getPostIDByUri($sPostUri)
     {
         $sPostIdSQL = "SELECT `PostID` FROM `{$this->_oConfig->sSQLPostsTable}` WHERE `PostUri`='{$sPostUri}'";
-        $iPostID    = (int)$this->getOne($sPostIdSQL);
-
+        $iPostID = (int)$this->getOne($sPostIdSQL);
         return $iPostID;
     }
-
     function getPostUriByID($iPostID)
     {
         $sPostUriSQL = "SELECT `PostUri` FROM `{$this->_oConfig->sSQLPostsTable}` WHERE `PostID`='{$iPostID}'";
-        $sPostUri    = $this->getOne($sPostUriSQL);
-
+        $sPostUri = $this->getOne($sPostUriSQL);
         return $sPostUri;
     }
 
@@ -303,15 +283,13 @@ class BxBlogsDb extends BxDolDb
         ";
 
         $aAllBlogPostInfo = $this->getRow($sAllBlogPostInfoSQL, [$iPostID]);
-
         return $aAllBlogPostInfo;
     }
 
     function getJustPostInfo($iPostID)
     {
         $sBlogPostsSQL = "SELECT * FROM `{$this->_oConfig->sSQLPostsTable}` WHERE `PostID` = ? LIMIT 1";
-        $aBlogPost     = $this->getRow($sBlogPostsSQL, [$iPostID]);
-
+        $aBlogPost = $this->getRow($sBlogPostsSQL, [$iPostID]);
         return $aBlogPost;
     }
 
@@ -323,7 +301,6 @@ class BxBlogsDb extends BxDolDb
             WHERE `PostID`='{$iPostID}'
         ";
         $iFeatured = $this->getOne($sCheckSQL);
-
         return $iFeatured;
     }
 
@@ -334,8 +311,7 @@ class BxBlogsDb extends BxDolDb
             FROM `{$this->_oConfig->sSQLPostsTable}`
             WHERE `PostID`='{$iPostID}'
         ";
-        $sStatus   = $this->getOne($sCheckSQL);
-
+        $sStatus = $this->getOne($sCheckSQL);
         return $sStatus;
     }
 
@@ -357,7 +333,7 @@ class BxBlogsDb extends BxDolDb
     function performUpdateBlog($aParams)
     {
         $iBlogID = $aParams['blogID'];
-        $sDesc   = $aParams['description'];
+        $sDesc = $aParams['description'];
 
         $sUpdateSQL = "
             UPDATE `{$this->_oConfig->sSQLBlogsTable}`
@@ -380,7 +356,6 @@ class BxBlogsDb extends BxDolDb
     {
         $sCheckSQL = "SELECT `ID` FROM `Profiles` WHERE `NickName`='{$sNickName}'";
         $iMemberID = (int)$this->getOne($sCheckSQL);
-
         return $iMemberID;
     }
 
@@ -401,18 +376,17 @@ class BxBlogsDb extends BxDolDb
                 LIMIT 10
         ";
         $aRssUnits = $this->getAll($sUnitsSQL);
-
         return $aRssUnits;
     }
 
     function getBlogPostsByMonth($iYear, $iMonth, $iNextYear, $iNextMonth, $sStatus = 'approval')
     {
-        $sStatus = $this->escape($sStatus);
-        $sExtra  = $sStatus
+        $sStatus = $this -> escape($sStatus);
+        $sExtra = $sStatus
             ? " AND `{$this->_oConfig->sSQLPostsTable}`.`PostStatus` = $sStatus"
             : '';
 
-        return $this->getAll("
+        return $this->getAll ("
             SELECT `{$this->_oConfig->sSQLPostsTable}`.*, DAYOFMONTH(FROM_UNIXTIME(`{$this->_oConfig->sSQLPostsTable}`.`PostDate`)) AS `Day`
             FROM `{$this->_oConfig->sSQLPostsTable}`
             WHERE
@@ -430,7 +404,6 @@ class BxBlogsDb extends BxDolDb
                 WHERE `{$this->_oConfig->sSQLPostsTable}`.`PostStatus` = 'approval'
                 AND `{$this->_oConfig->sSQLPostsTable}`.`OwnerID` = '{$iPID}'
         ";
-
         return (int)$this->getOne($sUnitsSQL);
     }
 

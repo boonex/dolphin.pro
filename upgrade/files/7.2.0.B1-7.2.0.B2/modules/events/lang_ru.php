@@ -9,5 +9,5 @@ $aLangContent = array(
     // ================ CHANGED KEYS ==================
 
     '_bx_events_privacy_post_in_forum' => 'Писать в форуме доступно',
-
+    
 );

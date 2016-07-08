@@ -2,9 +2,9 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_feedback' => 'Отзывы',
-    '_mma_Feedback_Delete' => 'Отзывы: удалять',
+  '_sys_module_feedback' => 'Отзывы',
+  '_mma_Feedback_Delete' => 'Отзывы: удалять',
 
 );

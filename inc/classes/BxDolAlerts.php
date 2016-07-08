@@ -52,7 +52,6 @@ class BxDolAlerts
 
     /**
      * Constructor
-     *
      * @param string $sType     - system type
      * @param string $sAction   - system action
      * @param int    $iObjectId - object id
@@ -61,15 +60,14 @@ class BxDolAlerts
     function __construct($sUnit, $sAction, $iObjectId, $iSender = 0, $aExtras = array())
     {
         $oCache = $GLOBALS['MySQL']->getDbCacheObject();
-        $aData  = $oCache->getData($GLOBALS['MySQL']->genDbCacheKey('sys_alerts'));
-        if (null === $aData) {
+        $aData = $oCache->getData($GLOBALS['MySQL']->genDbCacheKey('sys_alerts'));
+        if (null === $aData)
             $aData = BxDolAlerts::cache();
-        }
 
-        $this->_aAlerts   = $aData['alerts'];
+        $this->_aAlerts = $aData['alerts'];
         $this->_aHandlers = $aData['handlers'];
 
-        $this->sUnit   = $sUnit;
+        $this->sUnit = $sUnit;
         $this->sAction = $sAction;
         $this->iObject = (int)$iObjectId;
         $this->iSender = !empty($iSender) ? (int)$iSender :
@@ -85,24 +83,20 @@ class BxDolAlerts
         $oSubscription = BxDolSubscription::getInstance();
         $oSubscription->send($this->sUnit, $this->sAction, $this->iObject, $this->aExtras);
 
-        if (isset($this->_aAlerts[$this->sUnit]) && isset($this->_aAlerts[$this->sUnit][$this->sAction])) {
-            foreach ($this->_aAlerts[$this->sUnit][$this->sAction] as $iHandlerId) {
+        if(isset($this->_aAlerts[$this->sUnit]) && isset($this->_aAlerts[$this->sUnit][$this->sAction]))
+            foreach($this->_aAlerts[$this->sUnit][$this->sAction] as $iHandlerId) {
                 $aHandler = $this->_aHandlers[$iHandlerId];
 
-                if (!empty($aHandler['file']) && !empty($aHandler['class']) && file_exists(BX_DIRECTORY_PATH_ROOT . $aHandler['file'])) {
-                    if (!class_exists($aHandler['class'])) {
+                if(!empty($aHandler['file']) && !empty($aHandler['class']) && file_exists(BX_DIRECTORY_PATH_ROOT . $aHandler['file'])) {
+                    if(!class_exists($aHandler['class']))
                         require_once(BX_DIRECTORY_PATH_ROOT . $aHandler['file']);
-                    }
 
                     $oHandler = new $aHandler['class']();
                     $oHandler->response($this);
-                } else {
-                    if (!empty($aHandler['eval'])) {
-                        eval($aHandler['eval']);
-                    }
+                } else if(!empty($aHandler['eval'])) {
+                    eval($aHandler['eval']);
                 }
             }
-        }
     }
 
     /**
@@ -115,22 +109,16 @@ class BxDolAlerts
         $aResult = array('alerts' => array(), 'handlers' => array());
 
         $rAlerts = db_res("SELECT `unit`, `action`, `handler_id` FROM `sys_alerts` ORDER BY `id` ASC");
-        while ($aAlert = $rAlerts->fetch()) {
+        while($aAlert = $rAlerts->fetch())
             $aResult['alerts'][$aAlert['unit']][$aAlert['action']][] = $aAlert['handler_id'];
-        }
 
         $rHandlers = db_res("SELECT `id`, `class`, `file`, `eval` FROM `sys_alerts_handlers` ORDER BY `id` ASC");
-        while ($aHandler = $rHandlers->fetch()) {
-            $aResult['handlers'][$aHandler['id']] = array(
-                'class' => $aHandler['class'],
-                'file'  => $aHandler['file'],
-                'eval'  => $aHandler['eval']
-            );
-        }
+        while($aHandler = $rHandlers->fetch())
+            $aResult['handlers'][$aHandler['id']] = array('class' => $aHandler['class'], 'file' => $aHandler['file'], 'eval' => $aHandler['eval']);
 
 
         $oCache = $GLOBALS['MySQL']->getDbCacheObject();
-        $oCache->setData($GLOBALS['MySQL']->genDbCacheKey('sys_alerts'), $aResult);
+        $oCache->setData ($GLOBALS['MySQL']->genDbCacheKey('sys_alerts'), $aResult);
 
         return $aResult;
     }
@@ -138,7 +126,6 @@ class BxDolAlerts
 
 class BxDolAlertsResponse
 {
-    function __construct() { }
-
-    function response($oAlert) { }
+    function __construct(){}
+    function response($oAlert) {}
 }

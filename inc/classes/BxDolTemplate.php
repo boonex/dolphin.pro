@@ -162,86 +162,74 @@ class BxDolTemplate
     {
         $this->_sPrefix = 'BxDolTemplate';
 
-        $this->_sRootPath        = $sRootPath;
-        $this->_sRootUrl         = $sRootUrl;
+        $this->_sRootPath = $sRootPath;
+        $this->_sRootUrl = $sRootUrl;
         $this->_sInjectionsTable = 'sys_injections';
         $this->_sInjectionsCache = BX_DOL_TEMPLATE_INJECTIONS_CACHE;
 
         $this->_sCodeKey = 'skin';
-        $this->_sCode    = $GLOBALS['MySQL']->getParam('template');
-        if (empty($this->_sCode)) {
+        $this->_sCode = $GLOBALS['MySQL']->getParam('template');
+        if(empty($this->_sCode))
             $this->_sCode = BX_DOL_TEMPLATE_DEFAULT_CODE;
-        }
 
         //--- Check selected template in COOKIE(the lowest priority) ---//
         $sCode = empty($_COOKIE[$this->_sCodeKey]) ? '' : $_COOKIE[$this->_sCodeKey];
-        if (!empty($sCode) && preg_match('/^[A-Za-z0-9_-]+$/',
-                $sCode) && file_exists($this->_sRootPath . 'templates/tmpl_' . $sCode) && !is_file($this->_sRootPath . 'templates/tmpl_' . $sCode)
-        ) {
+        if (!empty($sCode) && preg_match('/^[A-Za-z0-9_-]+$/', $sCode) && file_exists($this->_sRootPath . 'templates/tmpl_' . $sCode) && !is_file($this->_sRootPath . 'templates/tmpl_' . $sCode))
             $this->_sCode = $sCode;
-        }
 
         //--- Check selected template in GET(the highest priority) ---//
         $sCode = empty($_GET[$this->_sCodeKey]) ? '' : $_GET[$this->_sCodeKey];
-        if (!empty($sCode) && preg_match('/^[A-Za-z0-9_-]+$/',
-                $sCode) && file_exists($this->_sRootPath . 'templates/tmpl_' . $sCode) && !is_file($this->_sRootPath . 'templates/tmpl_' . $sCode)
-        ) {
+        if(!empty($sCode) && preg_match('/^[A-Za-z0-9_-]+$/', $sCode) && file_exists($this->_sRootPath . 'templates/tmpl_' . $sCode) && !is_file($this->_sRootPath . 'templates/tmpl_' . $sCode)) {
             $this->_sCode = $sCode;
 
-            $aUrl  = parse_url($GLOBALS['site']['url']);
+            $aUrl = parse_url($GLOBALS['site']['url']);
             $sPath = isset($aUrl['path']) && !empty($aUrl['path']) ? $aUrl['path'] : '/';
 
-            if (!bx_get('preview')) {
-                setcookie($this->_sCodeKey, $this->_sCode, time() + 60 * 60 * 24 * 365, $sPath);
-            }
+            if (!bx_get('preview'))
+                setcookie( $this->_sCodeKey, $this->_sCode, time() + 60*60*24*365, $sPath);
 
             if (isset($_GET[$this->_sCodeKey])) {
                 bx_import('BxDolPermalinks');
                 $oPermalinks = new BxDolPermalinks();
-                if ($oPermalinks->redirectIfNecessary(array($this->_sCodeKey))) {
+                if ($oPermalinks->redirectIfNecessary(array($this->_sCodeKey)))
                     exit;
-                }
             }
 
         }
 
         $this->_sKeyWrapperHtml = '__';
-        $this->_sFolderHtml     = '';
-        $this->_sFolderCss      = 'css/';
-        $this->_sFolderImages   = 'images/';
-        $this->_sFolderIcons    = 'images/icons/';
-        $this->_aTemplates      = array();
+        $this->_sFolderHtml = '';
+        $this->_sFolderCss = 'css/';
+        $this->_sFolderImages = 'images/';
+        $this->_sFolderIcons = 'images/icons/';
+        $this->_aTemplates = array();
 
         $this->addLocation('system', $this->_sRootPath, $this->_sRootUrl);
 
-        $this->addLocationJs('system_inc_js', BX_DIRECTORY_PATH_INC . 'js/', BX_DOL_URL_ROOT . 'inc/js/');
-        $this->addLocationJs('system_inc_js_classes', BX_DIRECTORY_PATH_INC . 'js/classes/',
-            BX_DOL_URL_ROOT . 'inc/js/classes/');
+        $this->addLocationJs('system_inc_js', BX_DIRECTORY_PATH_INC . 'js/' , BX_DOL_URL_ROOT . 'inc/js/');
+        $this->addLocationJs('system_inc_js_classes', BX_DIRECTORY_PATH_INC . 'js/classes/' , BX_DOL_URL_ROOT . 'inc/js/classes/');
         $this->addLocationJs('system_plugins', BX_DIRECTORY_PATH_PLUGINS, BX_DOL_URL_PLUGINS);
-        $this->addLocationJs('system_plugins_jquery', BX_DIRECTORY_PATH_PLUGINS . 'jquery/',
-            BX_DOL_URL_PLUGINS . 'jquery/');
-        $this->addLocationJs('system_plugins_tinymce', BX_DIRECTORY_PATH_PLUGINS . 'tiny_mce/',
-            BX_DOL_URL_PLUGINS . 'tiny_mce/');
+        $this->addLocationJs('system_plugins_jquery', BX_DIRECTORY_PATH_PLUGINS . 'jquery/' , BX_DOL_URL_PLUGINS . 'jquery/');
+        $this->addLocationJs('system_plugins_tinymce', BX_DIRECTORY_PATH_PLUGINS . 'tiny_mce/' , BX_DOL_URL_PLUGINS . 'tiny_mce/');
 
-        $this->_bCacheEnable           = !defined('BX_DOL_CRON_EXECUTE') && getParam('sys_template_cache_enable') == 'on';
-        $this->_sCacheFolderUrl        = '';
-        $this->_sCachePublicFolderUrl  = BX_DOL_URL_CACHE_PUBLIC;
+        $this->_bCacheEnable = !defined('BX_DOL_CRON_EXECUTE') && getParam('sys_template_cache_enable') == 'on';
+        $this->_sCacheFolderUrl = '';
+        $this->_sCachePublicFolderUrl = BX_DOL_URL_CACHE_PUBLIC;
         $this->_sCachePublicFolderPath = BX_DIRECTORY_PATH_CACHE_PUBLIC;
-        $this->_sCacheFilePrefix       = "bx_templ_";
+        $this->_sCacheFilePrefix = "bx_templ_";
 
-        $this->_bImagesInline  = getParam('sys_template_cache_image_enable') == 'on';
+        $this->_bImagesInline = getParam('sys_template_cache_image_enable') == 'on';
         $this->_iImagesMaxSize = (int)getParam('sys_template_cache_image_max_size') * 1024;
 
-        $bArchive               = getParam('sys_template_cache_compress_enable') == 'on';
-        $this->_bCssCache       = !defined('BX_DOL_CRON_EXECUTE') && getParam('sys_template_cache_css_enable') == 'on';
-        $this->_bCssArchive     = $this->_bCssCache && $bArchive;
+        $bArchive = getParam('sys_template_cache_compress_enable') == 'on';
+        $this->_bCssCache = !defined('BX_DOL_CRON_EXECUTE') && getParam('sys_template_cache_css_enable') == 'on';
+        $this->_bCssArchive = $this->_bCssCache && $bArchive;
         $this->_sCssCachePrefix = $this->_sCacheFilePrefix . 'css_';
 
-        $this->_bJsCache       = !defined('BX_DOL_CRON_EXECUTE') && getParam('sys_template_cache_js_enable') == 'on';
-        $this->_bJsArchive     = $this->_bJsCache && $bArchive;
+        $this->_bJsCache = !defined('BX_DOL_CRON_EXECUTE') && getParam('sys_template_cache_js_enable') == 'on';
+        $this->_bJsArchive = $this->_bJsCache && $bArchive;
         $this->_sJsCachePrefix = $this->_sCacheFilePrefix . 'js_';
     }
-
     /**
      * Load templates.
      *
@@ -249,12 +237,10 @@ class BxDolTemplate
     function loadTemplates()
     {
         $aResult = array();
-        foreach ($this->_aTemplates as $sName) {
+        foreach($this->_aTemplates as $sName)
             $aResult[$sName] = $this->getHtml($sName . '.html');
-        }
         $this->_aTemplates = $aResult;
     }
-
     /**
      * Initialize template engine.
      * Note. The method is executed with the system, you shouldn't execute it in your subclasses.
@@ -262,31 +248,29 @@ class BxDolTemplate
     function init()
     {
         //--- Load injection's cache ---//
-        $oCache      = $GLOBALS['MySQL']->getDbCacheObject();
+        $oCache = $GLOBALS['MySQL']->getDbCacheObject();
         $aInjections = $oCache->getData($GLOBALS['MySQL']->genDbCacheKey($this->_sInjectionsCache));
         if (null === $aInjections) {
             $rInjections = db_res("SELECT `page_index`, `name`, `key`, `type`, `data`, `replace` FROM `" . $this->_sInjectionsTable . "` WHERE `active`='1'");
-            while ($aInjection = $rInjections->fetch()) {
+            while($aInjection = $rInjections->fetch())
                 $aInjections['page_' . $aInjection['page_index']][$aInjection['key']][] = $aInjection;
-            }
 
-            $oCache->setData($GLOBALS['MySQL']->genDbCacheKey($this->_sInjectionsCache), $aInjections);
+            $oCache->setData ($GLOBALS['MySQL']->genDbCacheKey($this->_sInjectionsCache), $aInjections);
         }
 
-        $GLOBALS[$this->_sPrefix . 'Injections'] = isset($GLOBALS[$this->_sPrefix . 'Injections']) ? array_merge_recursive($GLOBALS[$this->_sPrefix . 'Injections'],
-            $aInjections) : $aInjections;
+        $GLOBALS[$this->_sPrefix . 'Injections'] = isset($GLOBALS[$this->_sPrefix . 'Injections']) ? array_merge_recursive ($GLOBALS[$this->_sPrefix . 'Injections'], $aInjections) : $aInjections;
 
         //--- Load page elements related static variables ---//
-        $GLOBALS[$this->_sPrefix . 'PageKeywords'] = array();
-        $GLOBALS[$this->_sPrefix . 'OG']           = array();
+		$GLOBALS[$this->_sPrefix . 'PageKeywords'] = array();
+        $GLOBALS[$this->_sPrefix . 'OG']  = array();
 
-        $GLOBALS[$this->_sPrefix . 'Js']       = array();
+        $GLOBALS[$this->_sPrefix . 'Js'] = array();
         $GLOBALS[$this->_sPrefix . 'JsSystem'] = array();
 
-        $GLOBALS[$this->_sPrefix . 'Css']       = array();
+        $GLOBALS[$this->_sPrefix . 'Css'] = array();
         $GLOBALS[$this->_sPrefix . 'CssSystem'] = array();
         $GLOBALS[$this->_sPrefix . 'CssStyles'] = array();
-        $GLOBALS[$this->_sPrefix . 'CssAsync']  = array();
+        $GLOBALS[$this->_sPrefix . 'CssAsync'] = array();
 
         $this->setPageWidth(getParam('main_div_width'));
         $this->setPageTitle('');
@@ -298,7 +282,7 @@ class BxDolTemplate
      * Add location in array of locations.
      * Note. Location is the path/url to folder where 'templates' folder is stored.
      *
-     * @param string $sKey          - location's    unique key.
+     * @param string $sKey          - location's	unique key.
      * @param string $sLocationPath - location's path. For modules: '[path_to_dolphin]/modules/[vendor_name]/[module_name]/'
      * @param string $sLocationUrl  - location's url. For modules: '[url_to_dolphin]/modules/[vendor_name]/[module_name]/'
      */
@@ -306,15 +290,14 @@ class BxDolTemplate
     {
         $this->_aLocations[$sKey] = array(
             'path' => $sLocationPath . BX_DOL_TEMPLATE_FOLDER_ROOT . DIRECTORY_SEPARATOR,
-            'url'  => $sLocationUrl . BX_DOL_TEMPLATE_FOLDER_ROOT . '/'
+            'url' => $sLocationUrl . BX_DOL_TEMPLATE_FOLDER_ROOT . '/'
         );
     }
-
     /**
      * Add dynamic location.
      *
-     * @param  string $sLocationPath - location's path. For modules: '[path_to_dolphin]/modules/[vendor_name]/[module_name]/'
-     * @param  string $sLocationUrl  - location's url. For modules: '[url_to_dolphin]/modules/[vendor_name]/[module_name]/'
+     * @param  string   $sLocationPath - location's path. For modules: '[path_to_dolphin]/modules/[vendor_name]/[module_name]/'
+     * @param  string   $sLocationUrl  - location's url. For modules: '[url_to_dolphin]/modules/[vendor_name]/[module_name]/'
      * @return location key. Is needed to remove the location.
      */
     function addDynamicLocation($sLocationPath, $sLocationUrl)
@@ -324,25 +307,22 @@ class BxDolTemplate
 
         return $sLocationKey;
     }
-
     /**
      * Remove location from array of locations.
      * Note. Location is the path/url to folder where templates are stored.
      *
-     * @param string $sKey - location's    unique key.
+     * @param string $sKey - location's	unique key.
      */
     function removeLocation($sKey)
     {
-        if (isset($this->_aLocations[$sKey])) {
-            unset($this->_aLocations[$sKey]);
-        }
+        if(isset($this->_aLocations[$sKey]))
+           unset($this->_aLocations[$sKey]);
     }
-
     /**
      * Add JS location in array of JS locations.
      * Note. Location is the path/url to folder where JS files are stored.
      *
-     * @param string $sKey          - location's    unique key.
+     * @param string $sKey          - location's	unique key.
      * @param string $sLocationPath - location's path. For modules: '[path_to_dolphin]/modules/[vendor_name]/[module_name]/js/'
      * @param string $sLocationUrl  - location's url. For modules: '[url_to_dolphin]/modules/[vendor_name]/[module_name]/js/'
      */
@@ -350,15 +330,14 @@ class BxDolTemplate
     {
         $this->_aLocationsJs[$sKey] = array(
             'path' => $sLocationPath,
-            'url'  => $sLocationUrl
+            'url' => $sLocationUrl
         );
     }
-
     /**
      * Add dynamic JS location.
      *
-     * @param  string $sLocationPath - location's path. For modules: '[path_to_dolphin]/modules/[vendor_name]/[module_name]/'
-     * @param  string $sLocationUrl  - location's url. For modules: '[url_to_dolphin]/modules/[vendor_name]/[module_name]/'
+     * @param  string   $sLocationPath - location's path. For modules: '[path_to_dolphin]/modules/[vendor_name]/[module_name]/'
+     * @param  string   $sLocationUrl  - location's url. For modules: '[url_to_dolphin]/modules/[vendor_name]/[module_name]/'
      * @return location key. Is needed to remove the location.
      */
     function addDynamicLocationJs($sLocationPath, $sLocationUrl)
@@ -368,20 +347,17 @@ class BxDolTemplate
 
         return $sLocationKey;
     }
-
     /**
      * Remove JS location from array of locations.
      * Note. Location is the path/url to folder where templates are stored.
      *
-     * @param string $sKey - JS location's    unique key.
+     * @param string $sKey - JS location's	unique key.
      */
     function removeLocationJs($sKey)
     {
-        if (isset($this->_aLocationsJs[$sKey])) {
-            unset($this->_aLocationsJs[$sKey]);
-        }
+        if(isset($this->_aLocationsJs[$sKey]))
+           unset($this->_aLocationsJs[$sKey]);
     }
-
     /**
      * Get request line key.
      *
@@ -391,7 +367,6 @@ class BxDolTemplate
     {
         return $this->_sCodeKey;
     }
-
     /**
      * Get currently active template code.
      *
@@ -401,7 +376,6 @@ class BxDolTemplate
     {
         return isset($GLOBALS['iAdminPage']) && (int)$GLOBALS['iAdminPage'] == 1 ? BX_DOL_TEMPLATE_DEFAULT_CODE : $this->_sCode;
     }
-
     /**
      * Get page width.
      *
@@ -411,7 +385,6 @@ class BxDolTemplate
     {
         return $GLOBALS[$this->_sPrefix . 'PageWidth'];
     }
-
     /**
      * Set page width.
      *
@@ -422,10 +395,9 @@ class BxDolTemplate
         $GLOBALS[$this->_sPrefix . 'PageWidth'] = $sWidth;
 
         $this->addCssStyle('.sys_main_page_width', array(
-            'max-width' => $GLOBALS[$this->_sPrefix . 'PageWidth']
+        	'max-width' => $GLOBALS[$this->_sPrefix . 'PageWidth']
         ));
     }
-
     /**
      * Set page title.
      *
@@ -435,7 +407,6 @@ class BxDolTemplate
     {
         $GLOBALS[$this->_sPrefix . 'PageTitle'] = $sTitle;
     }
-
     /**
      * Set page's main box title.
      *
@@ -445,7 +416,6 @@ class BxDolTemplate
     {
         $GLOBALS[$this->_sPrefix . 'PageMainBoxTitle'] = $sTitle;
     }
-
     /**
      * Set page description.
      *
@@ -455,7 +425,6 @@ class BxDolTemplate
     {
         $GLOBALS[$this->_sPrefix . 'PageDescription'] = $sDescription;
     }
-
     /**
      * Add Option in JS output.
      *
@@ -463,15 +432,12 @@ class BxDolTemplate
      */
     function addJsOption($mixedName)
     {
-        if (is_string($mixedName)) {
+        if(is_string($mixedName))
             $mixedName = array($mixedName);
-        }
 
-        foreach ($mixedName as $sName) {
+        foreach($mixedName as $sName)
             $GLOBALS['BxDolTemplateJsOptions'][$sName] = $GLOBALS['MySQL']->getParam($sName);
-        }
     }
-
     /**
      * Add language translation for key in JS output.
      *
@@ -479,70 +445,60 @@ class BxDolTemplate
      */
     function addJsTranslation($mixedKey)
     {
-        if (is_string($mixedKey)) {
+        if(is_string($mixedKey))
             $mixedKey = array($mixedKey);
-        }
 
-        foreach ($mixedKey as $sKey) {
+        foreach($mixedKey as $sKey)
             $GLOBALS['BxDolTemplateJsTranslations'][$sKey] = _t($sKey, '{0}', '{1}');
-        }
     }
-
     /**
      * Add image in JS output.
      *
      * @param array $aImages an array of image descriptors.
-     *                       The descriptor is a key/value pear in the array of descriptors.
+     * The descriptor is a key/value pear in the array of descriptors.
      */
     function addJsImage($aImages)
     {
-        if (!is_array($aImages)) {
+        if(!is_array($aImages))
             return;
-        }
 
-        foreach ($aImages as $sKey => $sFile) {
+        foreach($aImages as $sKey => $sFile) {
             $sUrl = $this->getImageUrl($sFile);
-            if (empty($sUrl)) {
+            if(empty($sUrl))
                 continue;
-            }
 
             $GLOBALS['BxDolTemplateJsImages'][$sKey] = $sUrl;
         }
     }
-
     /**
      * Add icon in JS output.
      *
      * @param array $aIcons an array of icons descriptors.
-     *                      The descriptor is a key/value pear in the array of descriptors.
+     * The descriptor is a key/value pear in the array of descriptors.
      */
     function addJsIcon($aIcons)
     {
-        if (!is_array($aIcons)) {
+        if(!is_array($aIcons))
             return;
-        }
 
-        foreach ($aIcons as $sKey => $sFile) {
+        foreach($aIcons as $sKey => $sFile) {
             $sUrl = $this->getIconUrl($sFile);
-            if (empty($sUrl)) {
+            if(empty($sUrl))
                 continue;
-            }
 
             $GLOBALS[$this->_sPrefix . 'JsImages'][$sKey] = $sUrl;
         }
     }
-
-    /**
-     * Add CSS style.
-     *
-     * @param string $sName    CSS class name.
-     * @param string $sContent CSS class styles.
-     */
-    function addCssStyle($sName, $sContent)
-    {
-        $GLOBALS[$this->_sPrefix . 'CssStyles'][$sName] = $sContent;
-    }
-
+	/**
+	 * Add CSS style.
+	 *
+	 * @param string $sName CSS class name.
+	 * @param string $sContent CSS class styles.
+	 */
+	function addCssStyle($sName, $sContent)
+	{
+		$GLOBALS[$this->_sPrefix . 'CssStyles'][$sName] = $sContent;
+	}
     /**
      * Set page keywords.
      *
@@ -551,35 +507,26 @@ class BxDolTemplate
      */
     function addPageKeywords($mixedKeywords, $sDevider = ',')
     {
-        if (!$mixedKeywords) {
+        if (!$mixedKeywords)
             return;
-        }
 
-        if (is_string($mixedKeywords)) {
-            $mixedKeywords = strpos($mixedKeywords, $sDevider) !== false ? explode($sDevider,
-                $mixedKeywords) : array($mixedKeywords);
-        }
+        if(is_string($mixedKeywords))
+            $mixedKeywords = strpos($mixedKeywords, $sDevider) !== false ? explode($sDevider, $mixedKeywords) : array($mixedKeywords);
 
-        foreach ($mixedKeywords as $iKey => $sValue) {
+        foreach($mixedKeywords as $iKey => $sValue)
             $mixedKeywords[$iKey] = trim($sValue);
-        }
 
-        $GLOBALS[$this->_sPrefix . 'PageKeywords'] = array_merge($GLOBALS[$this->_sPrefix . 'PageKeywords'],
-            $mixedKeywords);
+        $GLOBALS[$this->_sPrefix . 'PageKeywords'] = array_merge($GLOBALS[$this->_sPrefix . 'PageKeywords'], $mixedKeywords);
     }
-
     /**
      * Set page meta Open Graph info.
-     *
-     * @param array  $a          open graph info, such as type, image, title, site_name
+     * @param array $a open graph info, such as type, image, title, site_name
      * @param string $sNamespace namespace, by default 'og'
      */
     function setOpenGraphInfo($a, $sNamespace = 'og')
     {
-        $GLOBALS[$this->_sPrefix . 'OG'][$sNamespace] = array_merge(isset($GLOBALS[$this->_sPrefix . 'OG'][$sNamespace]) ? $GLOBALS[$this->_sPrefix . 'OG'][$sNamespace] : array(),
-            $a);
+        $GLOBALS[$this->_sPrefix . 'OG'][$sNamespace] = array_merge(isset($GLOBALS[$this->_sPrefix . 'OG'][$sNamespace]) ? $GLOBALS[$this->_sPrefix . 'OG'][$sNamespace] : array(), $a);
     }
-
     /**
      * Returns page meta info, like meta keyword, meta description, location, etc
      */
@@ -587,29 +534,21 @@ class BxDolTemplate
     {
         $sRet = '';
 
-        if (!empty($GLOBALS[$this->_sPrefix . 'PageKeywords']) && is_array($GLOBALS[$this->_sPrefix . 'PageKeywords']) && $GLOBALS[$this->_sPrefix . 'PageKeywords']) {
-            $sRet .= '<meta name="keywords" content="' . bx_html_attribute(implode(',',
-                    $GLOBALS[$this->_sPrefix . 'PageKeywords'])) . "\" />\n";
-        }
-
-        if (!empty($GLOBALS[$this->_sPrefix . 'PageDescription']) && is_string($GLOBALS[$this->_sPrefix . 'PageDescription'])) {
+        if (!empty($GLOBALS[$this->_sPrefix . 'PageKeywords']) && is_array($GLOBALS[$this->_sPrefix . 'PageKeywords']) && $GLOBALS[$this->_sPrefix . 'PageKeywords'])
+            $sRet .= '<meta name="keywords" content="' . bx_html_attribute(implode(',', $GLOBALS[$this->_sPrefix . 'PageKeywords'])) . "\" />\n";
+    
+        if (!empty($GLOBALS[$this->_sPrefix . 'PageDescription']) && is_string($GLOBALS[$this->_sPrefix . 'PageDescription']))
             $sRet .= '<meta name="description" content="' . bx_html_attribute($GLOBALS[$this->_sPrefix . 'PageDescription']) . "\" />\n";
-        }
 
-        if (!empty($GLOBALS[$this->_sPrefix . 'OG'])) {
-            foreach ($GLOBALS[$this->_sPrefix . 'OG'] as $sNamespace => $a) {
-                foreach ($a as $k => $s) {
-                    $sRet .= '<meta property="' . ($sNamespace ? $sNamespace . ':' : '') . $k . '" content="' . bx_html_attribute($s) . "\" />\n";
-                }
-            }
-        }
+        if (!empty($GLOBALS[$this->_sPrefix . 'OG']))
+            foreach ($GLOBALS[$this->_sPrefix . 'OG'] as $sNamespace => $a)
+                foreach ($a as $k => $s)
+                    $sRet .= '<meta property="' . ($sNamespace  ? $sNamespace . ':' : '') . $k . '" content="' . bx_html_attribute($s) . "\" />\n";
 
         return $sRet;
     }
-
     /**
      * Get template, which was loaded earlier.
-     *
      * @see method this->loadTemplates and field this->_aTemplates
      *
      * @param  string $sName - template name.
@@ -619,7 +558,6 @@ class BxDolTemplate
     {
         return $this->_aTemplates[$sName];
     }
-
     /**
      * Get full URL for the icon.
      *
@@ -630,13 +568,11 @@ class BxDolTemplate
     function getIconUrl($sName, $sCheckIn = BX_DOL_TEMPLATE_CHECK_IN_BOTH)
     {
         $sContent = "";
-        if (($sContent = $this->_getInlineData('icon', $sName, $sCheckIn)) !== false) {
+        if(($sContent = $this->_getInlineData('icon', $sName, $sCheckIn)) !== false)
             return $sContent;
-        }
 
         return $this->_getAbsoluteLocation('url', $this->_sFolderIcons, $sName, $sCheckIn);
     }
-
     /**
      * Get absolute Path for the icon.
      *
@@ -648,7 +584,6 @@ class BxDolTemplate
     {
         return $this->_getAbsoluteLocation('path', $this->_sFolderIcons, $sName, $sCheckIn);
     }
-
     /**
      * Get full URL for the image.
      *
@@ -659,13 +594,11 @@ class BxDolTemplate
     function getImageUrl($sName, $sCheckIn = BX_DOL_TEMPLATE_CHECK_IN_BOTH)
     {
         $sContent = "";
-        if (($sContent = $this->_getInlineData('image', $sName, $sCheckIn)) !== false) {
+        if(($sContent = $this->_getInlineData('image', $sName, $sCheckIn)) !== false)
             return $sContent;
-        }
 
         return $this->_getAbsoluteLocation('url', $this->_sFolderImages, $sName, $sCheckIn);
     }
-
     /**
      * Get absolute Path for the image.
      *
@@ -677,7 +610,6 @@ class BxDolTemplate
     {
         return $this->_getAbsoluteLocation('path', $this->_sFolderImages, $sName, $sCheckIn);
     }
-
     /**
      * Get full URL of CSS file.
      *
@@ -689,7 +621,6 @@ class BxDolTemplate
     {
         return $this->_getAbsoluteLocation('url', $this->_sFolderCss, $sName, $sCheckIn);
     }
-
     /**
      * Get full Path of CSS file.
      *
@@ -701,7 +632,6 @@ class BxDolTemplate
     {
         return $this->_getAbsoluteLocation('path', $this->_sFolderCss, $sName, $sCheckIn);
     }
-
     /**
      * Get content of HTML file.
      *
@@ -712,7 +642,6 @@ class BxDolTemplate
     function getHtml($sName, $sCheckIn = BX_DOL_TEMPLATE_CHECK_IN_BOTH)
     {
         $sAbsolutePath = $this->_getAbsoluteLocation('path', $this->_sFolderHtml, $sName, $sCheckIn);
-
         return !empty($sAbsolutePath) ? file_get_contents($sAbsolutePath) : false;
     }
 
@@ -727,36 +656,23 @@ class BxDolTemplate
      * @param  string $sCheckIn            where the content would be searched(base, template, both)
      * @return string the result of operation.
      */
-    function parseHtmlByName(
-        $sName,
-        $aVariables,
-        $mixedKeyWrapperHtml = null,
-        $sCheckIn = BX_DOL_TEMPLATE_CHECK_IN_BOTH
-    ) {
-        if (isset($GLOBALS['bx_profiler'])) {
-            $GLOBALS['bx_profiler']->beginTemplate($sName, $sRand = time() . rand());
-        }
+    function parseHtmlByName($sName, $aVariables, $mixedKeyWrapperHtml = null, $sCheckIn = BX_DOL_TEMPLATE_CHECK_IN_BOTH)
+    {
+        if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->beginTemplate($sName, $sRand = time().rand());
 
         if (($sContent = $this->getCached($sName, $aVariables, $mixedKeyWrapperHtml, $sCheckIn)) !== false) {
-            if (isset($GLOBALS['bx_profiler'])) {
-                $GLOBALS['bx_profiler']->endTemplate($sName, $sRand, $sRet, true);
-            }
-
+            if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->endTemplate($sName, $sRand, $sRet, true);
             return $sContent;
         }
 
         $sRet = '';
-        if (($sContent = $this->getHtml($sName, $sCheckIn)) !== false) {
+        if (($sContent = $this->getHtml($sName, $sCheckIn)) !== false)
             $sRet = $this->_parseContent($sContent, $aVariables, $mixedKeyWrapperHtml);
-        }
 
-        if (isset($GLOBALS['bx_profiler'])) {
-            $GLOBALS['bx_profiler']->endTemplate($sName, $sRand, $sRet, false);
-        }
+        if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->endTemplate($sName, $sRand, $sRet, false);
 
         return $sRet;
     }
-
     /**
      * Parse HTML template.
      *
@@ -769,13 +685,11 @@ class BxDolTemplate
      */
     function parseHtmlByContent($sContent, $aVariables, $mixedKeyWrapperHtml = null)
     {
-        if (empty($sContent)) {
+        if(empty($sContent))
             return "";
-        }
 
         return $this->_parseContent($sContent, $aVariables, $mixedKeyWrapperHtml);
     }
-
     /**
      * Parse earlier loaded HTML template.
      *
@@ -788,13 +702,11 @@ class BxDolTemplate
      */
     function parseHtmlByTemplateName($sName, $aVariables, $mixedKeyWrapperHtml = null)
     {
-        if (!isset($this->_aTemplates[$sName]) || empty($this->_aTemplates[$sName])) {
+        if(!isset($this->_aTemplates[$sName]) || empty($this->_aTemplates[$sName]))
             return "";
-        }
 
         return $this->_parseContent($this->_aTemplates[$sName], $aVariables, $mixedKeyWrapperHtml);
     }
-
     /**
      * Parse page HTML template. Search for the page's template with accordance to it's file name.
      *
@@ -806,49 +718,38 @@ class BxDolTemplate
      */
     function parsePageByName($sName, $aVariables)
     {
-        if (isset($GLOBALS['bx_profiler'])) {
-            $GLOBALS['bx_profiler']->beginPage($sName);
-        }
+        if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->beginPage($sName);
 
         // add facebook meta tag
-        if ($sFbId = getParam('bx_facebook_connect_api_key')) {
+        if ($sFbId = getParam('bx_facebook_connect_api_key'))
             $this->setOpenGraphInfo(array('app_id' => $sFbId), 'fb');
-        }
 
         $sContent = $this->parseHtmlByName($sName, $aVariables, $this->_sKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH);
-        if (empty($sContent)) {
-            $sContent = $this->parseHtmlByName('default.html', $aVariables, $this->_sKeyWrapperHtml,
-                BX_DOL_TEMPLATE_CHECK_IN_BOTH);
-        }
+        if(empty($sContent))
+            $sContent = $this->parseHtmlByName('default.html', $aVariables, $this->_sKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH);
 
         //--- Add CSS and JS at the very last ---//
-        if (strpos($sContent, '<bx_include_css_styles />') !== false) {
-            $sContent = str_replace('<bx_include_css_styles />', $this->includeCssStyles(), $sContent);
-        }
+        if(strpos($sContent, '<bx_include_css_styles />') !== false)
+			$sContent = str_replace('<bx_include_css_styles />', $this->includeCssStyles(), $sContent);
 
-        if (strpos($sContent, '<bx_include_css />') !== false) {
+        if(strpos($sContent , '<bx_include_css />') !== false) {
             if (!empty($GLOBALS['_page']['css_name'])) {
                 $this->addCss($GLOBALS['_page']['css_name']);
             }
-            $sContent = str_replace('<bx_include_css />', $this->includeFiles('css', true) . $this->includeFiles('css'),
-                $sContent);
+            $sContent = str_replace('<bx_include_css />', $this->includeFiles('css', true) . $this->includeFiles('css'), $sContent);
         }
 
-        if (strpos($sContent, '<bx_include_js />') !== false) {
+        if(strpos($sContent , '<bx_include_js />') !== false) {
             if (!empty($GLOBALS['_page']['js_name'])) {
                 $this->addJs($GLOBALS['_page']['js_name']);
             }
-            $sContent = str_replace('<bx_include_js />',
-                $this->includeFiles('js', true) . $this->includeFiles('js') . $this->includeCssAsync(), $sContent);
-        }
+            $sContent = str_replace('<bx_include_js />', $this->includeFiles('js', true) . $this->includeFiles('js') . $this->includeCssAsync(), $sContent);
+        }        
 
-        if (isset($GLOBALS['bx_profiler'])) {
-            $GLOBALS['bx_profiler']->endPage($sContent);
-        }
+        if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->endPage($sContent);
 
         return $sContent;
     }
-
     /**
      * Parse system keys.
      *
@@ -866,10 +767,9 @@ class BxDolTemplate
         $aKeyWrappers = $this->_getKeyWrappers($mixedKeyWrapperHtml);
 
         $sRet = '';
-        switch ($sKey) {
+        switch( $sKey ) {
             case 'dir':
                 $a = bx_lang_info();
-
                 return $a['Direction'];
             case 'page_charset':
                 $sRet = 'UTF-8';
@@ -878,31 +778,24 @@ class BxDolTemplate
                 $sRet = $this->getMetaInfo();
                 break;
             case 'page_header':
-                if (!empty($GLOBALS[$this->_sPrefix . 'PageTitle'])) {
+                if(!empty($GLOBALS[$this->_sPrefix . 'PageTitle']))
                     $sRet = $GLOBALS[$this->_sPrefix . 'PageTitle'];
-                } else {
-                    if (isset($_page['header'])) {
-                        $sRet = $_page['header'];
-                    }
-                }
+                else if(isset($_page['header']))
+                    $sRet = $_page['header'];
 
                 //$sRet = process_line_output($sRet);
                 break;
             case 'page_header_text':
-                if (!empty($GLOBALS[$this->_sPrefix . 'PageMainBoxTitle'])) {
+                if(!empty($GLOBALS[$this->_sPrefix . 'PageMainBoxTitle']))
                     $sRet = $GLOBALS[$this->_sPrefix . 'PageMainBoxTitle'];
-                } else {
-                    if (isset($_page['header_text'])) {
-                        $sRet = $_page['header_text'];
-                    }
-                }
+                else if(isset($_page['header_text']))
+                    $sRet = $_page['header_text'];
 
                 //$sRet = process_line_output($sRet);
                 break;
             case 'main_div_width':
-                if (!empty($GLOBALS[$this->_sPrefix . 'PageWidth'])) {
+                if(!empty($GLOBALS[$this->_sPrefix . 'PageWidth']))
                     $sRet = process_line_output($GLOBALS[$this->_sPrefix . 'PageWidth']);
-                }
                 break;
             case 'main_logo':
                 $sRet = $GLOBALS['oFunctions']->genSiteLogo();
@@ -911,16 +804,16 @@ class BxDolTemplate
                 $sRet = $GLOBALS['oFunctions']->genSiteSplash();
                 break;
             case 'main_search':
-                $sRet = $GLOBALS['oFunctions']->genSiteSearch();
-                break;
+            	$sRet = $GLOBALS['oFunctions']->genSiteSearch();
+            	break;
             case 'service_menu':
-                $sRet = $GLOBALS['oFunctions']->genSiteServiceMenu();
-                break;
+            	$sRet = $GLOBALS['oFunctions']->genSiteServiceMenu();
+            	break;
             case 'top_menu':
-                $sRet = $GLOBALS['oTopMenu']->getCode();
+                $sRet = $GLOBALS['oTopMenu'] -> getCode();
                 break;
             case 'top_menu_breadcrumb':
-                $sRet = !empty($GLOBALS['oTopMenu']->sBreadCrumb) ? $GLOBALS['oTopMenu']->sBreadCrumb : $GLOBALS['oTopMenu']->genBreadcrumb();
+                $sRet = !empty($GLOBALS['oTopMenu']->sBreadCrumb) ? $GLOBALS['oTopMenu'] -> sBreadCrumb : $GLOBALS['oTopMenu']->genBreadcrumb();
                 break;
             case 'extra_top_menu':
                 $iProfileId = getLoggedId();
@@ -928,11 +821,11 @@ class BxDolTemplate
                 if ($iProfileId && getParam('ext_nav_menu_enabled')) {
                     bx_import('BxTemplMemberMenu');
                     $oMemberMenu = new BxTemplMemberMenu();
-                    $sRet        = $oMemberMenu->genMemberMenu($iProfileId);
+                    $sRet = $oMemberMenu -> genMemberMenu($iProfileId);
                 }
                 break;
             case 'bottom_links':
-                $sRet = $oFunctions->genSiteBottomMenu();
+                $sRet = $oFunctions -> genSiteBottomMenu();
                 break;
             case 'switch_skin_block':
                 $sRet = getParam("enable_template") ? templates_select_txt() : '';
@@ -947,10 +840,10 @@ class BxDolTemplate
                 $sRet = $this->_processJsOptions();
                 break;
             case 'bottom_text':
-                $sRet = _t('_bottom_text', date('Y'));
+                $sRet = _t( '_bottom_text', date('Y') );
                 break;
             case 'copyright':
-                $sRet = _t('_copyright', date('Y')) . getVersionComment();
+                $sRet = _t( '_copyright',   date('Y') ) . getVersionComment();
                 break;
             case 'flush_header':
                 //TODO: add some variable to disable it if needed
@@ -964,29 +857,23 @@ class BxDolTemplate
                 break;
             default:
                 $sRet = ($sTemplAdd = $oFunctions->TemplPageAddComponent($sKey)) !== false ? $sTemplAdd : $aKeyWrappers['left'] . $sKey . $aKeyWrappers['right'];
-        }
+            }
 
         $sRet = BxDolTemplate::processInjection($_page['name_index'], $sKey, $sRet);
-
         return $sRet;
     }
-
     /**
      * Get cache object for templates
-     *
      * @return cache class instance
      */
-    function getTemplatesCacheObject()
+    function getTemplatesCacheObject ()
     {
         $sCacheEngine = getParam('sys_template_cache_engine');
         $oCacheEngine = bx_instance('BxDolCache' . $sCacheEngine);
-        if (!$oCacheEngine->isAvailable()) {
+        if(!$oCacheEngine->isAvailable())
             $oCacheEngine = bx_instance('BxDolCacheFileHtml');
-        }
-
         return $oCacheEngine;
     }
-
     /**
      * Get template from cache if it's enabled.
      *
@@ -997,75 +884,60 @@ class BxDolTemplate
      * @param  boolean $bEvaluate           need to evaluate the template or not.
      * @return string  result of operation or false on failure.
      */
-    function getCached(
-        $sName,
-        &$aVariables,
-        $mixedKeyWrapperHtml = null,
-        $sCheckIn = BX_DOL_TEMPLATE_CHECK_IN_BOTH,
-        $bEvaluate = true
-    ) {
+    function getCached($sName, &$aVariables, $mixedKeyWrapperHtml = null, $sCheckIn = BX_DOL_TEMPLATE_CHECK_IN_BOTH, $bEvaluate = true)
+    {
         // initialization
 
-        if (!$this->_bCacheEnable) {
+        if (!$this->_bCacheEnable)
             return false;
-        }
 
         $sAbsolutePath = $this->_getAbsoluteLocation('path', $this->_sFolderHtml, $sName, $sCheckIn);
-        if (empty($sAbsolutePath)) {
+        if (empty($sAbsolutePath))
             return false;
-        }
 
-        $oCacheEngine      = $this->getTemplatesCacheObject();
+        $oCacheEngine = $this->getTemplatesCacheObject ();
         $isFileBasedEngine = $bEvaluate && method_exists($oCacheEngine, 'getDataFilePath');
 
         // try to get cached content
 
         $sCacheVariableName = "a";
-        $sCacheKey          = $this->_getCacheFileName('html', $sAbsolutePath) . '.php';
-        if ($isFileBasedEngine) {
+        $sCacheKey = $this->_getCacheFileName('html', $sAbsolutePath) . '.php';
+        if ($isFileBasedEngine)
             $sCacheContent = $oCacheEngine->getDataFilePath($sCacheKey);
-        } else {
+        else
             $sCacheContent = $oCacheEngine->getData($sCacheKey);
-        }
 
 
         // recreate cache if it is empty
 
-        if ($sCacheContent === null && ($sContent = file_get_contents($sAbsolutePath)) !== false && ($sContent = $this->_compileContent($sContent,
-                "\$" . $sCacheVariableName, 1, $aVariables, $mixedKeyWrapperHtml)) !== false
-        ) {
-            if (false === $oCacheEngine->setData($sCacheKey, $sContent)) {
+        if ($sCacheContent === null && ($sContent = file_get_contents($sAbsolutePath)) !== false && ($sContent = $this->_compileContent($sContent, "\$" . $sCacheVariableName, 1, $aVariables, $mixedKeyWrapperHtml)) !== false) {
+            if (false === $oCacheEngine->setData($sCacheKey, $sContent))
                 return false;
-            }
 
-            if ($isFileBasedEngine) {
+            if ($isFileBasedEngine)
                 $sCacheContent = $oCacheEngine->getDataFilePath($sCacheKey);
-            } else {
+            else
                 $sCacheContent = $sContent;
-            }
         }
 
-        if ($sCacheContent === null) {
+        if ($sCacheContent === null)
             return false;
-        }
 
         // return simple cache content
 
-        if (!$bEvaluate) {
+        if (!$bEvaluate)
             return $sCacheContent;
-        }
 
         // return evaluated cache content
 
         ob_start();
 
-        $$sCacheVariableName = &$aVariables;
+            $$sCacheVariableName = &$aVariables;
 
-        if ($isFileBasedEngine) {
-            include($sCacheContent);
-        } else {
-            eval('?' . '>' . $sCacheContent);
-        }
+            if ($isFileBasedEngine)
+                include($sCacheContent);
+            else
+                eval('?'.'>' . $sCacheContent);
 
         $sContent = ob_get_clean();
 
@@ -1075,8 +947,8 @@ class BxDolTemplate
     /**
      * Add JS file(s) to global output.
      *
-     * @param  mixed   $mixedFiles string value represents a single JS file name. An array - array of JS file names.
-     * @param  boolean $bDynamic   in the dynamic mode JS file(s) are not included to global output, but are returned from the function directly.
+     * @param  mixed          $mixedFiles string value represents a single JS file name. An array - array of JS file names.
+     * @param  boolean        $bDynamic   in the dynamic mode JS file(s) are not included to global output, but are returned from the function directly.
      * @return boolean/string result of operation.
      */
     function addJs($mixedFiles, $bDynamic = false)
@@ -1084,23 +956,22 @@ class BxDolTemplate
         return $this->_processFiles('js', 'add', $mixedFiles, $bDynamic);
     }
 
-    /**
-     * Add System JS file(s) to global output.
+	/**
+     * Add System JS file(s) to global output. 
      * System JS files are the files which are attached to all pages. They will be cached separately from the others.
      *
-     * @param mixed   $mixedFiles string value represents a single JS file name. An array - array of JS file names.
-     * @param boolean $bDynamic   in the dynamic mode JS file(s) are not included to global output, but are returned from the function directly.
+     * @param mixed $mixedFiles string value represents a single JS file name. An array - array of JS file names.
+     * @param boolean $bDynamic in the dynamic mode JS file(s) are not included to global output, but are returned from the function directly.
      * @return boolean/string result of operation.
      */
-    function addJsSystem($mixedFiles)
-    {
+    function addJsSystem($mixedFiles) {
         return $this->_processFiles('js', 'add', $mixedFiles, false, true);
     }
 
     /**
      * Delete JS file(s) from global output.
      *
-     * @param  mixed $mixedFiles string value represents a single JS file name. An array - array of JS file names.
+     * @param  mixed   $mixedFiles string value represents a single JS file name. An array - array of JS file names.
      * @return boolean result of operation.
      */
     function deleteJs($mixedFiles)
@@ -1108,14 +979,13 @@ class BxDolTemplate
         return $this->_processFiles('js', 'delete', $mixedFiles);
     }
 
-    /**
+	/**
      * Delete System JS file(s) from global output.
      *
      * @param mixed $mixedFiles string value represents a single JS file name. An array - array of JS file names.
      * @return boolean result of operation.
      */
-    function deleteJsSystem($mixedFiles)
-    {
+    function deleteJsSystem($mixedFiles) {
         return $this->_processFiles('js', 'delete', $mixedFiles, false, true);
     }
 
@@ -1128,27 +998,25 @@ class BxDolTemplate
      */
     function _compileJs($sAbsolutePath, &$aIncluded)
     {
-        if (isset($aIncluded[$sAbsolutePath])) {
-            return '';
-        }
+        if(isset($aIncluded[$sAbsolutePath]))
+           return '';
 
         $bExternal = strpos($sAbsolutePath, "http://") !== false || strpos($sAbsolutePath, "https://") !== false;
-        if ($bExternal) {
+        if($bExternal) {
             $sPath = $sAbsolutePath;
             $sName = '';
 
             $sContent = bx_file_get_contents($sAbsolutePath);
         } else {
             $aFileInfo = pathinfo($sAbsolutePath);
-            $sPath     = $aFileInfo['dirname'] . DIRECTORY_SEPARATOR;
-            $sName     = $aFileInfo['basename'];
+            $sPath = $aFileInfo['dirname'] . DIRECTORY_SEPARATOR;
+            $sName = $aFileInfo['basename'];
 
             $sContent = file_get_contents($sPath . $sName);
         }
 
-        if (empty($sContent)) {
+        if(empty($sContent))
             return '';
-        }
 
         $sUrl = bx_ltrim_str($sPath, realpath(BX_DIRECTORY_PATH_ROOT), BX_DOL_URL_ROOT);
         $sUrl = str_replace(DIRECTORY_SEPARATOR, '/', $sPath);
@@ -1170,7 +1038,6 @@ class BxDolTemplate
             $sContent
         );
     }
-
     /**
      * Wrap an URL to JS file into JS tag.
      *
@@ -1181,7 +1048,6 @@ class BxDolTemplate
     {
         return "<script language=\"javascript\" type=\"text/javascript\" src=\"" . $sFile . "\"></script>";
     }
-
     /**
      * Wrap JS code into JS tag.
      *
@@ -1196,8 +1062,8 @@ class BxDolTemplate
     /**
      * Add CSS file(s) to global output.
      *
-     * @param  mixed   $mixedFiles string value represents a single CSS file name. An array - array of CSS file names.
-     * @param  boolean $bDynamic   in the dynamic mode CSS file(s) are not included to global output, but are returned from the function directly.
+     * @param  mixed          $mixedFiles string value represents a single CSS file name. An array - array of CSS file names.
+     * @param  boolean        $bDynamic   in the dynamic mode CSS file(s) are not included to global output, but are returned from the function directly.
      * @return boolean/string result of operation
      */
     function addCss($mixedFiles, $bDynamic = false)
@@ -1207,18 +1073,15 @@ class BxDolTemplate
 
     /**
      * Add additional heavy css file (not very necessary) to load asynchronously for desktop browsers only
-     *
-     * @param  mixed $mixedFiles string value represents a single CSS file name. An array - array of CSS file names.
+     * @param  mixed          $mixedFiles string value represents a single CSS file name. An array - array of CSS file names.
      */
     function addCssAsync($mixedFiles)
     {
-        if (!is_array($mixedFiles)) {
+        if (!is_array($mixedFiles))
             $mixedFiles = array($mixedFiles);
-        }
 
-        foreach ($mixedFiles as $sFile) {
+        foreach ($mixedFiles as $sFile)
             $GLOBALS[$this->_sPrefix . 'CssAsync'][] = $this->_getAbsoluteLocationCss('url', $sFile);
-        }
 
         $this->addJs('loadCSS.js');
     }
@@ -1227,18 +1090,16 @@ class BxDolTemplate
      * Return script tag with special code to load async css.
      * This tag is added after js files list
      */
-    function includeCssAsync()
+    function includeCssAsync ()
     {
-        if (empty($GLOBALS[$this->_sPrefix . 'CssAsync'])) {
+        if (empty($GLOBALS[$this->_sPrefix . 'CssAsync']))
             return '';
-        }
 
-        $GLOBALS[$this->_sPrefix . 'CssAsync'] = array_unique($GLOBALS[$this->_sPrefix . 'CssAsync']);
+        $GLOBALS[$this->_sPrefix . 'CssAsync'] = array_unique($GLOBALS[$this->_sPrefix . 'CssAsync']);        
 
         $sList = '';
-        foreach ($GLOBALS[$this->_sPrefix . 'CssAsync'] as $sUrl) {
+        foreach ($GLOBALS[$this->_sPrefix . 'CssAsync'] as $sUrl)
             $sList .= 'loadCSS("' . $sUrl . '", document.getElementById("bx_css_async"));';
-        }
 
         // don't load css for mobile devices
         return '
@@ -1250,22 +1111,21 @@ class BxDolTemplate
         ';
     }
 
-    /**
+	/**
      * Add System CSS file(s) to global output.
      * System CSS files are the files which are attached to all pages. They will be cached separately from the others.
      *
      * @param mixed $mixedFiles string value represents a single CSS file name. An array - array of CSS file names.
      * @return boolean/string result of operation
      */
-    function addCssSystem($mixedFiles)
-    {
+    function addCssSystem($mixedFiles) {
         return $this->_processFiles('css', 'add', $mixedFiles, false, true);
     }
 
     /**
      * Delete CSS file(s) from global output.
      *
-     * @param  mixed $mixedFiles string value represents a single CSS file name. An array - array of CSS file names.
+     * @param  mixed   $mixedFiles string value represents a single CSS file name. An array - array of CSS file names.
      * @return boolean result of operation.
      */
     function deleteCss($mixedFiles)
@@ -1273,14 +1133,13 @@ class BxDolTemplate
         return $this->_processFiles('css', 'delete', $mixedFiles);
     }
 
-    /**
+	/**
      * Delete System CSS file(s) from global output.
      *
      * @param mixed $mixedFiles string value represents a single CSS file name. An array - array of CSS file names.
      * @return boolean result of operation.
      */
-    function deleteCssSystem($mixedFiles)
-    {
+    function deleteCssSystem($mixedFiles){
         return $this->_processFiles('css', 'delete', $mixedFiles, false, true);
     }
 
@@ -1293,66 +1152,58 @@ class BxDolTemplate
      */
     function _compileCss($sAbsolutePath, &$aIncluded)
     {
-        if (isset($aIncluded[$sAbsolutePath])) {
-            return '';
-        }
+        if(isset($aIncluded[$sAbsolutePath]))
+           return '';
 
         $bExternal = strpos($sAbsolutePath, "http://") !== false || strpos($sAbsolutePath, "https://") !== false;
-        if ($bExternal) {
+        if($bExternal) {
             $sPath = $sAbsolutePath;
             $sName = '';
 
             $sContent = bx_file_get_contents($sAbsolutePath);
         } else {
             $aFileInfo = pathinfo($sAbsolutePath);
-            $sPath     = $aFileInfo['dirname'] . DIRECTORY_SEPARATOR;
-            $sName     = $aFileInfo['basename'];
+            $sPath = $aFileInfo['dirname'] . DIRECTORY_SEPARATOR;
+            $sName = $aFileInfo['basename'];
 
             $sContent = file_get_contents($sPath . $sName);
         }
 
-        if (empty($sContent)) {
+        if(empty($sContent))
             return '';
-        }
 
         $sUrl = bx_ltrim_str($sPath, realpath(BX_DIRECTORY_PATH_ROOT), BX_DOL_URL_ROOT);
         $sUrl = str_replace(DIRECTORY_SEPARATOR, '/', $sPath);
 
-        $sContent                  = "\r\n/*--- BEGIN: " . $sUrl . $sName . "---*/\r\n" . $sContent . "\r\n/*--- END: " . $sUrl . $sName . "---*/\r\n";
+        $sContent = "\r\n/*--- BEGIN: " . $sUrl . $sName . "---*/\r\n" . $sContent . "\r\n/*--- END: " . $sUrl . $sName . "---*/\r\n";
         $aIncluded[$sAbsolutePath] = 1;
 
         $sContent = str_replace(array("\n\r", "\r\n", "\r"), "\n", $sContent);
-        if ($bExternal) {
+        if($bExternal) {
             $sContent = preg_replace_callback(
                 "'@import\s+url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/_-]+)\s*[\'|\"]*\s*\)\s*;'",
-                function ($matches) { return ''; },
+                function($matches) { return ''; },
                 $sContent
             );
 
             $sContent = preg_replace_callback(
                 "'url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/\?\#_=-]+)\s*[\'|\"]*\s*\)'",
-                function ($matches) use ($sPath) { return "url({$sPath}{$matches[1]});"; },
+                function($matches) use ($sPath) { return "url({$sPath}{$matches[1]});"; },
                 $sContent
             );
         } else {
             $sContent = preg_replace_callback(
                 "'@import\s+url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/_-]+)\s*[\'|\"]*\s*\)\s*;'",
-                function ($matches) use ($sPath
-                ) {
-                    return $this->_compileCss(realpath($sPath . dirname($matches[1])) . DIRECTORY_SEPARATOR . basename($matches[1]),
-                        $aIncluded);
-                },
+                function($matches) use ($sPath) { return $this->_compileCss(realpath($sPath . dirname($matches[1])) . DIRECTORY_SEPARATOR . basename($matches[1]), $aIncluded); },
                 $sContent
             );
 
             $sContent = preg_replace_callback(
                 "'url\s*\(\s*[\'|\"]*\s*([a-zA-Z0-9\.\/\?\#_=-]+)\s*[\'|\"]*\s*\)'",
-                create_function('$aMatches',
-                    'return BxDolTemplate::_callbackParseUrl("' . addslashes($sPath) . '", $aMatches);'),
+                create_function('$aMatches', 'return BxDolTemplate::_callbackParseUrl("' . addslashes($sPath) . '", $aMatches);'),
                 $sContent
             );
         }
-
         return $sContent;
     }
 
@@ -1365,7 +1216,6 @@ class BxDolTemplate
     function _minifyCss($s)
     {
         require_once(BX_DIRECTORY_PATH_PLUGINS . 'minify/lib/Minify/CSS/Compressor.php');
-
         return Minify_CSS_Compressor::process($s);
     }
 
@@ -1378,13 +1228,13 @@ class BxDolTemplate
      */
     public static function _callbackParseUrl($sPath, $aMatches)
     {
-        $sFile      = basename($aMatches[1]);
+        $sFile = basename($aMatches[1]);
         $sDirectory = dirname($aMatches[1]);
 
-        $sRootPath     = realpath(BX_DIRECTORY_PATH_ROOT);
+        $sRootPath = realpath(BX_DIRECTORY_PATH_ROOT);
         $sAbsolutePath = realpath($sPath . $sDirectory) . DIRECTORY_SEPARATOR . $sFile;
 
-        $sRootPath     = str_replace(DIRECTORY_SEPARATOR, '/', $sRootPath);
+        $sRootPath = str_replace(DIRECTORY_SEPARATOR, '/', $sRootPath);
         $sAbsolutePath = str_replace(DIRECTORY_SEPARATOR, '/', $sAbsolutePath);
 
         return 'url(' . bx_ltrim_str($sAbsolutePath, $sRootPath, BX_DOL_URL_ROOT) . ')';
@@ -1398,13 +1248,10 @@ class BxDolTemplate
      */
     function _wrapInTagCss($sFile)
     {
-        if (!$sFile) {
+        if (!$sFile)
             return '';
-        }
-
         return "<link href=\"" . $sFile . "\" rel=\"stylesheet\" type=\"text/css\" />";
     }
-
     /**
      * Wrap CSS code into CSS tag.
      *
@@ -1415,34 +1262,28 @@ class BxDolTemplate
     {
         return "<style>" . $sCode . "</style>";
     }
-
-    /*
+	/*
      *  Include CSS style(s) in the page's head section.
      */
-    function includeCssStyles()
-    {
-        $sResult = "";
-        if (empty($GLOBALS[$this->_sPrefix . 'CssStyles']) || !is_array($GLOBALS[$this->_sPrefix . 'CssStyles'])) {
-            return $sResult;
-        }
+	function includeCssStyles()
+	{
+		$sResult = "";
+		if(empty($GLOBALS[$this->_sPrefix . 'CssStyles']) || !is_array($GLOBALS[$this->_sPrefix . 'CssStyles']))
+			return $sResult;
 
-        foreach ($GLOBALS[$this->_sPrefix . 'CssStyles'] as $sName => $aContent) {
-            $sContent = "";
-            if (!empty($aContent) && is_array($aContent)) {
-                foreach ($aContent as $sStyleName => $sStyleValue) {
-                    $sContent .= "\t" . $sStyleName . ": " . $sStyleValue . ";\r\n";
-                }
-            }
+		foreach($GLOBALS[$this->_sPrefix . 'CssStyles'] as $sName => $aContent) {
+			$sContent = "";
+			if(!empty($aContent) && is_array($aContent))
+				foreach($aContent as $sStyleName => $sStyleValue)
+					$sContent .= "\t" . $sStyleName . ": " . $sStyleValue . ";\r\n";
 
-            $sResult .= $sName . " {\r\n" . $sContent . "}\r\n";
-        }
+			$sResult .= $sName . " {\r\n" . $sContent . "}\r\n";
+		}
 
-        return !empty($sResult) ? $this->_wrapInTagCssCode($sResult) : '';
-    }
-
+		return !empty($sResult) ? $this->_wrapInTagCssCode($sResult) : '';
+	}
     /**
      * Include CSS/JS file(s) attached to the page in its head section.
-     *
      * @see the method is system and would be called automatically.
      *
      * @param  string $sType the type of file('js' or 'css')
@@ -1453,69 +1294,59 @@ class BxDolTemplate
         $sUpcaseType = ucfirst($sType);
 
         $sArrayKey = $this->_sPrefix . $sUpcaseType . ($bSystem ? 'System' : '');
-        $aFiles    = isset($GLOBALS[$sArrayKey]) ? $GLOBALS[$sArrayKey] : array();
-        if (empty($aFiles) || !is_array($aFiles)) {
+        $aFiles = isset($GLOBALS[$sArrayKey]) ? $GLOBALS[$sArrayKey] : array();
+        if(empty($aFiles) || !is_array($aFiles))
             return "";
-        }
 
-        if (!$this->{'_b' . $sUpcaseType . 'Cache'}) {
+        if(!$this->{'_b' . $sUpcaseType . 'Cache'})
             return $this->_includeFiles($sType, $aFiles);
-        }
 
         //--- If cache already exists, return it ---//
-        $sMethodWrap    = '_wrapInTag' . $sUpcaseType;
+        $sMethodWrap = '_wrapInTag' . $sUpcaseType;
         $sMethodCompile = '_compile' . $sUpcaseType;
-        $sMethodMinify  = '_minify' . $sUpcaseType;
+        $sMethodMinify = '_minify' . $sUpcaseType;
 
         ksort($aFiles);
 
         $sName = "";
-        foreach ($aFiles as $aFile) {
+        foreach($aFiles as $aFile)
             $sName .= $aFile['url'];
-        }
         $sName = $this->_getCacheFileName($sType, $sName);
 
-        $sCacheAbsoluteUrl  = $this->_sCachePublicFolderUrl . $sName . '.' . $sType;
+        $sCacheAbsoluteUrl = $this->_sCachePublicFolderUrl . $sName . '.' . $sType;
         $sCacheAbsolutePath = $this->_sCachePublicFolderPath . $sName . '.' . $sType;
-        if (file_exists($sCacheAbsolutePath)) {
-            if ($this->{'_b' . $sUpcaseType . 'Archive'}) {
+        if(file_exists($sCacheAbsolutePath)) {
+            if($this->{'_b' . $sUpcaseType . 'Archive'})
                 $sCacheAbsoluteUrl = $this->_getLoaderUrl($sType, $sName);
-            }
 
-            return $this->$sMethodWrap($sCacheAbsoluteUrl);
+           return $this->$sMethodWrap($sCacheAbsoluteUrl);
         }
 
         //--- Collect all attached CSS/JS in one file ---//
-        $sResult   = "";
+        $sResult = "";
         $aIncluded = array();
-        foreach ($aFiles as $aFile) {
-            if (($sContent = $this->$sMethodCompile($aFile['path'], $aIncluded)) !== false) {
+        foreach($aFiles as $aFile)
+            if(($sContent = $this->$sMethodCompile($aFile['path'], $aIncluded)) !== false)
                 $sResult .= $sContent;
-            }
-        }
 
-        if (method_exists($this, $sMethodMinify)) {
+        if (method_exists($this, $sMethodMinify))
             $sResult = $this->$sMethodMinify($sResult);
-        }
 
         $mixedWriteResult = false;
-        if (!empty($sResult) && ($rHandler = fopen($sCacheAbsolutePath, 'w')) !== false) {
+        if(!empty($sResult) && ($rHandler = fopen($sCacheAbsolutePath, 'w')) !== false) {
             $mixedWriteResult = fwrite($rHandler, $sResult);
             fclose($rHandler);
-            @chmod($sCacheAbsolutePath, 0666);
+            @chmod ($sCacheAbsolutePath, 0666);
         }
 
-        if ($mixedWriteResult === false) {
+        if($mixedWriteResult === false)
             return $this->_includeFile($sType, $aFiles);
-        }
 
-        if ($this->{'_b' . $sUpcaseType . 'Archive'}) {
+        if($this->{'_b' . $sUpcaseType . 'Archive'})
             $sCacheAbsoluteUrl = $this->_getLoaderUrl($sType, $sName);
-        }
 
         return $this->$sMethodWrap($sCacheAbsoluteUrl);
     }
-
     /**
      * Include CSS/JS files without caching.
      *
@@ -1528,88 +1359,78 @@ class BxDolTemplate
         $sMethod = '_wrapInTag' . ucfirst($sType);
 
         $sResult = "";
-        foreach ($aFiles as $aFile) {
-            $sResult .= $this->$sMethod($aFile['url']);
-        }
+        foreach($aFiles as $aFile)
+           $sResult .= $this->$sMethod($aFile['url']);
 
         return $sResult;
     }
-
     /**
      * Insert/Delete CSS file from output stack.
      *
-     * @param  string $sType      the file type (css or js)
-     * @param  string $sAction    add/delete
-     * @param  mixed  $mixedFiles string value represents a single CSS file name. An array - array of CSS file names.
+     * @param  string  $sType      the file type (css or js)
+     * @param  string  $sAction    add/delete
+     * @param  mixed   $mixedFiles string value represents a single CSS file name. An array - array of CSS file names.
      * @return boolean result of operation.
      */
     function _processFiles($sType, $sAction, $mixedFiles, $bDynamic = false, $bSystem = false)
     {
-        if (empty($mixedFiles)) {
+        if(empty($mixedFiles))
             return $bDynamic ? "" : false;
-        }
 
-        if (is_string($mixedFiles)) {
+        if(is_string($mixedFiles))
             $mixedFiles = array($mixedFiles);
-        }
 
-        $sUpcaseType   = ucfirst($sType);
+        $sUpcaseType = ucfirst($sType);
         $sMethodLocate = '_getAbsoluteLocation' . $sUpcaseType;
-        $sMethodWrap   = '_wrapInTag' . $sUpcaseType;
-        $sResult       = '';
-        foreach ($mixedFiles as $sFile) {
+        $sMethodWrap = '_wrapInTag' . $sUpcaseType;
+        $sResult = '';
+        foreach($mixedFiles as $sFile) {
             //--- Process 3d Party CSS/JS file ---//
-            if (strpos($sFile, "http://") !== false || strpos($sFile, "https://") !== false) {
-                $sUrl  = $sFile;
+            if(strpos($sFile, "http://") !== false || strpos($sFile, "https://") !== false) {
+                $sUrl = $sFile;
                 $sPath = $sFile;
-            } //--- Process Custom CSS/JS file ---//
+            }
+            //--- Process Custom CSS/JS file ---//
+            else if(strpos($sFile, "|") !== false && $aParts = explode("|", $sFile)) {
+                $sFile = array_pop($aParts);
+                if (!isset($aParts[0]))
+                    $aParts[0] = '';
+                $sUrl = BX_DOL_URL_ROOT . (isset($aParts[1]) ? $aParts[1] : $aParts[0]) . $sFile;
+                $sPath = realpath(BX_DIRECTORY_PATH_ROOT . $aParts[0] . $sFile);
+            }
+            //--- Process Common CSS/JS file(check in default locations) ---//
             else {
-                if (strpos($sFile, "|") !== false && $aParts = explode("|", $sFile)) {
-                    $sFile = array_pop($aParts);
-                    if (!isset($aParts[0])) {
-                        $aParts[0] = '';
-                    }
-                    $sUrl  = BX_DOL_URL_ROOT . (isset($aParts[1]) ? $aParts[1] : $aParts[0]) . $sFile;
-                    $sPath = realpath(BX_DIRECTORY_PATH_ROOT . $aParts[0] . $sFile);
-                } //--- Process Common CSS/JS file(check in default locations) ---//
-                else {
-                    $sUrl  = $this->$sMethodLocate('url', $sFile);
-                    $sPath = $this->$sMethodLocate('path', $sFile);
-                }
+                $sUrl = $this->$sMethodLocate('url', $sFile);
+                $sPath = $this->$sMethodLocate('path', $sFile);
             }
 
-            if (empty($sPath) || empty($sUrl)) {
+            if(empty($sPath) || empty($sUrl))
                 continue;
-            }
 
-            $sArrayKey = $this->_sPrefix . $sUpcaseType . ($bSystem ? 'System' : '');
-            switch ($sAction) {
+			$sArrayKey = $this->_sPrefix . $sUpcaseType . ($bSystem ? 'System' : '');
+            switch($sAction) {
                 case 'add':
-                    if ($bDynamic) {
+                    if($bDynamic)
                         $sResult .= $this->$sMethodWrap($sUrl);
-                    } else {
+                    else {
                         $bFound = false;
-                        foreach ($GLOBALS[$sArrayKey] as $iKey => $aValue) {
-                            if ($aValue['url'] == $sUrl && $aValue['path'] == $sPath) {
+                        foreach($GLOBALS[$sArrayKey]  as $iKey => $aValue)
+                            if($aValue['url'] == $sUrl && $aValue['path'] == $sPath) {
                                 $bFound = true;
                                 break;
                             }
-                        }
 
-                        if (!$bFound) {
+                        if(!$bFound)
                             $GLOBALS[$sArrayKey][] = array('url' => $sUrl, 'path' => $sPath);
-                        }
                     }
                     break;
                 case 'delete':
-                    if (!$bDynamic) {
-                        foreach ($GLOBALS[$sArrayKey] as $iKey => $aValue) {
-                            if ($aValue['url'] == $sUrl) {
+                    if(!$bDynamic)
+                        foreach($GLOBALS[$sArrayKey]  as $iKey => $aValue)
+                            if($aValue['url'] == $sUrl) {
                                 unset($GLOBALS[$sArrayKey][$iKey]);
                                 break;
                             }
-                        }
-                    }
                     break;
             }
         }
@@ -1627,7 +1448,7 @@ class BxDolTemplate
      */
     function _parseContent($sContent, $aVariables, $mixedKeyWrapperHtml = null)
     {
-        $aKeys   = array_keys($aVariables);
+        $aKeys = array_keys($aVariables);
         $aValues = array_values($aVariables);
 
         $aKeyWrappers = $this->_getKeyWrappers($mixedKeyWrapperHtml);
@@ -1641,39 +1462,30 @@ class BxDolTemplate
                 preg_match($sKey, $sContent, $aMatches);
 
                 $sValue = '';
-                if (isset($aMatches[1]) && !empty($aMatches[1])) {
-                    if (is_array($aValues[$i])) {
-                        foreach ($aValues[$i] as $aValue) {
+                if(isset($aMatches[1]) && !empty($aMatches[1])) {
+                    if(is_array($aValues[$i]))
+                        foreach($aValues[$i] as $aValue)
                             $sValue .= $this->parseHtmlByContent($aMatches[1], $aValue, $mixedKeyWrapperHtml);
-                        }
-                    } else {
-                        if (is_string($aValues[$i])) {
-                            $sValue = $aValues[$i];
-                        }
-                    }
+                    else if(is_string($aValues[$i]))
+                        $sValue = $aValues[$i];
                 }
+            } else if (strncmp($aKeys[$i], 'bx_if:', 6) === 0) {
+                $sKey = "'<" . $aKeys[$i] . ">(.*)<\/" . $aKeys[$i] . ">'s";
+
+                $aMatches = array();
+                preg_match($sKey, $sContent, $aMatches);
+
+                $sValue = '';
+                if(isset($aMatches[1]) && !empty($aMatches[1]))
+                    if(is_array($aValues[$i]) && isset($aValues[$i]['content']) && $aValues[$i]['condition'])
+                        $sValue .= $this->parseHtmlByContent($aMatches[1], $aValues[$i]['content'], $mixedKeyWrapperHtml);
             } else {
-                if (strncmp($aKeys[$i], 'bx_if:', 6) === 0) {
-                    $sKey = "'<" . $aKeys[$i] . ">(.*)<\/" . $aKeys[$i] . ">'s";
-
-                    $aMatches = array();
-                    preg_match($sKey, $sContent, $aMatches);
-
-                    $sValue = '';
-                    if (isset($aMatches[1]) && !empty($aMatches[1])) {
-                        if (is_array($aValues[$i]) && isset($aValues[$i]['content']) && $aValues[$i]['condition']) {
-                            $sValue .= $this->parseHtmlByContent($aMatches[1], $aValues[$i]['content'],
-                                $mixedKeyWrapperHtml);
-                        }
-                    }
-                } else {
-                    $sKey   = "'" . $aKeyWrappers['left'] . $aKeys[$i] . $aKeyWrappers['right'] . "'s";
-                    $sValue = $aValues[$i];
-                    //$sValue = str_replace('$', '\\$', $aValues[$i]);
-                }
+                $sKey = "'" . $aKeyWrappers['left'] . $aKeys[$i] . $aKeyWrappers['right'] . "'s";
+                $sValue = $aValues[$i];
+                //$sValue = str_replace('$', '\\$', $aValues[$i]);
             }
 
-            $aKeys[$i]   = $sKey;
+            $aKeys[$i] = $sKey;
             $aValues[$i] = $sValue;
         }
 
@@ -1685,31 +1497,22 @@ class BxDolTemplate
             "'<bx_image_url:([^\s]+) \/>'s",
             "'<bx_icon_url:([^\s]+) \/>'s",
             "'<bx_text:([_\{\}\w\d\s]+[^\s]{1}) \/>'s",
-            "'<bx_text_js:([^\s]+) \/>'s",
-            "'<bx_text_attribute:([^\s]+) \/>'s",
+        	"'<bx_text_js:([^\s]+) \/>'s",
+			"'<bx_text_attribute:([^\s]+) \/>'s",
             "'<bx_url_root />'",
             "'<bx_url_admin />'"
         ));
 
         $aValues = array_merge($aValues, array(
-            function ($matches) use ($aVariables, $mixedKeyWrapperHtml) {
-                return $this->parseHtmlByName($matches[1], $aVariables, $mixedKeyWrapperHtml,
-                    BX_DOL_TEMPLATE_CHECK_IN_BOTH);
-            },
-            function ($matches) use ($aVariables, $mixedKeyWrapperHtml) {
-                return $this->parseHtmlByName($matches[1], $aVariables, $mixedKeyWrapperHtml,
-                    BX_DOL_TEMPLATE_CHECK_IN_TMPL);
-            },
-            function ($matches) use ($aVariables, $mixedKeyWrapperHtml) {
-                return $this->parseHtmlByName($matches[1], $aVariables, $mixedKeyWrapperHtml,
-                    BX_DOL_TEMPLATE_CHECK_IN_BASE);
-            },
-            function ($matches) { return $this->processInjection($GLOBALS['_page']['name_index'], $matches[1]); },
-            function ($matches) { return $this->getImageUrl($matches[1]); },
-            function ($matches) { return $this->getIconUrl($matches[1]); },
-            function ($matches) { return _t($matches[1]); },
-            function ($matches) { return bx_js_string(_t($matches[1])); },
-            function ($matches) { return bx_html_attribute(_t($matches[1])); },
+            function($matches) use ($aVariables, $mixedKeyWrapperHtml) { return $this->parseHtmlByName($matches[1], $aVariables, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH); },
+            function($matches) use ($aVariables, $mixedKeyWrapperHtml) { return $this->parseHtmlByName($matches[1], $aVariables, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_TMPL); },
+            function($matches) use ($aVariables, $mixedKeyWrapperHtml) { return $this->parseHtmlByName($matches[1], $aVariables, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BASE); },
+            function($matches) { return $this->processInjection($GLOBALS['_page']['name_index'], $matches[1]); },
+            function($matches) { return $this->getImageUrl($matches[1]); },
+            function($matches) { return $this->getIconUrl($matches[1]); },
+            function($matches) { return _t($matches[1]); },
+        	function($matches) { return bx_js_string(_t($matches[1])); },
+        	function($matches) { return bx_html_attribute(_t($matches[1])); },
             BX_DOL_URL_ROOT,
             BX_DOL_URL_ADMIN
         ));
@@ -1718,14 +1521,14 @@ class BxDolTemplate
         //$sContent = preg_replace($aKeys, $aValues, $sContent);
 
         $aCombined = array_combine($aKeys, $aValues);
-        foreach ($aCombined as $sPattern => $sValue) {
+        foreach($aCombined as $sPattern => $sValue) {
 
-            if (is_object($sValue) && ($sValue instanceof Closure)) {
+            if(is_object($sValue) && ($sValue instanceof Closure)) {
                 $sContent = preg_replace_callback($sPattern, $sValue, $sContent);
                 continue;
             }
 
-            $sContent = preg_replace_callback($sPattern, function ($matches) use ($sValue) {
+            $sContent = preg_replace_callback($sPattern, function($matches) use ($sValue) {
                 return $sValue;
             }, $sContent);
         }
@@ -1733,10 +1536,10 @@ class BxDolTemplate
         //--- Parse System Keys ---//
         //$sContent = preg_replace( "'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'e", "\$this->parseSystemKey('\\1', \$mixedKeyWrapperHtml)", $sContent);
         $sContent = preg_replace_callback("'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'",
-            function ($matches) use ($mixedKeyWrapperHtml) {
+            function($matches) use ($mixedKeyWrapperHtml) {
 
                 return $this->parseSystemKey($matches[1], $mixedKeyWrapperHtml);
-            }, $sContent);
+        }, $sContent);
 
         return $sContent;
     }
@@ -1753,65 +1556,53 @@ class BxDolTemplate
      */
     function _compileContent($sContent, $aVarName, $iVarDepth, $aVarValues, $mixedKeyWrapperHtml = null)
     {
-        $aKeys   = array_keys($aVarValues);
+        $aKeys = array_keys($aVarValues);
         $aValues = array_values($aVarValues);
 
         $aKeyWrappers = $this->_getKeyWrappers($mixedKeyWrapperHtml);
 
-        for ($i = 0; $i < count($aKeys); $i++) {
-            if (strpos($aKeys[$i], 'bx_repeat:') === 0) {
+        for($i = 0; $i < count($aKeys); $i++) {
+            if(strpos($aKeys[$i], 'bx_repeat:') === 0) {
                 $sKey = "'<" . $aKeys[$i] . ">(.*)<\/" . $aKeys[$i] . ">'s";
 
                 $aMatches = array();
                 preg_match($sKey, $sContent, $aMatches);
 
                 $sValue = '';
-                if (isset($aMatches[1]) && !empty($aMatches[1])) {
-                    if (empty($aValues[$i]) || !is_array($aValues[$i])) {
+                if(isset($aMatches[1]) && !empty($aMatches[1])) {
+                    if(empty($aValues[$i]) || !is_array($aValues[$i]))
                         return false;
-                    }
 
                     $sIndex = "\$" . str_repeat("i", $iVarDepth);
-                    $sValue .= '<' . "?php if(is_array(" . $aVarName . "['" . $aKeys[$i] . "'])) for(" . $sIndex . "=0; " . $sIndex . "<count(" . $aVarName . "['" . $aKeys[$i] . "']); " . $sIndex . "++){ ?" . '>';
-                    if (($sInnerValue = $this->_compileContent($aMatches[1],
-                            $aVarName . "['" . $aKeys[$i] . "'][" . $sIndex . "]", $iVarDepth + 1,
-                            current($aValues[$i]), $mixedKeyWrapperHtml)) === false
-                    ) {
+                    $sValue .= '<'."?php if(is_array(" . $aVarName . "['" . $aKeys[$i] . "'])) for(" . $sIndex . "=0; " . $sIndex . "<count(" . $aVarName . "['" . $aKeys[$i] . "']); " . $sIndex . "++){ ?".'>';
+                    if(($sInnerValue = $this->_compileContent($aMatches[1], $aVarName . "['" . $aKeys[$i] . "'][" . $sIndex . "]", $iVarDepth + 1, current($aValues[$i]), $mixedKeyWrapperHtml)) === false)
                         return false;
-                    }
                     $sValue .= $sInnerValue;
-                    $sValue .= '<' . "?php } else if(is_string(" . $aVarName . "['" . $aKeys[$i] . "'])) echo " . $aVarName . "['" . $aKeys[$i] . "']; ?" . '>';
+                    $sValue .= '<'."?php } else if(is_string(" . $aVarName . "['" . $aKeys[$i] . "'])) echo " . $aVarName . "['" . $aKeys[$i] . "']; ?".'>';
+                }
+            } else if(strpos($aKeys[$i], 'bx_if:') === 0) {
+                $sKey = "'<" . $aKeys[$i] . ">(.*)<\/" . $aKeys[$i] . ">'s";
+
+                $aMatches = array();
+                preg_match($sKey, $sContent, $aMatches);
+
+                $sValue = '';
+                if(isset($aMatches[1]) && !empty($aMatches[1])) {
+                    if(!is_array($aValues[$i]) || !isset($aValues[$i]['content']) || empty($aValues[$i]['content']) || !is_array($aValues[$i]['content']))
+                        return false;
+
+                    $sValue .= '<'."?php if(" . $aVarName . "['" . $aKeys[$i] . "']['condition']){ ?".'>';
+                    if(($sInnerValue = $this->_compileContent($aMatches[1], $aVarName . "['" . $aKeys[$i] . "']['content']", $iVarDepth, $aValues[$i]['content'], $mixedKeyWrapperHtml)) === false)
+                        return false;
+                    $sValue .= $sInnerValue;
+                    $sValue .= '<'.'?php } ?'.'>';
                 }
             } else {
-                if (strpos($aKeys[$i], 'bx_if:') === 0) {
-                    $sKey = "'<" . $aKeys[$i] . ">(.*)<\/" . $aKeys[$i] . ">'s";
-
-                    $aMatches = array();
-                    preg_match($sKey, $sContent, $aMatches);
-
-                    $sValue = '';
-                    if (isset($aMatches[1]) && !empty($aMatches[1])) {
-                        if (!is_array($aValues[$i]) || !isset($aValues[$i]['content']) || empty($aValues[$i]['content']) || !is_array($aValues[$i]['content'])) {
-                            return false;
-                        }
-
-                        $sValue .= '<' . "?php if(" . $aVarName . "['" . $aKeys[$i] . "']['condition']){ ?" . '>';
-                        if (($sInnerValue = $this->_compileContent($aMatches[1],
-                                $aVarName . "['" . $aKeys[$i] . "']['content']", $iVarDepth, $aValues[$i]['content'],
-                                $mixedKeyWrapperHtml)) === false
-                        ) {
-                            return false;
-                        }
-                        $sValue .= $sInnerValue;
-                        $sValue .= '<' . '?php } ?' . '>';
-                    }
-                } else {
-                    $sKey   = "'" . $aKeyWrappers['left'] . $aKeys[$i] . $aKeyWrappers['right'] . "'s";
-                    $sValue = '<' . '?=' . $aVarName . "['" . $aKeys[$i] . "'];?" . '>';
-                }
+                $sKey = "'" . $aKeyWrappers['left'] . $aKeys[$i] . $aKeyWrappers['right'] . "'s";
+                $sValue = '<'.'?=' . $aVarName . "['" . $aKeys[$i] . "'];?".'>';
             }
 
-            $aKeys[$i]   = $sKey;
+            $aKeys[$i] = $sKey;
             $aValues[$i] = $sValue;
         }
 
@@ -1823,57 +1614,44 @@ class BxDolTemplate
             "'<bx_image_url:([^\s]+) \/>'s",
             "'<bx_icon_url:([^\s]+) \/>'s",
             "'<bx_text:([_\{\}\w\d\s]+[^\s]{1}) \/>'s",
-            "'<bx_text_js:([^\s]+) \/>'s",
-            "'<bx_text_attribute:([^\s]+) \/>'s",
+        	"'<bx_text_js:([^\s]+) \/>'s",
+			"'<bx_text_attribute:([^\s]+) \/>'s",
             "'<bx_url_root />'",
             "'<bx_url_admin />'"
         ));
 
         $aValues = array_merge($aValues, array(
-            function ($matches) use ($aVarValues, $mixedKeyWrapperHtml) {
-                return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH,
-                    false);
-            },
-            function ($matches) use ($aVarValues, $mixedKeyWrapperHtml) {
-                return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BASE,
-                    false);
-            },
-            function ($matches) use ($aVarValues, $mixedKeyWrapperHtml) {
-                return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_TMPL,
-                    false);
-            },
-            function ($matches) {
-                return '<?=$this->processInjection($GLOBALS[\'_page\'][\'name_index\'], "' . $matches[1] . '")?>';
-            },
-            function ($matches) { return $this->getImageUrl($matches[1]); },
-            function ($matches) { return $this->getIconUrl($matches[1]); },
-            function ($matches) { return _t($matches[1]); },
-            function ($matches) { return bx_js_string(_t($matches[1])); },
-            function ($matches) { return bx_html_attribute(_t($matches[1])); },
+            function($matches) use ($aVarValues, $mixedKeyWrapperHtml) { return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BOTH, false); },
+            function($matches) use ($aVarValues, $mixedKeyWrapperHtml) { return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_BASE, false); },
+            function($matches) use ($aVarValues, $mixedKeyWrapperHtml) { return $this->getCached($matches[1], $aVarValues, $mixedKeyWrapperHtml, BX_DOL_TEMPLATE_CHECK_IN_TMPL, false); },
+            function($matches) { return '<?=$this->processInjection($GLOBALS[\'_page\'][\'name_index\'], "'.$matches[1].'")?>'; },
+            function($matches) { return $this->getImageUrl($matches[1]); },
+            function($matches) { return $this->getIconUrl($matches[1]); },
+            function($matches) { return _t($matches[1]); },
+            function($matches) { return bx_js_string(_t($matches[1])); },
+            function($matches) { return bx_html_attribute(_t($matches[1])); },
             BX_DOL_URL_ROOT,
             BX_DOL_URL_ADMIN
         ));
 
         //--- Parse Predefined Keys ---//
         $aCombined = array_combine($aKeys, $aValues);
-        foreach ($aCombined as $sPattern => $sValue) {
-            if (is_object($sValue) && ($sValue instanceof Closure)) {
+        foreach($aCombined as $sPattern => $sValue) {
+            if(is_object($sValue) && ($sValue instanceof Closure)) {
                 $sContent = preg_replace_callback($sPattern, $sValue, $sContent);
                 continue;
             }
 
-            $sContent = preg_replace_callback($sPattern, function ($matches) use ($sValue) {
+            $sContent = preg_replace_callback($sPattern, function($matches) use ($sValue) {
                 return $sValue;
             }, $sContent);
         }
 
         //--- Parse System Keys ---//
-        $sContent = preg_replace("'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'",
-            "<?=\$this->parseSystemKey('\\1', \$mixedKeyWrapperHtml);?" . ">", $sContent);
+        $sContent = preg_replace( "'" . $aKeyWrappers['left'] . "([a-zA-Z0-9_-]+)" . $aKeyWrappers['right'] . "'", "<?=\$this->parseSystemKey('\\1', \$mixedKeyWrapperHtml);?".">", $sContent);
 
         return $sContent;
     }
-
     /**
      * Get absolute location of some template's part.
      *
@@ -1885,55 +1663,47 @@ class BxDolTemplate
      */
     function _getAbsoluteLocation($sType, $sFolder, $sName, $sCheckIn = BX_DOL_TEMPLATE_CHECK_IN_BOTH)
     {
-        if ($sType == 'path') {
+        if($sType == 'path') {
             $sDivider = DIRECTORY_SEPARATOR;
-            $sRoot    = BX_DIRECTORY_PATH_ROOT;
-        } else {
-            if ($sType == 'url') {
-                $sDivider = '/';
-                $sRoot    = BX_DOL_URL_ROOT;
-            }
+            $sRoot = BX_DIRECTORY_PATH_ROOT;
+        } else if($sType == 'url') {
+            $sDivider = '/';
+            $sRoot = BX_DOL_URL_ROOT;
         }
 
-        if (strpos($sName, '|') !== false) {
+        if(strpos($sName,'|') !== false) {
             $aParts = explode('|', $sName);
 
-            $sName        = $aParts[1];
-            $sLocationKey = $this->addDynamicLocation(BX_DIRECTORY_PATH_ROOT . $aParts[0],
-                BX_DOL_URL_ROOT . $aParts[0]);
+            $sName = $aParts[1];
+            $sLocationKey = $this->addDynamicLocation(BX_DIRECTORY_PATH_ROOT . $aParts[0], BX_DOL_URL_ROOT . $aParts[0]);
         }
 
-        $sResult    = '';
+        $sResult = '';
         $aLocations = array_reverse($this->_aLocations, true);
-        foreach ($aLocations as $sKey => $aLocation) {
+        foreach($aLocations as $sKey => $aLocation) {
             $sCode = $this->getCode();
 
-            if (($sCheckIn == BX_DOL_TEMPLATE_CHECK_IN_BOTH || $sCheckIn == BX_DOL_TEMPLATE_CHECK_IN_TMPL) && extFileExists($aLocation['path'] . 'tmpl_' . $sCode . DIRECTORY_SEPARATOR . $sFolder . $sName)) {
+            if(($sCheckIn == BX_DOL_TEMPLATE_CHECK_IN_BOTH || $sCheckIn == BX_DOL_TEMPLATE_CHECK_IN_TMPL) && extFileExists($aLocation['path'] . 'tmpl_' . $sCode . DIRECTORY_SEPARATOR . $sFolder . $sName))
                 $sResult = $aLocation[$sType] . 'tmpl_' . $sCode . $sDivider . $sFolder . $sName;
-            } else {
-                if (($sCheckIn == BX_DOL_TEMPLATE_CHECK_IN_BOTH || $sCheckIn == BX_DOL_TEMPLATE_CHECK_IN_BASE) && extFileExists($aLocation['path'] . BX_DOL_TEMPLATE_FOLDER_BASE . DIRECTORY_SEPARATOR . $sFolder . $sName)) {
-                    $sResult = $aLocation[$sType] . BX_DOL_TEMPLATE_FOLDER_BASE . $sDivider . $sFolder . $sName;
-                } else {
-                    continue;
-                }
-            }
+            else if(($sCheckIn == BX_DOL_TEMPLATE_CHECK_IN_BOTH || $sCheckIn == BX_DOL_TEMPLATE_CHECK_IN_BASE) && extFileExists($aLocation['path'] . BX_DOL_TEMPLATE_FOLDER_BASE . DIRECTORY_SEPARATOR . $sFolder . $sName))
+                $sResult = $aLocation[$sType] . BX_DOL_TEMPLATE_FOLDER_BASE . $sDivider . $sFolder . $sName;
+            else
+                continue;
             break;
         }
 
         /**
          * try to find from received path
          */
-        if (!$sResult && @is_file(BX_DIRECTORY_PATH_ROOT . $aParts[0] . DIRECTORY_SEPARATOR . $aParts[1])) {
+        if(!$sResult && @is_file(BX_DIRECTORY_PATH_ROOT . $aParts[0] . DIRECTORY_SEPARATOR . $aParts[1])) {
             $sResult = $sRoot . $aParts[0] . $sDivider . $aParts[1];
         }
 
-        if (isset($sLocationKey)) {
-            $this->removeLocation($sLocationKey);
-        }
+        if(isset($sLocationKey))
+           $this->removeLocation($sLocationKey);
 
         return $sType == 'path' && !empty($sResult) ? realpath($sResult) : $sResult;
     }
-
     /**
      * Get absolute location of some template's part.
      *
@@ -1943,36 +1713,32 @@ class BxDolTemplate
      */
     function _getAbsoluteLocationJs($sType, $sName)
     {
-        $sResult    = '';
+        $sResult = '';
         $aLocations = array_reverse($this->_aLocationsJs, true);
-        foreach ($aLocations as $sKey => $aLocation) {
-            if (extFileExists($aLocation['path'] . $sName)) {
+        foreach($aLocations as $sKey => $aLocation) {
+            if(extFileExists($aLocation['path'] . $sName))
                 $sResult = $aLocation[$sType] . $sName;
-            } else {
+            else
                 continue;
-            }
             break;
         }
-
         return $sType == 'path' && !empty($sResult) ? realpath($sResult) : $sResult;
     }
-
     function _getAbsoluteLocationCss($sType, $sName)
     {
         return $this->_getAbsoluteLocation($sType, $this->_sFolderCss, $sName);
     }
-
     /**
      * Get inline data for Images and Icons.
      *
-     * @param  string $sType    image/icon
-     * @param  string $sName    file name
-     * @param  string $sCheckIn where the content would be searched(base, template, both)
+     * @param  string  $sType    image/icon
+     * @param  string  $sName    file name
+     * @param  string  $sCheckIn where the content would be searched(base, template, both)
      * @return unknown
      */
     function _getInlineData($sType, $sName, $sCheckIn)
     {
-        switch ($sType) {
+        switch($sType) {
             case 'image':
                 $sFolder = $this->_sFolderImages;
                 break;
@@ -1983,15 +1749,13 @@ class BxDolTemplate
         $sPath = $this->_getAbsoluteLocation('path', $sFolder, $sName, $sCheckIn);
 
         $iFileSize = 0;
-        if ($this->_bImagesInline && ($iFileSize = filesize($sPath)) !== false && $iFileSize < $this->_iImagesMaxSize) {
+        if($this->_bImagesInline && ($iFileSize = filesize($sPath)) !== false && $iFileSize < $this->_iImagesMaxSize) {
             $aFileInfo = pathinfo($sPath);
-
             return "data:image/" . strtolower($aFileInfo['extension']) . ";base64," . base64_encode(file_get_contents($sPath));
         }
 
         return false;
     }
-
     /**
      * Get file name where the template would be cached.
      *
@@ -2001,9 +1765,9 @@ class BxDolTemplate
     function _getCacheFileName($sType, $sAbsolutePath)
     {
         $sResult = md5($sAbsolutePath . $GLOBALS['site']['ver'] . $GLOBALS['site']['build'] . $GLOBALS['site']['url']);
-        switch ($sType) {
+        switch($sType) {
             case 'html':
-                $sResult = $this->_sCacheFilePrefix . bx_lang_name() . '_' . $this->_sCode . '_' . $sResult;
+                $sResult = $this->_sCacheFilePrefix . bx_lang_name() . '_' . $this->_sCode .  '_' . $sResult;
                 break;
             case 'css':
                 $sResult = $this->_sCssCachePrefix . $sResult;
@@ -2015,7 +1779,6 @@ class BxDolTemplate
 
         return $sResult;
     }
-
     /**
      * Get template key wrappers(left, right)
      *
@@ -2025,16 +1788,12 @@ class BxDolTemplate
     function _getKeyWrappers($mixedKeyWrapperHtml)
     {
         $aResult = array();
-        if (!empty($mixedKeyWrapperHtml) && is_string($mixedKeyWrapperHtml)) {
+        if(!empty($mixedKeyWrapperHtml) && is_string($mixedKeyWrapperHtml))
             $aResult = array('left' => $mixedKeyWrapperHtml, 'right' => $mixedKeyWrapperHtml);
-        } else {
-            if (!empty($mixedKeyWrapperHtml) && is_array($mixedKeyWrapperHtml)) {
-                $aResult = array('left' => $mixedKeyWrapperHtml[0], 'right' => $mixedKeyWrapperHtml[1]);
-            } else {
-                $aResult = array('left' => $this->_sKeyWrapperHtml, 'right' => $this->_sKeyWrapperHtml);
-            }
-        }
-
+        else if(!empty($mixedKeyWrapperHtml) && is_array($mixedKeyWrapperHtml))
+            $aResult = array('left' => $mixedKeyWrapperHtml[0], 'right' => $mixedKeyWrapperHtml[1]);
+        else
+            $aResult = array('left' => $this->_sKeyWrapperHtml, 'right' => $this->_sKeyWrapperHtml);
         return $aResult;
     }
 
@@ -2045,21 +1804,19 @@ class BxDolTemplate
      */
     function _processJsTranslations()
     {
-        $aSearch      = array("\r", "\n", '\'');
+        $aSearch = array("\r", "\n", '\'');
         $aReplacement = array('', '\n', '\\\'');
 
         $sReturn = '';
-        foreach ($GLOBALS['BxDolTemplateJsTranslations'] as $sKey => $sString) {
-            $sKey    = str_replace($aSearch, $aReplacement, $sKey);
+        foreach($GLOBALS['BxDolTemplateJsTranslations'] as $sKey => $sString) {
+            $sKey = str_replace($aSearch, $aReplacement, $sKey);
             $sString = str_replace($aSearch, $aReplacement, $sString);
 
-            $sReturn .= "'" . $sKey . "': '" . $sString . "',";
+               $sReturn .= "'" .  $sKey . "': '" . $sString . "',";
         }
 
-        return '<script type="text/javascript" language="javascript">var aDolLang = {' . substr($sReturn, 0,
-            -1) . '};</script>';
+        return '<script type="text/javascript" language="javascript">var aDolLang = {' . substr($sReturn, 0, -1) . '};</script>';
     }
-
     /**
      * Process all added options and return them as a string.
      *
@@ -2068,14 +1825,11 @@ class BxDolTemplate
     function _processJsOptions()
     {
         $sReturn = '';
-        foreach ($GLOBALS['BxDolTemplateJsOptions'] as $sName => $mixedValue) {
-            $sReturn .= "'" . $sName . "': '" . addslashes($mixedValue) . "',";
-        }
+        foreach($GLOBALS['BxDolTemplateJsOptions'] as $sName => $mixedValue)
+            $sReturn .= "'" .  $sName . "': '" . addslashes($mixedValue) . "',";
 
-        return '<script type="text/javascript" language="javascript">var aDolOptions = {' . substr($sReturn, 0,
-            -1) . '};</script>';
+        return '<script type="text/javascript" language="javascript">var aDolOptions = {' . substr($sReturn, 0, -1) . '};</script>';
     }
-
     /**
      * Process all added images and return them as a string.
      *
@@ -2084,12 +1838,10 @@ class BxDolTemplate
     function _processJsImages()
     {
         $sReturn = '';
-        foreach ($GLOBALS['BxDolTemplateJsImages'] as $sKey => $sUrl) {
-            $sReturn .= "'" . $sKey . "': '" . $sUrl . "',";
-        }
+        foreach($GLOBALS['BxDolTemplateJsImages'] as $sKey => $sUrl)
+            $sReturn .= "'" .  $sKey . "': '" . $sUrl . "',";
 
-        return '<script type="text/javascript" language="javascript">var aDolImages = {' . substr($sReturn, 0,
-            -1) . '};</script>';
+        return '<script type="text/javascript" language="javascript">var aDolImages = {' . substr($sReturn, 0, -1) . '};</script>';
     }
 
     /**
@@ -2109,13 +1861,13 @@ class BxDolTemplate
      * Static functions to display pages with errors, messages and so on.
      *
      */
-    function displayAccessDenied()
+    function displayAccessDenied ()
     {
         $sTitle = _t('_Access denied');
 
-        $GLOBALS['_page']                           = array(
-            'name_index'  => 0,
-            'header'      => $sTitle,
+        $GLOBALS['_page'] = array(
+            'name_index' => 0,
+            'header' => $sTitle,
             'header_text' => $sTitle
         );
         $GLOBALS['_page_cont'][0]['page_main_code'] = MsgBox($sTitle);
@@ -2123,14 +1875,13 @@ class BxDolTemplate
         PageCode();
         exit;
     }
-
-    function displayNoData()
+    function displayNoData ()
     {
         $sTitle = _t('_Empty');
 
-        $GLOBALS['_page']                           = array(
-            'name_index'  => 0,
-            'header'      => $sTitle,
+        $GLOBALS['_page'] = array(
+            'name_index' => 0,
+            'header' => $sTitle,
             'header_text' => $sTitle
         );
         $GLOBALS['_page_cont'][0]['page_main_code'] = MsgBox($sTitle);
@@ -2138,14 +1889,13 @@ class BxDolTemplate
         PageCode();
         exit;
     }
-
-    function displayErrorOccured()
+    function displayErrorOccured ()
     {
         $sTitle = _t('_Error Occured');
 
-        $GLOBALS['_page']                           = array(
-            'name_index'  => 0,
-            'header'      => $sTitle,
+        $GLOBALS['_page'] = array(
+            'name_index' => 0,
+            'header' => $sTitle,
             'header_text' => $sTitle
         );
         $GLOBALS['_page_cont'][0]['page_main_code'] = MsgBox($sTitle);
@@ -2153,14 +1903,13 @@ class BxDolTemplate
         PageCode();
         exit;
     }
-
-    function displayPageNotFound()
+    function displayPageNotFound ()
     {
         $sTitle = _t('_sys_request_page_not_found_cpt');
 
-        $GLOBALS['_page']                           = array(
-            'name_index'  => 0,
-            'header'      => $sTitle,
+        $GLOBALS['_page'] = array(
+            'name_index' => 0,
+            'header' => $sTitle,
             'header_text' => $sTitle
         );
         $GLOBALS['_page_cont'][0]['page_main_code'] = MsgBox($sTitle);
@@ -2169,14 +1918,13 @@ class BxDolTemplate
         PageCode();
         exit;
     }
-
-    function displayMsg($s, $bTranslate = false)
+    function displayMsg ($s, $bTranslate = false)
     {
         $sTitle = $bTranslate ? _t($s) : $s;
 
-        $GLOBALS['_page']                           = array(
-            'name_index'  => 0,
-            'header'      => $sTitle,
+        $GLOBALS['_page'] = array(
+            'name_index' => 0,
+            'header' => $sTitle,
             'header_text' => $sTitle
         );
         $GLOBALS['_page_cont'][0]['page_main_code'] = MsgBox($sTitle);
@@ -2198,59 +1946,44 @@ class BxDolTemplate
      */
     function processInjection($iPageIndex, $sKey, $sValue = "")
     {
-        if ($iPageIndex != 0 && isset($GLOBALS[$this->_sPrefix . 'Injections']['page_0'][$sKey]) && isset($GLOBALS[$this->_sPrefix . 'Injections']['page_' . $iPageIndex][$sKey])) {
-            $aSelection = @array_merge($GLOBALS[$this->_sPrefix . 'Injections']['page_0'][$sKey],
-                $GLOBALS[$this->_sPrefix . 'Injections']['page_' . $iPageIndex][$sKey]);
-        } else {
-            if (isset($GLOBALS[$this->_sPrefix . 'Injections']['page_0'][$sKey])) {
-                $aSelection = $GLOBALS[$this->_sPrefix . 'Injections']['page_0'][$sKey];
-            } else {
-                if (isset($GLOBALS[$this->_sPrefix . 'Injections']['page_' . $iPageIndex][$sKey])) {
-                    $aSelection = $GLOBALS[$this->_sPrefix . 'Injections']['page_' . $iPageIndex][$sKey];
-                } else {
-                    $aSelection = array();
-                }
-            }
-        }
+        if($iPageIndex != 0 && isset($GLOBALS[$this->_sPrefix . 'Injections']['page_0'][$sKey]) && isset($GLOBALS[$this->_sPrefix . 'Injections']['page_' . $iPageIndex][$sKey]))
+           $aSelection = @array_merge($GLOBALS[$this->_sPrefix . 'Injections']['page_0'][$sKey], $GLOBALS[$this->_sPrefix . 'Injections']['page_' . $iPageIndex][$sKey]);
+        else if(isset($GLOBALS[$this->_sPrefix . 'Injections']['page_0'][$sKey]))
+           $aSelection = $GLOBALS[$this->_sPrefix . 'Injections']['page_0'][$sKey];
+        else if(isset($GLOBALS[$this->_sPrefix . 'Injections']['page_' . $iPageIndex][$sKey]))
+            $aSelection = $GLOBALS[$this->_sPrefix . 'Injections']['page_' . $iPageIndex][$sKey];
+        else
+            $aSelection = array();
 
-        if (is_array($aSelection)) {
-            foreach ($aSelection as $aInjection) {
+        if(is_array($aSelection))
+            foreach($aSelection as $aInjection) {
 
-                if (isset($GLOBALS['bx_profiler'])) {
-                    $GLOBALS['bx_profiler']->beginInjection($sRand = time() . rand());
-                }
+                if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->beginInjection($sRand = time().rand());
 
-                switch ($aInjection['type']) {
+                switch($aInjection['type']) {
                     case 'text':
                         $sInjData = $aInjection['data'];
                         break;
                     case 'php':
                         ob_start();
                         $sInjData = eval($aInjection['data']);
-                        if (!empty($sInjData)) {
+                        if(!empty($sInjData))
                             ob_end_clean();
-                        } else {
+                        else
                             $sInjData = ob_get_clean();
-                        }
                         break;
                 }
-                if ((int)$aInjection['replace'] == 1) {
+                if((int)$aInjection['replace'] == 1)
                     $sValue = $sInjData;
-                } else {
+                else
                     $sValue .= $sInjData;
-                }
 
-                if (isset($GLOBALS['bx_profiler'])) {
-                    $GLOBALS['bx_profiler']->endInjection($sRand, $aInjection['name'], $aInjection['key'],
-                        (int)$aInjection['replace'] == 1);
-                }
+                if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->endInjection($sRand, $aInjection['name'], $aInjection['key'], (int)$aInjection['replace'] == 1);
 
             }
-        }
 
         return $sValue != '__' . $sKey . '__' ? str_replace('__' . $sKey . '__', '', $sValue) : $sValue;
     }
-
     /**
      * Static method to add ingection available on the current page only.
      *
@@ -2263,10 +1996,10 @@ class BxDolTemplate
     {
         $GLOBALS[$this->_sPrefix . 'Injections']['page_0'][$sKey][] = array(
             'page_index' => 0,
-            'key'        => $sKey,
-            'type'       => $sType,
-            'data'       => $sData,
-            'replace'    => $iReplace
+            'key' => $sKey,
+            'type' => $sType,
+            'data' => $sData,
+            'replace' => $iReplace
         );
     }
 }

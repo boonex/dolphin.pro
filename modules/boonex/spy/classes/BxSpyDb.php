@@ -1,100 +1,99 @@
 <?php
 
-/**
+    /**
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolModuleDb.php');
+    require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolModuleDb.php' );
 
-class BxSpyDb extends BxDolModuleDb
-{
-    var $_oConfig;
-    var $sTablePrefix;
-
-    /**
-     * Constructor.
-     */
-    function __construct(&$oConfig)
+    class BxSpyDb extends BxDolModuleDb
     {
-        parent::__construct();
+        var $_oConfig;
+        var $sTablePrefix;
 
-        $this->_oConfig     = $oConfig;
-        $this->sTablePrefix = $oConfig->getDbPrefix();
-    }
+        /**
+         * Constructor.
+         */
+        function __construct(&$oConfig)
+        {
+            parent::__construct();
 
-    /**
-     * Function will get all internal spy's handlers;
-     *
-     * @return : (array);
-     */
-    function getInternalHandlers()
-    {
-        $sQuery = "SELECT * FROM `{$this->sTablePrefix}handlers`";
-
-        return $this->getAll($sQuery);
-    }
-
-    /**
-     * Function will return number of all events;
-     *
-     * @param  : $sType (string) - type of activity;
-     * @return : (integer);
-     */
-    function getActivityCount($sType = '')
-    {
-        $sType = process_db_input($sType, BX_TAGS_STRIP);
-
-        $sWhere = '';
-        if ($sType && $sType != 'all') {
-            $sWhere = "WHERE `type` = '{$sType}'";
+            $this -> _oConfig = $oConfig;
+            $this -> sTablePrefix = $oConfig -> getDbPrefix();
         }
 
-        $sQuery = "SELECT COUNT(*) FROM `{$this->sTablePrefix}data` {$sWhere}";
-        !($iCount = $this->getOne($sQuery)) ? $iCount = 0 : null;
-
-        return $iCount;
-    }
-
-    /**
-     * Function will get the latest event's Id;
-     *
-     * @param  : $sType (string) - type of activity;
-     * @return : (integer);
-     */
-    function getLastActivityId($sType = '')
-    {
-        $sType  = process_db_input($sType, BX_TAGS_STRIP);
-        $sWhere = '';
-
-        if ($sType && $sType != 'all') {
-            $sWhere = "WHERE `type` = '{$sType}'";
+        /**
+         * Function will get all internal spy's handlers;
+         *
+         * @return : (array);
+         */
+        function getInternalHandlers()
+        {
+            $sQuery = "SELECT * FROM `{$this->sTablePrefix}handlers`";
+            return $this -> getAll($sQuery);
         }
 
-        $sQuery = "SELECT `id` FROM `{$this->sTablePrefix}data` {$sWhere} ORDER BY `id` DESC LIMIT 1";
-        !($iLastEventId = $this->getOne($sQuery)) ? $iLastEventId = 0 : null;
+        /**
+         * Function will return number of all events;
+         *
+         * @param  : $sType (string) - type of activity;
+         * @return : (integer);
+         */
+        function getActivityCount($sType = '')
+        {
+            $sType = process_db_input($sType, BX_TAGS_STRIP);
 
-        return $iLastEventId;
-    }
+            $sWhere = '';
+            if($sType && $sType != 'all'){
+                $sWhere = "WHERE `type` = '{$sType}'";
+            }
 
-    /**
-     * Function will get the latest friends event's Id;
-     *
-     * @param  : $sType (string) - type of activity;
-     * @param  : $iProfile (integer) - profile's id;
-     * @return : (integer);
-     */
-    function getLastFriendsActivityId($iProfileId, $sType = '')
-    {
-        $iProfileId = (int)$iProfileId;
-        $sType      = process_db_input($sType, BX_TAGS_STRIP);
-        $sWhere     = '';
+            $sQuery = "SELECT COUNT(*) FROM `{$this->sTablePrefix}data` {$sWhere}";
+            !($iCount = $this -> getOne($sQuery) ) ? $iCount = 0 : null;
 
-        if ($sType && $sType != 'all') {
-            $sWhere = " AND `bx_spy_data`.`type` = '{$sType}'";
+            return $iCount;
         }
 
-        $sQuery =
+        /**
+         * Function will get the latest event's Id;
+         *
+         * @param  : $sType (string) - type of activity;
+         * @return : (integer);
+         */
+        function getLastActivityId($sType = '')
+        {
+            $sType   = process_db_input($sType, BX_TAGS_STRIP);
+            $sWhere  = '';
+
+            if($sType && $sType != 'all'){
+                $sWhere = "WHERE `type` = '{$sType}'";
+            }
+
+            $sQuery = "SELECT `id` FROM `{$this->sTablePrefix}data` {$sWhere} ORDER BY `id` DESC LIMIT 1";
+            !($iLastEventId = $this -> getOne($sQuery) ) ? $iLastEventId = 0 : null;
+
+            return $iLastEventId;
+        }
+
+        /**
+         * Function will get the latest friends event's Id;
+         *
+         * @param  : $sType (string) - type of activity;
+         * @param  : $iProfile (integer) - profile's id;
+         * @return : (integer);
+         */
+        function getLastFriendsActivityId($iProfileId, $sType = '')
+        {
+            $iProfileId = (int) $iProfileId;
+            $sType   	= process_db_input($sType, BX_TAGS_STRIP);
+            $sWhere 	= '';
+
+            if($sType && $sType != 'all'){
+                $sWhere = " AND `bx_spy_data`.`type` = '{$sType}'";
+            }
+
+            $sQuery =
             "
                 SELECT
                     `bx_spy_data`.`id`
@@ -113,29 +112,28 @@ class BxSpyDb extends BxDolModuleDb
                     `bx_spy_data`.`id` DESC LIMIT 1
             ";
 
-        !($iLastEventId = $this->getOne($sQuery)) ? $iLastEventId = 0 : null;
-
-        return $iLastEventId;
-    }
-
-    /**
-     * Function will return number of all friends events;
-     *
-     * @param  : $sType (string) - type of activity;
-     * @param  : $iProfile (integer) - profile's id;
-     * @return : (integer);
-     */
-    function getFriendsActivityCount($iProfileId, $sType = '')
-    {
-        $iProfileId = (int)$iProfileId;
-        $sType      = process_db_input($sType, BX_TAGS_STRIP);
-        $sWhere     = '';
-
-        if ($sType && $sType != 'all') {
-            $sWhere = " AND `bx_spy_data`.`type` = '{$sType}'";
+            !($iLastEventId = $this -> getOne($sQuery) ) ? $iLastEventId = 0 : null;
+            return $iLastEventId;
         }
 
-        $sQuery =
+        /**
+         * Function will return number of all friends events;
+         *
+         * @param  : $sType (string) - type of activity;
+         * @param  : $iProfile (integer) - profile's id;
+         * @return : (integer);
+         */
+        function getFriendsActivityCount($iProfileId, $sType = '')
+        {
+            $iProfileId = (int) $iProfileId;
+               $sType   	= process_db_input($sType, BX_TAGS_STRIP);
+            $sWhere		= '';
+
+            if($sType && $sType != 'all'){
+                $sWhere = " AND `bx_spy_data`.`type` = '{$sType}'";
+            }
+
+            $sQuery =
             "
                 SELECT
                     COUNT(`bx_spy_data`.`id`)
@@ -152,63 +150,58 @@ class BxSpyDb extends BxDolModuleDb
                         {$sWhere}
             ";
 
-        !($iCount = $this->getOne($sQuery)) ? $iCount = 0 : null;
+            !($iCount = $this -> getOne($sQuery) ) ? $iCount = 0 : null;
+            return $iCount;
+        }
 
-        return $iCount;
-    }
+        /**
+         * Function will return global category number;
+         *
+         * @return : (integer) - category's number;
+         */
+        function getSettingsCategory($sValueName)
+        {
+            $sValueName = process_db_input($sValueName, BX_TAGS_STRIP);
+            return $this -> getOne('SELECT `kateg` FROM `sys_options` WHERE `Name` = "' . $sValueName . '"');
+        }
 
-    /**
-     * Function will return global category number;
-     *
-     * @return : (integer) - category's number;
-     */
-    function getSettingsCategory($sValueName)
-    {
-        $sValueName = process_db_input($sValueName, BX_TAGS_STRIP);
+        /**
+         * Function will set activiti as viwed;
+         *
+         * @param  : $iActivityId (integer) - activity's id;
+         * @return : void;
+         */
+        function setViewed($iActivityId)
+        {
+            $iActivityId = (int) $iActivityId;
+            $sQuery = "UPDATE `{$this->sTablePrefix}data` SET `viewed` = 1";
+            $this -> query($sQuery);
+        }
 
-        return $this->getOne('SELECT `kateg` FROM `sys_options` WHERE `Name` = "' . $sValueName . '"');
-    }
+        /**
+         * Function will set all profile's activiti as viwed;
+         *
+         * @param  : $iProfileId (integer) - profile's id;
+         * @return : void;
+         */
+        function setViewedProfileActivity($iProfileId)
+        {
+            $iProfileId = (int) $iProfileId;
+            $sQuery = "UPDATE `{$this->sTablePrefix}data` SET `viewed` = 1 WHERE `recipient_id` = {$iProfileId}";
+            $this -> query($sQuery);
+        }
 
-    /**
-     * Function will set activiti as viwed;
-     *
-     * @param  : $iActivityId (integer) - activity's id;
-     * @return : void;
-     */
-    function setViewed($iActivityId)
-    {
-        $iActivityId = (int)$iActivityId;
-        $sQuery      = "UPDATE `{$this->sTablePrefix}data` SET `viewed` = 1";
-        $this->query($sQuery);
-    }
+        function insertData(&$aData)
+        {
+            //--- Update Spy Handlers ---//
+            foreach($aData['handlers'] as $aHandler) {
+                $aHandler['alert_unit'] 	= process_db_input($aHandler['alert_unit'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+                $aHandler['alert_action'] 	= process_db_input($aHandler['alert_action'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+                $aHandler['module_uri'] 	= process_db_input($aHandler['module_uri'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+                $aHandler['module_class'] 	= process_db_input($aHandler['module_class'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+                $aHandler['module_method'] 	= process_db_input($aHandler['module_method'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
 
-    /**
-     * Function will set all profile's activiti as viwed;
-     *
-     * @param  : $iProfileId (integer) - profile's id;
-     * @return : void;
-     */
-    function setViewedProfileActivity($iProfileId)
-    {
-        $iProfileId = (int)$iProfileId;
-        $sQuery     = "UPDATE `{$this->sTablePrefix}data` SET `viewed` = 1 WHERE `recipient_id` = {$iProfileId}";
-        $this->query($sQuery);
-    }
-
-    function insertData(&$aData)
-    {
-        //--- Update Spy Handlers ---//
-        foreach ($aData['handlers'] as $aHandler) {
-            $aHandler['alert_unit']    = process_db_input($aHandler['alert_unit'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
-            $aHandler['alert_action']  = process_db_input($aHandler['alert_action'], BX_TAGS_STRIP,
-                BX_SLASHES_NO_ACTION);
-            $aHandler['module_uri']    = process_db_input($aHandler['module_uri'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
-            $aHandler['module_class']  = process_db_input($aHandler['module_class'], BX_TAGS_STRIP,
-                BX_SLASHES_NO_ACTION);
-            $aHandler['module_method'] = process_db_input($aHandler['module_method'], BX_TAGS_STRIP,
-                BX_SLASHES_NO_ACTION);
-
-            $sQuery =
+                $sQuery =
                 "
                     INSERT INTO
                         `{$this->sTablePrefix}handlers`
@@ -220,13 +213,13 @@ class BxSpyDb extends BxDolModuleDb
                         `module_method` = '{$aHandler['module_method']}'
                 ";
 
-            $this->query($sQuery);
-        }
+                $this -> query($sQuery);
+            }
 
-        $sAlertName = $this->_oConfig->getAlertSystemName();
+            $sAlertName = $this -> _oConfig -> getAlertSystemName();
 
-        //--- Update System Alerts ---//
-        $sQuery =
+            //--- Update System Alerts ---//
+            $sQuery =
             "
                 SELECT
                     `id`
@@ -237,13 +230,13 @@ class BxSpyDb extends BxDolModuleDb
                 LIMIT 1
             ";
 
-        $iHandlerId = (int)$this->getOne($sQuery, [$sAlertName]);
+            $iHandlerId = (int) $this -> getOne($sQuery, [$sAlertName]);
 
-        foreach ($aData['alerts'] as $aAlert) {
-            $aAlert['unit']   = process_db_input($aAlert['unit'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
-            $aAlert['action'] = process_db_input($aAlert['action'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+            foreach($aData['alerts'] as $aAlert) {
+                $aAlert['unit']		= process_db_input($aAlert['unit'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+                $aAlert['action']	= process_db_input($aAlert['action'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
 
-            $sQuery =
+                $sQuery =
                 "
                     INSERT INTO
                         `sys_alerts`
@@ -253,24 +246,21 @@ class BxSpyDb extends BxDolModuleDb
                        `handler_id` = '{$iHandlerId}'
                 ";
 
-            $this->query($sQuery);
+                $this -> query($sQuery);
+            }
         }
-    }
 
-    function deleteData(&$aData)
-    {
-        //--- Update Wall Handlers ---//
-        foreach ($aData['handlers'] as $aHandler) {
-            $aHandler['alert_unit']    = process_db_input($aHandler['alert_unit'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
-            $aHandler['alert_action']  = process_db_input($aHandler['alert_action'], BX_TAGS_STRIP,
-                BX_SLASHES_NO_ACTION);
-            $aHandler['module_uri']    = process_db_input($aHandler['module_uri'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
-            $aHandler['module_class']  = process_db_input($aHandler['module_class'], BX_TAGS_STRIP,
-                BX_SLASHES_NO_ACTION);
-            $aHandler['module_method'] = process_db_input($aHandler['module_method'], BX_TAGS_STRIP,
-                BX_SLASHES_NO_ACTION);
+        function deleteData(&$aData)
+        {
+            //--- Update Wall Handlers ---//
+            foreach($aData['handlers'] as $aHandler) {
+                $aHandler['alert_unit'] 	= process_db_input($aHandler['alert_unit'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+                $aHandler['alert_action'] 	= process_db_input($aHandler['alert_action'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+                $aHandler['module_uri'] 	= process_db_input($aHandler['module_uri'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+                $aHandler['module_class'] 	= process_db_input($aHandler['module_class'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+                $aHandler['module_method'] 	= process_db_input($aHandler['module_method'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
 
-            $sQuery =
+                $sQuery =
                 "
                     DELETE FROM
                         `{$this->sTablePrefix}handlers`
@@ -287,14 +277,14 @@ class BxSpyDb extends BxDolModuleDb
                     LIMIT 1
                 ";
 
-            $this->query($sQuery);
-        }
+                $this -> query($sQuery);
+            }
 
-        // define system alert name;
-        $sAlertName = $this->_oConfig->getAlertSystemName();
+            // define system alert name;
+            $sAlertName = $this -> _oConfig -> getAlertSystemName();
 
-        //--- Update System Alerts ---//
-        $sQuery =
+            //--- Update System Alerts ---//
+            $sQuery =
             "
                 SELECT
                     `id`
@@ -305,12 +295,12 @@ class BxSpyDb extends BxDolModuleDb
                 LIMIT 1
             ";
 
-        $iHandlerId = (int)$this->getOne($sQuery, [$sAlertName]);
-        foreach ($aData['alerts'] as $aAlert) {
-            $aAlert['unit']   = process_db_input($aAlert['unit'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
-            $aAlert['action'] = process_db_input($aAlert['action'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+            $iHandlerId = (int) $this -> getOne($sQuery, [$sAlertName]);
+            foreach($aData['alerts'] as $aAlert) {
+                $aAlert['unit']		= process_db_input($aAlert['unit'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+                $aAlert['action']	= process_db_input($aAlert['action'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
 
-            $sQuery =
+                $sQuery =
                 "
                     DELETE FROM
                         `sys_alerts`
@@ -323,42 +313,33 @@ class BxSpyDb extends BxDolModuleDb
                     LIMIT 1
                 ";
 
-            $this->query($sQuery);
+                $this -> query($sQuery);
+            }
         }
-    }
 
-    /**
-     * Function will create new activity;
-     *
-     * @param  : $iSenderId (integer) - activity's sender id;
-     * @param  : $iRecipientId (integer) - activity's recipient id;
-     * @param  : $aActivityInfo (array) - with some event's information;
-     * [ lang_key ] - (string) language key;
-     * [ params ]   - (array)  some nedded parameters;
-     * [ type   ]   - (string) type of activity;
-     * @return : (integer) created event's Id;
-     */
-    function createActivity(
-        $sAlertUnit,
-        $sAlertAction,
-        $iObjectId,
-        $iCommentId,
-        $iSenderId,
-        $iRecipientId,
-        $aActivityInfo
-    ) {
-        $iSenderId    = (int)$iSenderId;
-        $iRecipientId = (int)$iRecipientId;
+        /**
+         * Function will create new activity;
+         *
+         * @param  : $iSenderId (integer) - activity's sender id;
+         * @param  : $iRecipientId (integer) - activity's recipient id;
+         * @param  : $aActivityInfo (array) - with some event's information;
+                        [ lang_key ] - (string) language key;
+                        [ params ]   - (array)  some nedded parameters;
+                        [ type   ]   - (string) type of activity;
+         * @return : (integer) created event's Id;
+         */
+        function createActivity($sAlertUnit, $sAlertAction, $iObjectId, $iCommentId, $iSenderId, $iRecipientId, $aActivityInfo)
+        {
+            $iSenderId = (int) $iSenderId;
+            $iRecipientId = (int) $iRecipientId;
 
-        // procces recived parameters
-        $aParameters   = isset($aActivityInfo['params']) ? process_db_input(serialize($aActivityInfo['params']),
-            BX_TAGS_STRIP, BX_SLASHES_NO_ACTION) : '';
-        $sActivityType = isset($aActivityInfo['spy_type']) ? process_db_input($aActivityInfo['spy_type'], BX_TAGS_STRIP,
-            BX_SLASHES_NO_ACTION) : 'content_activity';
-        $sLangKey      = process_db_input($aActivityInfo['lang_key'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+            // procces recived parameters
+            $aParameters = isset($aActivityInfo['params']) ?  process_db_input(serialize($aActivityInfo['params']), BX_TAGS_STRIP, BX_SLASHES_NO_ACTION) : '';
+            $sActivityType = isset($aActivityInfo['spy_type']) ? process_db_input($aActivityInfo['spy_type'],BX_TAGS_STRIP, BX_SLASHES_NO_ACTION) : 'content_activity';
+            $sLangKey = process_db_input($aActivityInfo['lang_key'], BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
 
-        // execute query;
-        $sQuery =
+            // execute query;
+            $sQuery =
             "
                 INSERT INTO
                     `{$this->sTablePrefix}data`
@@ -375,53 +356,51 @@ class BxSpyDb extends BxDolModuleDb
                     `type`          = '{$sActivityType}'
             ";
 
-        $this->query($sQuery);
-
-        return $this->lastId();
-    }
-
-    function deleteActivityByObject($sUnit, $iObjectId, $iCommentId = 0)
-    {
-        $sWhereAddon = "";
-        if ($iCommentId != 0) {
-            $sWhereAddon = "AND `comment_id`='" . $iCommentId . "'";
+            $this -> query($sQuery);
+            return $this -> lastId();
         }
 
-        $sSql = "DELETE FROM
+        function deleteActivityByObject($sUnit, $iObjectId, $iCommentId = 0)
+        {
+            $sWhereAddon = "";
+            if($iCommentId != 0)
+                $sWhereAddon = "AND `comment_id`='" . $iCommentId . "'";
+
+            $sSql = "DELETE FROM
                     `" . $this->sTablePrefix . "data`
                 WHERE
                     `alert_unit`='" . $sUnit . "' AND
                     `object_id`='" . $iObjectId . "' " . $sWhereAddon;
 
-        return $this->query($sSql);
-    }
+            return $this->query($sSql);
+        }
 
-    function deleteActivityByUser($iUserId)
-    {
-        $sSql = "DELETE FROM
+        function deleteActivityByUser($iUserId)
+        {
+            $sSql = "DELETE FROM
                     `" . $this->sTablePrefix . "data`
                 WHERE
                     `sender_id`='" . $iUserId . "' OR
                     `recipient_id`='" . $iUserId . "'";
 
-        return $this->query($sSql);
-    }
+            return $this->query($sSql);
+        }
 
-    /**
-     * Function will attach created event to their friend ;
-     *
-     * @param  : $iEventId  (integer) - event's  Id;
-     * @param  : $iSenderId (integer) - sender's Id;
-     * @param  : $iFriendId (integer) - friend's Id;
-     * @return : void;
-     */
-    function attachFriendEvent($iEventId, $iSenderId, $iFriendId)
-    {
-        $iEventId  = (int)$iEventId;
-        $iSenderId = (int)$iSenderId;
-        $iFriendId = (int)$iFriendId;
+        /**
+         * Function will attach created event to their friend ;
+         *
+         * @param  : $iEventId  (integer) - event's  Id;
+         * @param  : $iSenderId (integer) - sender's Id;
+         * @param  : $iFriendId (integer) - friend's Id;
+         * @return : void;
+         */
+        function attachFriendEvent($iEventId, $iSenderId, $iFriendId)
+        {
+            $iEventId  = (int) $iEventId;
+            $iSenderId = (int) $iSenderId;
+            $iFriendId = (int) $iFriendId;
 
-        $sQuery =
+            $sQuery =
             "
                 INSERT INTO
                     `{$this->sTablePrefix}friends_data`
@@ -431,28 +410,28 @@ class BxSpyDb extends BxDolModuleDb
                     `friend_id` = {$iFriendId}
             ";
 
-        $this->query($sQuery);
-    }
-
-    /**
-     * Function will delete all unnecessary events;
-     *
-     * @param  : $iCount (integer) - number of rows that need to delete;
-     * @return : void;
-     */
-    function deleteUselessData($iDays = 0)
-    {
-        $iDays = (int)$iDays;
-        if ($iDays < 1) {
-            return 0;
+            $this -> query($sQuery);
         }
 
-        $iAffectedRows = $this->query("DELETE FROM `{$this->sTablePrefix}data` WHERE `{$this->sTablePrefix}data`.`date` < DATE_SUB(NOW(), INTERVAL $iDays DAY)");
-        $this->query("OPTIMIZE TABLE `{$this->sTablePrefix}data`");
+        /**
+         * Function will delete all unnecessary events;
+         *
+         * @param  : $iCount (integer) - number of rows that need to delete;
+         * @return : void;
+         */
+        function deleteUselessData($iDays = 0)
+        {
+            $iDays = (int) $iDays;
+            if ($iDays < 1) {
+                return 0;
+            }
 
-        $this->query("DELETE `{$this->sTablePrefix}friends_data` FROM `{$this->sTablePrefix}friends_data` LEFT JOIN `{$this->sTablePrefix}data` ON (`{$this->sTablePrefix}data`.`id` =  `{$this->sTablePrefix}friends_data`.`event_id`) WHERE `{$this->sTablePrefix}data`.`id` IS NULL");
-        $this->query("OPTIMIZE TABLE `{$this->sTablePrefix}friends_data`");
+            $iAffectedRows = $this -> query("DELETE FROM `{$this->sTablePrefix}data` WHERE `{$this->sTablePrefix}data`.`date` < DATE_SUB(NOW(), INTERVAL $iDays DAY)");
+            $this -> query("OPTIMIZE TABLE `{$this->sTablePrefix}data`");
 
-        return $iAffectedRows;
+            $this -> query("DELETE `{$this->sTablePrefix}friends_data` FROM `{$this->sTablePrefix}friends_data` LEFT JOIN `{$this->sTablePrefix}data` ON (`{$this->sTablePrefix}data`.`id` =  `{$this->sTablePrefix}friends_data`.`event_id`) WHERE `{$this->sTablePrefix}data`.`id` IS NULL");
+            $this -> query("OPTIMIZE TABLE `{$this->sTablePrefix}friends_data`");
+
+            return $iAffectedRows;
+        }
     }
-}

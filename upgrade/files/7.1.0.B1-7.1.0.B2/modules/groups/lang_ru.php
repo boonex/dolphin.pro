@@ -2,13 +2,13 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_groups' => 'Группы',
+  '_sys_module_groups' => 'Группы',
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_groups_menu_main'       => 'Главная',
-    '_bx_groups_page_title_home' => 'Главная',
+  '_bx_groups_menu_main' => 'Главная',
+  '_bx_groups_page_title_home' => 'Главная',
 
 );

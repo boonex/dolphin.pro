@@ -35,17 +35,17 @@ class BxFaceBookConnectDb extends BxDolConnectDb
      */
     function getProfileId($iFbUid)
     {
-        $iFbUidCopy = (int)$iFbUid;
-        $iFbUid     = $this->_processBigNumber($iFbUid);
+        $iFbUidCopy = (int) $iFbUid;
+        $iFbUid = $this -> _processBigNumber($iFbUid);
 
 
         //-- handle 64 bit number on 32bit system ( will need remove it in a feature version)--//
-        if ($iFbUidCopy != $iFbUid) {
+        if($iFbUidCopy != $iFbUid) {
             //update id
             $sQuery = "UPDATE `{$this -> sTablePrefix}accounts` SET `fb_profile` = '{$iFbUid}'
                 WHERE `fb_profile` = '{$iFbUidCopy}'";
 
-            $this->query($sQuery);
+            $this -> query($sQuery);
         }
         //--
 
@@ -53,8 +53,7 @@ class BxFaceBookConnectDb extends BxDolConnectDb
         $sQuery = "SELECT `id_profile` FROM `{$this -> sTablePrefix}accounts` WHERE
             `fb_profile` = '{$iFbUid}' LIMIT 1";
 
-        $iProfileId = $this->getOne($sQuery);
-
+        $iProfileId = $this -> getOne($sQuery);
         //--
 
         return $iProfileId;
@@ -64,18 +63,18 @@ class BxFaceBookConnectDb extends BxDolConnectDb
      *  Save new Fb uid
      *
      * @param $iProfileId integer
-     * @param $iFbUid     integer
+     * @param $iFbUid integer
      * @return void
      */
     function saveRemoteId($iProfileId, $iFbUid)
     {
-        $iFbUid     = $this->_processBigNumber($iFbUid);
-        $iProfileId = (int)$iProfileId;
+        $iFbUid = $this -> _processBigNumber($iFbUid);
+        $iProfileId = (int) $iProfileId;
 
         $sQuery = "REPLACE INTO `{$this -> sTablePrefix}accounts`
                     SET `id_profile` = {$iProfileId}, `fb_profile` = '{$iFbUid}'";
 
-        $this->query($sQuery);
+        $this -> query($sQuery);
     }
 
     /**
@@ -86,10 +85,10 @@ class BxFaceBookConnectDb extends BxDolConnectDb
      */
     function deleteRemoteAccount($iProfileId)
     {
-        $iProfileId = (int)$iProfileId;
-        $sQuery     = "DELETE FROM `{$this -> sTablePrefix}accounts`
+        $iProfileId = (int) $iProfileId;
+        $sQuery = "DELETE FROM `{$this -> sTablePrefix}accounts`
             WHERE `id_profile` = {$iProfileId}";
 
-        $this->query($sQuery);
+        $this -> query($sQuery);
     }
 }

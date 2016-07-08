@@ -14,7 +14,7 @@ class BxDskInstaller extends BxDolInstaller
     function __construct($aConfig)
     {
         parent::__construct($aConfig);
-        $this->_aActions['get_desktop']    = array('title' => 'Getting Desktop downloadable from boonex.com:');
+        $this->_aActions['get_desktop'] = array('title' => 'Getting Desktop downloadable from boonex.com:');
         $this->_aActions['remove_desktop'] = array('title' => 'Removing Desktop downloadable:');
     }
 
@@ -25,9 +25,7 @@ class BxDskInstaller extends BxDolInstaller
         $sTempFile = BX_DIRECTORY_PATH_MODULES . $this->_aConfig['home_dir'] . $this->sDesktopFile;
 
         $sData = $this->readUrl($this->sGetDesktopUrl . "index.php", array('url' => $sHomeUrl . 'XML.php'));
-        if (empty($sData)) {
-            return BX_DOL_INSTALLER_FAILED;
-        }
+        if(empty($sData)) return BX_DOL_INSTALLER_FAILED;
 
         $fp = @fopen($sTempFile, "w");
         @fwrite($fp, $this->readUrl($this->sGetDesktopUrl . $sData));
@@ -35,17 +33,13 @@ class BxDskInstaller extends BxDolInstaller
 
         $this->readUrl($this->sGetDesktopUrl . "index.php", array("delete" => $sData));
 
-        if (!file_exists($sTempFile) || filesize($sTempFile) == 0) {
-            return BX_DOL_INSTALLER_FAILED;
-        }
-
+        if(!file_exists($sTempFile) || filesize($sTempFile) == 0) return BX_DOL_INSTALLER_FAILED;
         return BX_DOL_INSTALLER_SUCCESS;
     }
 
     function actionRemoveDesktop($bInstall = true)
     {
         @unlink(BX_DIRECTORY_PATH_MODULES . $this->_aConfig['home_dir'] . $this->sDesktopFile);
-
         return BX_DOL_INSTALLER_SUCCESS;
     }
 

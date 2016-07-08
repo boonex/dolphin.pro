@@ -16,7 +16,6 @@ class BxFdbSearchResult extends BxDolTextSearchResult
         $this->aCurrent['searchFields'] = array('caption', 'content', 'tags');
         unset($this->aCurrent['restriction']['category']);
     }
-
     function getAlterOrder()
     {
         return array('order' => 'ORDER BY `date` DESC');

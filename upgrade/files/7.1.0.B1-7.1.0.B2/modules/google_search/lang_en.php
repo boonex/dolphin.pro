@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_google_search' => 'Google Site Search',
+  '_sys_module_google_search' => 'Google Site Search',
 
 );

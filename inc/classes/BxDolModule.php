@@ -9,7 +9,6 @@
  *
  * The object of the class contains major objects of the whole module. They are:
  * a. An object of config class
- *
  * @see BxDolConfig
  *
  * b. An object of database class.
@@ -55,7 +54,7 @@ class BxDolModule
         $this->_aModule = $aModule;
 
         $sClassPrefix = $aModule['class_prefix'];
-        $sClassPath   = BX_DIRECTORY_PATH_MODULES . $aModule['path'] . 'classes/';
+        $sClassPath = BX_DIRECTORY_PATH_MODULES . $aModule['path'] . 'classes/';
 
         $sClassName = $sClassPrefix . 'Config';
         require_once($sClassPath . $sClassName . '.php');
@@ -82,30 +81,23 @@ class BxDolModule
      */
     public static function getInstance($sClassName)
     {
-        if (empty($sClassName)) {
+        if(empty($sClassName))
             return null;
-        }
 
-        if (isset($GLOBALS['bxDolClasses'][$sClassName])) {
-            return $GLOBALS['bxDolClasses'][$sClassName];
-        } else {
+        if(isset($GLOBALS['bxDolClasses'][$sClassName]))
+           return $GLOBALS['bxDolClasses'][$sClassName];
+        else {
             $aModule = db_arr("SELECT * FROM `sys_modules` WHERE INSTR('" . $sClassName . "', `class_prefix`)=1 LIMIT 1");
-            if (empty($aModule) || !is_array($aModule)) {
-                return null;
-            }
+            if(empty($aModule) || !is_array($aModule)) return null;
 
             $sClassPath = BX_DIRECTORY_PATH_MODULES . $aModule['path'] . '/classes/' . $sClassName . '.php';
-            if (!file_exists($sClassPath)) {
-                return null;
-            }
+            if(!file_exists($sClassPath)) return null;
 
             require_once($sClassPath);
             $GLOBALS['bxDolClasses'][$sClassName] = new $sClassName($aModule);
-
             return $GLOBALS['bxDolClasses'][$sClassName];
         }
     }
-
     /**
      * Check whether user logged in or not.
      *
@@ -115,7 +107,6 @@ class BxDolModule
     {
         return isLogged();
     }
-
     /**
      * Get currently logged in user ID.
      *
@@ -125,13 +116,12 @@ class BxDolModule
     {
         return getLoggedId();
     }
-
     /**
      * Get currently logged in user password.
      *
      * @return string user password.
      */
-    function getUserPassword()
+    function getUserPassword ()
     {
         return getLoggedPassword();
     }
@@ -146,7 +136,7 @@ class BxDolModule
         return '_sys_module_' . strtolower(str_replace(' ', '_', $sUri));
     }
 
-    function serviceGetBaseUrl()
+	function serviceGetBaseUrl()
     {
         return BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri();
     }

@@ -134,7 +134,7 @@ class BxDolDb
 
     public function getLink()
     {
-        return $this->link;
+    	return $this->link;
     }
 
     /**

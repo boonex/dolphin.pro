@@ -12,64 +12,63 @@ class BxFdbDb extends BxDolTextDb
     {
         parent::__construct($oConfig);
     }
-
     function getEntries($aParams)
     {
-        switch ($aParams['sample_type']) {
+        switch($aParams['sample_type']) {
             case 'id':
-                $sMethod       = 'getRow';
+                $sMethod = 'getRow';
                 $sSelectClause = "`te`.`content` AS `content`, ";
-                $sWhereClause  = " AND `te`.`id`='" . $aParams['id'] . "'";
-                $sOrderClause  = "`te`.`date` DESC";
-                $sLimitClause  = "LIMIT 1";
+                $sWhereClause = " AND `te`.`id`='" . $aParams['id'] . "'";
+                $sOrderClause = "`te`.`date` DESC";
+                $sLimitClause = "LIMIT 1";
                 break;
             case 'uri':
-                $sMethod       = 'getRow';
+                $sMethod = 'getRow';
                 $sSelectClause = "`te`.`content` AS `content`, ";
-                $sWhereClause  = " AND `te`.`uri`='" . $aParams['uri'] . "'";
-                $sOrderClause  = "`te`.`date` DESC";
-                $sLimitClause  = "LIMIT 1";
+                $sWhereClause = " AND `te`.`uri`='" . $aParams['uri'] . "'";
+                $sOrderClause = "`te`.`date` DESC";
+                $sLimitClause = "LIMIT 1";
                 break;
             case 'view':
-                $sMethod       = 'getAll';
+                $sMethod = 'getAll';
                 $sSelectClause = "`te`.`content` AS `content`, ";
-                $sWhereClause  = " AND `te`.`uri`='" . $aParams['uri'] . "' AND `te`.`status`='" . BX_TD_STATUS_ACTIVE . "'";
-                $sOrderClause  = "`te`.`date` DESC";
-                $sLimitClause  = "LIMIT 1";
+                $sWhereClause = " AND `te`.`uri`='" . $aParams['uri'] . "' AND `te`.`status`='" . BX_TD_STATUS_ACTIVE . "'";
+                $sOrderClause = "`te`.`date` DESC";
+                $sLimitClause = "LIMIT 1";
                 break;
             case 'search_unit':
-                $sMethod       = 'getAll';
+                $sMethod = 'getAll';
                 $sSelectClause = "SUBSTRING(`te`.`content`, 1, " . $this->_oConfig->getSnippetLength() . ") AS `content`, ";
-                $sWhereClause  = " AND `te`.`uri`='" . $aParams['uri'] . "'";
-                $sOrderClause  = "`te`.`date` DESC";
-                $sLimitClause  = "LIMIT 1";
+                $sWhereClause = " AND `te`.`uri`='" . $aParams['uri'] . "'";
+                $sOrderClause = "`te`.`date` DESC";
+                $sLimitClause = "LIMIT 1";
                 break;
             case 'archive':
-                $sMethod       = 'getAll';
+                $sMethod = 'getAll';
                 $sSelectClause = "SUBSTRING(`te`.`content`, 1, " . $this->_oConfig->getSnippetLength() . ") AS `content`, ";
-                $sWhereClause  = " AND `te`.`status`='" . BX_TD_STATUS_ACTIVE . "'";
-                $sOrderClause  = "`te`.`date` DESC";
-                $sLimitClause  = "LIMIT " . $aParams['start'] . ', ' . $aParams['count'];
+                $sWhereClause = " AND `te`.`status`='" . BX_TD_STATUS_ACTIVE . "'";
+                $sOrderClause = "`te`.`date` DESC";
+                $sLimitClause = "LIMIT " . $aParams['start'] . ', ' . $aParams['count'];
                 break;
             case 'owner':
-                $sMethod       = 'getAll';
+                $sMethod = 'getAll';
                 $sSelectClause = "SUBSTRING(`te`.`content`, 1, " . $this->_oConfig->getSnippetLength() . ") AS `content`, ";
-                $sWhereClause  = " AND `te`.`author_id`='" . $aParams['sample_params']['owner_id'] . "'";
-                $sOrderClause  = "`te`.`date` DESC";
-                $sLimitClause  = "LIMIT " . $aParams['start'] . ', ' . $aParams['count'];
+                $sWhereClause = " AND `te`.`author_id`='" . $aParams['sample_params']['owner_id'] . "'";
+                $sOrderClause = "`te`.`date` DESC";
+                $sLimitClause = "LIMIT " . $aParams['start'] . ', ' . $aParams['count'];
                 break;
             case 'admin':
-                $sMethod       = 'getAll';
+                $sMethod = 'getAll';
                 $sSelectClause = "SUBSTRING(`te`.`content`, 1, " . $this->_oConfig->getSnippetLength() . ") AS `content`, ";
-                $sWhereClause  = !empty($aParams['filter_value']) ? " AND (`tp`.`NickName` LIKE '%" . $aParams['filter_value'] . "%' OR `te`.`caption` LIKE '%" . $aParams['filter_value'] . "%' OR `te`.`content` LIKE '%" . $aParams['filter_value'] . "%' OR `te`.`tags` LIKE '%" . $aParams['filter_value'] . "%')" : "";
-                $sOrderClause  = "`te`.`date` DESC";
-                $sLimitClause  = "LIMIT " . $aParams['start'] . ', ' . $aParams['count'];
+                $sWhereClause = !empty($aParams['filter_value']) ? " AND (`tp`.`NickName` LIKE '%" . $aParams['filter_value'] . "%' OR `te`.`caption` LIKE '%" . $aParams['filter_value'] . "%' OR `te`.`content` LIKE '%" . $aParams['filter_value'] . "%' OR `te`.`tags` LIKE '%" . $aParams['filter_value'] . "%')" : "";
+                $sOrderClause = "`te`.`date` DESC";
+                $sLimitClause = "LIMIT " . $aParams['start'] . ', ' . $aParams['count'];
                 break;
             case 'all':
-                $sMethod       = 'getAll';
+                $sMethod = 'getAll';
                 $sSelectClause = "SUBSTRING(`te`.`content`, 1, " . $this->_oConfig->getSnippetLength() . ") AS `content`, ";
-                $sWhereClause  = " AND `te`.`status`='" . BX_TD_STATUS_ACTIVE . "'";
-                $sOrderClause  = "`te`.`date` DESC";
+                $sWhereClause = " AND `te`.`status`='" . BX_TD_STATUS_ACTIVE . "'";
+                $sOrderClause = "`te`.`date` DESC";
                 break;
         }
         $sSql = "SELECT
@@ -93,22 +92,19 @@ class BxFdbDb extends BxDolTextDb
 
         $aResult = $this->$sMethod($sSql);
 
-        if (!in_array($aParams['sample_type'], array('id', 'uri', 'view'))) {
-            for ($i = 0; $i < count($aResult); $i++) {
-                $aResult[$i]['content'] = strip_tags($aResult[$i]['content']);
-            }
-        }
+        if(!in_array($aParams['sample_type'], array('id', 'uri', 'view')))
+           for($i = 0; $i < count($aResult); $i++)
+               $aResult[$i]['content'] = strip_tags($aResult[$i]['content']);
 
         return $aResult;
     }
 
     function getCount($aParams = array())
     {
-        if (!isset($aParams['sample_type'])) {
+        if(!isset($aParams['sample_type']))
             $aParams['sample_type'] = '';
-        }
 
-        switch ($aParams['sample_type']) {
+        switch($aParams['sample_type']) {
             case 'owner':
                 $sWhereClause = "`author_id`='" . $aParams['sample_params']['owner_id'] . "' AND `status`='" . BX_TD_STATUS_ACTIVE . "'";
                 break;
@@ -120,7 +116,6 @@ class BxFdbDb extends BxDolTextDb
                 break;
         }
         $sSql = "SELECT COUNT(`id`) FROM `" . $this->_sPrefix . "entries` WHERE " . $sWhereClause . " LIMIT 1";
-
         return (int)$this->getOne($sSql);
     }
 }

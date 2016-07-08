@@ -2,12 +2,12 @@
 
 $aLangContent = array(
 
-    // ================ CHANGED KEYS ================
+  // ================ CHANGED KEYS ================
 
-    '_adm_license_trial_copy_login_text' => 'This is a trial copy of Dolphin software. <a href="http://www.boonex.com/start" target="_blank">Get a license from BoonEx.</a>',
-    '_adm_license_note_unregistered'     => '<a href="http://www.boonex.com/start"><b>Buy a license</b></a> to remove BoonEx links and trial alerts.',
-    '_adm_license_popup_note'            => 'Trial copy! <b><a href="http://www.boonex.com/start">Get a license</a></b> and register it:',
-    '_adm_txt_dashboard_help'            => '
+  '_adm_license_trial_copy_login_text' => 'This is a trial copy of Dolphin software. <a href="http://www.boonex.com/start" target="_blank">Get a license from BoonEx.</a>',
+  '_adm_license_note_unregistered' => '<a href="http://www.boonex.com/start"><b>Buy a license</b></a> to remove BoonEx links and trial alerts.',
+  '_adm_license_popup_note' => 'Trial copy! <b><a href="http://www.boonex.com/start">Get a license</a></b> and register it:',
+  '_adm_txt_dashboard_help' => '
 <ol class="adm-ds-help bx-def-font-large">
     <li>
         Change the site logo to your own
@@ -55,6 +55,7 @@ $aLangContent = array(
         Register your license <a href="{0}license.php">here</a>
     </li>
 </ol>',
+
 
 
 );

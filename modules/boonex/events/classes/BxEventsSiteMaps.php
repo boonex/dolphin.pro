@@ -18,47 +18,38 @@ class BxEventsSiteMaps extends BxDolSiteMaps
     {
         parent::__construct($aSystem);
 
-        $this->_aQueryParts = array(
-            'fields'          => "`ID`, `EntryUri`, `Date`, `EventStart`, `EventEnd`",
-            // fields list
-            'field_date'      => "Date",
-            // date field name
-            'field_date_type' => "timestamp",
-            // date field type
-            'table'           => "`bx_events_main`",
-            // table name
-            'join'            => "",
-            // join SQL part
-            'where'           => "AND `Status` = 'approved' AND `allow_view_event_to` = '" . BX_DOL_PG_ALL . "'",
-            // SQL condition, without WHERE
-            'order'           => " `Date` ASC ",
-            // SQL order, without ORDER BY
+        $this->_aQueryParts = array (
+            'fields' => "`ID`, `EntryUri`, `Date`, `EventStart`, `EventEnd`", // fields list
+            'field_date' => "Date", // date field name
+            'field_date_type' => "timestamp", // date field type
+            'table' => "`bx_events_main`", // table name
+            'join' => "", // join SQL part
+            'where' => "AND `Status` = 'approved' AND `allow_view_event_to` = '" . BX_DOL_PG_ALL . "'", // SQL condition, without WHERE
+            'order' => " `Date` ASC ", // SQL order, without ORDER BY
         );
 
         $this->_oModule = BxDolModule::getInstance('BxEventsModule');
     }
 
-    protected function _genUrl($a)
+    protected function _genUrl ($a)
     {
         return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'view/' . $a['EntryUri'];
     }
 
-    protected function _genChangeFreq($a)
+    protected function _genChangeFreq ($a)
     {
         // calculate the date which is closest to now
-        $iDiffMin    = PHP_INT_MAX;
-        $aDateFields = array('Date', 'EventStart', 'EventEnd');
+        $iDiffMin = PHP_INT_MAX;
+        $aDateFields = array ('Date', 'EventStart', 'EventEnd');
         foreach ($aDateFields as $sField) {
             $iDiff = abs(time() - $a[$sField]);
-            if ($iDiff < $iDiffMin) {
+            if ($iDiff < $iDiffMin)
                 $iDiffMin = $iDiff;
-            }
         }
 
-        if ($iDiffMin != PHP_INT_MAX) {
+        if ($iDiffMin != PHP_INT_MAX)
             $a[$this->_aQueryParts['field_date']] = time() - $iDiffMin;
-        }
 
-        return parent::_genChangeFreq($a);
+        return parent::_genChangeFreq ($a);
     }
 }

@@ -7,25 +7,19 @@ if ($_GET['orca_integration'] && preg_match('/^[0-9a-z]+$/', $_GET['orca_integra
 }
 
 $aPathInfo = pathinfo(__FILE__);
-require_once($aPathInfo['dirname'] . '/inc/header.inc.php');
-if (!class_exists('Thing')) {
-    require_once($GLOBALS['gConf']['dir']['classes'] . 'Thing.php');
-}
-if (!class_exists('ThingPage')) {
-    require_once($GLOBALS['gConf']['dir']['classes'] . 'ThingPage.php');
-}
-if (!class_exists('Mistake')) {
-    require_once($GLOBALS['gConf']['dir']['classes'] . 'Mistake.php');
-}
-if (!class_exists('BxXslTransform')) {
-    require_once($GLOBALS['gConf']['dir']['classes'] . 'BxXslTransform.php');
-}
-if (!class_exists('BxDb')) {
-    require_once($GLOBALS['gConf']['dir']['classes'] . 'BxDb.php');
-}
-if (!class_exists('DbForum')) {
-    require_once($GLOBALS['gConf']['dir']['classes'] . 'DbForum.php');
-}
+require_once( $aPathInfo['dirname'] . '/inc/header.inc.php' );
+if (!class_exists('Thing'))
+    require_once( $GLOBALS['gConf']['dir']['classes'] . 'Thing.php' );
+if (!class_exists('ThingPage'))
+    require_once( $GLOBALS['gConf']['dir']['classes'] . 'ThingPage.php' );
+if (!class_exists('Mistake'))
+    require_once( $GLOBALS['gConf']['dir']['classes'] . 'Mistake.php' );
+if (!class_exists('BxXslTransform'))
+    require_once( $GLOBALS['gConf']['dir']['classes'] . 'BxXslTransform.php' );
+if (!class_exists('BxDb'))
+    require_once( $GLOBALS['gConf']['dir']['classes'] . 'BxDb.php' );
+if (!class_exists('DbForum'))
+    require_once( $GLOBALS['gConf']['dir']['classes'] . 'DbForum.php' );
 
 class BxForumProfileResponse extends BxDolAlertsResponse
 {
@@ -35,15 +29,13 @@ class BxForumProfileResponse extends BxDolAlertsResponse
 
         $iProfileId = $oAlert->iObject;
 
-        if (!$iProfileId || $oAlert->sUnit != 'profile' || ('delete' != $oAlert->sAction && 'edit' != $oAlert->sAction)) {
+        if (!$iProfileId || $oAlert->sUnit != 'profile' || ('delete' != $oAlert->sAction && 'edit' != $oAlert->sAction))
             return;
-        }
 
         $sUsername = ('delete' == $oAlert->sAction ? $oAlert->aExtras['profile_info']['NickName'] : getUsername($iProfileId));
 
-        if ('edit' == $oAlert->sAction && $oAlert->aExtras['OldProfileInfo']['NickName'] == $sUsername) {
+        if ('edit' == $oAlert->sAction && $oAlert->aExtras['OldProfileInfo']['NickName'] == $sUsername)
             return;
-        }
 
         $oDb = new DbForum ();
 
@@ -51,7 +43,7 @@ class BxForumProfileResponse extends BxDolAlertsResponse
             $oDb->deleteUser($sUsername);
         } else {
             $sOldUsername = ('delete' == $oAlert->sAction ? $sUsername : $oAlert->aExtras['OldProfileInfo']['NickName']);
-            $sNewUsername = ('delete' == $oAlert->sAction ? $gConf['anonymous'] : $sUsername);
+            $sNewUsername = ('delete' == $oAlert->sAction ? $gConf['anonymous'] : $sUsername);        
             $oDb->renameUser($sOldUsername, $sNewUsername);
         }
     }

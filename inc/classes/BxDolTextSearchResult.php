@@ -10,21 +10,21 @@ bx_import('BxTemplSearchResultText');
 class BxDolTextSearchResult extends BxTemplSearchResultText
 {
     var $aCurrent = array(
-        'name'         => '',
-        'title'        => '',
-        'table'        => '',
-        'ownFields'    => array('uri'),
+        'name' => '',
+        'title' => '',
+        'table' => '',
+        'ownFields' => array('uri'),
         'searchFields' => array('caption', 'content', 'tags', 'categories'),
-        'restriction'  => array(
-            'active1'  => array('value' => '1', 'field' => 'status', 'operator' => '<>'),
-            'active2'  => array('value' => '2', 'field' => 'status', 'operator' => '<>'),
-            'caption'  => array('value' => '', 'field' => 'caption', 'operator' => 'like'),
-            'content'  => array('value' => '', 'field' => 'content', 'operator' => 'like'),
-            'tag'      => array('value' => '', 'field' => 'tags', 'operator' => 'against'),
+        'restriction' => array(
+            'active1' => array('value' => '1', 'field' => 'status', 'operator' => '<>'),
+            'active2' => array('value' => '2', 'field' => 'status', 'operator' => '<>'),
+            'caption' => array('value' => '', 'field' => 'caption', 'operator' => 'like'),
+            'content' => array('value' => '', 'field' => 'content', 'operator' => 'like'),
+            'tag' => array('value' => '', 'field' => 'tags', 'operator' => 'against'),
             'category' => array('value' => '', 'field' => 'categories', 'operator' => 'against')
         ),
-        'paginate'     => array('perPage' => 4, 'page' => 1, 'totalNum' => 10, 'totalPages' => 1),
-        'sorting'      => 'last'
+        'paginate' => array('perPage' => 4, 'page' => 1, 'totalNum' => 10, 'totalPages' => 1),
+        'sorting' => 'last'
     );
 
     var $_oModule;
@@ -35,7 +35,7 @@ class BxDolTextSearchResult extends BxTemplSearchResultText
 
         $this->_oModule = $oModule;
 
-        $this->aCurrent['name']  = $this->_oModule->_oConfig->getSearchSystemName();
+        $this->aCurrent['name'] = $this->_oModule->_oConfig->getSearchSystemName();
         $this->aCurrent['title'] = '_' . $this->_oModule->_oConfig->getUri() . '_lcaption_search_object';
         $this->aCurrent['table'] = $this->_oModule->_oDb->getPrefix() . 'entries';
     }
@@ -44,14 +44,13 @@ class BxDolTextSearchResult extends BxTemplSearchResultText
     {
         $aEntries = $this->_oModule->_oDb->getEntries(array(
             'sample_type' => 'search_unit',
-            'uri'         => $aData['uri']
+            'uri' => $aData['uri']
         ));
 
         $aParams = array(
             'sample_type' => 'search_unit',
             'viewer_type' => $this->_oModule->_oTextData->getViewerType()
         );
-
         return $this->_oModule->_oTemplate->displayItem($aParams, array_shift($aEntries));
     }
 
@@ -60,9 +59,8 @@ class BxDolTextSearchResult extends BxTemplSearchResultText
         $sResult = parent::displayResultBlock();
 
         $sModuleUri = $this->_oModule->_oConfig->getUri();
-        if ($this->aCurrent['paginate']['totalNum'] == 0) {
+        if($this->aCurrent['paginate']['totalNum'] == 0)
             $sResult = MsgBox(_t('_' . $sModuleUri . '_msg_no_results'));
-        }
 
         return $this->_oModule->_oTemplate->parseHtmlByName('default_margin.html', array('content' => $sResult));
     }

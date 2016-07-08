@@ -36,28 +36,23 @@ class BxDolCronVideoComments extends BxDolCron
         global $sFilesPath;
 
         $iFilesCount = getSettingValue($sModule, "processCount");
-        if (!is_numeric($iFilesCount)) {
-            $iFilesCount = 2;
-        }
+        if(!is_numeric($iFilesCount)) $iFilesCount = 2;
         $iFailedTimeout = getSettingValue($sModule, "failedTimeout");
-        if (!is_numeric($iFailedTimeout)) {
-            $iFailedTimeout = 1;
-        }
+        if(!is_numeric($iFailedTimeout)) $iFailedTimeout = 1;
         $iFailedTimeout *= 86400;
         $sDbPrefix = DB_PREFIX . ucfirst($sModule);
 
         $iCurrentTime = time();
 
         //remove all tokens older than 10 minutes
-        getResult("DELETE FROM `" . $sDbPrefix . "Tokens` WHERE `Date`<'" . ($iCurrentTime - 600) . "'");
+        getResult("DELETE FROM `" . $sDbPrefix . "Tokens` WHERE `Date`<'" . ($iCurrentTime - 600). "'");
 
         getResult("UPDATE `" . $sDbPrefix . "Files` SET `Date`='" . $iCurrentTime . "', `Status`='" . VC_STATUS_FAILED . "' WHERE `Status`='" . VC_STATUS_PROCESSING . "' AND `Date`<'" . ($iCurrentTime - $iFailedTimeout) . "'");
         $rResult = getResult("SELECT * FROM `" . $sDbPrefix . "Files` WHERE `Status`='" . VC_STATUS_PENDING . "' ORDER BY `ID` LIMIT " . $iFilesCount);
-        for ($i = 0; $i < $rResult->rowCount(); $i++) {
+        for($i=0; $i<$rResult->rowCount(); $i++) {
             $aFile = $rResult->fetch();
-            if (!_convert($aFile['ID'])) {
+            if(!_convert($aFile['ID']))
                 getResult("UPDATE `" . $sDbPrefix . "Files` SET `Status`='" . VC_STATUS_FAILED . "' WHERE `ID`='" . $aFile['ID'] . "'");
-            }
         }
     }
 }

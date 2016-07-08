@@ -8,7 +8,7 @@ bx_import('BxTemplCmtsView');
 
 class BxAdsCmts extends BxTemplCmtsView
 {
-    var $_oModule;
+	var $_oModule;
 
     /**
      * Constructor
@@ -22,22 +22,19 @@ class BxAdsCmts extends BxTemplCmtsView
 
     function getBaseUrl()
     {
-        $aEntry = $this->_oModule->_oDb->getAdInfo($this->getId());
-        if (empty($aEntry) || !is_array($aEntry)) {
-            return '';
-        }
+    	$aEntry = $this->_oModule->_oDb->getAdInfo($this->getId());
+    	if(empty($aEntry) || !is_array($aEntry))
+    		return '';
 
-        return $this->_oModule->genUrl($aEntry['ID'], $aEntry['EntryUri'], 'entry');
+    	return $this->_oModule->genUrl($aEntry['ID'], $aEntry['EntryUri'], 'entry'); 
     }
 
     function isPostReplyAllowed()
     {
-        if (!parent::isPostReplyAllowed()) {
+        if (!parent::isPostReplyAllowed())
             return false;
-        }
-        $oMain   = BxDolModule::getInstance('BxAdsModule');
+        $oMain = BxDolModule::getInstance('BxAdsModule');
         $aAdPost = $oMain->_oDb->getAdInfo($this->getId());
-
         return $oMain->isAllowedComments($aAdPost);
     }
 }

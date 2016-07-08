@@ -8,7 +8,6 @@ bx_import('BxDolDb');
 
 /**
  * Database queries for captcha objects.
- *
  * @see BxDolCaptcha
  */
 class BxDolCaptchaQuery extends BxDolDb
@@ -21,14 +20,13 @@ class BxDolCaptchaQuery extends BxDolDb
         $this->_aObject = $aObject;
     }
 
-    static public function getCaptchaObject($sObject)
+    static public function getCaptchaObject ($sObject)
     {
-        $oDb     = $GLOBALS['MySQL'];
-        $sQuery  = "SELECT * FROM `sys_objects_captcha` WHERE `object` = ?";
+        $oDb = $GLOBALS['MySQL'];
+        $sQuery = "SELECT * FROM `sys_objects_captcha` WHERE `object` = ?";
         $aObject = $oDb->getRow($sQuery, [$sObject]);
-        if (!$aObject || !is_array($aObject)) {
+        if (!$aObject || !is_array($aObject))
             return false;
-        }
 
         return $aObject;
     }

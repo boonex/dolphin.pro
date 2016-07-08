@@ -1,86 +1,80 @@
 <?php
 
-/**
+    /**
  * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolMenuBottom');
+    bx_import('BxDolMenuBottom');
 
-/**
- * @see BxDolMenuBottom;
- */
-class BxBaseMenuBottom extends BxDolMenuBottom
-{
     /**
-     * Class constructor;
+     * @see BxDolMenuBottom;
      */
-    function __construct()
+    class BxBaseMenuBottom extends BxDolMenuBottom
     {
-        parent::__construct();
-    }
-
-    function getItems()
-    {
-        $sContent = parent::getItems();
-        $sContent .= $this->getSwitcherLanguage();
-        $sContent .= $this->getSwitcherTemplate();
-
-        return $sContent;
-    }
-
-    function getSwitcherLanguage()
-    {
-        $sContent = '';
-
-        $iLangsCount = count(getLangsArr());
-        if ($iLangsCount <= 1) {
-            return '';
+        /**
+         * Class constructor;
+         */
+        function __construct()
+        {
+            parent::__construct();
         }
 
-        $sLangName = getCurrentLangName();
-
-        $aTmplVars   = array();
-        $aTmplVars[] = array(
-            'caption' => _t('_sys_bm_language', $sLangName),
-            'link'    => 'javascript:void(0)',
-            'script'  => 'onclick="javascript:showPopupLanguage()"',
-            'target'  => ''
-        );
-
-        $sContent .= $GLOBALS['oSysTemplate']->parseHtmlByName('extra_' . $this->sName . '_menu.html',
-            array('bx_repeat:items' => $aTmplVars));
-        $sContent .= $GLOBALS['oFunctions']->getLanguageSwitcher($sLangName);
-
-        return $sContent;
-    }
-
-    function getSwitcherTemplate()
-    {
-        $sContent = '';
-        if (getParam('enable_template') != 'on') {
+        function getItems()
+        {
+            $sContent = parent::getItems();
+            $sContent .= $this->getSwitcherLanguage();
+            $sContent .= $this->getSwitcherTemplate();
             return $sContent;
         }
 
-        $iTmplsCount = count(get_templates_array());
-        if ($iTmplsCount <= 1) {
+        function getSwitcherLanguage()
+        {
+            $sContent = '';
+
+            $iLangsCount = count(getLangsArr());
+            if($iLangsCount <= 1)
+                return '';
+
+            $sLangName = getCurrentLangName();
+
+            $aTmplVars = array();
+            $aTmplVars[] = array(
+                'caption' => _t('_sys_bm_language', $sLangName),
+                'link' => 'javascript:void(0)',
+                'script' => 'onclick="javascript:showPopupLanguage()"',
+                'target' => ''
+            );
+
+            $sContent .= $GLOBALS['oSysTemplate']->parseHtmlByName('extra_' . $this->sName . '_menu.html', array('bx_repeat:items' => $aTmplVars));
+            $sContent .= $GLOBALS['oFunctions']->getLanguageSwitcher($sLangName);
+
             return $sContent;
         }
 
-        $sTemplName = $GLOBALS['oSysTemplate']->getCode();
+        function getSwitcherTemplate()
+        {
+            $sContent = '';
+            if(getParam('enable_template') != 'on')
+                return $sContent;
 
-        $aTmplVars   = array();
-        $aTmplVars[] = array(
-            'caption' => _t('_sys_bm_design', $sTemplName),
-            'link'    => 'javascript:void(0)',
-            'script'  => 'onclick="javascript:showPopupTemplate()"',
-            'target'  => ''
-        );
+            $iTmplsCount = count(get_templates_array());
+            if($iTmplsCount <= 1)
+                return $sContent;
 
-        $sContent .= $GLOBALS['oSysTemplate']->parseHtmlByName('extra_' . $this->sName . '_menu.html',
-            array('bx_repeat:items' => $aTmplVars));
-        $sContent .= $GLOBALS['oFunctions']->getTemplateSwitcher($sTemplName);
+            $sTemplName = $GLOBALS['oSysTemplate']->getCode();
 
-        return $sContent;
+            $aTmplVars = array();
+            $aTmplVars[] = array(
+                'caption' => _t('_sys_bm_design', $sTemplName),
+                'link' => 'javascript:void(0)',
+                'script' => 'onclick="javascript:showPopupTemplate()"',
+                'target' => ''
+            );
+
+            $sContent .= $GLOBALS['oSysTemplate']->parseHtmlByName('extra_' . $this->sName . '_menu.html', array('bx_repeat:items' => $aTmplVars));
+            $sContent .= $GLOBALS['oFunctions']->getTemplateSwitcher($sTemplName);
+
+            return $sContent;
+        }
     }
-}

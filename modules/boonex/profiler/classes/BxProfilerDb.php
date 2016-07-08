@@ -9,7 +9,6 @@ bx_import('BxDolModuleDb');
 /*
  * Profiler module data
  */
-
 class BxProfilerDb extends BxDolModuleDb
 {
     var $_oConfig;

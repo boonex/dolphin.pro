@@ -2,14 +2,14 @@
 
 $aLangContent = array(
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_poll_featured_polls' => 'Featured',
+  '_bx_poll_featured_polls' => 'Featured',
 
-    // ================ DELETED KEYS ==================
+  // ================ DELETED KEYS ==================
 
-    /*  
-      '_bx_poll_share' => 'Share',
-    */
+/*  
+  '_bx_poll_share' => 'Share',
+*/
 
 );

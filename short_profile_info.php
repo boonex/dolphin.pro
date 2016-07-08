@@ -13,26 +13,25 @@ bx_import('BxDolPrivacy');
 bx_import('BxDolUserStatusView');
 bx_import('BxDolSubscription');
 
-$iMemberId = getLoggedId();
+$iMemberId  = getLoggedId();
 
-if (!isset($_GET['ID']) && !(int)$_GET['ID']) {
+if (!isset($_GET['ID']) && !(int)$_GET['ID'])
     exit;
-}
 
-$iProfId      = (int)$_GET['ID'];
+$iProfId = (int)$_GET['ID'];
 $aProfileInfo = getProfileInfo($iProfId);
 
 $sProfLink = '<a href="' . getProfileLink($iProfId) . '">' . getNickName($aProfileInfo['ID']) . '</a> ';
 
 $oUserStatus = new BxDolUserStatusView();
-$sUserIcon   = $oUserStatus->getStatusIcon($iProfId);
+$sUserIcon = $oUserStatus->getStatusIcon($iProfId);
 $sUserStatus = $oUserStatus->getStatus($iProfId);
 
 $aUnit = array(
-    'status_icon'            => $sUserIcon,
-    'profile_status'         => _t('_prof_status', $sProfLink, $sUserStatus),
+    'status_icon' => $sUserIcon,
+    'profile_status' => _t('_prof_status', $sProfLink, $sUserStatus),
     'profile_status_message' => $aProfileInfo['status_message'],
-    'profile_actions'        => $oFunctions->getProfileViewActions($iProfId, true),
+    'profile_actions' => $oFunctions->getProfileViewActions($iProfId, true),
 );
 
 header('Content-type:text/html;charset=utf-8');

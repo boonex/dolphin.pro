@@ -16,9 +16,8 @@ class BxDolPaymentsQuery extends BxDolDb
     public function getObjects()
     {
         $aObjects = $this->getAll("SELECT * FROM `sys_objects_payments` WHERE 1");
-        if (empty($aObjects) || !is_array($aObjects)) {
+        if(empty($aObjects) || !is_array($aObjects))
             return array();
-        }
 
         return $aObjects;
     }

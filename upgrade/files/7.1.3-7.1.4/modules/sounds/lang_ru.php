@@ -2,10 +2,10 @@
 
 $aLangContent = array(
 
-    // ================ DELETED KEYS ==================
+  // ================ DELETED KEYS ==================
 
-    /*
-      '_bx_sounds_action_download' => 'Скачать',
-    */
-
+/*
+  '_bx_sounds_action_download' => 'Скачать',
+*/
+  
 );

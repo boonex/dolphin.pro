@@ -16,30 +16,25 @@ class BxZIPDb extends BxDolModuleDb
         $this->_oConfig = $oConfig;
     }
 
-    function getCountriesGeonames()
+    function getCountriesGeonames ()
     {
-        $a = $this->getPairs("SELECT `t1`.`ISO2`, `t1`.`Country` FROM `sys_countries` AS `t1` INNER JOIN `bx_zip_countries_geonames` AS `t2` ON `t1`.`ISO2` = `t2`.`ISO2`",
-            'ISO2', 'Country');
+        $a = $this->getPairs("SELECT `t1`.`ISO2`, `t1`.`Country` FROM `sys_countries` AS `t1` INNER JOIN `bx_zip_countries_geonames` AS `t2` ON `t1`.`ISO2` = `t2`.`ISO2`", 'ISO2', 'Country');
         $this->_countriesSortAndTranslate($a);
-
         return $a;
     }
 
-    function getCountriesGoogle()
+    function getCountriesGoogle ()
     {
-        $a = $this->getPairs("SELECT `t1`.`ISO2`, `t1`.`Country` FROM `sys_countries` AS `t1` INNER JOIN `bx_zip_countries_google` AS `t2` ON `t1`.`ISO2` = `t2`.`ISO2`",
-            'ISO2', 'Country');
+        $a = $this->getPairs("SELECT `t1`.`ISO2`, `t1`.`Country` FROM `sys_countries` AS `t1` INNER JOIN `bx_zip_countries_google` AS `t2` ON `t1`.`ISO2` = `t2`.`ISO2`", 'ISO2', 'Country');
         $this->_countriesSortAndTranslate($a);
-
         return $a;
     }
 
-    function _countriesSortAndTranslate(&$a)
+    function _countriesSortAndTranslate (&$a)
     {
-        foreach ($a as $k => $v) {
-            $a[$k] = _t('__' . $v);
-        }
-        asort($a);
+        foreach ($a as $k => $v)
+            $a[$k] = _t('__'.$v);
+        asort ($a);
     }
 
     function getSettingsCategory()

@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_events_event_is_in_process' => 'In Progress',
+  '_bx_events_event_is_in_process' => 'In Progress',
 
 );

@@ -2,12 +2,12 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_sys_module_simple_messenger' => 'Легкий мессенджер',
+  '_sys_module_simple_messenger' => 'Легкий мессенджер',
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_simple_messenger_privacy_page_group_created' => 'Настройки были сохранены',
+  '_simple_messenger_privacy_page_group_created' => 'Настройки были сохранены',
 
 );

@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_membership_err_not_active' => 'Sorry. Your account is not currently active. You cannot purchase any memberships until your account becomes active.',
-
+  '_membership_err_not_active' => 'Sorry. Your account is not currently active. You cannot purchase any memberships until your account becomes active.',  
+    
 );

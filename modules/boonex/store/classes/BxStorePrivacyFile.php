@@ -33,7 +33,6 @@ class BxStorePrivacyFile extends BxDolPrivacy
 
             return $iMembershipId == $aMembershipInfo['ID'] && (!$aMembershipInfo['DateStarts'] || $aMembershipInfo['DateStarts'] < time()) && (!$aMembershipInfo['DateExpires'] || $aMembershipInfo['DateExpires'] > time()) ? true : false;
         }
-
         return false;
     }
 

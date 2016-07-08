@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_bx_sounds_info_album' => 'Информация об альбоме',
+  '_bx_sounds_info_album' => 'Информация об альбоме',
 
 );

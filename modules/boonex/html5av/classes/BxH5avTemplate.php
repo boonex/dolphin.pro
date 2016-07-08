@@ -1,6 +1,6 @@
 <?php
 
-bx_import('BxDolTwigTemplate');
+bx_import ('BxDolTwigTemplate');
 
 class BxH5avTemplate extends BxDolTwigTemplate
 {

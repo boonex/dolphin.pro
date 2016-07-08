@@ -140,8 +140,7 @@ class BxStoreDb extends BxDolTwigModuleDb
             $sWhere = ' AND `hidden` = 0';
         }
 
-        return $this->getAll("SELECT * FROM `" . $this->_sPrefix . $this->_sTableMediaPrefix . "files` WHERE `entry_id` = ? $sWhere",
-            [$iEntryId]);
+        return $this->getAll("SELECT * FROM `" . $this->_sPrefix . $this->_sTableMediaPrefix . "files` WHERE `entry_id` = ? $sWhere", [$iEntryId]);
     }
 
     function getFilesByAuthor($iAuthorId)

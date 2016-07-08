@@ -19,19 +19,16 @@ class BxEventsVoting extends BxTemplVotingView
     function getMain()
     {
         $aPathInfo = pathinfo(__FILE__);
-        require_once($aPathInfo['dirname'] . '/BxEventsSearchResult.php');
-
+        require_once ($aPathInfo['dirname'] . '/BxEventsSearchResult.php');
         return (new BxEventsSearchResult())->getMain();
     }
 
-    function checkAction()
+    function checkAction ()
     {
-        if (!parent::checkAction()) {
+        if (!parent::checkAction())
             return false;
-        }
-        $oMain  = $this->getMain();
-        $aEvent = $oMain->_oDb->getEntryByIdAndOwner($this->getId(), 0, true);
-
+        $oMain = $this->getMain();
+        $aEvent = $oMain->_oDb->getEntryByIdAndOwner($this->getId (), 0, true);
         return $oMain->isAllowedRate($aEvent);
     }
 }

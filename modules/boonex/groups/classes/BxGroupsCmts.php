@@ -23,45 +23,38 @@ class BxGroupsCmts extends BxTemplCmtsView
 
     function getBaseUrl()
     {
-        $oMain  = $this->getMain();
-        $aEntry = $oMain->_oDb->getEntryById($this->getId());
-        if (empty($aEntry) || !is_array($aEntry)) {
-            return '';
-        }
+    	$oMain = $this->getMain();
+    	$aEntry = $oMain->_oDb->getEntryById($this->getId());
+    	if(empty($aEntry) || !is_array($aEntry))
+    		return '';
 
-        return BX_DOL_URL_ROOT . $oMain->_oConfig->getBaseUri() . 'view/' . $aEntry['uri'];
+    	return BX_DOL_URL_ROOT . $oMain->_oConfig->getBaseUri() . 'view/' . $aEntry['uri']; 
     }
 
-    function isPostReplyAllowed()
+    function isPostReplyAllowed ()
     {
-        if (!parent::isPostReplyAllowed()) {
+        if (!parent::isPostReplyAllowed())
             return false;
-        }
-        $oMain      = $this->getMain();
-        $aDataEntry = $oMain->_oDb->getEntryById($this->getId());
-
+        $oMain = $this->getMain();
+        $aDataEntry = $oMain->_oDb->getEntryById($this->getId ());
         return $oMain->isAllowedComments($aDataEntry);
     }
 
-    function isEditAllowedAll()
+    function isEditAllowedAll ()
     {
-        $oMain      = $this->getMain();
-        $aDataEntry = $oMain->_oDb->getEntryById($this->getId());
-        if ($oMain->isAllowedCreatorCommentsDeleteAndEdit($aDataEntry)) {
+        $oMain = $this->getMain();
+        $aDataEntry = $oMain->_oDb->getEntryById($this->getId ());
+        if ($oMain->isAllowedCreatorCommentsDeleteAndEdit ($aDataEntry))
             return true;
-        }
-
-        return parent::isEditAllowedAll();
+        return parent::isEditAllowedAll ();
     }
 
-    function isRemoveAllowedAll()
+    function isRemoveAllowedAll ()
     {
-        $oMain      = $this->getMain();
-        $aDataEntry = $oMain->_oDb->getEntryById($this->getId());
-        if ($oMain->isAllowedCreatorCommentsDeleteAndEdit($aDataEntry)) {
+        $oMain = $this->getMain();
+        $aDataEntry = $oMain->_oDb->getEntryById($this->getId ());
+        if ($oMain->isAllowedCreatorCommentsDeleteAndEdit ($aDataEntry))
             return true;
-        }
-
-        return parent::isRemoveAllowedAll();
+        return parent::isRemoveAllowedAll ();
     }
 }

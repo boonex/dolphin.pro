@@ -9,7 +9,6 @@ bx_import('BxDolModuleDb');
 /*
  * Map module Data
  */
-
 class BxGSearchDb extends BxDolModuleDb
 {
     /*

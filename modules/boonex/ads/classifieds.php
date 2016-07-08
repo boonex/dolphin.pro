@@ -4,27 +4,27 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once('../../../inc/header.inc.php');
+require_once( '../../../inc/header.inc.php' );
 require_once(BX_DIRECTORY_PATH_INC . 'admin.inc.php');
 
 bx_import('BxDolModuleDb');
-require_once(BX_DIRECTORY_PATH_MODULES . 'boonex/ads/classes/BxAdsModule.php');
+require_once( BX_DIRECTORY_PATH_MODULES . 'boonex/ads/classes/BxAdsModule.php');
 
 // --------------- page variables and login
 
-$_page['name_index'] = 151;
+$_page['name_index'] 	= 151;
 
 check_logged();
 
 $oModuleDb = new BxDolModuleDb();
-$aModule   = $oModuleDb->getModuleByUri('ads');
+$aModule = $oModuleDb->getModuleByUri('ads');
 
-$oAds                   = new BxAdsModule($aModule);
+$oAds = new BxAdsModule($aModule);
 $oAds->sCurrBrowsedFile = bx_html_attribute($_SERVER['PHP_SELF']);
-$_page['header']        = $oAds->GetHeaderString();
-$_page['header_text']   = $oAds->GetHeaderString();
+$_page['header'] = $oAds->GetHeaderString();
+$_page['header_text'] = $oAds->GetHeaderString();
 
-$_ni                                = $_page['name_index'];
+$_ni = $_page['name_index'];
 $_page_cont[$_ni]['page_main_code'] = PageCompAds($oAds);
 
 $oAds->_oTemplate->addCss(array('ads.css', 'categories.css', 'entry_view.css'));
@@ -39,10 +39,9 @@ function PageCompAds($oAds)
 
         if (false !== bx_get('action')) {
 
-            switch (bx_get('action')) {
+            switch(bx_get('action')) {
                 case '3':
-                    echo $oAds->actionSearch();
-                    exit;
+                    echo $oAds->actionSearch();exit;
                     break;
                 case '2':
                     $iClassifiedSubID = (int)bx_get('FilterSubCat');
@@ -95,21 +94,18 @@ function PageCompAds($oAds)
 
             }
 
-        } elseif ((false !== bx_get('bClassifiedID') && (int)bx_get('bClassifiedID') > 0) || (false !== bx_get('catUri') && bx_get('catUri') != '')) {
-            $iClassifiedID = ((int)bx_get('bClassifiedID') > 0) ? (int)bx_get('bClassifiedID') : (int)db_value("SELECT `ID` FROM `{$oAds->_oConfig->sSQLCatTable}` WHERE `CEntryUri`='" . process_db_input(bx_get('catUri'),
-                    BX_TAGS_STRIP) . "' LIMIT 1");
+        } elseif ((false !== bx_get('bClassifiedID') && (int)bx_get('bClassifiedID') > 0) || (false !== bx_get('catUri') && bx_get('catUri')!='')) {
+            $iClassifiedID = ((int)bx_get('bClassifiedID') > 0) ? (int)bx_get('bClassifiedID') : (int)db_value("SELECT `ID` FROM `{$oAds->_oConfig->sSQLCatTable}` WHERE `CEntryUri`='" . process_db_input(bx_get('catUri'), BX_TAGS_STRIP) . "' LIMIT 1");
             if ($iClassifiedID > 0) {
                 $sRetHtml .= $oAds->PrintAllSubRecords($iClassifiedID);
             }
-        } elseif ((false !== bx_get('bSubClassifiedID') && (int)bx_get('bSubClassifiedID') > 0) || (false !== bx_get('scatUri') && bx_get('scatUri') != '')) {
-            $iSubClassifiedID = ((int)bx_get('bSubClassifiedID') > 0) ? (int)bx_get('bSubClassifiedID') : (int)db_value("SELECT `ID` FROM `{$oAds->_oConfig->sSQLSubcatTable}` WHERE `SEntryUri`='" . process_db_input(bx_get('scatUri'),
-                    BX_TAGS_STRIP) . "' LIMIT 1");
+        } elseif ((false !== bx_get('bSubClassifiedID') && (int)bx_get('bSubClassifiedID') > 0) || (false !== bx_get('scatUri') && bx_get('scatUri')!='')) {
+            $iSubClassifiedID = ((int)bx_get('bSubClassifiedID') > 0) ? (int)bx_get('bSubClassifiedID') : (int)db_value("SELECT `ID` FROM `{$oAds->_oConfig->sSQLSubcatTable}` WHERE `SEntryUri`='" . process_db_input(bx_get('scatUri'), BX_TAGS_STRIP) . "' LIMIT 1");
             if ($iSubClassifiedID > 0) {
                 $sRetHtml .= $oAds->PrintSubRecords($iSubClassifiedID);
             }
-        } elseif ((false !== bx_get('ShowAdvertisementID') && (int)bx_get('ShowAdvertisementID') > 0) || (false !== bx_get('entryUri') && bx_get('entryUri') != '')) {
-            $iID = ((int)bx_get('ShowAdvertisementID') > 0) ? (int)bx_get('ShowAdvertisementID') : (int)db_value("SELECT `ID` FROM `{$oAds->_oConfig->sSQLPostsTable}` WHERE `EntryUri`='" . process_db_input(bx_get('entryUri'),
-                    BX_TAGS_STRIP) . "' LIMIT 1");
+        } elseif ((false !== bx_get('ShowAdvertisementID') && (int)bx_get('ShowAdvertisementID')>0) || (false !== bx_get('entryUri') && bx_get('entryUri')!='')) {
+            $iID = ((int)bx_get('ShowAdvertisementID') > 0) ? (int)bx_get('ShowAdvertisementID') : (int)db_value("SELECT `ID` FROM `{$oAds->_oConfig->sSQLPostsTable}` WHERE `EntryUri`='" . process_db_input(bx_get('entryUri'), BX_TAGS_STRIP) . "' LIMIT 1");
             $oAds->ActionPrintAdvertisement($iID);
 
             bx_import('PageView', $oAds->_aModule);
@@ -121,7 +117,8 @@ function PageCompAds($oAds)
             if ($iProfileID > -1) {
                 $sRetHtml .= $oAds->getMemberAds($iProfileID);
             }
-        } //non safe functions
+        }
+        //non safe functions
         elseif (false !== bx_get('DeleteAdvertisementID')) {
             $id = (int)bx_get('DeleteAdvertisementID');
             if ($id > 0) {

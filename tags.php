@@ -14,8 +14,8 @@ define('BX_TAGS_ACTION_SEARCH', 'search');
 define('BX_TAGS_BOX_DISIGN', 1);
 define('BX_TAGS_BOX_INT_MENU', 2);
 
-require_once('inc/header.inc.php');
-require_once(BX_DIRECTORY_PATH_INC . 'design.inc.php');
+require_once( 'inc/header.inc.php' );
+require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
 
 bx_import('BxTemplTags');
 bx_import('BxDolPageView');
@@ -30,35 +30,31 @@ function showTags($aParam = array(), $iBoxId = 1, $sAction = '', $iBox = 0, $sTi
     $oTags->getTagObjectConfig($aParam);
 
     if (empty($oTags->aTagObjects)) {
-        if ($iBox & BX_TAGS_BOX_DISIGN) {
+        if ($iBox & BX_TAGS_BOX_DISIGN)
             return DesignBoxContent($sTitle, MsgBox(_t('_Empty')), 1);
-        } else {
+        else
             return MsgBox(_t('_Empty'));
-        }
     }
 
     $aParam['type'] = isset($_GET['tags_mode']) && isset($oTags->aTagObjects[$_GET['tags_mode']]) ? $_GET['tags_mode'] : $oTags->getFirstObject();
 
     $sCode = '';
-    if ($iBox & BX_TAGS_BOX_INT_MENU) {
+    if ($iBox & BX_TAGS_BOX_INT_MENU)
         $sCode .= $oTags->getTagsInternalMenuHtml($aParam, $iBoxId, $sAction);
-    }
     $sCode .= $oTags->display($aParam, $iBoxId, $sAction);
 
     if ($iBox & BX_TAGS_BOX_DISIGN) {
         $aCaptionMenu = $iBox & BX_TAGS_BOX_INT_MENU ? '' : $oTags->getTagsTopMenuHtml($aParam, $iBoxId, $sAction);
-        $sCode        = DesignBoxContent($sTitle, $sCode, 1, $aCaptionMenu);
-        $sCode        = '<div id="page_block_' . $iBoxId . '">' . $sCode . '<div class="clear_both"></div></div>';
-
+        $sCode = DesignBoxContent($sTitle, $sCode, 1, $aCaptionMenu);
+        $sCode = '<div id="page_block_' . $iBoxId . '">' . $sCode . '<div class="clear_both"></div></div>';
         return $sCode;
-    } else {
+    } else
         return array(
             $sCode,
             ($iBox & BX_TAGS_BOX_INT_MENU ? '' : $oTags->getTagsTopMenu($aParam, $sAction)),
             array(),
             ($sDate ? _t('_tags_by_day') . $sDate : '')
         );
-    }
 }
 
 class TagsCalendar extends BxTemplCalendar
@@ -71,20 +67,19 @@ class TagsCalendar extends BxTemplCalendar
     function display()
     {
         $sTopControls = $GLOBALS['oSysTemplate']->parseHtmlByName('calendar_top_controls.html', array(
-            'month_prev_url' => $this->getBaseUri() . "&year={$this->iPrevYear}&month={$this->iPrevMonth}",
-            'month_next_url' => $this->getBaseUri() . "&year={$this->iNextYear}&month={$this->iNextMonth}",
-            'month_current'  => $this->getTitle(),
+            'month_prev_url' => $this->getBaseUri () . "&year={$this->iPrevYear}&month={$this->iPrevMonth}",
+            'month_next_url' => $this->getBaseUri () . "&year={$this->iNextYear}&month={$this->iNextMonth}",
+            'month_current' => $this->getTitle(),
         ));
 
-        $sHtml = $GLOBALS['oSysTemplate']->parseHtmlByName('calendar.html', array(
-            'top_controls'           => $sTopControls,
-            'bx_repeat:week_names'   => $this->_getWeekNames(),
-            'bx_repeat:calendar_row' => $this->_getCalendar(),
-            'bottom_controls'        => $sTopControls,
+        $sHtml = $GLOBALS['oSysTemplate']->parseHtmlByName('calendar.html', array (
+        	'top_controls' => $sTopControls,
+            'bx_repeat:week_names' => $this->_getWeekNames (),
+            'bx_repeat:calendar_row' => $this->_getCalendar (),
+        	'bottom_controls' => $sTopControls,
         ));
-        $sHtml = preg_replace('#<bx_repeat:events>.*?</bx_repeat:events>#s', '', $sHtml);
+        $sHtml = preg_replace ('#<bx_repeat:events>.*?</bx_repeat:events>#s', '', $sHtml);
         $GLOBALS['oSysTemplate']->addCss('calendar.css');
-
         return $sHtml;
     }
 
@@ -112,74 +107,63 @@ class TagsCalendar extends BxTemplCalendar
         return BX_DOL_URL_ROOT . 'tags.php?action=calendar';
     }
 
-    function getEntriesNames()
+    function getEntriesNames ()
     {
         return array(_t('_tags_single'), _t('_tags_plural'));
     }
 
-    function _getCalendar()
+    function _getCalendar ()
     {
         $sBrowseUri = $this->getBrowseUri();
-        list ($sEntriesSingle, $sEntriesMul) = $this->getEntriesNames();
+        list ($sEntriesSingle, $sEntriesMul) = $this->getEntriesNames ();
 
         $this->_getCalendarGrid($aCalendarGrid);
-        $aRet = array();
+        $aRet = array ();
         for ($i = 0; $i < 6; $i++) {
 
-            $aRow       = array('bx_repeat:cell');
+            $aRow = array ('bx_repeat:cell');
             $isRowEmpty = true;
 
             for ($j = $this->iWeekStart; $j < $this->iWeekEnd; $j++) {
 
-                $aCell = array();
+                $aCell = array ();
 
                 if ($aCalendarGrid[$i][$j]['today']) {
-                    $aCell['class']     = 'sys_cal_cell sys_cal_today';
-                    $aCell['day']       = $aCalendarGrid[$i][$j]['day'];
-                    $aCell['bx_if:num'] = array(
-                        'condition' => $aCalendarGrid[$i][$j]['num'],
-                        'content'   => array(
-                            'num'     => $aCalendarGrid[$i][$j]['num'],
-                            'href'    => $sBrowseUri . '&year=' . $this->iYear . '&month=' . $this->iMonth . '&day=' . $aCell['day'],
-                            'entries' => 1 == $aCalendarGrid[$i][$j]['num'] ? $sEntriesSingle : $sEntriesMul,
-                        )
-                    );
-                    $isRowEmpty         = false;
+                    $aCell['class'] = 'sys_cal_cell sys_cal_today';
+                    $aCell['day'] = $aCalendarGrid[$i][$j]['day'];
+                    $aCell['bx_if:num'] = array ('condition' => $aCalendarGrid[$i][$j]['num'], 'content' => array(
+                        'num' => $aCalendarGrid[$i][$j]['num'],
+                        'href' => $sBrowseUri . '&year=' . $this->iYear . '&month=' . $this->iMonth . '&day=' . $aCell['day'],
+                        'entries' => 1 == $aCalendarGrid[$i][$j]['num'] ? $sEntriesSingle : $sEntriesMul,
+                    ));
+                    $isRowEmpty = false;
                 } elseif (isset($aCalendarGrid[$i][$j]['day'])) {
-                    $aCell['class']     = 'sys_cal_cell';
-                    $aCell['day']       = $aCalendarGrid[$i][$j]['day'];
-                    $aCell['bx_if:num'] = array(
-                        'condition' => $aCalendarGrid[$i][$j]['num'],
-                        'content'   => array(
-                            'num'     => $aCalendarGrid[$i][$j]['num'],
-                            'href'    => $sBrowseUri . '&year=' . $this->iYear . '&month=' . $this->iMonth . '&day=' . $aCell['day'],
-                            'entries' => 1 == $aCalendarGrid[$i][$j]['num'] ? $sEntriesSingle : $sEntriesMul,
-                        )
-                    );
-                    $isRowEmpty         = false;
+                    $aCell['class'] = 'sys_cal_cell';
+                    $aCell['day'] = $aCalendarGrid[$i][$j]['day'];
+                    $aCell['bx_if:num'] = array ('condition' => $aCalendarGrid[$i][$j]['num'], 'content' => array(
+                        'num' => $aCalendarGrid[$i][$j]['num'],
+                        'href' => $sBrowseUri . '&year=' . $this->iYear . '&month=' . $this->iMonth . '&day=' . $aCell['day'],
+                        'entries' => 1 == $aCalendarGrid[$i][$j]['num'] ? $sEntriesSingle : $sEntriesMul,
+                    ));
+                    $isRowEmpty = false;
                 } else {
-                    $aCell['class']     = 'sys_cal_cell_blank';
-                    $aCell['day']       = '';
-                    $aCell['bx_if:num'] = array(
-                        'condition' => false,
-                        'content'   => array(
-                            'num'     => '',
-                            'href'    => '',
-                            'entries' => '',
-                        )
-                    );
+                    $aCell['class'] = 'sys_cal_cell_blank';
+                    $aCell['day'] = '';
+                    $aCell['bx_if:num'] = array ('condition' => false, 'content' => array(
+                        'num' => '',
+                        'href' => '',
+                        'entries' => '',
+                    ));
                 }
 
-                if ($aCell) {
+                if ($aCell)
                     $aRow['bx_repeat:cell'][] = $aCell;
-                }
             }
 
             if ($aRow['bx_repeat:cell'] && !$isRowEmpty) {
                 $aRet[] = $aRow;
             }
         }
-
         return $aRet;
     }
 
@@ -199,7 +183,7 @@ class TagsHomePage extends BxDolPageView
     {
         $aParam = array(
             'orderby' => 'recent',
-            'limit'   => getParam('tags_show_limit'),
+            'limit' => getParam('tags_show_limit'),
         );
 
         return showTags($aParam, $iBlockId, BX_TAGS_ACTION_HOME, BX_TAGS_BOX_INT_MENU, _t('_tags_recent'));
@@ -209,7 +193,7 @@ class TagsHomePage extends BxDolPageView
     {
         $aParam = array(
             'orderby' => 'popular',
-            'limit'   => getParam('tags_show_limit')
+            'limit' => getParam('tags_show_limit')
         );
 
         return showTags($aParam, $iBlockId, BX_TAGS_ACTION_HOME, 0, _t('_tags_popular'));
@@ -228,8 +212,8 @@ class TagsCalendarPage extends BxDolPageView
 
     function getBlockCode_Calendar($iBlockId)
     {
-        $sYear     = isset($_GET['year']) ? (int)$_GET['year'] : '';
-        $sMonth    = isset($_GET['month']) ? (int)$_GET['month'] : '';
+        $sYear = isset($_GET['year']) ? (int)$_GET['year'] : '';
+        $sMonth = isset($_GET['month']) ? (int)$_GET['month'] : '';
         $oCalendar = new TagsCalendar($sYear, $sMonth);
 
         return $oCalendar->display();
@@ -240,17 +224,16 @@ class TagsCalendarPage extends BxDolPageView
         if (isset($_GET['year']) && isset($_GET['month']) && isset($_GET['day'])) {
             $aParam = array(
                 'pagination' => getParam('tags_perpage_browse'),
-                'date'       => array(
-                    'year'  => (int)$_GET['year'],
+                'date' => array(
+                    'year' => (int)$_GET['year'],
                     'month' => (int)$_GET['month'],
-                    'day'   => (int)$_GET['day']
+                    'day' => (int)$_GET['day']
                 )
             );
 
             return showTags($aParam, $iBlockId, BX_TAGS_ACTION_CALENDAR, 0, _t('_tags_by_day'));
-        } else {
+        } else
             return MsgBox(_t('_Empty'));
-        }
     }
 }
 
@@ -268,12 +251,12 @@ class TagsSearchPage extends BxDolPageView
         bx_import('BxTemplFormView');
         $this->aSearchForm = array(
             'form_attrs' => array(
-                'name'   => 'form_search_tags',
-                'action' => '',
-                'method' => 'post',
+                'name'     => 'form_search_tags',
+                'action'   => '',
+                'method'   => 'post',
             ),
 
-            'params' => array(
+            'params' => array (
                 'db' => array(
                     'submit_name' => 'submit_form',
                 ),
@@ -281,23 +264,23 @@ class TagsSearchPage extends BxDolPageView
 
             'inputs' => array(
                 'Keyword' => array(
-                    'type'     => 'text',
-                    'name'     => 'Keyword',
-                    'caption'  => _t('_tags_caption_keyword'),
+                    'type' => 'text',
+                    'name' => 'Keyword',
+                    'caption' => _t('_tags_caption_keyword'),
                     'required' => true,
-                    'checker'  => array(
-                        'func'   => 'length',
+                    'checker' => array (
+                        'func' => 'length',
                         'params' => array(1, 100),
-                        'error'  => _t('_tags_err_keyword'),
+                        'error' => _t ('_tags_err_keyword'),
                     ),
-                    'db'       => array(
+                    'db' => array (
                         'pass' => 'Xss',
                     ),
                 ),
-                'Submit'  => array(
-                    'type'    => 'submit',
-                    'name'    => 'submit_form',
-                    'value'   => _t('_Submit'),
+                'Submit' => array (
+                    'type' => 'submit',
+                    'name' => 'submit_form',
+                    'value' => _t('_Submit'),
                     'colspan' => true,
                 ),
             ),
@@ -309,8 +292,7 @@ class TagsSearchPage extends BxDolPageView
 
     function getBlockCode_Form()
     {
-        return $GLOBALS['oSysTemplate']->parseHtmlByName('search_tags_box.html',
-            array('form' => $this->oForm->getCode()));
+        return $GLOBALS['oSysTemplate']->parseHtmlByName('search_tags_box.html', array('form' => $this->oForm->getCode()));
     }
 
     function getBlockCode_Founded($iBlockId)
@@ -320,19 +302,15 @@ class TagsSearchPage extends BxDolPageView
         );
 
         $sFilter = bx_get('filter');
-        if ($sFilter !== false) {
+        if ($sFilter !== false)
             $aParam['filter'] = process_db_input($sFilter);
-        } else {
-            if ($this->oForm->isSubmittedAndValid()) {
-                $aParam['filter'] = $this->oForm->getCleanValue('Keyword');
-            }
-        }
+        else if ($this->oForm->isSubmittedAndValid())
+            $aParam['filter'] = $this->oForm->getCleanValue('Keyword');
 
-        if (isset($aParam['filter'])) {
+        if (isset($aParam['filter']))
             return showTags($aParam, $iBlockId, BX_TAGS_ACTION_SEARCH, 0, _t('_tags_founded_tags'));
-        } else {
+        else
             return MsgBox(_t('_Empty'));
-        }
     }
 }
 
@@ -356,7 +334,7 @@ function getPage_Popular()
 {
     $aParam = array(
         'orderby' => 'popular',
-        'limit'   => getParam('tags_show_limit')
+        'limit' => getParam('tags_show_limit')
     );
 
     return showTags($aParam, 2, BX_TAGS_ACTION_POPULAR, BX_TAGS_BOX_DISIGN, _t('_popular_tags'));
@@ -403,15 +381,14 @@ if (!$bAjaxMode) {
     global $_page_cont;
     $iIndex = 25;
 
-    $_page['name_index'] = $iIndex;
-    $_page['css_name']   = 'tags.css';
+    $_page['name_index']    = $iIndex;
+    $_page['css_name']      = 'tags.css';
 
-    $_page['header']                       = _t('_Tags');
-    $_page['header_text']                  = _t('_Tags');
+    $_page['header'] = _t('_Tags');
+    $_page['header_text'] = _t('_Tags');
     $_page_cont[$iIndex]['page_main_code'] = $sContent;
 
     check_logged();
     PageCode();
-} else {
+} else
     echo $sContent;
-}

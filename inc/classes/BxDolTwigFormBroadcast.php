@@ -12,17 +12,17 @@ bx_import('BxDolProfileFields');
 class BxDolTwigFormBroadcast extends BxTemplFormView
 {
 
-    function __construct($sCaptionMsgTitle, $sErrMsgTitle, $sCaptionMsgBody, $sErrMsgBory)
+    function __construct ($sCaptionMsgTitle, $sErrMsgTitle, $sCaptionMsgBody, $sErrMsgBory)
     {
         $aCustomForm = array(
 
             'form_attrs' => array(
-                'name'   => 'form_broadcast',
-                'action' => '',
-                'method' => 'post',
+                'name'     => 'form_broadcast',
+                'action'   => '',
+                'method'   => 'post',
             ),
 
-            'params' => array(
+            'params' => array (
                 'db' => array(
                     'submit_name' => 'submit_form',
                 ),
@@ -30,43 +30,43 @@ class BxDolTwigFormBroadcast extends BxTemplFormView
 
             'inputs' => array(
                 'title' => array(
-                    'type'     => 'text',
-                    'name'     => 'title',
-                    'caption'  => $sCaptionMsgTitle,
+                    'type' => 'text',
+                    'name' => 'title',
+                    'caption' => $sCaptionMsgTitle,
                     'required' => true,
-                    'checker'  => array(
-                        'func'   => 'length',
-                        'params' => array(3, 100),
-                        'error'  => $sErrMsgTitle,
+                    'checker' => array (
+                        'func' => 'length',
+                        'params' => array(3,100),
+                        'error' => $sErrMsgTitle,
                     ),
-                    'db'       => array(
+                    'db' => array (
                         'pass' => 'Xss',
                     ),
                 ),
 
                 'message' => array(
-                    'type'     => 'textarea',
-                    'name'     => 'message',
-                    'caption'  => $sCaptionMsgBody,
+                    'type' => 'textarea',
+                    'name' => 'message',
+                    'caption' => $sCaptionMsgBody,
                     'required' => true,
-                    'checker'  => array(
-                        'func'   => 'length',
-                        'params' => array(10, 64000),
-                        'error'  => $sErrMsgBory,
+                    'checker' => array (
+                        'func' => 'length',
+                        'params' => array(10,64000),
+                        'error' => $sErrMsgBory,
                     ),
-                    'db'       => array(
+                    'db' => array (
                         'pass' => 'Xss',
                     ),
                 ),
 
-                'Submit' => array(
-                    'type'  => 'submit',
-                    'name'  => 'submit_form',
+                'Submit' => array (
+                    'type' => 'submit',
+                    'name' => 'submit_form',
                     'value' => _t('_Submit'),
                 ),
             ),
         );
 
-        parent::__construct($aCustomForm);
+        parent::__construct ($aCustomForm);
     }
 }

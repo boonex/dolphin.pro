@@ -1,6 +1,6 @@
 <?php
 
-bx_import('BxBaseCalendar');
+bx_import ('BxBaseCalendar');
 
 /**
  * @see BxDolCalendar

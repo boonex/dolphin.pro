@@ -5,37 +5,37 @@
  */
 require(BX_DIRECTORY_PATH_INC . 'version.inc.php');
 
-define('DOLPHIN_VERSION', $site['ver']);
+define('DOLPHIN_VERSION', $site['ver'] );
 
 class BxDolDatabaseBackup extends BxDolDb
 {
-    //class BxDolDatabaseBackup extends  CMySQL {
+//class BxDolDatabaseBackup extends  CMySQL {
 
-    var $sCharset, $sCollate;
-    var $sInputs;
+   var $sCharset,  $sCollate;
+   var $sInputs;
 
-    function __construct($sCharset = 'utf8', $sCollate = 'utf8_unicode_ci')
-    {
-        $this->sCharset = $sCharset;
-        $this->sCollate = $sCollate;
-        $this->sInputs  =
-            '--
+   function __construct($sCharset = 'utf8',  $sCollate = 'utf8_unicode_ci')
+   {
+     $this -> sCharset = $sCharset;
+     $this -> sCollate = $sCollate;
+     $this -> sInputs  =
+'--
 -- Database Dump For Dolphin: ' . DOLPHIN_VERSION . '
 --
 
 ';
 
-    }
+   }
 
     function _getTableStruct($name, $data = 0)
     {
         if ($data != 1) { ## 1 only data
             ##Read table structure
-            $Query  = "SHOW CREATE TABLE {$name}";
-            $Result = db_res($Query);
+            $Query = "SHOW CREATE TABLE {$name}";
+            $Result =  db_res($Query);
 
-            $this->sInputs .=
-                "
+            $this -> sInputs .=
+"
 --
 -- Table structure for table `{$name}`
 --
@@ -43,67 +43,61 @@ class BxDolDatabaseBackup extends BxDolDb
 DROP TABLE IF EXISTS `{$name}`;
 ";
 
-            while ($Row = $Result->fetch(PDO::FETCH_NUM)) {
-                $this->sInputs .= preg_replace("/ENGINE=.*/", "ENGINE=MyISAM DEFAULT CHARSET={$this -> sCharset};\n",
-                    $Row[1]);
-            }
+            while($Row = $Result->fetch(PDO::FETCH_NUM))
+                $this -> sInputs .= preg_replace("/ENGINE=.*/",  "ENGINE=MyISAM DEFAULT CHARSET={$this -> sCharset};\n",  $Row[1]);
         }
 
         ###	Read data from table
-        if ($data != 0) { ##Only strucure
+        if ($data != 0)	{ ##Only strucure
 
-            $this->sInputs .=
-                "
+            $this -> sInputs .=
+"
 --
 -- Dumping data for table `{$name}`
 --
 
 ";
 
-            $Query  = "SELECT *  FROM {$name} ";
-            $Result = db_res($Query);
+            $Query = "SELECT *  FROM {$name} ";
+            $Result =  db_res($Query);
 
-            while ($Row = $Result->fetch(PDO::FETCH_NUM)) {
-                $this->sInputs .= "INSERT INTO `{$name}` VALUES (";
+            while($Row = $Result->fetch(PDO::FETCH_NUM)) {
+                $this -> sInputs .= "INSERT INTO `{$name}` VALUES (";
 
-                for ($j = 0; $j < count($Row); $j++) {
-                    if (is_null($Row[$j])) {
-                        $this->sInputs .= "NULL, ";
-                    } else //string or numeric
-                    {
-                        $this->sInputs .= "'" . my_escape_string($Row[$j]) . "', ";
-                    }
+                for ($j = 0; $j < count($Row); $j++ ) {
+                    if( is_null( $Row[$j] ) )
+                            $this -> sInputs .= "NULL, ";
+                    else //string or numeric
+                            $this -> sInputs .= "'" . my_escape_string($Row[$j]) . "', ";
                 }
 
-                $this->sInputs = substr($this->sInputs, 0, strrpos($this->sInputs, ',')); //delete last ,
-                $this->sInputs .= ");\n";
+                $this -> sInputs = substr ($this -> sInputs, 0, strrpos($this -> sInputs, ',')); //delete last ,
+                $this -> sInputs .= ");\n";
             }
-            $this->sInputs .= "\n-- --------------------------------------------------------\n";
+            $this -> sInputs .= "\n-- --------------------------------------------------------\n";
         }
     }
 
     function _getAllTables($data = false)
     {
-        $Query  = "SHOW TABLES";
-        $Result = db_res($Query);
-        while ($Row = $Result->fetch(PDO::FETCH_NUM)) {
-            $this->_getTableStruct($Row[0], $data);
-        }
+        $Query = "SHOW TABLES";
+        $Result =  db_res($Query);
+        while($Row = $Result->fetch(PDO::FETCH_NUM))
+            $this -> _getTableStruct($Row[0], $data);
     }
 
     function _restoreFromDumpFile($file)
     {
-        return execSqlFile($file);
+        return execSqlFile( $file );
     }
 
 }
 
-function my_escape_string($text)
+function my_escape_string( $text )
 {
-    $text = str_replace('\\', '\\\\', $text);
-    $text = str_replace('\'', '\'\'', $text);
-    $text = str_replace("\n", '\\n', $text);
-    $text = str_replace("\r", '\\r', $text);
-
+    $text = str_replace( '\\', '\\\\', $text );
+    $text = str_replace( '\'', '\'\'', $text );
+    $text = str_replace( "\n", '\\n', $text );
+    $text = str_replace( "\r", '\\r', $text );
     return $text;
 }

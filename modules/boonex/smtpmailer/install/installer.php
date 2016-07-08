@@ -16,7 +16,6 @@ class BxSMTPInstaller extends BxDolInstaller
     function install($aParams)
     {
         $aResult = parent::install($aParams);
-
         return $aResult;
     }
 

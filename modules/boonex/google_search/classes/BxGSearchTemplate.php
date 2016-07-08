@@ -4,12 +4,11 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-bx_import('BxDolTwigTemplate');
+bx_import ('BxDolTwigTemplate');
 
 /*
  * Map module View
  */
-
 class BxGSearchTemplate extends BxDolTwigTemplate
 {
     /**

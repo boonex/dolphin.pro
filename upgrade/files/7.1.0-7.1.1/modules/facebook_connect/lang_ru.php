@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_facebook_chart' => 'Facebook профили',
+  '_bx_facebook_chart' => 'Facebook профили',
 
 );

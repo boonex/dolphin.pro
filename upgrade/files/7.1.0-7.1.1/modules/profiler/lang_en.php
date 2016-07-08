@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ CHANGED KEYS ==================
+  // ================ CHANGED KEYS ==================
 
-    '_bx_profiler_administration' => 'Profiler',
+  '_bx_profiler_administration' => 'Profiler',
 
 );

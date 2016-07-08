@@ -36,28 +36,27 @@ require_once('BxFdbData.php');
  * Service methods:
  *
  * Get post block.
- *
- * @see  BxFdbModule::servicePostBlock
- *       BxDolService::call('feedback', 'post_block');
+ * @see BxFdbModule::servicePostBlock
+ * BxDolService::call('feedback', 'post_block');
  * @note is needed for internal usage.
  *
  * Get edit block.
- * @see  BxFdbModule::serviceEditBlock
+ * @see BxFdbModule::serviceEditBlock
  * BxDolService::call('feedback', 'edit_block', array($mixed));
  * @note is needed for internal usage.
  *
  * Get administration block.
- * @see  BxFdbModule::serviceAdminBlock
+ * @see BxFdbModule::serviceAdminBlock
  * BxDolService::call('feedback', 'admin_block', array($iStart, $iPerPage, $sFilterValue));
  * @note is needed for internal usage.
  *
  * Get block with all feedback from current user.
- * @see  BxFdbModule::serviceMyBlock
+ * @see BxFdbModule::serviceMyBlock
  * BxDolService::call('feedback', 'my_block', array($iStart, $iPerPage));
  * @note is needed for internal usage.
  *
  * Get block with all feedback ordered by the time of posting.
- * @see  BxFdbModule::serviceArchiveBlock
+ * @see BxFdbModule::serviceArchiveBlock
  * BxDolService::call('feedback', 'archive_block', array($iStart, $iPerPage));
  * @note is needed for internal usage.
  *
@@ -110,20 +109,18 @@ class BxFdbModule extends BxDolTextModule
 
     function serviceMyBlock($iStart = 0, $iPerPage = 0)
     {
-        if (!$this->isLogged()) {
+        if(!$this->isLogged())
             return MsgBox(_t('_feedback_msg_no_results'));
-        }
 
-        if (empty($iPerPage)) {
+        if(empty($iPerPage))
             $iPerPage = $this->_oConfig->getPerPage();
-        }
 
         return $this->_oTemplate->displayBlock(array(
-            'sample_type'   => 'owner',
+            'sample_type' => 'owner',
             'sample_params' => array('owner_id' => $this->_oTextData->getAuthorId()),
-            'viewer_type'   => $this->_oTextData->getViewerType(),
-            'start'         => $iStart,
-            'count'         => $iPerPage
+            'viewer_type' => $this->_oTextData->getViewerType(),
+            'start' => $iStart,
+            'count' => $iPerPage
         ));
     }
 
@@ -138,8 +135,8 @@ class BxFdbModule extends BxDolTextModule
     function actionIndex()
     {
         $sMenu = "";
-        if (isMember()) {
-            $sLink    = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'post/';
+        if(isMember()) {
+            $sLink = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'post/';
             $sCaption = _t('_feedback_lcaption_post');
 
             $sMenu = BxDolPageView::getBlockCaptionMenu(mktime(), array(
@@ -149,10 +146,10 @@ class BxFdbModule extends BxDolTextModule
         $sContent = $this->serviceArchiveBlock();
 
         $aParams = array(
-            'index'   => 2,
-            'css'     => array('view.css', 'cmts.css'),
-            'title'   => array(
-                'page'  => _t('_feedback_pcaption_all'),
+            'index' => 2,
+            'css' => array('view.css', 'cmts.css'),
+            'title' => array(
+                'page' => _t('_feedback_pcaption_all'),
                 'block' => _t('_feedback_bcaption_view_all')
             ),
             'content' => array(
@@ -162,27 +159,23 @@ class BxFdbModule extends BxDolTextModule
         );
         $this->_oTemplate->getPageCode($aParams);
     }
-
     function actionPost($sName = '')
     {
         $sContentView = DesignBoxContent(_t('_feedback_bcaption_view_my'), $this->serviceMyBlock(), 1);
 
-        if (!empty($sName)) {
+        if(!empty($sName))
             $sContentForm = $this->serviceEditBlock(process_db_input($sName, BX_TAGS_STRIP));
-        } else {
-            if (isset($_POST['id'])) {
-                $sContentForm = $this->serviceEditBlock((int)$_POST['id']);
-            } else {
-                $sContentForm = $this->servicePostBlock();
-            }
-        }
+        else if(isset($_POST['id']))
+            $sContentForm = $this->serviceEditBlock((int)$_POST['id']);
+        else
+            $sContentForm = $this->servicePostBlock();
         $sContentForm = DesignBoxContent(_t('_feedback_bcaption_post'), $sContentForm, 1);
 
         $aParams = array(
-            'index'   => 3,
-            'css'     => array('view.css', 'post.css'),
-            'title'   => array(
-                'page'  => _t('_feedback_pcaption_post'),
+            'index' => 3,
+            'css' => array('view.css', 'post.css'),
+            'title' => array(
+                'page' => _t('_feedback_pcaption_post'),
                 'block' => _t('_feedback_bcaption_view_all')
             ),
             'content' => array(
@@ -192,14 +185,13 @@ class BxFdbModule extends BxDolTextModule
         );
         $this->_oTemplate->getPageCode($aParams);
     }
-
     function actionAdmin()
     {
         $GLOBALS['iAdminPage'] = 1;
         require_once(BX_DIRECTORY_PATH_INC . 'admin_design.inc.php');
 
         check_logged();
-        if (!@isAdmin()) {
+        if(!@isAdmin()) {
             send_headers_page_changed();
             login_form("", 1);
             exit;
@@ -207,35 +199,27 @@ class BxFdbModule extends BxDolTextModule
 
         //--- Process actions ---//
         $mixedResultSettings = '';
-        if (isset($_POST['save']) && isset($_POST['cat'])) {
+        if(isset($_POST['save']) && isset($_POST['cat'])) {
             $mixedResultSettings = $this->setSettings($_POST);
         }
 
-        if (isset($_POST['feedback-approve'])) {
+        if(isset($_POST['feedback-approve']))
             $this->_actPublish($_POST['feedback-ids'], true);
-        } else {
-            if (isset($_POST['feedback-reject'])) {
-                $this->_actPublish($_POST['feedback-ids'], false);
-            } else {
-                if (isset($_POST['feedback-delete'])) {
-                    $this->_actDelete($_POST['feedback-ids']);
-                }
-            }
-        }
+        else if(isset($_POST['feedback-reject']))
+            $this->_actPublish($_POST['feedback-ids'], false);
+        else if(isset($_POST['feedback-delete']))
+            $this->_actDelete($_POST['feedback-ids']);
         //--- Process actions ---//
 
         $sFilterValue = '';
-        if (isset($_GET['feedback-filter'])) {
+        if(isset($_GET['feedback-filter']))
             $sFilterValue = process_db_input($_GET['feedback-filter'], BX_TAGS_STRIP);
-        }
 
-        $sContent = DesignBoxAdmin(_t('_feedback_bcaption_settings'),
-            $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html',
-                array('content' => $this->getSettingsForm($mixedResultSettings))));
+        $sContent = DesignBoxAdmin(_t('_feedback_bcaption_settings'), $GLOBALS['oAdmTemplate']->parseHtmlByName('design_box_content.html', array('content' => $this->getSettingsForm($mixedResultSettings))));
         $sContent .= DesignBoxAdmin(_t('_feedback_bcaption_view_admin'), $this->serviceAdminBlock(0, 0, $sFilterValue));
 
         $aParams = array(
-            'title'   => array(
+            'title' => array(
                 'page' => _t('_feedback_pcaption_admin')
             ),
             'content' => array(
@@ -252,37 +236,29 @@ class BxFdbModule extends BxDolTextModule
     {
         return new BxFdbCmts($this->_oConfig->getCommentsSystemName(), $iId);
     }
-
     function _createObjectVoting($iId)
     {
         return new BxFdbVoting($this->_oConfig->getVotesSystemName(), $iId);
     }
-
     function _isDeleteAllowed($iAuthorId = 0, $bPerform = false)
     {
-        if (!isLogged()) {
+        if(!isLogged())
             return false;
-        }
 
-        if (isAdmin()) {
+        if(isAdmin())
             return true;
-        }
 
         $iUserId = getLoggedId();
-        if ($iAuthorId != 0 && $iAuthorId == $iUserId) {
+        if($iAuthorId != 0 && $iAuthorId == $iUserId)
             return true;
-        }
 
         $aCheckResult = checkAction($iUserId, ACTION_ID_FEEDBACK_DELETE, $bPerform);
-
         return $aCheckResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
-
     function _isCommentsAllowed(&$aEntry)
     {
         return $this->_oPrivacy->check('comment', $aEntry['id'], $this->_oTextData->getAuthorId());
     }
-
     function _isVotesAllowed(&$aEntry)
     {
         return $this->_oPrivacy->check('vote', $aEntry['id'], $this->_oTextData->getAuthorId());

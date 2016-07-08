@@ -2,8 +2,8 @@
 
 $aLangContent = array(
 
-    // ================ ADDED KEYS ==================
+  // ================ ADDED KEYS ==================
 
-    '_bx_poll_item_not_found' => 'Опрос не найден',
+  '_bx_poll_item_not_found' => 'Опрос не найден',
 
 );

@@ -23,16 +23,15 @@ class BxDolParams
     {
         global $site;
 
-        $this->_oDb        = $oDb;
+        $this->_oDb = $oDb;
         $this->_sCacheFile = 'sys_options_' . md5($site['ver'] . $site['build'] . $site['url']) . '.php';
 
         // feel free to change to another cache system if you are sure that it is available
-        $this->_oCache  = new BxDolCacheFile();
+        $this->_oCache = new BxDolCacheFile();
         $this->_aParams = $this->_oCache->getData($this->_sCacheFile);
 
-        if (empty($this->_aParams) && $this->_oDb != null) {
+        if (empty($this->_aParams) && $this->_oDb != null)
             $this->cache();
-        }
     }
 
     function isInCache($sKey)
@@ -42,14 +41,12 @@ class BxDolParams
 
     function get($sKey, $bFromCache = true)
     {
-        if (!$sKey) {
+        if (!$sKey)
             return false;
-        }
-        if ($bFromCache && $this->isInCache($sKey)) {
-            return $this->_aParams[$sKey];
-        } else {
-            return $this->_oDb->getOne("SELECT `VALUE` FROM `sys_options` WHERE `Name`= ? LIMIT 1", [$sKey]);
-        }
+        if ($bFromCache && $this->isInCache($sKey))
+           return $this->_aParams[$sKey];
+        else
+           return $this->_oDb->getOne("SELECT `VALUE` FROM `sys_options` WHERE `Name`= ? LIMIT 1", [$sKey]);
     }
 
     function set($sKey, $mixedValue)
@@ -65,8 +62,7 @@ class BxDolParams
     {
         $this->_aParams = $this->_oDb->getPairs("SELECT `Name`, `VALUE` FROM `sys_options`", "Name", "VALUE");
         if (empty($this->_aParams)) {
-            $this->_aParams = array();
-
+            $this->_aParams = array ();
             return false;
         }
 

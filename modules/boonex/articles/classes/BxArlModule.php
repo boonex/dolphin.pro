@@ -36,38 +36,37 @@ require_once('BxArlData.php');
  * Service methods:
  *
  * Get post block.
- *
- * @see  BxArlModule::servicePostBlock
- *       BxDolService::call('articles', 'post_block');
+ * @see BxArlModule::servicePostBlock
+ * BxDolService::call('articles', 'post_block');
  * @note is needed for internal usage.
  *
  * Get edit block.
- * @see  BxArlModule::serviceEditBlock
+ * @see BxArlModule::serviceEditBlock
  * BxDolService::call('articles', 'edit_block', array($mixed));
  * @note is needed for internal usage.
  *
  * Get administration block.
- * @see  BxArlModule::serviceAdminBlock
+ * @see BxArlModule::serviceAdminBlock
  * BxDolService::call('articles', 'admin_block', array($iStart, $iPerPage, $sFilterValue));
  * @note is needed for internal usage.
  *
  * Get block with all articles ordered by the time of posting.
- * @see  BxArlModule::serviceArchiveBlock
+ * @see BxArlModule::serviceArchiveBlock
  * BxDolService::call('articles', 'archive_block', array($iStart, $iPerPage));
  * @note is needed for internal usage.
  *
  * Get block with articles marked as featured.
- * @see  BxArlModule::serviceFeaturedBlock
+ * @see BxArlModule::serviceFeaturedBlock
  * BxDolService::call('articles', 'featured_block', array($iStart, $iPerPage));
  * @note is needed for internal usage.
  *
  * Get block with articles ordered by their rating.
- * @see  BxArlModule::serviceTopRatedBlock
+ * @see BxArlModule::serviceTopRatedBlock
  * BxDolService::call('articles', 'top_rated_block', array($iStart, $iPerPage));
  * @note is needed for internal usage.
  *
  * Get block with all articles ordered by their popularity(number of views).
- * @see  BxArlModule::servicePopularBlock
+ * @see BxArlModule::servicePopularBlock
  * BxDolService::call('articles', 'popular_block', array($iStart, $iPerPage));
  * @note is needed for internal usage.
  *
@@ -137,29 +136,23 @@ class BxArlModule extends BxDolTextModule
     {
         return new BxArlCalendar($iYear, $iMonth, $this->_oDb, $this->_oConfig);
     }
-
     function _createObjectCmts($iId)
     {
         return new BxArlCmts($this->_oConfig->getCommentsSystemName(), $iId);
     }
-
     function _createObjectVoting($iId)
     {
         return new BxArlVoting($this->_oConfig->getVotesSystemName(), $iId);
     }
-
     function _isDeleteAllowed($bPerform = false)
     {
-        if (!isLogged()) {
+        if(!isLogged())
             return false;
-        }
 
-        if (isAdmin()) {
+        if(isAdmin())
             return true;
-        }
 
         $aCheckResult = checkAction(getLoggedId(), ACTION_ID_ARTICLES_DELETE, $bPerform);
-
         return $aCheckResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
 }

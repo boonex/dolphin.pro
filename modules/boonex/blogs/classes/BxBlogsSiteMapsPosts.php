@@ -18,27 +18,20 @@ class BxBlogsSiteMapsPosts extends BxDolSiteMaps
     {
         parent::__construct($aSystem);
 
-        $this->_aQueryParts = array(
-            'fields'          => "`PostID`, `PostUri`, `PostDate`",
-            // fields list
-            'field_date'      => "PostDate",
-            // date field name
-            'field_date_type' => "timestamp",
-            // date field type
-            'table'           => "`bx_blogs_posts`",
-            // table name
-            'join'            => "",
-            // join SQL part
-            'where'           => "AND `PostStatus` = 'approval' AND `allowView` = '" . BX_DOL_PG_ALL . "'",
-            // SQL condition, without WHERE
-            'order'           => " `PostDate` ASC ",
-            // SQL order, without ORDER BY
+        $this->_aQueryParts = array (
+            'fields' => "`PostID`, `PostUri`, `PostDate`", // fields list
+            'field_date' => "PostDate", // date field name
+            'field_date_type' => "timestamp", // date field type
+            'table' => "`bx_blogs_posts`", // table name
+            'join' => "", // join SQL part
+            'where' => "AND `PostStatus` = 'approval' AND `allowView` = '" . BX_DOL_PG_ALL . "'", // SQL condition, without WHERE
+            'order' => " `PostDate` ASC ", // SQL order, without ORDER BY
         );
 
         $this->_oModule = BxDolModule::getInstance('BxBlogsModule');
     }
 
-    protected function _genUrl($a)
+    protected function _genUrl ($a)
     {
         return $this->_oModule->genUrl($a['PostID'], $a['PostUri']);
     }

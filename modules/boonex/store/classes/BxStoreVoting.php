@@ -19,19 +19,16 @@ class BxStoreVoting extends BxTemplVotingView
     function getMain()
     {
         $aPathInfo = pathinfo(__FILE__);
-        require_once($aPathInfo['dirname'] . '/BxStoreSearchResult.php');
-
+        require_once ($aPathInfo['dirname'] . '/BxStoreSearchResult.php');
         return (new BxStoreSearchResult())->getMain();
     }
 
-    function checkAction()
+    function checkAction ()
     {
-        if (!parent::checkAction()) {
+        if (!parent::checkAction())
             return false;
-        }
-        $oMain      = $this->getMain();
-        $aDataEntry = $oMain->_oDb->getEntryById($this->getId());
-
+        $oMain = $this->getMain();
+        $aDataEntry = $oMain->_oDb->getEntryById($this->getId ());
         return $oMain->isAllowedRate($aDataEntry);
     }
 }

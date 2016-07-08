@@ -9,12 +9,11 @@ bx_import('BxDolModuleTemplate');
 /*
  * Quotes module View
  */
-
 class BxQuotesTemplate extends BxDolModuleTemplate
 {
     /**
-     * Constructor
-     */
+    * Constructor
+    */
     function __construct(&$oConfig, &$oDb)
     {
         parent::__construct($oConfig, $oDb);
@@ -27,8 +26,8 @@ class BxQuotesTemplate extends BxDolModuleTemplate
         parent::loadTemplates();
     }
 
-    function parseHtmlByName($sName, &$aVars)
+    function parseHtmlByName ($sName, &$aVars)
     {
-        return parent::parseHtmlByName($sName . '.html', $aVars);
+        return parent::parseHtmlByName ($sName.'.html', $aVars);
     }
 }

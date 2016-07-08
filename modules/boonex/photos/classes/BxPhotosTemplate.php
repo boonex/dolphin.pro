@@ -8,7 +8,7 @@ bx_import('BxDolFilesTemplate');
 
 class BxPhotosTemplate extends BxDolFilesTemplate
 {
-    function __construct(&$oConfig, &$oDb)
+    function __construct (&$oConfig, &$oDb)
     {
         parent::__construct($oConfig, $oDb);
     }

@@ -8,7 +8,7 @@ bx_import('BxTemplCmtsView');
 
 class BxPollCmts extends BxTemplCmtsView
 {
-    var $_oModule;
+	var $_oModule;
 
     /**
      * Constructor
@@ -20,18 +20,16 @@ class BxPollCmts extends BxTemplCmtsView
         $this->_oModule = BxDolModule::getInstance('BxPollModule');
     }
 
-    function getBaseUrl()
+	function getBaseUrl()
     {
-        $aEntry = $this->_oModule->_oDb->getPollInfo($this->getId());
-        if (empty($aEntry) || !is_array($aEntry)) {
-            return '';
-        }
+    	$aEntry = $this->_oModule->_oDb->getPollInfo($this->getId());
+    	if(empty($aEntry) || !is_array($aEntry))
+    		return '';
 
-        $aEntry = array_shift($aEntry);
-        if (empty($aEntry) || !is_array($aEntry)) {
-            return '';
-        }
+    	$aEntry = array_shift($aEntry);
+    	if(empty($aEntry) || !is_array($aEntry))
+    		return '';
 
-        return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . '&action=show_poll_info&id=' . $aEntry['id_poll'];
+    	return BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . '&action=show_poll_info&id=' . $aEntry['id_poll']; 
     }
 }
