@@ -161,8 +161,10 @@ EOF;
 
 //check correct hostname
 \$aUrl = parse_url( \$site['url'] );
-if ( isset(\$_SERVER['HTTP_HOST']) and 0 != strcasecmp(\$_SERVER['HTTP_HOST'], \$aUrl['host']) and 0 != strcasecmp(\$_SERVER['HTTP_HOST'], \$aUrl['host'] . ':80') ) {
-    header( "Location:{\$aUrl['scheme']}://{\$aUrl['host']}{\$_SERVER['REQUEST_URI']}", true, 301 );
+\$iPortDefault = 'https' == \$aUrl['scheme'] ? '443' : '80';
+if ( isset(\$_SERVER['HTTP_HOST']) and 0 != strcasecmp(\$_SERVER['HTTP_HOST'], \$aUrl['host']) and 0 != strcasecmp(\$_SERVER['HTTP_HOST'], \$aUrl['host'] . ':' . (!empty(\$aUrl['port']) ? \$aUrl['port'] : \$iPortDefault)) ) {
+    \$sPort = empty(\$aUrl['port']) || 80 == \$aUrl['port'] || 443 == \$aUrl['port'] ? '' : ':' . \$aUrl['port'];
+    header( "Location:{\$aUrl['scheme']}://{\$aUrl['host']}{\$sPort}{\$_SERVER['REQUEST_URI']}", true, 301 );
     exit;
 }
 
