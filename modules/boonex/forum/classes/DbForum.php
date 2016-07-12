@@ -420,8 +420,8 @@ class DbForum extends BxDb
 
     function stick($topic_id, $user)
     {
-        if (!$this->query("UPDATE" . TF_FORUM_TOPIC . " SET `topic_sticky` = IF(`topic_sticky`, 0, 1) WHERE `topic_id` = ?",
-            [$topic_id])
+        if (!$this->query("UPDATE" . TF_FORUM_TOPIC . " SET `topic_sticky` = IF(`topic_sticky`, 0, ?) WHERE `topic_id` = ?",
+            [time(), $topic_id])
         ) {
             return false;
         }

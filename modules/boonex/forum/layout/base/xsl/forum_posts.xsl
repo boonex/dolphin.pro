@@ -41,7 +41,7 @@
                 <xsl:if test="0 = topic/sticky">
                     <btn href="javascript:void(0);" onclick="return f.stick('{topic/id}');" icon="{/root/urls/img}btn_icon_unsticky.gif">[L[Stick]]</btn>
                 </xsl:if>
-                <xsl:if test="1 = topic/sticky">
+                <xsl:if test="0 != topic/sticky">
                     <btn href="javascript:void(0);" onclick="return f.stick('{topic/id}');" icon="{/root/urls/img}btn_icon_sticky.gif">[L[Unstick]]</btn>
                 </xsl:if>
             </xsl:if>
