@@ -1464,10 +1464,10 @@ function getSiteInfo($sSourceUrl, $aProcessAdditionalTags = array())
 
 function bx_parse_html_tag($sContent, $sTag, $sAttrNameName, $sAttrNameValue, $sAttrContentName, $sCharset = false)
 {
-    if (!preg_match("/<{$sTag}\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"]\s+{$sAttrContentName}[='\" ]+([^('>\")]*)['\"][^>]*>/i",
+    if (!preg_match("/<{$sTag}\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"]\s+{$sAttrContentName}[='\" ]+([^'>\"]*)['\"][^>]*>/i",
             $sContent, $aMatch) || !isset($aMatch[1])
     ) {
-        preg_match("/<{$sTag}\s+{$sAttrContentName}[='\" ]+([^('>\")]*)['\"]\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"][^>]*>/i",
+        preg_match("/<{$sTag}\s+{$sAttrContentName}[='\" ]+([^'>\"]*)['\"]\s+{$sAttrNameName}[='\" ]+{$sAttrNameValue}['\"][^>]*>/i",
             $sContent, $aMatch);
     }
 
