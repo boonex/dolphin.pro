@@ -1952,7 +1952,7 @@ EOF;
 
         $sTitle = sprintf("[L[%s's forum posts]]", $aUser['title']);
 
-        return $this->_rssFeed ($sTitle, '?action=goto&amp;search=1#action=goto&amp;search_result=1&amp;&amp;msgs&amp;0&amp;' . $user . '&amp;posts&amp;0', $sTitle, $lastBuildDate, $items);
+        return $this->_rssFeed ($sTitle, '?action=goto&amp;search_result=1&amp;text=&amp;type=msgs&amp;forum=0&amp;u=' . $user . '&amp;disp=posts&amp;start=0', $sTitle, $lastBuildDate, $items);
     }
 
     /**
