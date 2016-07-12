@@ -30,7 +30,7 @@
                             <i class="sys-icon bolt"></i>
                         </xsl:when>
                         <xsl:when test="0 &lt; @sticky">
-                            <i class="sys-icon pushpin"></i>
+                            <i class="sys-icon thumb-tack"></i>
                         </xsl:when>
                         <xsl:when test="0 &lt; @locked">
                             <i class="sys-icon lock"></i>
