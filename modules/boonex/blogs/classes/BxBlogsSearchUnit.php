@@ -154,13 +154,13 @@ class BxBlogsSearchUnit extends BxTemplSearchResultText
         $this->sMobileWrapper = $sMobileWrapper;
     }
 
-       function getCurrentUrl($sType, $iId, $sUri, $aOwner = '')
-       {
+    function getCurrentUrl($sType, $iId, $sUri, $aOwner = '')
+    {
         if ($this->bAdminMode && isset($this->aConstants['linksTempl']['admin_' . $sType])) {
             $sType = 'admin_' . $sType;
         }
 
-           $sLink = $this->aConstants['linksTempl'][$sType];
+        $sLink = $this->aConstants['linksTempl'][$sType];
         $sLink = str_replace('{id}', $iId, $sLink);
         $sLink = str_replace('{uri}', $sUri, $sLink);
         if (is_array($aOwner) && !empty($aOwner)) {
@@ -217,7 +217,7 @@ class BxBlogsSearchUnit extends BxTemplSearchResultText
         $sAllCategoriesLinks = '';
         if (count($aCategories)>0) {
             foreach ($aCategories as $iKey => $sCatValue) {
-                $sCatLink = $this->getCurrentUrl('category', title2uri($sCatValue), title2uri($sCatValue), array('ownerId' => $aResSQL['ownerId'], 'blogOwnerName' => $sAuthorUsername));
+                $sCatLink = $this->getCurrentUrl('category', title2uri($sCatValue), title2uri($sCatValue), array('ownerId' => $aResSQL['ownerId'], 'ownerName' => $sAuthorUsername));
                 $sCatName = process_line_output($sCatValue);
                 $aAllCategoriesLinks[] = '<a href="' . $sCatLink . '">' . $sCatName . '</a>';
             }
