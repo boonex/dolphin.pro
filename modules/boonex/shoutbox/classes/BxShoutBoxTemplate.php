@@ -104,7 +104,7 @@
                 $aKeys = array
                 (
                     'owner_icon'    => $sMemberIcon,
-                    'message'       => WordWrapStr($aItems['Message']),
+                    'message'       => htmlentities(WordWrapStr(html_entity_decode($aItems['Message'], ENT_COMPAT, 'UTF-8')), ENT_COMPAT, 'UTF-8', false),
                     'by'            => $aLanguageKeys['by'],
                     'owner_nick'    => $sNickName,
                     'date'          => defineTimeInterval($aItems['DateTS'], true, true),
