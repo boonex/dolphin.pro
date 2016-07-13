@@ -29,12 +29,11 @@ define('BX_SLASHES_ADD', 1);
 define('BX_SLASHES_STRIP', 2);
 define('BX_SLASHES_NO_ACTION', 3);
 
-define('BX_ESCAPE_STR_AUTO',
-    0); ///< turn apostropes and quote signs into html special chars, for use in @see bx_js_string and @see bx_html_attribute
-define('BX_ESCAPE_STR_APOS',
-    1); ///< escape apostrophes only, for js strings enclosed in apostrophes, for use in @see bx_js_string and @see bx_html_attribute
-define('BX_ESCAPE_STR_QUOTE',
-    2); ///< escape quotes only, for js strings enclosed in quotes, for use in @see bx_js_string and @see bx_html_attribute
+define('BX_ESCAPE_STR_AUTO', 0); ///< turn apostropes and quote signs into html special chars, for use in @see bx_js_string and @see bx_html_attribute
+define('BX_ESCAPE_STR_APOS', 1); ///< escape apostrophes only, for js strings enclosed in apostrophes, for use in @see bx_js_string and @see bx_html_attribute
+define('BX_ESCAPE_STR_QUOTE', 2); ///< escape quotes only, for js strings enclosed in quotes, for use in @see bx_js_string and @see bx_html_attribute
+
+define('BX_URL_RE', "@\b((https?://)|(www\.))(([0-9a-zA-Z_!~*'().&=+$%-]+:)?[0-9a-zA-Z_!~*'().&=+$%-]+\@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-zA-Z_!~*'()-]+\.)*([0-9a-zA-Z][0-9a-zA-Z-]{0,61})?[0-9a-zA-Z]\.[a-zA-Z]{2,6})(:[0-9]{1,4})?((/[0-9a-zA-Z_!~*'().;?:\@&=+$,%#-]+)*/?)@"); ///< regular expression to match URL
 
 /**
  * The following two functions are needed to convert title to uri and back.
@@ -149,8 +148,9 @@ function WordWrapStr($sString, $iWidth = 25, $sWrapCharacter = '&shy;')
         return $sString;
     }
 
-    $aSpecialSymbols          = array("\r", "\n");
-    $aSpecialSymbolsWithSpace = array(" _SLASHR_", " _SLASHN_");
+    $aSpecialSymbols = array("\r", "\n");
+    $aSpecialSymbolsWithSpace = array(" _SLASHR_ ", " _SLASHN_ ");
+    $aSpecialSymbolsWithSpace2 = array("_SLASHR_", "_SLASHN_");
     if ($iWidth > 9) {
         $sString = str_replace($aSpecialSymbols, $aSpecialSymbolsWithSpace, $sString);
     } // preserve new line characters
@@ -159,7 +159,7 @@ function WordWrapStr($sString, $iWidth = 25, $sWrapCharacter = '&shy;')
     $sResult = ' ';
     foreach ($aWords as $sWord) {
 
-        if (($iWord = mb_strlen($sWord, 'UTF-8')) <= $iWidth) {
+        if (($iWord = mb_strlen($sWord, 'UTF-8')) <= $iWidth || preg_match(BX_URL_RE, $sWord)) {
             if ($iWord > 0) {
                 $sResult .= $sWord . ' ';
             }
@@ -177,6 +177,7 @@ function WordWrapStr($sString, $iWidth = 25, $sWrapCharacter = '&shy;')
 
     if ($iWidth > 9) {
         $sResult = str_replace($aSpecialSymbolsWithSpace, $aSpecialSymbols, $sResult);
+        $sResult = str_replace($aSpecialSymbolsWithSpace2, $aSpecialSymbols, $sResult);
     }
 
     return trim($sResult);
@@ -1829,8 +1830,7 @@ function bx_linkify($text, $sAttrs = '', $bHtmlSpecialChars = false)
         $text = htmlspecialchars($text, ENT_NOQUOTES, 'UTF-8');
     }
 
-    $re = "@\b((https?://)|(www\.))(([0-9a-zA-Z_!~*'().&=+$%-]+:)?[0-9a-zA-Z_!~*'().&=+$%-]+\@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-zA-Z_!~*'()-]+\.)*([0-9a-zA-Z][0-9a-zA-Z-]{0,61})?[0-9a-zA-Z]\.[a-zA-Z]{2,6})(:[0-9]{1,4})?((/[0-9a-zA-Z_!~*'().;?:\@&=+$,%#-]+)*/?)@";
-    preg_match_all($re, $text, $matches, PREG_OFFSET_CAPTURE);
+    preg_match_all(BX_URL_RE, $text, $matches, PREG_OFFSET_CAPTURE);
 
     $matches = $matches[0];
 
