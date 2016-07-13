@@ -66,6 +66,10 @@ class Forum extends ThingPage
         switch ($type) {
             case 'tlts':
                 while ( list (,$r) = each ($a) ) {
+
+                    if (!$this->_checkUserPerm ('', $r['forum_type'], 'read', $r['forum_id']))
+                        continue;
+
                     encode_post_text($r['cat_name']);
                     encode_post_text($r['forum_title']);
                     encode_post_text($r['topic_title'], true);
@@ -106,6 +110,10 @@ EOF;
                 break;
             case 'msgs':
                 while ( list (,$r) = each ($a) ) {
+
+                    if (!$this->_checkUserPerm ('', $r['forum_type'], 'read', $r['forum_id']))
+                        continue;
+
                     // search hightlight
                     if ($text) {
                         reset($ws);

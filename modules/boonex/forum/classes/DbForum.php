@@ -112,7 +112,7 @@ class DbForum extends BxDb
 
         if ('msgs' == $type) {
             $sSQL = "
-    SELECT DISTINCTROW $sCalcFoundRows t4.`cat_id`, t4.`cat_uri`, `cat_name`, t3.`forum_id`, t3.`forum_uri`, `forum_title`, t2.`topic_id`, t2.`topic_uri`, `topic_title`, `post_id`, t1.`when` AS `date`, `user` $fields
+    SELECT DISTINCTROW $sCalcFoundRows t4.`cat_id`, t4.`cat_uri`, `cat_name`, t3.`forum_id`, t3.`forum_uri`, t3.`forum_type`, `forum_title`, t2.`topic_id`, t2.`topic_uri`, `topic_title`, `post_id`, t1.`when` AS `date`, `user` $fields
     FROM " . TF_FORUM_POST . " AS t1
     INNER JOIN  " . TF_FORUM_TOPIC . " AS t2 ON (t2.`topic_id` = t1.`topic_id`)
     INNER JOIN  " . TF_FORUM . " AS t3 ON (t1.`forum_id` = t3.`forum_id`)
@@ -122,7 +122,7 @@ class DbForum extends BxDb
     LIMIT $start, {$gConf['topics_per_page']}";
         } else { // search titles
             $sSQL = "
-    SELECT $sCalcFoundRows t4.`cat_id`, t4.`cat_uri`, `cat_name`, t3.`forum_id`, t3.`forum_uri`, `forum_title`, t2.`topic_id`, t2.`topic_uri`, `topic_title`, `first_post_when` AS `date`, `first_post_user` AS `user` $fields
+    SELECT $sCalcFoundRows t4.`cat_id`, t4.`cat_uri`, `cat_name`, t3.`forum_id`, t3.`forum_uri`, t3.`forum_type`, `forum_title`, t2.`topic_id`, t2.`topic_uri`, `topic_title`, `first_post_when` AS `date`, `first_post_user` AS `user` $fields
     FROM " . TF_FORUM_TOPIC . " AS t2
     INNER JOIN  " . TF_FORUM . " AS t3 ON (t2.`forum_id` = t3.`forum_id`)
     INNER JOIN " . TF_FORUM_CAT . " AS t4 ON (t3.`cat_id` = t4.`cat_id`)
