@@ -4,20 +4,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-function bx_gsearch_import ($sClassPostfix, $aModuleOverwright = array())
-{
-    global $aModule;
-    $a = $aModuleOverwright ? $aModuleOverwright : $aModule;
-    if (!$a || $a['uri'] != 'google_search') {
-        $oMain = BxDolModule::getInstance('BxGSearchModule');
-        $a = $oMain->_aModule;
-    }
-    bx_import ($sClassPostfix, $a) ;
-}
-
 bx_import('BxDolModule');
-bx_import('BxDolPaginate');
-bx_import('BxDolAlerts');
 
 /**
  * Google Site Search module by BoonEx
@@ -63,18 +50,15 @@ class BxGSearchModule extends BxDolModule
         parent::BxDolModule($aModule);
         $GLOBALS['aModule'] = $aModule;
         $this->_iProfileId = getLoggedId();
-        $GLOBALS['oBxGSearchModule'] = &$this;
         $this->_sProto = bx_proto();
     }
 
     function actionHome ()
     {
-        bx_gsearch_import ('PageMain');
+        bx_import ('PageMain', $this->_aModule);
         $oPage = new BxGSearchPageMain ($this);
         $this->_oTemplate->pageStart();
         echo $oPage->getCode();
-        $this->_oTemplate->addJs ($this->_sProto . '://www.google.com/jsapi');
-        $this->_oTemplate->addCss ('main.css');
         $this->_oTemplate->pageCode(_t('_bx_gsearch'), false, false);
     }
 
@@ -107,9 +91,10 @@ class BxGSearchModule extends BxDolModule
         if($mixedResult !== true && !empty($mixedResult))
             $sResult = $mixedResult . $sResult;
 
+        echo $this->_oTemplate->adminBlock (_t('_bx_gsearch_help_text', BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri()), _t('_bx_gsearch_help_title'), false, false, 11);
+
         echo $this->_oTemplate->adminBlock ($sResult, _t('_bx_gsearch_administration'), false, false, 11);
 
-        $this->_oTemplate->addCssAdmin ('main.css');
         $this->_oTemplate->addCssAdmin ('forms_adv.css');
         $this->_oTemplate->pageCodeAdmin (_t('_bx_gsearch_administration'));
     }
@@ -122,16 +107,9 @@ class BxGSearchModule extends BxDolModule
      */
     function serviceGetSearchControl ()
     {
-        $this->_oTemplate->addCss ('main.css');
-        $this->_oTemplate->addJs ($this->_sProto . '://www.google.com/jsapi');
-        $a = parse_url ($GLOBALS['site']['url']);
         $aVars = array (
-            'is_image_search' => 'on' == getParam('bx_gsearch_block_images') ? 1 : 0,
-            'is_tabbed_search' => 'on' == getParam('bx_gsearch_block_tabbed') ? 1 : 0,
-            'domain' => $a['host'],
-            'keyword' => '',
-            'suffix' => 'simple',
-            'separate_search_form' => 0,
+            'msg' => !getParam('bx_gsearch_id') ? MsgBox(_t('_bx_gsearch_no_search_engine_id')) : '',
+            'cx' => getParam('bx_gsearch_id'),
         );
         return array($this->_oTemplate->parseHtmlByName('search', $aVars));
     }
