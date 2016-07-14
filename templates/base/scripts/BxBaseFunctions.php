@@ -690,7 +690,7 @@ class BxBaseFunctions
         $sLogoW = getParam('sys_main_logo_w');
         $sLogoH = getParam('sys_main_logo_h');
 
-        $sStyle = $sLogoW && $sLogoW ? " style=\"width:{$sLogoW}px; height:{$sLogoH}px;\" " : '';
+        $sStyle = $sLogoW ? " style=\"width:{$sLogoW}px; height:auto;\" " : '';
         $sLogoAttr2x = $sLogoUrl2x ? " src-2x=\"$sLogoUrl2x\" " : '';
         $sClass = 'mainLogo' . ($sLogoAttr2x ? ' bx-img-retina' : '');
         
