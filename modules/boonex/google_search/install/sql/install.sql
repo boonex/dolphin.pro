@@ -18,10 +18,7 @@ INSERT INTO `sys_options_cats` (`name`, `menu_order`) VALUES ('Google Search', @
 SET @iCategId = (SELECT LAST_INSERT_ID());
 INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `err_text`, `order_in_kateg`, `AvailableValues`) VALUES
 ('bx_gsearch_permalinks', 'on', 26, 'Enable friendly permalinks in Google Site Search', 'checkbox', '', '', '0', ''),
-('bx_gsearch_block_tabbed', 'on', @iCategId, 'Tabbed search results in block', 'checkbox', '', '', '0', ''),
-('bx_gsearch_block_images', 'on', @iCategId, 'Images search in block', 'checkbox', '', '', '0', ''),
-('bx_gsearch_separate_tabbed', 'on', @iCategId, 'Tabbed search results on separate page', 'checkbox', '', '', '0', ''),
-('bx_gsearch_separate_images', 'on', @iCategId, 'Images search on separate page', 'checkbox', '', '', '0', '');
+('bx_gsearch_id', '', @iCategId, 'Search engine ID', 'digit', '', '', '10', '');
 
 
 -- admin menu
