@@ -1474,7 +1474,7 @@ EOF;
             $aCatLinks = array();
             if (count($aCategories)>0) {
                 foreach ($aCategories as $iKey => $sCatValue) {
-                    $sCatLink = $oBlogSearch->getCurrentUrl('category', title2uri(trim($sCatValue)), title2uri(trim($sCatValue)), array('ownerId' => $iMemberID, 'blogOwnerName' => $aAuthor['NickName']));
+                    $sCatLink = $oBlogSearch->getCurrentUrl('category', title2uri(trim($sCatValue)), title2uri(trim($sCatValue)), array('ownerId' => $iMemberID, 'ownerName' => $aAuthor['NickName']));
                     $aCatLinks[] = '<a href="' . $sCatLink . '" rel="nofollow">' . $sCatValue . '</a>';
                 }
                 $sCats = implode(", ", $aCatLinks);

@@ -66,6 +66,10 @@ class Forum extends ThingPage
         switch ($type) {
             case 'tlts':
                 while ( list (,$r) = each ($a) ) {
+
+                    if (!$this->_checkUserPerm ('', $r['forum_type'], 'read', $r['forum_id']))
+                        continue;
+
                     encode_post_text($r['cat_name']);
                     encode_post_text($r['forum_title']);
                     encode_post_text($r['topic_title'], true);
@@ -106,6 +110,10 @@ EOF;
                 break;
             case 'msgs':
                 while ( list (,$r) = each ($a) ) {
+
+                    if (!$this->_checkUserPerm ('', $r['forum_type'], 'read', $r['forum_id']))
+                        continue;
+
                     // search hightlight
                     if ($text) {
                         reset($ws);
@@ -1952,7 +1960,7 @@ EOF;
 
         $sTitle = sprintf("[L[%s's forum posts]]", $aUser['title']);
 
-        return $this->_rssFeed ($sTitle, '?action=goto&amp;search=1#action=goto&amp;search_result=1&amp;&amp;msgs&amp;0&amp;' . $user . '&amp;posts&amp;0', $sTitle, $lastBuildDate, $items);
+        return $this->_rssFeed ($sTitle, '?action=goto&amp;search_result=1&amp;text=&amp;type=msgs&amp;forum=0&amp;u=' . $user . '&amp;disp=posts&amp;start=0', $sTitle, $lastBuildDate, $items);
     }
 
     /**

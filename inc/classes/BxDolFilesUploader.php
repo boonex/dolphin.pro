@@ -777,7 +777,7 @@ class BxDolFilesUploader extends BxDolTemplate
                 'value' => _t('_bx_'.$this->sUploadTypeLC.'s_admin_delete'),
                 'colspan' => true,
                 'attrs' => array(
-                    'onclick' => "return parent." . $this->_sJsPostObject . ".cancelSendFileInfo('" . $iFileID . "', '" . $this->sWorkingFile . "'); ",
+                    'onclick' => "return parent." . $this->_sJsPostObject . ".cancelSendFileInfo('" . $iFileID . "', '" . ('record' == $aDefaultValues['type'] || 'embed' == $aDefaultValues['type'] ? '' : $this->sWorkingFile) . "'); ",
                 )
             )
         );
