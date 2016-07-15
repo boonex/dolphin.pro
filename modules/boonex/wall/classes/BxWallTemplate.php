@@ -128,6 +128,11 @@ class BxWallTemplate extends BxDolModuleTemplate
 		$sEventType = bx_ltrim_str($aEvent['type'], $sPrefix, '');
 
 		$aResult = $this->_getCommonData($aEvent);
+    	if(isset($aResult['perform_delete']) && $aResult['perform_delete'] === true) {
+            $this->_oDb->deleteEvent(array('id' => $aEvent['id']));
+            return '';
+        }
+
 		if(empty($aResult) || empty($aResult['content']))
 			return '';
 
@@ -215,7 +220,11 @@ class BxWallTemplate extends BxDolModuleTemplate
         		$aContent = unserialize($aEvent['content']);
         		$iContent = (int)$aContent['id'];
 
-        		$aResult = array_merge($aResult, $this->_getCommonMedia($aContent['type'], $iContent));
+				$aResultMedia = $this->_getCommonMedia($aContent['type'], $iContent);
+				if(empty($aResultMedia) || !is_array($aResultMedia))
+					return array('perform_delete' => true);
+
+				$aResult = array_merge($aResult, $aResultMedia);
 
 				$sTmplName = 'common';
         		$aTmplVars['cpt_added_new'] = _t('_wall_added_' . $sEventType);
@@ -264,29 +273,27 @@ class BxWallTemplate extends BxDolModuleTemplate
         );
 
         $aMediaInfo = BxDolService::call($sType, 'get_' . $aConverter[$sType] . '_array', array($iObject, 'browse'), 'Search');
+		if(empty($aMediaInfo) || !is_array($aMediaInfo) || empty($aMediaInfo['file']))
+        	return array();
 
-        $aContent = array('title' => '', 'description' => '', 'content' => '');
-        if(!empty($aMediaInfo) && is_array($aMediaInfo) && !empty($aMediaInfo['file']))
-            $aContent = array(
-                'title' => _t('_wall_added_title_' . $sType, getNickName($aMediaInfo['owner'])),
-                'description' => $aMediaInfo['description'],
-                'content' => $this->parseHtmlByTemplateName('common_media', array(
-                    'image_url' =>  isset($aMediaInfo['file']) ? $aMediaInfo['file'] : '',
-                    'image_width' => isset($aMediaInfo['width']) ? (int)$aMediaInfo['width'] : 0,
-                    'image_height' => isset($aMediaInfo['height']) ? (int)$aMediaInfo['height'] : 0,
-                    'link' => isset($aMediaInfo['url']) ? $aMediaInfo['url'] : '',
-                    'title' => isset($aMediaInfo['title']) ? bx_html_attribute($aMediaInfo['title']) : '',
-                    'description' => isset($aMediaInfo['description']) ? $aMediaInfo['description'] : '',
-            		'bx_if:show_duration' => array(
-						'condition' => !empty($aMediaInfo['duration_f']),
-            			'content' => array(
-            				'duration_f' => $aMediaInfo['duration_f']
-            			)
-            		)
-                ))
-            );
-
-        return $aContent;
+		return array(
+			'title' => _t('_wall_added_title_' . $sType, getNickName($aMediaInfo['owner'])),
+			'description' => $aMediaInfo['description'],
+			'content' => $this->parseHtmlByTemplateName('common_media', array(
+				'image_url' =>  isset($aMediaInfo['file']) ? $aMediaInfo['file'] : '',
+				'image_width' => isset($aMediaInfo['width']) ? (int)$aMediaInfo['width'] : 0,
+				'image_height' => isset($aMediaInfo['height']) ? (int)$aMediaInfo['height'] : 0,
+				'link' => isset($aMediaInfo['url']) ? $aMediaInfo['url'] : '',
+				'title' => isset($aMediaInfo['title']) ? bx_html_attribute($aMediaInfo['title']) : '',
+				'description' => isset($aMediaInfo['description']) ? $aMediaInfo['description'] : '',
+				'bx_if:show_duration' => array(
+					'condition' => !empty($aMediaInfo['duration_f']),
+					'content' => array(
+				    	'duration_f' => $aMediaInfo['duration_f']
+					)
+				)
+			))
+		);
     }
 
     function getEmpty($bVisible)
