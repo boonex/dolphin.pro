@@ -6,11 +6,6 @@
 
 bx_import('BxDolTwigTemplate');
 
-if ((int)phpversion() < 5)
-    require_once(BX_DIRECTORY_PATH_MODULES . 'boonex/profiler/inc/fb4.php');
-else
-    require_once(BX_DIRECTORY_PATH_MODULES . 'boonex/profiler/inc/fb5.php');
-
 class BxProfilerTemplate extends BxDolTwigTemplate
 {
     var $_isAjaxOutput = false;
@@ -27,6 +22,7 @@ class BxProfilerTemplate extends BxDolTwigTemplate
 
     function plank($sTitle, $sContent = '')
     {
+        /*
         if ($this->_isAjaxOutput) {
             if (headers_sent())
                 return '';
@@ -36,6 +32,7 @@ class BxProfilerTemplate extends BxDolTwigTemplate
                 fb($sTitle . $sContent);
             return '';
         }
+        */
         if ($sContent)
             $sContent = '<div class="bx_profiler_switch" onclick="bx_profiler_switch(this)">+</div><div class="bx_profiler_content">'.$sContent.'</div>';
         return '<div class="bx_profiler_plank_wrapper" style="width:' . getParam('main_div_width') . '"><div class="bx_profiler_plank bx-def-margin-sec-leftright"><span class="bx_profiler_plank_title">' . $sTitle . '</span>' . $sContent . '</div>';
