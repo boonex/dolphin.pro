@@ -193,11 +193,13 @@ div.block_cont_nd {
 }
 
 .buildBlock .blockAlert {
+    display:inline-block;
 	cursor:help;
 	height:16px;
 	width:16px;
-	vertical-align: middle;
-	margin-left: 3px;
+	vertical-align:baseline;
+    color:red;
+	margin-left:3px;
 }
 
 #samplesBlocksArea .buildBlock,
