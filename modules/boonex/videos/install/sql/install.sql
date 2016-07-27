@@ -110,7 +110,7 @@ INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`
 ('[db_prefix]_view', '1140px', '', '_[db_prefix]_related', 0, 0, 'RelatedFiles', '', 1, 28.1, 'non,memb', 0);
 
 INSERT INTO `sys_page_compose` (`Page`, `PageWidth`, `Desc`, `Caption`, `Column`, `Order`, `Func`, `Content`, `DesignBox`, `ColWidth`, `Visible`, `MinWidth`) VALUES
-('[db_prefix]_home', '1140px', '', '_[db_prefix]_albums', 1, 1, 'Albums', '', 1, 28.1, 'non,memb', 0),
+('[db_prefix]_home', '1140px', '', '_[db_prefix]_albums', 1, 1, 'Albums', '', 1, 71.9, 'non,memb', 0),
 ('[db_prefix]_home', '1140px', '', '_[db_prefix]_special', 0, 0, 'Special', '', 1, 71.9, 'non,memb', 0),
 ('[db_prefix]_home', '1140px', '', '_[db_prefix]_latest_file', 1, 0, 'LatestFile', '', 1, 71.9, 'non,memb', 0),
 ('[db_prefix]_home', '1140px', '', '_[db_prefix]_public', 1, 2, 'All', '', 1, 71.9, 'non,memb', 380);
