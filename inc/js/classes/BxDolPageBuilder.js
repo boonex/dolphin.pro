@@ -214,7 +214,7 @@ BxDolPageBuilder.prototype.checkBlocksMaxWidths = function() {
 		var $block = $('#buildBlock_' + iBlockID);
 		var iColumnWidth = Math.round(parseInt(this.options.pageWidth) * parseInt(getCssWidth($block.parent().parent()[0])) / 100);
 		if(iColumnWidth < iBlockMinWidth) {
-			$('<img src="images/icons/alert.gif" class="blockAlert" />')
+			$('<span class="sys-icon exclamation-triangle blockAlert"></span>')
 			.appendTo($block)
 			.hover(
 			function() {
