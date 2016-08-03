@@ -201,6 +201,12 @@ class BxFilesModule extends BxDolFilesModule
             }
         }
 
+        if ('calendar' == $sParamName) {
+            $sParamValue = (int)$sParamValue;
+            $sParamValue1 = (int)$sParamValue1;
+            $sParamValue2 = (int)$sParamValue2;
+        }
+        
         $sClassName = $this->_oConfig->getClassPrefix() . 'Search';
         bx_import('Search', $this->_aModule);
         $oSearch = new $sClassName($sParamName, $sParamValue, $sParamValue1, $sParamValue2);
