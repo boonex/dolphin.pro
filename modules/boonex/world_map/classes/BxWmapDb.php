@@ -60,7 +60,6 @@ class BxWmapDb extends BxDolModuleDb
     {
         $aRet = array ();
         foreach ($this->_aParts as $sPart => $aPart) {
-            if ($sPart != 'caches') continue;
             $sFields = '';
             if ($aPart['join_field_country'])
                 $sFields .= ", `p`.`{$aPart['join_field_country']}` AS `country` ";

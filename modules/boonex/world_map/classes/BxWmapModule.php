@@ -922,7 +922,7 @@ class BxWmapModule extends BxDolModule
 
         $sAddress = rawurlencode($sAddress);
 
-        $sUrl = "http://maps.googleapis.com/maps/api/geocode/json";
+        $sUrl = bx_proto() . "://maps.googleapis.com/maps/api/geocode/json";
 
         $s = bx_file_get_contents($sUrl, array(
             'address' => $sAddress,
