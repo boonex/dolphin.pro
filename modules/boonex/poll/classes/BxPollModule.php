@@ -1568,7 +1568,7 @@
 
             !$sExtraParam ? $sExtraParam = '&tag=' . urlencode( title2uri($sTag) ) : '';
             $sOutputCode .= $this
-                -> showSearchResult( _t('_bx_poll_browse_tag') . ': ' . stripslashes($sTag), $sExtraParam );
+                -> showSearchResult( _t('_bx_poll_browse_tag') . ': ' . htmlspecialchars_adv($sTag), $sExtraParam );
 
             return $sOutputCode;
         }
@@ -1593,7 +1593,7 @@
             $this -> oSearch -> aCurrent['restriction']['category']['value'] = $sCategory;
             $sExtraParam .= '&category=' . urlencode( title2uri($sCategory) );
             $sOutputCode .= $this -> showSearchResult( _t('_bx_poll_browse_category')
-                . ': ' . stripslashes($sCategory), $sExtraParam );
+                . ': ' . htmlspecialchars_adv($sCategory), $sExtraParam );
 
             return $sOutputCode;
         }
