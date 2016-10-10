@@ -169,9 +169,9 @@ class BxPmtPayPal extends BxPmtProvider
                return $aResponse;
 
             array_walk($aResponse['content'], create_function('&$arg', "\$arg = trim(\$arg);"));
-            if(strcmp($aResponse['content'][1], "INVALID") == 0)
+            if(strcmp($aResponse['content'][0], "INVALID") == 0)
                 return array('code' => -1, 'message' => _t('_payment_pp_err_wrong_transaction'));
-            else if(strcmp($aResponse['content'][1], "VERIFIED") != 0)
+            else if(strcmp($aResponse['content'][0], "VERIFIED") != 0)
                 return array('code' => 2, 'message' => _t('_payment_pp_err_wrong_verification_status'));
         }
         else if($iPrcType == PP_PRC_TYPE_PDT) {
@@ -181,9 +181,9 @@ class BxPmtPayPal extends BxPmtProvider
             if((int)$aResponse['code'] !== 0)
                return $aResponse;
 
-            if(strcmp($aResponse['content'][1], "FAIL") == 0)
+            if(strcmp($aResponse['content'][0], "FAIL") == 0)
                 return array('code' => -1, 'message' => _t('_payment_pp_err_wrong_transaction'));
-            else if(strcmp($aResponse['content'][1], "SUCCESS") != 0)
+            else if(strcmp($aResponse['content'][0], "SUCCESS") != 0)
                 return array('code' => 2, 'message' => _t('_payment_pp_err_wrong_verification_status'));
 
             $aKeys = array();
@@ -215,42 +215,40 @@ class BxPmtPayPal extends BxPmtProvider
 
     function _readValidationData($sConnectionUrl, $sRequest)
     {
-        $iErrCode = 0;
-        $sErrMessage = "";
+        $rConnect = curl_init('https://' . $sConnectionUrl . '/cgi-bin/webscr');
+		curl_setopt($rConnect, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+		curl_setopt($rConnect, CURLOPT_POST, 1);
+		curl_setopt($rConnect, CURLOPT_RETURNTRANSFER,1);
+		curl_setopt($rConnect, CURLOPT_POSTFIELDS, $sRequest);
+		curl_setopt($rConnect, CURLOPT_SSL_VERIFYPEER, 1);
+		curl_setopt($rConnect, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($rConnect, CURLOPT_FORBID_REUSE, 1);
+		curl_setopt($rConnect, CURLOPT_HTTPHEADER, array('Connection: Close'));
 
-		$rSocket = fsockopen("ssl://" . $sConnectionUrl, 443, $iErrCode, $sErrMessage, 60);
-        if(!$rSocket)
-            return array('code' => 2, 'message' => 'Can\'t connect to remote host for validation (' . $sErrMessage . ')');
+		$sResponse = curl_exec($rConnect);
+    	if(curl_errno($rConnect) == 60) { // CURLE_SSL_CACERT
+            curl_setopt($rConnect, CURLOPT_CAINFO, BX_DIRECTORY_PATH_PLUGINS . 'curl/cacert.pem');
+            $sResponse = curl_exec($rConnect);
+        }
 
-		$sHeader = "POST /cgi-bin/webscr HTTP/1.1\r\n";
-        $sHeader .= "Host: " . $sConnectionUrl . "\r\n";
-        $sHeader .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $sHeader .= "Content-Length: " . strlen($sRequest) . "\r\n";
-        $sHeader .= "Connection: close\r\n\r\n";
+        curl_close($rConnect);
+		if(!$sResponse)
+			return array('code' => 6, 'message' => $this->_sLangsPrefix . 'err_cannot_validate');
 
-        fputs($rSocket, $sHeader);
-        fputs($rSocket, $sRequest);
-
-        $sResponse = '';
-        while(!feof($rSocket))
-            $sResponse .= fread($rSocket, 1024);
-        fclose($rSocket);
-
-        list($sResponseHeader, $sResponseContent) = explode("\r\n\r\n", $sResponse);
-
-        return array('code' => 0, 'content' => explode("\n", $sResponseContent));
+		return array('code' => 0, 'content' => explode("\n", $sResponse));
     }
 
     function _getReceivedAmount($sCurrencyCode, &$aResultData)
     {
         $fAmount = 0.00;
+        $fTax = isset($aResultData['tax']) ? (float)$aResultData['tax'] : 0.00;
 
         if($aResultData['mc_currency'] == $sCurrencyCode && isset($aResultData['payment_gross']) && !empty($aResultData['payment_gross']))
-            $fAmount = (float)$aResultData['payment_gross'];
+            $fAmount = (float)$aResultData['payment_gross'] - $fTax;
         else if($aResultData['mc_currency'] == $sCurrencyCode && isset($aResultData['mc_gross']) && !empty($aResultData['mc_gross']))
-            $fAmount = (float)$aResultData['mc_gross'];
+            $fAmount = (float)$aResultData['mc_gross'] - $fTax;
         else if($aResultData['settle_currency'] == $sCurrencyCode && isset($aResultData['settle_amount']) && !empty($aResultData['settle_amount']))
-            $fAmount = (float)$aResultData['settle_amount'];
+            $fAmount = (float)$aResultData['settle_amount'] - $fTax;
 
         return $fAmount;
     }
