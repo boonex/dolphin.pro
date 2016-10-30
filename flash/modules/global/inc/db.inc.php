@@ -46,6 +46,7 @@ class BxDbConnect
         else			$this->bConnected = false;
         @mysql_select_db($this->sDb, $this->rLink);
         mysql_query("SET NAMES 'utf8'", $this->rLink);
+        mysql_query("SET sql_mode = ''", $this->rLink);
         mysql_query("SET @@local.wait_timeout=9000;", $this->rLink);
         mysql_query("SET @@local.interactive_timeout=9000;", $this->rLink);
     }
