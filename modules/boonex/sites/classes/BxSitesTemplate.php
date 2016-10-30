@@ -198,7 +198,7 @@ class BxSitesTemplate extends BxDolModuleTemplate
         if (null == $this->_oMain)
             $this->_oMain = BxDolModule::getInstance('BxSitesModule');
 
-        $sUrl = strncasecmp($aData['url'], 'http://', 7) != 0 && strncasecmp($aData['url'], 'https://', 8) != 0 ? 'http://' . $aData['url'] : $aData['url'];
+        $sUrl = strncasecmp($aData['url'], 'http://', 7) !== 0 && strncasecmp($aData['url'], 'https://', 8) !== 0 ? 'http://' . $aData['url'] : $aData['url'];
 
         $aFile = BxDolService::call('photos', 'get_photo_array', array($aData['photo'], $sThumbSize), 'Search');
         $sImage = $aFile['no_image'] ? '' : $aFile['file'];

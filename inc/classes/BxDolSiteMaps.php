@@ -143,7 +143,7 @@ class BxDolSiteMaps extends BxDolMistake
 
         $l = strlen(BX_SITE_MAPS_FILES_PREFIX);
         while (($sFile = readdir($rHandler)) !== false)
-            if (0 == strncmp($sFile, BX_SITE_MAPS_FILES_PREFIX, $l) && file_exists(self::$BASE_PATH . $sFile))
+            if (0 === strncmp($sFile, BX_SITE_MAPS_FILES_PREFIX, $l) && file_exists(self::$BASE_PATH . $sFile))
                 @unlink (self::$BASE_PATH . $sFile);
 
         closedir($rHandler);
@@ -298,7 +298,7 @@ class BxDolSiteMaps extends BxDolMistake
     protected function _getDateTimeStamp ($a)
     {
         if ('datetime' == $this->_aQueryParts['field_date_type'])
-            return 0 == strncmp('0000-00-00', $a[$this->_aQueryParts['field_date']], 10) ? time() : strtotime($a[$this->_aQueryParts['field_date']]);
+            return 0 === strncmp('0000-00-00', $a[$this->_aQueryParts['field_date']], 10) ? time() : strtotime($a[$this->_aQueryParts['field_date']]);
         else
             return 0 == $this->_aQueryParts['field_date'] ? time() : $a[$this->_aQueryParts['field_date']];
     }

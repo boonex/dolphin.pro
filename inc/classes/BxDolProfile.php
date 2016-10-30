@@ -165,7 +165,7 @@ class BxDolProfile extends BxDolMistake
         }
 
         $iID = (int)$vID;
-        if ( strcmp("$vID", "$iID") == 0 ) {
+        if ( strcmp("$vID", "$iID") === 0 ) {
             return $iID;
         } else {
             $aNick = $oPDb -> getIdByNickname( $vID );

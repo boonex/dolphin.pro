@@ -96,7 +96,7 @@ class BxDolAdminMobileBuilder extends BxDolAdminBuilder
 
 $oAdminMobileBuilder = new BxDolAdminMobileBuilder (bx_get('page'));
 
-if (0 == strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+if (0 === strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
     $oAdminMobileBuilder->handlePostActions($_POST);
     exit;
 }

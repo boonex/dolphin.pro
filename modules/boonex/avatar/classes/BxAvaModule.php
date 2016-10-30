@@ -200,7 +200,7 @@ class BxAvaModule extends BxDolModule
     function actionSetSiteAvatar ($sImg)
     {
         $iAvatar = (int)$sImg;
-        if (!$iAvatar || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+        if (!$iAvatar || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
             echo _t('_bx_ava_msg_error_occured');
             exit;
         }
@@ -239,7 +239,7 @@ class BxAvaModule extends BxDolModule
             $iProfileIdOrig = $iProfileId;
 
         $iAvatar = (int)$sImg;
-        if (!$iAvatar || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+        if (!$iAvatar || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
             echo _t('_bx_ava_msg_error_occured');
             exit;
         }
@@ -276,7 +276,7 @@ class BxAvaModule extends BxDolModule
             $iProfileId = $this->_iProfileId;
 
         $iAvatar = (int)$sImg;
-        if (!$iAvatar || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+        if (!$iAvatar || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
             echo _t('_bx_ava_msg_error_occured');
             exit;
         }

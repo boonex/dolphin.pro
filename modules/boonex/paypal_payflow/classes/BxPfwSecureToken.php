@@ -23,7 +23,7 @@ class BxPfwSecureToken extends BxPfwPayPal
 		$this->_getSecureToken($iPendingId, $aCartInfo, $sTokenId);
 
 		$aResponse = $this->_executeCall();
-		if($aResponse === false || strcmp($sTokenId, $aResponse['SECURETOKENID']) != 0)
+		if($aResponse === false || strcmp($sTokenId, $aResponse['SECURETOKENID']) !== 0)
 			return false;
 
 		$this->_logInfo(__METHOD__, $aResponse);

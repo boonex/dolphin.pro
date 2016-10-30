@@ -77,7 +77,7 @@ function getMainCode()
     $_page['header'] = _t($sKissKey);
 
     if ( $_GET['ConfCode'] && $_GET['from'] &&
-        ( strcmp( $_GET['ConfCode'], base64_encode( base64_encode( crypt( $_GET['from'], CRYPT_EXT_DES  ? "vkiss_sec" : "vk") ) ) ) == 0 ) )
+        ( strcmp( $_GET['ConfCode'], base64_encode( base64_encode( crypt( $_GET['from'], CRYPT_EXT_DES  ? "vkiss_sec" : "vk") ) ) ) === 0 ) )
     {
         $member['ID'] = (int)$_GET['from'];
         $isCheckVisitorGreeting = false;

@@ -121,7 +121,7 @@ EOF;
 
         $sVote = '';
 
-        if (strncasecmp($sSiteUrl, 'http://', 7) != 0 && strncasecmp($sSiteUrl, 'https://', 8) != 0)
+        if (strncasecmp($sSiteUrl, 'http://', 7) !== 0 && strncasecmp($sSiteUrl, 'https://', 8) !== 0)
             $sSiteUrl = 'http://' . $sSiteUrl;
 
         if ($this->_oConfig->isVotesAllowed() &&

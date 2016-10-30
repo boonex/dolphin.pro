@@ -81,7 +81,7 @@ class BxGroupsTemplate extends BxDolTwigTemplate
             $sRet .= '<tr><td class="bx_groups_field_name bx-def-font-grayed bx-def-padding-sec-right" valign="top">' . $a['caption'] . '</td><td class="bx_groups_field_value">';
             if (is_string($a['display']) && is_callable(array($this, $a['display'])))
                 $sRet .= call_user_func_array(array($this, $a['display']), array($aDataEntry[$k]));
-            else if (0 == strcasecmp($k, 'country'))
+            else if (0 === strcasecmp($k, 'country'))
                 $sRet .= _t($GLOBALS['aPreValues']['Country'][$aDataEntry[$k]]['LKey']);
             else
                 $sRet .= $aDataEntry[$k];

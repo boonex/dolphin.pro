@@ -74,7 +74,7 @@ class BxDolAdminMenu extends BxDolMistake
 
         $sUri = $_SERVER['REQUEST_URI'];
         $sPath = parse_url (BX_DOL_URL_ROOT, PHP_URL_PATH);
-        if ($sPath && $sPath != '/' && 0 == strncmp($sPath, $sUri, strlen($sPath)))
+        if ($sPath && $sPath != '/' && 0 === strncmp($sPath, $sUri, strlen($sPath)))
             $sUri = substr($sUri, strlen($sPath) - strlen($sUri));
         $sUri = BX_DOL_URL_ROOT . trim($sUri, '/');
         $sFile = basename($_SERVER['PHP_SELF']);

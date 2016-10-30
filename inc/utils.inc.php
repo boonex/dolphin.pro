@@ -519,7 +519,7 @@ function get_templates_array($isAllParams = false)
 
     while (false !== ($sFileName = readdir($handle))) {
 
-        if (!is_dir($sPath . $sFileName) || 0 != strncmp($sFileName, 'tmpl_', 5))
+        if (!is_dir($sPath . $sFileName) || 0 !== strncmp($sFileName, 'tmpl_', 5))
             continue;
 
         $sTemplName = substr($sFileName, 5);
@@ -1086,15 +1086,15 @@ function bx_import($sClassName, $aModule = array())
         require_once (BX_DIRECTORY_PATH_MODULES . $a['path'] . 'classes/' . $a['class_prefix'] . $sClassName . '.php');
     }
 
-    if (0 == strncmp($sClassName, 'BxDol', 5)) {
+    if (0 === strncmp($sClassName, 'BxDol', 5)) {
         require_once(BX_DIRECTORY_PATH_CLASSES . $sClassName . '.php');
         return;
     }
-    if (0 == strncmp($sClassName, 'BxBase', 6)) {
+    if (0 === strncmp($sClassName, 'BxBase', 6)) {
         require_once(BX_DIRECTORY_PATH_BASE . 'scripts/' . $sClassName . '.php');
         return;
     }
-    if (0 == strncmp($sClassName, 'BxTempl', 7) && !class_exists($sClassName)) {
+    if (0 === strncmp($sClassName, 'BxTempl', 7) && !class_exists($sClassName)) {
         if (isset($GLOBALS['iAdminPage']) && (int)$GLOBALS['iAdminPage'] == 1) {
             if (!defined('BX_DOL_TEMPLATE_DEFAULT_CODE'))
                 require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolTemplate.php');
@@ -1600,7 +1600,7 @@ function bx_mkdir_r($sDirName, $rights = 0777)
  */
 function bx_proto ()
 {
-    return 0 == strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https' : 'http';
+    return 0 === strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https' : 'http';
 }
 
 /**
@@ -1627,7 +1627,7 @@ function bx_linkify($text, $sAttrs = '', $bHtmlSpecialChars = false)
         if (!preg_match('@^https?://@', $url))
             $url = 'http://'.$url;
 
-        if (strncmp(BX_DOL_URL_ROOT, $url, strlen(BX_DOL_URL_ROOT)) != 0) {
+        if (strncmp(BX_DOL_URL_ROOT, $url, strlen(BX_DOL_URL_ROOT)) !== 0) {
             $sAttrs .= ' target="_blank" ';
             if ($bAddNofollow)
                 $sAttrs .= ' rel="nofollow" ';
