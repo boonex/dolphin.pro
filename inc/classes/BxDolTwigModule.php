@@ -442,7 +442,7 @@ class BxDolTwigModule extends BxDolModule
     {
         if ('user' == $sMode || 'my' == $sMode) {
             $aProfile = getProfileInfo ($this->_iProfileId);
-            if (0 == strcasecmp($sValue, $aProfile['NickName']) || 'my' == $sMode) {
+            if (0 === strcasecmp($sValue, $aProfile['NickName']) || 'my' == $sMode) {
                 $this->_browseMy ($aProfile);
                 return;
             }
@@ -635,7 +635,7 @@ class BxDolTwigModule extends BxDolModule
             exit;
         }
 
-        if (!$this->isAllowedDelete($aDataEntry) || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+        if (!$this->isAllowedDelete($aDataEntry) || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
             echo MsgBox(_t('_Access denied')) . genAjaxyPopupJS($iEntryId, 'ajaxy_popup_result_div');
             exit;
         }
@@ -663,7 +663,7 @@ class BxDolTwigModule extends BxDolModule
             exit;
         }
 
-        if (!$this->isAllowedMarkAsFeatured($aDataEntry) || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+        if (!$this->isAllowedMarkAsFeatured($aDataEntry) || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
             echo MsgBox(_t('_Access denied')) . genAjaxyPopupJS($iEntryId, 'ajaxy_popup_result_div');
             exit;
         }
@@ -691,7 +691,7 @@ class BxDolTwigModule extends BxDolModule
             exit;
         }
 
-        if (!$this->isAllowedJoin($aDataEntry) || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+        if (!$this->isAllowedJoin($aDataEntry) || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
             echo MsgBox(_t('_Access denied')) . genAjaxyPopupJS($iEntryId, 'ajaxy_popup_result_div');
             exit;
         }
@@ -737,7 +737,7 @@ class BxDolTwigModule extends BxDolModule
             exit;
         }
 
-        if (!$this->isAllowedActivate($aDataEntry) || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+        if (!$this->isAllowedActivate($aDataEntry) || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
             echo MsgBox(_t('_Access denied')) . genAjaxyPopupJS($iEntryId, 'ajaxy_popup_result_div');
             exit;
         }
@@ -1806,7 +1806,7 @@ class BxDolTwigModule extends BxDolModule
     {
         header('Content-type:text/html;charset=utf-8');
 
-        if (false !== bx_get('ajax_action') && $this->isAllowedManageFans($aDataEntry) && 0 == strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+        if (false !== bx_get('ajax_action') && $this->isAllowedManageFans($aDataEntry) && 0 === strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
 
             $iEntryId = $aDataEntry[$this->_oDb->_sFieldId];
             $aIds = array ();

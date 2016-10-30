@@ -1451,7 +1451,7 @@ EOF;
             if ($this->_checkUserPerm ('', 'own', 'del', $f['forum_id']) && !$this->_isEditTimeout((int)$post_id) && !$aTopic['topic_locked'])
                 $no_access = false;
 
-        if ($no_access || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+        if ($no_access || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
             return <<<EOF
 <html>
 <body>
@@ -1494,7 +1494,7 @@ EOF;
     {
         $f = $this->fdb->getForumByPostId((int)$post_id);
         $user = $this->_getLoginUserName();
-        if (0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', 'hide_posts', $f ? $f['forum_id'] : 0))
+        if (0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', 'hide_posts', $f ? $f['forum_id'] : 0))
             return '<ret>0</ret>';
 
         if (!$this->fdb->hidePost ((int)$is_hide, (int)$post_id, $user))
@@ -1551,7 +1551,7 @@ EOS;
     function moveTopicSubmit ($topic_id, $forum_id, $old_forum_id, $goto_new_location)
     {
         $user = $this->_getLoginUserName();
-        if (0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', 'move_topics', (int)$forum_id) || !$topic_id || !$forum_id || !$old_forum_id)
+        if (0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', 'move_topics', (int)$forum_id) || !$topic_id || !$forum_id || !$old_forum_id)
             return '<ret>0</ret>';
 
         if (!$this->fdb->moveTopic ((int)$topic_id, (int)$forum_id, (int)$old_forum_id))
@@ -1572,7 +1572,7 @@ EOS;
     {
         $f = $this->fdb->getForumByTopicId ((int)$topic_id);
         $user = $this->_getLoginUserName();
-        if (0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', 'del_topics', $f ? $f['forum_id'] : 0))
+        if (0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', 'del_topics', $f ? $f['forum_id'] : 0))
             return '<ret>0</ret>';
 
         if (!$this->fdb->delTopic ((int)$topic_id, $user))
@@ -1593,7 +1593,7 @@ EOS;
     {
         $f = $this->fdb->getForumByTopicId ((int)$topic_id);
         $user = $this->_getLoginUserName();
-        if (0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', $is_hide ? 'hide_topics' : 'unhide_topics', $f ? $f['forum_id'] : 0))
+        if (0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', $is_hide ? 'hide_topics' : 'unhide_topics', $f ? $f['forum_id'] : 0))
             return '<ret>0</ret>';
 
         if (!$this->fdb->hideTopic ((int)$is_hide, (int)$topic_id, $user))
@@ -1613,7 +1613,7 @@ EOS;
     {
         $f = $this->fdb->getForumByTopicId ((int)$topic_id);
         $user = $this->_getLoginUserName();
-        if (0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', 'sticky', $f ? $f['forum_id'] : 0))
+        if (0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', 'sticky', $f ? $f['forum_id'] : 0))
             return '<ret>0</ret>';
 
         if (!$this->fdb->stick ((int)$topic_id, $user))
@@ -1631,7 +1631,7 @@ EOS;
     {
         $f = $this->fdb->getForumByTopicId ((int)$topic_id);
         $user = $this->_getLoginUserName();
-        if (0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', 'lock', $f ? $f['forum_id'] : 0))
+        if (0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') || !$this->_checkUserPerm ($user, '', 'lock', $f ? $f['forum_id'] : 0))
             return '<ret>0</ret>';
 
         if (!$this->fdb->lock ((int)$topic_id, $user))
@@ -1754,7 +1754,7 @@ EOF;
     function votePost ($post_id, $vote)
     {
         $u = $this->getLoginUser ();
-        if (!$u || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
+        if (!$u || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
             return '<ret>0</ret>';
 
         if (!$this->fdb->insertVote ((int)$post_id, $u, $vote))
@@ -1772,7 +1772,7 @@ EOF;
      */
     function report ($post_id)
     {
-        if (!$post_id || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
+        if (!$post_id || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
             return '<ret>0</ret>';
 
         $u = $this->getLoginUser ();
@@ -1794,7 +1794,7 @@ EOF;
      */
     function flag ($topic_id)
     {
-        if (!$topic_id || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
+        if (!$topic_id || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
             return '<ret>0</ret>';
 
         $u = $this->getLoginUser ();
@@ -2315,7 +2315,7 @@ EOF;
         header ("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header ("Content-type: {$a['att_type']}");
         header ("Content-Length: " . $a['att_size']);
-        if (0 != strncmp('image/', $a['att_type'], 6))
+        if (0 !== strncmp('image/', $a['att_type'], 6))
             header ("Content-Disposition: attachment; filename=\"{$a['att_name']}\"");
 
         readfile ($gConf['dir']['attachments'] . orca_build_path ($hash) . $hash);
@@ -2329,7 +2329,7 @@ EOF;
         $files = '';
         foreach ($attachments as $file) {
             encode_post_text ($file['att_name']);
-            $isImage = 0 == strncmp('image/', $file['att_type'], 6) ? 1 : 0;
+            $isImage = 0 === strncmp('image/', $file['att_type'], 6) ? 1 : 0;
             $files .= '<file image="' . $isImage . '" hash="' . $file['att_hash'] . '" size="' . orca_format_bytes($file['att_size']) . '" downloads="' . $file['att_downloads'] . '">' . $file['att_name'] . '</file>';
         }
 

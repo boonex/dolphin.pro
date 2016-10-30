@@ -1347,7 +1347,7 @@ class BxWallModule extends BxDolModule
     		return false;
 
     	$bSystem = $this->_oConfig->isSystem($aEvent['type'], $aEvent['action']);
-    	if($bSystem && strcmp($aEvent['action'], 'commentPost') == 0)
+    	if($bSystem && strcmp($aEvent['action'], 'commentPost') === 0)
     		return false;
 
         if(isAdmin())

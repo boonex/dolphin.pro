@@ -183,7 +183,7 @@ function check_login($ID, $passwd, $iRole = BX_DOL_ROLE_MEMBER, $error_handle = 
     }
 
     // If password is incorrect
-    if (strcmp($aProfile['Password'], $passwd) != 0) {
+    if (strcmp($aProfile['Password'], $passwd) !== 0) {
         if ($error_handle)
             login_form(_t("_INVALID_PASSWD"), $member);
         return false;

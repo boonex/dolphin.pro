@@ -13,7 +13,7 @@ function actionRSS()
     $sType = process_db_input($_REQUEST['action'], BX_TAGS_STRIP);
     $iLength = (int)$_REQUEST['length'];
 
-    if(strncmp($sType, 'sys_', 4) == 0) {
+    if(strncmp($sType, 'sys_', 4) === 0) {
         $aRssTitle = '';
         $aRssData = array();
 

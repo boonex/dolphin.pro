@@ -652,7 +652,7 @@ class BxSitesModule extends BxDolTwigModule
                 }
 
                 $aItem[$this->_oDb->_sFieldUri] = $sBaseUrl . $aItem[$this->_oDb->_sFieldUri];
-                $aItem['url'] = strncasecmp($aItem['url'], 'http://', 7) != 0 && strncasecmp($aItem['url'], 'https://', 8) != 0 ? 'http://' . $aItem['url'] : $aItem['url'];
+                $aItem['url'] = strncasecmp($aItem['url'], 'http://', 7) !== 0 && strncasecmp($aItem['url'], 'https://', 8) !== 0 ? 'http://' . $aItem['url'] : $aItem['url'];
                 $aItems[] = $aItem;
 
                 // BEGIN STW INTEGRATION
@@ -1309,7 +1309,7 @@ class BxSitesModule extends BxDolTwigModule
                 $oForm->initChecker();
                 if ($oForm->isSubmittedAndValid()) {
                     $sUrl = process_pass_data($_POST['url']);
-                    $sUrlFull = strncasecmp($sUrl, 'http://', 7) != 0 && strncasecmp($sUrl, 'https://', 8) != 0 ? 'http://' . $sUrl : $sUrl;
+                    $sUrlFull = strncasecmp($sUrl, 'http://', 7) !== 0 && strncasecmp($sUrl, 'https://', 8) !== 0 ? 'http://' . $sUrl : $sUrl;
                     $aSite = $this->_oDb->getSiteByUrl($sUrl);
 
                     if (count($aSite) == 0) {

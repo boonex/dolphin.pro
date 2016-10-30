@@ -293,7 +293,7 @@ class BxWallConfig extends BxDolConfig
 
 	function isSystemComment($sType, $sAction)
     {
-        return strcmp($sType, 'comment') == 0 && strcmp($sAction, 'add') == 0;
+        return strcmp($sType, 'comment') === 0 && strcmp($sAction, 'add') === 0;
     }
 
 	function isGrouped($sType, $sAction, $mixedObjectId)

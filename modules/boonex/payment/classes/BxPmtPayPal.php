@@ -169,9 +169,9 @@ class BxPmtPayPal extends BxPmtProvider
                return $aResponse;
 
             array_walk($aResponse['content'], create_function('&$arg', "\$arg = trim(\$arg);"));
-            if(strcmp($aResponse['content'][0], "INVALID") == 0)
+            if(strcmp($aResponse['content'][0], "INVALID") === 0)
                 return array('code' => -1, 'message' => _t('_payment_pp_err_wrong_transaction'));
-            else if(strcmp($aResponse['content'][0], "VERIFIED") != 0)
+            else if(strcmp($aResponse['content'][0], "VERIFIED") !== 0)
                 return array('code' => 2, 'message' => _t('_payment_pp_err_wrong_verification_status'));
         }
         else if($iPrcType == PP_PRC_TYPE_PDT) {
@@ -181,9 +181,9 @@ class BxPmtPayPal extends BxPmtProvider
             if((int)$aResponse['code'] !== 0)
                return $aResponse;
 
-            if(strcmp($aResponse['content'][0], "FAIL") == 0)
+            if(strcmp($aResponse['content'][0], "FAIL") === 0)
                 return array('code' => -1, 'message' => _t('_payment_pp_err_wrong_transaction'));
-            else if(strcmp($aResponse['content'][0], "SUCCESS") != 0)
+            else if(strcmp($aResponse['content'][0], "SUCCESS") !== 0)
                 return array('code' => 2, 'message' => _t('_payment_pp_err_wrong_verification_status'));
 
             $aKeys = array();

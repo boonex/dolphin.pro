@@ -101,7 +101,7 @@ class BxCRSSModule extends BxDolModule
 
             $sAction = bx_get('action');
 
-            if (0 == strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') && isset($sAction) && $sAction != '') {
+            if (0 === strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') && isset($sAction) && $sAction != '') {
                 $sNewUrl = process_db_input(bx_get('rss_url'), BX_TAGS_STRIP);
                 $sNewDesc = process_db_input(bx_get('rss_desc'), BX_TAGS_STRIP);
                 $iOldID = (int)bx_get('rss_id');

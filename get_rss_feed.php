@@ -21,7 +21,7 @@ if (isset($aPredefinedRssFeeds[$_GET['ID']])) {
 
     $sCont = $aPredefinedRssFeeds[$_GET['ID']];
 
-} elseif (0 == strncmp('forum|', $_GET['ID'], 6)) {
+} elseif (0 === strncmp('forum|', $_GET['ID'], 6)) {
 
     $a = explode('|', $_GET['ID']);
     if (!is_array($a) || 3 != count($a))
@@ -48,4 +48,4 @@ if( $iMemID ) {
 }
 
 header( 'Content-Type: text/xml' );
-echo bx_file_get_contents(defined('BX_PROFILER') && BX_PROFILER && 0 == strncmp($site['url'], $sUrl, strlen($site['url'])) ? bx_append_url_params($sUrl, 'bx_profiler_disable=1') : $sUrl);
+echo bx_file_get_contents(defined('BX_PROFILER') && BX_PROFILER && 0 === strncmp($site['url'], $sUrl, strlen($site['url'])) ? bx_append_url_params($sUrl, 'bx_profiler_disable=1') : $sUrl);

@@ -16,7 +16,7 @@ bx_import('BxDolAdminDashboard');
 define('BX_DOL_ADMIN_INDEX', 1);
 
 $bLogged = isLogged();
-$bNeedCheck = $bLogged && isAdmin() && isset($_POST['relocate']) && $_POST['relocate'] && strncasecmp($_POST['relocate'], BX_DOL_URL_ADMIN . 'license.php', strlen(BX_DOL_URL_ADMIN . 'license.php')) == 0;
+$bNeedCheck = $bLogged && isAdmin() && isset($_POST['relocate']) && $_POST['relocate'] && strncasecmp($_POST['relocate'], BX_DOL_URL_ADMIN . 'license.php', strlen(BX_DOL_URL_ADMIN . 'license.php')) === 0;
 
 if($bNeedCheck || (isset($_POST['ID']) && isset($_POST['Password']))) {
     $iId = getID($_POST['ID']);
@@ -30,7 +30,7 @@ if($bNeedCheck || (isset($_POST['ID']) && isset($_POST['Password']))) {
     if($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
         echo check_password($iId, $sPassword, BX_DOL_ROLE_ADMIN, false) ? 'OK' : 'Fail';
     else if($bNeedCheck || check_password($iId, $sPassword, BX_DOL_ROLE_ADMIN)) {
-        if($_POST['relocate'] && (strncasecmp($_POST['relocate'], BX_DOL_URL_ROOT, strlen(BX_DOL_URL_ROOT)) == 0 || strncasecmp($_POST['relocate'], BX_DOL_URL_ADMIN . 'license.php', strlen(BX_DOL_URL_ADMIN . 'license.php')) == 0))
+        if($_POST['relocate'] && (strncasecmp($_POST['relocate'], BX_DOL_URL_ROOT, strlen(BX_DOL_URL_ROOT)) === 0 || strncasecmp($_POST['relocate'], BX_DOL_URL_ADMIN . 'license.php', strlen(BX_DOL_URL_ADMIN . 'license.php')) === 0))
             $sUrlRelocate = $_POST['relocate'];
         else
             $sUrlRelocate = BX_DOL_URL_ADMIN . 'index.php';
