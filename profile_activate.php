@@ -72,8 +72,8 @@ function PageCompPageMainCode($iID, $sConfCode)
     );
 
     if ($p_arr['Status'] == 'Unconfirmed') {
-        $ConfCodeReal = base64_encode( base64_encode( crypt( $p_arr[Email], CRYPT_EXT_DES ? "secret_co" : "se" ) ) );
-        if (strcmp($ConfCode, $ConfCodeReal) != 0) {
+        $ConfCodeReal = base64_encode( base64_encode( crypt( $p_arr['Email'], CRYPT_EXT_DES ? "secret_co" : "se" ) ) );
+        if (strcmp($ConfCode, $ConfCodeReal) !== 0) {
             $aForm = array(
                 'form_attrs' => array (
                     'action' =>  BX_DOL_URL_ROOT . 'profile_activate.php',

@@ -358,7 +358,7 @@ class BxDolVoting
 
     protected function _getVoteResult ()
     {
-        if(strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') != 0 || bx_get($this->_aSystem['post_name']) === false)
+        if(strcasecmp($_SERVER['REQUEST_METHOD'], 'POST') !== 0 || bx_get($this->_aSystem['post_name']) === false)
 			return false;
 
         $iVote = (int)bx_get($this->_aSystem['post_name']);

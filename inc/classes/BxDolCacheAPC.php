@@ -92,7 +92,7 @@ class BxDolCacheAPC extends BxDolCache
         if (isset($aKeys['cache_list']) && is_array($aKeys['cache_list'])) {
             foreach ($aKeys['cache_list'] as $r) {
                 $sKey = $r['info'];
-                if (0 == strncmp($sKey, $s, $l))
+                if (0 === strncmp($sKey, $s, $l))
                     $this->delData($sKey);
             }
         }
@@ -110,7 +110,7 @@ class BxDolCacheAPC extends BxDolCache
         if (isset($aKeys['cache_list']) && is_array($aKeys['cache_list'])) {
             foreach ($aKeys['cache_list'] as $r) {
                 $sKey = $r['info'];
-                if (0 == strncmp($sKey, $s, $l))
+                if (0 === strncmp($sKey, $s, $l))
                     $iSize += $r['mem_size'];
             }
         }

@@ -24,7 +24,7 @@ class Admin extends ThingPage
      */
     function deleteCategory ($cat_id)
     {
-        if (!$this->_admin || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
+        if (!$this->_admin || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
             return '<ret>0</ret>';
 
         $db = new DbAdmin ();
@@ -38,7 +38,7 @@ class Admin extends ThingPage
      */
     function deleteForum ($forum_id)
     {
-        if (!$this->_admin || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
+        if (!$this->_admin || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
             return '<ret>0</ret>';
 
         $db = new DbAdmin ();
@@ -85,7 +85,7 @@ EOS;
      */
     function editCategorySubmit ($cat_id, $cat_name, $cat_order, $cat_expanded)
     {
-        if (!$this->_admin || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
+        if (!$this->_admin || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
             return '<ret>0</ret>';
 
         $cat_name = unicode_urldecode($cat_name);
@@ -153,7 +153,7 @@ OES;
      */
     function editFormSubmit ($cat_id, $forum_id, $title, $desc, $type, $order)
     {
-        if (!$this->_admin || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
+        if (!$this->_admin || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
             return '<ret>0</ret>';
 
         $title = unicode_urldecode ($title);
@@ -281,7 +281,7 @@ EOF;
     {
         global $gConf;
 
-        if (!$this->_admin || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
+        if (!$this->_admin || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST')) {
             return '<ret>0</ret>';
         }
 
@@ -298,7 +298,7 @@ EOF;
 
     function clearReport ($post_id)
     {
-        if (!$post_id || !$this->_admin || 0 != strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
+        if (!$post_id || !$this->_admin || 0 !== strcasecmp($_SERVER['REQUEST_METHOD'], 'POST'))
              return '<ret>0</ret>';
 
         $db = new DbAdmin ();

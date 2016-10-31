@@ -192,7 +192,7 @@ class BxDolMenu
 
                 $sItemUriPermalink = $this->oPermalinks->permalink($sItemUri);
 
-                if (0 == strcasecmp($sItemUri, $this->sRequestUriFile) || 0 == strcasecmp($sItemUriPermalink, $this->sRequestUriFile) || 0 == strncasecmp(rawurldecode($this->sRequestUriFile), $sItemUri, strlen($sItemUri)) || 0 == strncasecmp($this->sRequestUriFile, $sItemUriPermalink, strlen($sItemUriPermalink))) {
+                if (0 === strcasecmp($sItemUri, $this->sRequestUriFile) || 0 === strcasecmp($sItemUriPermalink, $this->sRequestUriFile) || 0 === strncasecmp(rawurldecode($this->sRequestUriFile), $sItemUri, strlen($sItemUri)) || 0 === strncasecmp($this->sRequestUriFile, $sItemUriPermalink, strlen($sItemUriPermalink))) {
 
                     if ((isset($aPossibleItems[$sItemUriPermalink]) && $aPossibleItems[$sItemUriPermalink]['Type'] == "custom" && $aItem['Type'] == "top") 
                         || 

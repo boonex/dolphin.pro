@@ -36,7 +36,6 @@ class BxDbConnect
     {
         return BxDolDb::getInstance()->escape($s, false);
     }
-
 }
 
 global $oDb;

@@ -74,7 +74,7 @@ class BxDolDNSURIBlacklists
         $aUrls = array ();
         foreach ($aUrlsUniq as $sUrl) {
 
-            if (0 == strncasecmp('www.', $sUrl, 4))
+            if (0 === strncasecmp('www.', $sUrl, 4))
                 $sUrl = substr($sUrl, 4);
 
             $aZones = explode ('.', $sUrl);

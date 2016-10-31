@@ -125,7 +125,7 @@ class BxBaseIndexPageView extends BxDolPageView
             if ('_' == $r['desc'][0])
                 $r['desc'] = _t($r['desc']);
 
-            if (0 == strncmp('php:', $r['url'], 4))
+            if (0 === strncmp('php:', $r['url'], 4))
                 $r['url'] = eval(substr($r['url'], 4));
             if (!$r['url'])
                 continue;

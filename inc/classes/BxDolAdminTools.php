@@ -775,7 +775,7 @@ EOF;
             <?php
                 $sSapi = php_sapi_name();
                 echo $sSapi . ' - ';
-                if (0 == strcasecmp('cgi', $sSapi))
+                if (0 === strcasecmp('cgi', $sSapi))
                     echo '<b class="warn">WARNING</b> (your PHP setup maybe very inefficient, <a href="?action=phpinfo">please check it for sure</a> and try to switch to mod_php, apache dso module or FastCGI)';
                 else
                     echo '<b class="ok">OK</b>';
@@ -906,7 +906,7 @@ EOF;
                 $bResult = ($mixedVal >= $a['val']);
                 break;
             case 'strcasecmp':
-                $bResult = 0 == strcasecmp($mixedVal, $a['val']);
+                $bResult = 0 === strcasecmp($mixedVal, $a['val']);
                 break;
             case '=':
             default:
