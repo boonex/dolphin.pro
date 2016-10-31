@@ -146,7 +146,7 @@ function SendTellFriend($iSenderID = 0)
     if(strlen(trim($sSenderEmail)) <= 0)
         return 0;
 
-	$sSenderName = clear_xss(bx_get('sender_name'));
+	$sSenderName = strmaxtextlen(bx_get('sender_name'), 16);
     $sSenderLink = $iSenderID != 0 ? getProfileLink($iSenderID) : BX_DOL_URL_ROOT;
 
     $sRecipientEmail   = clear_xss(bx_get('recipient_email'));
