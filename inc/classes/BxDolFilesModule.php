@@ -1644,7 +1644,6 @@ class BxDolFilesModule extends BxDolModule
     function getWallPost($aEvent, $sIcon = 'save', $aParams = array())
     {
         $sPrefix = $this->_oConfig->getMainPrefix();
-		$aOwner = getProfileInfo((int)$aEvent['owner_id']);
 
         $aObjectIds = strpos($aEvent['object_id'], ',') !== false ? explode(',', $aEvent['object_id']) : array($aEvent['object_id']);
         rsort($aObjectIds);
@@ -1682,7 +1681,15 @@ class BxDolFilesModule extends BxDolModule
         if($iDeleted == count($aObjectIds))
             return array('perform_delete' => true);
 
-        if(empty($aOwner) || empty($aItems))
+        $iOwner = 0;
+        if(!empty($aEvent['owner_id']))
+            $iOwner = (int)$aEvent['owner_id'];
+
+        $bItems = !empty($aItems) && is_array($aItems);
+        if($iOwner == 0 && $bItems && !empty($aItems[0]['owner']))
+            $iOwner = (int)$aItems[0]['owner'];
+
+        if($iOwner == 0 || !$bItems)
             return "";
 
         $sCss = "";
@@ -1692,7 +1699,6 @@ class BxDolFilesModule extends BxDolModule
             $this->_oTemplate->addCss(array('wall_post.css', 'wall_post_phone.css'));
 
         $iItems = count($aItems);
-        $iOwner = (int)$aEvent['owner_id'];
         $sOwner = getNickName($iOwner);
 
         //--- Grouped events
@@ -1710,6 +1716,7 @@ class BxDolFilesModule extends BxDolModule
 
             $sTemplateName = isset($aParams['templates']['grouped']) ? $aParams['templates']['grouped'] : 'modules/boonex/wall/|timeline_post_files_grouped.html';
             return array(
+                'owner_id' => $iOwner,
                 'title' => _t('_' . $sPrefix . '_wall_added_new_items_title', $sOwner, $iItems),
                 'description' => '',
                 'grouped' => array(
@@ -1736,6 +1743,7 @@ class BxDolFilesModule extends BxDolModule
         $sItemTxt = _t('_' . $sPrefix . '_wall_object');
         $sTemplateName = isset($aParams['templates']['single']) ? $aParams['templates']['single'] : 'modules/boonex/wall/|timeline_post_files.html';
         return array(
+        	'owner_id' => $iOwner,
             'title' => _t('_' . $sPrefix . '_wall_added_new_title', $sOwner, $sItemTxt),
             'description' => $aItem['description'],
             'grouped' => false,
