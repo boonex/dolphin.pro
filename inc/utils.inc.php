@@ -705,8 +705,8 @@ function clear_xss($val)
         ));
 
         $oConfig->set('HTML.DefinitionID', 'html5-definitions');
-		$oConfig->set('HTML.DefinitionRev', 1);
-		if ($def = $oConfig->maybeGetRawHTMLDefinition()) {
+        $oConfig->set('HTML.DefinitionRev', 1);
+        if ($def = $oConfig->maybeGetRawHTMLDefinition()) {
 		    $def->addElement('section', 'Block', 'Flow', 'Common');
 		    $def->addElement('nav',     'Block', 'Flow', 'Common');
 		    $def->addElement('article', 'Block', 'Flow', 'Common');
@@ -725,8 +725,9 @@ function clear_xss($val)
 		    $def->addElement('source', 'Block', 'Flow', 'Common', array(
 		        'src' => 'URI',
 		        'type' => 'Text',
-		    ));
-		} 
+            ));
+            $def->addAttribute('a', 'target', 'Enum#_blank,_self,_target,_top');
+		}
 
         $oHtmlPurifier = new HTMLPurifier($oConfig);
     }
