@@ -99,6 +99,7 @@ class BxGroupsFormAdd extends BxDolFormMedia
 
         $aInputPrivacyViewFans = $this->_oMain->_oPrivacy->getGroupChooser($iProfileId, 'groups', 'view_fans');
         $aInputPrivacyViewFans['values'] = array_merge($aInputPrivacyViewFans['values'], $aInputPrivacyCustom);
+        $aInputPrivacyViewFans['db'] = $aInputPrivacyCustomPass;
 
         $aInputPrivacyComment = $this->_oMain->_oPrivacy->getGroupChooser($iProfileId, 'groups', 'comment');
         $aInputPrivacyComment['values'] = array_merge($aInputPrivacyComment['values'], $aInputPrivacyCustom);
