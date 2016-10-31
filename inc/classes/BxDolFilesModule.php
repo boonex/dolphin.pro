@@ -1855,7 +1855,6 @@ class BxDolFilesModule extends BxDolModule
     function getWallPost($aEvent, $sIcon = 'save', $aParams = array())
     {
         $sPrefix = $this->_oConfig->getMainPrefix();
-        $aOwner  = getProfileInfo((int)$aEvent['owner_id']);
 
         $aObjectIds = strpos($aEvent['object_id'], ',') !== false ? explode(',',
             $aEvent['object_id']) : array($aEvent['object_id']);
@@ -1899,7 +1898,15 @@ class BxDolFilesModule extends BxDolModule
             return array('perform_delete' => true);
         }
 
-        if (empty($aOwner) || empty($aItems)) {
+        $iOwner = 0;
+        if(!empty($aEvent['owner_id']))
+            $iOwner = (int)$aEvent['owner_id'];
+
+        $bItems = !empty($aItems) && is_array($aItems);
+        if($iOwner == 0 && $bItems && !empty($aItems[0]['owner']))
+            $iOwner = (int)$aItems[0]['owner'];
+
+        if($iOwner == 0 || !$bItems) {
             return "";
         }
 
@@ -1911,7 +1918,6 @@ class BxDolFilesModule extends BxDolModule
         }
 
         $iItems = count($aItems);
-        $iOwner = (int)$aEvent['owner_id'];
         $sOwner = getNickName($iOwner);
 
         //--- Grouped events
