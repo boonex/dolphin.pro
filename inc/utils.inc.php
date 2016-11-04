@@ -449,7 +449,7 @@ function sendMail( $sRecipientEmail, $sMailSubject, $sMailBody, $iRecipientID = 
 
     // don't send mail to the user if he/she decided to not receive any site's notifications, unless it is critical emails (like email confirmation)
     if (!$bForceSend) {
-        $aRealRecipient = $GLOBALS['MySQL']->getRow("SELECT * FROM `Profiles` WHERE `Email`='" . process_db_input($sRecipientEmail, BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION) . "' LIMIT 1");
+        $aRealRecipient = isset($GLOBALS['MySQL']) && $GLOBALS['MySQL'] ? $GLOBALS['MySQL']->getRow("SELECT * FROM `Profiles` WHERE `Email`='" . process_db_input($sRecipientEmail, BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION) . "' LIMIT 1") : array();
         if ($aRealRecipient && 1 != $aRealRecipient['EmailNotify'])
             return true;
     }
