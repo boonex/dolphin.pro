@@ -39,7 +39,13 @@ class BxPmtBitPay extends BxPmtProvider
 
 	    switch ($aCartInfo['vendor_currency_code']) {
 			case 'USD':
-			case 'EUR':
+            case 'EUR':
+            case 'CAD':
+            case 'AUD':
+            case 'GBP':
+            case 'MXN':
+            case 'NZD':
+			case 'ZAR':
 			case 'BTC':
 				$this->aBpOptions['currency'] = $aCartInfo['vendor_currency_code'];
 		}
