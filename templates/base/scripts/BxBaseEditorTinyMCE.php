@@ -43,6 +43,7 @@ class BxBaseEditorTinyMCE extends BxDolEditor
                             "link: '{bx_url_tinymce}plugins/link/plugin.min.js'",
                             "lists: '{bx_url_tinymce}plugins/lists/plugin.min.js'",
                             "media: '{bx_url_tinymce}plugins/media/plugin.min.js'",
+                            "fullscreen: '{bx_url_tinymce}plugins/fullscreen/plugin.min.js'",
     );
     protected static $CONF_STANDARD = "
                         external_plugins: {
@@ -105,6 +106,7 @@ class BxBaseEditorTinyMCE extends BxDolEditor
                             "table: '{bx_url_tinymce}plugins/table/plugin.min.js'",
                             "textcolor: '{bx_url_tinymce}plugins/textcolor/plugin.min.js'",
                             "visualblocks: '{bx_url_tinymce}plugins/visualblocks/plugin.min.js'",
+                            "fullscreen: '{bx_url_tinymce}plugins/fullscreen/plugin.min.js'",
     );
     protected static $CONF_FULL = "
                         external_plugins: {
