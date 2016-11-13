@@ -490,7 +490,6 @@ class BxAvaModule extends BxDolModule
         $sPwd = db_value("SELECT `Password` FROM `Profiles` WHERE `ID` = '".(int)$iMemID."' LIMIT 1");
         if ($sPwd) {
 
-            bx_login ((int)$iMemID); // autologin here
             bx_import('BxDolPermalinks');
             $o = new BxDolPermalinks();
 
