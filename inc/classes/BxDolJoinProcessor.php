@@ -256,12 +256,11 @@ class BxDolJoinProcessor
             }
         }
 
-        //--- upload profile photo
-        if(isset($aProfile1['ProfilePhoto']) && !empty($aProfile1['ProfilePhoto'])) {
-            $sPass1 = getPassword($iId1);
-            bx_login($iId1);
+        bx_login($iId1);
+        check_logged();
 
-            check_logged();
+        //--- upload profile photo
+        if(isset($aProfile1['ProfilePhoto']) && !empty($aProfile1['ProfilePhoto'])) {            
 
             if ('sys_avatar' == getParam('sys_member_info_thumb') && BxDolRequest::serviceExists('avatar', 'set_image_for_cropping')) {
                 BxDolService::call('avatar', 'set_image_for_cropping', array ($iId1, $GLOBALS['dir']['tmp'] . $aProfile1['ProfilePhoto']));
