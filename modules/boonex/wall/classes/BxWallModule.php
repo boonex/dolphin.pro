@@ -616,7 +616,7 @@ class BxWallModule extends BxDolModule
 		$oForm = new BxTemplFormView(array());
 		$oForm->addCssJs(true, true);
 
-        $this->_oTemplate->addCss(array('view.css'));
+        $this->_oTemplate->addCss(array('view.css', 'view_phone.css'));
         $this->_oTemplate->addJs(array('modernizr.js', 'main.js', 'view.js'));
         return array($oSubscription->getData() . $this->_oTemplate->parseHtmlByName('view.html', $aVariables), $aTopMenu, LoadingBox('bx-wall-view-loading'), false, 'getBlockCaptionMenu');
     }
@@ -657,7 +657,7 @@ class BxWallModule extends BxDolModule
 		$oForm = new BxTemplFormView(array());
 		$oForm->addCssJs(true, true);
 
-        $this->_oTemplate->addCss(array('view.css'));
+        $this->_oTemplate->addCss(array('view.css', 'view_phone.css'));
         $this->_oTemplate->addJs(array('main.js', 'view.js'));
         return array($this->_oTemplate->parseHtmlByName('view.html', $aVariables), array(), LoadingBox('bx-wall-view-loading'), false, 'getBlockCaptionMenu');
     }
