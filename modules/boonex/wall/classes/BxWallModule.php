@@ -167,13 +167,14 @@ class BxWallModule extends BxDolModule
             return;
         }
 
+        $sTitle = _t($this->getRepostedLanguageKey($aReposted['type'], $aReposted['action'], $aReposted['object_id'], true), getNickName($iAuthorId));
         $iId = $this->_oDb->insertEvent(array(
             'owner_id' => $iOwnerId,
             'type' => $this->_oConfig->getPrefix('common_post') . 'repost',
             'action' => '',
             'object_id' => $iAuthorId,
             'content' => serialize($aContent),
-            'title' => _t($this->getRepostedLanguageKey($aReposted['type'], $aReposted['action'], $aReposted['object_id'], true), getNickName($iAuthorId)),
+            'title' => process_db_input($sTitle, BX_TAGS_NO_ACTION, BX_SLASHES_NO_ACTION),
             'description' => ''
         ));
 
@@ -985,7 +986,7 @@ class BxWallModule extends BxDolModule
 					)
 				),
             )),
-            'title' => _t('_wall_added_title_text', $aOwner['username']),
+            'title' => _t('_wall_added_title_text', getNickName($aOwner['id'])),
             'description' => $sContent
         );
     }
@@ -1027,7 +1028,7 @@ class BxWallModule extends BxDolModule
 				'url' => strpos($sUrl, 'http://') === false && strpos($sUrl, 'https://') === false ? 'http://' . $sUrl : $sUrl,
 				'description' => $sDescription
            )),
-           'title' => _t('_wall_added_title_link', $aOwner['username']),
+           'title' => _t('_wall_added_title_link', getNickName($aOwner['id'])),
            'description' => $sUrl . ' - ' . $sTitle
         );
     }
