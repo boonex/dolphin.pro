@@ -27,6 +27,7 @@ a.bx_photos-wall-caption-link:active {
 div.bx_photos-wall-content,
 div.bx_photos_comment-wall-content {
     position: relative;
+	padding: 5px;
 }
 div.wall-content.bx_photos-wall-content-grouped {
 	overflow: visible;
@@ -34,17 +35,24 @@ div.wall-content.bx_photos-wall-content-grouped {
 div.bx_photos-wall-content-grouped-cnt {
 	margin: -5px;
 }
+div.bx_photos-wall-content-grouped-cnt div.wall-content-gap {
+	margin: 5px;
+}
+div.bx_photos-wall-content-grouped-cnt div.wall-content-gap div.wall-content-wrapper {
+    margin: 0px;
+}
+
 div.bx_photos-wall-shp-wrapper,
 div.bx_photos-wall-shp-wrapper img {
 	width: 240px;
 	height: 240px;	
 }
+div.bx_photos-wall-shp-gap {
+	position: relative;
+    float: left;
+}
 div.bx_photos-wall-shp-wrapper {    
     position: relative;
-	float: left;
-
-	margin: 5px;
-
 	overflow: hidden;
 }
 div.bx_photos-wall-comments {

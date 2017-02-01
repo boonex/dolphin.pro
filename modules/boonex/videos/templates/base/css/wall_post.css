@@ -34,17 +34,23 @@ div.wall-content.bx_videos-wall-content-grouped {
 div.bx_videos-wall-content-grouped-cnt {
 	margin: -5px;
 }
+div.bx_videos-wall-content-grouped-cnt div.wall-content-gap {
+    margin: 5px;
+}
+div.bx_videos-wall-content-grouped-cnt div.wall-content-gap div.wall-content-wrapper {
+    margin: 0px;
+}
 div.bx_videos-wall-shp-wrapper,
 div.bx_videos-wall-shp-wrapper img {
 	width: 240px;
 	height: 240px;	
 }
+div.bx_videos-wall-shp-gap {
+    position: relative;
+    float: left;
+}
 div.bx_videos-wall-shp-wrapper {    
     position: relative;
-	float: left;
-
-	margin: 5px;
-
 	overflow: hidden;
 }
 div.bx_videos-wall-shp-duration {

@@ -11,9 +11,9 @@ div.result_block .bx-def-hr:first-child {
 .bx_sites_unit_thumb110 {
     max-width:240px;
     width:100%;
-    background-color:#fff;
-    background-repeat:no-repeat;
-    background-position:top center;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
     
 .bx_sites_block_percent .bx-twig-unit-thumb-cont,
