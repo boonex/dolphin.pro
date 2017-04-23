@@ -79,7 +79,7 @@ class Forum extends ThingPage
                         reset($ws);
                         while (list (,$w) = each ($ws)) {
                             if ($w) {
-                                $wreg = str_replace(array('(', ')'), array('\\(', '\\)'), $w);
+                                $wreg = preg_quote($w, '/');
                                 $r['topic_title'] = preg_replace ("/($wreg)/i", "<span style=\"background-color:yellow\">$w</span>", $r['topic_title']);
                             }
                         }
@@ -119,7 +119,7 @@ EOF;
                         reset($ws);
                         while (list (,$w) = each ($ws)) {
                             if ($w) {
-                                $wreg = str_replace(array('(', ')'), array('\\(', '\\)'), $w);
+                                $wreg = preg_quote($w, '/');
                                 $ind = eregi( "([^>]*<)", $r['post_text'], $ind ); // html tags?
                                 if ($ind)
                                     $r['post_text'] = preg_replace("/($wreg)(?=[^>]*<)/i", "<span style=\"background-color:yellow\">$w</span>", "<div>{$r['post_text']}</div>");
