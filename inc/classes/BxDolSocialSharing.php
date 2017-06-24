@@ -103,7 +103,7 @@ class BxDolSocialSharing
         $sCacheKey = $GLOBALS['MySQL']->genDbCacheKey('sys_social_sharing_locales_fb');
         $aData = $oCache->getData($sCacheKey);
         if (null === $aData) {
-            $sXML = bx_file_get_contents ('http://www.facebook.com/translations/FacebookLocales.xml');
+            $sXML = bx_file_get_contents (BX_DOL_URL_ROOT . 'plugins/facebook-php-sdk/FacebookLocales.xml');
             if (!$sXML)
                 return false;
             $xmlLocates = new SimpleXMLElement($sXML);
