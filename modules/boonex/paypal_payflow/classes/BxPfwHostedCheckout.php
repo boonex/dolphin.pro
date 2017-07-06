@@ -11,9 +11,9 @@ class BxPfwHostedCheckout extends BxPfwPayPal
 {
 	function BxPfwHostedCheckout($oDb, $oConfig, $aConfig)
 	{
-		parent::BxPfwPayPal($oDb, $oConfig, $aConfig);
+	    $this->_sTender = 'C';
 
-		$this->_aCallParameters['TENDER'] = 'C';
+		parent::BxPfwPayPal($oDb, $oConfig, $aConfig);
 	}
 
 	function initializeCheckout($iPendingId, $aCartInfo)

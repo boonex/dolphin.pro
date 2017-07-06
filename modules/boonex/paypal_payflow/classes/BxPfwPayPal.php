@@ -10,6 +10,7 @@ class BxPfwPayPal extends BxPfwProvider
 {
 	protected $_aValidationParameters;
 
+	protected $_sTender = '';
 	protected $_aCallParameters;
 	protected $_aCallCredentials;
 
@@ -19,25 +20,13 @@ class BxPfwPayPal extends BxPfwProvider
 	{
 		parent::BxPfwProvider($oDb, $oConfig, $aConfig);
 
-		$this->_aCallParameters = array(
-			'TENDER' => '',
-			'TRXTYPE' => 'S',
-			'ACTION' => '',
-			'VERBOSITY' => 'HIGH',
-			'BUTTONSOURCE' => 'Boonex_SP',
-		);
-
-		$this->_aCallCredentials = array(
-			'PARTNER' => $this->getOption('partner'),
-			'VENDOR' => $this->getOption('vendor'),
-			'USER' => $this->getOption('user'),
-			'PWD' => $this->getOption('password'),
-		);
+		$this->_sLangsPrefix = $this->_oConfig->getLangsPrefix();
 
 		$this->_oConfig->setProvider($this->_sName);
 		$this->_oConfig->setMode($this->getOption('mode'));
 
-		$this->_sLangsPrefix = $this->_oConfig->getLangsPrefix();
+		$this->_initCallCredentials();
+		$this->_initCallParameters();
 	}
 
 	function processResponse(&$aData)
@@ -66,6 +55,26 @@ class BxPfwPayPal extends BxPfwProvider
 		return array(
 			'code' => 0,
 			'message' => $this->_sLangsPrefix . 'msg_successfully_done'
+		);
+	}
+
+	protected function _initCallCredentials()
+	{
+	    $this->_aCallCredentials = array(
+			'PARTNER' => $this->getOption('partner'),
+			'VENDOR' => $this->getOption('vendor'),
+			'USER' => $this->getOption('user'),
+			'PWD' => $this->getOption('password'),
+		);
+	}
+
+    protected function _initCallParameters($sTender = '')
+	{
+	    $this->_aCallParameters = array(
+			'TENDER' => !empty($sTender) ? $sTender : $this->_sTender,
+			'TRXTYPE' => 'S',
+			'ACTION' => '',
+			'VERBOSITY' => 'HIGH',
 		);
 	}
 

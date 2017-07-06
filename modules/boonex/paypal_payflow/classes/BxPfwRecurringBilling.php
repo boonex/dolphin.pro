@@ -11,8 +11,6 @@ class BxPfwRecurringBilling extends BxPfwExpressCheckout
 	function BxPfwRecurringBilling($oDb, $oConfig, $aConfig)
 	{
 		parent::BxPfwExpressCheckout($oDb, $oConfig, $aConfig);
-
-		$this->_aCallParameters['TRXTYPE'] = 'R';
 	}
 
 	function initializeCheckout($iPendingId, $aCartInfo)
@@ -77,13 +75,14 @@ class BxPfwRecurringBilling extends BxPfwExpressCheckout
         ));
 
         //--- Establish subscription ---//
-		if($bPaymentAccepted && !empty($aResponsePay['BAID'])) {
-			$sBaid = process_db_input($aResponsePay['BAID'], BX_TAGS_STRIP);
+		if($bPaymentAccepted && (!empty($aResponsePay['PNREF']) || !empty($aResponsePay['BAID']))) {
+		    $sPnRef = !empty($aResponsePay['PNREF']) ? process_db_input($aResponsePay['PNREF'], BX_TAGS_STRIP) : '';
+		    $sBaid = !empty($aResponsePay['BAID']) ? process_db_input($aResponsePay['BAID'], BX_TAGS_STRIP) : '';
 
 			$oMain = bx_instance($this->_oConfig->getClassPrefix() . 'Module');
 			$aCartInfo = $oMain->_oCart->getInfo((int)$aPending['client_id'], (int)$aPending['seller_id'], $aPending['items']);
 
-			$this->_createRecurringBillingProfile($iPending, $aCartInfo, $sBaid);
+			$this->_createRecurringBillingProfile($iPending, $aCartInfo, $sPnRef, $sBaid);
 
 			$aResponseSubscribe = $this->_executeCall();
 			if($aResponseSubscribe !== false && (int)$aResponseSubscribe['RESULT'] == 0) {
@@ -181,33 +180,47 @@ class BxPfwRecurringBilling extends BxPfwExpressCheckout
 	{
 		parent::_setExpressCheckout($iPendingId, $aCartInfo);
 
-		$this->_aCallParameters['TRXTYPE'] = 'S';
-		$this->_aCallParameters['BILLINGTYPE'] = 'RecurringBilling';
+		$this->_aCallParameters['TRXTYPE'] = 'A';
+		$this->_aCallParameters['BILLINGTYPE'] = 'MerchantInitiatedBilling';
+		$this->_aCallParameters['BA_DESC'] = $aCartInfo['vendor_profile_name'];
+		$this->_aCallParameters['PAYMENTTYPE'] = 'any';
 	}
 
 	protected function _getExpressCheckout($sToken, $sPayerId)
     {
     	parent::_getExpressCheckout($sToken, $sPayerId);
 
-    	$this->_aCallParameters['TRXTYPE'] = 'S';
+    	$this->_aCallParameters['TRXTYPE'] = 'A';
     }
 
     protected function _doExpressCheckout($sToken, $sPayerId, $sAmount)
     {
     	parent::_doExpressCheckout($sToken, $sPayerId, $sAmount);
 
-    	$this->_aCallParameters['TRXTYPE'] = 'S';
+    	$this->_aCallParameters['TRXTYPE'] = 'A';
     }
 
-	protected function _createRecurringBillingProfile($iPendingId, $aCartInfo, $sBaid)
+	protected function _createRecurringBillingProfile($iPendingId, $aCartInfo, $sPnRef = '', $sBaid = '')
 	{
-		$aItem = array_shift($aCartInfo['items']);
+		$this->_aValidationParameters = array('TENDER', 'TRXTYPE', 'ACTION', 'PROFILENAME', 'START', 'PAYPERIOD', 'TERM', 'AMT');
 
-		$this->_aValidationParameters = array('TENDER', 'TRXTYPE', 'ACTION', 'BAID', 'PROFILENAME', 'START', 'PAYPERIOD', 'TERM', 'AMT');
-
+        $this->_initCallParameters($this->_sTender);
 		$this->_aCallParameters['TRXTYPE'] = 'R';
 		$this->_aCallParameters['ACTION'] = 'A';
-		$this->_aCallParameters['BAID'] = $sBaid;
+
+		if(!empty($sPnRef)) {
+		    $this->_aValidationParameters[] = 'ORIGID';
+
+		    $this->_aCallParameters['ORIGID'] = $sPnRef;		    
+		}
+
+		if(!empty($sBaid)) {
+		    $this->_aValidationParameters[] = 'BAID';
+
+		    $this->_aCallParameters['BAID'] = $sBaid;
+		}
+
+		$aItem = array_shift($aCartInfo['items']);
 
 		$this->_aCallParameters['PROFILENAME'] = _t($this->_sLangsPrefix . 'txt_subscription_for', $aItem['title']);
 		$this->_aCallParameters['START'] = date('mdY', (time() + 86400 * $aItem['duration']));
@@ -217,6 +230,10 @@ class BxPfwRecurringBilling extends BxPfwExpressCheckout
 
 		$this->_aCallParameters['AMT'] = sprintf( "%.2f", (float)$aItem['price']);
 		$this->_aCallParameters['CURRENCY'] = $aCartInfo['vendor_currency_code'];
+
+		$this->_aCallParameters['BA_DESC'] = $aCartInfo['vendor_profile_name'];
+		$this->_aCallParameters['RETRYNUMDAYS'] = '2';
+		$this->_aCallParameters['MAXFAILPAYMENTS'] = '1';
 	}
 
 	protected function _cancelRecurringBillingProfile($sRecurringProfileId)

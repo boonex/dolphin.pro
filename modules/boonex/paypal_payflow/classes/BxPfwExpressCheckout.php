@@ -10,9 +10,9 @@ class BxPfwExpressCheckout extends BxPfwPayPal
 {
 	function BxPfwExpressCheckout($oDb, $oConfig, $aConfig)
 	{
-		parent::BxPfwPayPal($oDb, $oConfig, $aConfig);
+	    $this->_sTender = 'P';
 
-		$this->_aCallParameters['TENDER'] = 'P';
+		parent::BxPfwPayPal($oDb, $oConfig, $aConfig);
 	}
 
 	function initializeCheckout($iPendingId, $aCartInfo)
