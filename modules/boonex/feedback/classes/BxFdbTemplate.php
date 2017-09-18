@@ -39,19 +39,45 @@ class BxFdbTemplate extends BxDolTextTemplate
     }
     function displayItem($aParams, &$aEntry)
     {
+        global $oFunctions;
+
         $sSampleType = $aParams['sample_type'];
         $iViewerType = $aParams['viewer_type'];
         $iViewerId = isset($aParams['viewer_id']) ? (int)$aParams['viewer_id'] : 0;
         $bAdminPanel = $iViewerType == BX_TD_VIEWER_TYPE_ADMIN && ((isset($aParams['admin_panel']) && $aParams['admin_panel']) || $sSampleType == 'admin');
+        $bAuthorExists = !empty($aEntry['author_id']) && !empty($aEntry['author_username']);
 
         $sModuleUri = $this->_oConfig->getUri();
         $sLKLinkEdit = _t('_' . $sModuleUri . '_lcaption_edit');
 
         $aTmplVars = array(
             'id' => $this->_oConfig->getSystemPrefix() . $aEntry['id'],
-            'author_icon' => get_member_icon($aEntry['author_id'], 'left'),
-            'author_url' => getProfileLink($aEntry['author_id']),
-            'author_username' => getNickName($aEntry['author_id']),
+        	'bx_if:author_icon' => array(
+        		'condition' => $bAuthorExists,
+                'content' => array(
+                    'author_icon' => get_member_icon($aEntry['author_id'], 'left'),
+                )
+            ),
+        
+            'bx_if:author_icon_empty' => array(
+        		'condition' => !$bAuthorExists,
+                'content' => array(
+            		'author_icon' => $oFunctions->getSexPic('', 'small')
+                )
+            ),
+            'bx_if:author_username_link' => array(
+                'condition' => $bAuthorExists,
+                'content' => array(
+        			'author_url' => getProfileLink($aEntry['author_id']),
+            		'author_username' => getNickName($aEntry['author_id'])
+                )
+            ),
+            'bx_if:author_username_text' => array(
+                'condition' => !$bAuthorExists,
+            	'content' => array(
+            		'author_username' => _t('_Anonymous')
+                )
+            ),
             'caption' => str_replace("$", "&#36;", $aEntry['caption']),
             'class' => !in_array($sSampleType, array('view')) ? ' ' . $this->sCssPrefix . '-text-snippet' : '',
             'date' => defineTimeInterval($aEntry['date']),

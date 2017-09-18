@@ -5,14 +5,26 @@
             <input type="checkbox" name="feedback-ids[]" value="__id__" />
         </div>
     </bx_if:checkbox>
-    __author_icon__
+    <bx_if:author_icon>__author_icon__</bx_if:author_icon>
+    <bx_if:author_icon_empty>
+        <div class="thumbnail_block thumbnail_block_icon" style="float:left;">
+            <div class="thumbnail_image">
+                <img class="thumbnail_image_file bx-def-thumbnail bx-def-shadow bx-img-retina" src="__author_icon__" />
+            </div>
+        </div>
+    </bx_if:author_icon_empty>
     <div class="feedback-info">
         <div class="feedback-caption bx-def-font-h2">
             <a class="feedback-caption bx-def-font-h2" href="__link__">__caption__</a>
         </div>
         <div class="feedback-text__class__ bx-def-font-large bx-def-margin-sec-top">__content__</div>
         <div class="feedback-date bx-def-margin-sec-top">
-            <a class="feedback-author" href="__author_url__">__author_username__</a>
+            <bx_if:author_username_link>
+                <a class="feedback-author" href="__author_url__">__author_username__</a>
+            </bx_if:author_username_link>
+            <bx_if:author_username_text>
+                <span class="feedback-author">__author_username__</span>
+            </bx_if:author_username_text>
             <span class="sys-bullet"></span>
             <span class="feedback-date bx-def-font-small bx-def-font-grayed">__date__</span>
             <bx_if:status>
