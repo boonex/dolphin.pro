@@ -477,7 +477,11 @@ class BxEventsModule extends BxDolTwigModule
             'txt_added_new_plural' => '_bx_events_wall_added_new_items',
         	'txt_added_new_title_plural' => '_bx_events_wall_added_new_title_items',
             'txt_privacy_view_event' => 'view_event',
-            'obj_privacy' => $this->_oPrivacy
+            'obj_privacy' => $this->_oPrivacy,
+        	'fields' => array(
+                'owner' => 'ResponsibleID',
+                'date' => 'Date'
+            )
         );
         return parent::_serviceGetWallPost($aEvent, $aParams);
     }

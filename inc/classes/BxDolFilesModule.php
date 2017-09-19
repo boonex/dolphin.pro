@@ -1685,9 +1685,16 @@ class BxDolFilesModule extends BxDolModule
         if(!empty($aEvent['owner_id']))
             $iOwner = (int)$aEvent['owner_id'];
 
+        $iDate = 0;
+        if(!empty($aEvent['date']))
+            $iDate = (int)$aEvent['date'];
+
         $bItems = !empty($aItems) && is_array($aItems);
         if($iOwner == 0 && $bItems && !empty($aItems[0]['owner']))
             $iOwner = (int)$aItems[0]['owner'];
+
+        if($iDate == 0 && $bItems && !empty($aItems[0]['date']))
+            $iDate = (int)$aItems[0]['date'];
 
         if($iOwner == 0 || !$bItems)
             return "";
@@ -1732,7 +1739,8 @@ class BxDolFilesModule extends BxDolModule
                     'cpt_album_title' => $aAlbumInfo['Caption'],
                     'bx_repeat:items' => $aTmplItems,
                     'post_id' => $aEvent['id']
-                ))
+                )),
+                'date' => $iDate
             );
         }
 
@@ -1755,7 +1763,8 @@ class BxDolFilesModule extends BxDolModule
                 'cpt_item_url' => $aItem['url'],
                 'cpt_item' => $sItemTxt,
                 'post_id' => $aEvent['id']
-            )))
+            ))),
+            'date' => $iDate
         );
     }
 

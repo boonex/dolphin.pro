@@ -3385,7 +3385,22 @@ EOF;
         if($iDeleted == count($aObjectIds))
             return array('perform_delete' => true);
 
-        if(empty($aItems))
+        $iOwner = 0;
+        if(!empty($aEvent['owner_id']))
+            $iOwner = (int)$aEvent['owner_id'];
+
+        $iDate = 0;
+        if(!empty($aEvent['date']))
+            $iDate = (int)$aEvent['date'];
+
+        $bItems = !empty($aItems) && is_array($aItems);
+        if($iOwner == 0 && $bItems && !empty($aItems[0]['OwnerID']))
+            $iOwner = (int)$aItems[0]['OwnerID'];
+
+        if($iDate == 0 && $bItems && !empty($aItems[0]['DateTime_UTS']))
+            $iDate = (int)$aItems[0]['DateTime_UTS'];
+
+        if($iOwner == 0 || empty($aItems))
             return '';
 
         $sCss = '';
@@ -3396,7 +3411,6 @@ EOF;
             $this->_oTemplate->addCss('wall_post.css');
 
         $iItems = count($aItems);
-        $iOwner = (int)$aEvent['owner_id'];
         $sOwner = getNickName($iOwner);
 
         //--- Grouped events
@@ -3411,6 +3425,7 @@ EOF;
                 );
 
             return array(
+            	'owner_id' => $iOwner,
                 'title' => _t('_bx_ads_wall_added_new_title_items', $sOwner, $iItems),
                 'description' => '',
                 'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_grouped.html', array(
@@ -3418,7 +3433,8 @@ EOF;
 	                'cpt_added_new' => _t('_bx_ads_wall_added_new_items', $iItems),
 	                'bx_repeat:items' => $aTmplItems,
 	                'post_id' => $aEvent['id']
-	            ))
+	            )),
+	            'date' => $iDate
             );
         }
 
@@ -3429,6 +3445,7 @@ EOF;
         $sPostTxt = _t('_bx_ads_wall_object');
 
         return array(
+        	'owner_id' => $iOwner,
             'title' => _t('_bx_ads_wall_added_new_title', $sOwner, $sPostTxt),
             'description' => _t('_bx_ads_wall_added_new_title', $sOwner, $sPostTxt),
             'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post.html', array(
@@ -3438,7 +3455,8 @@ EOF;
                 'cpt_item_url' => $aItem['url'],
                 'unit' => $this->getUnit($aItem['ID']),
                 'post_id' => $aEvent['id'],
-        	))
+        	)),
+        	'date' => $iDate
         );
     }
 

@@ -328,7 +328,11 @@ class BxStoreModule extends BxDolTwigModule
             'txt_added_new_plural' => '_bx_store_wall_added_new_items',
         	'txt_added_new_title_plural' => '_bx_store_wall_added_new_title_items',
             'txt_privacy_view_event' => 'view_product',
-            'obj_privacy' => $this->_oPrivacyProduct
+            'obj_privacy' => $this->_oPrivacyProduct,
+            'fields' => array(
+                'owner' => 'author_id',
+                'date' => 'created'
+            )
         );
         return parent::_serviceGetWallPost($aEvent, $aParams);
     }
