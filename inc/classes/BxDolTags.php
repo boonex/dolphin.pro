@@ -22,6 +22,7 @@ class BxDolTags extends BxDolMistake
     var $sCacheTable;
     var $sTagTable;
     var $aTagFields;
+    var $iTagLength;
 
     var $aTagObjects = array();
 
@@ -35,6 +36,7 @@ class BxDolTags extends BxDolMistake
 
         $this->sCacheFile = 'sys_objects_tag';
         $this->sNonParseParams = 'tags_non_parsable';
+
         $this->sCacheTable = 'sys_objects_tag';
         $this->sTagTable = 'sys_tags';
         $this->aTagFields = array(
@@ -43,6 +45,8 @@ class BxDolTags extends BxDolMistake
             'tag' => 'Tag',
             'date' => 'Date'
         );
+        $this->iTagLength = 32;
+
         $this->aObjFields = array(
             'id' => 'ID',
             'name' => 'ObjectName',
@@ -223,6 +227,8 @@ class BxDolTags extends BxDolMistake
 
         foreach( $aTags as $sTag ) {
             $aTagsSet['tag'] = process_db_input(trim($sTag), BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+            if(get_mb_len($aTagsSet['tag']) > $this->iTagLength)
+                $aTagsSet['tag'] = get_mb_substr($aTagsSet['tag'], 0, $this->iTagLength);
 
             $sQuery = "SELECT COUNT(*) FROM `sys_tags`
                 WHERE `ObjID` = '{$aTagsSet['id']}' AND `Type` = '{$aTagsSet['type']}' AND `Tag` = '{$aTagsSet['tag']}'";
