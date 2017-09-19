@@ -156,6 +156,8 @@ class BxWallDb extends BxDolModuleDb
         $sMethod = "getAll";
         $sJoinClause = $sWhereClause = $sOrderClause = $sLimitClause = "";
 
+        $sWhereClause .= "AND `te`.`active`='1' AND `te`.`hidden`<>'1' ";
+
         $sWhereModuleFilter = '';
         if(isset($aParams['modules']) && !empty($aParams['modules']) && is_array($aParams['modules']))
         	$sWhereModuleFilter = "AND `type` IN ('" . implode("','", $aParams['modules']) . "') ";

@@ -2128,7 +2128,26 @@
                 return array('perform_delete' => true);
 
             $aItem = array_shift($aItem);
-            $aProfile = getProfileInfo((int)$aEvent['owner_id']);
+
+            $iOwner = 0;
+            if(!empty($aEvent['owner_id']))
+                $iOwner = (int)$aEvent['owner_id'];
+    
+            $iDate = 0;
+            if(!empty($aEvent['date']))
+                $iDate = (int)$aEvent['date'];
+    
+            $bItem = !empty($aItem) && is_array($aItem);
+            if($iOwner == 0 && $bItem && !empty($aItem['id_profile']))
+                $iOwner = (int)$aItem['id_profile'];
+    
+            if($iDate == 0 && $bItem && !empty($aItem['poll_date']))
+                $iDate = (int)$aItem['poll_date'];
+
+            if($iOwner == 0 || !$bItem)
+                return '';
+
+            $aProfile = getProfileInfo($iOwner);
             if(empty($aProfile) || (int)$aItem['poll_approval'] != 1 || !$this->oPrivacy->check('view', (int)$aEvent['object_id'], getLoggedId()))
                 return '';
 
@@ -2143,8 +2162,6 @@
             }
 
             $sInit = $this->getInitPollPage();
-
-            $iOwner = (int)$aEvent['owner_id'];
             $sOwner = getNickName($iOwner);
 
             //--- Single public event
@@ -2152,6 +2169,7 @@
 
             $sTextWallObject = _t('_bx_poll_wall_object');
             return array(
+            	'owner_id' => $iOwner,
                 'title' => _t('_bx_poll_wall_added_new_title', $sOwner, $sTextWallObject),
                 'description' => $aItem['poll_question'],
                 'content' => $sJs . $sCss . $sInit . $this->_oTemplate->parseHtmlByName('wall_post.html', array(
@@ -2163,7 +2181,8 @@
 	                'cnt_item_title' => $aItem['poll_question'],
 	                'cnt_item_id' => $aItem['id_poll'],
 	                'post_id' => $aEvent['id'],
-	            ))
+	            )),
+	            'date' => $iDate
             );
         }
 

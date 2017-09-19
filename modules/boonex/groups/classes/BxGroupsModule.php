@@ -425,7 +425,11 @@ class BxGroupsModule extends BxDolTwigModule
             'txt_added_new_plural' => '_bx_groups_wall_added_new_items',
         	'txt_added_new_title_plural' => '_bx_groups_wall_added_new_title_items',
             'txt_privacy_view_event' => 'view_group',
-            'obj_privacy' => $this->_oPrivacy
+            'obj_privacy' => $this->_oPrivacy,
+        	'fields' => array(
+                'owner' => 'author_id',
+                'date' => 'created'
+            )
         );
         return parent::_serviceGetWallPost ($aEvent, $aParams);
     }

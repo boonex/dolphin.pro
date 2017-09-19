@@ -348,14 +348,18 @@ class BxStoreModule extends BxDolTwigModule
     function serviceGetWallPost($aEvent)
     {
         $aParams = array(
-            'icon'                       => 'shopping-cart',
-            'txt_object'                 => '_bx_store_wall_object',
-            'txt_added_new_single'       => '_bx_store_wall_added_new',
-            'txt_added_new_title_single' => '_bx_store_wall_added_new_title',
-            'txt_added_new_plural'       => '_bx_store_wall_added_new_items',
-            'txt_added_new_title_plural' => '_bx_store_wall_added_new_title_items',
-            'txt_privacy_view_event'     => 'view_product',
-            'obj_privacy'                => $this->_oPrivacyProduct
+        	'icon' => 'shopping-cart',
+            'txt_object' => '_bx_store_wall_object',
+            'txt_added_new_single' => '_bx_store_wall_added_new',
+        	'txt_added_new_title_single' => '_bx_store_wall_added_new_title',
+            'txt_added_new_plural' => '_bx_store_wall_added_new_items',
+        	'txt_added_new_title_plural' => '_bx_store_wall_added_new_title_items',
+            'txt_privacy_view_event' => 'view_product',
+            'obj_privacy' => $this->_oPrivacyProduct,
+            'fields' => array(
+                'owner' => 'author_id',
+                'date' => 'created'
+            )
         );
 
         return parent::_serviceGetWallPost($aEvent, $aParams);

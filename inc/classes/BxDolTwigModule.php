@@ -999,7 +999,22 @@ class BxDolTwigModule extends BxDolModule
         if($iDeleted == count($aObjectIds))
             return array('perform_delete' => true);
 
-        if(empty($aItems))
+        $iOwner = 0;
+        if(!empty($aEvent['owner_id']))
+            $iOwner = (int)$aEvent['owner_id'];
+
+        $iDate = 0;
+        if(!empty($aEvent['date']))
+            $iDate = (int)$aEvent['date'];
+
+        $bItems = !empty($aItems) && is_array($aItems);
+        if($iOwner == 0 && $bItems && isset($aParams['fields']['owner']) && !empty($aItems[0][$aParams['fields']['owner']]))
+            $iOwner = (int)$aItems[0][$aParams['fields']['owner']];
+
+        if($iDate == 0 && $bItems && isset($aParams['fields']['date']) && !empty($aItems[0][$aParams['fields']['date']]))
+            $iDate = (int)$aItems[0][$aParams['fields']['date']];
+
+        if($iOwner == 0 || empty($aItems))
             return '';
 
         $sCss = '';
@@ -1011,7 +1026,6 @@ class BxDolTwigModule extends BxDolModule
             $this->_oTemplate->addCss(array('wall_post.css', 'unit.css', 'twig.css'));
 
         $iItems = count($aItems);
-        $iOwner = (int)$aEvent['owner_id'];
         $sOwner = getNickName($iOwner);
 
         bx_import('Voting', $this->_aModule);
@@ -1031,6 +1045,7 @@ class BxDolTwigModule extends BxDolModule
 
             $sTmplName = isset($aParams['templates']['grouped']) ? $aParams['templates']['grouped'] : 'modules/boonex/wall/|timeline_post_twig_grouped.html';
             return array(
+            	'owner_id' => $iOwner,
                 'title' => _t($aParams['txt_added_new_title_plural'], $sOwner, $iItems),
                 'description' => '',
                 'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
@@ -1039,7 +1054,8 @@ class BxDolTwigModule extends BxDolModule
 	                'cpt_user_name' => $sOwner,
 	                'cpt_added_new' => _t($aParams['txt_added_new_plural'], $iItems),
 	                'bx_repeat:items' => $aTmplItems,
-	            ))
+	            )),
+	            'date' => $iDate
             );
         }
 
@@ -1050,6 +1066,7 @@ class BxDolTwigModule extends BxDolModule
 
         $sTmplName = isset($aParams['templates']['single']) ? $aParams['templates']['single'] : 'modules/boonex/wall/|timeline_post_twig.html';
         return array(
+        	'owner_id' => $iOwner,
             'title' => _t($aParams['txt_added_new_title_single'], $sOwner, $sTextWallObject),
             'description' => $aItem[$this->_oDb->_sFieldDescription],
             'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTmplName, array(
@@ -1060,7 +1077,8 @@ class BxDolTwigModule extends BxDolModule
 	            'cpt_object' => $sTextWallObject,
 	            'cpt_item_url' => $sBaseUrl . $aItem[$this->_oDb->_sFieldUri],
 	            'content' => $this->_oTemplate->unit($aItem, 'unit', $oVoting, true),
-	        ))
+	        )),
+	        'date' => $iDate
         );
     }
 

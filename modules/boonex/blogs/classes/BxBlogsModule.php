@@ -3261,9 +3261,23 @@ EOF;
             return array('perform_delete' => true);
         }
 
-        if (empty($aItems)) {
+        $iOwner = 0;
+        if(!empty($aEvent['owner_id']))
+            $iOwner = (int)$aEvent['owner_id'];
+
+        $iDate = 0;
+        if(!empty($aEvent['date']))
+            $iDate = (int)$aEvent['date'];
+
+        $bItems = !empty($aItems) && is_array($aItems);
+        if($iOwner == 0 && $bItems && !empty($aItems[0]['OwnerID']))
+            $iOwner = (int)$aItems[0]['OwnerID'];
+
+        if($iDate == 0 && $bItems && !empty($aItems[0]['PostDate']))
+            $iDate = (int)$aItems[0]['PostDate'];
+
+        if($iOwner == 0 || empty($aItems))
             return '';
-        }
 
         $sCss = '';
         if ($aEvent['js_mode']) {
@@ -3273,7 +3287,6 @@ EOF;
         }
 
         $iItems = count($aItems);
-        $iOwner = (int)$aEvent['owner_id'];
         $sOwner = getNickName($iOwner);
 
         //--- Grouped events
@@ -3294,14 +3307,16 @@ EOF;
             }
 
             return array(
-                'title'       => _t('_bx_blog_wall_added_new_title_items', $sOwner, $iItems),
+            	'owner_id' => $iOwner,
+                'title' => _t('_bx_blog_wall_added_new_title_items', $sOwner, $iItems),
                 'description' => '',
-                'content'     => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_grouped.html', array(
-                        'cpt_user_name'   => $sOwner,
-                        'cpt_added_new'   => _t('_bx_blog_wall_added_new_items', $iItems),
-                        'bx_repeat:items' => $aTmplItems,
-                        'post_id'         => $aEvent['id']
-                    ))
+                'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post_grouped.html', array(
+	                'cpt_user_name' => $sOwner,
+	                'cpt_added_new' => _t('_bx_blog_wall_added_new_items', $iItems),
+	                'bx_repeat:items' => $aTmplItems,
+	                'post_id' => $aEvent['id']
+	            )),
+	            'date' => $iDate
             );
         }
 
@@ -3318,16 +3333,18 @@ EOF;
         $sTextWallObject = _t('_bx_blog_wall_object');
 
         return array(
-            'title'       => _t('_bx_blog_wall_added_new_title', $sOwner, $sTextWallObject),
+        	'owner_id' => $iOwner,
+            'title' => _t('_bx_blog_wall_added_new_title', $sOwner, $sTextWallObject),
             'description' => $aItem['PostText'],
-            'content'     => $sCss . $this->_oTemplate->parseHtmlByName('wall_post.html', array(
-                    'cpt_user_name' => $sOwner,
-                    'cpt_added_new' => _t('_bx_blog_wall_added_new'),
-                    'cpt_object'    => $sTextWallObject,
-                    'cpt_item_url'  => $aItem['url'],
-                    'unit'          => $sPostUnit,
-                    'post_id'       => $aEvent['id'],
-                ))
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName('wall_post.html', array(
+	            'cpt_user_name' => $sOwner,
+	            'cpt_added_new' => _t('_bx_blog_wall_added_new'),
+	            'cpt_object' => $sTextWallObject,
+	            'cpt_item_url' => $aItem['url'],
+	            'unit' => $sPostUnit,
+	            'post_id' => $aEvent['id'],
+	        )),
+	        'date' => $iDate
         );
     }
 

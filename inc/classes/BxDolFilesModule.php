@@ -1902,13 +1902,19 @@ class BxDolFilesModule extends BxDolModule
         if(!empty($aEvent['owner_id']))
             $iOwner = (int)$aEvent['owner_id'];
 
+        $iDate = 0;
+        if(!empty($aEvent['date']))
+            $iDate = (int)$aEvent['date'];
+
         $bItems = !empty($aItems) && is_array($aItems);
         if($iOwner == 0 && $bItems && !empty($aItems[0]['owner']))
             $iOwner = (int)$aItems[0]['owner'];
 
-        if($iOwner == 0 || !$bItems) {
+        if($iDate == 0 && $bItems && !empty($aItems[0]['date']))
+            $iDate = (int)$aItems[0]['date'];
+
+        if($iOwner == 0 || !$bItems)
             return "";
-        }
 
         $sCss = "";
         if ($aEvent['js_mode']) {
@@ -1936,23 +1942,24 @@ class BxDolFilesModule extends BxDolModule
             $sTemplateName = isset($aParams['templates']['grouped']) ? $aParams['templates']['grouped'] : 'modules/boonex/wall/|timeline_post_files_grouped.html';
 
             return array(
-                'title'       => _t('_' . $sPrefix . '_wall_added_new_items_title', $sOwner, $iItems),
+                'owner_id' => $iOwner,
+                'title' => _t('_' . $sPrefix . '_wall_added_new_items_title', $sOwner, $iItems),
                 'description' => '',
-                'grouped'     => array(
-                    'group_id'        => $aAlbumInfo['ID'],
+                'grouped' => array(
+                    'group_id' => $aAlbumInfo['ID'],
                     'group_cmts_name' => $sPrefix . '_albums'
                 ),
-                'content'     => $sCss . $this->_oTemplate->parseHtmlByName($sTemplateName, array(
-                        'mod_prefix'      => $sPrefix,
-                        'mod_icon'        => $sIcon,
-                        'cpt_user_name'   => $sOwner,
-                        'cpt_added_new'   => _t('_' . $sPrefix . '_wall_added_new_items', $iItems),
-                        'cpt_album_url'   => $oSearch->getCurrentUrl('album', $aAlbumInfo['ID'],
-                                $aAlbumInfo['Uri']) . '/owner/' . getUsername($iOwner),
-                        'cpt_album_title' => $aAlbumInfo['Caption'],
-                        'bx_repeat:items' => $aTmplItems,
-                        'post_id'         => $aEvent['id']
-                    ))
+                'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTemplateName, array(
+                    'mod_prefix' => $sPrefix,
+                    'mod_icon' => $sIcon,
+                    'cpt_user_name' => $sOwner,
+                    'cpt_added_new' => _t('_' . $sPrefix . '_wall_added_new_items', $iItems),
+                    'cpt_album_url' => $oSearch->getCurrentUrl('album', $aAlbumInfo['ID'], $aAlbumInfo['Uri']) . '/owner/' . getUsername($iOwner),
+                    'cpt_album_title' => $aAlbumInfo['Caption'],
+                    'bx_repeat:items' => $aTmplItems,
+                    'post_id' => $aEvent['id']
+                )),
+                'date' => $iDate
             );
         }
 
@@ -1964,18 +1971,20 @@ class BxDolFilesModule extends BxDolModule
         $sTemplateName = isset($aParams['templates']['single']) ? $aParams['templates']['single'] : 'modules/boonex/wall/|timeline_post_files.html';
 
         return array(
-            'title'       => _t('_' . $sPrefix . '_wall_added_new_title', $sOwner, $sItemTxt),
+        	'owner_id' => $iOwner,
+            'title' => _t('_' . $sPrefix . '_wall_added_new_title', $sOwner, $sItemTxt),
             'description' => $aItem['description'],
-            'grouped'     => false,
-            'content'     => $sCss . $this->_oTemplate->parseHtmlByName($sTemplateName, array_merge($aTmplItem, array(
-                    'mod_prefix'    => $sPrefix,
-                    'mod_icon'      => $sIcon,
-                    'cpt_user_name' => $sOwner,
-                    'cpt_added_new' => _t('_' . $sPrefix . '_wall_added_new'),
-                    'cpt_item_url'  => $aItem['url'],
-                    'cpt_item'      => $sItemTxt,
-                    'post_id'       => $aEvent['id']
-                )))
+            'grouped' => false,
+            'content' => $sCss . $this->_oTemplate->parseHtmlByName($sTemplateName, array_merge($aTmplItem, array(
+                'mod_prefix' => $sPrefix,
+                'mod_icon' => $sIcon,
+                'cpt_user_name' => $sOwner,
+                'cpt_added_new' => _t('_' . $sPrefix . '_wall_added_new'),
+                'cpt_item_url' => $aItem['url'],
+                'cpt_item' => $sItemTxt,
+                'post_id' => $aEvent['id']
+            ))),
+            'date' => $iDate
         );
     }
 
