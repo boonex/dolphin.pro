@@ -4,4 +4,10 @@
 		float: none;
 		width: 100% !important;
 	}
+	
+	/*--- Categories ---*/
+    .bx_ads_main_photo img {
+        width: auto;
+        max-width: 100%;
+    }
 }
