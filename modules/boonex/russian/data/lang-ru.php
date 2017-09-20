@@ -1193,6 +1193,7 @@ $LANG= array(
   '_adm_mmail_Send_to_members' => 'Послать пользователям',
   '_adm_mmail_Send_to_members_info' => '{0} пользователей подписаны на рассылку',
   '_adm_mmail_Send_to_subscribers' => 'Послать подписчикам',
+  '_adm_mmail_Sex' => 'Пол',
   '_adm_mmail_Text_email_body' => 'Текстовое тело сообщения',
   '_adm_mmail_X_emails_was_succ_added_to_queue' => '{0} e-mail сообщений были удачно добавлены в очередь.',
   '_adm_mmail_emails' => 'E-mail сообщения',

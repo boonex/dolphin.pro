@@ -352,14 +352,14 @@ function getQueueMessage()
     global $aPreValues;
 
     if ( isset($_POST['msgs_id']) ) {
-        $aSexValues = getFieldValues('Sex');
-        foreach($aSexValues as $sKey => $sValue)
-            $aSexValues[$sKey] = _t($sValue);
-
-		$aAgeValues = array(
+        $aSexValues = $aAgeValues = array(
 			'all' => _t('_All'),
 			'selectively' => _t('_Selectively'),
 		);
+
+		$aSexesValues = getFieldValues('Sex');
+        foreach($aSexesValues as $sKey => $sValue)
+            $aSexesValues[$sKey] = _t($sValue);
 
         $aStartAgesOptions = array();
         $aEndAgesOptions = array();
@@ -411,11 +411,21 @@ function getQueueMessage()
                     ),
                     'info' => _t('_adm_mmail_Send_to_members_info', $iRecipientMembers),
                 ),
-                'sex' => array (
-                    'type' => 'checkbox_set',
+                'Sex' => array (
+                    'type' => 'select',
                     'name' => 'sex',
+                	'caption' => _t('_adm_mmail_Sex'),
+					'value' => 'all',
                     'values' => $aSexValues,
-                    'value' => array_keys($aSexValues)
+                	'attrs' => array(
+                        'onClick' => 'setSexState();',
+                    ),
+                ),
+                'Sexes' => array (
+                    'type' => 'checkbox_set',
+                    'name' => 'sexes',
+                    'values' => $aSexesValues,
+                    'value' => array_keys($aSexesValues)
                 ),
                 'Age' => array (
                     'type' => 'select',
@@ -526,8 +536,9 @@ function QueueMessage()
     if($_POST['send_to_members'] == 'memb') {
         //--- Sex filter
         $sex_filter_sql = '';
-        if(is_array($_POST['sex']) && !empty($_POST['sex']))
-            $sex_filter_sql = "AND `Sex` IN ('" . implode("','", $_POST['sex']) . "')";
+        $sex = $_POST['sex'];
+        if($sex != 'all' && !empty($_POST['sexes']) && is_array($_POST['sexes']))
+            $sex_filter_sql = "AND `Sex` IN ('" . implode("','", $_POST['sexes']) . "')";
 
         //--- Age filter
         $age_filter_sql = '';

@@ -1,19 +1,33 @@
 <script type="text/javascript" language="JavaScript">
 	function setControlsState() {
-        var oElements = $(".form_queue_form input[name='sex[]'],.form_queue_form select[name=age],.form_queue_form select[name=age_start],.form_queue_form select[name=age_end],.form_queue_form select[name=country],.form_queue_form select[name=membership]");
-        if ($('.form_queue_form input[name=send_to_members]:checked').length)
+        var oElements = $(".form_queue_form select[name='sex'],.form_queue_form input[name='sexes[]'],.form_queue_form select[name='age'],.form_queue_form select[name='age_start'],.form_queue_form select[name='age_end'],.form_queue_form select[name='country'],.form_queue_form select[name='membership']");
+        if ($(".form_queue_form input[name='send_to_members']:checked").length)
         	oElements.removeAttr('disabled');            
         else
         	oElements.attr('disabled', 'disabled');
 
+        setSexState();
         setAgeState();
 	}
+
+	function setSexState() {
+        var oSex = $(".form_queue_form select[name='sex']");
+        if(oSex.is(':disabled'))
+            return;
+
+        var oElements = $(".form_queue_form input[name='sexes[]']");
+        if (oSex.val() != 'all')
+            oElements.removeAttr('disabled');
+        else
+            oElements.attr('disabled', 'disabled');
+    }
+
 	function setAgeState() {
-		var oAge = $('.form_queue_form select[name=age]');
+		var oAge = $(".form_queue_form select[name='age']");
 		if(oAge.is(':disabled'))
 			return;
 
-		var oElements = $(".form_queue_form select[name=age_start],.form_queue_form select[name=age_end]");
+		var oElements = $(".form_queue_form select[name='age_start'],.form_queue_form select[name='age_end']");
 		if (oAge.val() != 'all')
 			oElements.removeAttr('disabled');
         else
