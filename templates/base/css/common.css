@@ -488,6 +488,8 @@ div.dbPrivacyMenu a.dbPrivacyGroupActive:active {
 }
 .dbContent {
 	position:relative;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 .dbContent img {
 	max-width: 100%;
