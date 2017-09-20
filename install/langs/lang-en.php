@@ -1193,6 +1193,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_mmail_Send_to_members' => 'Send to members',
   '_adm_mmail_Send_to_members_info' => '{0} members agreed to receive newslatters',
   '_adm_mmail_Send_to_subscribers' => 'Send to subscribers',
+  '_adm_mmail_Sex' => 'Sex',
   '_adm_mmail_Text_email_body' => 'Text email body',
   '_adm_mmail_X_emails_was_succ_added_to_queue' => '{0} emails were successfully added to queue.',
   '_adm_mmail_emails' => 'emails',
