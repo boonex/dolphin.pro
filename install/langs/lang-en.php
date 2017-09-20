@@ -658,7 +658,7 @@ By using this Site, you signify your acceptance of this policy and <a href="{1}t
 
 If you have any questions about this Privacy Policy, the practices of this site, or your dealings with this site, please <a href="{1}contact.php">contact us</a>.
 
-<div class="bx-def-font-small bx-def-font-grayed bx-def-margin-sec-top">Privacy policy created by <a href="http://www.generateprivacypolicy.com" target="_blank">Generate Privacy Policy</a></div>
+<div class="bx-def-font-small bx-def-font-grayed bx-def-margin-sec-top">Privacy policy created by <a href="http://www.privacypolicies.com" target="_blank">Generate Privacy Policy</a></div>
   ',
   '_PRIVACY_H' => 'Privacy Policy',
   '_PRIVACY_H1' => 'Privacy policy',

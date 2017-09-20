@@ -655,7 +655,7 @@ $LANG= array(
 
 Если у Вас есть вопросы об этой Политике Конфиденциальности, об установленных на Сайте порядках или о Вашем опыте работы с Сайтом, пожалуйста, <a href="{1}contact.php">напишите нам</a>.
 
-<div class="bx-def-font-small bx-def-font-grayed bx-def-margin-sec-top">Политика Конфиденциальности создана с помощью сайта <a href="http://www.generateprivacypolicy.com" target="_blank">Создать Политику Конфиденциальности</a></div>
+<div class="bx-def-font-small bx-def-font-grayed bx-def-margin-sec-top">Политика Конфиденциальности создана с помощью сайта <a href="http://www.privacypolicies.com" target="_blank">Создать Политику Конфиденциальности</a></div>
   ',
   '_PRIVACY_H' => 'Конфиденциальность',
   '_PRIVACY_H1' => 'Конфиденциальность',
