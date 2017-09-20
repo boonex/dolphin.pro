@@ -83,10 +83,10 @@ class BxDolMemberInfo
 	            return $aData['UserStatusMessage'];
 
 	        case 'sys_age_sex':
-	            $s = ('0000-00-00' == $aData['DateOfBirth'] ? '' :  _t('_y/o', age($aData['DateOfBirth'])) . ' ') . _t('_' . $aData['Sex']);
+	            $s = ('0000-00-00' == $aData['DateOfBirth'] ? '' :  _t('_y/o', age($aData['DateOfBirth']))) . (empty($aData['Sex']) ? '' : ' ' . _t('_' . $aData['Sex']));
 	            if ($aData['Couple'] > 0) {
 	                $aData2 = getProfileInfo($aData['Couple']);
-	                $s .= '<br />' . ('0000-00-00' == $aData2['DateOfBirth'] ? '' :  _t('_y/o', age($aData2['DateOfBirth'])) . ' ') . _t('_' . $aData2['Sex']);
+	                $s .= '<br />' . ('0000-00-00' == $aData2['DateOfBirth'] ? '' :  _t('_y/o', age($aData2['DateOfBirth']))) . (empty($aData2['Sex']) ? '' : ' ' . _t('_' . $aData2['Sex']));
 	            }
 	            return $s;
 
