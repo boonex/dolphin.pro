@@ -210,7 +210,7 @@ class BxSitesTemplate extends BxDolModuleTemplate
                 );
 
                 bx_sites_import('STW');
-                $sThumbHTML = getThumbnailHTML($sUrl, $aSTWOptions);
+                $sThumbHTML = getThumbnailHTML($sUrl, $aSTWOptions, false, 'bx-def-shadow bx-def-round-corners');
             }
         }
         // END STW INTEGRATION
