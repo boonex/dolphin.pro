@@ -1328,7 +1328,7 @@ class BxSitesModule extends BxDolTwigModule
                 if ($oForm->isSubmittedAndValid()) {
                     $sUrl = process_pass_data($_POST['url']);
                     $sUrlFull = strncasecmp($sUrl, 'http://', 7) !== 0 && strncasecmp($sUrl, 'https://', 8) !== 0 ? 'http://' . $sUrl : $sUrl;
-                    $aSite = $this->_oDb->getSiteByUrl($sUrl);
+                    $aSite = $this->_oDb->getSiteByUrl(process_db_input($sUrl, BX_TAGS_STRIP));
 
                     if (count($aSite) == 0) {
                         $aInfo = getSiteInfo($sUrlFull);
