@@ -127,6 +127,8 @@ div.adm-mp-msi-username {
 div.adm-mp-msi-username a,
 div.adm-mp-msi-info {
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 /*--- EXTENDED Members list Styles ---*/
