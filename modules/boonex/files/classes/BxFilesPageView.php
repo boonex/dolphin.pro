@@ -193,7 +193,7 @@ class BxFilesPageView extends BxDolPageView
             'fileTitle' => $this->aFileInfo['medTitle'],
             'fileSize' => (int)$this->aFileInfo['medSize'] > 0 ? _t_format_size((int)$this->aFileInfo['medSize']) : 0,
             'fileExt' => $this->aFileInfo['medExt'],
-            'fileDescription' => $this->aFileInfo['medDesc'],
+            'fileDescription' => nl2br($this->aFileInfo['medDesc']),
             'rate' => $oVotingView->isEnabled() ? $oVotingView->getBigVoting(1, $this->aFileInfo['Rate']): '',
             'favInfo' => $this->oDb->getFavoritesCount($this->aFileInfo['medID']),
             'viewInfo' => $this->aFileInfo['medViews'],
