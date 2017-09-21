@@ -280,7 +280,7 @@ class BxDolTwigPageView extends BxDolPageView
         if (!$iNum)
             return MsgBox(_t('_Empty'));
 
-        $sActionsUrl = BX_DOL_URL_ROOT . $this->_oMain->_oConfig->getBaseUri() . "view/" . $this->aDataEntry[$this->_oDb->_sFieldUri] . '?ajax_action=';
+        $sActionsUrl = bx_append_url_params(BX_DOL_URL_ROOT . $this->_oMain->_oConfig->getBaseUri() . "view/" . $this->aDataEntry[$this->_oDb->_sFieldUri], array('ajax_action' => ''));
         $aButtons = array (
             array (
                 'type' => 'submit',
