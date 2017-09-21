@@ -4,8 +4,14 @@
 #site_customize .popup_form_wrapper .container {
 	background-color: rgba(255, 255, 255, 0.9);
 }
+#site_customize .buttons_content {
+	margin-bottom: 0px;
+}
 #site_customize .buttons_bar {
 	display: block;
+}
+#site_customize .buttons_bar .bx-btn {
+	margin: 0.3125rem;
 }
 #site_customize .input_wrapper_text {
     margin-right: 3px;
