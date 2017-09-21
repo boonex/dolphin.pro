@@ -1,10 +1,15 @@
 #profile_customize .popup_form_wrapper .container {
 	background-color: rgba(255, 255, 255, 0.9);
 }
+#profile_customize .buttons_content {
+    margin-bottom: 0px;
+}
 #profile_customize .buttons_bar {
 	display: block;
 }
-
+#profile_customize .buttons_bar .bx-btn {
+    margin: 0.3125rem;
+}
 form#custom_themes_form .themes {
 	margin: -5px;
 

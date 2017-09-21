@@ -1,15 +1,15 @@
 <bx_if:select_target>__top_controls__</bx_if:select_target>
-<div class="bx-def-bc-margin">
+<div class="buttons_content bx-def-bc-margin">
     __content__
-    <div class="buttons_bar bx-def-margin-top">
-        <bx_repeat:buttons>
-            <button class="bx-btn" type="__btn_type__" name="__btn_name__" onclick="__btn_action__">__btn_value__</button>
-	    </bx_repeat:buttons>
-        <button class="bx-btn" type="button" name="close" onclick="$('#profile_customize_page').fadeOut('slow');">
-            <bx_text:_bx_profile_customize_btn_close />
-        </button>
-        <div class="clear_both"></div>
-    </div>
+</div>
+<div class="buttons_bar bx-def-bc-margin-thd">
+	<bx_repeat:buttons>
+	    <button class="bx-btn" type="__btn_type__" name="__btn_name__" onclick="__btn_action__">__btn_value__</button>
+	</bx_repeat:buttons>
+	<button class="bx-btn" type="button" name="close" onclick="$('#profile_customize_page').fadeOut('slow');">
+	    <bx_text:_bx_profile_customize_btn_close />
+	</button>
+	<div class="clear_both"></div>
 </div>
 <script type="text/javascript">
     $.colorInput.defaults.cellSize = 10;
