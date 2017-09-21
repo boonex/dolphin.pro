@@ -38,7 +38,7 @@ class BxSoundsTemplate extends BxDolFilesTemplate
             'width' => $iWidth,
             'fileUrl' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/' . $aInfo['medUri'],
             'fileTitle' => $aInfo['medTitle'],
-            'fileDescription' => $aInfo['medDesc'],
+            'fileDescription' => nl2br($aInfo['medDesc']),
             'rate' => $oVotingView->isEnabled() ? $oVotingView->getBigVoting(1, $aInfo['Rate']): '',
             'favInfo' => isset($aInfo['favCount']) ? $aInfo['favCount'] : '',
             'viewInfo' => $aInfo['medViews'],

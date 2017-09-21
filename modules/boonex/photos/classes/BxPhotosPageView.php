@@ -189,7 +189,7 @@ class BxPhotosPageView extends BxDolPageView
             'pic' => $this->oSearch->getImgUrl($this->aFileInfo['Hash'], 'file'),
             'width' => $iWidth,
             'fileTitle' => $this->aFileInfo['medTitle'],
-            'fileDescription' => $this->aFileInfo['medDesc'],
+            'fileDescription' => nl2br($this->aFileInfo['medDesc']),
             'rate' => $oVotingView->isEnabled() ? $oVotingView->getBigVoting(1, $this->aFileInfo['Rate']): '',
             'favInfo' => $this->oDb->getFavoritesCount($this->aFileInfo['medID']),
             'viewInfo' => $this->aFileInfo['medViews'],
