@@ -244,15 +244,30 @@ class BxDolPageViewAdmin
             LEFT JOIN `{$this -> sDBTable}` ON `{$this -> sDBTable}`.`Page` = `{$this -> sDBTable}_pages`.`Name`
             WHERE `{$this -> sDBTable}_pages`.`Name` = '{$sPageName}'";
 
-        db_res($sQuery);
+        if(!db_res($sQuery)) 
+            return false;
+
+        $oZ = new BxDolAlerts('page_builder', 'page_delete', 0, 0, array('uri' => $sPageName));
+        $oZ->alert();
+
+        return true;
     }
 
     function deleteBlock( $iBlockID )
     {
         $iBlockID = (int) $iBlockID;
+        $aBlock = db_assoc_arr("SELECT * FROM `{$this -> sDBTable}` WHERE `ID`='{$iBlockID}'");
+        if(empty($aBlock) || !is_array($aBlock))
+            return true;
 
-        $sQuery = "DELETE FROM `{$this -> sDBTable}` WHERE `Page` = '{$this -> sPage_db}' AND `ID` = '{$iBlockID}'";
-        db_res( $sQuery );
+        $sQuery = "DELETE FROM `{$this -> sDBTable}` WHERE `Page` = '{$this -> sPage_db}' AND `ID`='{$iBlockID}'";
+        if(!db_res( $sQuery ))
+            return false;
+
+        $oZ = new BxDolAlerts('page_builder', 'block_delete', $iBlockID, 0, array('page_uri' => $aBlock['Page']));
+        $oZ->alert();
+
+        return true;
     }
 
     function resetPage()
@@ -261,6 +276,9 @@ class BxDolPageViewAdmin
             $sQuery = "DELETE FROM `{$this -> sDBTable}` WHERE `Page` = '{$this -> sPage_db}'";
             db_res($sQuery);
             execSqlFile( $this -> oPage -> sDefaultSqlFile );
+
+            $oZ = new BxDolAlerts('page_builder', 'page_reset', 0, 0, array('uri' => $this -> sPage_db));
+            $oZ->alert();
         }
 
         echo (int)$this -> oPage -> bResetable;
