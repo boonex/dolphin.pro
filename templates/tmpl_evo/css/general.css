@@ -10,7 +10,7 @@ div.sys_root_bg {
 	height: 120vh;
 
 	background-image: url(../images/sys-bg-main.jpg);
-	background-repeat: repeat;
+	background-repeat: repeat center center fixed;
 }
 
 div.sys_root {
