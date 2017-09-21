@@ -908,7 +908,7 @@ EOF;
                     'required' => true,
                     'checker' => array (
                         'func' => 'length',
-                        'params' => array(3,255),
+                        'params' => array(3,100),
                         'error' => _t('_bx_ads_Caption_error'),
                     ),
                     'db' => array (
