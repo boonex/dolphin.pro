@@ -43,7 +43,7 @@ CREATE TABLE `[db_prefix]_main` (
   `IDProfile` int(11) unsigned NOT NULL default '0',
   `IDClassifiedsSubs` int(11) unsigned NOT NULL default '0',
   `DateTime` int(10) default NULL,
-  `Subject` varchar(50) NOT NULL default '',
+  `Subject` varchar(100) NOT NULL default '',
   `EntryUri` varchar(255) NOT NULL default '',
   `Message` text NOT NULL,
   `Status` enum('new','active','inactive') NOT NULL default 'new',
