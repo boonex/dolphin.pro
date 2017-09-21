@@ -50,35 +50,39 @@ class BxPhotosModule extends BxDolFilesModule
         $sParamValue  = clear_xss($sParamValue);
         $sParamValue1 = clear_xss($sParamValue1);
         $iPointPos    = strrpos($sParamValue1, '.');
-        $sKey = substr($sParamValue1, 0, $iPointPos);
-        $iId = $this->_oDb->getIdByHash($sKey);
-        if ($iId > 0) {
-            $sExt = substr($sParamValue1, $iPointPos + 1);
-            switch ($sExt) {
-                case 'png':
-                    $sCntType = 'image/x-png';
-                    break;
-                case 'gif':
-                    $sCntType = 'image/gif';
-                    break;
-                default:
-                    $sCntType = 'image/jpeg';
-            }
-            $sPath = $this->_oConfig->getFilesPath() . $iId . str_replace('{ext}', $sExt, $this->_oConfig->aFilePostfix[$sParamValue]);
-            $sAdd = '';
-            if ($this->iHeaderCacheTime > 0) {
-                $iLastModTime = filemtime($sPath);
-                $sAdd = ", max-age={$this->iHeaderCacheTime}, Last-Modified: " . gmdate("D, d M Y H:i:s", $iLastModTime) . " GMT";
-            }
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0" . $sAdd);
-            header("Content-Type:" . $sCntType);
-            header("Content-Length: " . filesize($sPath));
-            readfile($sPath);
-        } else {
-            header("HTTP/1.0 404 Not Found");
-            echo _t('_sys_request_page_not_found_cpt');
+
+        $iId = (int)$this->_oDb->getIdByHash(substr($sParamValue1, 0, $iPointPos));
+        if(empty($iId)) 
+            return $this->_oTemplate->displayPageNotFound();
+
+        $aInfo = $this->_oDb->getFileInfo(array('fileId' => $iId));
+        if(empty($aInfo) || !is_array($aInfo)) 
+            return $this->_oTemplate->displayPageNotFound();
+
+        if ($aInfo['AllowAlbumView'] == BX_DOL_PG_HIDDEN || !$this->isAllowedView($aInfo)) 
+            return $this->_oTemplate->displayAccessDenied();
+
+        $sExt = substr($sParamValue1, $iPointPos + 1);
+        switch ($sExt) {
+            case 'png':
+                $sCntType = 'image/x-png';
+                break;
+            case 'gif':
+                $sCntType = 'image/gif';
+                break;
+            default:
+                $sCntType = 'image/jpeg';
         }
-        exit;
+        $sPath = $this->_oConfig->getFilesPath() . $iId . str_replace('{ext}', $sExt, $this->_oConfig->aFilePostfix[$sParamValue]);
+        $sAdd = '';
+        if ($this->iHeaderCacheTime > 0) {
+            $iLastModTime = filemtime($sPath);
+            $sAdd = ", max-age={$this->iHeaderCacheTime}, Last-Modified: " . gmdate("D, d M Y H:i:s", $iLastModTime) . " GMT";
+        }
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0" . $sAdd);
+        header("Content-Type:" . $sCntType);
+        header("Content-Length: " . filesize($sPath));
+        readfile($sPath);
     }
 
     function actionCropPerform($iPhotoID)
