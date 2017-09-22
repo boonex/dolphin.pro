@@ -208,7 +208,9 @@ class BxWallTemplate extends BxDolModuleTemplate
         		break;
 
 			case BX_WALL_PARSE_TYPE_LINK:
-				$aResult['content'] = $aEvent['content'];
+				$aResult['content'] = $this->parseHtmlByContent($aEvent['content'], array(
+				    'bx_wall_get_image_url' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'get_image/' . $aEvent['id'] . '/'
+				), array('{', '}'));
 
 				$sTmplName = 'common';
         		$aTmplVars['cpt_added_new'] = _t('_wall_added_' . $sEventType);
