@@ -356,6 +356,44 @@ class BxWallModule extends BxDolModule
         ));
     }
     /**
+     * Get image.
+     *
+     * @return string with image.
+     */
+	function actionGetImage($iId, $sUrl)
+    {
+        $aEvent = $this->_oDb->getEvents(array('browse' => 'id', 'object_id' => $iId));
+        if(empty($aEvent) || !is_array($aEvent) || strpos($aEvent['content'], urlencode($sUrl)) === false) {
+            header("Location: " . $this->_oTemplate->getImageUrl('no-image.png'));
+            exit;
+        }
+
+        $sUrl = base64_decode(urldecode($sUrl));
+
+        $sProtoHttp = 'http';
+        $sProtoHttps = 'https';
+        $sProtoSite = bx_proto();
+        $sProtoImage = bx_proto($sUrl);
+
+        if($sProtoSite == $sProtoHttp || ($sProtoSite == $sProtoHttps && $sProtoImage == $sProtoHttps)) {
+            header("Location: " . $sUrl);
+            exit;
+        }
+        
+        $aHeaders = get_headers($sUrl);
+        $sContent = bx_file_get_contents($sUrl);
+        
+        foreach ($aHeaders as $sHeader) {
+            $aMatches = array();
+            if(preg_match("/^Cache-Control:\s*max-age\s*=\s*([0-9]*)$/i", $sHeader, $aMatches)) 
+                if((int)$aMatches[1] < 2592000)
+                    $sHeader = 'Cache-Control: max-age=2592000';
+        
+            header($sHeader);
+        }
+        echo $sContent;
+    }
+    /**
      * Get RSS for specified owner.
      *
      * @param  string $sUsername wall owner username
@@ -1021,9 +1059,7 @@ class BxWallModule extends BxDolModule
         		'bx_if:show_thumnail' => array(
         			'condition' => $bThumbnail,
         			'content' => array(
-        				'thumbnail' => bx_append_url_params(BX_DOL_URL_ROOT . 'get_image.php', array(
-                            'url' => urlencode(base64_encode($sThumbnail))
-                        ))
+        				'thumbnail' => '{bx_wall_get_image_url}' . urlencode(base64_encode($sThumbnail))
         			)
         		),
 				'title' => $sTitle,
