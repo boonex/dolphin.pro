@@ -1688,10 +1688,9 @@
                 if ( $iNewMessages > $iOldCount) {
                     // generate notify messages;
                     for( $i = $iOldCount; $i < $iNewMessages; $i++) {
-                        $aSenderInfo = getProfileInfo($aMessages[$i][1]);
                         $aKeys = array (
                             'sender_thumb'    => $oFunctions -> getMemberIcon($aMessages[$i][1], 'left'),
-                            'sender_nickname' => getNickName($aSenderInfo['id']),
+                            'sender_nickname' => getNickName($aMessages[$i][1]),
                             'message_id'      => $aMessages[$i][0],
 
                             'sent_key'        => _t( '_Sent you a' ),
