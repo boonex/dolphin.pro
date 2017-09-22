@@ -14,8 +14,8 @@ class BxBaseSearchProfile extends BxBaseSearchResultText
         'name' => 'profile',
         'title' => '_People',
         'table' => 'Profiles',
-        'ownFields' => array('ID', 'NickName', 'NickName', 'DescriptionMe', 'Country', 'City', 'Tags', 'DateReg', 'DateOfBirth', 'Sex', 'Couple'),
-        'searchFields' => array('NickName', 'DescriptionMe', 'City', 'Tags'),
+        'ownFields' => array('ID', 'NickName', 'DescriptionMe', 'Country', 'City', 'Tags', 'DateReg', 'DateOfBirth', 'Sex', 'Couple'),
+        'searchFields' => array('NickName', 'FullName', 'FirstName', 'LastName', 'DescriptionMe', 'City', 'Tags'),
         'restriction' => array(
             'activeStatus' => array('value'=>'Active', 'field'=>'Status', 'operator'=>'='),
         ),

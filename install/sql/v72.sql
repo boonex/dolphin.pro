@@ -2449,7 +2449,7 @@ CREATE TABLE `Profiles` (
   KEY `DateOfBirth` (`DateOfBirth`),
   KEY `DateReg` (`DateReg`),
   KEY `DateLastNav` (`DateLastNav`),
-  FULLTEXT KEY `NickName_2` (`NickName`,`City`,`DescriptionMe`,`Tags`)
+  FULLTEXT KEY `NickName_2` (`NickName`,`FullName`,`FirstName`,`LastName`,`City`,`DescriptionMe`,`Tags`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
