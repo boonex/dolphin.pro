@@ -19,7 +19,8 @@ CREATE TABLE `[db_prefix]_main` (
   `Status` enum('approved','disapproved','pending') NOT NULL default 'pending',
   `Type` varchar(30) NOT NULL default 'text/plain',
   PRIMARY KEY  (`ID`),
-  KEY `Owner` (`Owner`)
+  KEY `Owner` (`Owner`),
+  KEY `Uri` (`Uri`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Favorites
