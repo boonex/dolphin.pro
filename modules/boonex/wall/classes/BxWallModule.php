@@ -1021,7 +1021,9 @@ class BxWallModule extends BxDolModule
         		'bx_if:show_thumnail' => array(
         			'condition' => $bThumbnail,
         			'content' => array(
-        				'thumbnail' => $sThumbnail
+        				'thumbnail' => bx_append_url_params(BX_DOL_URL_ROOT . 'get_image.php', array(
+                            'url' => urlencode(base64_encode($sThumbnail))
+                        ))
         			)
         		),
 				'title' => $sTitle,

@@ -1599,9 +1599,9 @@ function bx_mkdir_r($sDirName, $rights = 0777)
 /**
  * Returns current site protocol http:// or https://
  */
-function bx_proto ()
+function bx_proto ($sUrl = BX_DOL_URL_ROOT)
 {
-    return 0 === strncmp('https', BX_DOL_URL_ROOT, 5) ? 'https' : 'http';
+    return 0 === strncmp('https', $sUrl, 5) ? 'https' : 'http';
 }
 
 /**
