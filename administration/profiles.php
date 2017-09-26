@@ -354,9 +354,7 @@ function getMembers($aParams)
                 `tp`.`NickName` LIKE '%" . $aParams['ctl_params']['value'] . "%' OR
                 `tp`.`Email` LIKE '%" . $aParams['ctl_params']['value'] . "%' OR
                 `tp`.`DescriptionMe` LIKE '%" . $aParams['ctl_params']['value'] . "%' OR
-                `tp`.`Tags` LIKE '%" . $aParams['ctl_params']['value'] . "%' OR
-                `tp`.`DateReg` LIKE '%" . $aParams['ctl_params']['value'] . "%' OR
-                `tp`.`DateLastLogin` LIKE '%" . $aParams['ctl_params']['value'] . "%'
+                `tp`.`Tags` LIKE '%" . $aParams['ctl_params']['value'] . "%'
             )";
                 break;
         }
