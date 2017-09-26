@@ -49,6 +49,7 @@ class BxDb extends Mistake
         }
 
         mysql_query ("SET NAMES 'utf8'", $this->link);
+        mysql_query ("SET sql_mode = ''", $this->link);
     }
 
     function select_db()
