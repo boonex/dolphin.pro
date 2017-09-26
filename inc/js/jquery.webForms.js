@@ -225,7 +225,7 @@ $(document).ready(function() {
                 var $trc = $($inputParent).nextAll('div.clear_both:last');
                 $trc = $trc.length ? $trc : $inputParent; // just if div.clear_both doesn't exist
                 
-                var $clearBoth = $('<div class="clear_both"></div>').insertAfter($trc);
+                var $clearBoth = $('<div class="bx-btn form_input_multiply_path"></div><div class="clear_both"></div>').insertAfter($trc);
                 
                 $inputParent
                 .clone()
@@ -243,6 +243,9 @@ $(document).ready(function() {
                         .get(0)
                             .focus();
             });
+
+            if($input.attr('type') == 'file')
+            	$('<div class="bx-btn form_input_multiply_path"></div>').insertAfter($inputParent.nextAll('.bx-btn.form_input_multiply_add:first, .bx-btn.form_input_multiply_remove:first'));
 
             // check if "clear_both" is needed after nely added button(s)
             if ($inputParent.parent().find('.bx-btn > .multiply_add_button, .bx-btn > .multiply_other_button').length)

@@ -234,10 +234,6 @@
     padding: 0px 20px;
 }
 
-.form_advanced_table .bx-btn.form_input_multiply_remove {
-    float:none;
-}
-
 .form_advanced_table .sys-icon.multiply_add_button,
 .form_advanced_table .sys-icon.multiply_remove_button,
 .form_advanced_table .sys-icon.multiply_other_button,
@@ -310,6 +306,37 @@
 .bx-form-element-file .input_wrapper.input_wrapper_file {
 	margin-top: -10px;
 }
+
+.bx-form-element-file .bx-btn.form_input_multiply_path {
+	margin: 10px 10px 0px 0px;
+	padding: 0 10px;
+
+	background-color: transparent;
+	background-image: none;
+	border-width: 0px;
+	border-radius: 0px;
+	box-shadow: none;
+
+    filter: none;
+
+    text-shadow: none;
+    text-transform: none;
+
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.7);
+
+    cursor: auto;    
+}
+.bx-form-element-file .bx-btn.form_input_multiply_path:hover,
+.bx-form-element-file .bx-btn.form_input_multiply_path:active {
+	top: 0px;
+
+	background-color: transparent;
+	box-shadow: none;
+
+	color: rgba(0, 0, 0, 0.7);
+}
+
 
 /* * * * * Multiply Select Box field * * * * */
 .bx-form-element-select_box .bx-btn {
