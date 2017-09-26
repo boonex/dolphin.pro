@@ -154,8 +154,10 @@ BxPhotoUpload.prototype.showErrorMsg = function(sErrorCode) {
 }
 
 BxPhotoUpload.prototype.onFileChangedEvent = function (oElement) {
+	$(oElement).parents('.bx-btn:first').nextAll('.form_input_multiply_path:first').html($(oElement).val());
+
 	this.changeContinueButtonStatus();
-}
+};
 
 BxPhotoUpload.prototype._loading = function (bShow) {
     var oLoading = $('.upload-loading-container');

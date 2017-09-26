@@ -641,7 +641,7 @@ class BxDolFilesUploader extends BxDolTemplate
                     'required' => true,
                     'attrs'    => array(
                         'multiplyable' => $aExtras['from_wall'] ? 'false' : 'true',
-                        'onchange'     => "parent." . $this->_sJsPostObject . ".onFileChangedEvent();"
+                        'onchange' => "parent." . $this->_sJsPostObject . ".onFileChangedEvent(this);"
                     )
                 ),
                 'agreement' => array(
