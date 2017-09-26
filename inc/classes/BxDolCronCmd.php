@@ -63,7 +63,7 @@ class BxDolCronCmd extends BxDolCron
 
         // profile_delete
         if ( $db_clean_profiles > 0) {
-            $res = db_res("SELECT `ID` FROM `Profiles` WHERE (`DateLastNav` < NOW() - INTERVAL $db_clean_profiles DAY) AND (`Couple` > `ID` OR `Couple` = 0)");
+            $res = db_res("SELECT `ID` FROM `Profiles` WHERE ((`DateLastNav` <> '0000-00-00 00:00:00' AND `DateLastNav` < NOW() - INTERVAL $db_clean_profiles DAY) OR (`DateLastNav` = '0000-00-00 00:00:00' AND `DateReg` < NOW() - INTERVAL $db_clean_profiles DAY)) AND (`Couple` > `ID` OR `Couple` = 0)");
             if ( $res ) {
                 $db_clean_profiles_num = $res->rowCount();
                 while ( $arr = $res->fetch() ) {
