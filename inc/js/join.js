@@ -54,13 +54,11 @@ function doShowJoinErrors( aErrors, eForm ) {
     
     for( var iInd = 0; iInd < aErrors.length; iInd ++ ) {
         var aErrorsInd = aErrors[iInd];
-        if(!$.isArray(aErrorsInd) && !$.isEmptyObject(aErrorsInd))
-	        for( var sField in aErrorsInd ) {
-	            var sError = aErrorsInd[ sField ];
-	            bHaveErrors = true;
+        $.each(aErrorsInd, function( sField, sError ) {
+            bHaveErrors = true;
 
-	            doShowError( eForm, sField, iInd, sError );
-	        }
+            doShowError( eForm, sField, iInd, sError );
+        });
     }
 
     if( bHaveErrors )
