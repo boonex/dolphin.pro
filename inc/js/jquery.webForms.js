@@ -57,7 +57,15 @@ $(document).ready(function() {
                         $(this).attr('readonly', 'readonly');
 
 			}
-			
+
+			// Single file selector
+			if($(this).is(".form_input_file.bx-def-font-inputs[type = 'file'][multiplyable != 'true']")) {
+				$('<div class="bx-btn form_input_multiply_path"></div>').insertAfter($(this).parents('.bx-btn:first'));
+
+				$(this).change(function() {
+	            	$(this).parents('.bx-btn:first').nextAll('.form_input_multiply_path:first').html($(this).val());
+	            });
+			}
 
 			// Multiplyable
 			if (this.getAttribute('multiplyable') == 'true') {
@@ -192,6 +200,11 @@ $(document).ready(function() {
             var $input = $(this);
             var $inputParent = $input.parent();
             var $wrapper = $inputParent.clone().children().remove().end();
+            var $fOnChange = function() {
+            	$(this).parents('.bx-btn:first').nextAll('.form_input_multiply_path:first').html($(this).val());
+            };
+
+            $input.change($fOnChange);
 
             // insert "Other" button
             if ($input.attr('add_other') == 'true' && !$inputParent.parent().find('.multiply_other_button').length) {
@@ -235,7 +248,7 @@ $(document).ready(function() {
                     .each(function(){
                         var $input = $('input', this);
                         if ($input.length && ($input.attr('type') == 'file' || $input.attr('type') == 'text'))
-                            $input.val('');
+                            $input.val('').change($fOnChange);
                     })
                     .insertAfter($trc)
                     .children(':first')

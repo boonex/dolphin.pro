@@ -148,8 +148,6 @@ BxSoundUpload.prototype.showErrorMsg = function(sErrorCode) {
 }
 
 BxSoundUpload.prototype.onFileChangedEvent = function (oElement) {
-	$(oElement).parents('.bx-btn:first').nextAll('.form_input_multiply_path:first').html($(oElement).val());
-
 	this.changeContinueButtonStatus();
 };
 
