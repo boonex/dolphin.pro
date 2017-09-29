@@ -60,7 +60,7 @@ class BxPhotosModule extends BxDolFilesModule
         if(empty($aInfo) || !is_array($aInfo)) 
             return $this->_oTemplate->displayPageNotFound();
 
-        if ($aInfo['AllowAlbumView'] == BX_DOL_PG_HIDDEN || !$this->isAllowedView($aInfo)) 
+        if($aInfo['AllowAlbumView'] != BX_DOL_PG_HIDDEN && !$this->isAllowedView($aInfo)) 
             return $this->_oTemplate->displayAccessDenied();
 
         $sExt = substr($sParamValue1, $iPointPos + 1);
