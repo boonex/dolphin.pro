@@ -358,9 +358,11 @@ class BxWallModule extends BxDolModule
      */
 	function actionGetImage($iId, $sUrl)
     {
+        $sNoImage = $this->_oTemplate->getImageUrl('no-image.png');
+
         $aEvent = $this->_oDb->getEvents(array('browse' => 'id', 'object_id' => $iId));
         if(empty($aEvent) || !is_array($aEvent) || strpos($aEvent['content'], urlencode($sUrl)) === false) {
-            header("Location: " . $this->_oTemplate->getImageUrl('no-image.png'));
+            header("Location: " . $sNoImage);
             exit;
         }
 
@@ -375,19 +377,42 @@ class BxWallModule extends BxDolModule
             header("Location: " . $sUrl);
             exit;
         }
-        
+
+        $bImage = false;
         $aHeaders = get_headers($sUrl);
-        $sContent = bx_file_get_contents($sUrl);
-        
+
+        $bHeaderCache = false;
+        $sHeaderCache = 'Cache-Control: max-age=2592000';
+
         foreach ($aHeaders as $sHeader) {
+            //--- Check type
             $aMatches = array();
-            if(preg_match("/^Cache-Control:\s*max-age\s*=\s*([0-9]*)$/i", $sHeader, $aMatches)) 
+            if(preg_match("/^Content-Type:\s*([a-z]*)\/([a-z]*)$/i", $sHeader, $aMatches)) {
+                if($aMatches[1] == 'image' && in_array($aMatches[2], array('png', 'jpeg', 'gif')))
+                    $bImage = true;
+            }
+
+            //--- Check cache
+            $aMatches = array();
+            if(preg_match("/^Cache-Control:\s*max-age\s*=\s*([0-9]*)$/i", $sHeader, $aMatches)) {
+                $bHeaderCache = true;
+
                 if((int)$aMatches[1] < 2592000)
-                    $sHeader = 'Cache-Control: max-age=2592000';
-        
+                    $sHeader = $sHeaderCache;
+            }
+
             header($sHeader);
         }
-        echo $sContent;
+
+        if(!$bImage) {
+            header("Location: " . $sNoImage);
+            exit;
+        }
+
+        if(!$bHeaderCache)
+            header($sHeaderCache);
+
+        echo bx_file_get_contents($sUrl);
     }
     /**
      * Get RSS for specified owner.
