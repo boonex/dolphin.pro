@@ -108,7 +108,7 @@ INSERT INTO `sys_objects_vote` (`ObjectName`, `TableRating`, `TableTrack`, `RowP
 ('bx_feedback', '[db_prefix]voting', '[db_prefix]voting_track', 'fdb_', 5, 'vote_send_result', 'BX_PERIOD_PER_VOTE', 1, '', '', '[db_prefix]entries', 'rate', 'rate_count', 'id', 'BxFdbVoting', 'modules/boonex/feedback/classes/BxFdbVoting.php');
 
 INSERT INTO `sys_objects_tag` (`ObjectName`, `Query`, `PermalinkParam`, `EnabledPermalink`, `DisabledPermalink`, `LangKey`) VALUES
-('bx_feedback', 'SELECT `tags` FROM `[db_prefix]entries` WHERE `id`={iID} AND `status`=0', 'permalinks_module_feedback', 'm/feedback/tags/{tag}', 'modules/?r=feedback/tags/{tag}', '_feedback_lcaption_tags_object');
+('bx_feedback', 'SELECT `tags` FROM `[db_prefix]entries` WHERE `id`={iID} AND `status`=0', 'permalinks_module_feedback', 'm/feedback/tag/{tag}', 'modules/?r=feedback/tag/{tag}', '_feedback_lcaption_tags_object');
 
 INSERT INTO `sys_objects_search` (`ObjectName`, `Title`, `ClassName`, `ClassPath`) VALUES
 ('bx_feedback', '_feedback_lcaption_search_object', 'BxFdbSearchResult', 'modules/boonex/feedback/classes/BxFdbSearchResult.php');
