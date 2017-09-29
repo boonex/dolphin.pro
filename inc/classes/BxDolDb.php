@@ -385,6 +385,14 @@ class BxDolDb extends BxDolMistake
         return in_array(strtoupper($sFieldName), $aFields['uppercase']);
     }
 
+    function fetchField($mixedQuery, $iField)
+    {
+        if(is_string($mixedQuery))
+            $mixedQuery = $this->res($mixedQuery);
+
+        return mysql_fetch_field($mixedQuery, $iField);
+    }
+
     function getEncoding()
     {
         return  mysql_client_encoding($this->link) or $this->error('Database get encoding error');
@@ -592,6 +600,15 @@ EOJ;
             return true;
         }
         return false;
+    }
+
+    public function arrayToSQL($a, $sDiv = ',')
+    {
+        $s = '';
+        foreach($a as $k => $v)
+            $s .= "`{$k}` = '" . $this->escape($v) . "'" . $sDiv;
+
+        return trim($s, $sDiv);
     }
 
     function escape ($s)
