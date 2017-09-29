@@ -499,6 +499,14 @@ class BxDolDb
         return in_array(strtoupper($sFieldName), $aFields['uppercase']);
     }
 
+    public function fetchField($mixedQuery, $iField, $aBindings = [])
+    {
+        if(is_string($mixedQuery))
+            $mixedQuery = $this->res($mixedQuery, $aBindings);
+
+        return $mixedQuery->getColumnMeta($iField);
+    }
+
     public function getDbCacheObject()
     {
         if ($this->oDbCacheObject != null) {
@@ -587,6 +595,22 @@ class BxDolDb
         }
 
         return false;
+    }
+
+    /**
+     * Convert array of key => values to SQL query.
+     * Array keys are field names and array values are field values.
+     * @param $a array
+     * @param $sDiv fields separator, by default it is ',', another useful value is ' AND '
+     * @return part of SQL query string
+     */
+    public function arrayToSQL($a, $sDiv = ',')
+    {
+        $s = '';
+        foreach($a as $k => $v)
+            $s .= "`{$k}` = " . $this->escape($v) . $sDiv;
+
+        return trim($s, $sDiv);
     }
 
     /**

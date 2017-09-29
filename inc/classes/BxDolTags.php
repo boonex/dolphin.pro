@@ -72,6 +72,14 @@ class BxDolTags
                 "SELECT * FROM `{$this->sCacheTable}`", 'ObjectName');
     }
 
+    function implodeTags ($aTags)
+    {
+        if(empty($aTags) || !is_array($aTags))
+            return '';
+
+        return implode(',', $aTags);
+    }
+
     function explodeTags ($sText)
     {
         $aTags = preg_split( '/['.$this->sTagsDivider.']/', $sText, 0, PREG_SPLIT_NO_EMPTY );
@@ -94,20 +102,29 @@ class BxDolTags
         $this->getTagObjectConfig();
 
         $iID = (int)$iID;
-        if ($iID > 0 && array_key_exists($sType, $this->aTagObjects) && isset($this->aTagObjects[$sType]['Query'])) {
-            $this->oDb->query( "DELETE FROM `{$this->sTagTable}` WHERE `{$this->aTagFields['id']}` = $iID AND `{$this->aTagFields['type']}` = '$sType'" );
-            $sqlQuery = str_replace('{iID}', $iID, $this->aTagObjects[$sType]['Query']);
-            $sTags = $this->oDb->getOne($sqlQuery);
-            if( !strlen( $sTags ) )
-                return;
-            $aTagsSet = array(
-                'id' => $iID,
-                'type' => $sType,
-                'tagString' => $sTags,
-                'date' => 'CURRENT_TIMESTAMP'
-            );
-            $this->_insertTags($aTagsSet);
-        }
+        if($iID <= 0 || !array_key_exists($sType, $this->aTagObjects) || !isset($this->aTagObjects[$sType]['Query'])) 
+            return;
+
+        $this->oDb->query("DELETE FROM `{$this->sTagTable}` WHERE `{$this->aTagFields['id']}` = $iID AND `{$this->aTagFields['type']}` = '$sType'");
+
+        $sQuerySelect = str_replace('{iID}', $iID, $this->aTagObjects[$sType]['Query']);
+        $sTags = $this->oDb->getOne($sQuerySelect);
+        if(!strlen($sTags))
+            return;
+
+        $sResult = $this->_insertTags(array(
+            'id' => $iID,
+            'type' => $sType,
+            'tagString' => $sTags,
+            'date' => time()
+        ));
+
+        if(empty($sResult))
+            return;
+
+        $oField = $this->oDb->fetchField($sQuerySelect, 0);
+        if($oField && ($i = mb_stripos($sQuerySelect, 'WHERE')) !== false && mb_stripos($sQuerySelect, 'JOIN') === false)
+            $this->oDb->query("UPDATE `{$oField->table}` SET `{$oField->name}` = '" . $sResult . "' " . mb_substr($sQuerySelect, $i));
     }
 
     function getTagList($aParam)
@@ -218,27 +235,35 @@ class BxDolTags
         if( !$aTags )
             return;
 
-        $sFields = '';
+        $bUpdate = false;
+        foreach( $aTags as $iKey => $sTag ) {
+            $sTag = process_db_input(trim($sTag), BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+            if(get_mb_len($sTag) > $this->iTagLength) {
+                $sTag = get_mb_substr($sTag, 0, $this->iTagLength);
 
-        foreach ($this->aTagFields as $sKey => $sValue)
-            $sFields .= $sValue .', ';
-
-        $sFields = trim($sFields, ', ');
-        $sValues = '';
-
-        foreach( $aTags as $sTag ) {
-            $aTagsSet['tag'] = process_db_input(trim($sTag), BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
-            if(get_mb_len($aTagsSet['tag']) > $this->iTagLength)
-                $aTagsSet['tag'] = get_mb_substr($aTagsSet['tag'], 0, $this->iTagLength);
-
-            $sQuery = "SELECT COUNT(*) FROM `sys_tags`
-                WHERE `ObjID` = '{$aTagsSet['id']}' AND `Type` = '{$aTagsSet['type']}' AND `Tag` = '{$aTagsSet['tag']}'";
-
-            if(!$this->oDb->getOne($sQuery)) {
-                 $sValues  = "('{$aTagsSet['id']}', '{$aTagsSet['type']}', '{$aTagsSet['tag']}', {$aTagsSet['date']})";
-                 $sqlQuery = "INSERT INTO `{$this->sTagTable}` ($sFields) VALUES $sValues";
-                 $this->oDb->query($sqlQuery);
+                $aTags[$iKey] = $sTag;
+                $bUpdate = true;
             }
+
+            $sQuery = "SELECT COUNT(*) FROM `sys_tags` WHERE " . $this->oDb->arrayToSQL(array(
+                $this->aTagFields['id'] => $aTagsSet['id'],
+                $this->aTagFields['type'] => $aTagsSet['type'],
+                $this->aTagFields['tag'] => $sTag,
+            ), ' AND ');
+
+            if(!$this->oDb->getOne($sQuery))
+                $this->oDb->query("INSERT INTO `{$this->sTagTable}` SET " . $this->oDb->arrayToSQL(array(
+                    $this->aTagFields['id'] => $aTagsSet['id'],
+                    $this->aTagFields['type'] => $aTagsSet['type'],
+                    $this->aTagFields['tag'] => $sTag,
+                    $this->aTagFields['date'] => $aTagsSet['date']
+                )));
         }
+
+        $sResult = '';
+        if($bUpdate)
+            $sResult = $this->implodeTags(array_unique($aTags));
+
+        return $sResult;
     }
 }
