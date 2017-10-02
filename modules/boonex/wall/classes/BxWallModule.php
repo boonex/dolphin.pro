@@ -1329,7 +1329,7 @@ class BxWallModule extends BxDolModule
 		$sType = $aEvent['type'];
 		$sAction = $aEvent['action'];
 	    $iObjectId = $aEvent['object_id'];
-		if($this->_oConfig->isGrouped($sType, $sAction, $iObjectId)) 
+		if($this->_oConfig->isGrouped($sType, $sAction, $iObjectId) || $this->_oConfig->isGroupedObject($iObjectId)) 
 			return $this->_getObjectVotingDefault($aEvent['id']);
 
 		$oVoting = new BxWallVoting($sType, $iObjectId);

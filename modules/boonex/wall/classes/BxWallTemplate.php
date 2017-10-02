@@ -54,36 +54,13 @@ class BxWallTemplate extends BxDolModuleTemplate
 	                    'title' => process_db_input($aResult['title'], BX_TAGS_STRIP),
 	                    'description' => process_db_input($aResult['description'], BX_TAGS_STRIP)
 	                ), $aEvent['id']);
-	
-	            if(!in_array($aEvent['type'], array('profile', 'friend'))) {
-	                $sType = $aEvent['type'];
-
-	                $iObjectId = $aEvent['object_id'];
-	                if($aEvent['action'] == 'comment_add') {
-	                	$aContent = unserialize($aEvent['content']);
-	                	$iObjectId = (int)$aContent['object_id'];
-	                }
-
-	                if($this->_oConfig->isGrouped($aEvent['type'], $aEvent['action'], $iObjectId)) {
-	                    $sType = isset($aResult['grouped']['group_cmts_name']) ? $aResult['grouped']['group_cmts_name'] : '';
-	                    $iObjectId = isset($aResult['grouped']['group_id']) ? (int)$aResult['grouped']['group_id'] : 0;
-	                }
-	
-	                $oComments = new BxWallCmts($sType, $iObjectId);
-	                if($oComments->isEnabled())
-	                    $sComments = $oComments->getCommentsFirstSystem('comment', $aEvent['id']);
-	                else
-	                    $sComments = $this->getDefaultComments($aEvent['id']);
-	            }
-	            else
-					$sComments = $this->getDefaultComments($aEvent['id']);
 
 				$sResult = $this->parseHtmlByTemplateName('balloon', array(
 		        	'post_type' => $aEvent['type'],
 		            'post_id' => $aEvent['id'],
 		            'post_owner_icon' => $this->getOwnerThumbnail((int)$aEvent['owner_id']),
 		        	'post_content' => $aResult['content'],
-		            'comments_content' => $sComments
+		            'comments_content' => $this->getComments($aEvent, $aResult)
 		        ));
 				break;
 
@@ -644,6 +621,34 @@ class BxWallTemplate extends BxDolModuleTemplate
     		'class' => 'thumbnail_block_' . $sType,
     		'src' => $GLOBALS['oFunctions']->getSexPic('', $aType2Icon[$sType])
     	));
+    }
+
+    function getComments($aEvent, $aResult) 
+    {
+        if(in_array($aEvent['type'], array('profile', 'friend'))) 
+            return $this->getDefaultComments($aEvent['id']);
+
+        $sType = $aEvent['type'];
+        $iObjectId = $aEvent['object_id'];
+
+        if($aEvent['action'] == 'comment_add') {
+            $aContent = unserialize($aEvent['content']);
+            $iObjectId = (int)$aContent['object_id'];
+        }
+
+        if($this->_oConfig->isGrouped($aEvent['type'], $aEvent['action'], $iObjectId)) {
+            $sType = isset($aResult['grouped']['group_cmts_name']) ? $aResult['grouped']['group_cmts_name'] : '';
+            $iObjectId = isset($aResult['grouped']['group_id']) ? (int)$aResult['grouped']['group_id'] : 0;
+        }
+
+        if($this->_oConfig->isGroupedObject($iObjectId))
+            return $this->getDefaultComments($aEvent['id']);
+
+        $oComments = new BxWallCmts($sType, $iObjectId);
+        if($oComments->isEnabled())
+            return $oComments->getCommentsFirstSystem('comment', $aEvent['id']);
+
+        return $this->getDefaultComments($aEvent['id']);
     }
 
     function getDefaultComments($iEventId)
