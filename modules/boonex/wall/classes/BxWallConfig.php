@@ -306,6 +306,11 @@ class BxWallConfig extends BxDolConfig
 		if((int)$aHandler['groupable'] == 0 || empty($aHandler['group_by']))
 			return false;
 
+        return $this->isGroupedObject($mixedObjectId);
+    }
+
+    function isGroupedObject($mixedObjectId)
+    {
         return strpos($mixedObjectId, BX_WALL_DIVIDER_OBJECT_ID) !== false;
     }
 
