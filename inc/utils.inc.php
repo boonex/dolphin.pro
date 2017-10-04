@@ -1846,10 +1846,10 @@ function bx_linkify($text, $sAttrs = '', $bHtmlSpecialChars = false)
         }
 
         if (strncmp(BX_DOL_URL_ROOT, $url, strlen(BX_DOL_URL_ROOT)) !== 0) {
-            $sAttrs .= ' target="_blank" ';
-            if ($bAddNofollow) {
+            if (false === stripos($sAttrs, 'target="_blank"'))
+                $sAttrs .= ' target="_blank" ';
+            if ($bAddNofollow && false === stripos($sAttrs, 'rel="nofollow"'))
                 $sAttrs .= ' rel="nofollow" ';
-            }
         }
 
         $text = substr_replace($text, '<a ' . $sAttrs . ' href="' . $url . '">' . $matches[$i][0] . '</a>',
