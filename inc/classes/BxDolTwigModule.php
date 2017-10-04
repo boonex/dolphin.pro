@@ -701,6 +701,8 @@ class BxDolTwigModule extends BxDolModule
         if ($isFan) {
 
             if ($this->_oDb->leaveEntry($iEntryId, $this->_iProfileId)) {
+                $this->_onEventFanRemove($iEntryId, $this->_iProfileId, $aDataEntry, '');
+
                 $sRedirect = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/' . $aDataEntry[$this->_oDb->_sFieldUri];
                 echo MsgBox($sMsgLeaveSuccess) . genAjaxyPopupJS($iEntryId, 'ajaxy_popup_result_div', $sRedirect);
                 exit;
@@ -1649,6 +1651,10 @@ class BxDolTwigModule extends BxDolModule
         // we do not need to send any notofication mail here because it will be part of standard subscription process
         $oAlert = new BxDolAlerts($this->_sPrefix, 'join', $iEntryId, $iProfileId);
         $oAlert->alert();
+
+        bx_import('BxDolSubscription');
+        $oSubscription = BxDolSubscription::getInstance();
+        $oSubscription->subscribeMember($iProfileId, $this->_sPrefix, '', $iEntryId);
     }
 
     function _onEventJoinRequest ($iEntryId, $iProfileId, $aDataEntry, $sEmailTemplate, $iMaxFans = 1000)
@@ -1671,9 +1677,15 @@ class BxDolTwigModule extends BxDolModule
 
     function _onEventFanRemove ($iEntryId, $iProfileId, $aDataEntry, $sEmailTemplate)
     {
-        $this->_notifyEmail ($sEmailTemplate, $iProfileId, $aDataEntry);
+        if ($sEmailTemplate)
+            $this->_notifyEmail ($sEmailTemplate, $iProfileId, $aDataEntry);
+        
         $oAlert = new BxDolAlerts($this->_sPrefix, 'fan_remove', $iEntryId, $iProfileId);
         $oAlert->alert();
+
+        bx_import('BxDolSubscription');
+        $oSubscription = BxDolSubscription::getInstance();
+        $oSubscription->unsubscribeMember($iProfileId, $this->_sPrefix, '', $iEntryId);
     }
 
     function _onEventFanBecomeAdmin ($iEntryId, $iProfileId, $aDataEntry, $sEmailTemplate)
