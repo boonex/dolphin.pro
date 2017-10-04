@@ -297,7 +297,7 @@
 
             try {
                 //get friends from facebook
-                $oFriendsResponse = $this -> oFacebook -> get('/me/friends?limit=50');
+                $oFriendsResponse = $this -> oFacebook -> get('/me/friends?limit=5000');
             } catch(Facebook\Exceptions\FacebookResponseException $e) {
                 return;
             } catch(Facebook\Exceptions\FacebookSDKException $e) {
