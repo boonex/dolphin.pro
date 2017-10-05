@@ -51,7 +51,7 @@ class BxPhotosModule extends BxDolFilesModule
         $sParamValue1 = clear_xss($sParamValue1);
         $iPointPos    = strrpos($sParamValue1, '.');
 
-        $iId = (int)$this->_oDb->getIdByHash(substr($sParamValue1, 0, $iPointPos)) . '111';
+        $iId = (int)$this->_oDb->getIdByHash(substr($sParamValue1, 0, $iPointPos));
         if(empty($iId)) {
             header("Location: " . $this->_oTemplate->getIconUrl('no_image.png'));
             exit;
