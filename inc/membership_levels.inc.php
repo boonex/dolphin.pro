@@ -230,11 +230,15 @@ function getMemberMembershipInfo_latest($iMemberId, $iTime = '')
  * 					'DateExpires'	=> (UNIX timestamp) date/time expires )
  *
  */
-function getMemberMembershipInfo($iMemberId, $iTime = '')
+function getMemberMembershipInfo($iMemberId, $iTime = '', $bCheckUserStatus = false)
 {
     $iTime = ($iTime == '') ? time() : (int)$iTime;
 
-    $aMembershipCurrent = getMemberMembershipInfo_current($iMemberId, $iTime);
+    if ($bCheckUserStatus && ($aProfile = getProfileInfo($iMemberId)) && $aProfile['Status'] != 'Active')
+        $aMembershipCurrent =& $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_NON_MEMBER, 'getRow', "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ".MEMBERSHIP_ID_NON_MEMBER);
+    else    
+        $aMembershipCurrent = getMemberMembershipInfo_current($iMemberId, $iTime);
+
     if(in_array($aMembershipCurrent['ID'], array(MEMBERSHIP_ID_STANDARD, MEMBERSHIP_ID_NON_MEMBER)))
         return $aMembershipCurrent;
 
@@ -325,7 +329,7 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
 
     //get current member's membership information
 
-    $arrMembership = getMemberMembershipInfo($iMemberId);
+    $arrMembership = getMemberMembershipInfo($iMemberId, '', $isCheckMemberStatus);
 
     $arrLangFileParams[CHECK_ACTION_LANG_FILE_MEMBERSHIP] = $arrMembership['Name'];
     $arrLangFileParams[CHECK_ACTION_LANG_FILE_SITE_EMAIL] = $site['email'];
@@ -337,15 +341,6 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
         if ( (isAdmin() || isModerator()) && $iForcedProfID>0) {
             $iDestID = $iForcedProfID;
             $performAction = false;
-        }
-
-        if ($isCheckMemberStatus) {
-            $active = getProfileInfo( $iDestID );
-            if ($active['Status'] != 'Active') {
-                $result[CHECK_ACTION_RESULT] = CHECK_ACTION_RESULT_NOT_ACTIVE;
-                $result[CHECK_ACTION_MESSAGE] = _t_ext(CHECK_ACTION_MESSAGE_NOT_ACTIVE, $arrLangFileParams);
-                return $result;
-            }
         }
     }
 

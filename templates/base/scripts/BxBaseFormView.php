@@ -955,9 +955,6 @@ class BxBaseFormView extends BxDolForm
 
     function genInfoIcon($sInfo)
     {
-        $sInfo = str_replace( "\n", "\\n", $sInfo );
-        $sInfo = str_replace( "\r", "",    $sInfo );
-
         return $this->getInput('icon_info', $this->convertArray2Attrs(array(
         	'class' => 'sys-icon info-circle', 
         	'float_info' => htmlspecialchars_adv($sInfo)
