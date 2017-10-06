@@ -53,15 +53,21 @@ class BxPhotosModule extends BxDolFilesModule
         $iPointPos    = strrpos($sParamValue1, '.');
 
         $iId = (int)$this->_oDb->getIdByHash(substr($sParamValue1, 0, $iPointPos));
-        if(empty($iId)) 
-            return $this->_oTemplate->displayPageNotFound();
+        if(empty($iId)) {
+            header("Location: " . $this->_oTemplate->getIconUrl('no_image.png'));
+            exit;
+        }
 
         $aInfo = $this->_oDb->getFileInfo(array('fileId' => $iId));
-        if(empty($aInfo) || !is_array($aInfo)) 
-            return $this->_oTemplate->displayPageNotFound();
+        if(empty($aInfo) || !is_array($aInfo)) {
+            header("Location: " . $this->_oTemplate->getIconUrl('no_image.png'));
+            exit;
+        }
 
-        if($aInfo['AllowAlbumView'] != BX_DOL_PG_HIDDEN && !$this->isAllowedView($aInfo)) 
-            return $this->_oTemplate->displayAccessDenied();
+        if($aInfo['AllowAlbumView'] != BX_DOL_PG_HIDDEN && !$this->isAllowedView($aInfo)) {
+            header("Location: " . $this->_oTemplate->getIconUrl('private.png'));
+            exit;
+        }
 
         $sExt = substr($sParamValue1, $iPointPos + 1);
         switch ($sExt) {
