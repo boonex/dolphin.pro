@@ -10,12 +10,12 @@
          * Main Section.
          */
         'title' => 'Spy',
-        'version' => '1.3.3',
+        'version' => '1.3.4',
         'vendor' => 'Boonex',
         'update_url' => '',
 
         'compatible_with' => array(
-            '7.3.3'
+            '7.3.4'
         ),
 
         /**
