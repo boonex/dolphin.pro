@@ -21,22 +21,13 @@
  * DEALINGS IN THE SOFTWARE.
  *
  */
-namespace Facebook\Helpers;
+namespace Facebook\Exceptions;
 
 /**
- * Class FacebookJavaScriptLoginHelper
+ * Class FacebookResumableUploadException
  *
  * @package Facebook
  */
-class FacebookJavaScriptHelper extends FacebookSignedRequestFromInputHelper
+class FacebookResumableUploadException extends FacebookSDKException
 {
-    /**
-     * Get raw signed request from the cookie.
-     *
-     * @return string|null
-     */
-    public function getRawSignedRequest()
-    {
-        return $this->getRawSignedRequestFromCookie();
-    }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2017 Facebook, Inc.
  *
  * You are hereby granted a non-exclusive, worldwide, royalty-free license to
  * use, copy, modify, and distribute this software in source code or binary
@@ -25,16 +25,14 @@ namespace Facebook\Helpers;
 
 use Facebook\Authentication\AccessToken;
 use Facebook\Authentication\OAuth2Client;
-use Facebook\Url\UrlDetectionInterface;
+use Facebook\Exceptions\FacebookSDKException;
+use Facebook\PersistentData\FacebookSessionPersistentDataHandler;
+use Facebook\PersistentData\PersistentDataInterface;
+use Facebook\PseudoRandomString\PseudoRandomStringGeneratorFactory;
+use Facebook\PseudoRandomString\PseudoRandomStringGeneratorInterface;
 use Facebook\Url\FacebookUrlDetectionHandler;
 use Facebook\Url\FacebookUrlManipulator;
-use Facebook\PersistentData\PersistentDataInterface;
-use Facebook\PersistentData\FacebookSessionPersistentDataHandler;
-use Facebook\PseudoRandomString\PseudoRandomStringGeneratorInterface;
-use Facebook\PseudoRandomString\McryptPseudoRandomStringGenerator;
-use Facebook\PseudoRandomString\OpenSslPseudoRandomStringGenerator;
-use Facebook\PseudoRandomString\UrandomPseudoRandomStringGenerator;
-use Facebook\Exceptions\FacebookSDKException;
+use Facebook\Url\UrlDetectionInterface;
 
 /**
  * Class FacebookRedirectLoginHelper
@@ -79,7 +77,7 @@ class FacebookRedirectLoginHelper
         $this->oAuth2Client = $oAuth2Client;
         $this->persistentDataHandler = $persistentDataHandler ?: new FacebookSessionPersistentDataHandler();
         $this->urlDetectionHandler = $urlHandler ?: new FacebookUrlDetectionHandler();
-        $this->pseudoRandomStringGenerator = $prsg ?: $this->detectPseudoRandomStringGenerator();
+        $this->pseudoRandomStringGenerator = PseudoRandomStringGeneratorFactory::createPseudoRandomStringGenerator($prsg);
     }
 
     /**
@@ -113,32 +111,6 @@ class FacebookRedirectLoginHelper
     }
 
     /**
-     * Detects which pseudo-random string generator to use.
-     *
-     * @return PseudoRandomStringGeneratorInterface
-     *
-     * @throws FacebookSDKException
-     */
-    public function detectPseudoRandomStringGenerator()
-    {
-        // Since openssl_random_pseudo_bytes() can sometimes return non-cryptographically
-        // secure pseudo-random strings (in rare cases), we check for mcrypt_create_iv() first.
-        if (function_exists('mcrypt_create_iv')) {
-            return new McryptPseudoRandomStringGenerator();
-        }
-
-        if (function_exists('openssl_random_pseudo_bytes')) {
-            return new OpenSslPseudoRandomStringGenerator();
-        }
-
-        if (!ini_get('open_basedir') && is_readable('/dev/urandom')) {
-            return new UrandomPseudoRandomStringGenerator();
-        }
-
-        throw new FacebookSDKException('Unable to detect a cryptographically secure pseudo-random string generator.');
-    }
-
-    /**
      * Stores CSRF state and returns a URL to which the user should be sent to in order to continue the login process with Facebook.
      *
      * @param string $redirectUrl The URL Facebook should redirect users to after login.
@@ -150,7 +122,7 @@ class FacebookRedirectLoginHelper
      */
     private function makeUrl($redirectUrl, array $scope, array $params = [], $separator = '&')
     {
-        $state = $this->pseudoRandomStringGenerator->getPseudoRandomString(static::CSRF_LENGTH);
+        $state = $this->persistentDataHandler->get('state') ?: $this->pseudoRandomStringGenerator->getPseudoRandomString(static::CSRF_LENGTH);
         $this->persistentDataHandler->set('state', $state);
 
         return $this->oAuth2Client->getAuthorizationUrl($redirectUrl, $state, $scope, $params, $separator);
@@ -247,6 +219,7 @@ class FacebookRedirectLoginHelper
         }
 
         $this->validateCsrf();
+        $this->resetCsrf();
 
         $redirectUrl = $redirectUrl ?: $this->urlDetectionHandler->getCurrentUrl();
         // At minimum we need to remove the state param
@@ -263,27 +236,27 @@ class FacebookRedirectLoginHelper
     protected function validateCsrf()
     {
         $state = $this->getState();
+        if (!$state) {
+            throw new FacebookSDKException('Cross-site request forgery validation failed. Required GET param "state" missing.');
+        }
         $savedState = $this->persistentDataHandler->get('state');
-
-        if (!$state || !$savedState) {
-            throw new FacebookSDKException('Cross-site request forgery validation failed. Required param "state" missing.');
+        if (!$savedState) {
+            throw new FacebookSDKException('Cross-site request forgery validation failed. Required param "state" missing from persistent data.');
         }
 
-        $savedLen = strlen($savedState);
-        $givenLen = strlen($state);
-
-        if ($savedLen !== $givenLen) {
-            throw new FacebookSDKException('Cross-site request forgery validation failed. The "state" param from the URL and session do not match.');
+        if (\hash_equals($savedState, $state)) {
+            return;
         }
 
-        $result = 0;
-        for ($i = 0; $i < $savedLen; $i++) {
-            $result |= ord($state[$i]) ^ ord($savedState[$i]);
-        }
+        throw new FacebookSDKException('Cross-site request forgery validation failed. The "state" param from the URL and session do not match.');
+    }
 
-        if ($result !== 0) {
-            throw new FacebookSDKException('Cross-site request forgery validation failed. The "state" param from the URL and session do not match.');
-        }
+    /**
+     * Resets the CSRF so that it doesn't get reused.
+     */
+    private function resetCsrf()
+    {
+        $this->persistentDataHandler->set('state', null);
     }
 
     /**
