@@ -408,7 +408,7 @@
             $oFacebookRedirectLoginHelper = $this -> oFacebook -> getRedirectLoginHelper();
 
             try {
-                $sAccessToken = $oFacebookRedirectLoginHelper->getAccessToken();
+                $sAccessToken = $oFacebookRedirectLoginHelper->getAccessToken($this -> _oConfig -> aFaceBookReqParams['redirect_uri']);
             } catch(Facebook\Exceptions\FacebookResponseException $e) {
                 // When Graph returns an error
                 return $e->getMessage();

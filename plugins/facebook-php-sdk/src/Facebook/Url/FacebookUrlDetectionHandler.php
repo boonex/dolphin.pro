@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2017 Facebook, Inc.
  *
  * You are hereby granted a non-exclusive, worldwide, royalty-free license to
  * use, copy, modify, and distribute this software in source code or binary
@@ -95,8 +95,9 @@ class FacebookUrlDetectionHandler implements UrlDetectionInterface
     protected function getHostName()
     {
         // Check for proxy first
-        if ($host = $this->getHeader('X_FORWARDED_HOST')) {
-            $elements = explode(',', $host);
+        $header = $this->getHeader('X_FORWARDED_HOST');
+        if ($header && $this->isValidForwardedHost($header)) {
+            $elements = explode(',', $header);
             $host = $elements[count($elements) - 1];
         } elseif (!$host = $this->getHeader('HOST')) {
             if (!$host = $this->getServerVar('SERVER_NAME')) {
@@ -159,5 +160,23 @@ class FacebookUrlDetectionHandler implements UrlDetectionInterface
     protected function getHeader($key)
     {
         return $this->getServerVar('HTTP_' . $key);
+    }
+
+    /**
+     * Checks if the value in X_FORWARDED_HOST is a valid hostname
+     * Could prevent unintended redirections
+     *
+     * @param string $header
+     *
+     * @return boolean
+     */
+    protected function isValidForwardedHost($header)
+    {
+        $elements = explode(',', $header);
+        $host = $elements[count($elements) - 1];
+        
+        return preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $host) //valid chars check
+            && 0 < strlen($host) && strlen($host) < 254 //overall length check
+            && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $host); //length of each label
     }
 }

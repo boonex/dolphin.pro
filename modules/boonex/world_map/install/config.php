@@ -9,12 +9,12 @@ $aConfig = array(
      * Main Section.
      */
     'title' => 'World Map',
-    'version' => '1.3.3',
+    'version' => '1.3.4',
     'vendor' => 'BoonEx',
     'update_url' => '',
 
     'compatible_with' => array(
-        '7.3.3'
+        '7.3.4'
     ),
 
     /**
