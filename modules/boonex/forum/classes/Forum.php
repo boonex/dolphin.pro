@@ -137,7 +137,7 @@ EOF;
                     if ($text) {
                         reset($ws);
                         while (list (,$w) = each ($ws)) {
-                            $wreg = str_replace(array('(', ')'), array('\\(', '\\)'), $w);
+                            $wreg = preg_quote($w, '/');
                             $r['topic_title'] = preg_replace ("/($wreg)/i", "<span style=\"background-color:yellow\">$w</span>", $r['topic_title']);
                         }
                     }
