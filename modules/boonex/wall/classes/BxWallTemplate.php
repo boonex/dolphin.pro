@@ -427,7 +427,7 @@ class BxWallTemplate extends BxDolModuleTemplate
             return array('perform_delete' => true);
 
         if($aOwner['status'] != 'Active')
-            return "";
+            return array();
 
         if($aOwner['couple'] == 0 && $aOwner['sex'] == 'male')
             $sTxtEditedProfile = _t('_wall_edited_his_profile');
@@ -456,7 +456,7 @@ class BxWallTemplate extends BxDolModuleTemplate
             return array('perform_delete' => true);
 
         if($aOwner['status'] != 'Active')
-            return "";
+            return array();
 
         if($aOwner['couple'] == 0 && $aOwner['sex'] == 'male')
             $sTxtEditedProfile = _t('_wall_edited_his_profile_status_message');
@@ -491,7 +491,7 @@ class BxWallTemplate extends BxDolModuleTemplate
 
         $aContent = unserialize($aEvent['content']);
         if(empty($aContent) || empty($aContent['object_id']))
-            return '';
+            return array();
 
 		$iItem = (int)$aContent['object_id'];
         $aItem = getProfileInfo($iItem);
@@ -501,7 +501,7 @@ class BxWallTemplate extends BxDolModuleTemplate
         bx_import('BxDolCmtsProfile');
         $oCmts = new BxDolCmtsProfile('profile', $iItem);
         if(!$oCmts->isEnabled())
-            return '';
+            return array();
 
 		$aItem['url'] = getProfileLink($iItem);
         $aComment = $oCmts->getCommentRow($iComment);
@@ -542,12 +542,12 @@ class BxWallTemplate extends BxDolModuleTemplate
 
         $aContent = unserialize($aEvent['content']);
         if(empty($aContent) || !isset($aContent['comment_id']))
-            return '';
+            return array();
 
         bx_import('BxDolCmtsProfile');
         $oCmts = new BxDolCmtsProfile('profile', $iId);
         if(!$oCmts->isEnabled())
-            return '';
+            return array();
 
         $aItem['url'] = getProfileLink($iId);
         $aComment = $oCmts->getCommentRow((int)$aContent['comment_id']);
@@ -581,7 +581,7 @@ class BxWallTemplate extends BxDolModuleTemplate
             return array('perform_delete' => true);
 
         if($aOwner['status'] != 'Active' || $aFriend['status'] != 'Active')
-            return "";
+            return array();
 
         $sOwner = getNickName((int)$aEvent['owner_id']);
 
