@@ -102,12 +102,12 @@
 
 .input_wrapper_input_set {
     float: none;
-    margin: -5px;
+    margin: -10px -5px 0px -5px;
     padding: 0px;
 }
 
 .input_wrapper_input_set .bx-btn {
-	margin: 5px;
+	margin: 10px 5px 0px 5px;
 }
 
 .input_wrapper_text,
