@@ -1693,9 +1693,6 @@ class BxDolFilesModule extends BxDolModule
         if($iOwner == 0 && $bItems && !empty($aItems[0]['owner']))
             $iOwner = (int)$aItems[0]['owner'];
 
-        if($iDate == 0 && $bItems && !empty($aItems[0]['date']))
-            $iDate = (int)$aItems[0]['date'];
-
         if($iOwner == 0 || !$bItems)
             return "";
 

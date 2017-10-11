@@ -130,7 +130,7 @@ class BxVideosSearch extends BxTemplSearchResultSharedMedia
         }
 
         return array(
-        	'id' => $aImageInfo['id'],
+            'id' => $aImageInfo['id'],
             'file' => $sFileName,
             'file_path' => $sFilePath,
             'title' => $aImageInfo['title'],
@@ -141,8 +141,9 @@ class BxVideosSearch extends BxTemplSearchResultSharedMedia
             'url' => $this->getCurrentUrl('file', $iId, $aImageInfo['uri']),
             'video' => $aImageInfo['Video'],
             'source' => $aImageInfo['Source'],
-        	'duration' => $aImageInfo['Time'],
-        	'duration_f' => _format_time(round(($aImageInfo['Time'])/1000)),
+            'duration' => $aImageInfo['Time'],
+            'duration_f' => _format_time(round(($aImageInfo['Time'])/1000)),
+            'date' => $aImageInfo['date'],
             'rate' => $aImageInfo['rate'],
             'rate_count' => $aImageInfo['rate_count'],
             'comments_count' => $aImageInfo['comments_count'],

@@ -161,7 +161,7 @@ class BxSoundsSearch extends BxTemplSearchResultSharedMedia
         $sFilePath = $this->getImgPath($iId, $sType);
         $sUrl = $this->getCurrentUrl('file', $iId, $aImageInfo['uri']);
         return array(
-        	'id' => $aImageInfo['id'],
+            'id' => $aImageInfo['id'],
             'file' => $sFileName,
             'file_path' => $sFilePath,
             'title' => $aImageInfo['title'],
@@ -170,6 +170,7 @@ class BxSoundsSearch extends BxTemplSearchResultSharedMedia
             'width' => (int)$this->oModule->_oConfig->getGlParam($sType . '_width') + 2 * 2,
             'height' => (int)$this->oModule->_oConfig->getGlParam($sType . '_height') + 2 * 2,
             'url' => $sUrl,
+            'date' => $aImageInfo['date'],
             'rate' => $aImageInfo['rate'],
             'rate_count' => $aImageInfo['rate_count'],
             'comments_count' => $aImageInfo['comments_count'],
