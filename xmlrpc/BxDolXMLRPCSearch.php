@@ -110,7 +110,8 @@ class BxDolXMLRPCSearch
 
         $sMatch = '';
         if ($sKeyword && strlen($sKeyword) > 2) {
-            $sMatch .= " MATCH (`NickName`, `City`, `DescriptionMe`, `Tags`) AGAINST ('$sKeyword') ";
+            $sMatch .= " MATCH (`NickName`,`FullName`,`FirstName`,`LastName`,`City`,`DescriptionMe`,`Tags`) AGAINST ('$sKeyword') ";
+            
             $sWhere .= " AND $sMatch  ";
         }
         if ($isWithPhotosOnly)
