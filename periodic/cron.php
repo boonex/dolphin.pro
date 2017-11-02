@@ -124,8 +124,10 @@ function runJob($aJob)
 $oDb = BxDolDb::getInstance();
 $aJobs = $oDb->fromCache('sys_cron_jobs', 'getAll', 'SELECT * FROM `sys_cron_jobs`');
 
-$aDate = getdate(time());
+$iDate = time();
+setParam('sys_cron_time', $iDate);
 
+$aDate = getdate($iDate);
 foreach($aJobs as $aRow) {
     if (checkCronJob($aRow['time'], $aDate))
         runJob($aRow);

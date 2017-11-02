@@ -747,6 +747,10 @@ EOF;
         if you are unsure if output is correct then <a href="#manual_audit">manual server audit</a> may be reqired.
     </li>
     <li>
+        <b>cronjobs execution time - </b>
+        <span><?php $iCronTime = (int)getParam('sys_cron_time'); echo !empty($iCronTime) ? getLocaleDate($iCronTime, BX_DOL_LOCALE_DATE) : (function_exists('_t') ? _t('_None') : 'None'); ?></span>
+    </li>
+    <li>
         <b>media server</b>
         <br />
         Please follow <a href="<?php echo $GLOBALS['site']['url_admin']; ?>flash.php">this link</a> to check media server settings. Also you can try video chat - if video chat is working then most probably that flash media server is working correctly, however it doesn't guarantee that all other flash media server application will work.
