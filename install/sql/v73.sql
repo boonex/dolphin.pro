@@ -1296,6 +1296,7 @@ INSERT INTO `sys_options` VALUES
 ('tags_last_parse_time', '0', @iCatHidden, 'Temporary value when tags cron-job was runed last time', 'digit', '', '', 51, ''),
 ('cupid_last_cron', '0', @iCatHidden, 'Temporary value when cupid mails checked was runed last time', 'text', '', '', 52, ''),
 ('sys_show_admin_help', 'on', @iCatHidden, 'Show help in admin dashboard', 'checkbox', '', '', 53, ''),
+('sys_cron_time', '', @iCatHidden, 'Last cron execution time', 'digit', '', '', 54, ''),
 
 ('sys_main_logo', '', @iCatHidden, 'Main logo file name', 'text', '', '', 60, ''),
 ('sys_main_logo_w', '', @iCatHidden, 'Main logo width', 'digit', '', '', 61, ''),
