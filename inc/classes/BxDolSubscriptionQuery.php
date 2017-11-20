@@ -153,7 +153,7 @@ class BxDolSubscriptionQuery extends BxDolDb
             if(isset($aUnitParams['template']))
                 $aTemplateParams = array_merge($aTemplateParams, $aUnitParams['template']);
 
-            $aMail = $oEmailTemplate->parseTemplate('t_Subscription', $aTemplateParams);
+            $aMail = $oEmailTemplate->parseTemplate('t_Subscription', $aTemplateParams, empty($iUserId) ? 0 : $iUserId);
             sendMail($sUserEmail, $aMail['subject'], $aMail['body']);
 
             $aResult = array('code' => 0, 'message' => _t('_sys_txt_sbs_success_subscribe'));

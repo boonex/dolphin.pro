@@ -1945,7 +1945,7 @@ class BxDolTwigModule extends BxDolModule
         if (!$oEmailTemplate)
             return false;
 
-        $aTemplate = $oEmailTemplate->getTemplate($sEmailTemplateName);
+        $aTemplate = $oEmailTemplate->getTemplate($sEmailTemplateName, $iRecipient);
         $aTemplateVars = array (
             'EntryTitle' => $aDataEntry[$this->_oDb->_sFieldTitle],
             'EntryUrl' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/' . $aDataEntry[$this->_oDb->_sFieldUri],
