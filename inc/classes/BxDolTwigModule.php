@@ -307,7 +307,6 @@ class BxDolTwigModule extends BxDolModule
                 $this->_oTemplate->displayErrorOccured();
                 return;
             }
-            $aTemplate = $oEmailTemplate->getTemplate($this->_sPrefix . '_broadcast');
             $aTemplateVars = array (
                 'BroadcastTitle' => $this->_oDb->unescape($oForm->getCleanValue ('title')),
                 'BroadcastMessage' => nl2br($this->_oDb->unescape($oForm->getCleanValue ('message'))),
@@ -316,7 +315,8 @@ class BxDolTwigModule extends BxDolModule
             );
             $iSentMailsCounter = 0;
             foreach ($aRecipients as $aProfile) {
-                   $iSentMailsCounter += sendMail($aProfile['Email'], $aTemplate['Subject'], $aTemplate['Body'], $aProfile['ID'], $aTemplateVars);
+                $aTemplate = $oEmailTemplate->getTemplate($this->_sPrefix . '_broadcast', $aProfile['ID']);
+                $iSentMailsCounter += sendMail($aProfile['Email'], $aTemplate['Subject'], $aTemplate['Body'], $aProfile['ID'], $aTemplateVars);
             }
             if (!$iSentMailsCounter) {
                 $this->_oTemplate->displayErrorOccured();
@@ -377,13 +377,15 @@ class BxDolTwigModule extends BxDolModule
             $aPlusOriginal = $this->_getInviteParams ($aDataEntry, $aInviter);
 
             $oEmailTemplate = new BxDolEmailTemplates();
-            $aTemplate = $oEmailTemplate->getTemplate($sEmailTemplate);
+
             $iSuccess = 0;
 
             // send invitation to registered members
             if (false !== bx_get('inviter_users') && is_array(bx_get('inviter_users'))) {
                 $aInviteUsers = bx_get('inviter_users');
-                foreach ($aInviteUsers as $iRecipient) {
+                foreach ($aInviteUsers as $iRecipient) {                    
+                    $aTemplate = $oEmailTemplate->getTemplate($sEmailTemplate, $iRecipient);
+
                     $aRecipient = getProfileInfo($iRecipient);
                     $aPlus = array_merge (array ('NickName' => ' ' . getNickName($aRecipient['ID'])), $aPlusOriginal);
                     $iSuccess += sendMail(trim($aRecipient['Email']), $aTemplate['Subject'], $aTemplate['Body'], '', $aPlus) ? 1 : 0;
@@ -1945,7 +1947,7 @@ class BxDolTwigModule extends BxDolModule
         if (!$oEmailTemplate)
             return false;
 
-        $aTemplate = $oEmailTemplate->getTemplate($sEmailTemplateName);
+        $aTemplate = $oEmailTemplate->getTemplate($sEmailTemplateName, $iRecipient);
         $aTemplateVars = array (
             'EntryTitle' => $aDataEntry[$this->_oDb->_sFieldTitle],
             'EntryUrl' => BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'view/' . $aDataEntry[$this->_oDb->_sFieldUri],
