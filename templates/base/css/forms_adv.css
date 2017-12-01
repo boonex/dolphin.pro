@@ -226,6 +226,10 @@
 	padding-left: 5px;
 }
 
+.form_advanced_table .form_input_multiply_path {
+	display: none;
+}
+
 .form_advanced_table .bx-btn.form_input_multiply_add,
 .form_advanced_table .bx-btn.form_input_multiply_other,
 .form_advanced_table .bx-btn.form_input_multiply_remove,
@@ -308,6 +312,8 @@
 }
 
 .bx-form-element-file .bx-btn.form_input_multiply_path {
+	display: block;
+
 	margin: 10px 10px 0px 0px;
 	padding: 0 10px;
 
