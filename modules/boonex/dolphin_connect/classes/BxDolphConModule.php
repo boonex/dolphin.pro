@@ -138,11 +138,6 @@ class BxDolphConModule extends BxDolConnectModule
         }
     }
 
-    protected function _redirect($sUrl, $iStatus = 302)
-    {
-        header("Location:{$sUrl}", true, $iStatus);
-        exit;
-    }
 
     /**
      * @param $aProfileInfo - remote profile info

@@ -448,4 +448,10 @@ class BxDolConnectModule extends BxDolModule
 
         return $sRedirectUrl;
     }
+
+    protected function _redirect($sUrl, $iStatus = 302)
+    {
+        header("Location:{$sUrl}", true, $iStatus);
+        exit;
+    }
 }
