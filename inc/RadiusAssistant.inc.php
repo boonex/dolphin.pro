@@ -9,7 +9,8 @@ class RadiusAssistant
 
     function __construct($Latitude, $Longitude, $Miles)
     {
-        //global $maxLat, $minLat, $maxLong, $minLong;
+        global $minLat;
+
         $EQUATOR_LAT_MILE = 69.172;
         $this->maxLat = $Latitude + $Miles / $EQUATOR_LAT_MILE;
         $this->minLat = $Latitude - ($this->maxLat - $Latitude);
