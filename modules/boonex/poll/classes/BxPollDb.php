@@ -237,48 +237,21 @@ class BxPollDb extends BxDolModuleDb
     }
 
     /**
-     * Function will set poll's status ;
+     * Function will set poll's status , featured;
      *
      * @param  : $iPollId (integer) - poll's Id ;
-     * @param  : $iStatus (integer) - poll's status (1 - as approved, 0 - not approved) ;
      * @return : (integer) - number of affected rows ;
      */
-    function setStatus($iPollId, $iStatus)
+    function setOption($iPollId, $sAction = 'approval')
     {
         $iPollId = (int) $iPollId;
-        $iStatus = (int) $iStatus;
 
         $sQuery =
         "
             UPDATE
                 `{$this -> _sTable}`
             SET
-                `poll_approval` = {$iStatus}
-            WHERE
-               `id_poll` = {$iPollId}
-        ";
-
-        return $this -> query($sQuery);
-    }
-
-    /**
-     * Function will set poll's status ;
-     *
-     * @param  : $iPollId (integer) - poll's Id ;
-     * @param  : $iStatus (integer) - poll's status (1 - as featured, 0 - not featured) ;
-     * @return : (integer) - number of affected rows ;
-     */
-    function setFeatured($iPollId, $iStatus)
-    {
-        $iPollId = (int) $iPollId;
-        $iStatus = (int) $iStatus;
-
-        $sQuery =
-        "
-            UPDATE
-                `{$this -> _sTable}`
-            SET
-                `poll_featured` = {$iStatus}
+                `poll_{$sAction}` = IF (`poll_{$sAction}` = 1, 0, 1)
             WHERE
                `id_poll` = {$iPollId}
         ";

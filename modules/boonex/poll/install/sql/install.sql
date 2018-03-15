@@ -470,8 +470,9 @@
     ('{del_poll_title}', 'remove', '{del_poll_url}', '{del_poll_script}', '', 2, 'bx_poll', 0),
     ('{TitleShare}', 'share-square-o', '', 'showPopupAnyHtml (\'{BaseUri}share_popup/{ID}\');', '', 3, 'bx_poll', 0),
     ('{sbs_poll_title}', 'paperclip', '', '{sbs_poll_script}', '', 4, 'bx_poll', 0),
-    ('{approved_cpt}', 'check', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{base_url}approve/{ID}/{approved_act}'', false, ''post''); return false;', '', 5, 'bx_poll', 0),
-    ('{repostCpt}', 'repeat', '', '{repostScript}', '', 6, 'bx_poll', 0);
+    ('{approved_cpt}', 'check', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{base_url}set_option/{ID}'', false, ''post''); return false;', '', 5, 'bx_poll', 0),
+    ('{repostCpt}', 'repeat', '', '{repostScript}', '', 6, 'bx_poll', 0),
+	('{featured_cpt}', 'star-o', '', 'getHtmlData(''ajaxy_popup_result_div_{ID}'', ''{base_url}set_option/{ID}/featured'', false, ''post''); return false;', '', 7, 'bx_poll', 0);
 
     --
     -- Dumping data for table `sys_objects_actions`
