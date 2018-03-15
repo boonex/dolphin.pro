@@ -152,9 +152,7 @@ div.viewFile {
 }
 
 .sys_file_search_unit.bx_photos_search_unit {
-	width: auto;
 	max-width: 240px;
-	height: auto;
 }
 .sys_file_search_pic.bx_photos_file_search_pic {
 	width: 100%;
