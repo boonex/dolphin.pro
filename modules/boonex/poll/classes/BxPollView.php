@@ -212,7 +212,7 @@ class BxPollView extends BxDolPageView
         
         $aUnitInfo['base_url']     =  BX_DOL_URL_ROOT . $aUnitInfo['BaseUri'];
         $aUnitInfo['approved_cpt'] = '';
-        $aUnitInfo['approved_act'] = '';
+		$aUnitInfo['featured_cpt'] = '';
         
         $aUnitInfo['del_poll_title'] = $aUnitInfo['del_poll_url'] = $aUnitInfo['del_poll_script'];
         if(isLogged() && ($this -> aPollInfo['id_profile'] == $this->iMemberId || isAdmin())) {
@@ -227,15 +227,8 @@ class BxPollView extends BxDolPageView
         
         if (isAdmin($this->iMemberId) || (isModerator($this->iMemberId) && $this->aPollInfo['id_profile'] != $this->iMemberId))
         {
-            $sMsg = '_';
-            $iAppr = 1;
-            if ($this->aPollInfo['poll_approval'] == 1)
-            {
-                $sMsg .= 'dis';
-                $iAppr = 0;
-            }
-            $aUnitInfo['approved_cpt'] = _t('_' . $sMainPrefix .  $sMsg . 'approve');
-            $aUnitInfo['approved_act'] = $iAppr;
+            $aUnitInfo['approved_cpt'] = _t('_' . $sMainPrefix .  ($this->aPollInfo['poll_approval'] ? '_dis' : '_') . 'approve');			
+			$aUnitInfo['featured_cpt'] = _t('_' . $sMainPrefix .  ($this->aPollInfo['poll_featured'] ? '_un' : '_') . 'featured');            
         }
 
         $oSubscription = BxDolSubscription::getInstance();

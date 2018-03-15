@@ -1339,18 +1339,15 @@
                     $iValue = (int) $iValue;
 
                     // set as approved;
-                    if( isset($_POST['approve']) ) {
-                        $this -> _oDb -> setStatus($iValue, 1);
-                    } else if( isset($_POST['disapprove']) ) {
-                        $this -> _oDb -> setStatus($iValue, 0);
-                    } else if( isset($_POST['delete'])) {
+                    if (isset($_POST['approve']) || isset($_POST['disapprove']))
+					{
+                        $this -> _oDb -> setOption($iValue);
+                    } else if( isset($_POST['delete']))
+					{
                         $this->deletePoll($iValue);
-                    } else if( isset($_POST['featured'])) {
-                        $this -> _oDb -> setFeatured($iValue, 1);
-                    } else if( isset($_POST['unfeatured'])) {
-                        $this -> _oDb -> setFeatured($iValue, 0);
-                    }
-
+                    } else if(isset($_POST['featured']) || isset($_POST['unfeatured']))
+			            $this -> _oDb -> setOption($iValue, 'featured');
+            
                     $oTag = new BxDolTags();
                     $oTag -> reparseObjTags('bx_poll', $iValue);
 
@@ -1490,21 +1487,20 @@
         }
         
         /**
-         * Method for ajax approval / disaproval from action button ;
+         * Method for ajax perform actions (approval/disaproval - featured/unfeatured)  from actions button ;
          *
          * @return : (text) - Html response ;
          */        
-        function actionApprove($iPollId, $iApprove = 1)
+        function actionSetOption($iPollId, $sAction = 'approval')
         {
             $iPollId = (int)$iPollId;
             if ($iPollId)
             {
                 $iActionerId = getLoggedId();
-                $iApprove = (int)$iApprove;
                 $sJQueryJS = genAjaxyPopupJS($iPollId);
                 if (isAdmin($iActionerId) || isModerator($iActionerId))
                 {
-                    if (!$this->_oDb ->setStatus($iPollId, $iApprove))
+                    if (!$this->_oDb ->setOption($iPollId, $sAction))
                         $sMsg = '_Error';
                     else
                         $sMsg = '_Saved';                        
@@ -1516,7 +1512,6 @@
                 exit;
             }
         }
-
         /**
          * Function will generate global settings form ;
          *
