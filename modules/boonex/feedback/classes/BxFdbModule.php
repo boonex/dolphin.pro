@@ -161,6 +161,9 @@ class BxFdbModule extends BxDolTextModule
     }
     function actionPost($sName = '')
     {
+		if (!$this -> _isAllowedPost())
+			$this->_oTemplate->displayAccessDenied ();
+		
         $sContentView = DesignBoxContent(_t('_feedback_bcaption_view_my'), $this->serviceMyBlock(), 1);
 
         if(!empty($sName))
@@ -255,6 +258,12 @@ class BxFdbModule extends BxDolTextModule
         $aCheckResult = checkAction($iUserId, ACTION_ID_FEEDBACK_DELETE, $bPerform);
         return $aCheckResult[CHECK_ACTION_RESULT] == CHECK_ACTION_RESULT_ALLOWED;
     }
+	
+	function _isAllowedPost()
+    {
+       return isLogged();
+	}
+	
     function _isCommentsAllowed(&$aEntry)
     {
         return $this->_oPrivacy->check('comment', $aEntry['id'], $this->_oTextData->getAuthorId());
