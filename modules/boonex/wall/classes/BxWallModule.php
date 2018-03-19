@@ -1069,7 +1069,9 @@ class BxWallModule extends BxDolModule
 			'OGImage' => array('name_attr' => 'property', 'name' => 'og:image'),
 		));
         $sTitle = isset($aSiteInfo['title']) ? $aSiteInfo['title'] : $sUrl;
-        $sDescription = isset($aSiteInfo['description']) ? $aSiteInfo['description'] : '';
+        $sDescription = '';
+        if(isset($aSiteInfo['description']))
+            $sDescription = preg_replace('/[^ -\x{2122}]\s+|\s*[^ -\x{2122}]/u', '', $aSiteInfo['description']);
 
 		$sThumbnail = '';
 		if(!empty($aSiteInfo['thumbnailUrl']))
