@@ -88,4 +88,16 @@ class BxDolModuleTemplate extends BxDolTemplate
             return $sRet;
         }
     }
+
+    // ======================= tags/cat parsing functions
+
+    function _parseAnything ($s, $sDiv, $sLinkStart, $sClassName = '')
+    {
+        $sRet = '';
+        $a = explode ($sDiv, $s);
+        $sClass = $sClassName ? 'class="'.$sClassName.'"' : '';
+        foreach ($a as $sName)
+            $sRet .= '<a '.$sClass.' href="' . $sLinkStart . title2uri($sName) . '">'.$sName.'</a> ';
+        return $sRet;
+    }
 }

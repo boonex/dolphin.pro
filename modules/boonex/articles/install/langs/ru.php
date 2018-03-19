@@ -27,6 +27,7 @@ $aLangContent = array(
   '_articles_bcaption_top_rated' => 'Лучшие статьи',
   '_articles_bcaption_view_action' => 'Действия',
   '_articles_bcaption_view_comment' => 'Комментарии',
+  '_articles_bcaption_view_info' => 'Информация',
   '_articles_bcaption_view_main' => 'Статья',
   '_articles_bcaption_view_vote' => 'Рейтинг',
   '_articles_calendar_top_menu_sitem' => 'Календарь',

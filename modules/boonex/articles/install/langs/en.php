@@ -27,6 +27,7 @@ $aLangContent = array(
   '_articles_bcaption_top_rated' => 'Top Rated Articles',
   '_articles_bcaption_view_action' => 'Actions',
   '_articles_bcaption_view_comment' => 'Comments',
+  '_articles_bcaption_view_info' => 'Info',
   '_articles_bcaption_view_main' => 'Article',
   '_articles_bcaption_view_vote' => 'Rating',
   '_articles_calendar_top_menu_sitem' => 'Calendar',

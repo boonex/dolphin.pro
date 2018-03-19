@@ -59,6 +59,19 @@ class BxDolTextTemplate extends BxDolModuleTemplate
 
         return $this->addJs(array('main.js'), true) . $this->parseHtmlByName('admin.html', $aResult);
     }
+    function displayBlockInfo($aEntry, $sFields = '')
+    {
+        $aAuthor = getProfileInfo($aEntry['author_id']);
+
+        return $this->parseHtmlByName('entry_info.html', array (
+            'author_unit' => get_member_thumbnail($aAuthor['ID'], 'none', true),
+            'date' => getLocaleDate($aEntry['date'], BX_DOL_LOCALE_DATE_SHORT),
+            'date_ago' => defineTimeInterval($aEntry['date'], false),
+            'cats' => $this->parseCategories($aEntry['categories']),
+            'tags' => $this->parseTags($aEntry['tags']),
+            'fields' => $sFields,
+        )); 
+    }
     function displayBlock($aParams)
     {
         $bShowEmpty = isset($aParams['show_empty']) ? $aParams['show_empty'] : true;
@@ -213,6 +226,19 @@ class BxDolTextTemplate extends BxDolModuleTemplate
                 $_page_cont[$iIndex][$sKey] = $sValue;
 
         PageCodeAdmin();
+    }
+
+    // ======================= tags/cat parsing functions
+
+    function parseTags ($s)
+    {
+        return $this->_parseAnything ($s, ',', BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'tag/');
+    }
+
+    function parseCategories ($s)
+    {
+        bx_import ('BxDolCategories');
+        return $this->_parseAnything ($s, CATEGORIES_DIVIDER, BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'category/');
     }
 
     protected function _updatePaginate($aParams)
