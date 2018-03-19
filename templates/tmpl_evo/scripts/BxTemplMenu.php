@@ -22,17 +22,6 @@ class BxTemplMenu extends BxBaseMenu
         parent::__construct();
     }
 
-    function setCustomSubActions(&$aKeys, $sActionsType, $bSubMenuMode = true)
-    {
-        parent::setCustomSubActions($aKeys, $sActionsType, $bSubMenuMode);
-
-        $this->sCustomActions = $GLOBALS['oSysTemplate']->parseHtmlByContent($this->sCustomActions, array(
-            'popup' => $GLOBALS['oFunctions']->transBox(
-                $GLOBALS['oSysTemplate']->parseHtmlByName('share_popup.html', array())
-            )
-        ));
-    }
-
     function genTopSubitems($iItemID)
     {
         return '';
@@ -77,20 +66,23 @@ class BxTemplMenu extends BxBaseMenu
         return $iResult;
     }
 
+	/*
+    * Generate header for sub items of sub menu elements
+    */
+    function genSubHeader( $iTItemID, $iFirstID, $sCaption, $sDisplay, $sPicture = '' )
+    {
+        $this->sCustomActions .= $GLOBALS['oSysTemplate']->parseHtmlByName('action_link_submenu_share.html', array(
+    		'popup' => $GLOBALS['oFunctions']->transBox(
+    			$GLOBALS['oSysTemplate']->parseHtmlByName('share_popup.html', array())
+    		)
+    	)); 
+
+        parent::genSubHeader($iTItemID, $iFirstID, $sCaption, $sDisplay, $sPicture);
+    }
+
     function genSubHeaderCaption($aItem, $sCaption, $sTemplateFile = 'navigation_menu_sub_header_caption.html')
     {
         return '';
-    }
-
-    function genSubHeaderLogin($sTemplateFile = 'login_join.html')
-    {
-        $sContent = parent::genSubHeaderLogin($sTemplateFile);
-
-        return $GLOBALS['oSysTemplate']->parseHtmlByContent($sContent, array(
-            'popup' => $GLOBALS['oFunctions']->transBox(
-                $GLOBALS['oSysTemplate']->parseHtmlByName('share_popup.html', array())
-            )
-        ));
     }
 
     function GenMoreElementBegin()
