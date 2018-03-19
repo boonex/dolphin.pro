@@ -33,6 +33,10 @@ class BxDolTextPageView extends BxDolPageView
         $sContent = $this->_oObject->getBlockVote($this->_sName);
         return !empty($sContent) ? array($sContent, array(), array(), false) : '';
     }
+    function getBlockCode_Info()
+    {
+        return $this->_oObject->getBlockInfo($this->_sName);
+    }
     function getBlockCode_Action()
     {
         return $this->_oObject->getBlockAction($this->_sName);

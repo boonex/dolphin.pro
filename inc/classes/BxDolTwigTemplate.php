@@ -100,16 +100,6 @@ class BxDolTwigTemplate extends BxDolModuleTemplate
         return $this->_parseAnything ($s, CATEGORIES_DIVIDER, BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'browse/category/');
     }
 
-    function _parseAnything ($s, $sDiv, $sLinkStart, $sClassName = '')
-    {
-        $sRet = '';
-        $a = explode ($sDiv, $s);
-        $sClass = $sClassName ? 'class="'.$sClassName.'"' : '';
-        foreach ($a as $sName)
-            $sRet .= '<a '.$sClass.' href="' . $sLinkStart . title2uri($sName) . '">'.$sName.'</a> ';
-        return $sRet;
-    }
-
     // ======================= display standard pages functions
 
     function displayAccessDenied ()

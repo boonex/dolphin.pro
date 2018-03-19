@@ -801,6 +801,23 @@ div.search_res_members_nickname {
     width: 100%;
 }
 
+/*  text Info block    */
+.bx-text-entry-info {
+	position: relative;
+}
+.bx-text-ei-text {
+    overflow: hidden;
+}
+.bx-text-ei-unit {
+    position: relative;
+    margin: 4px 0px;
+    line-height: 16px;
+}
+.bx-text-ei-unit > .sys-icon {
+    font-size: 14px;
+    vertical-align: middle;
+}
+
 /* ------ */
 
 .usualHeader {
