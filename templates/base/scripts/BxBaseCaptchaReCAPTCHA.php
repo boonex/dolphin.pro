@@ -15,25 +15,29 @@ class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
     protected $_bJsCssAdded = false;
     protected $_oTemplate;
 
-    protected $_sSkin = 'custom';
-    protected $_error = null;
-    protected $_sProto = 'http';
+    protected $_sSkin;
+	protected $_sApiUrl;
+	protected $_sVerifyUrl;
     protected $_sKeyPublic;
     protected $_sKeyPrivate;
 
+    protected $_error = null;
+
     public function __construct ($aObject, $oTemplate)
     {
-        parent::__construct ($aObject);
+        parent::__construct ($aObject, $oTemplate);
 
         if ($oTemplate)
             $this->_oTemplate = $oTemplate;
         else
             $this->_oTemplate = $GLOBALS['oSysTemplate'];
 
+        $this->_sSkin = 'light';
+        $this->_sApiUrl = 'https://www.google.com/recaptcha/api.js';
+        $this->_sVerifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+
         $this->_sKeyPublic = getParam('sys_recaptcha_key_public');
         $this->_sKeyPrivate = getParam('sys_recaptcha_key_private');
-
-        $this->_sProto = bx_proto();
     }
 
     /**
@@ -41,40 +45,42 @@ class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
      */
     public function display ($bDynamicMode = false)
     {
-        $sId = 'sys-captcha-' . time() . rand(0, PHP_INT_MAX);
-        $sInit = "
-            Recaptcha.create('" . $this->_sKeyPublic . "', '" . $sId . "', {
-                lang: '" . bx_lang_name() . "',
-                theme: '" . $this->_sSkin . "',
-                custom_theme_widget: '" . $sId . "'
-            });
-        ";
+        $sCode = '';
+        $aApiParams = array();
+        if($bDynamicMode)  {
+        	$sPostfix = $this->_sObject;
+        	$sId = 'sys-captcha-' . $sPostfix;
 
-        if ($bDynamicMode) {
+        	$sOnLoadFunction = 'onLoadCallback' . $sPostfix;
+        	$sOnLoadCode = "
+	        	var " . $sOnLoadFunction . " = function() {
+					grecaptcha.render('" . $sId . "', {
+						'sitekey': '" . $this->_sKeyPublic . "',
+						'theme': '" . $this->_sSkin . "'
+					});
+				};
+		        ";
 
-            $sCode = "
-            <script>
-                if ('undefined' == typeof(window.Recaptcha)) {
-                    $.getScript('{$this->_sProto}://www.google.com/recaptcha/api/js/recaptcha_ajax.js', function(data, textStatus, jqxhr) {
-                        $sInit
-                    });
-                } else {
-                    $sInit
-                }
-            </script>";
+        	$aApiParams = array(
+        		'onload' => $sOnLoadFunction,
+        		'render' => 'explicit'
+        	);
 
-        } else {
+        	$sCode .= $this->_oTemplate->_wrapInTagJsCode($sOnLoadCode);
+        	$sCode .= '<div id="' . $sId . '"></div>';
+        }
+        else {
+        	$aApiParams = array(
+        		'render' => 'onload'
+        	);
 
-            $sCode = "
-            <script>
-                $(document).ready(function () {
-                    $sInit
-                });
-            </script>";
-
+        	$sCode .= '<div class="g-recaptcha" data-sitekey="' . $this->_sKeyPublic . '" data-theme="' . $this->_sSkin . '" style="max-width:200px;"></div>';
         }
 
-        return $this->_addJsCss($bDynamicMode) . $GLOBALS['oSysTemplate']->parseHtmlByName('reCaptcha.html', array('id' => $sId)) . $sCode;
+        $aApiParams['hl'] = getCurrentLangName(false);
+        $sCodeJs = $this->_oTemplate->addJs(bx_append_url_params($this->_sApiUrl, $aApiParams), $bDynamicMode);
+
+        return ($bDynamicMode ? $sCodeJs : '') . $sCode;
     }
 
     /**
@@ -82,29 +88,30 @@ class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
      */
     public function check ()
     {
-        require_once(BX_DIRECTORY_PATH_PLUGINS . 'recaptcha/recaptchalib.php');
+    	$mixedResponce = bx_file_get_contents($this->_sVerifyUrl, array(
+    		'secret' => $this->_sKeyPrivate, 
+    		'response' => process_pass_data(bx_get('g-recaptcha-response')),
+    		'remoteip' => getVisitorIP()
+    	));
+    	if($mixedResponce === false)
+    		return false;
 
-        $oResp = recaptcha_check_answer(
-            $this->_sKeyPrivate,
-            $_SERVER["REMOTE_ADDR"],
-            $this->getUserResponse (),
-            process_pass_data(bx_get('recaptcha_response_field'))
-        );
+    	$aResponce = json_decode($mixedResponce, true); 	
+    	if(isset($aResponce['success']) && $aResponce['success'] === true)
+    		return true;
 
-        if (!$oResp->is_valid) {
-            $this->_error = $oResp->error;
-            return false;
-        }
+		if(!empty($aResponce['error-codes']))
+			$this->_error = $aResponce['error-codes'];
 
-        return true;
+		return false;
     }
 
-    /**
+	/**
      * Return text entered by user
      */
     public function getUserResponse ()
     {
-        return process_pass_data(bx_get('recaptcha_challenge_field'));
+        return process_pass_data(bx_get('g-recaptcha-response'));
     }
 
     /**
@@ -114,18 +121,6 @@ class BxBaseCaptchaReCAPTCHA extends BxDolCaptcha
     {
         return !empty($this->_sKeyPublic) && !empty($this->_sKeyPrivate);
     }
-
-    /**
-     * Add css/js files which are needed for display and functionality.
-     */
-    protected function _addJsCss($bDynamicMode = false)
-    {
-        if ($bDynamicMode)
-            return '';
-        if ($this->_bJsCssAdded)
-            return '';
-        $this->_oTemplate->addJs($this->_sProto . '://www.google.com/recaptcha/api/js/recaptcha_ajax.js');
-        $this->_bJsCssAdded = true;
-        return '';
-    }
 }
+
+/** @} */
