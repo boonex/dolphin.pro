@@ -87,8 +87,9 @@ class BxH5avModule extends BxDolModule
                     $sFilePoster = 'flash/modules/video/files/' . $iFileId . '.jpg';
                     $sPoster = file_exists(BX_DIRECTORY_PATH_ROOT . $sFilePoster) ? ' poster="' . BX_DOL_URL_ROOT . $sFilePoster . '" ' : '';
 
+                    $sAttrConrolsList = 'true' == getSettingValue('video', 'save') ? '' : ' controlsList="nodownload" ';
                     $sOverride = '
-                        <video controls preload="metadata" autobuffer ' . $sAutoPlay . $sPoster . ' style="width:100%; max-height:' . getSettingValue('video', 'player_height') . 'px;" id="' . $sId . '">
+                        <video ' . $sAttrConrolsList . ' controls preload="metadata" autobuffer ' . $sAutoPlay . $sPoster . ' style="width:100%; max-height:' . getSettingValue('video', 'player_height') . 'px;" id="' . $sId . '">
                             ' . $sSourceWebm . '
                             <source src="' . BX_DOL_URL_ROOT . "flash/modules/video/get_file.php?id=" . $iFileId . "&ext=m4v&token=" . $sToken . '" />
                             ' . (BX_H5AV_FALLBACK ? $sFlash : '<b>Can not playback media - your browser doesn\'t support HTML5 audio/video tag.</b>') . '
