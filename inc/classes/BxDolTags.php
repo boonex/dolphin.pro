@@ -243,8 +243,7 @@ class BxDolTags extends BxDolMistake
                 $aTags[$iKey] = $sTag;
                 $bUpdate = true;
             }
-            $sTag = process_db_input(trim($sTag), BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
-
+            $sTag = process_db_input($sTag, BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
 
             $sQuery = "SELECT COUNT(*) FROM `sys_tags` WHERE " . $this->oDb->arrayToSQL(array(
                 $this->aTagFields['id'] => $aTagsSet['id'],
