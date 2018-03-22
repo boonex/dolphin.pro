@@ -239,7 +239,7 @@ Try typing your password with CAPS LOCK off.
 If this fails, you can request a password that will be sent to the email address you provided when you registered.</p>
 
 ',
-  '_FORGOT' => 'Forgot your ID and/or password? Please, write your e-mail address below and we will send you your account ID and password.',
+  '_FORGOT' => 'Forgot your ID and/or password? Please, write your e-mail address below and we will send you the new password.',
   '_FREEMAIL_ALREADY_SENT' => 'You have already requested this member\'s contact information for free. You can see it in <a href="profile.php?ID={0}">their profile</a>, or in <a href="communicator.php">your Connections</a>.',
   '_FREEMAIL_BLOCK' => 'Sorry, contact information could not be sent to you. This member has blocked you.',
   '_FREEMAIL_ERROR' => 'Sorry, contact information could not be sent to you at this time. Make sure that you are logged in and  your profile is in active mode.',
