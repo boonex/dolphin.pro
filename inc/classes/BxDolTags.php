@@ -123,7 +123,7 @@ class BxDolTags extends BxDolMistake
 
         $oField = $this->oDb->fetchField($sQuerySelect, 0);
         if($oField && ($i = mb_stripos($sQuerySelect, 'WHERE')) !== false && mb_stripos($sQuerySelect, 'JOIN') === false)
-            $this->oDb->query("UPDATE `{$oField->table}` SET `{$oField->name}` = '" . $sResult . "' " . mb_substr($sQuerySelect, $i));
+            $this->oDb->query("UPDATE `{$oField->table}` SET `{$oField->name}` = '" . process_db_input($sResult) . "' " . mb_substr($sQuerySelect, $i));
     }
 
     function getTagList($aParam)
@@ -236,13 +236,15 @@ class BxDolTags extends BxDolMistake
 
         $bUpdate = false;
         foreach( $aTags as $iKey => $sTag ) {
-            $sTag = process_db_input(trim($sTag), BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+            $sTag = trim($sTag);
             if(get_mb_len($sTag) > $this->iTagLength) {
                 $sTag = get_mb_substr($sTag, 0, $this->iTagLength);
 
                 $aTags[$iKey] = $sTag;
                 $bUpdate = true;
             }
+            $sTag = process_db_input(trim($sTag), BX_TAGS_STRIP, BX_SLASHES_NO_ACTION);
+
 
             $sQuery = "SELECT COUNT(*) FROM `sys_tags` WHERE " . $this->oDb->arrayToSQL(array(
                 $this->aTagFields['id'] => $aTagsSet['id'],
