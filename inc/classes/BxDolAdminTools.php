@@ -747,7 +747,7 @@ EOF;
         if you are unsure if output is correct then <a href="#manual_audit">manual server audit</a> may be reqired.
     </li>
     <li>
-        <b>cronjobs execution time - </b>
+        <b>last cronjob execution time - </b>
         <span><?php $iCronTime = (int)getParam('sys_cron_time'); echo !empty($iCronTime) ? getLocaleDate($iCronTime, BX_DOL_LOCALE_DATE) : (function_exists('_t') ? _t('_None') : 'None'); ?></span>
     </li>
     <li>
