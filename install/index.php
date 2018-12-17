@@ -1192,7 +1192,7 @@ function printInstallError($sText)
 function createTable($arr)
 {
     $ret = '';
-    $i   = '';
+    $i = 0;
     foreach ($arr as $key => $value) {
         $sStyleAdd = (($i % 2) == 0) ? 'background-color:#ede9e9;' : 'background-color:#fff;';
 
