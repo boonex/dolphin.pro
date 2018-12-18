@@ -127,7 +127,7 @@ function getMemberMembershipInfo_current($iMemberId, $time = '')
      * NOTE. Don't use cache here, because it's causing an error, if a number of memberrship levels are purchased at the same time.
      * fromMemory returns the same DateExpires because buyMembership function is called in cycle in the same session.
      */
-    $aMemLevel =& $GLOBALS['MySQL']->getRow("
+    $aMemLevel = $GLOBALS['MySQL']->getRow("
         SELECT  `sys_acl_levels_members`.IDLevel as ID,
                 `sys_acl_levels`.Name as Name,
                 UNIX_TIMESTAMP(`sys_acl_levels_members`.DateStarts) as DateStarts,
@@ -167,7 +167,7 @@ function getMemberMembershipInfo_current($iMemberId, $time = '')
      * no purchased/assigned memberships for the member or all of them have expired -- the member is assumed to have Standard membership
      */
     if(is_null($aMemLevel['ID'])) {
-        $aMemLevel =& $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_STANDARD, 'getRow', "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ?", [MEMBERSHIP_ID_STANDARD]);
+        $aMemLevel = $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_STANDARD, 'getRow', "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ?", [MEMBERSHIP_ID_STANDARD]);
         if (!$aMemLevel || !count($aMemLevel)) {
             //again, this should never happen, but just in case
             echo "<br /><b>getMemberMembershipInfo()</b> fatal error: <b>Standard</b> membership not found.";

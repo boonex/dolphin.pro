@@ -48,11 +48,11 @@ class BxWallCmts extends BxTemplCmtsView
     /**
      * get full comments block with initializations
      */
-    function getCommentsFirst($sType)
+    function getCommentsFirstDefault($sType)
     {
         $iObjectId = $this->getId();
         return $this->_oModule->_oTemplate->parseHtmlByTemplateName('comments', array(
-            'actions' => $this->getActions(0, $sType, $iObjectId),
+            'actions' => $this->getActionsExt(0, $sType, $iObjectId),
             'cmt_system' => $this->_sSystem,
             'cmt_object' => $iObjectId,
         	'bx_if:show_replies' => array(
@@ -69,7 +69,7 @@ class BxWallCmts extends BxTemplCmtsView
     function getCommentsFirstSystem($sType, $iEventId, $iCommentId = 0)
     {
         return $this->_oModule->_oTemplate->parseHtmlByTemplateName('comments', array(
-            'actions' => $this->getActions($iCommentId, $sType, $iEventId),
+            'actions' => $this->getActionsExt($iCommentId, $sType, $iEventId),
             'cmt_system' => $this->_sSystem,
             'cmt_object' => $this->getId(),
             'bx_if:show_replies' => array(
@@ -82,7 +82,7 @@ class BxWallCmts extends BxTemplCmtsView
         ));
     }
 
-    function getActions($iCmtId, $sType = 'comment', $iEventId = 0)
+    function getActionsExt($iCmtId, $sType = 'comment', $iEventId = 0)
     {
         $aEvent = $this->_oModule->_oDb->getEvents(array('browse' => 'id', 'object_id' => $iEventId));
 

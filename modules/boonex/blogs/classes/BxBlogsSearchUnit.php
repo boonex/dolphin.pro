@@ -373,7 +373,7 @@ EOF;
         return array();
     }
 
-    function showPagination($bAdmin = false)
+    function showPagination($aParams = array())
     {
         $aLinkAddon = $this->getLinkAddByPrams();
         $oPaginate = new BxDolPaginate(array(

@@ -250,14 +250,14 @@ class BxPhotosModule extends BxDolFilesModule
         }
     }
 
-    function serviceGetMemberMenuItem ()
+    function serviceGetMemberMenuItem ($sIcon = 'picture-o')
     {
-        return parent::serviceGetMemberMenuItem ('picture-o');
+        return parent::serviceGetMemberMenuItem ($sIcon);
     }
 
-    function serviceGetMemberMenuItemAddContent ()
+    function serviceGetMemberMenuItemAddContent ($sIcon = 'picture-o')
     {
-        return parent::serviceGetMemberMenuItemAddContent ('picture-o');
+        return parent::serviceGetMemberMenuItemAddContent ($sIcon);
     }
 
 	function isAllowedShare(&$aDataEntry)

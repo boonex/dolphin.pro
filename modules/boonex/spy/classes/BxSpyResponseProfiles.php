@@ -18,7 +18,7 @@
             $this->_oModule = $oModule;
         }
 
-        function response(&$oAlert)
+        function response($oAlert)
         {
             $iSenderId = $oAlert->iSender;
 

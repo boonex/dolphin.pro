@@ -1779,7 +1779,7 @@ class BxDolTwigModule extends BxDolModule
             else
                 return '';
         } else {
-            $sPagination = $sAjaxPaginationBlockId ? $o->showPaginationAjax($sAjaxPaginationBlockId) : $o->showPagination($sUrlAdmin);
+            $sPagination = $sAjaxPaginationBlockId ? $o->showPaginationAjax($sAjaxPaginationBlockId) : $o->showPagination(array('url_admin' => $sUrlAdmin));
             $sActionsPanel = $o->showAdminActionsPanel ($sFormName, $aButtons);
         }
 

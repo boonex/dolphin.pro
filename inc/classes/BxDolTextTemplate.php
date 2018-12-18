@@ -22,7 +22,8 @@ class BxDolTextTemplate extends BxDolModuleTemplate
         $this->oPaginate = null;
         $this->sCssPrefix = '';
     }
-    function init(&$oModule)
+
+    function setModule(&$oModule)
     {
         $this->_oModule = $oModule;
 
@@ -35,6 +36,7 @@ class BxDolTextTemplate extends BxDolModuleTemplate
             'on_change_page' => $this->_oConfig->getJsObject() . '.changePage({start}, {per_page})'
         ));
     }
+
     function displayAdminBlock($aParams)
     {
         $oSearchResult = $aParams['search_result_object'];

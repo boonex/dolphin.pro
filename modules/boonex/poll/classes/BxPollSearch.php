@@ -147,8 +147,10 @@ class BxPollSearch extends BxTemplSearchResultText
         return $aSql;
     }
 
-    function showPagination($sModulePath = null)
+    function showPagination($aParams = array())
     {
+        $sModulePath = isset($aParams['module_path']) && !empty($aParams['module_path']) ? $aParams['module_path'] : false;
+
         $aParameters['settings'] = array(
             'count'             => $this -> aCurrent['paginate']['totalNum'],
             'per_page'          => $this -> aCurrent['paginate']['perPage'],

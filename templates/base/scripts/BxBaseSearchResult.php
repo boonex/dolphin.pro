@@ -152,8 +152,11 @@ EOF;
         ));
     }
 
-    function showPagination($bAdmin = false, $bChangePage = true, $bPageReload = true)
+    function showPagination($aParams = array())
     {
+        $bChangePage = !isset($aParams['change_page']) || $aParams['change_page'] === true;
+        $bPageReload = !isset($aParams['page_reload']) || $aParams['page_reload'] === true;
+
         $sPageLink = $this->getCurrentUrl('browseAll', 0, '');
         $aLinkAddon = $this->getLinkAddByPrams();
 

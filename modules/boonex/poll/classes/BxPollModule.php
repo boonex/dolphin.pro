@@ -1825,7 +1825,7 @@
                     ));
 
                 if($bShowPagination)
-                    $sPaginate = $this -> oSearch -> showPagination($this -> sPathToModule . $sExtraParam);
+                    $sPaginate = $this -> oSearch -> showPagination(array('module_path' => $this -> sPathToModule . $sExtraParam));
             } else
                 $sOutputCode = $bShowEmptyMsg ? MsgBox( _t('_Empty') ) : '';
 

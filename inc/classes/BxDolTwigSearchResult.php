@@ -37,8 +37,10 @@ class BxDolTwigSearchResult extends BxTemplSearchResult
         return $oMain->_oTemplate->unit($aData, $this->sUnitTemplate, $this->oVotingView);
     }
 
-    function showPagination($sUrlAdmin = false)
+    function showPagination($aParams = array())
     {
+        $sUrlAdmin = isset($aParams['url_admin']) && !empty($aParams['url_admin']) ? $aParams['url_admin'] : false;
+
         $oMain = $this->getMain();
         $oConfig = $oMain->_oConfig;
         bx_import('BxDolPaginate');

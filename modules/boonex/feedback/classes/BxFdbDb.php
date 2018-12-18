@@ -12,7 +12,7 @@ class BxFdbDb extends BxDolTextDb
     {
         parent::__construct($oConfig);
     }
-    function getEntries($aParams)
+    function getEntries($aParams = array())
     {
         switch($aParams['sample_type']) {
             case 'id':

@@ -189,7 +189,7 @@ class BxFdbModule extends BxDolTextModule
         $this->_oTemplate->getPageCode($aParams);
     }
 
-    function actionAdmin()
+    function actionAdmin($sName = '')
     {
         $GLOBALS['iAdminPage'] = 1;
         require_once(BX_DIRECTORY_PATH_INC . 'admin_design.inc.php');

@@ -464,9 +464,7 @@ function sendMail(
         return false;
     }
 
-    if ($iRecipientID) {
-        $aRecipientInfo = getProfileInfo($iRecipientID);
-    }
+    $aRecipientInfo = $iRecipientID ? getProfileInfo($iRecipientID) : array();
 
     // don't send mail to the user if he/she decided to not receive any site's notifications, unless it is critical emails (like email confirmation)
     if (!$bForceSend) {
@@ -529,7 +527,7 @@ function sendMail(
             'html'    => 'html' == $sEmailFlag ? true : false,
         );
 
-        $oZ = new BxDolAlerts('profile', 'send_mail', $aRecipientInfo['ID'], '', $aAlertData);
+        $oZ = new BxDolAlerts('profile', 'send_mail', $iRecipientID, '', $aAlertData);
         $oZ->alert();
     }
 

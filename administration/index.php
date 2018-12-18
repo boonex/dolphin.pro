@@ -27,7 +27,7 @@ if($bNeedCheck || (isset($_POST['ID']) && isset($_POST['Password']))) {
         $oZ->alert();
     }
 
-    if($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
+    if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
         echo check_password($iId, $sPassword, BX_DOL_ROLE_ADMIN, false) ? 'OK' : 'Fail';
     else if($bNeedCheck || check_password($iId, $sPassword, BX_DOL_ROLE_ADMIN)) {
         if($_POST['relocate'] && (strncasecmp($_POST['relocate'], BX_DOL_URL_ROOT, strlen(BX_DOL_URL_ROOT)) === 0 || strncasecmp($_POST['relocate'], BX_DOL_URL_ADMIN . 'license.php', strlen(BX_DOL_URL_ADMIN . 'license.php')) === 0))

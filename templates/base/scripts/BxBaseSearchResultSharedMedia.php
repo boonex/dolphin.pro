@@ -127,7 +127,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         $this->bDynamic = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
     }
 
-    function getCurrentUrl ($sType, $iId = 0, $sUri = '')
+    function getCurrentUrl ($sType, $iId = 0, $sUri = '', $aOwner = '')
     {
         $sLink = $this->aConstants['linksTempl'][$sType];
         return BX_DOL_URL_ROOT . $this->oModule->_oConfig->getBaseUri() . str_replace('{uri}', $sUri, $sLink);

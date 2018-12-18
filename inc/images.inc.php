@@ -28,7 +28,7 @@ $use_gd = getParam( 'enable_gd' ) == 'on' ? 1 : 0;
  */
 function imageResize( $srcFilename, $dstFilename, $sizeX, $sizeY, $forceJPGOutput = false, $isSquare = false )
 {
-    $o =& BxDolImageResize::instance();
+    $o = BxDolImageResize::instance();
     $o->removeCropOptions ();
     $o->setJpegOutput ($forceJPGOutput);
     $o->setSize ($sizeX, $sizeY);
@@ -57,6 +57,6 @@ function imageResize( $srcFilename, $dstFilename, $sizeX, $sizeY, $forceJPGOutpu
 */
 function applyWatermark( $srcFilename, $dstFilename, $wtrFilename, $wtrTransparency )
 {
-    $o =& BxDolImageResize::instance();
+    $o = BxDolImageResize::instance();
     return $o->applyWatermark ($srcFilename, $dstFilename, $wtrFilename, $wtrTransparency);
 }

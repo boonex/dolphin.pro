@@ -353,7 +353,7 @@ class BxDolSearchResult
      * Get html code of pagination
      */
 
-    function showPagination ()
+    function showPagination ($aParams = array())
     {
     }
 

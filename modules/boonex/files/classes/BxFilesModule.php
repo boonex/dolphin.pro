@@ -391,14 +391,14 @@ class BxFilesModule extends BxDolFilesModule
         exit;
     }
 
-    function serviceGetMemberMenuItem ()
+    function serviceGetMemberMenuItem ($sIcon = 'save')
     {
-        return parent::serviceGetMemberMenuItem ('save');
+        return parent::serviceGetMemberMenuItem ($sIcon);
     }
 
-    function serviceGetMemberMenuItemAddContent ()
+    function serviceGetMemberMenuItemAddContent ($sIcon = 'save')
     {
-        return parent::serviceGetMemberMenuItemAddContent ('save');
+        return parent::serviceGetMemberMenuItemAddContent ($sIcon);
     }
 
     function serviceGetWallPost($aEvent)
@@ -424,7 +424,7 @@ class BxFilesModule extends BxDolFilesModule
         ));
     }
 
-    function serviceGetWallAddComment($aEvent)
+    function serviceGetWallAddComment($aEvent, $aParams = array())
     {
     	return parent::serviceGetWallAddComment($aEvent, array(
     		'templates' => array(

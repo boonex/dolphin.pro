@@ -400,7 +400,7 @@ EOF;
         return array();
     }
 
-    function showPagination($bAdmin = false, $bChangePage = true, $bPageReload = true)
+    function showPagination($aParams = array())
     {
         $aPgnParams = array(
             'page_url' => $this->aCurrent['paginate']['page_url'],

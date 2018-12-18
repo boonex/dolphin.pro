@@ -52,13 +52,13 @@ class BxSoundsModule extends BxDolFilesModule
         return PROFILE_SOUND_CATEGORY;
     }
 
-    function serviceGetMemberMenuItem ()
+    function serviceGetMemberMenuItem ($sIcon = 'music')
     {
-        return parent::serviceGetMemberMenuItem ('music');
+        return parent::serviceGetMemberMenuItem ($sIcon);
     }
-    function serviceGetMemberMenuItemAddContent ()
+    function serviceGetMemberMenuItemAddContent ($sIcon = 'music')
     {
-        return parent::serviceGetMemberMenuItemAddContent ('music');
+        return parent::serviceGetMemberMenuItemAddContent ($sIcon);
     }
 
     function getEmbedCode ($iFileId)

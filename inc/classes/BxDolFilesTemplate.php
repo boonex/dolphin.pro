@@ -18,14 +18,6 @@ class BxDolFilesTemplate extends BxDolModuleTemplate
         parent::__construct($oConfig, $oDb);
     }
 
-    /**
-     * @deprecated
-     */
-    function init (&$oDb)
-    {
-        $this->_oDb = &$oDb;
-    }
-
     // function of output
     function pageCode ($aPage = array(), $aPageCont = array(), $aCss = array(), $aJs = array(), $bAdminMode = false, $isSubActions = true)
     {

@@ -28,7 +28,6 @@ class BxDolFilesModule extends BxDolModule
     {
         parent::__construct($aModule);
         $this->_iProfileId = $this->_oDb->iViewer;
-        $this->_oTemplate->init($this->_oDb);
         $this->aPageTmpl = array(
             'name_index'  => 1,
             'header'      => $GLOBALS['site']['title'],

@@ -65,14 +65,14 @@ class BxVideosModule extends BxDolFilesModule
         return PROFILE_VIDEO_CATEGORY;
     }
 
-    function serviceGetMemberMenuItem ()
+    function serviceGetMemberMenuItem ($sIcon = 'film')
     {
-        return parent::serviceGetMemberMenuItem ('film');
+        return parent::serviceGetMemberMenuItem ($sIcon);
     }
 
-    function serviceGetMemberMenuItemAddContent ()
+    function serviceGetMemberMenuItemAddContent ($sIcon = 'film')
     {
-        return parent::serviceGetMemberMenuItemAddContent ('film');
+        return parent::serviceGetMemberMenuItemAddContent ($sIcon);
     }
 
     function getWallPost($aEvent, $sIcon, $aParams = array())

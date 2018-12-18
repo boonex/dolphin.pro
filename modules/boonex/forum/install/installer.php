@@ -23,9 +23,9 @@ class BxOrcaInstaller extends BxDolInstaller
         ));
     }
 
-    function uninstall()
+    function uninstall($aParams)
     {
-        $ret = parent::uninstall(array());
+        $ret = parent::uninstall($aParams);
 
         $sPath = BX_DIRECTORY_PATH_MODULES . 'boonex/forum/';
 

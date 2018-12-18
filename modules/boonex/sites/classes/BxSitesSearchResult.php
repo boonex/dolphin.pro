@@ -363,7 +363,7 @@ class BxSitesSearchResult extends BxTemplSearchResult
         }
     }
 
-    function showPagination()
+    function showPagination($aParams = array())
     {
         bx_import('BxDolPaginate');
         $oConfig = $this->_oMain->_oConfig;

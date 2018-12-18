@@ -460,7 +460,7 @@ class BxDolFormCheckerHelper
 {
     // check functions - check values for limits or patterns
 
-    function checkLength ($s, $iLenMin, $iLenMax)
+    public static function checkLength ($s, $iLenMin, $iLenMax)
     {
         if (is_array($s)) {
             foreach ($s as $k => $v) {
@@ -473,11 +473,13 @@ class BxDolFormCheckerHelper
         $iLen = get_mb_len ($s);
         return $iLen >= $iLenMin && $iLen <= $iLenMax ? true : false;
     }
-    function checkDate ($s)
+
+    public static function checkDate ($s)
     {
         return $this->checkPreg ($s, '#^\d+\-\d+\-\d+$#');
     }
-    function checkDateTime ($s)
+
+    public static function checkDateTime ($s)
     {
         // remove unnecessary opera's input value;
         $s = str_replace('T', ' ', $s);
@@ -485,7 +487,8 @@ class BxDolFormCheckerHelper
 
         return $this->checkPreg ($s, '#^\d+\-\d+\-\d+[\sT]{1}\d+:\d+$#');
     }
-    function checkPreg ($s, $r)
+
+    public static function checkPreg ($s, $r)
     {
         if (is_array($s)) {
             foreach ($s as $k => $v)
@@ -496,20 +499,20 @@ class BxDolFormCheckerHelper
         return preg_match($r, $s) ? true : false;
     }
 
-    function checkAvail ($s)
+    public static function checkAvail ($s)
     {
         if (is_array($s)) {
-            return !$this->_isEmptyArray($s);
+            return !self::_isEmptyArray($s);
         }
         return $s ? true : false;
     }
 
-    function checkEmail($s)
+    public static function checkEmail($s)
     {
         return filter_var($s, FILTER_VALIDATE_EMAIL) !== false;
     }
 
-    function checkCaptcha($s)
+    public static function checkCaptcha($s)
     {
         // init captcha object
         bx_import('BxDolCaptcha');
@@ -537,13 +540,14 @@ class BxDolFormCheckerHelper
 
         return true;
     }
-    function checkNoSpam($val)
+
+    public static function checkNoSpam($val)
     {
         return !bx_is_spam($val);
     }
 
     // pass functions, prepare values to insert to database
-    function passInt ($s)
+    public static function passInt ($s)
     {
         if (is_array($s)) {
             $a = array ();
@@ -554,7 +558,8 @@ class BxDolFormCheckerHelper
         }
         return (int)$s;
     }
-    function passFloat ($s)
+
+    public static function passFloat ($s)
     {
         if (is_array($s)) {
             $a = array ();
@@ -565,7 +570,8 @@ class BxDolFormCheckerHelper
         }
         return (float)$s;
     }
-    function passDate ($s)
+
+    public static function passDate ($s)
     {
         if (is_array($s)) {
             $a = array ();
@@ -576,7 +582,8 @@ class BxDolFormCheckerHelper
         }
         return $this->_passDate ($s);
     }
-    function passDateUTC ($s)
+
+    public static function passDateUTC ($s)
     {
         if (is_array($s)) {
             $a = array ();
@@ -587,7 +594,8 @@ class BxDolFormCheckerHelper
         }
         return $this->_passDate ($s, 'gmmktime');
     }
-    function _passDate ($s, $sFunc = 'mktime')
+
+    public static function _passDate ($s, $sFunc = 'mktime')
     {
         list($iYear, $iMonth, $iDay) = explode( '-', $s);
         $iDay   = (int)$iDay;
@@ -596,29 +604,32 @@ class BxDolFormCheckerHelper
         $iRet = $sFunc (0, 0, 0, $iMonth, $iDay, $iYear);
         return $iRet > 0 ? $iRet : 0;
     }
-    function passDateTime ($s)
+
+    public static function passDateTime ($s)
     {
         if (is_array($s)) {
             $a = array ();
             foreach ($s as $k => $v) {
-                $a[$k] = $this->_passDateTime ($v);
+                $a[$k] = self::_passDateTime ($v);
             }
             return $a;
         }
-        return $this->_passDateTime ($s);
+        return self::_passDateTime ($s);
     }
-    function passDateTimeUTC ($s)
+
+    public static function passDateTimeUTC ($s)
     {
         if (is_array($s)) {
             $a = array ();
             foreach ($s as $k => $v) {
-                $a[$k] = $this->_passDateTime ($v, 'gmmktime');
+                $a[$k] =self::_passDateTime ($v, 'gmmktime');
             }
             return $a;
         }
-        return $this->_passDateTime ($s, 'gmmktime');
+        return self::_passDateTime ($s, 'gmmktime');
     }
-    function _passDateTime ($s, $sFunc = 'mktime')
+
+    public static function _passDateTime ($s, $sFunc = 'mktime')
     {
         if (preg_match('#(\d+)\-(\d+)\-(\d+)[\sT]{1}(\d+):(\d+)#', $s, $m)) {
             $iDay   = $m[3];
@@ -631,7 +642,8 @@ class BxDolFormCheckerHelper
         }
         return $this->passDate ($s);
     }
-    function passXss ($s)
+
+    public static function passXss ($s)
     {
         if (is_array($s)) {
             $a = array ();
@@ -642,7 +654,8 @@ class BxDolFormCheckerHelper
         }
         return process_db_input ($s, BX_TAGS_STRIP);
     }
-    function passXssHtml ($s)
+
+    public static function passXssHtml ($s)
     {
         if (is_array($s)) {
             $a = array ();
@@ -654,7 +667,7 @@ class BxDolFormCheckerHelper
         return process_db_input ($s, BX_TAGS_VALIDATE);
     }
 
-    function passAll ($s)
+    public static function passAll ($s)
     {
         if (is_array($s)) {
             $a = array ();
@@ -666,55 +679,60 @@ class BxDolFormCheckerHelper
         return process_db_input ($s, BX_TAGS_NO_ACTION);
     }
 
-    function passPreg ($s, $r)
+    public static function passPreg ($s, $r)
     {
         if (is_array($s)) {
             $a = array ();
             foreach ($s as $k => $v) {
-                $a[$k] = $this->_passPreg ($v, $r);
+                $a[$k] = self::_passPreg ($v, $r);
             }
             return $a;
         }
-        return $this->_passPreg($s, $r);
+        return self::_passPreg($s, $r);
     }
-    function _passPreg ($s, $r)
+
+    public static function _passPreg ($s, $r)
     {
         if (preg_match ($r, $s, $m)) {
             return $m[1];
         }
         return '';
     }
-    function passTags ($s)
+
+    public static function passTags ($s)
     {
         if (is_array($s)) {
             $a = array ();
             foreach ($s as $k => $v) {
-                $a[$k] = $this->_passTags ($v);
+                $a[$k] = self::_passTags ($v);
             }
             return $a;
         }
-        return $this->_passTags($s);
+        return self::_passTags($s);
     }
-    function _passTags ($s)
+
+    public static function _passTags ($s)
     {
         $sTags = $this->passXss ($s);
         $aTags = explodeTags($sTags);
         return implode(",", $aTags);
     }
-    function passCategories ($aa)
+
+    public static function passCategories ($aa)
     {
         if (is_array($aa)) {
             $a = array ();
             foreach ($aa as $k => $v)
                 if ($v)
-                    $a[$k] = $this->passXss ($v);
+                    $a[$k] = self::passXss ($v);
         } else {
-            $a = $this->passXss ($aa);
+            $a = self::passXss ($aa);
         }
         return is_array($a) ? implode(CATEGORIES_DIVIDER, $a) : $a;
 
     }
-    function passBoolean ($s)
+
+    public static function passBoolean ($s)
     {
         if (is_array($s)) {
             $a = array ();
@@ -727,27 +745,28 @@ class BxDolFormCheckerHelper
     }
 
     // display functions, prepare values to output to the screen
-
-    function displayDate ($i)
+    public static function displayDate ($i)
     {
         return date("Y-m-d", $i);
     }
-    function displayDateTime ($i)
+
+    public static function displayDateTime ($i)
     {
         return date("Y-m-d H:i", $i);
     }
-    function displayDateUTC ($i)
+
+    public static function displayDateUTC ($i)
     {
         return gmdate("Y-m-d", $i);
     }
-    function displayDateTimeUTC ($i)
+
+    public static function displayDateTimeUTC ($i)
     {
         return gmdate("Y-m-d H:i", $i);
     }
 
     // for internal usage only
-
-    function _isEmptyArray ($a)
+    public static function _isEmptyArray ($a)
     {
         if (!is_array($a))
             return true;

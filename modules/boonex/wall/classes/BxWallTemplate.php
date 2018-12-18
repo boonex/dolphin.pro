@@ -21,7 +21,7 @@ class BxWallTemplate extends BxDolModuleTemplate
         $this->_aTemplates = array('divider', 'balloon', 'repost', 'common', 'common_media', 'comments', 'actions');
     }
 
-    function init(&$oModule)
+    function setModule(&$oModule)
     {
         $this->_oModule = $oModule;
     }
@@ -654,7 +654,7 @@ class BxWallTemplate extends BxDolModuleTemplate
     function getDefaultComments($iEventId)
     {
         $oComments = new BxWallCmts($this->_oConfig->getCommentSystemName(), $iEventId);
-        return $oComments->getCommentsFirst('comment');
+        return $oComments->getCommentsFirstDefault('comment');
     }
 
     function getJsCode($sType, $aParams = array(), $aRequestParams = array())

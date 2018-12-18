@@ -81,25 +81,30 @@
         /**
          * Function will generate page's pagination;
          *
-         * @param  : $sModulePath (string) - path to current module;
+         * @param  : $aParams (array) - an array with params (path to current module, 'on change page' script, etc);
          * @return : (text) - html presentation data;
          */
-        function showPagination($sModulePath, $sScript = null)
+        function showPagination($aParams = array())
         {
-            $aParameters['settings'] = array(
-                'count'             => $this -> aCurrent['paginate']['totalNum'],
-                'per_page'          => $this -> aCurrent['paginate']['perPage'],
-                'page'              => $this -> aCurrent['paginate']['page'],
+            $sModulePath = '';
+            if(isset($aParams['module_path']) && !empty($aParams['module_path']))
+                $sModulePath = $aParams['module_path'];
+            else
+                $sModulePath = bx_append_url_params($this->oSpyObject->_oConfig->getBaseUri(), array('type' => 'all'));
+
+            $sScript = isset($aParams['on_change_page']) && !empty($aParams['on_change_page']) ? $aParams['on_change_page'] : null; 
+
+            $aPaginate = array(
+                'count' => $this -> aCurrent['paginate']['totalNum'],
+                'per_page' => $this -> aCurrent['paginate']['perPage'],
+                'page' => $this -> aCurrent['paginate']['page'],
+                'page_url' => $sModulePath . '&page={page}&per_page={per_page}',
+                'on_change_page' => $sScript,
+                'on_change_per_page' => null
             );
 
-            $aParameters['settings']['page_url']            = $sModulePath . '&page={page}&per_page={per_page}';
-            $aParameters['settings']['on_change_page']      = $sScript ? $sScript : null;
-            $aParameters['settings']['on_change_per_page']  = null;
-
-            $oPaginate = new BxDolPaginate( array_shift($aParameters) );
-            $sPaginate = '<div class="clear_both"></div>' . $oPaginate -> getSimplePaginate(null, -1, -1, false);
-
-            return $sPaginate;
+            $oPaginate = new BxDolPaginate($aPaginate);
+            return '<div class="clear_both"></div>' . $oPaginate -> getSimplePaginate(null, -1, -1, false);
         }
 
         function getAlterOrder ()
