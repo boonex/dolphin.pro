@@ -75,7 +75,7 @@ class BxVideosModule extends BxDolFilesModule
         return parent::serviceGetMemberMenuItemAddContent ($sIcon);
     }
 
-    function getWallPost($aEvent, $sIcon, $aParams = array())
+    function getWallPost($aEvent, $sIcon = 'save', $aParams = array())
     {
     	return parent::getWallPost($aEvent, $sIcon, array(
     		'templates' => array(
@@ -85,7 +85,7 @@ class BxVideosModule extends BxDolFilesModule
     	));
     }
 
-    function getWallPostOutline($aEvent, $sIcon, $aParams = array())
+    function getWallPostOutline($aEvent, $sIcon = 'save', $aParams = array())
     {
     	return parent::getWallPostOutline($aEvent, $sIcon, array(
     		'templates' => array(

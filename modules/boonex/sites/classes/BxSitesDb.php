@@ -94,9 +94,9 @@ class BxSitesDb extends BxDolModuleDb
             WHERE `date` >= UNIX_TIMESTAMP('$iYear-$iMonth-1') AND `date` < UNIX_TIMESTAMP('$iNextYear-$iNextMonth-1') AND `status` = 'approved'");
     }
 
-    function getSettingsCategory()
+    function getSettingsCategory($sName)
     {
-        return $this->getOne("SELECT `ID` FROM `sys_options_cats` WHERE `name` = 'Sites' LIMIT 1");
+        return $this->getOne("SELECT `ID` FROM `sys_options_cats` WHERE `name` = '{$sName}' LIMIT 1");
     }
 
     function setStatusSite($iSiteId, $sStatus)

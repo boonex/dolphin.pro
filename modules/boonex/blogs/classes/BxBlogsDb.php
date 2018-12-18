@@ -381,10 +381,7 @@ class BxBlogsDb extends BxDolDb
 
     function getBlogPostsByMonth($iYear, $iMonth, $iNextYear, $iNextMonth, $sStatus = 'approval')
     {
-        $sStatus = $this -> escape($sStatus);
-        $sExtra = $sStatus
-            ? " AND `{$this->_oConfig->sSQLPostsTable}`.`PostStatus` = $sStatus"
-            : '';
+        $sExtra = !empty($sStatus) ? " AND `{$this->_oConfig->sSQLPostsTable}`.`PostStatus` = " . $this -> escape($sStatus) : '';
 
         return $this->getAll ("
             SELECT `{$this->_oConfig->sSQLPostsTable}`.*, DAYOFMONTH(FROM_UNIXTIME(`{$this->_oConfig->sSQLPostsTable}`.`PostDate`)) AS `Day`

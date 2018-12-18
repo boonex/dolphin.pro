@@ -148,7 +148,7 @@ class BxSitesModule extends BxDolTwigModule
     {
         $iSiteId = (int)$iSiteId;
         if (!($aSite = $this->_oDb->getSiteById($iSiteId))) {
-            $this->_oTemplate->displayPageNotFound (_t('_bx_sites_action_title_delete'));
+            $this->_oTemplate->displayPageNotFoundExt (_t('_bx_sites_action_title_delete'));
             return;
         }
 
@@ -174,12 +174,12 @@ class BxSitesModule extends BxDolTwigModule
         $iSiteId = (int)$iSiteId;
 
         if (!($aSite = $this->_oDb->getSiteById($iSiteId))) {
-            $this->_oTemplate->displayPageNotFound (_t('_bx_site_caption_edit'));
+            $this->_oTemplate->displayPageNotFoundExt (_t('_bx_site_caption_edit'));
             return;
         }
 
         if (!$this->isAllowedEdit($aSite)) {
-            $this->_oTemplate->displayAccessDenied (_t('_bx_site_caption_edit'));
+            $this->_oTemplate->displayAccessDeniedExt (_t('_bx_site_caption_edit'));
             return;
         }
 
@@ -225,17 +225,17 @@ class BxSitesModule extends BxDolTwigModule
         $aSite = is_numeric($mixedVar) ? $this->_oDb->getSiteById((int)$mixedVar) : $this->_oDb->getSiteByEntryUri(process_db_input($mixedVar));
 
         if (empty($aSite)) {
-            $this->_oTemplate->displayPageNotFound (_t('_bx_sites'));
+            $this->_oTemplate->displayPageNotFoundExt (_t('_bx_sites'));
             return;
         }
 
         if (!$this->isAllowedView($aSite)) {
-            $this->_oTemplate->displayAccessDenied($aSite['title']);
+            $this->_oTemplate->displayAccessDeniedExt($aSite['title']);
             return;
         }
 
         if ($aSite['status'] == 'pending' && !$this->isAdmin() && !($aSite['ownerid'] == $this->iOwnerId && $aEvent['ownerid']))  {
-            $this->_oTemplate->displayAccessDenied($aSite['title']);
+            $this->_oTemplate->displayAccessDeniedExt($aSite['title']);
             return;
         }
 
@@ -269,7 +269,7 @@ class BxSitesModule extends BxDolTwigModule
         $iSiteId = (int)$iSiteId;
 
         if (!($aSite = $this->_oDb->getSiteById($iSiteId))) {
-            $this->_oTemplate->displayPageNotFound (_t('_bx_sites_featured_top_menu_sitem'));
+            $this->_oTemplate->displayPageNotFoundExt (_t('_bx_sites_featured_top_menu_sitem'));
             return;
         }
 
@@ -308,7 +308,7 @@ class BxSitesModule extends BxDolTwigModule
     function actionSearch()
     {
         if (!$this->isAllowedSearch()) {
-            $this->_oTemplate->displayAccessDenied(_t('_bx_sites_caption_browse_search'), false);
+            $this->_oTemplate->displayAccessDeniedExt(_t('_bx_sites_caption_browse_search'), false);
             return;
         }
 
@@ -324,7 +324,7 @@ class BxSitesModule extends BxDolTwigModule
             $o = new BxSitesSearchResult('search', $oForm->getCleanValue('Keyword'));
 
             if ($o->isError) {
-                $this->_oTemplate->displayPageNotFound (_t('_bx_sites_caption_browse_search'));
+                $this->_oTemplate->displayPageNotFoundExt (_t('_bx_sites_caption_browse_search'));
                 return;
             }
 
@@ -332,7 +332,7 @@ class BxSitesModule extends BxDolTwigModule
                 $this->_oTemplate->pageStart();
                 echo $s;
             } else {
-                $this->_oTemplate->displayNoData (_t('_bx_sites_caption_browse_search'));
+                $this->_oTemplate->displayNoDataExt (_t('_bx_sites_caption_browse_search'));
                 return;
             }
 
@@ -359,7 +359,7 @@ class BxSitesModule extends BxDolTwigModule
         }
 
         if (!$this->isAllowedBrowse() || ('my' == $sMode && $this->iOwnerId == 0)) {
-            $this->_oTemplate->displayAccessDenied(_t('_bx_sites'), $bAjaxMode);
+            $this->_oTemplate->displayAccessDeniedExt(_t('_bx_sites'), $bAjaxMode);
             return;
         }
 
@@ -372,7 +372,7 @@ class BxSitesModule extends BxDolTwigModule
             );
 
         if ($o->isError) {
-            $this->_oTemplate->displayNoData($o->aCurrent['title'], $bAjaxMode);
+            $this->_oTemplate->displayNoDataExt($o->aCurrent['title'], $bAjaxMode);
             return;
         }
 
@@ -391,7 +391,7 @@ class BxSitesModule extends BxDolTwigModule
             } else
                 echo $s;
         } else
-            $this->_oTemplate->displayNoData($o->aCurrent['title'], $bAjaxMode);
+            $this->_oTemplate->displayNoDataExt($o->aCurrent['title'], $bAjaxMode);
     }
 
     function actionDeleteProfileSites ($iProfileId)
@@ -424,7 +424,7 @@ class BxSitesModule extends BxDolTwigModule
     function actionAdministration($sUrl = '')
     {
         if (!$this->isAdmin()) {
-            $this->_oTemplate->displayAccessDenied (_t('_bx_sites'));
+            $this->_oTemplate->displayAccessDeniedExt (_t('_bx_sites'));
             return;
         }
 
@@ -466,7 +466,7 @@ class BxSitesModule extends BxDolTwigModule
     function actionAdd()
     {
         if (!$this->isAllowedAdd()) {
-            $this->_oTemplate->displayAccessDenied(_t('_bx_sites'));
+            $this->_oTemplate->displayAccessDeniedExt(_t('_bx_sites'));
             return;
         }
 
@@ -1190,7 +1190,7 @@ class BxSitesModule extends BxDolTwigModule
 
     // private functions
 
-    function _actionAdministrationManage($isAdminEntries)
+    function _actionAdministrationManage($isAdminEntries, $sKeyBtnDelete = '', $sKeyBtnActivate = '', $sUrl = false)
     {
         if ($_POST['action_activate'] && is_array($_POST['entry'])) {
             foreach ($_POST['entry'] as $iSiteId)
@@ -1224,10 +1224,9 @@ class BxSitesModule extends BxDolTwigModule
         return $GLOBALS['oSysTemplate']->parseHtmlByName('default_padding.html', array('content' => $this->_addSiteForm()));
     }
 
-    function _actionAdministrationSettings()
+    function _actionAdministrationSettings($sSettingsCatName = 'Sites')
     {
-        $iId = $this->_oDb->getSettingsCategory();
-
+        $iId = $this->_oDb->getSettingsCategory($sSettingsCatName);
         if(empty($iId))
             return MsgBox(_t('_sys_request_page_not_found_cpt'));
 

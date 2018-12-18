@@ -26,13 +26,9 @@ class BxProfileCustomizeTemplate extends BxDolModuleTemplate
             $GLOBALS['oAdmTemplate']->addDynamicLocation($this->_oConfig->getHomePath(), $this->_oConfig->getHomeUrl());
     }
 
-    /**
-     * @depricated
-     */
-    function init(&$oModule, &$oDb)
+    function setModule(&$oModule)
     {
         $this->_oModule = $oModule;
-        $this->_oDb = $oDb;
     }
 
     function profileCustomizeBlock($aTopMenu, $sPage, $aTargets, $sTarget, $aVars)

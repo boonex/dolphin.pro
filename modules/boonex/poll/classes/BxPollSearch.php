@@ -106,7 +106,7 @@ class BxPollSearch extends BxTemplSearchResultText
      *
      * @return : (text) - Html presentation data ;
      */
-    function displaySearchBox ($sCode, $sPaginate = '')
+    function displaySearchBox ($sCode, $sPaginate = '', $bAdminBox = false)
     {
         // generate the init poll's part ;
         $sInitSection =  $this -> oPollObject -> getInitPollPage(false);

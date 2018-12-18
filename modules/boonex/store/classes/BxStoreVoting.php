@@ -23,10 +23,11 @@ class BxStoreVoting extends BxTemplVotingView
         return (new BxStoreSearchResult())->getMain();
     }
 
-    function checkAction ()
+    function checkAction ($bPerformAction = false)
     {
-        if (!parent::checkAction())
+        if (!parent::checkAction($bPerformAction))
             return false;
+
         $oMain = $this->getMain();
         $aDataEntry = $oMain->_oDb->getEntryById($this->getId ());
         return $oMain->isAllowedRate($aDataEntry);

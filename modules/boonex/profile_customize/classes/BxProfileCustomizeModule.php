@@ -72,7 +72,7 @@ class BxProfileCustomizeModule extends BxDolModule
         parent::__construct($aModule);
         $this->iUserId = getLoggedId();
         $this->_oConfig->init($this->_oDb);
-        $this->_oTemplate->init($this, $this->_oDb);
+        $this->_oTemplate->setModule($this);
 
         $this->_aCssMatch = $this->_oDb->getUnits();
     }

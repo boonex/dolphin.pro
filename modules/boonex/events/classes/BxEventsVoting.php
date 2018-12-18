@@ -23,10 +23,11 @@ class BxEventsVoting extends BxTemplVotingView
         return (new BxEventsSearchResult())->getMain();
     }
 
-    function checkAction ()
+    function checkAction ($bPerformAction = false)
     {
-        if (!parent::checkAction())
+        if (!parent::checkAction($bPerformAction))
             return false;
+
         $oMain = $this->getMain();
         $aEvent = $oMain->_oDb->getEntryByIdAndOwner($this->getId (), 0, true);
         return $oMain->isAllowedRate($aEvent);

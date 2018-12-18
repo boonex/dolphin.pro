@@ -1471,7 +1471,7 @@ class BxDolTwigModule extends BxDolModule
 
     // ================================== admin actions
 
-    function _actionAdministrationSettings ($sSettingsCatName)
+    function _actionAdministrationSettings ($sSettingsCatName = '')
     {
         if (!preg_match('/^[A-Za-z0-9_-]+$/', $sSettingsCatName))
             return MsgBox(_t('_sys_request_page_not_found_cpt'));
@@ -1500,7 +1500,7 @@ class BxDolTwigModule extends BxDolModule
         return $this->_oTemplate->parseHtmlByName('default_padding', $aVars);
     }
 
-    function _actionAdministrationManage ($isAdminEntries, $sKeyBtnDelete, $sKeyBtnActivate, $sUrl = false)
+    function _actionAdministrationManage ($isAdminEntries, $sKeyBtnDelete = '', $sKeyBtnActivate = '', $sUrl = false)
     {
         if (getPostFieldIfSet('action_activate') && (isset($_POST['entry']) && is_array($_POST['entry']))) {
 

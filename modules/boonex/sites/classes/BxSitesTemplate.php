@@ -248,12 +248,12 @@ class BxSitesTemplate extends BxDolModuleTemplate
         return $aResult;
     }
 
-    function displayAccessDenied($sTitle, $isAjaxMode = false)
+    function displayAccessDeniedExt($sTitle, $isAjaxMode = false)
     {
         $this->_showDisplay($sTitle, _t('_bx_sites_msg_access_denied'), $isAjaxMode);
     }
 
-    function displayNoData($sTitle, $isAjaxMode = false)
+    function displayNoDataExt($sTitle, $isAjaxMode = false)
     {
         $this->_showDisplay($sTitle, _t('_Empty'), $isAjaxMode);
     }
@@ -263,7 +263,7 @@ class BxSitesTemplate extends BxDolModuleTemplate
         $this->_showDisplay($sTitle, _t('_bx_sites_msg_pending_approval'), $isAjaxMode);
     }
 
-    function displayPageNotFound($sTitle, $isAjaxMode = false)
+    function displayPageNotFoundExt($sTitle, $isAjaxMode = false)
     {
         header("HTTP/1.0 404 Not Found");
         $this->_showDisplay($sTitle, _t('_bx_sites_msg_page_not_found'), $isAjaxMode);

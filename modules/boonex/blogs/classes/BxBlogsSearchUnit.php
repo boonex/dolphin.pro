@@ -176,7 +176,7 @@ class BxBlogsSearchUnit extends BxTemplSearchResultText
         return ($oMain->isPermalinkEnabled()) ? BX_DOL_URL_ROOT . $sLink : $this->sHomeUrl . $sLink;
     }
 
-    function displaySearchBox ($sCode, $sPaginate = '')
+    function displaySearchBox ($sCode, $sPaginate = '', $bAdminBox = false)
     {
         $sCode = DesignBoxContent(_t($this->aCurrent['title']), '<div class="bx-def-bc-padding">'.$sCode .'<div class="clear_both"></div></div>'. $sPaginate, 1);
         if (true !== bx_get('searchMode'))

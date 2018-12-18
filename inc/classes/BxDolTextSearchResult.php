@@ -46,12 +46,13 @@ class BxDolTextSearchResult extends BxTemplSearchResultText
             'sample_type' => 'search_unit',
             'uri' => $aData['uri']
         ));
+        $aEvent = array_shift($aEntries);
 
         $aParams = array(
             'sample_type' => 'search_unit',
             'viewer_type' => $this->_oModule->_oTextData->getViewerType()
         );
-        return $this->_oModule->_oTemplate->displayItem($aParams, array_shift($aEntries));
+        return $this->_oModule->_oTemplate->displayItem($aParams, $aEvent);
     }
 
     function displayResultBlock()

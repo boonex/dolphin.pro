@@ -263,7 +263,7 @@ class BxFilesSearch extends BxTemplSearchResult
         $aUnit['unitClass'] = $this->aCurrent['name'];
 
         // title
-        $aUnit['titleLink'] = $this->getCurrentUrl('file', $aData['id'], $aData['uri']);;
+        $aUnit['titleLink'] = $this->getCurrentUrl('file', $aData['id'], $aData['uri']);
         $aUnit['title'] = $aData['title'];
 
         // from
@@ -317,7 +317,7 @@ class BxFilesSearch extends BxTemplSearchResult
         return $aDBTopMenu;
     }
 
-    function getCurrentUrl ($sType, $iId = 0, $sUri = '')
+    function getCurrentUrl ($sType, $iId, $sUri, $aOwner = '')
     {
         $sLink = $this->aConstants['linksTempl'][$sType];
         return BX_DOL_URL_ROOT . $this->oModule->_oConfig->getBaseUri() . str_replace('{uri}', $sUri, $sLink);

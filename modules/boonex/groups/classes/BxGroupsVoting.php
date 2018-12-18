@@ -21,10 +21,11 @@ class BxGroupsVoting extends BxTemplVotingView
         return BxDolModule::getInstance('BxGroupsModule');
     }
 
-    function checkAction ()
+    function checkAction ($bPerformAction = false)
     {
-        if (!parent::checkAction())
+        if (!parent::checkAction($bPerformAction))
             return false;
+
         $oMain = $this->getMain();
         $aDataEntry = $oMain->_oDb->getEntryById($this->getId ());
         return $oMain->isAllowedRate($aDataEntry);

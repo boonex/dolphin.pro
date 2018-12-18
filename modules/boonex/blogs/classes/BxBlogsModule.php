@@ -1933,7 +1933,7 @@ EOF;
                 break;
         }
 
-        $sAdmPost = BxDolPageView::getBlockCaptionMenu(mktime(), array(
+        $sAdmPost = BxDolPageView::getBlockCaptionMenu(time(), array(
             'blogs_main'    => array('href' => $sBlogMainLink, 'title' => $sMainC, 'active' => $sMainTabClass),
             'blogs_add'     => array('href' => $sBlogAddLink, 'title' => $sAddC, 'active' => $sAddTabClass),
             'blogs_manage'  => array('href' => $sBlogManageLink, 'title' => $sManageC, 'active' => $sManageTabClass),

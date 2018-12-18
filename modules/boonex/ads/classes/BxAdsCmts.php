@@ -29,10 +29,11 @@ class BxAdsCmts extends BxTemplCmtsView
     	return $this->_oModule->genUrl($aEntry['ID'], $aEntry['EntryUri'], 'entry'); 
     }
 
-    function isPostReplyAllowed()
+    function isPostReplyAllowed($isPerformAction = false)
     {
-        if (!parent::isPostReplyAllowed())
+        if (!parent::isPostReplyAllowed($isPerformAction))
             return false;
+
         $oMain = BxDolModule::getInstance('BxAdsModule');
         $aAdPost = $oMain->_oDb->getAdInfo($this->getId());
         return $oMain->isAllowedComments($aAdPost);

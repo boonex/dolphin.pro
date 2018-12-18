@@ -33,10 +33,11 @@ class BxBlogsCmts extends BxTemplCmtsView
     	return $oMain->genUrl($aEntry['ID'], $aEntry['PostUri'], 'entry'); 
     }
 
-    function isPostReplyAllowed()
+    function isPostReplyAllowed($isPerformAction = false)
     {
-        if (!parent::isPostReplyAllowed())
+        if (!parent::isPostReplyAllowed($isPerformAction))
             return false;
+
         $oMain = $this->getMain();
         $aBlogPost = $oMain->_oDb->getPostInfo($this->getId(), 0, true);
         return $oMain->isAllowedComments($aBlogPost);

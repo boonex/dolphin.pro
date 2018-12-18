@@ -476,7 +476,7 @@ class BxDolFormCheckerHelper
 
     public static function checkDate ($s)
     {
-        return $this->checkPreg ($s, '#^\d+\-\d+\-\d+$#');
+        return self::checkPreg ($s, '#^\d+\-\d+\-\d+$#');
     }
 
     public static function checkDateTime ($s)
@@ -485,7 +485,7 @@ class BxDolFormCheckerHelper
         $s = str_replace('T', ' ', $s);
         $s = str_replace('Z', ':00', $s);
 
-        return $this->checkPreg ($s, '#^\d+\-\d+\-\d+[\sT]{1}\d+:\d+$#');
+        return self::checkPreg ($s, '#^\d+\-\d+\-\d+[\sT]{1}\d+:\d+$#');
     }
 
     public static function checkPreg ($s, $r)
@@ -576,11 +576,11 @@ class BxDolFormCheckerHelper
         if (is_array($s)) {
             $a = array ();
             foreach ($s as $k => $v) {
-                $a[$k] = $this->_passDate ($v);
+                $a[$k] = self::_passDate ($v);
             }
             return $a;
         }
-        return $this->_passDate ($s);
+        return self::_passDate ($s);
     }
 
     public static function passDateUTC ($s)
@@ -588,11 +588,11 @@ class BxDolFormCheckerHelper
         if (is_array($s)) {
             $a = array ();
             foreach ($s as $k => $v) {
-                $a[$k] = $this->_passDate ($v, 'gmmktime');
+                $a[$k] = self::_passDate ($v, 'gmmktime');
             }
             return $a;
         }
-        return $this->_passDate ($s, 'gmmktime');
+        return self::_passDate ($s, 'gmmktime');
     }
 
     public static function _passDate ($s, $sFunc = 'mktime')
@@ -640,7 +640,7 @@ class BxDolFormCheckerHelper
             $iRet = $sFunc ($iH, $iM, 0, $iMonth, $iDay, $iYear);
             return $iRet > 0 ? $iRet : 0;
         }
-        return $this->passDate ($s);
+        return self::passDate ($s);
     }
 
     public static function passXss ($s)
@@ -713,7 +713,7 @@ class BxDolFormCheckerHelper
 
     public static function _passTags ($s)
     {
-        $sTags = $this->passXss ($s);
+        $sTags = self::passXss ($s);
         $aTags = explodeTags($sTags);
         return implode(",", $aTags);
     }
