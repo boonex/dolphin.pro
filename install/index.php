@@ -256,36 +256,39 @@ $confFirst['site_url']  = array(
     'ex'      => "http://www.mydomain.com/path/",
     'desc'    => "Your site URL (slash at the end is required)",
     'def'     => "http://",
-    'def_exp' => '
-            $str = "http://".$_SERVER[\'HTTP_HOST\'].$_SERVER[\'PHP_SELF\'];
-            return preg_replace("/install\/(index\.php$)/","",$str);',
-    'check'   => 'return strlen($arg0) >= 10 ? true : false;'
+    'def_exp' => function () {
+            $str = "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+            return preg_replace("/install\/(index\.php$)/", "", $str);
+    },
+    'check'   => function ($arg0) { return strlen($arg0) >= 10 ? true : false; }
 );
 $confFirst['dir_root']  = array(
     'name'    => "Directory root",
     'ex'      => "/path/to/your/script/files/",
     'desc'    => "Path to the directory where your Dolphin files are located (slash at the end is required)",
-    'def_exp' => '
-            $str = rtrim($_SERVER[\'DOCUMENT_ROOT\'], \'/\').$_SERVER[\'PHP_SELF\'];
-            return preg_replace("/install\/(index\.php$)/","",$str);',
-    'check'   => 'return strlen($arg0) >= 1 ? true : false;'
+    'def_exp' => function () {
+            $str = rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $_SERVER['PHP_SELF'];
+            return preg_replace("/install\/(index\.php$)/", "", $str);
+    },
+    'check'   => function ($arg0) { return strlen($arg0) >= 1 ? true : false; }
 );
 $confFirst['dir_php']   = array(
     'name'    => "Path to php binary",
     'ex'      => "/usr/local/bin/php",
     'desc'    => "Full path to your PHP interpreter",
     'def'     => "/usr/local/bin/php",
-    'def_exp' => "
-            if ( file_exists(\"/usr/local/bin/php\") ) return \"/usr/local/bin/php\";
-            if ( file_exists(\"/usr/bin/php\") ) return \"/usr/bin/php\";
-            \$fp = popen ( \"whereis php\", \"r\");
-            if ( \$fp ) {
-                \$s = fgets(\$fp);
-                \$s = sscanf(\$s, \"php: %s\");
-                if ( file_exists(\"\$s[0]\") ) return \"\$s[0]\";
-               }
-               return '';",
-    'check'   => 'return strlen($arg0) >= 7 ? true : false;'
+    'def_exp' => function () {
+            if ( file_exists("/usr/local/bin/php") ) return "/usr/local/bin/php";
+            if ( file_exists("/usr/bin/php") ) return "/usr/bin/php";
+            $fp = popen ( "whereis php", "r");
+            if ( $fp ) {
+                $s = fgets($fp);
+                $s = sscanf($s, "php: %s");
+                if ( file_exists("$s[0]") ) return "$s[0]";
+            }
+            return '';
+    },
+    'check'   => function ($arg0) { return strlen($arg0) >= 7 ? true : false; }
 );
 $aDbConf                = array();
 $aDbConf['sql_file']    = array(
@@ -293,24 +296,25 @@ $aDbConf['sql_file']    = array(
     'ex'      => "/home/dolphin/public_html/install/sql/vXX.sql",
     'desc'    => "SQL file location",
     'def'     => "./sql/vXX.sql",
-    'def_exp' => '
+    'def_exp' => function () {
             if ( !( $dir = opendir( "sql/" ) ) )
                 return "";
             while (false !== ($file = readdir($dir))) {
-                if ( substr($file,-3) != \'sql\' ) continue;
+                if ( substr($file,-3) != 'sql' ) continue;
                 closedir( $dir );
                 return "./sql/$file";
             }
             closedir( $dir );
-            return "";',
-    'check'   => 'return strlen($arg0) >= 4 ? true : false;'
+            return "";
+    },
+    'check'   => function ($arg0) { return strlen($arg0) >= 4 ? true : false; }
 );
 $aDbConf['db_host']     = array(
     'name'  => "Database host name",
     'ex'    => "localhost",
     'desc'  => "MySQL database host name",
     'def'   => "localhost",
-    'check' => 'return strlen($arg0) >= 1 ? true : false;'
+    'check' => function ($arg0) { return strlen($arg0) >= 1 ? true : false; }
 );
 $aDbConf['db_port']     = array(
     'name'  => "Database host port number",
@@ -330,19 +334,19 @@ $aDbConf['db_name']     = array(
     'name'  => "Database name",
     'ex'    => "user_dolphin",
     'desc'  => "MySQL database name",
-    'check' => 'return strlen($arg0) >= 1 ? true : false;'
+    'check' => function ($arg0) { return strlen($arg0) >= 1 ? true : false; }
 );
 $aDbConf['db_user']     = array(
     'name'  => "Database user",
     'ex'    => "YourName",
     'desc'  => "MySQL database user name with read/write access",
-    'check' => 'return strlen($arg0) >= 1 ? true : false;'
+    'check' => function ($arg0) { return strlen($arg0) >= 1 ? true : false; }
 );
 $aDbConf['db_password'] = array(
     'name'  => "Database password",
     'ex'    => "MySuperSecretWord",
     'desc'  => "MySQL database password",
-    'check' => 'return strlen($arg0) >= 0 ? true : false;'
+    'check' => function ($arg0) { return strlen($arg0) >= 0 ? true : false; }
 );
 
 $aGeneral                     = array();
@@ -350,43 +354,43 @@ $aGeneral['site_title']       = array(
     'name'  => "Site Title",
     'ex'    => "The Best Community",
     'desc'  => "The name of your site",
-    'check' => 'return strlen($arg0) >= 1 ? true : false;'
+    'check' => function ($arg0) { return strlen($arg0) >= 1 ? true : false; }
 );
 $aGeneral['site_desc']        = array(
     'name'  => "Site Description",
     'ex'    => "The place to find new friends, communicate and have fun.",
     'desc'  => "Meta description of your site",
-    'check' => 'return strlen($arg0) >= 1 ? true : false;'
+    'check' => function ($arg0) { return strlen($arg0) >= 1 ? true : false; }
 );
 $aGeneral['site_email']       = array(
     'name'  => "Site e-mail",
     'ex'    => "admin@your.site",
     'desc'  => "Site e-mail",
-    'check' => 'return strlen($arg0) > 0 AND strstr($arg0,"@") ? true : false;'
+    'check' => function ($arg0) { return strlen($arg0) > 0 AND strstr($arg0,"@") ? true : false; }
 );
 $aGeneral['notify_email']     = array(
     'name'  => "Notify e-mail",
     'ex'    => "no-reply@your.site",
     'desc'  => "Email to send site notifications from",
-    'check' => 'return strlen($arg0) > 0 AND strstr($arg0,"@") ? true : false;'
+    'check' => function ($arg0) { return strlen($arg0) > 0 AND strstr($arg0,"@") ? true : false; }
 );
 $aGeneral['bug_report_email'] = array(
     'name'  => "Bug report email",
     'ex'    => "admin@your.site",
     'desc'  => "Email for receiving bug reports",
-    'check' => 'return strlen($arg0) > 0 AND strstr($arg0,"@") ? true : false;'
+    'check' => function ($arg0) { return strlen($arg0) > 0 AND strstr($arg0,"@") ? true : false; }
 );
 $aGeneral['admin_username']   = array(
     'name'  => "Admin Username",
     'ex'    => "admin",
     'desc'  => "Username to login to the administration area of the site",
-    'check' => 'return strlen($arg0) >= 1 ? true : false;'
+    'check' => function ($arg0) { return strlen($arg0) >= 1 ? true : false; }
 );
 $aGeneral['admin_password']   = array(
     'name'  => "Admin Password",
     'ex'    => "MySuperSecretWord",
     'desc'  => "Secure admin password",
-    'check' => 'return strlen($arg0) >= 1 ? true : false;'
+    'check' => function ($arg0) { return strlen($arg0) >= 1 ? true : false; }
 );
 
 $aNonDeletableModules = array(
@@ -822,14 +826,11 @@ function checkConfigArray($aCheckedArray, &$sError)
     $sErrorMessage = '';
 
     foreach ($aCheckedArray as $sKey => $sValue) {
-        if (!strlen($sValue['check'])) {
+        if (!is_callable($sValue['check'])) {
             continue;
         }
 
-        $funcbody = $sValue['check'];
-        $func     = create_function('$arg0', $funcbody);
-
-        if (!$func($_POST[$sKey])) {
+        if (!$sValue['check']($_POST[$sKey])) {
             $sFieldErr = $sValue['name'];
             $sErrorMessage .= "Please, input valid data to <b>{$sFieldErr}</b> field<br />";
             $error_arr[$sKey] = 1;
@@ -1197,10 +1198,8 @@ function createTable($arr)
         $sStyleAdd = (($i % 2) == 0) ? 'background-color:#ede9e9;' : 'background-color:#fff;';
 
         $def_exp_text = "";
-        if (strlen($value['def_exp'])) {
-            $funcbody = $value['def_exp'];
-            $func     = create_function("", $funcbody);
-            $def_exp  = $func();
+        if (is_callable($value['def_exp'])) {
+            $def_exp  = $value['def_exp']();
             if (strlen($def_exp)) {
                 $def_exp_text = "&nbsp;<font color=green>found</font>";
                 $value['def'] = $def_exp;
