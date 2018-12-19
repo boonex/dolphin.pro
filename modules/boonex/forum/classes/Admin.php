@@ -222,9 +222,8 @@ OES;
         $u = $f->_getLoginUser();
 
         $a = $adb->$sDbFunc($u);
-        reset ($a);
         $p = '';
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
             // acquire user info
             if (!isset($ui[$r['user']]) && ($aa = $f->_getUserInfoReadyArray ($r['user'])))
                 $ui[$r['user']] = $aa;

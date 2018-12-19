@@ -39,7 +39,7 @@ class DbAdmin extends BxDb
     {
         $sql = "SELECT `forum_id` FROM " . TF_FORUM . " WHERE `cat_id` = '$cat_id'";
         $a   = $this->getAll($sql);
-        for (reset($a); list (, $r) = each($a);) {
+        foreach ($a as $r) {
             $this->deleteForumPosts($r['forum_id']);
             $this->deleteForumTopics($r['forum_id']);
             $this->deleteForum($r['forum_id']);

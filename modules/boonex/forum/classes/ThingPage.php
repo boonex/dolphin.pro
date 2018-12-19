@@ -93,8 +93,7 @@ class ThingPage extends Thing
 
         if (is_array($li)) {
             $ret .= "<logininfo>";
-            reset ($li);
-            while (list($k,$v) = each($li)) {
+            foreach ($li as $k => $v) {
                 if ('role' == $k)
                     encode_post_text ($v);
                 elseif ('profile_title' == $k)
@@ -122,9 +121,9 @@ class ThingPage extends Thing
     /**
      * returns page XML
      */
-    function getPageXML (&$li)
+    function getPageXML ($first_load = 1, &$p)
     {
-        return $this->addHeaderFooter ($li, $this->content);
+        return $this->addHeaderFooter ($p, $this->content);
     }
 
     /**

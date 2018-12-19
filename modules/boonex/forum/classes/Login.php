@@ -83,7 +83,7 @@ class Login extends ThingPage
         $js = '';
 
         // check input values
-        for (reset($this->f_join); list ($name, $a) = each ($this->f_join);) {
+        foreach ($this->f_join as $name => $a) {
             if ($a['regexp'])
                 if (!preg_match($a['regexp'], $p[$name]))
                     $js .= $this->_getJsErr($name, $a['err']);
@@ -132,7 +132,7 @@ class Login extends ThingPage
         $js = '';
 
         // check input values
-        for (reset($this->f_login); list ($name, $a) = each ($this->f_login);) {
+        foreach ($this->f_login as $name => $a) {
             if ($a['regexp'])
                 if (!preg_match($a['regexp'], $p[$name]))
                     $js .= $this->_getJsErr($name, $a['err']);

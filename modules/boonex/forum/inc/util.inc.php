@@ -98,7 +98,7 @@ function checkMagicQuotes ()
  */
 function addSlashesArray (&$a)
 {
-    for ( reset ($a); list ($k, $v) = each ($a);  ) {
+    foreach ($a as $k => $v) {
         if (is_array($v))
             addSlashesArray ($v);
         else

@@ -25,7 +25,7 @@ class BxMail extends Mistake
 EOF;
 
         $p['site_url'] = $gConf['url']['base'];
-        for (reset ($p) ; list ($k, $v) = each ($p); ) {
+        foreach ($p as $k => $v) {
             $mailContent = str_replace ('{'.$k.'}', $v, $mailContent);
         }
 

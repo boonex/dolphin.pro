@@ -62,10 +62,9 @@ class Forum extends ThingPage
 
         $ui = array();
         $s = '';
-        reset ($a);
         switch ($type) {
             case 'tlts':
-                while ( list (,$r) = each ($a) ) {
+                foreach ($a as $r) {
 
                     if (!$this->_checkUserPerm ('', $r['forum_type'], 'read', $r['forum_id']))
                         continue;
@@ -76,8 +75,7 @@ class Forum extends ThingPage
 
                     // search hightlight
                     if ($text) {
-                        reset($ws);
-                        while (list (,$w) = each ($ws)) {
+                        foreach ($ws as $w) {
                             if ($w) {
                                 $wreg = preg_quote($w, '/');
                                 $r['topic_title'] = preg_replace ("/($wreg)/i", "<span style=\"background-color:yellow\">$w</span>", $r['topic_title']);
@@ -109,15 +107,14 @@ EOF;
                 }
                 break;
             case 'msgs':
-                while ( list (,$r) = each ($a) ) {
+                foreach ($a as $r) {
 
                     if (!$this->_checkUserPerm ('', $r['forum_type'], 'read', $r['forum_id']))
                         continue;
 
                     // search hightlight
                     if ($text) {
-                        reset($ws);
-                        while (list (,$w) = each ($ws)) {
+                        foreach ($ws as $w) {
                             if ($w) {
                                 $wreg = preg_quote($w, '/');
                                 $ind = preg_match( "([^>]*<)/i", $r['post_text'], $ind ); // html tags?
@@ -135,8 +132,7 @@ EOF;
                     encode_post_text($r['topic_title'], true);
 
                     if ($text) {
-                        reset($ws);
-                        while (list (,$w) = each ($ws)) {
+                        foreach ($ws as $w) {
                             $wreg = preg_quote($w, '/');
                             $r['topic_title'] = preg_replace ("/($wreg)/i", "<span style=\"background-color:yellow\">$w</span>", $r['topic_title']);
                         }
@@ -507,9 +503,8 @@ EOF;
         if ($this->_checkUserPerm ('', '', 'download', $forum_id));
             $gl_allow_download = 1;
 
-        reset ($a);
         $p = '';
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
 
             // acquire user info
             if (!$ui[$r['user']] && ($aa = $this->_getUserInfoReadyArray ($r['user']))) {
@@ -648,9 +643,8 @@ EOF;
 
         $num = 0;
         $a = $this->fdb->$sFunc($user, $start, $num);
-        reset ($a);
         $t = '';
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
                 $lp = $this->fdb->getTopicPost($r['topic_id'], 'last');
                 $fp = $this->fdb->getTopicPost($r['topic_id'], 'first');
 
@@ -790,8 +784,7 @@ EOF;
         $a = $this->fdb->getTopics($forum_id, $start);
         $ui = array();
         $t = '';
-        reset ($a);
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
                 // acquire user info
                 if (!isset($ui[$r['first_post_user']]) && ($aa = $this->_getUserInfoReadyArray ($r['first_post_user'])))
                     $ui[$r['first_post_user']] = $aa;
@@ -871,8 +864,7 @@ EOF;
         $a = $this->fdb->getRecentTopics($start);
         $ui = array();
         $t = '';
-        reset ($a);
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
                 if (!$this->_checkUserPerm ('', $r['forum_type'], 'read', $r['forum_id']))
                     continue;
 
@@ -987,9 +979,8 @@ EOF;
     function getCategsShortXML ($sCheckPermission = false)
     {
         $a = $this->fdb->getCategs();
-        reset ($a);
         $c = '';
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
             $c .= "<categ id=\"{$r['cat_id']}\" uri=\"{$r['cat_uri']}\">";
             encode_post_text($r['cat_name']);
             $c .= "<title>{$r['cat_name']}</title>";
@@ -1007,8 +998,7 @@ EOF;
     {
         $c = $root ? '<forums>' : '';
         $aa = $this->fdb->getForums ($cat);
-        reset ($aa);
-        while ( list (,$rr) = each ($aa) ) {
+        foreach ($aa as $rr) {
             if ($sCheckPermission && !$this->_checkUserPerm ('', $rr['forum_type'], $sCheckPermission, $rr['forum_id']))
                 continue;
 
@@ -1037,8 +1027,7 @@ EOF;
             $c = '';
         $aa = $this->fdb->getForumsByCatUri (filter_to_db($cat));
 
-        reset ($aa);
-        while ( list (,$rr) = each ($aa) ) {
+        foreach ($aa as $rr) {
             if (!$this->_checkUserPerm ('', $rr['forum_type'], 'read', $rr['forum_id']))
                 continue;
 
@@ -1108,9 +1097,8 @@ EOF;
         global $gConf;
 
         $a = $this->fdb->getCategs();
-        reset ($a);
         $c = '';
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
             $icon_url  = $r['cat_icon'] ? $gConf['url']['icon'] . $r['cat_icon'] : '';
             $c .= "<categ id=\"{$r['cat_id']}\" uri=\"{$r['cat_uri']}\" icon=\"$icon_url\" count_posts=\"{$r['count_posts']}\" count_topics=\"{$r['count_topics']}\" count_forums=\"{$r['count_forums']}\">";
             encode_post_text ($r['cat_name']);
@@ -1150,9 +1138,8 @@ EOF;
             $ts = 0;
 
         $a = $this->fdb->getLivePosts ($count, $ts);
-        reset ($a);
         $ui = array ();
-        while (list(,$r) = each ($a)) {
+        foreach ($a as $r) {
             // acquire user info
             if (!isset($ui[$r['user']]) && ($aa = $this->_getUserInfoReadyArray ($r['user'])))
                 $ui[$r['user']] = $aa;
@@ -1835,10 +1822,9 @@ EOF;
 
         $a = $this->fdb->getTopics ($forum_id, 0);
 
-        reset ($a);
         $items = '';
         $lastBuildDate = '';
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
             $lp = $this->fdb->getTopicPost($r['topic_id'], 'last');
 
             $td = $this->fdb->getTopicDesc ($r['topic_id']);
@@ -1871,8 +1857,7 @@ EOF;
         $items = '';
         $lastBuildDate = '';
         $ui = array();
-        reset ($a);
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
             // acquire user info
             if (!isset($ui[$r['last_post_user']]) && ($aa = $this->_getUserInfoReadyArray ($r['last_post_user'], false)))
                 $ui[$r['last_post_user']] = $aa;
@@ -1910,10 +1895,9 @@ EOF;
 
         $a = $this->fdb->getPosts ($topic_id, 0, 'DESC', 10);
 
-        reset ($a);
         $items = '';
         $lastBuildDate = '';
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
             $td = orca_mb_substr($r['post_text'], 0, 255);
             if (orca_mb_len($td) == 255) $td .= '[...]';
             $td = strip_tags($td);
@@ -1941,10 +1925,9 @@ EOF;
 
         $a = $this->fdb->getUserPostsList(filter_to_db($user), $sort, $gConf['topics_per_page']);
 
-        reset ($a);
         $items = '';
         $lastBuildDate = '';
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
             if (!$lastBuildDate)
                 $lastBuildDate = $r['when'];
 
@@ -1976,11 +1959,10 @@ EOF;
 
         $a = $this->fdb->getAllPostsList($sort, $gConf['topics_per_page']);
 
-        reset ($a);
         $ui = array();
         $items = '';
         $lastBuildDate = '';
-        while ( list (,$r) = each ($a) ) {
+        foreach ($a as $r) {
             if (!$lastBuildDate)
                 $lastBuildDate = $r['when'];
 
