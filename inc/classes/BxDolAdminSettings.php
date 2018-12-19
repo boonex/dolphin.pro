@@ -94,7 +94,10 @@ class BxDolAdminSettings
                         $aItemsData[$aItem['name']] = process_db_input($aData[$aItem['name']], BX_TAGS_STRIP);
 
                     if(!empty($aItem['check'])) {
-                        $oFunction = create_function('$arg0', $aItem['check']);
+                        $oFunction = function($arg0) use ($aItem) {
+                            return eval($aItem['check']);
+                        };
+
                         if(!$oFunction($aItemsData[$aItem['name']])) {
                             $this->_iCategoryActive = (int)$mixedCategory;
                             return MsgBox("'" . $aItem['title'] .  "' " . $aItem['check_error'], $this->_iResultTimer);

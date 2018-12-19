@@ -1173,7 +1173,7 @@ class BxDolPFM
     {
         global $aPreValues;
 
-        $aUpdateStrs = '';
+        $aUpdateStrs = array();
         foreach( $aUpdate as $sKey => $sValue ) {
             if( is_null( $sValue ) )
                 $aUpdateStrs[] = "`$sKey` = NULL";

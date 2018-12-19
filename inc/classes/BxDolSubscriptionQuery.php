@@ -126,7 +126,10 @@ class BxDolSubscriptionQuery extends BxDolDb
         $aResults = array();
         foreach($aSubscriptions as $aSubscription) {
             if($aSubscription['action'] == $aParams['action'] && !empty($aSubscription['params'])) {
-                $oFunction = create_function('$arg1, $arg2, $arg3', $aSubscription['params']);
+                $oFunction = function($arg1, $arg2, $arg3) use ($aSubscription) {
+                    return eval($aSubscription['params']);
+                };
+
                 $aUnitParams = $oFunction($aParams['unit'], $aParams['action'], $aParams['object_id']);
             }
 
@@ -232,7 +235,10 @@ class BxDolSubscriptionQuery extends BxDolDb
         $aSubscription = $this->getSubscription($aParams['unit'], $aParams['action']);
 
         if(!empty($aSubscription['params'])) {
-            $oFunction = create_function('$arg1, $arg2, $arg3', $aSubscription['params']);
+            $oFunction = function($arg1, $arg2, $arg3) use ($aSubscription) {
+                return eval($aSubscription['params']);
+            };
+
             $aUnitParams = $oFunction($aParams['unit'], $aParams['action'], $aParams['object_id']);
         }
 

@@ -99,7 +99,10 @@ class BxDolSubscription
         $bCollapsed = true;
         $sTmplRow = $oSysTemplate->getHtml('subscription_row.html');
         foreach($aSubscriptions as $aSubscription) {
-            $oFunction = create_function('$arg1, $arg2, $arg3', $aSubscription['params']);
+            $oFunction = function($arg1, $arg2, $arg3) use ($aSubscription) {
+                return eval($aSubscription['params']);
+            };
+
             $aParams = $oFunction($aSubscription['unit'], $aSubscription['action'], $aSubscription['object_id']);
             if(isset($aParams['skip']) && $aParams['skip'] === true)
                 continue;

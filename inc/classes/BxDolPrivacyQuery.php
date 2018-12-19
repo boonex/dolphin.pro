@@ -71,16 +71,20 @@ class BxDolPrivacyQuery extends BxDolDb
         }
         //--- Check in system groups('All', 'Friends', etc) ---//
         if($this->getParam('sys_ps_enabled_group_' . $aGroup['id']) == 'on' && (int)$aGroup['owner_id'] == 0 && !empty($aGroup['get_content'])) {
-            $oFunction = create_function('$arg0, $arg1, $arg2', $aGroup['get_content']);
+            $oFunction = function($arg0, $arg1, $arg2) use ($aGroup) {
+                return eval($aGroup['get_content']);
+            };
 
             if($oFunction($this, $iObjectOwnerId, $iViewerId))
                return true;
         }
         //--- Check in 'Default' group ---//
         if((int)$aGroup['owner_id'] == 0 && !empty($aGroup['get_parent'])) {
-            $oFunction = create_function('$arg0, $arg1, $arg2', $aGroup['get_parent']);
-            $iId = $oFunction($this, $iObjectOwnerId, $iViewerId);
+            $oFunction = function($arg0, $arg1, $arg2) use ($aGroup) {
+                return eval($aGroup['get_parent']);
+            };
 
+            $iId = $oFunction($this, $iObjectOwnerId, $iViewerId);
             if($this->isGroupMember($iId, $iObjectOwnerId, $iViewerId))
                 return true;
         }

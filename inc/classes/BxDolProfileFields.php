@@ -386,7 +386,9 @@ class BxDolProfileFields extends Thing
         if( empty($sCheck) )
             return true;
 
-        $sFunc = create_function( '$arg0', $sCheck );
+        $sFunc = function($arg0) use ($sCheck) {
+            return eval($sCheck);
+        };
 
         if( !$sFunc( $mValue ) )
             return false;

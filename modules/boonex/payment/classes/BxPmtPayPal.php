@@ -168,7 +168,9 @@ class BxPmtPayPal extends BxPmtProvider
             if((int)$aResponse['code'] !== 0)
                return $aResponse;
 
-            array_walk($aResponse['content'], create_function('&$arg', "\$arg = trim(\$arg);"));
+            array_walk($aResponse['content'], function(&$arg) {
+                $arg = trim($arg);  
+            });
             if(strcmp($aResponse['content'][0], "INVALID") === 0)
                 return array('code' => -1, 'message' => _t('_payment_pp_err_wrong_transaction'));
             else if(strcmp($aResponse['content'][0], "VERIFIED") !== 0)

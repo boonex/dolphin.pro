@@ -38,7 +38,8 @@ class BxDolCmtsQuery extends BxDolDb
             $sFields = '`r`.`cmt_rate` AS `cmt_rated`,';
             $sJoin = "LEFT JOIN {$this->_sTableTrack} AS `r` ON (`r`.`cmt_system_id` = ".$this->_aSystem['system_id']." AND `r`.`cmt_id` = `c`.`cmt_id` AND `r`.`cmt_rate_author_id` = $iAuthorId)";
         }
-        $a = $this->getAll("SELECT
+
+        $aCmts = $this->getAll("SELECT
                 $sFields
                 `c`.`cmt_id`,
                 `c`.`cmt_parent_id`,
@@ -65,9 +66,9 @@ class BxDolCmtsQuery extends BxDolDb
 
         //LEFT JOIN `media` AS `m` ON (`m`.`med_id` = `p`.`Avatar` AND `m`.`med_status` = 'active')
 
-        for(reset($a) ; list ($k) = each ($a) ; ) {
-            $a[$k]['cmt_text'] = str_replace("[ray_url]", $sHomeUrl, $a[$k]['cmt_text']);
-            $a[$k]['cmt_ago'] = defineTimeInterval ($a[$k]['cmt_time_ts']);
+        foreach($aCmts as $k => $aCmt) {
+            $aCmts[$k]['cmt_text'] = str_replace("[ray_url]", $sHomeUrl, $aCmt['cmt_text']);
+            $aCmts[$k]['cmt_ago'] = defineTimeInterval($aCmt['cmt_time_ts']);
         }
 
         return $a;

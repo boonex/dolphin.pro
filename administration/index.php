@@ -114,7 +114,10 @@ function PageCategoryCode($sCategoryName)
 
     foreach($aItems as $aItem) {
         if(strlen($aItem['check']) > 0) {
-            $oFunction = create_function('', $aItem['check']);
+            $oFunction = function() use ($aItem) {
+                return eval($aItem['check']);
+            };
+
             if(!$oFunction())
                 continue;
         }

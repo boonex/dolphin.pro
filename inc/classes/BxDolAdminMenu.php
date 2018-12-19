@@ -202,7 +202,10 @@ class BxDolAdminMenu
         global $oAdmTemplate;
 
         if(strlen($aItem['check']) > 0) {
-            $oFunction = create_function( '', $aItem['check'] );
+            $oFunction = function() use($aItem) {
+                return eval($aItem['check']);
+            };
+
             if(!$oFunction())
                 return '';
         }

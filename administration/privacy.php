@@ -14,6 +14,7 @@ require_once( BX_DIRECTORY_PATH_INC . 'design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'admin_design.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'utils.inc.php' );
 
+bx_import('BxDolPrivacy');
 bx_import('BxDolAdminSettings');
 bx_import('BxTemplSearchResult');
 
