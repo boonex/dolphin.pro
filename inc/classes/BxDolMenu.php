@@ -266,10 +266,7 @@ class BxDolMenu
         if( !$sCheck )
             return true;
 
-        $sCheck = str_replace( '\$', '$', $sCheck );
-        $fFunc = create_function('', $sCheck );
-
-        return $fFunc();
+        return function () { eval($sCheck); };
     }
 
     function genSubItems( $iTItemID = 0 )
