@@ -342,7 +342,7 @@ class BxDolTemplate
      */
     function addDynamicLocationJs($sLocationPath, $sLocationUrl)
     {
-        $sLocationKey = mktime();
+        $sLocationKey = time();
         $this->addLocationJs($sLocationKey, $sLocationPath, $sLocationUrl);
 
         return $sLocationKey;

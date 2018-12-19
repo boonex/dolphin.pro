@@ -33,10 +33,11 @@ class BxEventsCmts extends BxTemplCmtsView
     	return BX_DOL_URL_ROOT . $oMain->_oConfig->getBaseUri() . 'view/' . $aEntry['EntryUri']; 
     }
 
-    function isPostReplyAllowed ()
+    function isPostReplyAllowed ($isPerformAction = false)
     {
-        if (!parent::isPostReplyAllowed())
+        if (!parent::isPostReplyAllowed($isPerformAction))
             return false;
+
         $oMain = $this->getMain();
         $aEvent = $oMain->_oDb->getEntryByIdAndOwner($this->getId (), 0, true);
         return $oMain->isAllowedComments($aEvent);

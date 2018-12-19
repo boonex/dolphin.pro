@@ -312,7 +312,7 @@ class BxBaseFunctions
      */
     function popupBox($sName, $sTitle, $sContent, $aActions = array())
     {
-        $iId = !empty($sName) ? $sName : mktime();
+        $iId = !empty($sName) ? $sName : time();
 
         $aButtons = array();
         foreach($aActions as $sId => $aAction)

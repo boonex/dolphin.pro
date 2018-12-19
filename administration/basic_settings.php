@@ -300,8 +300,8 @@ function setLogo(&$aData, &$aFile)
     if(empty($sExt))
         return '_adm_txt_settings_file_wrong_format';
 
-    $sFileName = mktime() . '.' . $sExt;
-    $sFileName2x = BX_RETINA_PREFIX . mktime() . '.' . $sExt;
+    $sFileName = time() . '.' . $sExt;
+    $sFileName2x = BX_RETINA_PREFIX . time() . '.' . $sExt;
     $sFilePath = $dir['mediaImages'] . $sFileName;
     $sFilePath2x = $dir['mediaImages'] . $sFileName2x;
     if(!move_uploaded_file($aFile['new_file']['tmp_name'], $sFilePath))

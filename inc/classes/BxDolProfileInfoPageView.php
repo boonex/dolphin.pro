@@ -24,7 +24,7 @@ class BxDolProfileInfoPageView extends BxTemplProfileView
         $this->oProfileGen = new BxBaseProfileGenerator( $aMemberInfo['ID'] );
         $this->aConfSite = $site;
         $this->aConfDir  = $dir;
-        parent::__construct($sPageName);
+        BxDolPageView::__construct($sPageName);
 
         $this->iMemberID  = getLoggedId();
         $this->aMemberInfo = &$aMemberInfo;

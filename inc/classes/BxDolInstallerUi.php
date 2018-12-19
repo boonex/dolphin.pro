@@ -311,7 +311,7 @@ class BxDolInstallerUi extends BxDolDb
 
         $sErrMsg = false;
 
-        $sName = mktime();
+        $sName = time();
         $sAbsolutePath = BX_DIRECTORY_PATH_ROOT . "tmp/" . $sName . '.zip';
         $sPackageRootFolder = false;
 
@@ -424,7 +424,7 @@ class BxDolInstallerUi extends BxDolDb
     }
     function downloadUpdate($sLink)
     {
-    	$sName = mktime() . '.zip';
+    	$sName = time() . '.zip';
     	$sData = bx_file_get_contents($sLink);
 
 		//--- write ZIP archive.

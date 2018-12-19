@@ -383,7 +383,7 @@ JS;
                 );
             }
 
-            return BxDolPageView::getBlockCaptionItemCode( mktime(), $aTopToggleEllements );
+            return BxDolPageView::getBlockCaptionItemCode(time(), $aTopToggleEllements );
         }
 
         /**

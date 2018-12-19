@@ -588,7 +588,7 @@ function importLanguage(&$aData, &$aFiles)
 {
     global $MySQL;
 
-    $sTmpPath = $GLOBALS['dir']['tmp'] . mktime() . ".php";
+    $sTmpPath = $GLOBALS['dir']['tmp'] . time() . ".php";
     if(!file_exists($aFiles['ImportLanguage_File']['tmp_name']) || !move_uploaded_file($aFiles['ImportLanguage_File']['tmp_name'], $sTmpPath))
         return '_adm_txt_langs_cannot_upload_file';
 

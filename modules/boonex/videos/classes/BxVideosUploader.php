@@ -206,7 +206,7 @@ class BxVideosUploader extends BxDolFilesUploader
      *         - id: uploaded file ID if file was successfully uploaded
      *         - error: error message if file wasn't successfully uploaded
      */
-    function performUpload ($sFilePath, $sRealFilename = '', $aInfo = array(), $isMoveUploadedFile = true)
+    function performUpload ($sFilePath, $sRealFilename = '', $aInfo = array(), $isMoveUploadedFile = true, $aExtraParams = array())
     {
         $iOwner = $this->_getAuthorId();
         if ($this->_iOwnerId)

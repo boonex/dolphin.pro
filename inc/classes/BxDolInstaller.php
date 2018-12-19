@@ -285,9 +285,13 @@ class BxDolInstaller extends BxDolInstallerUtils
 
         $sMessage = '';
         foreach($this->_aConfig[$sOperationName] as $sAction => $iEnabled) {
-               $sCookie = empty($this->_aConfig['name'])
-                    ? ''
-                    : $this->_aConfig['name'] . '_' . $sAction;
+            $sCookie = '';
+            if(!empty($this->_aConfig['name'])) 
+                $sCookie = $this->_aConfig['name'];
+            else 
+                $sCookie = $this->_aConfig['home_uri'];
+            $sCookie .= '_' . $sAction;
+
             $sMethod = 'action' . str_replace (' ', '', ucwords(str_replace ('_', ' ', $sAction)));
             if($iEnabled == 0 || (isset($_COOKIE[$sCookie]) && (int)$_COOKIE[$sCookie] == 1) || !method_exists($this, $sMethod))
                 continue;

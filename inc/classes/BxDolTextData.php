@@ -162,7 +162,7 @@ class BxDolTextData
         $oForm->initChecker();
 
         if($oForm->isSubmittedAndValid()) {
-            $iDateNow = mktime();
+            $iDateNow = time();
             $iDatePublish = $oForm->getCleanValue('when');
             if($iDatePublish > $iDateNow)
                 $iStatus = BX_TD_STATUS_PENDING;
@@ -233,7 +233,7 @@ class BxDolTextData
         $oForm->initChecker();
 
         if($oForm->isSubmittedAndValid()) {
-            $iDateNow = mktime();
+            $iDateNow = time();
             $iDatePublish = $oForm->getCleanValue('when');
             if($iDatePublish > $iDateNow)
                 $iStatus = BX_TD_STATUS_PENDING;

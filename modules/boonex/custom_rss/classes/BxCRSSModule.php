@@ -264,7 +264,7 @@ EOF;
 
         //Action to showing managing form
         $sPreferSpeed = $this->_oConfig->getAnimationSpeed();
-        $sActions = BxDolPageView::getBlockCaptionMenu(mktime(), array(
+        $sActions = BxDolPageView::getBlockCaptionMenu(time(), array(
             'crss_t1' => array('href' => bx_html_attribute($_SERVER['PHP_SELF']), 'title' => $sEditC, 'onclick' => "ShowHideEditCRSSForm('{$sPreferSpeed}'); return false;")
         ));
         return DesignBoxContent(_t('_crss_Custom_Feeds'), $sBlockContent, 1, $sActions);

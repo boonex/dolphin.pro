@@ -8,7 +8,7 @@ class BxDolConnectAlerts extends BxDolAlertsResponse
 {
     var $oModule;
 
-    function response(&$o)
+    function response($oAlert)
     {
         if($o->sUnit == 'system') {
             switch($o->sAction) {

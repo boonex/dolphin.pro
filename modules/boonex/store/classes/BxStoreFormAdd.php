@@ -332,20 +332,25 @@ class BxStoreFormAdd extends BxDolFormMedia
         parent::__construct ($aCustomForm);
     }
 
-    function uploadFiles ($sName = 'files', $sTitle = 'files_titles', $sPrivacy = 'allow_purchase_to')
+    function uploadFiles ($sTag, $sCat, $sName = 'files', $sTitle = 'files_titles', $sTitleAlt = 'title', $sPrivacy = 'allow_purchase_to')
     {
-        $aRet = array ();
+        if(empty($sTag))
+            $sTag = BX_STORE_FILES_TAG;
+
+        if(empty($sCat))
+            $sCat = BX_STORE_FILES_CAT;
 
         $aTitles = $this->getCleanValue($sTitle);
         $aPrivacy = $this->getCleanValue($sPrivacy);
         $aPrices = $_POST['files_prices'];
 
+        $aRet = array();
         foreach ($_FILES[$sName]['tmp_name'] as $i => $sUploadedFile) {
             $aFileInfo = array (
-                'medTitle' => is_array($aTitles) && isset($aTitles[$i]) && $aTitles[$i] ? stripslashes($aTitles[$i]) : stripslashes($this->getCleanValue('title')),
-                'medDesc' => is_array($aTitles) && isset($aTitles[$i]) && $aTitles[$i] ? stripslashes($aTitles[$i]) : stripslashes($this->getCleanValue('title')),
-                'medTags' => BX_STORE_FILES_TAG,
-                'Categories' => array(BX_STORE_FILES_CAT),
+                'medTitle' => is_array($aTitles) && isset($aTitles[$i]) && $aTitles[$i] ? stripslashes($aTitles[$i]) : stripslashes($this->getCleanValue($sTitleAlt)),
+                'medDesc' => is_array($aTitles) && isset($aTitles[$i]) && $aTitles[$i] ? stripslashes($aTitles[$i]) : stripslashes($this->getCleanValue($sTitleAlt)),
+                'medTags' => $sTag,
+                'Categories' => array($sCat),
                 'Type' => $_FILES[$sName]['type'][$i],
             );
             $aPathInfo = pathinfo ($_FILES[$sName]['name'][$i]);
@@ -367,7 +372,7 @@ class BxStoreFormAdd extends BxDolFormMedia
     {
         parent::processMedia ($iEntryId, $iProfileId);
 
-        if ($aMedia = $this->uploadFiles()) {
+        if ($aMedia = $this->uploadFiles(BX_STORE_FILES_TAG, BX_STORE_FILES_CAT)) {
             $this->_oDb->insertMediaFiles ($iEntryId, $aMedia, $this->_oMain->_iProfileId);
         }
     }

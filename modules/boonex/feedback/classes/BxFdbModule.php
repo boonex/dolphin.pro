@@ -139,7 +139,7 @@ class BxFdbModule extends BxDolTextModule
             $sLink = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'post/';
             $sCaption = _t('_feedback_lcaption_post');
 
-            $sMenu = BxDolPageView::getBlockCaptionMenu(mktime(), array(
+            $sMenu = BxDolPageView::getBlockCaptionMenu(time(), array(
                 'fdb_post' => array('href' => $sLink, 'title' => $sCaption)
             ));
         }

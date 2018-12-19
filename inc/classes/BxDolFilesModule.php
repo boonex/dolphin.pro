@@ -269,13 +269,12 @@ class BxDolFilesModule extends BxDolModule
                 );
                 $oSearch->aCurrent['restriction']['activeStatus']['operator'] = '<>';
 
-                $aIds         = '';
+                $aIds = array();
                 $aExcludeList = $oSearch->getSearchData();
-                if (!empty($aExcludeList)) {
-                    foreach ($aExcludeList as $aValue) {
+                if (!empty($aExcludeList))
+                    foreach ($aExcludeList as $aValue)
                         $aIds[] = $aValue['id'];
-                    }
-                }
+
                 $aInfo['prevItem'] = $this->oAlbums->getClosestObj($aInfo['albumId'], $aInfo['medID'], 'prev',
                     $aInfo['obj_order'], $aIds);
                 $aInfo['nextItem'] = $this->oAlbums->getClosestObj($aInfo['albumId'], $aInfo['medID'], 'next',

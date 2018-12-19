@@ -96,7 +96,7 @@ class BxPollSearch extends BxTemplSearchResultText
      */
     function displaySearchUnit($aData)
     {
-        $aData['poll_ago'] = mktime() - $aData['poll_date'];
+        $aData['poll_ago'] = time() - $aData['poll_date'];
         $sOutputHtml =  $this -> oPollObject -> getPollBlock($aData);
         return $sOutputHtml;
     }

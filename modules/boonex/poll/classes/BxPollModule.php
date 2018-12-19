@@ -2483,7 +2483,7 @@
          */
         function genPollsList(&$aActivePolls)
         {
-            $iNow = mktime();
+            $iNow = time();
 
             $sOutputCode = '';
             foreach($aActivePolls as $iKey => $aItems) {

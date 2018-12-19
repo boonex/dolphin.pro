@@ -214,7 +214,7 @@ class BxQuotesModule extends BxDolModule
 EOF;
 
         bx_import('BxDolPageView');
-        $sActions = /*BxDolPageView::getBlockCaptionMenu(mktime(),*/ array(
+        $sActions = /*BxDolPageView::getBlockCaptionMenu(time(),*/ array(
             'add_unit' => array('href' => $sAction, 'title' => _t('_bx_quotes_add_new'), 'onclick' => '', 'active' => 0),
         )/*)*/;
         return DesignBoxAdmin($sExistedC, $sCode, $sActions);

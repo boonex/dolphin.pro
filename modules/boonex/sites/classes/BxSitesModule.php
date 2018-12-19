@@ -1329,7 +1329,7 @@ class BxSitesModule extends BxDolTwigModule
                     $sUrlFull = strncasecmp($sUrl, 'http://', 7) !== 0 && strncasecmp($sUrl, 'https://', 8) !== 0 ? 'http://' . $sUrl : $sUrl;
                     $aSite = $this->_oDb->getSiteByUrl(process_db_input($sUrl, BX_TAGS_STRIP));
 
-                    if (count($aSite) == 0) {
+                    if (empty($aSite) || !is_array($aSite)) {
                         $aInfo = getSiteInfo($sUrlFull);
 
                         if (!empty($aInfo)) {
