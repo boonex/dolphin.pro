@@ -1,6 +1,6 @@
 <?php
 /**
- * ENGLISH language file: please UTF-8 encoding only, so use UTF-8 compliant editor only
+ * RUSSIAN language file: please UTF-8 encoding only, so use UTF-8 compliant editor only
  ****************************************************************************************/
 
 $GLOBALS['L'] = array (
