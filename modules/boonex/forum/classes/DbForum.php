@@ -85,8 +85,9 @@ class DbForum extends BxDb
                 if ('msgs' == $type) // messages
                 {
                     $sql_w .= " AND `post_text` LIKE '%$s%' ";
-                } else // titles
-                {
+                } 
+                else // titles
+                { 
                     $sql_w .= " AND `topic_title` LIKE '%$s%' ";
                 }
                 $order_by = 'ORDER BY `last_post_when` DESC';
@@ -106,11 +107,9 @@ class DbForum extends BxDb
             $sql_w .= " AND t3.`forum_id` = '$f' ";
         }
 
-        if ($posts) {
-            $fields .= ', `post_text` ';
-        }
-
         if ('msgs' == $type) {
+            if ($posts)
+                $fields .= ', `post_text` ';
             $sSQL = "
     SELECT DISTINCTROW $sCalcFoundRows t4.`cat_id`, t4.`cat_uri`, `cat_name`, t3.`forum_id`, t3.`forum_uri`, t3.`forum_type`, `forum_title`, t2.`topic_id`, t2.`topic_uri`, `topic_title`, `post_id`, t1.`when` AS `date`, `user` $fields
     FROM " . TF_FORUM_POST . " AS t1
@@ -122,7 +121,7 @@ class DbForum extends BxDb
     LIMIT $start, {$gConf['topics_per_page']}";
         } else { // search titles
             $sSQL = "
-    SELECT $sCalcFoundRows t4.`cat_id`, t4.`cat_uri`, `cat_name`, t3.`forum_id`, t3.`forum_uri`, t3.`forum_type`, `forum_title`, t2.`topic_id`, t2.`topic_uri`, `topic_title`, `first_post_when` AS `date`, `first_post_user` AS `user` $fields
+    SELECT DISTINCTROW $sCalcFoundRows t4.`cat_id`, t4.`cat_uri`, `cat_name`, t3.`forum_id`, t3.`forum_uri`, t3.`forum_type`, `forum_title`, t2.`topic_id`, t2.`topic_uri`, `topic_title`, `first_post_when` AS `date`, `first_post_user` AS `user` $fields
     FROM " . TF_FORUM_TOPIC . " AS t2
     INNER JOIN  " . TF_FORUM . " AS t3 ON (t2.`forum_id` = t3.`forum_id`)
     INNER JOIN " . TF_FORUM_CAT . " AS t4 ON (t3.`cat_id` = t4.`cat_id`)

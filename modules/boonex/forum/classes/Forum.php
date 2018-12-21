@@ -117,7 +117,7 @@ EOF;
                         foreach ($ws as $w) {
                             if ($w) {
                                 $wreg = preg_quote($w, '/');
-                                $ind = preg_match( "([^>]*<)/i", $r['post_text'], $ind ); // html tags?
+                                $ind = preg_match( "/([^>]*<)/i", $r['post_text'], $ind ); // html tags?
                                 if ($ind)
                                     $r['post_text'] = preg_replace("/($wreg)(?=[^>]*<)/i", "<span style=\"background-color:yellow\">$w</span>", "<div>{$r['post_text']}</div>");
                                 else
