@@ -139,14 +139,16 @@
 
 	<iframe name="post_actions" width="1" height="1" frameborder="1" style="border:none;">&#160;</iframe>
 
-    <xsl:call-template name="breadcrumbs">
-        <xsl:with-param name="link1">
-            <a href="{$rw_cat}{cat/uri}{$rw_cat_ext}" onclick="return f.selectForumIndex('{cat/uri}')"><xsl:value-of select="cat/title" disable-output-escaping="yes" /></a>
-        </xsl:with-param>
-        <xsl:with-param name="link2">
-            <a href="{$rw_forum}{forum/uri}{$rw_forum_page}0{$rw_forum_ext}" onclick="return f.selectForum('{forum/uri}', 0);"><xsl:value-of select="forum/title" disable-output-escaping="yes" /></a>
-        </xsl:with-param>        
-    </xsl:call-template>
+    <xsl:if test="'' != cat/title and '' != forum/title">
+        <xsl:call-template name="breadcrumbs">
+            <xsl:with-param name="link1">
+                <a href="{$rw_cat}{cat/uri}{$rw_cat_ext}" onclick="return f.selectForumIndex('{cat/uri}')"><xsl:value-of select="cat/title" disable-output-escaping="yes" /></a>
+            </xsl:with-param>
+            <xsl:with-param name="link2">
+                <a href="{$rw_forum}{forum/uri}{$rw_forum_page}0{$rw_forum_ext}" onclick="return f.selectForum('{forum/uri}', 0);"><xsl:value-of select="forum/title" disable-output-escaping="yes" /></a>
+            </xsl:with-param>        
+        </xsl:call-template>
+    </xsl:if>
 
 </xsl:template>
 
