@@ -266,7 +266,7 @@ class BxDolMenu
         if( !$sCheck )
             return true;
 
-        return function () { eval($sCheck); };
+        return eval($sCheck);
     }
 
     function genSubItems( $iTItemID = 0 )
