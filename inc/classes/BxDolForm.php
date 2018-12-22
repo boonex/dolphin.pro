@@ -148,14 +148,14 @@ class BxDolForm
 
     function initChecker ($aValues = array ())
     {
+        $oChecker = new BxDolFormChecker($this->_sCheckerHelper);
+        $oChecker->setFormMethod($this->aFormAttrs['method']);        
+
         if ($this->isSubmitted ()) {
-            $oChecker = new BxDolFormChecker($this->_sCheckerHelper);
-            $oChecker->setFormMethod($this->aFormAttrs['method']);
             $oChecker->enableFormCsrfChecking(isset($this->aParams['csrf']['disable']) && $this->aParams['csrf']['disable'] === true ? false : true);
             $this->_isValid = $oChecker->check($this->aInputs);
-        } else /*if ($aValues)*/ {
-            $oChecker = new BxDolFormChecker($this->_sCheckerHelper);
-            $oChecker->setFormMethod($this->aFormAttrs['method']);
+        } 
+        elseif ($aValues) {
             $oChecker->fillWithValues($this->aInputs, $aValues);
         }
 
