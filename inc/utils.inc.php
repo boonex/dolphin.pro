@@ -1933,16 +1933,3 @@ function getGetFieldIfSet($sField)
 {
     return (!isset($_GET[$sField])) ? null : $_GET[$sField];
 }
-
-/**
- * Var dumps then dies
- *
- * @param $dump
- */
-function dd($dump)
-{
-    echo '<pre>';
-    var_dump($dump);
-    echo '</pre>';
-    exit;
-}
