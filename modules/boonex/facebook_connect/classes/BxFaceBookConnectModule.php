@@ -55,7 +55,7 @@ class BxFaceBookConnectModule extends BxDolConnectModule
     function actionAdministration()
     {
         parent::_actionAdministration('bx_facebook_connect_api_key', '_bx_facebook_settings',
-            '_bx_facebook_information', '_bx_facebook_information_block');
+            '_bx_facebook_information', '_bx_facebook_information_block', $this->_oConfig->sPageReciver);
     }
 
     /**
