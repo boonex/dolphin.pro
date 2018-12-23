@@ -8,12 +8,9 @@
 define('BX_DOL_TABLE_PROFILES', '`Profiles`');
 
 require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolParams.php');
-require_once(BX_DIRECTORY_PATH_INC . 'traits/BxDolTraitLogger.php');
 
 class BxDolDb
 {
-    use BxDolTraitLogger;
-
     protected $host, $port, $socket, $dbname, $user, $password;
 
     /**
