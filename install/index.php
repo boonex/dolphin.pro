@@ -119,6 +119,7 @@ $aConf['headerTempl'] = <<<EOS
 \$db['user']                = '%db_user%';
 \$db['passwd']              = '%db_password%';
 \$db['db']                  = '%db_name%';
+\$db['persistent']          = false;
 
 define('BX_DOL_URL_ROOT', \$site['url']);
 define('BX_DOL_URL_ADMIN', \$site['url_admin']);
@@ -147,6 +148,7 @@ define('DATABASE_PORT', \$db['port']);
 define('DATABASE_USER', \$db['user']);
 define('DATABASE_PASS', \$db['passwd']);
 define('DATABASE_NAME', \$db['db']);
+define('DATABASE_PERSISTENT', \$db['persistent']);
 
 define('BX_DOL_SPLASH_VIS_DISABLE', 'disable');
 define('BX_DOL_SPLASH_VIS_INDEX', 'index');
