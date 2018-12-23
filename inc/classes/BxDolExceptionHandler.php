@@ -18,17 +18,31 @@ class BxDolExceptionHandler
         if (in_array(get_class($e), $this->dontReport)) {
             return;
         }
-
+        
+        if (!defined('BX_DOL_LOG_ERROR') || BX_DOL_LOG_ERROR)
+            $this->log($e);
+        
+        $bFullError = (!defined('BX_DOL_FULL_ERROR')) ? false : BX_DOL_FULL_ERROR;
+        $this->render($e, $bFullError);
+        
         $bEmailError = (!defined('BX_DOL_EMAIL_ERROR')) ? true : BX_DOL_EMAIL_ERROR;
         if ($bEmailError) {
             $this->email($e);
         }
-
-        // default to true if not defined, so we can debug better
-        $bFullError = (!defined('BX_DOL_FULL_ERROR')) ? true : BX_DOL_FULL_ERROR;
-        $this->render($e, $bFullError);
     }
 
+    protected function log(Throwable $e)
+    {
+        $s = "\n--- " . date('c') . "\n";
+        $s .= "Type: " . get_class($e) . "\n";
+        $s .= "Message: " . $e->getMessage() . "\n";
+        $s .= "File: " . $e->getFile() . "\n";
+        $s .= "Line: " . $e->getLine() . "\n";
+        $s .= "Trace: \n";
+        $s .= nl2br($e->getTraceAsString());
+        file_put_contents($GLOBALS['dir']['tmp'] . 'error.log', $s, FILE_APPEND);
+    }
+    
     /**
      * @param Throwable $e
      * @param boolean   $bFullMsg display full error message with back trace
@@ -49,12 +63,12 @@ class BxDolExceptionHandler
         <?php if (!$bFullMsg): ?>
             <div style="border:2px solid red;padding:4px;width:600px;margin:0px auto;">
                 <div style="text-align:center;background-color:transparent;color:#000;font-weight:bold;">
-                    <?= _t('_Exception_user_msg') ?>
+                    <?= (function_exists('_t') ? _t('_Exception_user_msg') : 'Something went wrong! Please try reloading the page.') ?>
                 </div>
             </div>
         <?php else: ?>
             <div style="border:2px solid red;padding:10px;width:90%;margin:0px auto;">
-                <h2 style="margin-top: 0px;"><?= _t('_Exception_uncaught_msg') ?></h2>
+                <h2 style="margin-top: 0px;"><?= (function_exists('_t') ? _t('_Exception_uncaught_msg') : 'An uncaught exception was thrown') ?></h2>
                 <h3>Details</h3>
                 <table style="table-layout: fixed;">
                     <tr>

@@ -93,6 +93,7 @@ $aConf['headerTempl'] = <<<EOS
 \$site['base']              = "{\$site['url']}templates/base/";
 
 \$site['bugReportMail']     = "%bug_report_email%";
+\$site['logError']          = true;
 \$site['fullError']         = false;
 \$site['emailError']        = true;
 
@@ -125,6 +126,7 @@ define('BX_DOL_URL_PLUGINS', \$site['plugins']);
 define('BX_DOL_URL_MODULES', \$site['url'] . 'modules/' );
 define('BX_DOL_URL_CACHE_PUBLIC', \$site['url'] . 'cache_public/');
 
+define('BX_DOL_LOG_ERROR', \$site['logError']);
 define('BX_DOL_FULL_ERROR', \$site['fullError']);
 define('BX_DOL_EMAIL_ERROR', \$site['emailError']);
 define('BX_DOL_REPORT_EMAIL', \$site['bugReportMail']);
