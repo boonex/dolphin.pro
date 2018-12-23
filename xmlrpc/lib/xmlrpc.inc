@@ -2309,8 +2309,8 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 						$bd = 0;
 					}
 				}
-				// be tolerant to line endings, and extra empty lines
-				$ar = preg_replace("\r?\n", trim(substr($data, 0, $pos)));
+                // be tolerant to line endings, and extra empty lines
+				$ar = preg_split("/\r?\n/", trim(substr($data, 0, $pos)));
 				while(list(,$line) = @each($ar))
 				{
 					// take care of multi-line headers and cookies

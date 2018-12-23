@@ -362,7 +362,7 @@ class BxBaseBrowse extends BxDolBrowse
             // init some variables ;
             $sCountrySection     = '';
             $sExtendedCss        = '';
-            $aCurrentArray       = '';
+            $aCurrentArray       = array();
 
             $aUsedTemplates = array
             (
