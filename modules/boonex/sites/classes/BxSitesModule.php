@@ -117,7 +117,7 @@ class BxSitesModule extends BxDolTwigModule
         // BEGIN STW INTEGRATION
         $this->sHomeUrl = $this->_oConfig->getHomeUrl();
         $this->sHomePath = $this->_oConfig->getHomePath();
-        $this->sModuleUrl = BX_DOL_Url_ROOT . $this->_oConfig->getBaseUri();
+        $this->sModuleUrl = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri();
 
         $sThumbSuffix = 'data/images/thumbs/';
         $this->sThumbPath = $this->sHomePath.$sThumbSuffix;

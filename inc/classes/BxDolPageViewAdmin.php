@@ -379,7 +379,7 @@ class BxDolPageViewAdmin
             $sEditorCode = $oEditor->attachEditor('#' . $sEditorId, BX_EDITOR_FULL);
         }
 
-        return /*$sInitEditor. */ $GLOBALS['oAdmTemplate']->parseHtmlByName('pbuilder_content.html', array(
+        return $GLOBALS['oAdmTemplate']->parseHtmlByName('pbuilder_content.html', array(
             'top_controls' => $this->getPageSelector(),
             'bx_if:page' => array(
                 'condition' => (bool)$this -> oPage,

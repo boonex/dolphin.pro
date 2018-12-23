@@ -71,12 +71,12 @@ class BxDolTwigPageView extends BxDolPageView
         $aAuthor = getProfileInfo($aData['author_id']);
 
         $aVars = array (
-            'author_unit' => get_member_thumbnail($aAuthor['ID'], 'none', true),
             'date' => getLocaleDate($aData['created'], BX_DOL_LOCALE_DATE_SHORT),
             'date_ago' => defineTimeInterval($aData['created'], false),
             'cats' => $this->_oTemplate->parseCategories($aData['categories']),
             'tags' => $this->_oTemplate->parseTags($aData['tags']),
             'fields' => $sFields,
+            'author_unit' => $GLOBALS['oFunctions']->getMemberThumbnail($aAuthor['ID'], 'none', true),
             'location' => $sLocation,
         );
         return $this->_oTemplate->parseHtmlByName('entry_view_block_info', $aVars);
