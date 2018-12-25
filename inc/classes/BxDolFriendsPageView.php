@@ -55,7 +55,7 @@ class BxDolFriendsPageView extends BxDolPageView
         // init some variables ;
         $sOutputHtml 	= '';
         $sEmpty 	    = '';
-        $iIndex 		= '';
+        $iIndex 		= 0;
 
         $aUsedTemplates = array (
             'browse_searched_block.html'
