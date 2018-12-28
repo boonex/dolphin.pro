@@ -72,7 +72,7 @@ class BxSctrModule extends BxDolModule
         $this->iUserId = isLogged() && isAdmin() ? getLoggedId() : 0;
 
         $this->_oConfig->init($this->_oDb);
-        $this->_oTemplate->init($this, $this->_oDb);
+        $this->_oTemplate->initialize($this, $this->_oDb);
 
         $this->_aCssMatch = $this->_oDb->getUnits();
     }

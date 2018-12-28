@@ -78,9 +78,9 @@ function bx_charts_get_data($aObject, $iFrom, $iTo)
 
     // get data
     if ($aObject['column_date'] >= 0)
-        $aData = $GLOBALS['MySQL']->getAllWithKey($sQuery, $aObject['column_date'], PDO::FETCH_NUM);
+        $aData = $GLOBALS['MySQL']->getAllWithKey($sQuery, $aObject['column_date'], [], PDO::FETCH_NUM);
     else
-        $aData = $GLOBALS['MySQL']->getAll($sQuery, PDO::FETCH_NUM);
+        $aData = $GLOBALS['MySQL']->getAll($sQuery, [], PDO::FETCH_NUM);
     if (!$aData)
         return false;
 

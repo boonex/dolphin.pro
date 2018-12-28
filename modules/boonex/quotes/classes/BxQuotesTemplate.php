@@ -26,8 +26,8 @@ class BxQuotesTemplate extends BxDolModuleTemplate
         parent::loadTemplates();
     }
 
-    function parseHtmlByName ($sName, &$aVars)
+    function parseHtmlByName ($sName, $aVars, $mixedKeyWrapperHtml = NULL, $sCheckIn = BX_DOL_TEMPLATE_CHECK_IN_BOTH)
     {
-        return parent::parseHtmlByName ($sName.'.html', $aVars);
+        return parent::parseHtmlByName ($sName.'.html', $aVars, $mixedKeyWrapperHtml, $sCheckIn);
     }
 }

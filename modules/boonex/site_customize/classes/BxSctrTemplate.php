@@ -29,7 +29,7 @@ class BxSctrTemplate extends BxDolModuleTemplate
     /**
      * @depricated
      */
-    function init(&$oModule, &$oDb)
+    function initialize(&$oModule, &$oDb)
     {
         $this->_oModule = $oModule;
         $this->_oDb = $oDb;

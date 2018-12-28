@@ -335,7 +335,7 @@ class BxProfiler
                 $iTimePages += $r['raw_time'];
                 unset ($GLOBALS['bx_profiler']->_aPages[$k]['raw_time']);
             }
-            $sPages = count($GLOBALS['bx_profiler']->_aPages) . ' (' . $this->_formatTime($iTimePages, 3) . ')';
+            $sPages = count($GLOBALS['bx_profiler']->_aPages); // . ' (' . $this->_formatTime($iTimePages, 3) . ')';
         }
 
         $sTemplatesCached = '';
@@ -534,6 +534,8 @@ class BxProfiler
 
     function _calcTime ($begin)
     {
+        if (!$begin)
+            return 0;
         $i1 = explode(' ', microtime ());
         $i2 = explode(' ', $begin);
         return ($i1[0]+$i1[1]) - ($i2[0]+$i2[1]);
