@@ -6,7 +6,7 @@
 
 class BxPollResponse extends BxDolAlertsResponse
 {
-    function response(&$o)
+    function response($o)
     {
         if($o->sUnit == 'profile') {
             switch($o->sAction) {

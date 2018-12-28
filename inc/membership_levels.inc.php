@@ -683,8 +683,8 @@ function getMemberships($purchasableOnly = false)
 
     $resMemLevels = db_res("SELECT DISTINCT `sys_acl_levels`.ID, `sys_acl_levels`.Name FROM `sys_acl_levels` $queryPurchasable");
 
-    while(list($id, $name) = $resMemLevels->fetch()) {
-        $result[(int)$id] = $name;
+    while($r = $resMemLevels->fetch()) {
+        $result[(int)$r['ID']] = $r['Name'];
     }
 
     return $result;

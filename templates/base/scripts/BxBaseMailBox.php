@@ -1720,7 +1720,7 @@
          * @param  : $iMemberId (integer) - member's Id ;
          * @return : Html presentation data ;
         */
-        function get_member_menu_messages_list( $iMemberId = 0 )
+        static function get_member_menu_messages_list( $iMemberId = 0 )
         {
             global $oSysTemplate, $oFunctions;
 

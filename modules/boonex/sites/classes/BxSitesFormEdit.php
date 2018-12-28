@@ -46,7 +46,7 @@ class BxSitesFormEdit extends BxSitesFormAdd
 
         $this->_aCustomForm['inputs'] = array_merge($this->_aCustomForm['inputs'], $aFormInputsSubmit);
 
-        parent::__construct ($this->_aCustomForm);
+        BxTemplFormView::__construct ($this->_aCustomForm);
     }
 
     function checkUploadPhoto()

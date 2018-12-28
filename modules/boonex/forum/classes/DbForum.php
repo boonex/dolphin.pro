@@ -1046,7 +1046,7 @@ class DbForum extends BxDb
                 [$sUserOld]);
             $iAffectedRows += $this->query("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_user_stat` WHERE `user` = ?",
                 [$sUserOld]);
-            $iAffectedRows += $this->query("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_vote` WHERE `user` = ?",
+            $iAffectedRows += $this->query("DELETE FROM  `" . $gConf['db']['prefix'] . "forum_vote` WHERE `user_name` = ?",
                 [$sUserOld]);
         }
 

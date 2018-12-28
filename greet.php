@@ -45,7 +45,7 @@ function getMainCode()
     global $_page;
 
     $member['ID']       = getLoggedId();
-    $member['Password'] = getLoggedPassword;
+    $member['Password'] = getLoggedPassword();
 
     if (false != bx_get('ConfCode') && false != bx_get('sendto')) {
         $recipientID = (int)bx_get('sendto');

@@ -331,7 +331,7 @@ class BxDolCmts
 
     function onAuthorDelete ($iAuthorId)
     {
-        for ( reset($this->_aSystems) ; list ($sSystem, $aSystem) = each ($this->_aSystems) ; ) {
+        foreach ($this->_aSystems as $sSystem => $aSystem) {
             $oQuery = new BxDolCmtsQuery($aSystem);
             $oQuery->deleteAuthorComments ($iAuthorId);
         }

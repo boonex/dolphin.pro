@@ -183,7 +183,7 @@ class BxDolCmtsQuery extends BxDolDb
         $aObjectsIds = array();
         $isDelOccured = 0;
         $a = $this->getAll ("SELECT `cmt_id`, `cmt_parent_id`, `cmt_object_id` FROM {$this->_sTable} WHERE `cmt_author_id` = ? AND `cmt_replies` = 0", [$iAuthorId]);
-        for ( reset($a) ; list (, $r) = each ($a) ; ) {
+        foreach ($a as $r) {
             $this->query ("DELETE FROM {$this->_sTable} WHERE `cmt_id` = '{$r['cmt_id']}'");
             $this->query ("UPDATE {$this->_sTable} SET `cmt_replies` = `cmt_replies` - 1 WHERE `cmt_id` = '{$r['cmt_parent_id']}'");
             $aObjectsIds[$r['cmt_object_id']] = $r['cmt_object_id'];

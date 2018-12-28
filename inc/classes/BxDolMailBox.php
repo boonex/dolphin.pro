@@ -899,7 +899,7 @@
          * @param  : $sMessageStatus (string)   - needed message's status (possible values - '1', '0');
          * @return : (integer) - number of sent messages;
          */
-        function getCountSentMessages($iMemberId, $sMessageStatus = null)
+        static function getCountSentMessages($iMemberId, $sMessageStatus = null)
         {
             $iMemberId = (int) $iMemberId;
             $sMessageStatus = process_db_input($sMessageStatus);
@@ -929,7 +929,7 @@
          * @param  : $sMessageStatus (string)   - needed message's status (possible values - '1', '0');
          * @return : (integer) - number of inbox messages;
          */
-        function getCountInboxMessages($iMemberId, $sMessageStatus = null)
+        static function getCountInboxMessages($iMemberId, $sMessageStatus = null)
         {
             $iMemberId = (int) $iMemberId;
             $sMessageStatus = process_db_input($sMessageStatus);
@@ -959,7 +959,7 @@
          * @param  : $sMessageStatus (string)   - needed message's status (possible values - '1', '0');
          * @return : (integer) - number of trashed messages;
          */
-        function getCountTrashedMessages($iMemberId, $sMessageStatus = null)
+        static function getCountTrashedMessages($iMemberId, $sMessageStatus = null)
         {
             $iMemberId = (int) $iMemberId;
             $sMessageStatus = process_db_input($sMessageStatus);
