@@ -6,7 +6,7 @@
 
 use OAuth2\Response;
 
-class BxOAuthAPI extends Thing
+class BxOAuthAPI
 {
     protected $_oModule;
     protected $_oDb;
