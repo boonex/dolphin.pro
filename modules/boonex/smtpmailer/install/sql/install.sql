@@ -23,5 +23,6 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 ('bx_smtp_secure', 'Not Secure', @iCategId, 'Is your SMTP server requires secure connection', 'select', '', '', '0', 'Not Secure,SSL,TLS'), 
 ('bx_smtp_from_name', '', @iCategId, '''From'' name of the message', 'digit', '', '', '0', ''),
 ('bx_smtp_from_email', '', @iCategId, 'Override default sender email address', 'digit', '', '', '0', ''),
-('bx_smtp_send_attachments', '', @iCategId, 'Attach every outgoing email all files from ''modules/boonex/smtpmailer/data/attach/'' folder', 'checkbox', '', '', '0', '');
+('bx_smtp_send_attachments', '', @iCategId, 'Attach every outgoing email all files from ''modules/boonex/smtpmailer/data/attach/'' folder', 'checkbox', '', '', '0', ''),
+('bx_smtp_allow_selfsigned', '', @iCategId, 'Allow self-signed certificates', 'checkbox', '', '', '0', '');
 
