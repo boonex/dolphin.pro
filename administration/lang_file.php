@@ -162,7 +162,8 @@ function PageCodeMain($aResults)
         'adm-langs-btn-langs' => array('href' => 'javascript:void(0)', 'onclick' => 'javascript:onChangeType(this)', 'title' => _t('_adm_txt_langs_languages'), 'active' => isset($aResults['langs']) ? 1 : 0),
         'adm-langs-btn-langs-add' => array('href' => 'javascript:void(0)', 'onclick' => 'javascript:onChangeType(this)', 'title' => _t('_adm_txt_langs_languages_add'), 'active' => isset($aResults['langs-add']) ? 1 : 0),
         'adm-langs-btn-langs-import' => array('href' => 'javascript:void(0)', 'onclick' => 'javascript:onChangeType(this)', 'title' => _t('_adm_txt_langs_languages_import'), 'active' => isset($aResults['langs-import']) ? 1 : 0),
-        'adm-langs-btn-settings' => array('href' => 'javascript:void(0)', 'onclick' => 'javascript:onChangeType(this)', 'title' => _t('_adm_txt_langs_settings'), 'active' => isset($aResults['settings']) ? 1 : 0)
+        'adm-langs-btn-settings' => array('href' => 'javascript:void(0)', 'onclick' => 'javascript:onChangeType(this)', 'title' => _t('_adm_txt_langs_settings'), 'active' => isset($aResults['settings']) ? 1 : 0),
+        'adm-langs-btn-help' => array('href' => 'https://github.com/boonex/dolphin.pro/wiki/Using-Language-Keys-to-Change-Site-Text', 'target' => '_blank', 'title' => _t('_help'))
     );
 
     $sResult = $GLOBALS['oAdmTemplate']->parseHtmlByName('langs.html', array(
