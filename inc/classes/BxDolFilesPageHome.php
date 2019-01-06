@@ -63,7 +63,7 @@ class BxDolFilesPageHome extends BxDolPageView
             $aTopMenu = $this->oSearch->getTopMenu(array($this->oConfig->getMainPrefix() . '_mode'));
             $sPaginate = $oPaginate->getPaginate();
         } else {
-            $sCode = MsgBox(_t("_Empty"));;
+            $sCode = MsgBox(_t("_Empty"));
             $aTopMenu = array();
             $sPaginate = '';
         }

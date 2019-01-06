@@ -168,7 +168,7 @@ switch ($sAction) {
                     exit;
                 }
             }
-            $GLOBALS['_page']['header'] = _t('_Error occured');;
+            $GLOBALS['_page']['header'] = _t('_Error occured');
             $GLOBALS['_page_cont'][$GLOBALS['_ni']]['page_main_code'] = _t('_Error occured');
         break;
 }

@@ -9,7 +9,7 @@ bx_import('BxDolModuleTemplate');
 bx_import('BxTemplProfileView');
 bx_import('BxTemplFormView');
 bx_import('BxTemplSearchResult');
-bx_import('BxDolAdminSettings');;
+bx_import('BxDolAdminSettings');
 
 class BxSctrTemplate extends BxDolModuleTemplate
 {

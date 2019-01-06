@@ -38,7 +38,7 @@ switch ( $_REQUEST['result'] ) {
         $desc = _t("_RESULT1_DESC");
     break;
     case '2':
-        $header	= _t("_RESULT1_H");;
+        $header	= _t("_RESULT1_H");
         $result_text = _t("_RESULT1_THANK", $site['title']);
         $desc = _t("_RESULT2DESC", $site['title']);
     break;
