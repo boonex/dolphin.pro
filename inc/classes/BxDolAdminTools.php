@@ -589,7 +589,6 @@ EOF;
             'key_buffer_size' => array('op' => '>=', 'val' => 128*1024, 'type' => 'bytes'),
             'query_cache_limit' => array('op' => '>=', 'val' => 1000000, 'type' => 'bytes'),
             'query_cache_size' => array('op' => '>=', 'val' => 16*1024*1024, 'type' => 'bytes'),
-            'query_cache_type' => array('op' => 'strcasecmp', 'val' => 'on', 'type' => 'bool'),
             'max_heap_table_size' => array('op' => '>=', 'val' => 16*1024*1024, 'type' => 'bytes'),
             'tmp_table_size' => array('op' => '>=', 'val' => 16*1024*1024, 'type' => 'bytes'),
             'thread_cache_size ' => array('op' => '>', 'val' => 0),
