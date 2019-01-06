@@ -14,7 +14,7 @@
             parent::__construct($aConfig);
         }
 
-        function install(&$aParams)
+        function install($aParams)
         {
             $aResult = parent::install($aParams);
 

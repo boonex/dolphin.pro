@@ -45,7 +45,7 @@ class BxWmapInstaller extends BxDolInstaller
         return $aResult;
     }
 
-    function uninstall()
+    function uninstall($aParams)
     {
         $ret = parent::uninstall(array());
 
