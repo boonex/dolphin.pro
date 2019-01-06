@@ -5,7 +5,7 @@
  */
 
 bx_import( 'BxDolPageView' );
-bx_import( 'BxBaseProfileView' );
+bx_import( 'BxTemplProfileGenerator' );
 
 class BxDolFriendsPageView extends BxDolPageView
 {
@@ -43,7 +43,7 @@ class BxDolFriendsPageView extends BxDolPageView
         // check member on line time ;
         $this -> iMemberOnlineTime = (int)getParam('member_online_time');
         $this -> iProfileID = $iProfileID;
-        $this -> oProfile = new BxBaseProfileGenerator($iProfileID);
+        $this -> oProfile = new BxTemplProfileGenerator($iProfileID);
     }
 
     /**

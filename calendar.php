@@ -53,7 +53,8 @@ function getProfilesByDate ($sDate)
 
 function getCalendar ()
 {
-    $oProfile = new BxBaseProfileGenerator(getLoggedId());
+    bx_import("BxTemplProfileGenerator");
+    $oProfile = new BxTemplProfileGenerator(getLoggedId());
     $mSearchRes = $oProfile->GenProfilesCalendarBlock();
     list($sResults, $aDBTopMenu, $sPagination, $sTopFilter) = $mSearchRes;
     return DesignBoxContent(_t('_People_Calendar'), $sResults, 1);

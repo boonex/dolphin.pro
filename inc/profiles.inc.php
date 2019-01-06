@@ -630,8 +630,8 @@ function bx_check_profile_visibility ($iViewedId, $iViewerId = 0, $bReturn = fal
         exit;
     }
 
-    bx_import('BxBaseProfileView');
-    $oProfile = new BxBaseProfileGenerator( $iViewedId );
+    bx_import('BxTemplProfileGenerator');
+    $oProfile = new BxTemplProfileGenerator( $iViewedId );
     $p_arr  = $oProfile -> _aProfile;
 
     // check if viewed member is active

@@ -5,6 +5,7 @@
  */
 
 bx_import ('BxTemplProfileView');
+bx_import ('BxTemplProfileGenerator');
 
 class BxDolProfileInfoPageView extends BxTemplProfileView
 {
@@ -21,7 +22,7 @@ class BxDolProfileInfoPageView extends BxTemplProfileView
     {
         global $site, $dir;
 
-        $this->oProfileGen = new BxBaseProfileGenerator( $aMemberInfo['ID'] );
+        $this->oProfileGen = new BxTemplProfileGenerator( $aMemberInfo['ID'] );
         $this->aConfSite = $site;
         $this->aConfDir  = $dir;
         BxDolPageView::__construct($sPageName);

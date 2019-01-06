@@ -13,6 +13,7 @@ require_once( BX_DIRECTORY_PATH_INC . 'profiles.inc.php' );
 require_once( BX_DIRECTORY_PATH_INC . 'utils.inc.php' );
 
 bx_import('BxTemplProfileView');
+bx_import('BxTemplProfileGenerator');
 bx_import('BxDolInstallerUtils');
 
 $profileID = getID( $_GET['ID'] );
@@ -44,7 +45,7 @@ if ($profileID != $memberID) {
     new BxDolViews('profiles', $profileID);
 }
 
-$oProfile = new BxBaseProfileGenerator( $profileID );
+$oProfile = new BxTemplProfileGenerator( $profileID );
 
 $oProfile->oCmtsView->getExtraCss();
 $oProfile->oCmtsView->getExtraJs();

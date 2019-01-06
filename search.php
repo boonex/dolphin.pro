@@ -14,8 +14,8 @@ require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolProfileFields.php' );
 require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolProfilesController.php' );
 
 bx_import('BxDolDb');
-bx_import('BxBaseSearchProfile');
-bx_import('BxTemplProfileView');
+bx_import('BxTemplSearchProfile');
+bx_import('BxTemplProfileGenerator');
 
 class BxDolSearchPageView extends BxDolPageView
 {
@@ -129,7 +129,7 @@ class BxDolSearchPageView extends BxDolPageView
 
         $oPaginate = new BxDolPaginate($aPaginate);
 
-        $oSearchProfile = new BxBaseSearchProfile();
+        $oSearchProfile = new BxTemplSearchProfile();
         $aExtendedCss = array( 'ext_css_class' => 'search_filled_block');
         $sTemplateName = $sMode == 'extended' ? 'search_profiles_ext.html' : 'search_profiles_sim.html';
         $iIndex = 0;
@@ -204,7 +204,7 @@ class BxDolSearchPageView extends BxDolPageView
             $aRequestParams['distance'] = (int)$_REQUEST['distance'];
 
         // start page generation
-        $oProfile = new BxBaseProfileGenerator(getLoggedId());
+        $oProfile = new BxTemplProfileGenerator(getLoggedId());
 
         switch($_REQUEST['show']) {
             case 'match':

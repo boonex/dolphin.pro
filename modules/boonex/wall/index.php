@@ -7,6 +7,7 @@
 
 bx_import('Module', $aModule);
 bx_import('BxTemplProfileView');
+bx_import('BxTemplProfileGenerator');
 bx_import('BxTemplConfig');
 
 class BxWallPage extends BxTemplProfileView
@@ -19,7 +20,7 @@ class BxWallPage extends BxTemplProfileView
         $this->_sOwner = $sOwner;
         $this->_oWall = &$oWall;
 
-        $this->oProfileGen = new BxBaseProfileGenerator(getId($sOwner, 0));
+        $this->oProfileGen = new BxTemplProfileGenerator(getId($sOwner, 0));
         $this->aConfSite = $GLOBALS['site'];
         $this->aConfDir  = $GLOBALS['dir'];
         parent::__construct('wall');

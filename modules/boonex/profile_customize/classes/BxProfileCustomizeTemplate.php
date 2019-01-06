@@ -7,6 +7,7 @@
 
 bx_import('BxDolModuleTemplate');
 bx_import('BxTemplProfileView');
+bx_import('BxTemplProfileGenerator');
 bx_import('BxTemplFormView');
 bx_import('BxTemplSearchResult');
 bx_import('BxDolAdminSettings');
@@ -171,7 +172,7 @@ class BxProfileCustomizeTemplate extends BxDolModuleTemplate
     {
         global $p_arr;
 
-        $oProfile = new BxBaseProfileGenerator($iUserId);
+        $oProfile = new BxTemplProfileGenerator($iUserId);
         $oPPV = new BxTemplProfileView($oProfile, $site, $dir);
 
         $oProfile->oCmtsView->getExtraCss();
