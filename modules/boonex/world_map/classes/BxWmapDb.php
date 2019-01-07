@@ -81,7 +81,7 @@ class BxWmapDb extends BxDolModuleDb
             $sSql = "SELECT '$sPart' AS `part`, `p`.`{$aPart['join_field_id']}` AS `id`, `p`.`{$aPart['join_field_title']}`
                      AS `title`, `p`.`{$aPart['join_field_uri']}` AS `uri` $sFields FROM `{$aPart['join_table']}` AS `p` 
                      LEFT JOIN `" . $this->_sPrefix . "locations` AS `m` ON (`m`.`id` = `p`.`{$aPart['join_field_id']}` AND `m`.`part` = '$sPart') 
-                     WHERE ISNULL(`m`.`id`) {$aPart['join_where']} LIMIT $iLimit";
+                     WHERE ISNULL(`m`.`id`) LIMIT $iLimit";
 
             $a = $this->getAll ($sSql);
             $aRet = array_merge ($aRet, $a);
@@ -89,7 +89,7 @@ class BxWmapDb extends BxDolModuleDb
         return $aRet;
     }
 
-    function getDirectLocation ($iEntryId, $aPart)
+    function getDirectLocation ($iEntryId, $aPart, $bProcessHidden = false)
     {
         $sPart = $aPart['part'];
 
@@ -114,7 +114,7 @@ class BxWmapDb extends BxDolModuleDb
         $sSql = "SELECT '$sPart' AS `part`, `p`.`{$aPart['join_field_id']}` AS `id`, `p`.`{$aPart['join_field_title']}` AS `title`, `p`.`{$aPart['join_field_uri']}` AS `uri`, `p`.`{$aPart['join_field_author']}` AS `author_id`, `l`.`lat`, `l`.`lng`, `l`.`zoom`, `l`.`type` $sFields
             FROM `{$aPart['join_table']}` AS `p`
             LEFT JOIN `" . $this->_sPrefix . "locations` AS `l` ON (`l`.`id` = `p`.`{$aPart['join_field_id']}` AND `l`.`part` = '$sPart')
-            WHERE `p`.`{$aPart['join_field_id']}` = ? {$aPart['join_where']} LIMIT 1";
+            WHERE `p`.`{$aPart['join_field_id']}` = ? " . ($bProcessHidden ? $aPart['join_where'] : '') . " LIMIT 1";
 
         return $this->getRow ($sSql, [$iEntryId]);
     }
@@ -191,6 +191,19 @@ class BxWmapDb extends BxDolModuleDb
             $this->removePart($aOptions['part']);
             return false;
         }
+
+        return true;
+    }
+
+    function updatePart($sPart, $aOptions)
+    {
+        $sQuery = "UPDATE `" . $this->_sPrefix . "parts` SET ";
+        foreach ($aOptions as $sField => $sValue)
+            $sQuery .= "`$sField` = {$this->escape($sValue)},";
+        $sQuery = trim ($sQuery, ', ');
+        $sQuery .= " WHERE `part` = ?";
+        if (!$this->query($sQuery, [$sPart]))
+            return false;
 
         return true;
     }

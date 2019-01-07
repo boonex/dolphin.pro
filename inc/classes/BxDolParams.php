@@ -50,12 +50,16 @@ class BxDolParams
     }
 
     function set($sKey, $mixedValue)
-    {
+    {        
         //--- Update Database ---//
         $this->_oDb->query("UPDATE `sys_options` SET `VALUE`= ? WHERE `Name`= ? LIMIT 1", [$mixedValue, $sKey]);
 
         //--- Update Cache ---//
         $this->cache();
+
+        // set param alert
+        $oAlert = new BxDolAlerts('system', 'set_param', 0, 0, array('name' => $sKey, 'value' => $mixedValue));
+        $oAlert->alert();
     }
 
     function cache()

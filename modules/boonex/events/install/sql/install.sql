@@ -335,6 +335,7 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 ('bx_events_permalinks', 'on', 26, 'Enable friendly permalinks in events', 'checkbox', '', '', '0', ''),
 ('bx_events_autoapproval', 'on', @iCategId, 'Activate all events after creation automatically', 'checkbox', '', '', '0', ''),
 ('bx_events_main_upcoming_event_from_featured_only', '', @iCategId, 'Main upcoming event from featured events only', 'checkbox', '', '', '0', ''),
+('bx_events_only_upcoming_events_on_map', '', @iCategId, 'Display only upcoming and current events on the map', 'checkbox', '', '', '0', ''),
 ('bx_events_max_email_invitations', '10', @iCategId, 'Max number of email invitation to send per one invite', 'digit', '', '', '0', ''),
 ('bx_events_perpage_main_upcoming', '10', @iCategId, 'Number of upcoming events to show on main page', 'digit', '', '', '0', ''),
 ('bx_events_perpage_main_recent', '4', @iCategId, 'Number of recently added events to show on main page', 'digit', '', '', '0', ''),
@@ -519,6 +520,10 @@ INSERT INTO `sys_alerts` VALUES (NULL , 'bx_files', 'delete', @iHandler);
 INSERT INTO `sys_alerts_handlers` VALUES (NULL, 'bx_events_map_install', '', '', 'if (''wmap'' == $this->aExtras[''uri''] && $this->aExtras[''res''][''result'']) BxDolService::call(''events'', ''map_install'');');
 SET @iHandler := LAST_INSERT_ID();
 INSERT INTO `sys_alerts` VALUES (NULL , 'module', 'install', @iHandler);
+
+INSERT INTO `sys_alerts_handlers` VALUES (NULL, 'bx_events_set_param', '', '', 'if (''bx_events_only_upcoming_events_on_map'' == $this->aExtras[''name'']) BxDolService::call(''events'', ''set_upcoming_events_on_map'');');
+SET @iHandler := LAST_INSERT_ID();
+INSERT INTO `sys_alerts` VALUES (NULL , 'system', 'set_param', @iHandler);
 
 -- privacy
 INSERT INTO `sys_privacy_actions` (`module_uri`, `name`, `title`, `default_group`) VALUES

@@ -191,6 +191,8 @@ class BxWmapModule extends BxDolModule
 
         $aa = array();
         foreach ($a as $r) {
+            if (!$this->_oDb->getDirectLocation($r['id'], $this->_aParts[$r['part']], true))
+                continue;
 
             if ('profiles' == $r['part']) {
                 $r['title'] = getNickName($r['id']);
@@ -830,6 +832,14 @@ class BxWmapModule extends BxDolModule
         }
 
         return true;
+    }
+
+    function servicePartUpdate($sPart, $a)
+    {        
+        if (!$this->_oDb->updatePart($sPart, $a))
+            return false;
+
+        return true;        
     }
 
     function servicePartInstall($sPart, $a)

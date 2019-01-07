@@ -96,6 +96,10 @@ SET @iHandler := (SELECT `id` FROM `sys_alerts_handlers` WHERE `name` = 'bx_even
 DELETE FROM `sys_alerts` WHERE `handler_id` = @iHandler;
 DELETE FROM `sys_alerts_handlers` WHERE `id` = @iHandler;
 
+SET @iHandler := (SELECT `id` FROM `sys_alerts_handlers` WHERE `name` = 'bx_events_set_param' LIMIT 1);
+DELETE FROM `sys_alerts` WHERE `handler_id` = @iHandler;
+DELETE FROM `sys_alerts_handlers` WHERE `id` = @iHandler;
+
 -- privacy
 DELETE FROM `sys_privacy_actions` WHERE `module_uri` = 'events';
 
