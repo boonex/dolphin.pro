@@ -626,6 +626,8 @@ function bx_check_profile_visibility ($iViewedId, $iViewerId = 0, $bReturn = fal
         $_page['header_text'] = "{$site['title']} "._t("_Member Profile");
         $_page['name_index'] = 0;
         $_page_cont[0]['page_main_code'] = MsgBox($check_res[CHECK_ACTION_MESSAGE]);
+        
+        header("HTTP/1.0 403 Forbidden");
         PageCode();
         exit;
     }
@@ -653,6 +655,8 @@ function bx_check_profile_visibility ($iViewedId, $iViewerId = 0, $bReturn = fal
             $oProfilePrivateView = new BxDolProfilePrivatePageView($oProfile, $site, $dir);
             $_page['name_index'] = 7;
             $_page_cont[7]['page_main_code'] = $oProfilePrivateView->getCode();
+
+            header("HTTP/1.0 403 Forbidden");
             PageCode();
             exit;
         }
