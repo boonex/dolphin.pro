@@ -43,15 +43,15 @@
 
                 <span class="bx-def-font-small bx-def-font-grayed">
                     <span class="forum_stat">                    
-                        <xsl:call-template name="replace_hash_percent">
+                        <xsl:call-template name="replace_hash_percent_node">
                             <xsl:with-param name="s" select="string('[L[created by # %]]')"/>
-                            <xsl:with-param name="hash" select="first_u/profile_title"/>
+                            <xsl:with-param name="hash" select="first_u/profile_link"/>
                             <xsl:with-param name="percent" select="first_d"/>
                         </xsl:call-template>
                         <span class="forum_bullet"></span>
-                        <xsl:call-template name="replace_hash_percent">
+                        <xsl:call-template name="replace_hash_percent_node">
                             <xsl:with-param name="s" select="string('[L[last reply by # %]]')"/>
-                            <xsl:with-param name="hash" select="last_u/profile_title"/>
+                            <xsl:with-param name="hash" select="last_u/profile_link"/>
                             <xsl:with-param name="percent" select="last_d"/>
                         </xsl:call-template>
                     </span>

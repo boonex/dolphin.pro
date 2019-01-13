@@ -681,6 +681,7 @@ EOF;
         <avatar_medium>{$ui[$lp['user']]['avatar64']}</avatar_medium>
         <profile>{$ui[$lp['user']]['url']}</profile>
         <profile_title>{$ui[$lp['user']]['title']}</profile_title>
+        <profile_link>{$ui[$lp['user']]['link']}</profile_link>
         <onclick>{$ui[$lp['user']]['onclick']}</onclick>
         <role>{$ui[$lp['user']]['role']}</role>
     </last_u>
@@ -690,6 +691,7 @@ EOF;
         <avatar_medium>{$ui[$fp['user']]['avatar64']}</avatar_medium>
         <profile>{$ui[$fp['user']]['url']}</profile>
         <profile_title>{$ui[$fp['user']]['title']}</profile_title>
+        <profile_link>{$ui[$fp['user']]['link']}</profile_link>
         <onclick>{$ui[$fp['user']]['onclick']}</onclick>
         <role>{$ui[$fp['user']]['role']}</role>
     </first_u>
@@ -817,6 +819,7 @@ EOF;
         <avatar_medium>{$ui[$r['last_post_user']]['avatar64']}</avatar_medium>
         <profile>{$ui[$r['last_post_user']]['url']}</profile>
         <profile_title>{$ui[$r['last_post_user']]['title']}</profile_title>
+        <profile_link>{$ui[$r['last_post_user']]['link']}</profile_link>
         <onclick>{$ui[$r['last_post_user']]['onclick']}</onclick>
         <role>{$ui[$r['last_post_user']]['role']}</role>
     </last_u>
@@ -826,6 +829,7 @@ EOF;
         <avatar_medium>{$ui[$r['first_post_user']]['avatar64']}</avatar_medium>
         <profile>{$ui[$r['first_post_user']]['url']}</profile>
         <profile_title>{$ui[$r['first_post_user']]['title']}</profile_title>
+        <profile_link>{$ui[$r['first_post_user']]['link']}</profile_link>
         <onclick>{$ui[$r['first_post_user']]['onclick']}</onclick>
         <role>{$ui[$r['first_post_user']]['role']}</role>
     </first_u>
@@ -897,6 +901,7 @@ EOF;
         <avatar_medium>{$ui[$r['last_post_user']]['avatar64']}</avatar_medium>
         <profile>{$ui[$r['last_post_user']]['url']}</profile>
         <profile_title>{$ui[$r['last_post_user']]['title']}</profile_title>
+        <profile_link>{$ui[$r['last_post_user']]['link']}</profile_link>
         <onclick>{$ui[$r['last_post_user']]['onclick']}</onclick>
         <role>{$ui[$r['last_post_user']]['role']}</role>
     </last_u>
@@ -906,6 +911,7 @@ EOF;
         <avatar_medium>{$ui[$r['first_post_user']]['avatar64']}</avatar_medium>
         <profile>{$ui[$r['first_post_user']]['url']}</profile>
         <profile_title>{$ui[$r['first_post_user']]['title']}</profile_title>
+        <profile_link>{$ui[$r['first_post_user']]['link']}</profile_link>
         <onclick>{$ui[$r['first_post_user']]['onclick']}</onclick>
         <role>{$ui[$r['first_post_user']]['role']}</role>
     </first_u>
@@ -2071,11 +2077,15 @@ EOF;
         $aa = $this->_getUserInfo ($user);
         if (!$aa)
             return array();
+
         if ($bWrapWithCdata ) {
             encode_post_text ($aa['role']);
             encode_post_text ($aa['profile_title']);
         }
-        return array ('avatar' => $aa['avatar'], 'avatar64' => $aa['avatar64'], 'url' => $aa['profile_url'], 'title' => $aa['profile_title'], 'onclick' => $aa['profile_onclick'], 'role' => $aa['role']);
+
+        $aa['profile_link'] = ($aa['profile_url'] ? '<a href="' . $aa['profile_url'] . '">' . $aa['profile_title'] . '</a>' : $aa['profile_title']);
+
+        return array ('avatar' => $aa['avatar'], 'avatar64' => $aa['avatar64'], 'url' => $aa['profile_url'], 'link' => $aa['profile_link'], 'title' => $aa['profile_title'], 'onclick' => $aa['profile_onclick'], 'role' => $aa['role']);
     }
 
     function _getUserInfo ($user)
