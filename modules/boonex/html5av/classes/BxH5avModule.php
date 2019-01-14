@@ -63,7 +63,12 @@ class BxH5avModule extends BxDolModule
         if (!($iFileId = (int)$oAlert->iObject))
             return false;
 
-        $oAlert->aExtras['override'] = '<iframe width="' . BX_H5AV_VIDEO_EMBED_WIDTH . '" height="' . BX_H5AV_VIDEO_EMBED_HEIGHT . '" src="' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'video_embed/' . $iFileId . '" frameborder="0" allowfullscreen></iframe>';
+        if (!($aFile = $this->_oDb->getRow("SELECT * FROM `RayVideoFiles` WHERE `ID` = ?", [$iFileId])))
+            return false;
+
+        if ("" == $aFile['Source']) {
+            $oAlert->aExtras['override'] = '<iframe width="' . BX_H5AV_VIDEO_EMBED_WIDTH . '" height="' . BX_H5AV_VIDEO_EMBED_HEIGHT . '" src="' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'video_embed/' . $iFileId . '" frameborder="0" allowfullscreen></iframe>';
+        }
 
         return true;
     }

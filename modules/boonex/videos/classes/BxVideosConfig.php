@@ -36,10 +36,10 @@ class BxVideosConfig extends BxDolFilesConfig
         $sProto = bx_proto();
         
         if(!defined("YOUTUBE_VIDEO_PLAYER"))
-            define("YOUTUBE_VIDEO_PLAYER", '<iframe width="100%" height="360" src="' . $sProto . '://www.youtube-nocookie.com/embed/#video#?rel=0&amp;showinfo=0#autoplay#" frameborder="0" allowfullscreen></iframe>');
+            define("YOUTUBE_VIDEO_PLAYER", '<iframe width="100%" height="315" src="' . $sProto . '://www.youtube-nocookie.com/embed/#video#?rel=0&amp;showinfo=0#autoplay#" frameborder="0" allowfullscreen></iframe>');
 
         if(!defined("YOUTUBE_VIDEO_EMBED"))
-            define("YOUTUBE_VIDEO_EMBED", '<iframe width="480" height="360" src="' . $sProto . '://www.youtube-nocookie.com/embed/#video#?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>');
+            define("YOUTUBE_VIDEO_EMBED", '<iframe width="560" height="315" src="' . $sProto . '://www.youtube-nocookie.com/embed/#video#?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>');
 
         $this->initConfig();
     }
