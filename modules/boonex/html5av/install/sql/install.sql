@@ -30,6 +30,10 @@ INSERT INTO `sys_alerts_handlers` VALUES (NULL, 'bx_h5av_audio_delete', '', '', 
 SET @iHandler := LAST_INSERT_ID();
 INSERT INTO `sys_alerts` VALUES (NULL , 'bx_sounds', 'delete', @iHandler);
 
+INSERT INTO `sys_alerts_handlers` VALUES (NULL, 'bx_h5av_audio_embed', '', '', 'BxDolService::call(''h5av'', ''response_audio_embed'', array($this));');
+SET @iHandler := LAST_INSERT_ID();
+INSERT INTO `sys_alerts` VALUES (NULL , 'bx_sounds', 'embed_code', @iHandler);
+
 
 INSERT INTO `sys_alerts_handlers` VALUES (NULL, 'bx_h5av_cmts_player', '', '', 'BxDolService::call(''h5av'', ''response_cmts_player'', array($this));');
 SET @iHandler := LAST_INSERT_ID();

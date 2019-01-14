@@ -3,8 +3,12 @@
 bx_import('BxDolModule');
 
 define('BX_H5AV_FALLBACK', true);
-define('BX_H5AV_EMBED_HEIGHT', 315);
-define('BX_H5AV_EMBED_WIDTH', 560);
+
+define('BX_H5AV_VIDEO_EMBED_HEIGHT', 315);
+define('BX_H5AV_VIDEO_EMBED_WIDTH', 560);
+
+define('BX_H5AV_AUDIO_EMBED_HEIGHT', 54);
+define('BX_H5AV_AUDIO_EMBED_WIDTH', 560);
 
 class BxH5avModule extends BxDolModule
 {
@@ -16,7 +20,19 @@ class BxH5avModule extends BxDolModule
 
     function actionVideoEmbed ($iFileId = 0)
     {
-        list($sPlayer, $sMessage) = $this->getVideoPlayer ($iFileId, false, false, 'height:' . BX_H5AV_EMBED_HEIGHT . 'px;');
+        list($sPlayer, $sMessage) = $this->getVideoPlayer ($iFileId, false, false, 'height:' . BX_H5AV_VIDEO_EMBED_HEIGHT . 'px;');
+        echo $this->_oTemplate->parseHtmlByName('embed.html', array(
+            'body' => $sPlayer,
+            'bx_if:message' => array(
+                'condition' => !(bool)$sPlayer,
+                'content' => array('message' => $sMessage),
+            )
+        ));
+    }
+
+    function actionAudioEmbed ($iFileId = 0)
+    {
+        list($sPlayer, $sMessage) = $this->getAudioPlayer ($iFileId, false, 'height:' . BX_H5AV_AUDIO_EMBED_HEIGHT . 'px;');
         echo $this->_oTemplate->parseHtmlByName('embed.html', array(
             'body' => $sPlayer,
             'bx_if:message' => array(
@@ -27,6 +43,19 @@ class BxH5avModule extends BxDolModule
     }
     
     /**
+     * Audio Embed
+     */ 
+    function serviceResponseAudioEmbed ($oAlert)
+    {
+        if (!($iFileId = (int)$oAlert->iObject))
+            return false;
+
+        $oAlert->aExtras['override'] = '<iframe width="' . BX_H5AV_AUDIO_EMBED_WIDTH . '" height="' . BX_H5AV_AUDIO_EMBED_HEIGHT . '" src="' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'audio_embed/' . $iFileId . '" frameborder="0" allowfullscreen></iframe>';
+
+        return true;
+    }
+    
+    /**
      * Video Embed
      */ 
     function serviceResponseVideoEmbed ($oAlert)
@@ -34,7 +63,7 @@ class BxH5avModule extends BxDolModule
         if (!($iFileId = (int)$oAlert->iObject))
             return false;
 
-        $oAlert->aExtras['override'] = '<iframe width="' . BX_H5AV_EMBED_WIDTH . '" height="' . BX_H5AV_EMBED_HEIGHT . '" src="' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'video_embed/' . $iFileId . '" frameborder="0" allowfullscreen></iframe>';
+        $oAlert->aExtras['override'] = '<iframe width="' . BX_H5AV_VIDEO_EMBED_WIDTH . '" height="' . BX_H5AV_VIDEO_EMBED_HEIGHT . '" src="' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'video_embed/' . $iFileId . '" frameborder="0" allowfullscreen></iframe>';
 
         return true;
     }
@@ -61,7 +90,7 @@ class BxH5avModule extends BxDolModule
     function getVideoPlayer ($iFileId, $bEnableAutoplay = true, $bSetMaxHeight = true, $sCustomStyles = '')
     {
         if (!($aFile = $this->_oDb->getRow("SELECT * FROM `RayVideoFiles` WHERE `ID` = ?", [$iFileId])))
-            return false;
+            return array(false, _t('_sys_media_not_found'));
 
         global $sIncPath;
         global $sModulesPath;
@@ -206,8 +235,18 @@ class BxH5avModule extends BxDolModule
         if (!($iFileId = (int)$oAlert->iObject))
             return false;
 
+        list($sPlayer, $sMessage) = $this->getAudioPlayer ($iFileId);
+
+        if ($sPlayer || $sMessage)
+            $oAlert->aExtras['override'] = ($sPlayer ? $sPlayer : $this->_oTemplate->addCss(array('default.css', 'common.css', 'general.css'), true) . MsgBox($sMessage));
+
+        return true;
+    }
+
+    function getAudioPlayer ($iFileId, $bEnableAutoplay = true, $sCustomStyles = '')
+    {
         if (!($aFile = $this->_oDb->getRow("SELECT * FROM `RayMp3Files` WHERE `ID` = ?", [$iFileId])))
-            return false;
+            return array(false, _t('_sys_media_not_found'));
 
         global $sIncPath;
         global $sModulesPath;
@@ -231,11 +270,11 @@ class BxH5avModule extends BxDolModule
         switch($aFile['Status']) {
             case STATUS_PENDING:
             case STATUS_PROCESSING:
-                $sOverride = $this->_oTemplate->addCss(array('default.css', 'common.css', 'general.css'), true) . MsgBox(_t('_sys_media_processing'));
+                $sOverride = array(false, _t('_sys_media_processing'));
                 break;
             case STATUS_DISAPPROVED:
                 if (!isAdmin()) {
-                    $sOverride = $this->_oTemplate->addCss(array('default.css', 'common.css', 'general.css'), true) . MsgBox(_t('_sys_media_disapproved'));
+                    $sOverride = array(false, _t('_sys_media_disapproved'));
                     break;
                 }                
             case STATUS_APPROVED:
@@ -265,9 +304,9 @@ class BxH5avModule extends BxDolModule
                                     time: parseInt(this.duration * 1000)
                                 });
                             });';                    
-                    $sAutoPlay = TRUE_VAL == getSettingValue('mp3', 'autoPlay') && class_exists('BxSoundsPageView') ? 'autoplay' : '';
-                    $sOverride = '
-                        <audio controls ' . $sAutoPlay . ' preload="metadata" autobuffer style="width:100%" id="' . $sId . '">
+                    $sAutoPlay = $bEnableAutoplay && TRUE_VAL == getSettingValue('mp3', 'autoPlay') && class_exists('BxSoundsPageView') ? 'autoplay' : '';
+                    $sPlayer = '
+                        <audio controls ' . $sAutoPlay . ' preload="metadata" autobuffer style="width:100%; ' . $sCustomStyles . '" id="' . $sId . '">
                             <source type=\'audio/mpeg; codecs="mp3"\' src="' . BX_DOL_URL_ROOT . "flash/modules/mp3/get_file.php?id=" . $iFileId . "&token=" . $sToken . '" />
                             ' . $sSourceOgg . '
                             ' . (BX_H5AV_FALLBACK ? $sFlash : '<b>Can not playback media - your browser doesn\'t support HTML5 audio/video tag.</b>') . '
@@ -283,20 +322,18 @@ class BxH5avModule extends BxDolModule
                             });
                             ' . $sJs . '
                         </script>';
-
+                    $sOverride = array($sPlayer, '');
                     break;
                 }
             case STATUS_FAILED:
             default:
-                $sOverride = $this->_oTemplate->addCss(array('default.css', 'common.css', 'general.css'), true) . MsgBox(_t('_sys_media_not_found'));
+                $sOverride = array(false, _t('_sys_media_not_found'));
                 break;
         }
 
-        $oAlert->aExtras['override'] = $sOverride;
-
-        return true;
+        return $sOverride;
     }
-
+    
     /**
      * Audio Convert
      */
