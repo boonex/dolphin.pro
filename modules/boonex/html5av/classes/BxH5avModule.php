@@ -3,6 +3,8 @@
 bx_import('BxDolModule');
 
 define('BX_H5AV_FALLBACK', true);
+define('BX_H5AV_EMBED_HEIGHT', 315);
+define('BX_H5AV_EMBED_WIDTH', 560);
 
 class BxH5avModule extends BxDolModule
 {
@@ -10,6 +12,31 @@ class BxH5avModule extends BxDolModule
     function __construct(&$aModule)
     {
         parent::__construct($aModule);
+    }
+
+    function actionVideoEmbed ($iFileId = 0)
+    {
+        list($sPlayer, $sMessage) = $this->getVideoPlayer ($iFileId, false, false, 'height:' . BX_H5AV_EMBED_HEIGHT . 'px;');
+        echo $this->_oTemplate->parseHtmlByName('embed.html', array(
+            'body' => $sPlayer,
+            'bx_if:message' => array(
+                'condition' => !(bool)$sPlayer,
+                'content' => array('message' => $sMessage),
+            )
+        ));
+    }
+    
+    /**
+     * Video Embed
+     */ 
+    function serviceResponseVideoEmbed ($oAlert)
+    {
+        if (!($iFileId = (int)$oAlert->iObject))
+            return false;
+
+        $oAlert->aExtras['override'] = '<iframe width="' . BX_H5AV_EMBED_WIDTH . '" height="' . BX_H5AV_EMBED_HEIGHT . '" src="' . BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'video_embed/' . $iFileId . '" frameborder="0" allowfullscreen></iframe>';
+
+        return true;
     }
 
     /**
@@ -23,6 +50,16 @@ class BxH5avModule extends BxDolModule
         if (!($iFileId = (int)$oAlert->iObject))
             return false;
 
+        list($sPlayer, $sMessage) = $this->getVideoPlayer ($iFileId);
+
+        if ($sPlayer || $sMessage)
+            $oAlert->aExtras['override'] = ($sPlayer ? $sPlayer : $this->_oTemplate->addCss(array('default.css', 'common.css', 'general.css'), true) . MsgBox($sMessage));
+
+        return true;
+    }
+
+    function getVideoPlayer ($iFileId, $bEnableAutoplay = true, $bSetMaxHeight = true, $sCustomStyles = '')
+    {
         if (!($aFile = $this->_oDb->getRow("SELECT * FROM `RayVideoFiles` WHERE `ID` = ?", [$iFileId])))
             return false;
 
@@ -47,11 +84,11 @@ class BxH5avModule extends BxDolModule
         switch($aFile['Status']) {
             case STATUS_PENDING:
             case STATUS_PROCESSING:
-                $sOverride = $this->_oTemplate->addCss(array('default.css', 'common.css', 'general.css'), true) . MsgBox(_t('_sys_media_processing'));
+                $sOverride = array(false, _t('_sys_media_processing'));
                 break;
             case STATUS_DISAPPROVED:
                 if (!isAdmin()) {
-                    $sOverride = $this->_oTemplate->addCss(array('default.css', 'common.css', 'general.css'), true) . MsgBox(_t('_sys_media_disapproved'));
+                    $sOverride = array(false, _t('_sys_media_disapproved'));
                     break;            
                 }    
             case STATUS_APPROVED:
@@ -82,13 +119,15 @@ class BxH5avModule extends BxDolModule
                                 });
                             });';
 
-                    $sAutoPlay = TRUE_VAL == getSettingValue('video', 'autoPlay') && class_exists('BxVideosPageView') ? 'autoplay' : '';
+                    $sAutoPlay = $bEnableAutoplay && TRUE_VAL == getSettingValue('video', 'autoPlay') && class_exists('BxVideosPageView') ? 'autoplay' : '';
                     
                     $sFilePoster = 'flash/modules/video/files/' . $iFileId . '.jpg';
                     $sPoster = file_exists(BX_DIRECTORY_PATH_ROOT . $sFilePoster) ? ' poster="' . BX_DOL_URL_ROOT . $sFilePoster . '" ' : '';
 
-                    $sOverride = '
-                        <video controls preload="metadata" autobuffer ' . $sAutoPlay . $sPoster . ' style="width:100%; max-height:' . getSettingValue('video', 'player_height') . 'px;" id="' . $sId . '">
+                    $sStyleMaxHeight = $bSetMaxHeight ? 'max-height:' . getSettingValue('video', 'player_height') . 'px;' : '';
+
+                    $sPlayer = '
+                        <video controls preload="metadata" autobuffer ' . $sAutoPlay . $sPoster . ' style="width:100%;' . $sStyleMaxHeight . $sCustomStyles . '" id="' . $sId . '">
                             ' . $sSourceWebm . '
                             <source src="' . BX_DOL_URL_ROOT . "flash/modules/video/get_file.php?id=" . $iFileId . "&ext=m4v&token=" . $sToken . '" />
                             ' . (BX_H5AV_FALLBACK ? $sFlash : '<b>Can not playback media - your browser doesn\'t support HTML5 audio/video tag.</b>') . '
@@ -104,19 +143,17 @@ class BxH5avModule extends BxDolModule
                             });
                             ' . $sJs . '
                         </script>';
+                    $sOverride = array($sPlayer, '');
                 break;
                 }
             case STATUS_FAILED:
             default:
                 if (!BX_H5AV_FALLBACK || !file_exists($sFilesPath . $iFileId . FLV_EXTENSION))
-                    $sOverride = $this->_oTemplate->addCss(array('default.css', 'common.css', 'general.css'), true) . MsgBox(_t('_sys_media_not_found'));
+                    $sOverride = array(false, _t('_sys_media_not_found'));
                 break;
         }
 
-        if ($sOverride)
-            $oAlert->aExtras['override'] = $sOverride;
-
-        return true;
+        return $sOverride;
     }
 
     /**

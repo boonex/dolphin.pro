@@ -13,6 +13,10 @@ INSERT INTO `sys_alerts_handlers` VALUES (NULL, 'bx_h5av_video_delete', '', '', 
 SET @iHandler := LAST_INSERT_ID();
 INSERT INTO `sys_alerts` VALUES (NULL , 'bx_videos', 'delete', @iHandler);
 
+INSERT INTO `sys_alerts_handlers` VALUES (NULL, 'bx_h5av_video_embed', '', '', 'BxDolService::call(''h5av'', ''response_video_embed'', array($this));');
+SET @iHandler := LAST_INSERT_ID();
+INSERT INTO `sys_alerts` VALUES (NULL , 'bx_videos', 'embed_code', @iHandler);
+
 
 INSERT INTO `sys_alerts_handlers` VALUES (NULL, 'bx_h5av_audio_player', '', '', 'BxDolService::call(''h5av'', ''response_audio_player'', array($this));');
 SET @iHandler := LAST_INSERT_ID();
