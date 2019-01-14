@@ -109,15 +109,15 @@ class BxH5avModule extends BxDolModule
         require_once($sModulesPath . $sModule . '/inc/functions.inc.php');
         require_once($sModulesPath . $sModule . '/inc/customFunctions.inc.php');
 
-        $sOverride = false;
+        $aRet = array(false, false);
         switch($aFile['Status']) {
             case STATUS_PENDING:
             case STATUS_PROCESSING:
-                $sOverride = array(false, _t('_sys_media_processing'));
+                $aRet = array(false, _t('_sys_media_processing'));
                 break;
             case STATUS_DISAPPROVED:
                 if (!isAdmin()) {
-                    $sOverride = array(false, _t('_sys_media_disapproved'));
+                    $aRet = array(false, _t('_sys_media_disapproved'));
                     break;            
                 }    
             case STATUS_APPROVED:
@@ -172,17 +172,17 @@ class BxH5avModule extends BxDolModule
                             });
                             ' . $sJs . '
                         </script>';
-                    $sOverride = array($sPlayer, '');
+                    $aRet = array($sPlayer, '');
                 break;
                 }
             case STATUS_FAILED:
             default:
                 if (!BX_H5AV_FALLBACK || !file_exists($sFilesPath . $iFileId . FLV_EXTENSION))
-                    $sOverride = array(false, _t('_sys_media_not_found'));
+                    $aRet = array(false, _t('_sys_media_not_found'));
                 break;
         }
 
-        return $sOverride;
+        return $aRet;
     }
 
     /**
@@ -266,15 +266,15 @@ class BxH5avModule extends BxDolModule
         require_once($sModulesPath . $sModule . '/inc/functions.inc.php');
         require_once($sModulesPath . $sModule . '/inc/customFunctions.inc.php');
 
-        $sOverride = false;
+        $aRet = array(false, false);
         switch($aFile['Status']) {
             case STATUS_PENDING:
             case STATUS_PROCESSING:
-                $sOverride = array(false, _t('_sys_media_processing'));
+                $aRet = array(false, _t('_sys_media_processing'));
                 break;
             case STATUS_DISAPPROVED:
                 if (!isAdmin()) {
-                    $sOverride = array(false, _t('_sys_media_disapproved'));
+                    $aRet = array(false, _t('_sys_media_disapproved'));
                     break;
                 }                
             case STATUS_APPROVED:
@@ -322,16 +322,16 @@ class BxH5avModule extends BxDolModule
                             });
                             ' . $sJs . '
                         </script>';
-                    $sOverride = array($sPlayer, '');
+                    $aRet = array($sPlayer, '');
                     break;
                 }
             case STATUS_FAILED:
             default:
-                $sOverride = array(false, _t('_sys_media_not_found'));
+                $aRet = array(false, _t('_sys_media_not_found'));
                 break;
         }
 
-        return $sOverride;
+        return $aRet;
     }
     
     /**
