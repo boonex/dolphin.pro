@@ -9,7 +9,7 @@ require_once(BX_DIRECTORY_PATH_MODULES . 'boonex/payment/classes/BxPmtTemplate.p
 
 class BxPfwTemplate extends BxPmtTemplate
 {
-	var $_oModule;
+    var $_oModule;
 
     function __construct(&$oConfig, &$oDb)
     {
@@ -25,12 +25,12 @@ class BxPfwTemplate extends BxPmtTemplate
         $this->_oModule = null;
     }
 
-	function init(&$oModule)
+    function setModule(&$oModule)
     {
         $this->_oModule = $oModule;
     }
 
-	function addAdminParentJs($mixedFiles, $bDynamic = false)
+    function addAdminParentJs($mixedFiles, $bDynamic = false)
     {
         global $oAdmTemplate;
         return $oAdmTemplate->addJs($mixedFiles, $bDynamic);
@@ -221,10 +221,10 @@ class BxPfwTemplate extends BxPmtTemplate
         $this->getPageCode($aParams);
     }
 
-    function _getJsContentCart()
+    function _getJsContentCart($bWrapped = true)
     {
     	$sJsObject = $this->_oConfig->getJsObject('cart');
-    	$sJsContent = $this->getJsCode('cart', true);
+    	$sJsContent = $this->getJsCode('cart', $bWrapped);
     	
     	return array('js_object' => $sJsObject, 'js_content' => $sJsContent);
     }

@@ -24,7 +24,7 @@ class BxPfwModule extends BxPmtModule
     {
         parent::__construct($aModule);
 
-		$this->_oTemplate->init($this);
+        $this->_oTemplate->setModule($this);
     }
 
     /**
