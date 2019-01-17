@@ -34,6 +34,7 @@ $iSenderID   = getLoggedId();
 $aSenderInfo = getProfileInfo($iSenderID);
 
 // --------------- page components
+$bAjaxMode =  isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
 
 $sCaption = ($profileID) ? _t('_TELLAFRIEND2', $site['title']) : _t('_TELLAFRIEND', $site['title']);
 
@@ -75,7 +76,8 @@ $aForm = array(
         'sender_email'    => array(
             'type'    => 'text',
             'name'    => 'sender_email',
-            'caption' => _t("_Your email"),
+            'caption' => _t('_Your email'),
+            'required' => true,
             'value'   => $aSenderInfo['Email'],
             'checker' => array(
                 'func'  => 'email',
@@ -85,13 +87,25 @@ $aForm = array(
         'recipient_email' => array(
             'type'    => 'text',
             'name'    => 'recipient_email',
-            'caption' => _t("_Friend email"),
+            'caption' => _t('_Friend email'),
+            'required' => true,
             'value'   => '',
             'checker' => array(
                 'func'  => 'email',
                 'error' => _t('_sys_adm_form_err_required_field'),
             ),
         ),
+        'captcha' => array(
+                'type' => 'captcha',
+                'caption' => _t('_Enter what you see'),
+                'name' => 'securityImageValue',
+                'required' => true,
+                'dynamic' => $bAjaxMode,
+                'checker' => array(
+                    'func' => 'captcha',
+                    'error' => _t( '_Incorrect Captcha' ),
+                ),
+            ),
         'submit_send'     => array(
             'type'  => 'submit',
             'name'  => 'submit_send',
@@ -100,15 +114,16 @@ $aForm = array(
     )
 );
 
+if(isLogged())
+    unset($aForm['inputs']['captcha']);
+
 // generate form or form result content
 $oForm = new BxTemplFormView($aForm);
 $oForm->initChecker();
-if ($oForm->isSubmittedAndValid()) {
-    $s         = SendTellFriend($iSenderID) ? "_Email was successfully sent" : "_Email sent failed";
-    $sPageCode = MsgBox(_t($s));
-} else {
+if ($oForm->isSubmittedAndValid())
+    $sPageCode = MsgBox(_t(SendTellFriend($iSenderID) ? '_Email was successfully sent' : '_Email sent failed'));
+else
     $sPageCode = $oForm->getCode();
-}
 
 // output AJAX form submission result
 if (bx_get('BxAjaxSubmit')) {
