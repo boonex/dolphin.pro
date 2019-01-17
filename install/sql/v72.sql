@@ -1522,6 +1522,7 @@ INSERT INTO `sys_acl_actions` VALUES(6, 'comments post', NULL);
 INSERT INTO `sys_acl_actions` VALUES(7, 'comments vote', NULL);
 INSERT INTO `sys_acl_actions` VALUES(8, 'comments edit own', NULL);
 INSERT INTO `sys_acl_actions` VALUES(9, 'comments remove own', NULL);
+INSERT INTO `sys_acl_actions` VALUES(10, 'send friend request', NULL);
 
 -- --------------------------------------------------------
 
@@ -1575,6 +1576,7 @@ INSERT INTO `sys_acl_matrix` VALUES(2, 6, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sys_acl_matrix` VALUES(2, 7, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sys_acl_matrix` VALUES(2, 8, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sys_acl_matrix` VALUES(2, 9, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_acl_matrix` VALUES(2, 10, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sys_acl_matrix` VALUES(3, 1, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sys_acl_matrix` VALUES(3, 2, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sys_acl_matrix` VALUES(3, 3, NULL, NULL, NULL, NULL, NULL);
@@ -1583,6 +1585,7 @@ INSERT INTO `sys_acl_matrix` VALUES(3, 6, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sys_acl_matrix` VALUES(3, 7, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sys_acl_matrix` VALUES(3, 8, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sys_acl_matrix` VALUES(3, 9, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_acl_matrix` VALUES(3, 10, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 

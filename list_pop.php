@@ -328,6 +328,11 @@ function PageListFriend($iProfileId, $iMemberId = 0)
         return MsgBox( _t('_Failed to apply changes') );
     }
 
+    $iUseriId = getLoggedId();
+    $aResult = checkAction($iUseriId, ACTION_ID_SEND_FRIEND_REQUEST, $bPerformAction);
+    if($aResult[CHECK_ACTION_RESULT] != CHECK_ACTION_RESULT_ALLOWED)
+        return MsgBox($aResult[CHECK_ACTION_MESSAGE]);
+
     // block members
     if ( isBlocked($iMemberId, $iProfileId) ) {
         return MsgBox( _t('_You have blocked by this profile') );

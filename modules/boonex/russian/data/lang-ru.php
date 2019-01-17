@@ -1702,6 +1702,7 @@ $LANG= array(
   '_mma_comments_remove_own' => 'удалять свои комментарии',
   '_mma_comments_vote' => 'голосовать за комментарии',
   '_mma_get_other_members_emails' => 'получить электронный адрес другого пользователя',
+  '_mma_send_friend_request' => 'посылать предложения дружбы',
   '_mma_send_greetings' => 'посылать приветствия',
   '_mma_send_messages' => 'посылать сообщения',
   '_mma_view_profiles' => 'просматривать профили',

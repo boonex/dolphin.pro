@@ -1706,6 +1706,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_mma_comments_remove_own' => 'comments remove own',
   '_mma_comments_vote' => 'comments vote',
   '_mma_get_other_members_emails' => 'get other members\' emails',
+  '_mma_send_friend_request' => 'send friend requests',
   '_mma_send_greetings' => 'send greetings',
   '_mma_send_messages' => 'send messages',
   '_mma_view_profiles' => 'view profiles',
