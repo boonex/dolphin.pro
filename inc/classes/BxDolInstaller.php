@@ -186,6 +186,8 @@ class BxDolInstaller extends BxDolInstallerUtils
             $GLOBALS['MySQL']->cleanMemory('sys_modules_' . $iModuleId);
             $GLOBALS['MySQL']->cleanMemory('sys_modules');
         }
+        else
+            $this->_perform('uninstall', 'Uninstallation');
 
         $aResult['operation_title'] = $sTitle;
         return $aResult;
@@ -285,25 +287,14 @@ class BxDolInstaller extends BxDolInstallerUtils
 
         $sMessage = '';
         foreach($this->_aConfig[$sOperationName] as $sAction => $iEnabled) {
-            $sCookie = '';
-            if(!empty($this->_aConfig['name'])) 
-                $sCookie = $this->_aConfig['name'];
-            else 
-                $sCookie = $this->_aConfig['home_uri'];
-            $sCookie .= '_' . $sAction;
-
             $sMethod = 'action' . str_replace (' ', '', ucwords(str_replace ('_', ' ', $sAction)));
-            if($iEnabled == 0 || (isset($_COOKIE[$sCookie]) && (int)$_COOKIE[$sCookie] == 1) || !method_exists($this, $sMethod))
+            if($iEnabled == 0 || !method_exists($this, $sMethod))
                 continue;
 
             $mixedResult = $this->$sMethod($sOperationName == 'install' || $sOperationName == 'update');
 
             //--- On Success ---//
             if((is_int($mixedResult) && (int)$mixedResult == BX_DOL_INSTALLER_SUCCESS) || (isset($mixedResult['code']) && (int)$mixedResult['code'] == BX_DOL_INSTALLER_SUCCESS)) {
-                if($sOperationName == 'install' || $sOperationName == 'update')
-                    setcookie($sCookie, 1, 0, '/');
-                else
-                    setcookie($sCookie, 1, time() - 86400, '/');
                 $sMessage .= $this->_displayResult($sAction, true, isset($mixedResult['content']) ? $mixedResult['content'] : '');
                 continue;
             }
@@ -312,10 +303,6 @@ class BxDolInstaller extends BxDolInstallerUtils
             $sMethodFailed = $sMethod . 'Failed';
             return array('message' => $this->_displayResult($sAction, false, method_exists($this, $sMethodFailed) ? $this->$sMethodFailed($mixedResult) : $this->actionOperationFailed($mixedResult)), 'result' => false);
         }
-
-        //--- Remove all cookies ---//
-        foreach($this->_aConfig[$sOperationName] as $sAction => $iEnabled)
-            setcookie( (empty($this->_aConfig['name']) ? '' : $this->_aConfig['name']) . '_' . $sAction, 1, time() - 86400, '/');
 
         $sMessage .= $sOperationTitle . ' finished';
         return array('message' => $sMessage, 'result' => true);
