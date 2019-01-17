@@ -59,6 +59,16 @@ div.thumbnail_block {
     height: 64px;    
 }
 
+div.thumbnail_block.tbf_none {
+    float: none;
+}
+div.thumbnail_block.tbf_left {
+    float: left;
+}
+div.thumbnail_block.tbf_right {
+    float: right;
+}
+
 div.thumbnail_block_with_info {
     width:240px;
 }

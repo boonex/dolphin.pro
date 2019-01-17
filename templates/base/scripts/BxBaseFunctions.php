@@ -458,7 +458,7 @@ class BxBaseFunctions
 
         return $GLOBALS['oSysTemplate']->parseHtmlByName($bCouple ? 'thumbnail_couple' . $sTmplSfx . '.html' : 'thumbnail_single' . $sTmplSfx . '.html', array(
             'iProfId' => $iId ? $iId : 0,
-            'sys_thb_float' => $sFloat,
+            'sys_thb_float' => 'tbf_' . $sFloat,
             'classes_add' => ($bGenProfLink ? ' thumbnail_block_with_info' : '') . ($sType != 'medium' ? ' thumbnail_block_icon' : ''),
             'sys_status_icon' => $sStatusIcon,
             'sys_status_title' => $oUserStatusView->getStatus($iId),
