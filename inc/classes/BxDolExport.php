@@ -164,7 +164,7 @@ class BxDolExport
 
     protected function _getFilePath($sTableName, $sField, $sFileName, $sPrefix, $sExt)
     {
-        return BX_DIRECTORY_PATH_ROOT . $this->_sFilesBaseDir . $sPrefix . $sFileName . $sExt;
+        return BX_DIRECTORY_PATH_ROOT . $this->_sFilesBaseDir . (is_string($sPrefix) ? $sPrefix : '') . $sFileName . $sExt;
     }
 
     protected function _getFilesFromStmt($sTableName, $oStmt, $aFields)

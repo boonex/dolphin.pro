@@ -35,4 +35,6 @@ SET @iHandler := (SELECT `id` FROM `sys_alerts_handlers` WHERE `name` = 'bx_avat
 DELETE FROM `sys_alerts` WHERE `handler_id` = @iHandler;
 DELETE FROM `sys_alerts_handlers` WHERE `id` = @iHandler;
 
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_avatar';
 

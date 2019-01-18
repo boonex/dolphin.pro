@@ -63,3 +63,8 @@ INSERT INTO `sys_alerts_handlers` VALUES (NULL, 'bx_avatar', 'BxAvaProfileDelete
 SET @iHandler := LAST_INSERT_ID();
 INSERT INTO `sys_alerts` VALUES (NULL , 'profile', 'delete', @iHandler);
 
+-- export
+SET @iMaxOrderExports = (SELECT MAX(`order`)+1 FROM `sys_objects_exports`);
+INSERT INTO `sys_objects_exports` (`object`, `title`, `class_name`, `class_file`, `order`, `active`) VALUES
+('bx_avatar', '_bx_ava_avatar', 'BxAvaExport', 'modules/boonex/avatar/classes/BxAvaExport.php', @iMaxOrderExports, 1);
+
