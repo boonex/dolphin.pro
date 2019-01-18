@@ -220,13 +220,21 @@ class BxPageACModule extends BxDolModule
     //--- Services ---//
     function serviceMenuItemsFilter($sType, &$aItems)
     {
-        if ($_REQUEST['modules-uninstall'] && in_array('boonex/pageac/', $_REQUEST['pathes'])) return ;//to avoid menu filtering during module uninstallation.
+        //to avoid menu filtering during module uninstallation.
+        if(isset($_REQUEST['modules-uninstall']) && $_REQUEST['modules-uninstall'] && in_array('boonex/pageac/', $_REQUEST['pathes'])) 
+            return ;
 
-        define('BX_DOL_ROLE_MEMBER',    1);	//this code is required here because at the time of BxDolMenu::load function call profiles.inc.php isn't fully included yet,
-        define('BX_DOL_ROLE_ADMIN',     2);	//thus all defines and function calls located in profiles.inc.php aren't executed at this moment
-        check_logged();						//so a call to isLogged or check_logged always would fail here because BX_DOL_ROLE_MEMBER/BX_DOL_ROLE_ADMIN aren't defined yet.
-        if (!isLogged()) return; //non-members visibility controlled by default in builders
-        elseif (isRole(BX_DOL_ROLE_ADMIN, getLoggedId())) return; //admin isn't affected by this module
+        if(!defined('BX_DOL_ROLE_MEMBER'))
+            define('BX_DOL_ROLE_MEMBER', 1);	//this code is required here because at the time of BxDolMenu::load function call profiles.inc.php isn't fully included yet,
+        if(!defined('BX_DOL_ROLE_ADMIN'))
+            define('BX_DOL_ROLE_ADMIN', 2);	//thus all defines and function calls located in profiles.inc.php aren't executed at this moment
+
+        check_logged(); //so a call to isLogged or check_logged always would fail here because BX_DOL_ROLE_MEMBER/BX_DOL_ROLE_ADMIN aren't defined yet.
+        
+        if(!isLogged()) 
+            return; //non-members visibility controlled by default in builders
+        else if (isRole(BX_DOL_ROLE_ADMIN, getLoggedId())) 
+            return; //admin isn't affected by this module
 
         $aMembership = getMemberMembershipInfo(getLoggedId());
         $iMemLevel = intval($aMembership['ID']);
