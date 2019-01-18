@@ -14,6 +14,7 @@ require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolProfileFields.php' );
 require_once( BX_DIRECTORY_PATH_CLASSES . 'BxDolProfilesController.php' );
 
 bx_import('BxDolDb');
+bx_import('BxDolPageView');
 bx_import('BxTemplSearchProfile');
 bx_import('BxTemplProfileGenerator');
 
@@ -56,15 +57,41 @@ class BxDolSearchPageView extends BxDolPageView
         $aProfile = $logged['member'] ? getProfileInfo(getLoggedId()) : array();
 
         // default params for search form
-        $aDefaultParams = array(
-            'LookingFor' => isset($_GET['LookingFor']) ? $_GET['LookingFor'] : ($aProfile['Sex'] ? $aProfile['Sex'] : 'male'),
-            'Sex' => isset($_GET['Sex']) ? $_GET['Sex'] : ($aProfile['LookingFor'] ? $aProfile['LookingFor'] : 'female'),
-            'Country' => isset($_GET['Country'][0]) ? $_GET['Country'][0] : ($aProfile['Country'] ? $aProfile['Country'] : getParam('default_country')),
-            'DateOfBirth' => isset($_GET['DateOfBirth']) ? $_GET['DateOfBirth'] : getParam('search_start_age') . '-' . getParam('search_end_age'),
-            'Tags' => isset($_GET['Tags']) ? $_GET['Tags'] : '',
-            'online_only' => isset($_GET['online_only']) ? $_GET['online_only'] : '',
-            'photos_only' => isset($_GET['photos_only']) ? $_GET['photos_only'] : ''
-        );
+        $aDefaultParams = array();
+
+        $aForms = $this->oPF->getFormsSearch($aDefaultParams, true);
+        foreach($aForms as $aForm) {
+            if(empty($aForm['inputs']) || !is_array($aForm['inputs']))
+                continue;
+
+            foreach($aForm['inputs'] as $aInput) {
+                $sName = $aInput['name'];
+                $mValue = bx_get($sName);
+
+                switch($sName) {
+                    case 'LookingFor':
+                        $aDefaultParams[$sName] = $mValue !== false ? $mValue : ($aProfile['Sex'] ? $aProfile['Sex'] : 'male');
+                        break;
+
+                    case 'Sex':
+                        $aDefaultParams[$sName] = $mValue !== false ? $mValue : ($aProfile['LookingFor'] ? $aProfile['LookingFor'] : 'female');
+                        break;
+
+                    case 'Country':
+                        $aDefaultParams[$sName] = $mValue !== false && isset($mValue[0]) ? $mValue[0] : ($aProfile['Country'] ? $aProfile['Country'] : getParam('default_country'));
+                        break;
+
+                    case 'DateOfBirth':
+                        $aDefaultParams[$sName] = $mValue !== false ? $mValue : getParam('search_start_age') . '-' . getParam('search_end_age');
+                        break;
+
+                    default:
+                        if($mValue !== false)
+                            $aDefaultParams[$sName] = $mValue;
+                }
+            }
+            
+        }
 
         $sForms = $this->oPF->getFormCode(array('default_params' => $aDefaultParams));
 

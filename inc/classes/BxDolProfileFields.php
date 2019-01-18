@@ -1035,7 +1035,7 @@ class BxDolProfileFields extends Thing
         return $sCustomHtmlBefore . $oForm->getCode() . $sCustomHtmlAfter;
     }
 
-    function getFormsSearch($aParams)
+    function getFormsSearch($aParams, $bReturnArray = false)
     {
         $aShowModes = array('featured', 'birthdays', 'top_rated', 'popular', 'moderators');
 
@@ -1045,6 +1045,7 @@ class BxDolProfileFields extends Thing
         $sSearchModeName = ($this->iAreaID == 10 ? 'quick' : ($this->iAreaID == 11 ? 'adv' : 'simple'));
 
         $sResult = '';
+        $aResult = array();
 
         $iFormCounter = 1;
 
@@ -1120,7 +1121,7 @@ class BxDolProfileFields extends Thing
                         }
 
                         $aFormInput['values'] = $this->convertValues4Input($aItem['Values'], $aItem['UseLKey'], 'search');
-                        if (is_array($aFormInput['value'])) {
+                        if($aItem['Type'] == 'select_one' && is_array($aFormInput['value'])) {
                             $aFormInput['value'] = $aFormInput['value'][0];
                         }
                     break;
@@ -1237,13 +1238,17 @@ EOF;
             if (isset($aParams['inputs']) && is_array($aParams['inputs']))
                 $aForm['inputs'] = array_merge ($aForm['inputs'], $aParams['inputs']);
 
-            $oForm = new BxTemplFormView($aForm);
-            $sResult .= $oForm->getCode();
+            if(!$bReturnArray) {
+                $oForm = new BxTemplFormView($aForm);
+                $sResult .= $oForm->getCode();
+            }
+            else
+                $aResult[] = $aForm;
 
             $iFormCounter++;
         } // block generation finished
 
-        return $sResult;
+        return !$bReturnArray ? $sResult : $aResult;
     }
 
     /**
