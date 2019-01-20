@@ -78,6 +78,10 @@ class BxDolExport
      */
     static public function generateAllExports ($iProfileId)
     {
+        $iProfileId = (int)$iProfileId;
+        if (!($aProfile = getProfileInfo($iProfileId)))
+            return "Profile($iProfileId) doesn't exist";
+
         $aSystems =& self::getSystems ();
         $aExports = array ();
         foreach ($aSystems as $sSystem => $aSystem) {
@@ -89,13 +93,25 @@ class BxDolExport
                 $aExports[$sSystem] = $a;
         }
 
-        $sFilename = self::createZip($iProfileId, $aExports);
-        if (!$sFilename)
-            return 'export zip file creation failed';
+        $sFileName = self::createZip($iProfileId, $aExports);
+        if (!$sFileName)
+            return 'Export zip file creation failed';
 
-        // TODO: send link to the user and delete file after 24 hours
 
-        return $sFilename;
+        if (!self::sendEmailNotification($aProfile, $sFileName))
+            return "Send notification email to user($iProfileId) failed";
+
+        return true;
+    }
+
+    static public function sendEmailNotification($aProfile, $sFilename)
+    {
+        $oEmailTemplate = new BxDolEmailTemplates();
+        $aTemplate = $oEmailTemplate->getTemplate('t_ExportReady', $aProfile['ID']);
+        $aTemplateVars = array (
+            'FileUrl' => BX_DOL_URL_CACHE_PUBLIC . $sFilename,
+        );        
+        return sendMail($aProfile['Email'], $aTemplate['Subject'], $aTemplate['Body'], $aProfile['ID'], $aTemplateVars);
     }
 
     static public function createZip($iProfileId, $aExports)
@@ -103,9 +119,11 @@ class BxDolExport
         if (!class_exists('ZipArchive'))
             return false;
 
-        $sFilename = BX_DIRECTORY_PATH_CACHE_PUBLIC . 'export-' . $iProfileId . '-' . $GLOBALS['site']['ver'] . '.' . $GLOBALS['site']['build'] . '-' . genRndPwd(8, false) . '.zip';
+        $sFileName = 'export-' . $iProfileId . '-' . $GLOBALS['site']['ver'] . '.' . $GLOBALS['site']['build'] . '-' . genRndPwd(8, false) . '.zip';
+        $sFilePath = BX_DIRECTORY_PATH_CACHE_PUBLIC . $sFileName;
+        
         $oZip = new ZipArchive();
-        if ($oZip->open($sFilename, ZipArchive::CREATE)!==TRUE)
+        if ($oZip->open($sFilePath, ZipArchive::CREATE)!==TRUE)
             return false;
 
         // collect data
@@ -131,7 +149,7 @@ class BxDolExport
 
         $oZip->close();
         
-        return $sFilename;
+        return $sFileName;
     }
 
     /**
