@@ -89,9 +89,49 @@ class BxDolExport
                 $aExports[$sSystem] = $a;
         }
 
-        // combine all together and zip
+        $sFilename = self::createZip($iProfileId, $aExports);
+        if (!$sFilename)
+            return 'export zip file creation failed';
 
-        return $aExports;
+        // TODO: send link to the user and delete file after 24 hours
+
+        return $sFilename;
+    }
+
+    static public function createZip($iProfileId, $aExports)
+    {
+        if (!class_exists('ZipArchive'))
+            return false;
+
+        $sFilename = BX_DIRECTORY_PATH_CACHE_PUBLIC . 'export-' . $iProfileId . '-' . $GLOBALS['site']['ver'] . '.' . $GLOBALS['site']['build'] . '-' . genRndPwd(8, false) . '.zip';
+        $oZip = new ZipArchive();
+        if ($oZip->open($sFilename, ZipArchive::CREATE)!==TRUE)
+            return false;
+
+        // collect data
+
+        $sSqlDump = "-- Dolphin user data export\n";
+        $sSqlDump .= "-- Profile ID: $iProfileId\n";
+        $sSqlDump .= "-- Profile Username: " . getUsername($iProfileId) . "\n";
+        $sSqlDump .= "-- Dolphin Version: " . $GLOBALS['site']['ver'] . '.' . $GLOBALS['site']['build'] . "\n";
+        foreach ($aExports as $sSystem => $a) {
+            // sql
+            if (!empty($a['sql']))
+                $sSqlDump .= "\n\n-- " . $sSystem . "\n\n" . $a['sql'];
+
+            // files
+            if (!empty($a['files']))
+                chdir(BX_DIRECTORY_PATH_ROOT);
+                foreach ($a['files'] as $sFile)
+                    $oZip->addGlob($sFile);
+        }
+            
+        // add DB dump
+        $oZip->addFromString('/dump.sql', $sSqlDump);
+
+        $oZip->close();
+        
+        return $sFilename;
     }
 
     /**
@@ -164,7 +204,7 @@ class BxDolExport
 
     protected function _getFilePath($sTableName, $sField, $sFileName, $sPrefix, $sExt)
     {
-        return BX_DIRECTORY_PATH_ROOT . $this->_sFilesBaseDir . (is_string($sPrefix) ? $sPrefix : '') . $sFileName . $sExt;
+        return $this->_sFilesBaseDir . (is_string($sPrefix) ? $sPrefix : '') . $sFileName . $sExt;
     }
 
     protected function _getFilesFromStmt($sTableName, $oStmt, $aFields)
