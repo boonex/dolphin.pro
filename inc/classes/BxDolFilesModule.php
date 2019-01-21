@@ -1976,6 +1976,7 @@ class BxDolFilesModule extends BxDolModule
                 'cpt_user_name' => $sOwner,
                 'cpt_added_new' => _t('_' . $sPrefix . '_wall_added_new'),
                 'cpt_item_url' => $aItem['url'],
+                'cpt_item_title' => $aItem['title'],
                 'cpt_item' => $sItemTxt,
                 'post_id' => $aEvent['id']
             ))),
