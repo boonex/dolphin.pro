@@ -2054,6 +2054,7 @@ You can do this by:
   '_sys_media_disapproved' => 'File not approved yet',
   '_sys_media_processing' => 'File not processed yet',
   '_sys_media_not_found' => 'File not found',
+  '_sys_wrn_disabled_scripts' => 'Your browser doesn\'t support scripts!',
   '_sys_x_byte' => '{0} bytes',
   '_sys_x_gigabyte' => '{0} Gb',
   '_sys_x_kilobyte' => '{0} Kb',

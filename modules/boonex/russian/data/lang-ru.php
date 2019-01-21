@@ -2050,6 +2050,7 @@ $LANG= array(
   '_sys_media_disapproved' => 'Файл еще не одобрен',
   '_sys_media_processing' => 'Файл еще не обработан',
   '_sys_media_not_found' => 'Файл не найден',
+  '_sys_wrn_disabled_scripts' => 'Ваш браузер не поддерживает скрипты!',
   '_sys_x_byte' => '{0} Байт',
   '_sys_x_gigabyte' => '{0} Гб',
   '_sys_x_kilobyte' => '{0} Кб',

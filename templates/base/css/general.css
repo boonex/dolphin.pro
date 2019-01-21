@@ -17,6 +17,14 @@ object
 
 /*------------------*/
 
+div.sys_no_js {
+    background-color: rgb(255, 200, 200);
+
+    text-align: center;
+}
+
+/*------------------*/
+
 div.member_block
 {
     float:left;
