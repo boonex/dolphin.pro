@@ -134,14 +134,17 @@ class BxDolCronCmd extends BxDolCron
 
         $file_life = 86400;  // one day
         $dirToClean = array();
-        $dirToClean[] = $dir['tmp'];
-        $dirToClean[] = $dir['cache'];
+        $dirToClean[$dir['tmp']] = "/.*/";
+        $dirToClean[$dir['cache']] = "/.*/";
+        $dirToClean[BX_DIRECTORY_PATH_CACHE_PUBLIC] = "/^export/";
 
-        foreach( $dirToClean as $value ) {
+        foreach( $dirToClean as $value => $sRegExp) {
             if ( !( $lang_dir = opendir( $value ) ) ) {
                 continue;
             } else {
                 while ($lang_file = readdir( $lang_dir )) {
+                    if (!preg_match($sRegExp, $lang_file))
+                        continue;
                     $diff = time() - filectime( $value . $lang_file);
                     if ( $diff > $file_life && '.' != $lang_file && '..' != $lang_file && '.htaccess' !== $lang_file ) {
                         @unlink ($value . $lang_file);

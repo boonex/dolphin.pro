@@ -78,6 +78,10 @@ class BxDolExport
      */
     static public function generateAllExports ($iProfileId)
     {
+        $iProfileId = (int)$iProfileId;
+        if (!($aProfile = getProfileInfo($iProfileId)))
+            return "Profile($iProfileId) doesn't exist";
+
         $aSystems =& self::getSystems ();
         $aExports = array ();
         foreach ($aSystems as $sSystem => $aSystem) {
@@ -89,9 +93,63 @@ class BxDolExport
                 $aExports[$sSystem] = $a;
         }
 
-        // combine all together and zip
+        $sFileName = self::createZip($iProfileId, $aExports);
+        if (!$sFileName)
+            return 'Export zip file creation failed';
 
-        return $aExports;
+
+        if (!self::sendEmailNotification($aProfile, $sFileName))
+            return "Send notification email to user($iProfileId) failed";
+
+        return true;
+    }
+
+    static public function sendEmailNotification($aProfile, $sFilename)
+    {
+        $oEmailTemplate = new BxDolEmailTemplates();
+        $aTemplate = $oEmailTemplate->getTemplate('t_ExportReady', $aProfile['ID']);
+        $aTemplateVars = array (
+            'FileUrl' => BX_DOL_URL_CACHE_PUBLIC . $sFilename,
+        );        
+        return sendMail($aProfile['Email'], $aTemplate['Subject'], $aTemplate['Body'], $aProfile['ID'], $aTemplateVars);
+    }
+
+    static public function createZip($iProfileId, $aExports)
+    {
+        if (!class_exists('ZipArchive'))
+            return false;
+
+        $sFileName = 'export-' . $iProfileId . '-' . $GLOBALS['site']['ver'] . '.' . $GLOBALS['site']['build'] . '-' . genRndPwd(8, false) . '.zip';
+        $sFilePath = BX_DIRECTORY_PATH_CACHE_PUBLIC . $sFileName;
+        
+        $oZip = new ZipArchive();
+        if ($oZip->open($sFilePath, ZipArchive::CREATE)!==TRUE)
+            return false;
+
+        // collect data
+
+        $sSqlDump = "-- Dolphin user data export\n";
+        $sSqlDump .= "-- Profile ID: $iProfileId\n";
+        $sSqlDump .= "-- Profile Username: " . getUsername($iProfileId) . "\n";
+        $sSqlDump .= "-- Dolphin Version: " . $GLOBALS['site']['ver'] . '.' . $GLOBALS['site']['build'] . "\n";
+        foreach ($aExports as $sSystem => $a) {
+            // sql
+            if (!empty($a['sql']))
+                $sSqlDump .= "\n\n-- " . $sSystem . "\n\n" . $a['sql'];
+
+            // files
+            if (!empty($a['files']))
+                chdir(BX_DIRECTORY_PATH_ROOT);
+                foreach ($a['files'] as $sFile)
+                    $oZip->addGlob($sFile);
+        }
+            
+        // add DB dump
+        $oZip->addFromString('/dump.sql', $sSqlDump);
+
+        $oZip->close();
+        
+        return $sFileName;
     }
 
     /**
@@ -164,7 +222,7 @@ class BxDolExport
 
     protected function _getFilePath($sTableName, $sField, $sFileName, $sPrefix, $sExt)
     {
-        return BX_DIRECTORY_PATH_ROOT . $this->_sFilesBaseDir . (is_string($sPrefix) ? $sPrefix : '') . $sFileName . $sExt;
+        return $this->_sFilesBaseDir . (is_string($sPrefix) ? $sPrefix : '') . $sFileName . $sExt;
     }
 
     protected function _getFilesFromStmt($sTableName, $oStmt, $aFields)
