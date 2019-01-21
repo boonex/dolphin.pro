@@ -58,6 +58,10 @@ class BxDolSearchPageView extends BxDolPageView
 
         // default params for search form
         $aDefaultParams = array();
+        
+        $sSrmKey = 'search_result_mode';
+        if(bx_get($sSrmKey) !== false)
+            $aDefaultParams[$sSrmKey] = process_db_input(bx_get($sSrmKey));
 
         $aForms = $this->oPF->getFormsSearch($aDefaultParams, true);
         foreach($aForms as $aForm) {

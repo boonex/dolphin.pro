@@ -847,7 +847,7 @@ class BxBaseProfileGenerator extends BxDolProfile
                 $aGetParams = $_GET;
                 unset( $aGetParams['search_result_mode'] );
                 $sRequestString = $this->collectRequestString( $aGetParams );
-                $aDBTopMenu[$modeTitle] = array('href' => bx_html_attribute($_SERVER['PHP_SELF']) . "?search_result_mode={$myMode}{$sRequestString}", 'dynamic' => true, 'active' => ( $myMode == $sOutputMode ));
+                $aDBTopMenu[$modeTitle] = array('href' => bx_html_attribute($_SERVER['PHP_SELF']) . "?search_result_mode={$myMode}{$sRequestString}", 'dynamic' => false, 'active' => ( $myMode == $sOutputMode ));
             }
 
             if ($sOutputMode == 'sim') {

@@ -1063,6 +1063,18 @@ class BxDolProfileFields extends Thing
                 'name'  => 'search_mode',
                 'value' => $sSearchModeName,
             );
+            
+            // create search result mode hidden input (if requested)
+            $sSrmKey = 'search_result_mode';
+            if(!empty($aDefaultParams[$sSrmKey])) {
+                $aInputs[] = array(
+                    'type'  => 'hidden',
+                    'name'  => $sSrmKey,
+                    'value' => $aDefaultParams[$sSrmKey],
+                );
+
+                unset($aDefaultParams[$sSrmKey]);
+            }
 
             // create show parameter as hidden input 
             $aInputs[] = array(

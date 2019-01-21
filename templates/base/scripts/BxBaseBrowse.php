@@ -867,10 +867,9 @@ class BxBaseBrowse extends BxDolBrowse
         );
 
         foreach( $aToggleItems AS $sKey => $sValue ) {
-            $aToggleEllements[$sValue] = array
-            (
+            $aToggleEllements[$sValue] = array (
                 'href' => $sModeLocation . '&mode=' . $sKey,
-                'dynamic' => true,
+                'dynamic' => false,
                 'active' => ($this -> aDisplaySettings['mode'] == $sKey ),
             );
         }
