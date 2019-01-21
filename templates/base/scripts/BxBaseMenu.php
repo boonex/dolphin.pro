@@ -319,7 +319,7 @@ EOF;
     */
     function genTopItem($sText, $sLink, $sTarget, $sOnclick, $bActive, $iItemID, $isBold = false, $sPicture = '')
     {
-    	$sLink = (strpos($sLink, 'http://') === false && strpos($sLink, 'https://') === false && !strlen($sOnclick)) ? $this->sSiteUrl . $sLink : $sLink;
+    	$sLink = (strpos($sLink, 'http://') === false && strpos($sLink, 'https://') === false && strpos($sLink, 'javascript') === false && !strlen($sOnclick)) ? $this->sSiteUrl . $sLink : $sLink;
 
         return $GLOBALS['oSysTemplate']->parseHtmlByName('navigation_menu_mm_item.html', array(
         	'link' => $sLink,
