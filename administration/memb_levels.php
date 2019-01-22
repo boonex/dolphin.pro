@@ -293,9 +293,11 @@ function _getLevelsCreateForm($iLevelId, $bActive = false)
         unset($aForm['inputs']['Active']);
         unset($aForm['inputs']['Purchasable']);
         unset($aForm['inputs']['Removable']);
-        unset($aForm['inputs']['Icon']);
 
         $aForm['form_attrs']['action'] = $sSubmitUrl . '?action=edit&level=' . $iLevelId;
+        $aForm['inputs']['Icon']['info'] = _t('_adm_txt_mlevels_icon_info_edit');
+        $aForm['inputs']['Icon']['required'] = false;
+        $aForm['inputs']['Icon']['checker'] = array();
         $aForm['inputs']['Submit']['value'] = _t('_adm_btn_mlevels_save');
         $aForm['inputs']['ID'] = array(
             'type' => 'hidden',
@@ -311,15 +313,16 @@ function _getLevelsCreateForm($iLevelId, $bActive = false)
     $oForm->initChecker();
 
     if($oForm->isSubmittedAndValid()) {
+        $sFilePath = BX_DIRECTORY_PATH_ROOT . 'media/images/membership/';
+        $sFileName = time();
+        $sFileExt = '';
+
         //--- Add new level
         if(!$bEdit) {
-            $sFilePath = BX_DIRECTORY_PATH_ROOT . 'media/images/membership/';
-            $sFileName = time();
-            $sFileExt = '';
-
             if ($GLOBALS['MySQL']->getOne("SELECT `Name` FROM `sys_acl_levels` WHERE `Name`='" . $oForm->getCleanValue('Name') . "' LIMIT 1")) {
                 $oForm->aInputs['Name']['error'] = _t('_adm_txt_mlevels_name_err_non_uniq');
-            } elseif (isImage($_FILES['Icon']['type'], $sFileExt) && !empty($_FILES['Icon']['tmp_name']) && move_uploaded_file($_FILES['Icon']['tmp_name'],  $sFilePath . $sFileName . '.' . $sFileExt)) {
+            } 
+            else if (isImage($_FILES['Icon']['type'], $sFileExt) && !empty($_FILES['Icon']['tmp_name']) && move_uploaded_file($_FILES['Icon']['tmp_name'],  $sFilePath . $sFileName . '.' . $sFileExt)) {
                 $sPath = $sFilePath . $sFileName . '.' . $sFileExt;
                 imageResize($sPath, $sPath, 110, 110);
 
@@ -331,12 +334,25 @@ function _getLevelsCreateForm($iLevelId, $bActive = false)
 
                 header('Location: ' . $sSubmitUrl);
                 exit;
-            } else
+            } 
+            else
                 $oForm->aInputs['Icon']['error'] = $oForm->aInputs['Icon']['checker']['error'];
         }
         //--- Edit existing level
         else {
-            $bResult = $oForm->update($iLevelId);
+            $aValsToAdd = array();
+            if(isImage($_FILES['Icon']['type'], $sFileExt) && !empty($_FILES['Icon']['tmp_name']) && move_uploaded_file($_FILES['Icon']['tmp_name'],  $sFilePath . $sFileName . '.' . $sFileExt)) {
+                $aValsToAdd['Icon'] = $sFileName . '.' . $sFileExt;
+
+                $sPath = $sFilePath . $sFileName . '.' . $sFileExt;
+                imageResize($sPath, $sPath, 110, 110);
+                
+                $sIconOld = $GLOBALS['MySQL']->getOne("SELECT `Icon` FROM `sys_acl_levels` WHERE `ID`='" . $iLevelId . "' LIMIT 1");
+                if(!empty($sIconOld))
+                    @unlink($sFilePath . $sIconOld);
+            }          
+
+            $bResult = $oForm->update($iLevelId, $aValsToAdd);
             if($bResult !== false) {
                 deleteStringFromLanguage('_adm_txt_mp_' . strtolower($aLevel['Name']));
 

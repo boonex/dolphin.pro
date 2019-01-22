@@ -1444,6 +1444,7 @@ For any further information please <a href="{1}contact.php">contact us</a>
   '_adm_txt_mlevels_edit' => 'Edit',
   '_adm_txt_mlevels_icon' => 'Image Icon',
   '_adm_txt_mlevels_icon_err' => 'You need to select an image for thumbnail',
+  '_adm_txt_mlevels_icon_info_edit' => 'Leave empty if you want to use previously uploaded icon.',
   '_adm_txt_mlevels_is_used' => 'There are members using the level so it cannot be deleted',
   '_adm_txt_mlevels_levels' => 'Levels',
   '_adm_txt_mlevels_levels_add' => 'Add Level',

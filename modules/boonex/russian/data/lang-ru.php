@@ -1441,6 +1441,7 @@ $LANG= array(
   '_adm_txt_mlevels_edit' => 'Редактировать',
   '_adm_txt_mlevels_icon' => 'Иконка изображения',
   '_adm_txt_mlevels_icon_err' => 'Вы должны выбрать картинку для миниатюры',
+  '_adm_txt_mlevels_icon_info_edit' => 'Оставьте пустым, если Вы хотите использовать ранее загруженное изображение.',
   '_adm_txt_mlevels_is_used' => 'Это членство уже назначено пользователям, поэтому не может быть удалено',
   '_adm_txt_mlevels_levels' => 'Членства',
   '_adm_txt_mlevels_levels_add' => 'Добавить',
