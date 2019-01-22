@@ -71,6 +71,8 @@ if(isset($_POST['create_language'])) {
     foreach($aItems as $aItem)
         $aContent[$aItem['key']] = $aItem['string'];
 
+    ksort($aContent);
+
     $sName = 'lang_' . $aLanguage['Name'] . '.php';
     $sContent = "<?php\n\$aLangInfo=" . var_export($aLanguage, true) . ";\n\$aLangContent=" . var_export($aContent, true) . ";\n?>";
 
