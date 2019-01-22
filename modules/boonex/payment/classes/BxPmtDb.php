@@ -101,19 +101,17 @@ class BxPmtDb extends BxDolModuleDb
         $sCurrencyCode = $this->_oConfig->getCurrencyCode();
         $sCurrencySign = $this->_oConfig->getCurrencySign();
 
-        if($iId == BX_PMT_ADMINISTRATOR_ID) {
-            $iSiteId = $this->_oConfig->getSiteId();
+        if($iId == BX_PMT_ADMINISTRATOR_ID)
             return array(
                 'id' => BX_PMT_ADMINISTRATOR_ID,
                 'username' => BX_PMT_ADMINISTRATOR_USERNAME,
-                'profile_name' => getNickName($iSiteId),
-                'profile_icon' => get_member_icon($iSiteId),
-                'profile_url' => getProfileLink($iSiteId),
+                'profile_name' => getParam('site_title'),
+                'profile_icon' => $GLOBALS['oFunctions']->getMemberThumbnail(0, 'none', false, 'site', true, 'small'),
+                'profile_url' => BX_DOL_URL_ROOT,
                 'status' => 'Active',
                 'currency_code' => $sCurrencyCode,
                 'currency_sign' => $sCurrencySign
             );
-        }
 
         $sSql = "SELECT
                `tp`.`ID` AS `id`,

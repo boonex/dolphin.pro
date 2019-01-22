@@ -5,8 +5,8 @@
                 <div class="pmt-box-collapse" style="background-image:url(<bx_icon_url:toggle.png />)" onclick="javascript:__js_object__.toggle(this)">
                     <img src="<bx_image_url:spacer.gif />" />                
                 </div>
-                <bx_if:show_link>__txt_shopping_cart__ (__items_count__) - __items_price__ __vendor_currency_code__</bx_if:show_link>
-                <bx_if:show_text>__txt_shopping_cart__ (__items_count__) - __items_price__ __vendor_currency_code__</bx_if:show_text>
+                <bx_if:show_link>__txt_shopping_cart__ (__txt_shopping_cart_summary__)</bx_if:show_link>
+                <bx_if:show_text>__txt_shopping_cart__ (__txt_shopping_cart_summary__)</bx_if:show_text>
             </div>
             <div class="pmt-box-cnt bx-def-border-top">
                 <form id="items_from___vendor_id__" name="items_from___vendor_id__" method="POST" action="__process_url__" onsubmit="javascript:return __js_object__.onSubmit(this)">

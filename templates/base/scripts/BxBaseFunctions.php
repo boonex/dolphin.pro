@@ -393,78 +393,88 @@ class BxBaseFunctions
 
     function getMemberThumbnail($iId, $sFloat = 'none', $bGenProfLink = false, $sForceSex = 'visitor', $isAutoCouple = true, $sType = 'medium', $aOnline = array(), $sTmplSfx = '')
     {
-        $aProfile = getProfileInfo($iId);
-        if (!$aProfile)
-            return '';
-
-		$bOnline = 0;
-        $bCouple = ((int)$aProfile['Couple'] > 0) && $isAutoCouple ? true : false;
-
-        $bThumb1 = $bThumb2 = false;
-        $sThumbUrl = $sThumbTwiceUrl = $sThumbUrlCouple = $sThumbTwiceUrlCouple = '';
-        $sThumbSetting = getParam($sType == 'small' ? 'sys_member_info_thumb_icon' : 'sys_member_info_thumb');       
-
-        bx_import('BxDolMemberInfo');
-        $o = BxDolMemberInfo::getObjectInstance($sThumbSetting);
-        $sThumbUrl = $o ? $o->get($aProfile) : '';
-
-        if(!empty($sThumbUrl)) {
-			$o = BxDolMemberInfo::getObjectInstance($sThumbSetting . '_2x');
-	        $sThumbTwiceUrl = $o ? $o->get($aProfile) : '';
-	        if(!$sThumbTwiceUrl)
-	            $sThumbTwiceUrl = $sThumbUrl;
+        $bForceSexSite = $bForceSexVacant = false;
+        if(!$bGenProfLink) {
+            if($sForceSex == 'site')
+                $bForceSexSite = true;
+            else if($sForceSex != 'visitor')
+                $bForceSexVacant = true;
         }
 
-        $bThumb1 = !empty($sThumbUrl) && !empty($sThumbTwiceUrl);
+        $bProfile = false;
+        $aProfile = array();
+        if(!$bForceSexSite) {
+            $aProfile = getProfileInfo($iId);
+            if(!$aProfile)
+                return '';
 
-        $sLink = '';
-        $sUserTitle = '';
-        $sUserInfo = '';
+            $bProfile = true;
+        }
 
-        $oUserStatusView = bx_instance('BxDolUserStatusView');
-        $sStatusIcon = $oUserStatusView->getStatusIcon($iId, 'icon8');
+        $bCouple = $bThumb = $bThumbCouple = false;
+        $sThumbUrl = $sThumbTwiceUrl = $sThumbUrlCouple = $sThumbTwiceUrlCouple = '';
+        $sUserTitle = $sUserLink = $sUserInfo = $sUserStatusIcon = $sUserStatusTitle = '';
 
-        if ($iId > 0) {
-            $sLink = getProfileLink($iId);
+        if($bProfile) {
+            $sThumbSetting = getParam($sType == 'small' ? 'sys_member_info_thumb_icon' : 'sys_member_info_thumb');       
+
+            bx_import('BxDolMemberInfo');
+            $o = BxDolMemberInfo::getObjectInstance($sThumbSetting);
+            $sThumbUrl = $o ? $o->get($aProfile) : '';
+
+            if(!empty($sThumbUrl)) {
+                $o = BxDolMemberInfo::getObjectInstance($sThumbSetting . '_2x');
+                $sThumbTwiceUrl = $o ? $o->get($aProfile) : '';
+                if(!$sThumbTwiceUrl)
+                    $sThumbTwiceUrl = $sThumbUrl;
+            }
+
+            $bThumb = !empty($sThumbUrl) && !empty($sThumbTwiceUrl);
+
+            $oUserStatusView = bx_instance('BxDolUserStatusView');
+            $sUserStatusIcon = $oUserStatusView->getStatusIcon($iId, 'icon8');
+            $sUserStatusTitle = $oUserStatusView->getStatus($iId);
+
+            $sUserLink = getProfileLink($iId);
             $sUserTitle = $this->getUserTitle($iId);
             $sUserInfo = $this->getUserInfo($iId);
+            
+            if((int)$aProfile['Couple'] > 0 && $isAutoCouple) {
+                $bCouple = true;
+                $aProfileCouple = getProfileInfo($aProfile['Couple']);
 
-            if (empty($aOnline) || 0 != (int)$aOnline['is_online'])
-                $bOnline = 1;
-        }
+                $o = BxDolMemberInfo::getObjectInstance($sThumbSetting);
+                $sThumbUrlCouple = $o ? $o->get($aProfileCouple) : '';
 
-        if(!$bGenProfLink) {
-            if ($sForceSex != 'visitor') {
-                $sUserTitle = _t('_Vacant');
-                $sLink = 'javascript:void(0)';
+                if(!empty($sThumbUrlCouple)) {
+                    $o = BxDolMemberInfo::getObjectInstance($sThumbSetting . '_2x');
+                    $sThumbTwiceUrlCouple = $o ? $o->get($aProfileCouple) : '';
+                    if(!$sThumbTwiceUrlCouple)
+                        $sThumbTwiceUrlCouple = $sThumbUrlCouple;
+                }
+
+                $bThumbCouple = !empty($sThumbUrlCouple) && !empty($sThumbTwiceUrlCouple);
             }
         }
 
-        if($bCouple) {
-            $aProfileCouple = getProfileInfo($aProfile['Couple']);
-
-            $o = BxDolMemberInfo::getObjectInstance($sThumbSetting);
-	        $sThumbUrlCouple = $o ? $o->get($aProfileCouple) : '';
-
-	        if(!empty($sThumbUrlCouple)) {
-				$o = BxDolMemberInfo::getObjectInstance($sThumbSetting . '_2x');
-		        $sThumbTwiceUrl = $o ? $o->get($aProfileCouple) : '';
-		        if(!$sThumbTwiceUrlCouple)
-		            $sThumbTwiceUrlCouple = $sThumbUrlCouple;
-	        }
-
-	        $bThumb2 = !empty($sThumbUrlCouple) && !empty($sThumbTwiceUrlCouple);
+        if($bForceSexSite) {
+            $sUserTitle = getParam('site_title');
+            $sUserLink = BX_DOL_URL_ROOT;
+        }
+        else if($bForceSexVacant) {
+            $sUserTitle = _t('_Vacant');
+            $sUserLink = 'javascript:void(0)';
         }
 
         return $GLOBALS['oSysTemplate']->parseHtmlByName($bCouple ? 'thumbnail_couple' . $sTmplSfx . '.html' : 'thumbnail_single' . $sTmplSfx . '.html', array(
-            'iProfId' => $iId ? $iId : 0,
+            'iProfId' => $bProfile ? $iId : 0,
             'sys_thb_float' => 'tbf_' . $sFloat,
             'classes_add' => ($bGenProfLink ? ' thumbnail_block_with_info' : '') . ($sType != 'medium' ? ' thumbnail_block_icon' : ''),
-            'sys_status_icon' => $sStatusIcon,
-            'sys_status_title' => $oUserStatusView->getStatus($iId),
-            'usr_profile_url' => $sLink,
+            'sys_status_icon' => $sUserStatusIcon,
+            'sys_status_title' => $sUserStatusTitle,
+            'usr_profile_url' => $sUserLink,
         	'bx_if:show_thumbnail_image1' => array(
-        		'condition' => $bThumb1,
+        		'condition' => $bThumb,
         		'content' => array(
         			'usr_thumb_url0' => $sThumbUrl,
         			'usr_thumb_url0_2x' => $sThumbTwiceUrl,
@@ -472,7 +482,7 @@ class BxBaseFunctions
         		)
         	),
         	'bx_if:show_thumbnail_image2' => array(
-        		'condition' => $bThumb2,
+        		'condition' => $bThumbCouple,
         		'content' => array(
         			'usr_thumb_url1' => $sThumbUrlCouple,
         			'usr_thumb_url1_2x' => $sThumbTwiceUrlCouple,
@@ -480,13 +490,13 @@ class BxBaseFunctions
         		)
         	),
         	'bx_if:show_thumbnail_letter1' => array(
-        		'condition' => !$bThumb1,
+        		'condition' => !$bThumb,
         		'content' => array(
         			'letter' => mb_substr($sUserTitle, 0, 1)
         		)
         	),
         	'bx_if:show_thumbnail_letter2' => array(
-        		'condition' => !$bThumb2,
+        		'condition' => !$bThumbCouple,
         		'content' => array(
         			'letter' => mb_substr($sUserTitle, 0, 1)
         		)
@@ -497,7 +507,7 @@ class BxBaseFunctions
                 'content' => array(
                     'user_title' => $sUserTitle,
                     'user_info' => $sUserInfo,
-                    'usr_profile_url' => $sLink,
+                    'usr_profile_url' => $sUserLink,
                 ),
             ),
         ));
