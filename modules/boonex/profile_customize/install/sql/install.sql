@@ -54,7 +54,7 @@ INSERT INTO `sys_options` (`Name`, `VALUE`, `kateg`, `desc`, `Type`, `check`, `e
 
 -- action
 SET @iMaxOrder = (SELECT `Order` + 1 FROM `sys_objects_actions` WHERE `Type` = 'Profile' ORDER BY `Order` DESC LIMIT 1);
-INSERT INTO `sys_objects_actions` (`Caption`, `Icon`, `Url`, `Script`, `Eval`, `Order`, `Type`) VALUES('{evalResult}', 'magic', '', '$(''#profile_customize_page'').fadeIn(''slow'');', 'if (defined(''BX_PROFILE_PAGE'') && {ID} == {member_id} && getParam(''bx_profile_customize_enable'') == ''on'') return _t( ''_Customize'' ); else return null;', @iMaxOrder, 'Profile');
+INSERT INTO `sys_objects_actions` (`Caption`, `Icon`, `Url`, `Script`, `Eval`, `Order`, `Type`) VALUES('{evalResult}', 'magic', '', '$(''#profile_customize_page'').fadeIn(''slow'');', 'return array(''evalResult'' => defined(''BX_PROFILE_PAGE'') && {ID} == {member_id} && getParam(''bx_profile_customize_enable'') == ''on'' ? _t( ''_Customize'' ) : null, ''evalResultCssClassWrapper'' => ''bx-phone-hide'');', @iMaxOrder, 'Profile');
 
 -- admin menu
 SET @iMax = (SELECT MAX(`order`) FROM `sys_menu_admin` WHERE `parent_id` = '2');

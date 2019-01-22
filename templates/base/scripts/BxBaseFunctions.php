@@ -224,12 +224,17 @@ class BxBaseFunctions
         if ( is_array($aMatches) and !empty($aMatches) ) {
             // replace all founded markers ;
             foreach( $aMatches[3] as $iMarker => $sMarkerValue ) {
-                if ( is_array($aMemberSettings) and array_key_exists($sMarkerValue, $aMemberSettings) and !array_key_exists($sMarkerValue, $this -> aSpecialKeys) ){
+                if( is_array($aMemberSettings) and array_key_exists($sMarkerValue, $aMemberSettings) and !array_key_exists($sMarkerValue, $this -> aSpecialKeys) ){
                     $sTransformText = str_replace( '{' . $sMarkerValue . '}', $aMemberSettings[$sMarkerValue],  $sTransformText);
-                } else if ( $sMarkerValue == 'evalResult' and $sExecuteCode ) {
+                } 
+                else if(($sMarkerValue == 'evalResult' || substr($sMarkerValue, 0, 10) == 'evalResult') && $sExecuteCode) {
                     //find all special markers into Execute code ;
-                    $sExecuteCode = $this -> markerReplace( $aMemberSettings, $sExecuteCode );
-                    $sTransformText =  str_replace( '{' . $sMarkerValue . '}', eval( $sExecuteCode ),  $sTransformText);
+                    $sExecuteCode = $this -> markerReplace($aMemberSettings, $sExecuteCode);
+                    $sExecuteCode = eval($sExecuteCode);
+                    if(is_array($sExecuteCode))
+                        $sExecuteCode = isset($sExecuteCode[$sMarkerValue]) ? $sExecuteCode[$sMarkerValue] : '';
+
+                    $sTransformText =  str_replace( '{' . $sMarkerValue . '}', $sExecuteCode,  $sTransformText);
                 } else {
                     //  if isset into special keys ;
                     if ( array_key_exists($sMarkerValue, $this -> aSpecialKeys) ) {
@@ -244,8 +249,9 @@ class BxBaseFunctions
 
             // try to translate item ;
             if ( $bTranslate ) {
-                foreach( $aMatches[1] as $iMarker => $sMarkerValue ) if ( $sMarkerValue )
-                    $sTransformText = str_replace( $sMarkerValue , _t( trim($sMarkerValue) ),  $sTransformText);
+                foreach( $aMatches[1] as $iMarker => $sMarkerValue ) 
+                    if ( $sMarkerValue )
+                        $sTransformText = str_replace( $sMarkerValue , _t( trim($sMarkerValue) ),  $sTransformText);
             }
         }
 
@@ -604,8 +610,11 @@ class BxBaseFunctions
                 $sActionLink = $this -> genActionLink( $aKeys, $aRow, 'menuLink', $sTemplateIndexActionLink );
 
                 if ( $sActionLink ) {
+                    $sActionLinkClass = 'actionItem' . ($iIndex % 2 == 0 ? 'Even' : 'Odd') . ' {evalResultCssClassWrapper}';
+                    $sActionLinkClass = $this -> markerReplace($aKeys, $sActionLinkClass, $aRow['Eval']);
+
                     $aActionsItem[] = array (
-                    	'action_link_class' => 'actionItem' . ($iIndex % 2 == 0 ? 'Even' : 'Odd'),
+                    	'action_link_class' => $sActionLinkClass,
                         'action_link' => $sActionLink,
                     );
 
