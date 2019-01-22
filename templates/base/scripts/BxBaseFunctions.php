@@ -227,14 +227,23 @@ class BxBaseFunctions
                 if( is_array($aMemberSettings) and array_key_exists($sMarkerValue, $aMemberSettings) and !array_key_exists($sMarkerValue, $this -> aSpecialKeys) ){
                     $sTransformText = str_replace( '{' . $sMarkerValue . '}', $aMemberSettings[$sMarkerValue],  $sTransformText);
                 } 
-                else if(($sMarkerValue == 'evalResult' || substr($sMarkerValue, 0, 10) == 'evalResult') && $sExecuteCode) {
-                    //find all special markers into Execute code ;
-                    $sExecuteCode = $this -> markerReplace($aMemberSettings, $sExecuteCode);
-                    $sExecuteCode = eval($sExecuteCode);
-                    if(is_array($sExecuteCode))
-                        $sExecuteCode = isset($sExecuteCode[$sMarkerValue]) ? $sExecuteCode[$sMarkerValue] : '';
+                else if(($sMarkerValue == 'evalResult' || substr($sMarkerValue, 0, 10) == 'evalResult')) {
+                    $sExecuteResult = '';
+                    if(!empty($sExecuteCode)) {
+                        $sExecuteCode = $this -> markerReplace($aMemberSettings, $sExecuteCode);
+                        $sExecuteResult = eval($sExecuteCode);
 
-                    $sTransformText =  str_replace( '{' . $sMarkerValue . '}', $sExecuteCode,  $sTransformText);
+                        /*
+                         * Custom keys like 'evalResult...' must be taken from EvalResult array only. 
+                         * It's needed to correctly serve old EvalResult strings.
+                         */
+                        if(is_array($sExecuteResult))
+                            $sExecuteResult = isset($sExecuteResult[$sMarkerValue]) ? $sExecuteResult[$sMarkerValue] : '';
+                        else if($sMarkerValue != 'evalResult')
+                            $sExecuteResult = '';
+                    }
+
+                    $sTransformText =  str_replace( '{' . $sMarkerValue . '}', $sExecuteResult,  $sTransformText);
                 } else {
                     //  if isset into special keys ;
                     if ( array_key_exists($sMarkerValue, $this -> aSpecialKeys) ) {

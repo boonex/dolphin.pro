@@ -281,7 +281,13 @@ class BxSctrModule extends BxDolModule
      */
     function serviceGetCustomizeButton()
     {
-    	return isAdmin() && $this->_oConfig->isEnabled() ? 'oBxSctrMain.showBlock();' : '';
+        if(!isAdmin() || !$this->_oConfig->isEnabled())
+            return '';
+
+    	return array(
+            'evalResult' => 'oBxSctrMain.showBlock();',
+            'evalResultCssClassWrapper' => 'bx-phone-hide'
+        );
     }
     function serviceGetCustomizeBlock($sPage = '', $sTarget = '')
     {

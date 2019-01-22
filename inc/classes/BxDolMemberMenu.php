@@ -246,13 +246,13 @@
                                 && $aReplaced[$sPosition][$iKey]['Caption']
                                 && ($aReplaced[$sPosition][$iKey]['Link'] || $aReplaced[$sPosition][$iKey]['Script']) ) {
 
-                                $sMenuClass = $sPosition == 'top_extra' ? 'extra_item' : '';
+                                $sMenuClass = '';
+                                if($sPosition == 'top_extra') { 
+                                    $sMenuClass = 'extra_item {evalResultCssClassWrapper}';
+                                    $sMenuClass = $oFunctions -> markerReplace($aMemberInfo, $sMenuClass, $aItems['Eval']);
+                                }
 
                                 $sPartCaption = $aReplaced[$sPosition][$iKey]['Caption'];
-                                
-                                //define some settings for "Add Content"
-                                if($aReplaced[$sPosition][$iKey]['Name'] == 'AddContent')
-                                	$sMenuClass .= ' extra_item_add_content';
 
                                 //define some settings for "Member block" ;
                                 if($aReplaced[$sPosition][$iKey]['Name'] == 'MemberBlock') {

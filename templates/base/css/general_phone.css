@@ -8,8 +8,11 @@
 
 	/*--- Extra top menu ---*/
 	div.extra_top_menu table.fixed_menu div.popup_html div.menu_item b.menu_item_username {
-		display: none;
+            display: none;
 	}
+        div.extra_top_menu table.fixed_menu div.popup_html li.extra_item.bx-phone-hide {
+            display: none;
+        }
 
 	/*--- Login Join Form Section ---*/
 	div#login_div div.login_ajax_wrap,
