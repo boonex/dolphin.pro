@@ -1893,6 +1893,7 @@ More info about URI DNSBL: <br />
   '_sys_box_title_download' => 'Download',
   '_sys_box_title_search_keyword' => 'Keyword Search',
   '_sys_box_title_search_people' => 'People Search',
+  '_sys_btn_thumbnail_change' => 'Change Thumbnail',
   '_sys_btn_cover_change' => 'Change Cover',
   '_sys_btn_fans_add_to_admins' => 'To Admins',
   '_sys_btn_fans_confirm' => 'Confirm',

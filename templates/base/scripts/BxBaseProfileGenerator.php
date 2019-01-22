@@ -322,27 +322,38 @@ class BxBaseProfileGenerator extends BxDolProfile
     	$bProfileThumbnail = false;
     	$bProfileThumbnailHref = false;
 
-	    $aProfileThumbnail = BxDolService::call('photos', 'profile_photo', array($p_arr['ID'], 'browse', 'full'), 'Search');
+        $aProfileThumbnail = BxDolService::call('photos', 'profile_photo', array($p_arr['ID'], 'browse', 'full'), 'Search');
     	if(!empty($aProfileThumbnail) && is_array($aProfileThumbnail)) {
-    		$sProfileThumbnail = $aProfileThumbnail['file_url'];
-    		$sProfileThumbnailHref = $aProfileThumbnail['view_url'];
+            $sProfileThumbnail = $aProfileThumbnail['file_url'];
+            $sProfileThumbnailHref = $aProfileThumbnail['view_url'];
 
-    		$bProfileThumbnail = true;
-    		$bProfileThumbnailHref = true;
+            $bProfileThumbnail = true;
+            $bProfileThumbnailHref = true;
 
     	    $aProfileThumbnail2x = BxDolService::call('photos', 'profile_photo', array($p_arr['ID'], 'browse2x', 'full'), 'Search');
-        	if(!empty($aProfileThumbnail2x) && is_array($aProfileThumbnail2x))
+            if(!empty($aProfileThumbnail2x) && is_array($aProfileThumbnail2x))
                 $sProfileThumbnail2x = $aProfileThumbnail['file_url'];
     	}
 
-    	if($bProfileOwner) {
-    		$sProfileThumbnailHref = BxDolService::call('photos', 'get_manage_profile_photo_url', array($p_arr['ID'], 'profile_album_name'));
+    	if($bProfileOwner && BxDolRequest::serviceExists('photos', 'get_manage_profile_photo_url')) {
+            $sProfileThumbnailHref = BxDolService::call('photos', 'get_manage_profile_photo_url', array($p_arr['ID'], 'profile_album_name'));
 
-    		$bProfileThumbnailHref = true;
+            $bProfileThumbnailHref = !empty($sProfileThumbnailHref);
     	}
 
-    	$sProfileCover = BxDolService::call('photos', 'profile_cover', array($p_arr['ID'], 'file'), 'Search');
-    	$bProfileCover = !empty($sProfileCover);
+        $sProfileCoverHref = '';
+        $bProfileCoverHref = false;
+        if(BxDolRequest::serviceExists('photos', 'profile_cover')) {
+            $sProfileCoverHref = BxDolService::call('photos', 'profile_cover', array($p_arr['ID'], 'file'), 'Search');
+            $bProfileCoverHref = !empty($sProfileCoverHref);
+        }
+        
+        $sProfileCoverChangeHref = '';
+        $bProfileCoverChangeHref = false;
+        if($bProfileOwner && BxDolRequest::serviceExists('photos', 'get_album_uploader_url')) {
+            $sProfileCoverChangeHref = BxDolService::call('photos', 'get_album_uploader_url', array($p_arr['ID'], 'profile_cover_album_name'));
+            $bProfileCoverChangeHref = !empty($sProfileCoverChangeHref);
+        }
 
     	bx_import('BxDolMemberInfo');
         $o = BxDolMemberInfo::getObjectInstance('sys_status_message');
@@ -350,74 +361,85 @@ class BxBaseProfileGenerator extends BxDolProfile
 
         $sBackground = '';
         $sBackgroundClass = '';
-        if($bProfileCover) {
-        	$sBackground = $sProfileCover;
-        	$sBackgroundClass = ' sys-pcb-cover';
+        if($bProfileCoverHref) {
+            $sBackground = $sProfileCoverHref;
+            $sBackgroundClass = ' sys-pcb-cover';
         }
         else if($bProfileThumbnail) {
-        	$sBackground = $sProfileThumbnail;
-        	$sBackgroundClass = ' sys-pcb-thumbnail';
+            $sBackground = $sProfileThumbnail;
+            $sBackgroundClass = ' sys-pcb-thumbnail';
         }
 
     	$aTmplVarsMenu = array();
     	$aMenuItems = $GLOBALS['oTopMenu']->getSubItems();
     	foreach($aMenuItems as $aMenuItem)
-    		$aTmplVarsMenu[] = array(
-    			'href' => $aMenuItem['Link'],
-    			'bx_if:show_onclick' => array(
-    				'condition' => !empty($aMenuItem['Onclick']),
-    				'content' => array(
-    					'onclick' => $aMenuItem['Onclick']
-    				)
-    			),
-    			'bx_if:show_target' => array(
-    				'condition' => !empty($aMenuItem['Target']),
-    				'content' => array(
-    					'target' => $aMenuItem['Target']
-    				)
-    			),
-    			'caption' => _t($aMenuItem['Caption'])
-    		);
+            $aTmplVarsMenu[] = array(
+                'href' => $aMenuItem['Link'],
+                'bx_if:show_onclick' => array(
+                    'condition' => !empty($aMenuItem['Onclick']),
+                    'content' => array(
+                        'onclick' => $aMenuItem['Onclick']
+                    )
+                ),
+                'bx_if:show_target' => array(
+                    'condition' => !empty($aMenuItem['Target']),
+                    'content' => array(
+                        'target' => $aMenuItem['Target']
+                    )
+                ),
+                'caption' => _t($aMenuItem['Caption'])
+            );
 
-		$sContent = $GLOBALS['oSysTemplate']->parseHtmlByName('profile_cover.html', array(
-			'background_class' => $sBackgroundClass,
-			'bx_if:show_background' => array(
-				'condition' => !empty($sBackground),
-				'content' => array(
-					'background' => $sBackground
-				)
-			),
-			'bx_if:show_actions' => array(
-				'condition' => $bProfileOwner && BxDolRequest::serviceExists('photos', 'get_album_uploader_url'),
-				'content' => array(
-					'href_upload' => BxDolService::call('photos', 'get_album_uploader_url', array($p_arr['ID'], 'profile_cover_album_name'))
-				)
-			),
-			'bx_if:show_thumbnail_image' => array(
-				'condition' => $bProfileThumbnail,
-				'content' => array(
-					'thumbnail_href' => $sProfileThumbnailHref,
-					'thumbnail' => $sProfileThumbnail,
+        $sContent = $GLOBALS['oSysTemplate']->parseHtmlByName('profile_cover.html', array(
+            'background_class' => $sBackgroundClass,
+            'bx_if:show_background' => array(
+                'condition' => !empty($sBackground),
+                'content' => array(
+                    'background' => $sBackground
+                )
+            ),
+            'bx_if:show_actions' => array(
+                'condition' => $bProfileOwner,
+                'content' => array(
+                    'bx_if:show_action_thumbnail' => array(
+                        'condition' => $bProfileThumbnailHref,
+                        'content' => array(
+                            'href_upload_thumbnail' => $sProfileThumbnailHref
+                        ),
+                    ),
+                    'bx_if:show_action_cover' => array(
+                        'condition' => $bProfileCoverChangeHref,
+                        'content' => array(
+                            'href_upload' => $sProfileCoverChangeHref,
+                        )
+                    )
+                )
+            ),
+            'bx_if:show_thumbnail_image' => array(
+                'condition' => $bProfileThumbnail,
+                'content' => array(
+                    'thumbnail_href' => $sProfileThumbnailHref,
+                    'thumbnail' => $sProfileThumbnail,
                     'thumbnail2x' => $sProfileThumbnail2x,
-				)
-			),
-			'bx_if:show_thumbnail_letter_text' => array(
-				'condition' => !$bProfileThumbnail && !$bProfileThumbnailHref,
-				'content' => array(
-					'letter' => mb_substr($sProfileNickname, 0, 1)
-				)
-			),
-			'bx_if:show_thumbnail_letter_link' => array(
-				'condition' => !$bProfileThumbnail && $bProfileThumbnailHref,
-				'content' => array(
-					'thumbnail_href' => $sProfileThumbnailHref,
-					'letter' => mb_substr($sProfileNickname, 0, 1)
-				)
-			),
-			'nickname' => $sProfileNickname,
-			'status' => $sProfileStatus,
-			'bx_repeat:menu_items' => $aTmplVarsMenu,
-		));
+                )
+            ),
+            'bx_if:show_thumbnail_letter_text' => array(
+                'condition' => !$bProfileThumbnail && !$bProfileThumbnailHref,
+                'content' => array(
+                    'letter' => mb_substr($sProfileNickname, 0, 1)
+                )
+            ),
+            'bx_if:show_thumbnail_letter_link' => array(
+                'condition' => !$bProfileThumbnail && $bProfileThumbnailHref,
+                'content' => array(
+                    'thumbnail_href' => $sProfileThumbnailHref,
+                    'letter' => mb_substr($sProfileNickname, 0, 1)
+                )
+            ),
+            'nickname' => $sProfileNickname,
+            'status' => $sProfileStatus,
+            'bx_repeat:menu_items' => $aTmplVarsMenu,
+        ));
 
     	return array($sContent, array(), array(), true);
     }

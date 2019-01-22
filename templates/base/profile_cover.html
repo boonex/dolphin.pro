@@ -3,7 +3,12 @@
 	<div class="sys-profile-cover-bg-l2"></div>
 	<bx_if:show_actions>
 		<div class="sys-profile-cover-actions bx-def-padding">
-			<a class="bx-btn bx-btn-small sys-pca-change-background" href="__href_upload__" title="<bx_text_attribute:_sys_btn_cover_change />"><i class="sys-icon picture-o sys-pca-icon"></i><span class="sys-pca-text"><bx_text:_sys_btn_cover_change /></span></a>
+                    <bx_if:show_action_thumbnail>
+                        <a class="bx-btn bx-btn-small sys-pca-change-background" href="__href_upload_thumbnail__" title="<bx_text_attribute:_sys_btn_thumbnail_change />"> <i class="sys-icon user sys-pca-icon"></i><span class="sys-pca-text" ><bx_text:_sys_btn_thumbnail_change /></span></a>
+                    </bx_if:show_action_thumbnail>
+                    <bx_if:show_action_cover>
+                        <a class="bx-btn bx-btn-small sys-pca-change-background" href="__href_upload__" title="<bx_text_attribute:_sys_btn_cover_change />"><i class="sys-icon picture-o sys-pca-icon"></i><span class="sys-pca-text"><bx_text:_sys_btn_cover_change /></span></a>
+                    </bx_if:show_action_cover>
 		</div>
 	</bx_if:show_actions>
 	<div class="sys-profile-cover-cnt">

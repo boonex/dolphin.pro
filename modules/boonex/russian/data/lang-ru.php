@@ -1889,6 +1889,7 @@ $LANG= array(
   '_sys_box_title_download' => 'Загрузить',
   '_sys_box_title_search_keyword' => 'Поиск по ключевому слову',
   '_sys_box_title_search_people' => 'Поиск пользователей',
+  '_sys_btn_thumbnail_change' => 'Изменить миниатюру',
   '_sys_btn_cover_change' => 'Изменить обложку',
   '_sys_btn_fans_add_to_admins' => 'В админы',
   '_sys_btn_fans_confirm' => 'Принять',
