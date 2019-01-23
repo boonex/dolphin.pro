@@ -18,8 +18,8 @@ CREATE TABLE `[db_prefix]_main` (
   `Hash` varchar(32) NOT NULL default '',
   PRIMARY KEY  (`ID`),
   UNIQUE KEY `Hash` (`Hash`),
+  UNIQUE KEY `Uri` (`Uri`),
   KEY `Owner` (`Owner`),
-  KEY `Uri` (`Uri`),
   KEY `Date` (`Date`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

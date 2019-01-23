@@ -2852,8 +2852,8 @@ CREATE TABLE `RayMp3Files` (
   `Featured` tinyint(4) NOT NULL,
   `Status` enum('approved','disapproved','pending','processing','failed') NOT NULL default 'pending',
   PRIMARY KEY  (`ID`),
-  KEY (`Owner`),
-  KEY `Uri` (`Uri`)
+  UNIQUE KEY `Uri` (`Uri`), 
+  KEY (`Owner`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -2920,8 +2920,8 @@ CREATE TABLE `RayVideoFiles` (
   `Source` varchar(20) NOT NULL default '',
   `Video` varchar(32) NOT NULL default '',
   PRIMARY KEY  (`ID`),
-  KEY (`Owner`),
-  KEY `Uri` (`Uri`)
+  UNIQUE KEY `Uri` (`Uri`),
+  KEY (`Owner`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 --
@@ -2964,8 +2964,8 @@ CREATE TABLE `RayVideo_commentsFiles` (
   `Views` int(12) default '0',
   `Status` enum('approved','disapproved','pending','processing','failed') NOT NULL default 'pending',
   PRIMARY KEY  (`ID`),
-  KEY (`Owner`),
-  KEY `Uri` (`Uri`)
+  UNIQUE KEY `Uri` (`Uri`),
+  KEY (`Owner`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
