@@ -79,7 +79,7 @@ class BxFilesSearch extends BxTemplSearchResult
                     'Title' => 'title',
                     'DateTimeUTS' => 'date',
                     'Desc' => 'desc',
-                    'Photo' => '',
+                    'Image' => '',
             ),
         ),
         );

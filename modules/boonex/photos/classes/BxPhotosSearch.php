@@ -32,6 +32,7 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
         $this->aCurrent['ownFields'] = array('ID', 'Title', 'Uri', 'Date', 'Size', 'Views', 'Rate', 'RateCount', 'Hash');
         $this->aCurrent['searchFields'] = array('Title', 'Tags', 'Desc', 'Categories');
         $this->aCurrent['rss']['title'] = _t('_bx_photos');
+        $this->aCurrent['rss']['fields']['Image'] = 'Hash';
 
         // redeclaration some unique fav fields
         $this->aAddPartsConfig['favorite']['table'] = 'bx_photos_favorites';
@@ -757,5 +758,10 @@ class BxPhotosSearch extends BxTemplSearchResultSharedMedia
     function getModuleFolder ()
     {
         return 'boonex/photos';
+    }
+
+    function getRssUnitImage (&$a, $sField)
+    {
+        return $this->getImgUrl($a[$sField]);
     }
 }

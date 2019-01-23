@@ -213,7 +213,6 @@ class BxFilesModule extends BxDolFilesModule
         $sRss = bx_get('rss');
         if ($sRss !== false && $sRss) {
             $oSearch->aCurrent['paginate']['perPage'] = 10;
-            header('Content-Type: text/xml; charset=UTF-8');
             echo $oSearch->rss();
             exit;
         }

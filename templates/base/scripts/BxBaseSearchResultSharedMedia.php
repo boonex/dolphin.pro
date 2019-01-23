@@ -99,7 +99,7 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
                     'Title' => 'title',
                     'DateTimeUTS' => 'date',
                     'Desc' => 'desc',
-                    'Photo' => '',
+                    'Image' => '',
                 ),
             ),
         );
