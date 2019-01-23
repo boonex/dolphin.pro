@@ -3408,11 +3408,11 @@ EOF;
         if (is_array($aRssUnits) && count($aRssUnits) > 0) {
 
             foreach ($aRssUnits as $iUnitID => $aUnitInfo) {
-                $sPostLink = '';
                 $iPostID   = (int)$aUnitInfo['UnitID'];
-                $sGenUrl   = $this->genUrl($iPostID, $aUnitInfo['UnitUri']);
+                $sPostLink   = $this->genUrl($iPostID, $aUnitInfo['UnitUri']);
 
                 $aRssUnits[$iUnitID]['UnitLink'] = $sPostLink;
+                $aRssUnits[$iUnitID]['UnitIcon'] = $this->getAdCover($aUnitInfo['UnitIcon'], 'big_thumb');
             }
 
             $sUnitTitleC = _t('_bx_ads_Ads');
@@ -3420,6 +3420,7 @@ EOF;
 
             bx_import('BxDolRssFactory');
             $oRssFactory = new BxDolRssFactory();
+            $oRssFactory->SetRssHeader();
 
             echo $oRssFactory->GenRssByData($aRssUnits, $sUnitTitleC, $sMainLink);
         }

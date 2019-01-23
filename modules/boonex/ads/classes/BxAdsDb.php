@@ -338,7 +338,8 @@ class BxAdsDb extends BxDolDb
                     `{$this->_oConfig->sSQLPostsTable}`.`Subject` AS 'UnitTitle',
                     `{$this->_oConfig->sSQLPostsTable}`.`EntryUri` AS 'UnitUri',
                     `{$this->_oConfig->sSQLPostsTable}`.`Message` AS 'UnitDesc',
-                    `{$this->_oConfig->sSQLPostsTable}`.`DateTime` AS 'UnitDateTimeUTS'
+                    `{$this->_oConfig->sSQLPostsTable}`.`DateTime` AS 'UnitDateTimeUTS',
+                        `{$this->_oConfig->sSQLPostsTable}`.`Media` AS 'UnitIcon'
                 FROM `{$this->_oConfig->sSQLPostsTable}`
                 WHERE `{$this->_oConfig->sSQLPostsTable}`.`Status` = 'active'
                 AND `{$this->_oConfig->sSQLPostsTable}`.`IDProfile` = '{$iPID}'
