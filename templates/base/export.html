@@ -1,0 +1,9 @@
+<div class="bx-def-padding bx_profile_export_content">
+    __content__
+    <script>
+        $.post(site_url + 'export.php?profile_id=__profile_id__', function (oData) {
+            var s = ('undefined' !== typeof(oData.msg) ? oData.msg : 'error occured');
+            $('.bx_profile_export_content').html(s);
+        }, 'json');
+    </script>
+</div>

@@ -945,6 +945,21 @@ function showPopupAnyHtml(sUrl, oCustomOptions) {
 	);
 }
 
+function bx_export_user_data_popup(sProfileId) {
+    if ('undefined' === typeof(sProfileId))
+        sProfileId = 0;
+
+    var sId = 'bx_profile_export';
+    
+    $('#' + sId).remove();
+	$('<div id="' + sId + '" style="display: none;"></div>').prependTo('body').load(
+		site_url + 'export.php?action=popup&profile_id=' + sProfileId ,
+		function() {
+			$(this).dolPopup({});
+		}
+	);
+}
+
 function loadHtmlInPopup(sId, sUrl) {
     var oPopupOptions = {};
 
