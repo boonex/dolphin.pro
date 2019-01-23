@@ -22,7 +22,13 @@ $LANG= array(
   '_ADVICE_H' => 'Advice',
   '_ADVICE_H1' => 'Advice',
   '_ALREADY_ACTIVATED' => 'Your account is already active..',
-  '_ATT_ACTIVE' => '<a href="pedit.php?ID={0}">Edit Profile</a><span class="sys-bullet"></span><a href="javascript:void(0);" onclick="javascript:loadHtmlInPopup(\'explanation_popup\', \'explanation.php?explain=Active\');">Explanation</a><span class="sys-bullet"></span><a href="change_status.php">Suspend</a>',
+  '_ATT_ACTIVE' => '<a href="pedit.php?ID={0}">Edit Profile</a>
+  <span class="sys-bullet"></span>
+  <a href="javascript:void(0);" onclick="javascript:loadHtmlInPopup(\'explanation_popup\', \'explanation.php?explain=Active\');">Explanation</a>
+  <span class="sys-bullet"></span>
+  <a href="change_status.php">Suspend</a>
+  <span class="sys-bullet"></span>
+  <a href="javascript:void(0);" onclick="bx_export_user_data_popup()">Export personal data</a>',
   '_ATT_ACTIVE_E' => 'You are an active member. You can suspend your profile to hide it from others, if needed.',
   '_ATT_APPROVAL' => '<a href="javascript:void(0);" onclick="javascript:loadHtmlInPopup(\'explanation_popup\', \'explanation.php?explain=Approval\');">Info</a>',
   '_ATT_APPROVAL_E' => 'Your profile activation is in progress. Usually it takes up to 24 hours. Thank you for your patience.',
@@ -1921,6 +1927,7 @@ More info about URI DNSBL: <br />
   '_sys_cnts_txt_mutual_friends' => '{0} Mutual Friends',
   '_sys_email_footer_info' => 'To unsubscribe - login to your account, edit your profile and uncheck \'Receive site notifications\'.',
   '_sys_err_categories' => 'please specify at least one category',
+  '_sys_export_success' => 'Data export download link has been sent to your email: {0}',
   '_sys_invitation_step_additional_emails' => 'Additional Emails',
   '_sys_invitation_step_additional_emails_info' => 'Add limited number of emails to send invitation to',
   '_sys_invitation_step_invitation_text' => 'Invitation Text',

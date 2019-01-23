@@ -22,7 +22,13 @@ $LANG= array(
     '_ADVICE_H' => 'Совет',
     '_ADVICE_H1' => 'Совет',
     '_ALREADY_ACTIVATED' => 'Ваш аккаунт уже активирован..',
-    '_ATT_ACTIVE' => '<a href="pedit.php?ID={0}">Изменить</a><span class="sys-bullet"></span><a href="javascript:void(0);" onclick="javascript:loadHtmlInPopup(\'explanation_popup\', \'explanation.php?explain=Active\');">Пояснение</a><span class="sys-bullet"></span><a href="change_status.php">Спрятать</a>',
+    '_ATT_ACTIVE' => '<a href="pedit.php?ID={0}">Изменить</a>
+    <span class="sys-bullet"></span>
+    <a href="javascript:void(0);" onclick="javascript:loadHtmlInPopup(\'explanation_popup\', \'explanation.php?explain=Active\');">Пояснение</a>
+    <span class="sys-bullet"></span>
+    <a href="change_status.php">Спрятать</a>
+    <span class="sys-bullet"></span>
+    <a href="javascript:void(0);" onclick="bx_export_user_data_popup()">Экспортировать персональные данные</a>',
     '_ATT_ACTIVE_E' => 'Вы - активный пользователь. Если нужно, Вы можете спрятать свою учётную запись от остальных.',
     '_ATT_APPROVAL' => '<a href="javascript:void(0);" onclick="javascript:loadHtmlInPopup(\'explanation_popup\', \'explanation.php?explain=Approval\');">Инфо</a>',
     '_ATT_APPROVAL_E' => 'Активация Вашей учётной записи в процессе. Обычно она занимает не более 24 часов. Спасибо за Ваше терпение.',
@@ -1917,6 +1923,7 @@ $LANG= array(
   '_sys_cnts_txt_mutual_friends' => '{0} общих друзей',
   '_sys_email_footer_info' => 'Чтобы отписаться, зайдите в свой аккаунт, отредактируйте свой профиль и уберите отметку с \'Получать уведомления сайта\'.',
   '_sys_err_categories' => 'укажите как минимум одну категорию',
+  '_sys_export_success' => 'Ссылка на скачивание данных была отправлена на емейл: {0}',
   '_sys_invitation_step_additional_emails' => 'Дополнительные электронные адреса',
   '_sys_invitation_step_additional_emails_info' => 'Добавить ограниченное число e-mail адресов для посылки приглашения',
   '_sys_invitation_step_invitation_text' => 'Текст приглашения',
