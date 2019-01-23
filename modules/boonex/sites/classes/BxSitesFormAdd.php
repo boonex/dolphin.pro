@@ -151,10 +151,11 @@ class BxSitesFormAdd extends BxTemplFormView
                     'content' => '',
                     'caption' => 'Thumbnail'
                 ),
-                'photo'         => array(
-                    'type'    => 'file',
-                    'name'    => 'photo',
+                'photo' => array(
+                    'type' => 'file',
+                    'name' => 'photo',
                     'caption' => _t('_bx_sites_form_photo'),
+                    'info' => _t('_bx_sites_form_photo_inf')
                 ),
                 'tags'          => array(
                     'type'     => 'text',

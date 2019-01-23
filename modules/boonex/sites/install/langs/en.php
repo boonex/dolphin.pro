@@ -88,6 +88,7 @@ $aLangContent = array(
   '_bx_sites_form_field_err' => 'incorrect value',
   '_bx_sites_form_other_thumbnail' => 'Other thumbnail',
   '_bx_sites_form_photo' => 'Photo',
+  '_bx_sites_form_photo_inf' => 'Leave this field empty to allow the system to get an image automatically from provided URL.',
   '_bx_sites_form_title' => 'Title',
   '_bx_sites_form_url' => 'Url',
   '_bx_sites_home_top_menu_sitem' => 'Sites Home',

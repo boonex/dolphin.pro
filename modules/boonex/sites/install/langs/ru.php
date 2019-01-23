@@ -88,6 +88,7 @@ $aLangContent = array(
   '_bx_sites_form_field_err' => 'неверное значение',
   '_bx_sites_form_other_thumbnail' => 'Другая миниатюра',
   '_bx_sites_form_photo' => 'Фото',
+  '_bx_sites_form_photo_inf' => 'Оставьте данное поле пустым, чтобы позволить системе получить изображение автоматически из предоставленной ссылки.',
   '_bx_sites_form_title' => 'Заголовок',
   '_bx_sites_form_url' => 'Адрес',
   '_bx_sites_home_top_menu_sitem' => 'Главная',

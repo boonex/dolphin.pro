@@ -35,6 +35,8 @@ class BxSitesFormEdit extends BxSitesFormAdd
         $oCategories->getTagObjectConfig ();
         $this->_aCustomForm['inputs']['categories'] = $oCategories->getGroupChooser ('bx_sites', (int)$this->_oModule->iOwnerId, true, $this->_aParam['categories']);
 
+        $this->_aCustomForm['inputs']['photo']['info'] = '';
+
         $aFormInputsSubmit = array (
             'Submit' => array (
                 'type' => 'submit',

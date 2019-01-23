@@ -1288,6 +1288,8 @@ class BxSitesModule extends BxDolTwigModule
 
     function _addSiteForm()
     {
+        global $dir;
+
         bx_sites_import('FormAdd');
         $oForm = new BxSitesFormAdd($this);
         $sMsgBox = '';
@@ -1310,8 +1312,35 @@ class BxSitesModule extends BxDolTwigModule
                         'categories' => $sCategories
                     );
 
+                    //TODO: Continue from here
                     if (isset($_FILES['photo']['tmp_name']) && $_FILES['photo']['tmp_name'])
                         $aValsAdd['photo'] = $oForm->uploadPhoto($_FILES['photo']['tmp_name']);
+                    else {
+                        $aSiteInfo = getSiteInfo($aParam['url'], array(
+                            'thumbnailUrl' => array('tag' => 'link', 'content_attr' => 'href'),
+                            'OGImage' => array('name_attr' => 'property', 'name' => 'og:image'),
+                        ));
+
+                        $sSiteThumbnailUrl = '';
+                        if(!empty($aSiteInfo['thumbnailUrl']))
+                            $sSiteThumbnailUrl = $aSiteInfo['thumbnailUrl'];
+                        else if(!empty($aSiteInfo['OGImage']))
+                            $sSiteThumbnailUrl = $aSiteInfo['OGImage'];
+
+                        $bImage = false;
+                        $aHeaders = get_headers($sSiteThumbnailUrl);
+                        foreach ($aHeaders as $sHeader) {
+                            $aMatches = array();
+                            if(preg_match("/^Content-Type:\s*([a-z]*)\/([a-z]*)$/i", $sHeader, $aMatches))
+                                if($aMatches[1] == 'image' && in_array($aMatches[2], array('png', 'jpeg', 'gif'))) {
+                                    $bImage = true;
+                                    break;
+                                }
+                        }
+
+                        if($bImage)
+                            $aValsAdd['photo'] = $oForm->uploadPhoto($sSiteThumbnailUrl, true);
+                    }
 
                     $aValsAdd['ownerid'] = $this->iOwnerId;
 
