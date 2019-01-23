@@ -109,6 +109,16 @@ function getLocaleFormat($iCode = BX_DOL_LOCALE_DATE_SHORT, $iType = BX_DOL_LOCA
 }
 
 /**
+ * Get UTC/GMT time string in ISO8601 date format from provided unix timestamp
+ * @param $iUnixTimestamp - unix timestamp
+ * @return ISO8601 formatted date/time string
+ */
+function bx_time_utc($iUnixTimestamp)
+{
+    return gmdate(DATE_ISO8601, (int)$iUnixTimestamp);
+}
+
+/**
  * Function will check on blocked status;
  *
  * @param  : $iFirstProfile (integer) - first profile's id;

@@ -23,11 +23,12 @@ class BxDolRssFactory
     function GenRssByData($aRssData, $sUnitTitleC, $sMainLink)
     {
         return $this->GenRssByCustomData($aRssData, $sUnitTitleC, $sMainLink, array(
+            'Guid' => 'UnitLink',
             'Link' => 'UnitLink',
-            'Guid' => 'UnitID',
             'Title' => 'UnitTitle',
             'DateTimeUTS' => 'UnitDateTimeUTS',
             'Desc' => 'UnitDesc',
+            'Image' => 'UnitIcon'
         ));
     }
 
@@ -48,29 +49,40 @@ class BxDolRssFactory
     {
         global $site;
 
-        $sUnits = '';
         $sRSSLast = '';
-        if (isset($aRssData[0]))
-            $sRSSLast = getLocaleDate($aRssData[0][$aFields['DateTimeUTS']], 6);
+        if(!empty($aRssData) && is_array($aRssData)) {
+            reset($aRssData);
+            $aUnitFirst = current($aRssData);
+
+            $sRSSLast = bx_time_utc($aUnitFirst[$aFields['DateTimeUTS']]);
+        }
 
         if ($iPID > 0)
             $aPIDOwnerInfo = getProfileInfo($iPID);
 
         $iUnitLimitChars = 2000;//(int)getParam('max_blog_preview');
+        $sUnitRSSFeed = '';
         if ($aRssData) {
-            foreach ($aRssData as $iUnitID => $aUnitInfo) {
+            $sTxtReadMore = _t('_Read more');
+
+            foreach ($aRssData as $aUnitInfo) {
                 $sUnitUrl = $aUnitInfo[$aFields['Link']];
                 $sUnitGuid = $aUnitInfo[$aFields['Guid']];
 
-                $sUnitTitle = strmaxwordlen(strip_tags($aUnitInfo[$aFields['Title']]), 100);
-                $sUnitDate = getLocaleDate($aUnitInfo[$aFields['DateTimeUTS']], 6);
+                $sUnitTitle = strip_tags($aUnitInfo[$aFields['Title']]);
+                $sUnitDate = bx_time_utc($aUnitInfo[$aFields['DateTimeUTS']]);
 
-                $sLinkMore = '';
-                if ( strlen( $aUnitInfo[$aFields['Desc']]) > $iUnitLimitChars ) {
-                    $sLinkMore = "... <a href=\"".$sUnitUrl."\">"._t('_Read more')."</a>";
+                $sUnitDesc = '';
+                if(isset($aFields['Desc']) && !empty($aUnitInfo[$aFields['Desc']])) {
+                    $sLinkMore = '';
+                    if ( strlen( $aUnitInfo[$aFields['Desc']]) > $iUnitLimitChars )
+                        $sLinkMore = "... <a href=\"".$sUnitUrl."\">" . $sTxtReadMore . "</a>";
+
+                    $sUnitDesc = "<p>" . mb_substr(strip_tags($aUnitInfo[$aFields['Desc']]), 0, $iUnitLimitChars) . $sLinkMore . "</p>";
                 }
-                $sUnitDescVal = mb_substr(strip_tags($aUnitInfo[$aFields['Desc']]), 0, $iUnitLimitChars) . $sLinkMore;
-                $sUnitDesc = $sUnitDescVal;
+
+                if(isset($aFields['Image']) && !empty($aUnitInfo[$aFields['Image']]))
+                    $sUnitDesc .= "<img src=\"" . $aUnitInfo[$aFields['Image']] . "\" />";
 
                 $sUnitRSSFeed .= "<item><title><![CDATA[{$sUnitTitle}]]></title><link><![CDATA[{$sUnitUrl}]]></link><guid><![CDATA[{$sUnitGuid}]]></guid><description><![CDATA[{$sUnitDesc}]]></description><pubDate>{$sUnitDate}</pubDate></item>";
             }
@@ -89,7 +101,11 @@ class BxDolRssFactory
             $sRSSImage = "<image><url>{$sImage}</url><title>{$sRSSTitle}</title><link>{$sMainLink}</link></image>";
         }
 
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel><title>{$sRSSTitle}</title><link>{$sMainLink}</link><description>{$sRSSTitle}</description><lastBuildDate>{$sRSSLast}</lastBuildDate>{$sRSSImage}{$sUnitRSSFeed}</channel></rss>";
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel><title>{$sRSSTitle}</title><link><![CDATA[{$sMainLink}]]></link><description>{$sRSSTitle}</description><lastBuildDate>{$sRSSLast}</lastBuildDate>{$sRSSImage}{$sUnitRSSFeed}</channel></rss>";
     }
 
+    function SetRssHeader()
+    {
+        header('Content-Type: text/xml; charset=UTF-8');
+    }
 }
