@@ -87,4 +87,12 @@ class BxDolTwigSearchResult extends BxTemplSearchResult
         $this->setPublicUnitsOnly(true);
         return parent::rss();
     }
+
+    function getRssUnitImage (&$a, $sField)
+    {
+        $aImage = array ('ID' => $a['author_id'], 'Avatar' => $a[$sField]);
+        $aImage = BxDolService::call('photos', 'get_image', array($aImage, 'browse'), 'Search');
+
+        return $aImage['no_image'] ? '' : $aImage['file'];
+    }
 }

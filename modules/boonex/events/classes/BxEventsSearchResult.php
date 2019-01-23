@@ -44,7 +44,7 @@ class BxEventsSearchResult extends BxDolTwigSearchResult
                 'Title' => 'Title',
                 'DateTimeUTS' => 'Date',
                 'Desc' => 'Description',
-                'Photo' => '',
+                'Image' => 'PrimPhoto',
             ),
         ),
         'ident' => 'ID'

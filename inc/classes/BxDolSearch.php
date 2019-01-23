@@ -284,8 +284,8 @@ class BxDolSearchResult
         }
 
         require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolRssFactory.php');
-        $oRss = new BxDolRssFactory ();
-
+        $oRss = new BxDolRssFactory();
+        $oRss->SetRssHeader();
         return $oRss->GenRssByCustomData(
             $aData,
             $this->aCurrent['rss']['title'] ? $this->aCurrent['rss']['title'] : $this->aCurrent['title'],

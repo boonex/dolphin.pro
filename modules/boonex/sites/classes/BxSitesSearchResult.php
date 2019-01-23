@@ -42,7 +42,7 @@ class BxSitesSearchResult extends BxTemplSearchResult
                 'Title' => 'title',
                 'DateTimeUTS' => 'date',
                 'Desc' => 'description',
-                'Photo' => '',
+                'Image' => 'photo',
             ),
         ),
         'ident' => 'id'
@@ -410,6 +410,14 @@ class BxSitesSearchResult extends BxTemplSearchResult
     {
         $oMain = $this->getSitesMain();
         return BX_DOL_URL_ROOT . $oMain->_oConfig->getBaseUri() . 'view/' . $a['entryUri'];
+    }
+
+    function getRssUnitImage (&$a, $sField)
+    {
+        $aImage = array ('ID' => $a['author_id'], 'Avatar' => $a[$sField]);
+        $aImage = BxDolService::call('photos', 'get_image', array($aImage, 'browse'), 'Search');
+
+        return $aImage['no_image'] ? '' : $aImage['file'];
     }
 
     function getAlterOrder()

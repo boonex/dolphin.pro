@@ -43,7 +43,7 @@ class BxGroupsSearchResult extends BxDolTwigSearchResult
                 'Title' => 'title',
                 'DateTimeUTS' => 'created',
                 'Desc' => 'desc',
-                'Photo' => '',
+                'Image' => 'thumb',
             ),
         ),
         'ident' => 'id'
