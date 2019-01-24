@@ -11,12 +11,12 @@
          * Main Section.
          */
         'title' => 'Simple Messenger',
-        'version' => '1.3.0',
+        'version' => '1.4.0',
         'vendor' => 'Boonex',
         'update_url' => '',
 
         'compatible_with' => array(
-            '7.3.0'
+            '7.4.0'
         ),
 
         /**
