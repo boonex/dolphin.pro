@@ -136,37 +136,35 @@ div.thumbnail_image_couple img.thumbnail_image_file,
 div.thumbnail_image_couple img.thumbnail_image_file2,
 div.thumbnail_image_couple p.thumbnail_image_letter,
 div.thumbnail_image_couple p.thumbnail_image_letter2 {
-	float: right;
+    float: left;
     width: 32px;
 }
 
 div.thumbnail_image_couple p.thumbnail_image_letter,
 div.thumbnail_image_couple p.thumbnail_image_letter2 {
-	font-size: 36px;
+    font-size: 32px;
 }
 
 div.thumbnail_image_couple img.thumbnail_image_file,
 div.thumbnail_image_couple p.thumbnail_image_letter {
-	border-left-width: 0px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-}
-
-div.thumbnail_image_couple p.thumbnail_image_letter {
-	padding-left: 2px;
-	text-align: left;
-}
-
-div.thumbnail_image_couple img.thumbnail_image_file2,
-div.thumbnail_image_couple p.thumbnail_image_letter2 {
-	border-right-width: 0px;
+    border-right-width: 0px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
 }
 
+div.thumbnail_image_couple p.thumbnail_image_letter {
+    text-align: center;
+}
+
+div.thumbnail_image_couple img.thumbnail_image_file2,
 div.thumbnail_image_couple p.thumbnail_image_letter2 {
-	padding-right: 2px;
-	text-align: right;
+    border-left-width: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+div.thumbnail_image_couple p.thumbnail_image_letter2 {
+    text-align: center;
 }
 
 div.thumbnail_block_icon img.thumbnail_image_file,

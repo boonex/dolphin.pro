@@ -15,6 +15,7 @@ class BxDolProfileFields extends Thing
     var $aBlocks; // array of current blocks
     var $aCache; // full cache of profile fields
     var $aCoupleMutual; //couple mutual fields
+    var $aCoupleMutualCopy; //couple mutual fields, which values should be coppied in second profile.
 
     var $sLinkPref = '#!'; //prefix for values links
 
@@ -659,6 +660,7 @@ class BxDolProfileFields extends Thing
         $aAllItems = $this -> aCache[100][0]['Items'];
 
         $this -> aCoupleMutual = array( 'NickName', 'Password', 'Email', 'Country', 'City', 'zip', 'EmailNotify' );
+        $this -> aCoupleMutualCopy = array('Country', 'City', 'zip');
 
         foreach( $aAllItems as $aItem ) {
             if( $aItem['Name'] == 'Couple' ) {
@@ -681,6 +683,11 @@ class BxDolProfileFields extends Thing
     function getCoupleMutualFields()
     {
         return $this -> aCoupleMutual;
+    }
+
+    function getCoupleMutualFieldsCopy()
+    {
+        return $this -> aCoupleMutualCopy;
     }
 
     function getViewableValue( $aItem, $sValue )

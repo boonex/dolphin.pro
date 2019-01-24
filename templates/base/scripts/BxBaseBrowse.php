@@ -11,6 +11,8 @@ bx_import('BxTemplSearchProfile');
 
 class BxBaseBrowse extends BxDolBrowse
 {
+    var $bShowBothCoupleProfiles = true;
+
     // for block devider ;
     var $aParameters;
 
@@ -23,7 +25,8 @@ class BxBaseBrowse extends BxDolBrowse
     var $aDisplaySettings;
 
     // add this string to all sql queries
-    var $_sSqlActive = "`Profiles`.`Status` = 'Active' and (`Profiles`.`Couple` = 0 or `Profiles`.`Couple` > `Profiles`.`ID`)";
+    var $_sSqlActive = "`Profiles`.`Status` = 'Active'";
+    
 
     /**
      * Class constructor ;
@@ -43,6 +46,9 @@ class BxBaseBrowse extends BxDolBrowse
      */
     function __construct( &$aFilteredSettings, &$aDisplaySettings, $sPageName )
     {
+        if(!$this->bShowBothCoupleProfiles)
+            $this->_sSqlActive .= " AND (`Profiles`.`Couple` = 0 or `Profiles`.`Couple` > `Profiles`.`ID`)";
+
         if ( isset($aFilteredSettings['sex']) and $aFilteredSettings['sex'] == 'all' )
             $aFilteredSettings['sex'] = null;
 

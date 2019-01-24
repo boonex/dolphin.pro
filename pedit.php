@@ -126,6 +126,14 @@ class BxDolPEditProcessor extends BxDolPageView
         if( isset($_POST['do_submit']) ) {
             $this -> oPF -> processPostValues( $this -> bCouple, $this -> aValues, $this -> aErrors, 0, $this -> iProfileID, (int)$_POST['pf_block'] );
 
+            //--- move necessary mutual fields in second profile for correct work of some features like browsing, etc.
+            $aMutualFieldsCopy = $this->oPF->getCoupleMutualFieldsCopy();
+            if(!empty($aMutualFieldsCopy) && is_array($aMutualFieldsCopy)) {
+                $aMutualFieldsCopy = array_intersect_key($this -> aValues[0], array_flip($aMutualFieldsCopy));
+                        
+                $this -> aValues[1] = array_merge($this -> aValues[1], $aMutualFieldsCopy);
+            }
+
             if( empty( $this -> aErrors[0] ) and empty( $this -> aErrors[1] ) ) { // do not save in ajax mode
                 if (!$this -> bAjaxMode or $this->bForceAjaxSave) {
                     $this -> saveProfile();

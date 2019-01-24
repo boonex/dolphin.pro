@@ -53,7 +53,7 @@ class BxDolProfilesController
                 $aNewProfile[$sItemName] = $aData[$sItemName];
             } elseif( $aMainMember and array_key_exists( $sItemName, $aMainMember ) and $aItem['Type'] != 'system' ) {
                 if( $aItem['Unique'] )
-                    $aNewProfile[$sItemName] = $this -> genUniqueValue( $sItemName, $aMainMember[$sItemName] );
+                    $aNewProfile[$sItemName] = $this -> genUniqueValue($sItemName, $aMainMember[$sItemName], ($sItemName == 'NickName' ? '-pair' : false));
                 else
                     $aNewProfile[$sItemName] = $aMainMember[$sItemName];
             } else {
@@ -343,10 +343,12 @@ class BxDolProfilesController
         return db_assoc_arr( "SELECT * FROM `Profiles` WHERE `ID` = " . (int)$iMemberID );
     }
 
-    function genUniqueValue( $sFieldName, $sValue, $bRandMore = false )
+    function genUniqueValue( $sFieldName, $sValue, $mixedRandMore = false )
     {
-        if( $bRandMore )
+        if( $mixedRandMore === true )
             $sRand = '(' . rand(1000, 9999) . ')';
+        else if(is_string($mixedRandMore) && !empty($mixedRandMore))
+            $sRand = $mixedRandMore;
         else
             $sRand = '(2)';
 

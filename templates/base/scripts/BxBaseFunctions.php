@@ -427,25 +427,11 @@ class BxBaseFunctions
         }
 
         $bCouple = $bThumb = $bThumbCouple = false;
-        $sThumbUrl = $sThumbTwiceUrl = $sThumbUrlCouple = $sThumbTwiceUrlCouple = '';
-        $sUserTitle = $sUserLink = $sUserInfo = $sUserStatusIcon = $sUserStatusTitle = '';
+        $sThumbUrl = $sThumbUrlTwice = '';
+        $sThumbUrlCouple = $sThumbUrlCoupleTwice = '';
+        $sUserTitle = $sUserTitleCouple = $sUserLink = $sUserInfo = $sUserStatusIcon = $sUserStatusTitle = '';
 
         if($bProfile) {
-            $sThumbSetting = getParam($sType == 'small' ? 'sys_member_info_thumb_icon' : 'sys_member_info_thumb');       
-
-            bx_import('BxDolMemberInfo');
-            $o = BxDolMemberInfo::getObjectInstance($sThumbSetting);
-            $sThumbUrl = $o ? $o->get($aProfile) : '';
-
-            if(!empty($sThumbUrl)) {
-                $o = BxDolMemberInfo::getObjectInstance($sThumbSetting . '_2x');
-                $sThumbTwiceUrl = $o ? $o->get($aProfile) : '';
-                if(!$sThumbTwiceUrl)
-                    $sThumbTwiceUrl = $sThumbUrl;
-            }
-
-            $bThumb = !empty($sThumbUrl) && !empty($sThumbTwiceUrl);
-
             $oUserStatusView = bx_instance('BxDolUserStatusView');
             $sUserStatusIcon = $oUserStatusView->getStatusIcon($iId, 'icon8');
             $sUserStatusTitle = $oUserStatusView->getStatus($iId);
@@ -453,22 +439,41 @@ class BxBaseFunctions
             $sUserLink = getProfileLink($iId);
             $sUserTitle = $this->getUserTitle($iId);
             $sUserInfo = $this->getUserInfo($iId);
-            
+
+            $sThumbSetting = getParam($sType == 'small' ? 'sys_member_info_thumb_icon' : 'sys_member_info_thumb');       
+
+            //--- get first person thumbs
+            bx_import('BxDolMemberInfo');
+            $o = BxDolMemberInfo::getObjectInstance($sThumbSetting);
+            $sThumbUrl = $o ? $o->get($aProfile) : '';
+
+            if(!empty($sThumbUrl)) {
+                $o = BxDolMemberInfo::getObjectInstance($sThumbSetting . '_2x');
+                $sThumbUrlTwice = $o ? $o->get($aProfile) : '';
+                if(!$sThumbUrlTwice)
+                    $sThumbUrlTwice = $sThumbUrl;
+            }
+
+            $bThumb = !empty($sThumbUrl) && !empty($sThumbUrlTwice);
+
             if((int)$aProfile['Couple'] > 0 && $isAutoCouple) {
                 $bCouple = true;
                 $aProfileCouple = getProfileInfo($aProfile['Couple']);
 
+                $sUserTitleCouple = $this->getUserTitle($aProfile['Couple']);
+
+                //--- get second person thumbs
                 $o = BxDolMemberInfo::getObjectInstance($sThumbSetting);
                 $sThumbUrlCouple = $o ? $o->get($aProfileCouple) : '';
 
                 if(!empty($sThumbUrlCouple)) {
                     $o = BxDolMemberInfo::getObjectInstance($sThumbSetting . '_2x');
-                    $sThumbTwiceUrlCouple = $o ? $o->get($aProfileCouple) : '';
-                    if(!$sThumbTwiceUrlCouple)
-                        $sThumbTwiceUrlCouple = $sThumbUrlCouple;
+                    $sThumbUrlCoupleTwice = $o ? $o->get($aProfileCouple) : '';
+                    if(!$sThumbUrlCoupleTwice)
+                        $sThumbUrlCoupleTwice = $sThumbUrlCouple;
                 }
 
-                $bThumbCouple = !empty($sThumbUrlCouple) && !empty($sThumbTwiceUrlCouple);
+                $bThumbCouple = !empty($sThumbUrlCouple) && !empty($sThumbUrlCoupleTwice);
             }
         }
 
@@ -489,20 +494,20 @@ class BxBaseFunctions
             'sys_status_title' => $sUserStatusTitle,
             'usr_profile_url' => $sUserLink,
         	'bx_if:show_thumbnail_image1' => array(
-        		'condition' => $bThumb,
-        		'content' => array(
-        			'usr_thumb_url0' => $sThumbUrl,
-        			'usr_thumb_url0_2x' => $sThumbTwiceUrl,
-        			'usr_thumb_alt0' => bx_html_attribute($sUserTitle),
-        		)
+                    'condition' => $bThumb,
+                    'content' => array(
+                        'usr_thumb_url0' => $sThumbUrl,
+                        'usr_thumb_url0_2x' => $sThumbUrlTwice,
+                        'usr_thumb_alt0' => bx_html_attribute($sUserTitle),
+                    )
         	),
         	'bx_if:show_thumbnail_image2' => array(
-        		'condition' => $bThumbCouple,
-        		'content' => array(
-        			'usr_thumb_url1' => $sThumbUrlCouple,
-        			'usr_thumb_url1_2x' => $sThumbTwiceUrlCouple,
-        			'usr_thumb_alt1' => bx_html_attribute($sUserTitle),
-        		)
+                    'condition' => $bThumbCouple,
+                    'content' => array(
+                        'usr_thumb_url1' => $sThumbUrlCouple,
+                        'usr_thumb_url1_2x' => $sThumbUrlCoupleTwice,
+                        'usr_thumb_alt1' => bx_html_attribute($sUserTitleCouple),
+                    )
         	),
         	'bx_if:show_thumbnail_letter1' => array(
         		'condition' => !$bThumb,
@@ -513,7 +518,7 @@ class BxBaseFunctions
         	'bx_if:show_thumbnail_letter2' => array(
         		'condition' => !$bThumbCouple,
         		'content' => array(
-        			'letter' => mb_substr($sUserTitle, 0, 1)
+        			'letter' => mb_substr($sUserTitleCouple, 0, 1)
         		)
         	),
             'usr_thumb_title0' => $sUserTitle,
