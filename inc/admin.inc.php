@@ -446,8 +446,13 @@ function bx_admin_profile_change_status($mixedIds, $sStatus, $bSendActMail = FAL
 
     foreach ($mixedIds as $iId) {
         $iId = (int)$iId;
+        $aProfile = getProfileInfo($iId);
 
-        if (!$GLOBALS['MySQL']->query("UPDATE `Profiles` SET `Status` = '$sStatus' WHERE `ID` = $iId"))
+        $aIds = array($iId);
+        if((int)$aProfile['Couple'] > 0)
+            $aIds[] = $aProfile['Couple'];
+
+        if (!$GLOBALS['MySQL']->query("UPDATE `Profiles` SET `Status` = '$sStatus' WHERE `ID` IN (" . $GLOBALS['MySQL']->implode_escape($aIds) . ")"))
             break;
 
         createUserDataFile($iId);

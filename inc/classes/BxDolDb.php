@@ -631,6 +631,33 @@ class BxDolDb
     }
 
     /**
+     * This function is usefull when you need to form array of parameters to pass to IN(...) SQL construction.
+     * Example:
+     * @code
+     * $a = array(2, 4.5, 'apple', 'car');
+     * $s = "SELECT * FROM `t` WHERE `a` IN (" . $oDb->implode_escape($a) . ")";
+     * echo $s; // outputs: SELECT * FROM `t` WHERE `a` IN (2, 4.5, 'apple', 'car')
+     * @endcode
+     *
+     * @param $mixed array or parameters or just one paramter
+     * @return string which is ready to pass to IN(...) SQL construction
+     */
+    public function implode_escape ($mixed)
+    {
+        if (is_array($mixed)) {
+            $s = '';
+            foreach ($mixed as $v)
+                $s .= (is_numeric($v) ? $v : $this->escape($v)) . ',';
+            if ($s)
+                return substr($s, 0, -1);
+            else
+                return 'NULL';
+        }
+
+        return is_numeric($mixed) ? $mixed : ($mixed ? $this->escape($mixed) : 'NULL');
+    }
+
+    /**
      * @deprecated
      * @param $mixed
      * @return array|mixed
