@@ -9,12 +9,12 @@ $aConfig = array(
      * Main Section.
      */
     'title' => 'OAuth2 Server',
-    'version' => '1.3.0',
+    'version' => '1.4.0',
     'vendor' => 'BoonEx',
     'update_url' => '',
 
     'compatible_with' => array(
-        '7.3.0'
+        '7.4.0'
     ),
 
     /**
