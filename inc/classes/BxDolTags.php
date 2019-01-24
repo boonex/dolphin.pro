@@ -122,10 +122,9 @@ class BxDolTags
         if(empty($sResult))
             return;
 
-        $oField = $this->oDb->fetchField($sQuerySelect, 0);
-        if($oField && ($i = mb_stripos($sQuerySelect, 'WHERE')) !== false && mb_stripos($sQuerySelect, 'JOIN') === false)
-            $this->oDb->query("UPDATE `{$oField->table}` SET `{$oField->name}` = '" . process_db_input($sResult) . "' " . mb_substr($sQuerySelect, $i));
-            
+        $aField = $this->oDb->fetchField($sQuerySelect, 0);
+        if($aField && ($i = mb_stripos($sQuerySelect, 'WHERE')) !== false && mb_stripos($sQuerySelect, 'JOIN') === false)
+            $this->oDb->query("UPDATE `{$aField['table']}` SET `{$aField['name']}` = '" . process_db_input($sResult) . "' " . mb_substr($sQuerySelect, $i));
     }
 
     function getTagList($aParam)

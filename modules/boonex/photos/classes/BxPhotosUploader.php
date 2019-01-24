@@ -77,8 +77,17 @@ class BxPhotosUploader extends BxDolFilesUploader
     function serviceAcceptEmbedFile()
     {
         $sErrorReturn = '<script type="text/javascript">parent.' . $this->_sJsPostObject . '.showErrorMsg("photo_embed_failed_message");parent.' . $this->_sJsPostObject . '.resetEmbed();</script>';
-        $sPhotoId = substr(trim($_POST['embed']), -11, 10);
-        if(empty($sPhotoId)) return $sErrorReturn;
+
+        $sEmbed = process_db_input(bx_get('embed'));
+
+        $aMatches = array();
+        if(!preg_match("/^https?:\/\/(www.)?flickr.com\/photos\/([0-9A-Za-z_@-]+)\/([0-9]{11})\/$/i", $sEmbed, $aMatches))
+            return $sErrorReturn;
+
+        if(empty($aMatches[3]))
+            return $sErrorReturn;
+
+        $sPhotoId = $aMatches[3];
 
         $sApiKey = $this->oModule->_oConfig->getGlParam('flickr_photo_api');
         $sPhotoUrl = str_replace("#api_key#", $sApiKey, FLICKR_PHOTO_RSS);
@@ -125,37 +134,43 @@ class BxPhotosUploader extends BxDolFilesUploader
     function serviceAcceptFileInfo()
     {
         $iAuthorId = $this->_getAuthorId();
-        $sJSPhotoId = (int)$_POST['file_id'];
-        switch($_POST['type']) {
+
+        $sType = process_db_input($_POST['type']);
+        $iFileId = (int)$_POST['file_id'];
+        switch($sType) {
             case 'embed':
             case 'record':
                 global $sFilesPath;
-                $iPhotoID = (int)$this->performPhotoUpload($sFilesPath . $iAuthorId . IMAGE_EXTENSION, array(), false, false);
+                $iPhotoId = (int)$this->performPhotoUpload($sFilesPath . $iAuthorId . IMAGE_EXTENSION, array(), false, false);
                 removeFiles($iAuthorId);
                 break;
+
             case 'upload':
             default:
-                $iPhotoID = $sJSPhotoId;
+                $iPhotoId = $iFileId;
                 break;
         }
 
-        if ($iPhotoID && $iAuthorId) {
+        if($iPhotoId && $iAuthorId) {
             $sTitle = $_POST['title'];
             $sTags = $_POST['tags'];
+            if($sType == 'embed' && !empty($sTags) && strpos($sTags, BX_DOL_TAGS_DIVIDER) === false)
+                $sTags = str_replace(' ', BX_DOL_TAGS_DIVIDER, $sTags);
             $sDescription = $_POST['description'];
 
             $aCategories = array();
-            foreach ($_POST['Categories'] as $sKey => $sVal) {
-                if ($sVal != '') {
+            foreach($_POST['Categories'] as $sKey => $sVal)
+                if($sVal != '')
                     $aCategories[] = $sVal;
-                }
-            }
             $sCategories = implode(CATEGORIES_DIVIDER, $aCategories);
-            if ($this->initFile($iPhotoID, $sTitle, $sCategories, $sTags, $sDescription)) {
-                $this->alertAdd($iPhotoID);
-                return '<script type="text/javascript">parent.' . $this->_sJsPostObject . '.onSuccessSendingFileInfo("' . $sJSPhotoId . '");</script>';
+
+            if($this->initFile($iPhotoId, $sTitle, $sCategories, $sTags, $sDescription)) {
+                $this->alertAdd($iPhotoId);
+
+                return '<script type="text/javascript">parent.' . $this->_sJsPostObject . '.onSuccessSendingFileInfo("' . $iFileId . '");</script>';
             }
         }
+
         return '<script type="text/javascript">parent.' . $this->_sJsPostObject . '.showErrorMsg("photo_failed_message");</script>';
     }
 

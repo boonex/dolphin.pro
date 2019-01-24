@@ -33,9 +33,9 @@ class BxPhotosConfig extends BxDolFilesConfig
         $this->aDefaultAlbums[] = 'profile_cover_album_name';
 
         if(!defined("FLICKR_PHOTO_RSS"))
-            define("FLICKR_PHOTO_RSS", "http://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=#api_key#&photo_id=#photo#");
+            define("FLICKR_PHOTO_RSS", "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=#api_key#&photo_id=#photo#");
         if(!defined("FLICKR_PHOTO_URL"))
-            define("FLICKR_PHOTO_URL", "http://farm#farm#.static.flickr.com/#server#/#id#_#secret##mode#.#ext#");
+            define("FLICKR_PHOTO_URL", "https://farm#farm#.static.flickr.com/#server#/#id#_#secret##mode#.#ext#");
 
         $this->initConfig();
     }

@@ -192,17 +192,17 @@ BxPhotoUpload.prototype.resetUpload = function () {
 }
 
 BxPhotoUpload.prototype.resetEmbed = function () {
-	var tText = $('#photo_upload_form [name="embed"]');
-	tText.attr("value", "");
-	shPhotoEnableSubmit(false);
+    $('#photo_upload_form [name="embed"]').attr("value", "");
+
+    shPhotoEnableSubmit(false);
 }
 
 BxPhotoUpload.prototype.checkEmbed = function (bAlert) {
-	var tText = $('#photo_upload_form [name="embed"]');
-	var sText = tText.attr("value").split(" ").join("");
+    var sText = $('#photo_upload_form [name="embed"]').attr("value").split(" ").join("");
 
-	var bResult = /^https?:\/\/(www.)?flickr.com\/photos\/([0-9A-Za-z_@-]+)\/([0-9]{10})\/$/.test(sText) && $('#photo_accepted_files_block').text() == "";
-	if (bAlert && !bResult)
+    var bResult = /^https?:\/\/(www.)?flickr.com\/photos\/([0-9A-Za-z_@-]+)\/([0-9]{11})\/$/.test(sText) && $('#photo_accepted_files_block').text() == "";
+    if(bAlert && !bResult)
         alert(_t('_bx_photos_emb_err'));
-	return bResult;
+
+    return bResult;
 }
