@@ -19,7 +19,10 @@ bx_import('BxDolExportQuery');
  * order - order in which this sitemap is generated
  * active - is object active, allowed values 0 or 1
  *
- * You can refer to BoonEx modules for sample record in this table and sample classes.
+ * You can refer to BoonEx modules for sample records in this table and sample classes.
+ *
+ * When writing export queries, make sure that data which isn't belonging 
+ * to the exported user is anomyzed. 
  */
 class BxDolExport
 {

@@ -113,3 +113,6 @@ DELETE FROM `sys_objects_site_maps` WHERE `object` = 'bx_events';
 -- chart
 DELETE FROM `sys_objects_charts` WHERE `object` = 'bx_events';
 
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_events';
+
