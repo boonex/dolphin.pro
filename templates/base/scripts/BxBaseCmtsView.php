@@ -84,7 +84,7 @@ class BxBaseCmtsView extends BxDolCmts
             $sRet .= '<li class="cmt-no">' . _t('_There are no comments yet') . '</li>';
         else {
             $i = 0;
-            for ( reset($aCmts) ; list ($k, $r) = each ($aCmts) ;  ++$i) {
+            foreach ($aCmts as $k => $r) {
             	$sAnchor = $this->_getAnchor($r['cmt_id']);
 
                 $sClass = '';
