@@ -69,7 +69,6 @@ class BxEventsExport extends BxDolExport
     protected function _getFilePath($sTableName, $sField, $sFileName, $sPrefix, $sExt)
     {
         $s = $sFileName;
-        echo $this->_sFilesBaseDir . substr($s, 0, 1) . '/' . substr($s, 0, 2) . '/' . substr($s, 0, 3) . '/' . $s . '<br />';
         return $this->_sFilesBaseDir . substr($s, 0, 1) . '/' . substr($s, 0, 2) . '/' . substr($s, 0, 3) . '/' . $s;
     }
 }
