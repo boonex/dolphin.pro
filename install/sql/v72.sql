@@ -3923,4 +3923,6 @@ CREATE TABLE IF NOT EXISTS `sys_objects_exports` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `sys_objects_exports` (`object`, `title`, `class_name`, `class_file`, `order`, `active`) VALUES
-('profiles', '_Profiles', 'BxDolExportProfile', '', 1, 1);
+('profiles', '_Profiles', 'BxDolExportProfile', '', 1, 1),
+('flash', '_adm_admtools_Flash', 'BxDolExportFlash', '', 2, 1);
+
