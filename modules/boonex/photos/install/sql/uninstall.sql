@@ -74,6 +74,9 @@ DELETE FROM `sys_objects_site_maps` WHERE `object` = '[db_prefix]' OR `object` =
 -- chart
 DELETE FROM `sys_objects_charts` WHERE `object` = '[db_prefix]';
 
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = '[db_prefix]';
+
 -- member info
 DELETE FROM `sys_objects_member_info` WHERE `object` = 'bx_photos_thumb' OR `object` = 'bx_photos_icon';
 
