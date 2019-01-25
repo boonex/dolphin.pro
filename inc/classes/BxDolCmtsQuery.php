@@ -71,7 +71,7 @@ class BxDolCmtsQuery extends BxDolDb
             $aCmts[$k]['cmt_ago'] = defineTimeInterval($aCmt['cmt_time_ts']);
         }
 
-        return $a;
+        return $aCmts;
     }
 
     function getComment ($iId, $iCmtId, $iAuthorId = 0)
