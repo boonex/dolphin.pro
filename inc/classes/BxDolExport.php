@@ -232,16 +232,21 @@ class BxDolExport
     {
         if (!$oStmt->rowCount())
             return array();
+
         $aFiles = array();
         while ($r = $oStmt->fetch(PDO::FETCH_ASSOC)) {
-            foreach ($aFields as $sField => $aPrefix2Ext) {
-                foreach ($aPrefix2Ext as $sPrefix => $sExt) {                    
-                    $sPath = $this->_getFilePath($sTableName, $sField, $r[$sField], $sPrefix, $sExt);
-                    if (file_exists($sPath))
-                        $aFiles[] = $sPath;
+            if(is_a($aFields, 'BxDolExportFiles'))
+                $aFields->perform($r, $aFiles);
+            else
+                foreach ($aFields as $sField => $aPrefix2Ext) {
+                    foreach ($aPrefix2Ext as $sPrefix => $sExt) {                    
+                        $sPath = $this->_getFilePath($sTableName, $sField, $r[$sField], $sPrefix, $sExt);
+                        if (file_exists($sPath))
+                            $aFiles[] = $sPath;
+                    }
                 }
-            }
         }
+
         return $aFiles;
     }
     
@@ -266,4 +271,16 @@ class BxDolExport
         $s .= ";\n\n";
         return $s;
     }
+}
+
+class BxDolExportFiles
+{
+    protected $_sBaseDir;
+
+    public function __construct($sBaseDir)
+    {
+        $this->_sBaseDir = $sBaseDir;
+    }
+
+    public function perform($aRow, &$aFiles) {}
 }
