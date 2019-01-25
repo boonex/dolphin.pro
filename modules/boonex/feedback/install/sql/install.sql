@@ -81,7 +81,7 @@ INSERT INTO `sys_menu_top` (`Parent`, `Name`, `Caption`, `Link`, `Order`, `Visib
 
 SET @iOrder = (SELECT MAX(`order`) FROM `sys_menu_admin` WHERE `parent_id`='2');
 INSERT INTO `sys_menu_admin`(`parent_id`, `name`, `title`, `url`, `description`, `icon`, `icon_large`, `check`, `order`) VALUES
-(2, 'bx_feedback', '_feedback_admin_menu_sitem', '{siteUrl}modules/?r=feedback/admin/', 'For managing member\'s feedback', 'thumbs-up', '', '', @iOrder+1);
+(2, 'bx_feedback', '_feedback_admin_menu_sitem', '{siteUrl}modules/?r=feedback/admin/', 'For managing member''s feedback', 'thumbs-up', '', '', @iOrder+1);
 
 
 INSERT INTO `sys_permalinks`(`standard`, `permalink`, `check`) VALUES('modules/?r=feedback/', 'm/feedback/', 'permalinks_module_feedback');
@@ -156,3 +156,7 @@ SET @iMaxOrderCharts = (SELECT MAX(`order`)+1 FROM `sys_objects_charts`);
 INSERT INTO `sys_objects_charts` (`object`, `title`, `table`, `field_date_ts`, `field_date_dt`, `query`, `active`, `order`) VALUES
 ('bx_feedback', '_feedback_chart', 'bx_fdb_entries', 'date', '', '', 1, @iMaxOrderCharts);
 
+-- export
+SET @iMaxOrderExports = (SELECT MAX(`order`)+1 FROM `sys_objects_exports`);
+INSERT INTO `sys_objects_exports` (`object`, `title`, `class_name`, `class_file`, `order`, `active`) VALUES
+('bx_feedback', '_feedback', 'BxFdbExport', 'modules/boonex/feedback/classes/BxFdbExport.php', @iMaxOrderExports, 1);

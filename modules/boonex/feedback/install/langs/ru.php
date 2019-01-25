@@ -6,6 +6,8 @@
 
 $aLangContent = array(
   '_sys_module_feedback' => 'Отзывы',
+
+  '_feedback' => 'Отзывы',
   '_feedback_actions_delete' => 'Удалить',
   '_feedback_admin_menu_sitem' => 'Отзывы',
   '_feedback_bcaption_all_tags' => 'Все теги',

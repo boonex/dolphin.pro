@@ -217,3 +217,7 @@ SET @iMaxOrderCharts = (SELECT MAX(`order`)+1 FROM `sys_objects_charts`);
 INSERT INTO `sys_objects_charts` (`object`, `title`, `table`, `field_date_ts`, `field_date_dt`, `query`, `active`, `order`) VALUES
 ('bx_news', '_news_chart', 'bx_news_entries', 'when', '', '', 1, @iMaxOrderCharts);
 
+-- export
+SET @iMaxOrderExports = (SELECT MAX(`order`)+1 FROM `sys_objects_exports`);
+INSERT INTO `sys_objects_exports` (`object`, `title`, `class_name`, `class_file`, `order`, `active`) VALUES
+('bx_news', '_news', 'BxNewsExport', 'modules/boonex/news/classes/BxNewsExport.php', @iMaxOrderExports, 1);

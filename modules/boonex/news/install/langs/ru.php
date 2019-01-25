@@ -6,6 +6,8 @@
 
 $aLangContent = array(
   '_sys_module_news' => 'Новости',
+
+  '_news' => 'Новости',
   '_news_actions_delete' => 'Удалить',
   '_news_admin_menu_sitem' => 'Новости',
   '_news_archive_top_menu_sitem' => 'Архив',

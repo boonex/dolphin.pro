@@ -49,3 +49,5 @@ DELETE FROM `sys_objects_site_maps` WHERE `object` = 'bx_articles';
 -- chart
 DELETE FROM `sys_objects_charts` WHERE `object` = 'bx_articles';
 
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_articles';

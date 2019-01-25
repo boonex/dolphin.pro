@@ -41,3 +41,5 @@ DELETE FROM `sys_objects_site_maps` WHERE `object`='bx_feedback';
 -- chart
 DELETE FROM `sys_objects_charts` WHERE `object` = 'bx_feedback';
 
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_feedback';

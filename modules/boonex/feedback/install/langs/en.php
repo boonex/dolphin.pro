@@ -6,6 +6,8 @@
 
 $aLangContent = array(
   '_sys_module_feedback' => 'Feedback',
+
+  '_feedback' => 'Feedback',
   '_feedback_actions_delete' => 'Delete',
   '_feedback_admin_menu_sitem' => 'Feedback',
   '_feedback_bcaption_all_tags' => 'All Tags',

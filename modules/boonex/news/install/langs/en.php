@@ -6,6 +6,8 @@
 
 $aLangContent = array(
   '_sys_module_news' => 'News',
+
+  '_news' => 'News',
   '_news_actions_delete' => 'Delete',
   '_news_admin_menu_sitem' => 'News',
   '_news_archive_top_menu_sitem' => 'News Archive',

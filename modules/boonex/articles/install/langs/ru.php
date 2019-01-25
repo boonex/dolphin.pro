@@ -6,6 +6,8 @@
 
 $aLangContent = array(
   '_sys_module_articles' => 'Статьи',
+
+  '_articles' => 'Статьи',
   '_articles_actions_delete' => 'Удалить',
   '_articles_admin_menu_sitem' => 'Статьи',
   '_articles_archive_top_menu_sitem' => 'Архив',
