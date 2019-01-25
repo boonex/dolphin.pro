@@ -6,8 +6,10 @@
 
 $aLangContent = array(
     '_sys_module_wall' => 'Timeline',
-	'_wall_pc_view' => 'Timeline',
-	'_wall_pc_view_index_tl' => 'Timeline',
+
+    '_wall' => 'Timeline',
+    '_wall_pc_view' => 'Timeline',
+    '_wall_pc_view_index_tl' => 'Timeline',
     '_wall_pc_view_profile_tl' => 'Timeline',
     '_wall_pc_view_account_tl' => 'Friends Timeline',
     '_wall_pc_view_index_ol' => 'Outline',

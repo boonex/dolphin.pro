@@ -36,3 +36,6 @@ DELETE FROM `sys_email_templates` WHERE `Name` IN ('t_sbsWallUpdates');
 
 -- chart
 DELETE FROM `sys_objects_charts` WHERE `object` = 'bx_wall';
+
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_wall';

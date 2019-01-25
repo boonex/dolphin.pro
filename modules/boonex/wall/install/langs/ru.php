@@ -6,8 +6,10 @@
 
 $aLangContent = array(
     '_sys_module_wall' => 'Линейка',
-	'_wall_pc_view' => 'Линейка',
-	'_wall_pc_view_index_tl' => 'Линейка',
+
+    '_wall' => 'Линейка',
+    '_wall_pc_view' => 'Линейка',
+    '_wall_pc_view_index_tl' => 'Линейка',
     '_wall_pc_view_profile_tl' => 'Линейка',
     '_wall_pc_view_account_tl' => 'Друзья',
     '_wall_pc_view_index_ol' => 'Обзор',
