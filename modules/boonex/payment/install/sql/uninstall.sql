@@ -30,5 +30,8 @@ DELETE FROM `sys_email_templates` WHERE `Name` IN ('bx_pmt_paid_need_join');
 -- chart
 DELETE FROM `sys_objects_charts` WHERE `object` = 'bx_pmt';
 
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_pmt';
+
 -- payments
 DELETE FROM `sys_objects_payments` WHERE `object` = @sModuleName;

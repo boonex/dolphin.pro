@@ -43,5 +43,9 @@ DELETE FROM `sys_email_templates` WHERE `Name` IN ('bx_pfw_paid_need_join');
 DELETE FROM `sys_objects_charts` WHERE `object` = @sModuleName;
 
 
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = @sModuleName;
+
+
 -- payments
 DELETE FROM `sys_objects_payments` WHERE `object` = @sModuleName;

@@ -6,6 +6,8 @@
 
 $aLangContent = array(
     '_sys_module_payment' => 'Платежи',
+
+    '_payment' => 'Платежи',
     '_payment_pcpt_details' => 'Детали платежей',
     '_payment_pcpt_view_cart' => 'Корзина',
     '_payment_pcpt_admin' => 'Платежи',

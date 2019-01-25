@@ -6,6 +6,8 @@
 
 $aLangContent = array(
 	'_sys_module_payflow' => 'PayPal PayFlow Pro',
+
+        '_bx_pfw' => 'PayPal PayFlow Pro',
 	'_bx_pfw_pcpt_join' => 'Join',
 	'_bx_pfw_bcpt_join' => 'Join',
 	'_bx_pfw_chart' => 'Transactions',

@@ -151,6 +151,11 @@ SET @iMaxOrderCharts = (SELECT MAX(`order`)+1 FROM `sys_objects_charts`);
 INSERT INTO `sys_objects_charts` (`object`, `title`, `table`, `field_date_ts`, `field_date_dt`, `query`, `active`, `order`) VALUES
 ('bx_pmt', '_payment_chart', 'bx_pmt_transactions', 'date', '', '', 1, @iMaxOrderCharts);
 
+-- export
+SET @iMaxOrderExports = (SELECT MAX(`order`)+1 FROM `sys_objects_exports`);
+INSERT INTO `sys_objects_exports` (`object`, `title`, `class_name`, `class_file`, `order`, `active`) VALUES
+('bx_pmt', '_payment', 'BxPmtExport', 'modules/boonex/payment/classes/BxPmtExport.php', @iMaxOrderExports, 1);
+
 -- payments
 INSERT INTO `sys_objects_payments` (`object`, `title`, `uri`) VALUES
 (@sModuleName, '_sys_module_payment', 'payment');

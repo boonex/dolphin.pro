@@ -163,6 +163,12 @@ INSERT INTO `sys_objects_charts` (`object`, `title`, `table`, `field_date_ts`, `
 (@sModuleName, '_bx_pfw_chart', 'bx_pfw_transactions', 'date', '', '', 1, @iMaxOrderCharts);
 
 
+-- export
+SET @iMaxOrderExports = (SELECT MAX(`order`)+1 FROM `sys_objects_exports`);
+INSERT INTO `sys_objects_exports` (`object`, `title`, `class_name`, `class_file`, `order`, `active`) VALUES
+(@sModuleName, '_bx_pfw', 'BxPfwExport', 'modules/boonex/paypal_payflow/classes/BxPfwExport.php', @iMaxOrderExports, 1);
+
+
 -- payments
 INSERT INTO `sys_objects_payments` (`object`, `title`, `uri`) VALUES
 (@sModuleName, '_sys_module_payflow', 'payflow');
