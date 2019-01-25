@@ -53,7 +53,7 @@ class BxDolProfilesController
                 $aNewProfile[$sItemName] = $aData[$sItemName];
             } elseif( $aMainMember and array_key_exists( $sItemName, $aMainMember ) and $aItem['Type'] != 'system' ) {
                 if( $aItem['Unique'] )
-                    $aNewProfile[$sItemName] = $this -> genUniqueValue($sItemName, $aMainMember[$sItemName], ($sItemName == 'NickName' ? '-pair' : false));
+                    $aNewProfile[$sItemName] = $this -> genUniqueValue($sItemName, $aMainMember[$sItemName]);
                 else
                     $aNewProfile[$sItemName] = $aMainMember[$sItemName];
             } else {
