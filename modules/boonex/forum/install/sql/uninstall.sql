@@ -44,3 +44,6 @@ DELETE FROM `sys_objects_site_maps` WHERE `object` = 'bx_forum';
 -- chart
 DELETE FROM `sys_objects_charts` WHERE `object` = 'bx_forum';
 
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_forum';
+

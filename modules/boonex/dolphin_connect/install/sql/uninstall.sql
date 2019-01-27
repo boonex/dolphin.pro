@@ -36,4 +36,7 @@ DELETE FROM `sys_permalinks` WHERE `standard`  = 'modules/?r=dolphcon/';
 
 DELETE FROM `sys_objects_charts` WHERE `object` = 'bx_dolphcon';
 
+-- Export
+
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_dolphcon';
 

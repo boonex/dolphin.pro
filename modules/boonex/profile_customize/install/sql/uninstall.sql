@@ -16,3 +16,7 @@ DELETE FROM `sys_objects_actions` WHERE `Type` = 'Profile' AND `Eval` LIKE '%bx_
 
 -- delete from admin-menu
 DELETE FROM `sys_menu_admin` WHERE `name` = 'bx_profile_customize';
+
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_profile_customize';
+

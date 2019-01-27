@@ -14,3 +14,7 @@ DELETE FROM `sys_page_compose` WHERE `Caption`='_crss_Custom_Feeds' AND `Func`='
 
 -- site stats
 DELETE FROM `sys_stat_site` WHERE `Name`='crss';
+
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_crss';
+

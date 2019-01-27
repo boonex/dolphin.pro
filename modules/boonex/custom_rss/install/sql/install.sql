@@ -30,3 +30,9 @@ INSERT INTO `sys_page_compose` (`ID`, `Page`, `PageWidth`, `Desc`, `Caption`, `C
 -- site stats
 SET @iStatSiteOrder := (SELECT `StatOrder` + 1 FROM `sys_stat_site` WHERE 1 ORDER BY `StatOrder` DESC LIMIT 1);
 INSERT INTO `sys_stat_site` VALUES(NULL, 'crss', 'crss_ss', '', 'SELECT COUNT(`ID`) FROM `[db_prefix]_main` WHERE `Status`=''active''', 'modules/boonex/custom_rss/post_mod_crss.php', 'SELECT COUNT(`ID`) FROM `[db_prefix]_main` WHERE `Status`=''passive''', 'rss', @iStatSiteOrder);
+
+-- export
+SET @iMaxOrderExports = (SELECT MAX(`order`)+1 FROM `sys_objects_exports`);
+INSERT INTO `sys_objects_exports` (`object`, `title`, `class_name`, `class_file`, `order`, `active`) VALUES
+('bx_crss', '_sys_module_custom_rss', 'BxCRSSExport', 'modules/boonex/custom_rss/classes/BxCRSSExport.php', @iMaxOrderExports, 1);
+

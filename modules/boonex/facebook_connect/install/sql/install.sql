@@ -184,4 +184,10 @@
     INSERT INTO `sys_objects_charts` (`object`, `title`, `table`, `field_date_ts`, `field_date_dt`, `column_date`, `column_count`, `type`, `options`, `query`, `active`, `order`) VALUES
     ('bx_facebook', '_bx_facebook_chart', '', '', 'DateReg', 0, 1, '', '', 'SELECT {field_date_formatted} AS `period`, COUNT(*) AS {object} FROM `Profiles` INNER JOIN `bx_facebook_accounts` ON (`id_profile` = `ID`) WHERE {field_date} >= ''{from}'' AND {field_date} <= ''{to}'' GROUP BY `period` ORDER BY {field_date} ASC', 1, @iMaxOrderCharts);
 
+    --
+    -- export
+    --
+    SET @iMaxOrderExports = (SELECT MAX(`order`)+1 FROM `sys_objects_exports`);
+    INSERT INTO `sys_objects_exports` (`object`, `title`, `class_name`, `class_file`, `order`, `active`) VALUES
+    ('bx_facebook', '_sys_module_facebook_connect', 'BxFaceBookConnectExport', 'modules/boonex/facebook_connect/classes/BxFaceBookConnectExport.php', @iMaxOrderExports, 1);
 
