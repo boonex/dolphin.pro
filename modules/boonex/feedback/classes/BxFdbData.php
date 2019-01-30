@@ -19,5 +19,11 @@ class BxFdbData extends BxDolTextData
         unset($this->_aForm['inputs']['snippet']);
         unset($this->_aForm['inputs']['when']);
         unset($this->_aForm['inputs']['categories']);
+
+        if(!$this->_oModule->_oConfig->isCommentsEnabled())
+            $this->_aForm['inputs']['allow_comment_to']['type'] = 'hidden';
+
+        if(!$this->_oModule->_oConfig->isVotesEnabled())
+            $this->_aForm['inputs']['allow_vote_to']['type'] = 'hidden';
     }
 }
