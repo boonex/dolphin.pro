@@ -119,7 +119,7 @@ $aConf['headerTempl'] = <<<EOS
 \$db['user']                = '%db_user%';
 \$db['passwd']              = '%db_password%';
 \$db['db']                  = '%db_name%';
-\$db['persistent']          = false;
+\$db['persistent']          = true;
 
 define('BX_DOL_URL_ROOT', \$site['url']);
 define('BX_DOL_URL_ADMIN', \$site['url_admin']);
