@@ -5,6 +5,7 @@
  */
 
 bx_import('BxDolExport');
+bx_import('BxDolInstallerUtils');
 
 class BxAdsExport extends BxDolExport
 {
@@ -34,5 +35,10 @@ class BxAdsExport extends BxDolExport
                     'thumb_' => ''),
             ),
         );
+
+        if (BxDolInstallerUtils::isModuleInstalled('wmap')) {
+            $this->_aTables['bx_wmap_locations'] = array(
+                'query' => "SELECT `t`.* FROM `bx_wmap_locations` AS `t` INNER JOIN `bx_ads_main` AS `m` ON (`m`.`ID` = `t`.`id`) WHERE `m`.`IDProfile` = {profile_id} AND `part` = 'ads'");
+        }
     }
 }

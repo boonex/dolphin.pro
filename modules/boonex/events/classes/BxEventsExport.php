@@ -5,6 +5,7 @@
  */
 
 bx_import('BxDolExport');
+bx_import('BxDolInstallerUtils');
 
 class BxEventsExport extends BxDolExport
 {
@@ -64,6 +65,11 @@ class BxEventsExport extends BxDolExport
                 ),
             ),
         );
+
+        if (BxDolInstallerUtils::isModuleInstalled('wmap')) {
+            $this->_aTables['bx_wmap_locations'] = array(
+                'query' => "SELECT `t`.* FROM `bx_wmap_locations` AS `t` INNER JOIN `bx_events_main` AS `m` ON (`m`.`ID` = `t`.`id`) WHERE `m`.`ResponsibleID` = {profile_id} AND `part` = 'events'");
+        }
     }
 
     protected function _getFilePath($sTableName, $sField, $sFileName, $sPrefix, $sExt)

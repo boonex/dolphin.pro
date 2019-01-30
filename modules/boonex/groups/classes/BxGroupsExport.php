@@ -5,6 +5,7 @@
  */
 
 bx_import('BxDolExport');
+bx_import('BxDolInstallerUtils');
 
 class BxGroupsExport extends BxDolExport
 {
@@ -24,19 +25,19 @@ class BxGroupsExport extends BxDolExport
             'bx_groups_rating' => array(
                 'query' => "SELECT `f`.* FROM `bx_groups_rating` AS `f` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`ID` = `f`.`gal_id`) WHERE `m`.`author_id` = {profile_id}"),
             'bx_groups_rating_track' => array(
-                'query' => "SELECT `t`.`gal_id`, 0, `t`.`gal_date` FROM `bx_groups_rating_track` AS `t` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`ID` = `t`.`gal_id`) WHERE `m`.`author_id` = {profile_id}"), // anonymize some data 
+                'query' => "SELECT `t`.`gal_id`, 0, `t`.`gal_date` FROM `bx_groups_rating_track` AS `t` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`id` = `t`.`gal_id`) WHERE `m`.`author_id` = {profile_id}"), // anonymize some data 
             'bx_groups_shoutbox' => '`OwnerID` = {profile_id}',
             'bx_groups_sounds' => array(
-                'query' => "SELECT `f`.* FROM `bx_groups_sounds` AS `f` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`ID` = `f`.`entry_id`) WHERE `m`.`author_id` = {profile_id}"),
+                'query' => "SELECT `f`.* FROM `bx_groups_sounds` AS `f` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`id` = `f`.`entry_id`) WHERE `m`.`author_id` = {profile_id}"),
             'bx_groups_videos' => array(
-                'query' => "SELECT `f`.* FROM `bx_groups_videos` AS `f` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`ID` = `f`.`entry_id`) WHERE `m`.`author_id` = {profile_id}"),
+                'query' => "SELECT `f`.* FROM `bx_groups_videos` AS `f` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`id` = `f`.`entry_id`) WHERE `m`.`author_id` = {profile_id}"),
             'bx_groups_views_track' => '`viewer` = {profile_id}',
             'bx_groups_views_track' => array(
-                'query' => "SELECT `t`.`id`, 0, 0, `t`.`ts` FROM `bx_groups_views_track` AS `t` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`ID` = `t`.`id`) WHERE `m`.`author_id` = {profile_id}"), // anonymize some data 
+                'query' => "SELECT `t`.`id`, 0, 0, `t`.`ts` FROM `bx_groups_views_track` AS `t` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`id` = `t`.`id`) WHERE `m`.`author_id` = {profile_id}"), // anonymize some data 
 
-            // events forum
+            // groups forum
             'bx_groups_forum' => array(
-                'query' => "SELECT `f`.* FROM `bx_groups_forum` AS `f` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`ID` = `f`.`entry_id`) WHERE `m`.`author_id` = {profile_id}"),
+                'query' => "SELECT `f`.* FROM `bx_groups_forum` AS `f` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`id` = `f`.`entry_id`) WHERE `m`.`author_id` = {profile_id}"),
             'bx_groups_forum_actions_log' => array(
                 'query' => "SELECT `f`.* FROM `bx_groups_forum_actions_log` AS `f` INNER JOIN `Profiles` AS `p` ON (`p`.`NickName` = `f`.`user_name`) WHERE `p`.`ID` = {profile_id}"),
             'bx_groups_forum_attachments' => array(
@@ -64,6 +65,11 @@ class BxGroupsExport extends BxDolExport
                 ),
             ),
         );
+
+        if (BxDolInstallerUtils::isModuleInstalled('wmap')) {
+            $this->_aTables['bx_wmap_locations'] = array(
+                'query' => "SELECT `t`.* FROM `bx_wmap_locations` AS `t` INNER JOIN `bx_groups_main` AS `m` ON (`m`.`id` = `t`.`id`) WHERE `m`.`author_id` = {profile_id} AND `part` = 'groups'");
+        }
     }
 
     protected function _getFilePath($sTableName, $sField, $sFileName, $sPrefix, $sExt)
