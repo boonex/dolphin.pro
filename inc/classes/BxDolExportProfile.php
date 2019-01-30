@@ -36,9 +36,8 @@ class BxDolExportProfile extends BxDolExport
             'sys_profiles_match' => '`profile_id` = {profile_id}',
             'sys_profiles_match_mails' => '`profile_id` = {profile_id}',
             'sys_profile_rating' => '`pr_id` = {profile_id}',
-            'sys_profile_views_track' => '`viewer` = {profile_id}',
             'sys_profile_views_track' => array(
-                'query' => "SELECT `id`, 0, 0, `ts` FROM `sys_profile_views_track` WHERE `id` = {profile_id}"), // anonymize some data             
+                'query' => "SELECT `t`.`id`, IF(`t`.`viewer` = {profile_id}, `t`.`viewer`, 0), IF(`t`.`viewer` = {profile_id}, `t`.`ip`, 0), `t`.`ts` FROM `sys_profile_views_track` AS `t` WHERE `t`.`id` = {profile_id} OR `t`.`viewer` = {profile_id}"), // anonymize some data
             'sys_profile_voting_track' => array(
                 'query' => "SELECT `pr_id`, 0, `pr_date` FROM `sys_profile_voting_track` WHERE `pr_id` = {profile_id}"), // anonymize some data 
             'sys_sbs_entries' => '`subscriber_id` = {profile_id}',

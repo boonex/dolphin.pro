@@ -20,7 +20,7 @@ class BxAdsExport extends BxDolExport
             'bx_ads_rating' => array(
                 'query' => "SELECT `r`.* FROM `bx_ads_rating` AS `r` INNER JOIN `bx_ads_main` AS `m` ON (`m`.`ID` = `r`.`ads_id`) WHERE `m`.`IDProfile` = {profile_id}"),
             'bx_ads_views_track' => array(
-                'query' => "SELECT `t`.`id`, 0, 0, `t`.`ts` FROM `bx_ads_views_track` AS `t` INNER JOIN `bx_ads_main` AS `m` ON (`m`.`ID` = `t`.`id`) WHERE `m`.`IDProfile` = {profile_id}"), // anonymize some data
+                'query' => "SELECT `t`.`id`, IF(`t`.`viewer` = {profile_id}, `t`.`viewer`, 0), IF(`t`.`viewer` = {profile_id}, `t`.`ip`, 0), `t`.`ts` FROM `bx_ads_views_track` AS `t` INNER JOIN `bx_ads_main` AS `m` ON (`m`.`ID` = `t`.`id`) WHERE `m`.`IDProfile` = {profile_id} OR `t`.`viewer` = {profile_id}"), // anonymize some data
             'bx_ads_voting_track' => array(
                 'query' => "SELECT `t`.`ads_id`, 0, `t`.`ads_date` FROM `bx_ads_voting_track` AS `t` INNER JOIN `bx_ads_main` AS `m` ON (`m`.`ID` = `t`.`ads_id`) WHERE `m`.`IDProfile` = {profile_id}"), // anonymize some data 
         );

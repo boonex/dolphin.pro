@@ -31,9 +31,8 @@ class BxEventsExport extends BxDolExport
                 'query' => "SELECT `f`.* FROM `bx_events_sounds` AS `f` INNER JOIN `bx_events_main` AS `m` ON (`m`.`ID` = `f`.`entry_id`) WHERE `m`.`ResponsibleID` = {profile_id}"),
             'bx_events_videos' => array(
                 'query' => "SELECT `f`.* FROM `bx_events_videos` AS `f` INNER JOIN `bx_events_main` AS `m` ON (`m`.`ID` = `f`.`entry_id`) WHERE `m`.`ResponsibleID` = {profile_id}"),
-            'bx_events_views_track' => '`viewer` = {profile_id}',
             'bx_events_views_track' => array(
-                'query' => "SELECT `t`.`id`, 0, 0, `t`.`ts` FROM `bx_events_views_track` AS `t` INNER JOIN `bx_events_main` AS `m` ON (`m`.`ID` = `t`.`id`) WHERE `m`.`ResponsibleID` = {profile_id}"), // anonymize some data 
+                'query' => "SELECT `t`.`id`, IF(`t`.`viewer` = {profile_id}, `t`.`viewer`, 0), IF(`t`.`viewer` = {profile_id}, `t`.`ip`, 0), `t`.`ts` FROM `bx_events_views_track` AS `t` INNER JOIN `bx_events_main` AS `m` ON (`m`.`ID` = `t`.`id`) WHERE `m`.`ResponsibleID` = {profile_id} OR `t`.`viewer` = {profile_id}"), // anonymize some data
 
             // events forum
             'bx_events_forum' => array(

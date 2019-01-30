@@ -18,7 +18,7 @@ class BxBlogsExport extends BxDolExport
             'bx_blogs_rating' => array(
                 'query' => "SELECT `r`.* FROM `bx_blogs_rating` AS `r` INNER JOIN `bx_blogs_posts` AS `m` ON (`m`.`PostID` = `r`.`blogp_id`) WHERE `m`.`OwnerID` = {profile_id}"),
             'bx_blogs_views_track' => array(
-                'query' => "SELECT `t`.`id`, 0, 0, `t`.`ts` FROM `bx_blogs_views_track` AS `t` INNER JOIN `bx_blogs_posts` AS `m` ON (`m`.`PostID` = `t`.`id`) WHERE `m`.`OwnerID` = {profile_id}"), // anonymize some data
+                'query' => "SELECT `t`.`id`, IF(`t`.`viewer` = {profile_id}, `t`.`viewer`, 0), IF(`t`.`viewer` = {profile_id}, `t`.`ip`, 0), `t`.`ts` FROM `bx_blogs_views_track` AS `t` INNER JOIN `bx_blogs_posts` AS `m` ON (`m`.`PostID` = `t`.`id`) WHERE `m`.`OwnerID` = {profile_id} OR `t`.`viewer` = {profile_id}"), // anonymize some data
             'bx_blogs_voting_track' => array(
                 'query' => "SELECT `t`.`blogp_id`, 0, `t`.`blogp_date` FROM `bx_blogs_voting_track` AS `t` INNER JOIN `bx_blogs_posts` AS `m` ON (`m`.`PostID` = `t`.`blogp_id`) WHERE `m`.`OwnerID` = {profile_id}"), // anonymize some data 
         );
