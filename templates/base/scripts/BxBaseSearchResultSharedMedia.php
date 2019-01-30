@@ -325,9 +325,9 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
         $iFileId = db_value($sqlQuery);
         $sCode = '';
         if ($iFileId != 0) {
-            $this->oTemplate->addCss('view.css');
-            $oRate = new BxTemplVotingView($this->aCurrent['name'], $aInfo['medID']);
             $aInfo = $this->oModule->_oDb->getFileInfo(array('fileId' => $iFileId));
+
+            $oRate = new BxTemplVotingView($this->aCurrent['name'], $aInfo['medID']);            
             $aDraw = array(
                 'file' => $this->oTemplate->getFileConcept($aInfo['medID'], array('ext'=>$aInfo['medExt'], 'source'=>$aInfo['medSource'])),
                 'file_url' => $this->getCurrentUrl('file', $aInfo['medID'], $aInfo['medUri']),
@@ -337,6 +337,8 @@ class BxBaseSearchResultSharedMedia extends BxBaseSearchResult
                 'owner_url' => getProfileLink($aInfo['medProfId']),
                 'owner_nick' => getNickName($aInfo['medProfId'])
             );
+
+            $this->oTemplate->addCss('view.css');
             $sCode = $this->oTemplate->parseHtmlByName('latest_file.html', $aDraw);
         }
         return $sCode;
