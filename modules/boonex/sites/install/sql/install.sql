@@ -295,6 +295,11 @@ SET @iMaxOrderCharts = (SELECT MAX(`order`)+1 FROM `sys_objects_charts`);
 INSERT INTO `sys_objects_charts` (`object`, `title`, `table`, `field_date_ts`, `field_date_dt`, `query`, `active`, `order`) VALUES
 ('bx_sites', '_bx_sites', 'bx_sites_main', 'date', '', '', 1, @iMaxOrderCharts);
 
+-- export
+SET @iMaxOrderExports = (SELECT MAX(`order`)+1 FROM `sys_objects_exports`);
+INSERT INTO `sys_objects_exports` (`object`, `title`, `class_name`, `class_file`, `order`, `active`) VALUES
+('bx_sites', '_sys_module_sites', 'BxSitesExport', 'modules/boonex/sites/classes/BxSitesExport.php', @iMaxOrderExports, 1);
+
 
 -- begin stw integration
 -- stw requests

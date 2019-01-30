@@ -33,3 +33,9 @@
 
     DELETE FROM `sys_objects_charts` WHERE `object` = 'bx_spy';
 
+    --
+    -- export
+    --
+
+    DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_spy';
+

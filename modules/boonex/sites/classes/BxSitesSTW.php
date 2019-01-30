@@ -452,8 +452,8 @@
     {
         if (extension_loaded('simplexml')) { // If simplexml is available, we can do more stuff!
             $oDOM = new DOMDocument;
-            $sLineXML = $oDOM->loadXML($sResponse);
-            $sXML = simplexml_import_dom($sLineXML);
+            $oDOM->loadXML($sResponse);
+            $sXML = simplexml_import_dom($oDOM);
             $sXMLLayout = 'http://www.shrinktheweb.com/doc/stwresponse.xsd';
 
             // Pull response codes from XML feed
@@ -576,8 +576,8 @@
     {
         if (extension_loaded('simplexml')) { // If simplexml is available, we can do more stuff!
             $oDOM = new DOMDocument;
-            $sLineXML = $oDOM->loadXML($sResponse);
-            $sXML = simplexml_import_dom($sLineXML);
+            $oDOM->loadXML($sResponse);
+            $sXML = simplexml_import_dom($oDOM);
             $sXMLLayout = 'http://www.shrinktheweb.com/doc/stwacctresponse.xsd';
 
             // Pull response codes from XML feed

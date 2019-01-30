@@ -70,3 +70,8 @@
 
     DELETE FROM `sys_objects_charts` WHERE `object` = 'bx_simple_messenger';
 
+
+    -- export
+
+    DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_simple_messenger';
+

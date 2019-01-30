@@ -60,3 +60,10 @@
     SET @iHandler := (SELECT `id` FROM `sys_alerts_handlers` WHERE `name` = 'bx_shoutbox_profile_delete' LIMIT 1);
     DELETE FROM `sys_alerts` WHERE `handler_id` = @iHandler;
     DELETE FROM `sys_alerts_handlers` WHERE `id` = @iHandler;
+
+    --
+    -- export
+    --
+
+    DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_shoutbox';
+

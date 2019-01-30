@@ -47,3 +47,6 @@ DELETE FROM `sys_menu_top` WHERE `Parent` = 138 AND `Name` = 'World Map';
 -- mobile
 DELETE FROM `sys_menu_mobile` WHERE `type` = 'bx_wmap';
 
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_wmap';
+

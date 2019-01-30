@@ -70,6 +70,9 @@ DELETE FROM `sys_objects_site_maps` WHERE `object` = 'bx_sites';
 -- chart
 DELETE FROM `sys_objects_charts` WHERE `object` = 'bx_sites';
 
+-- export
+DELETE FROM `sys_objects_exports` WHERE `object` = 'bx_sites';
+
 
 -- begin stw integration
 -- stw requests

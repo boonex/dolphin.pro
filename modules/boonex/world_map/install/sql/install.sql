@@ -129,3 +129,9 @@ INSERT INTO `sys_menu_mobile` (`type`, `page`, `title`, `icon`, `action`, `actio
 ('bx_wmap', 'homepage', '_bx_wmap_location', 'home_location.png', 2, '', '', '', @iMaxOrderHomepage, 1),
 ('bx_wmap', 'profile', '_bx_wmap_location', '', 2, '', '', '', @iMaxOrderProfile, 1),
 ('bx_wmap', 'search', '_bx_wmap_search_near_me', '', 32, '', '', '', @iMaxOrderSearch, 1);
+
+-- export
+SET @iMaxOrderExports = (SELECT MAX(`order`)+1 FROM `sys_objects_exports`);
+INSERT INTO `sys_objects_exports` (`object`, `title`, `class_name`, `class_file`, `order`, `active`) VALUES
+('bx_wmap', '_sys_module_wmap', 'BxWmapExport', 'modules/boonex/world_map/classes/BxWmapExport.php', @iMaxOrderExports, 1);
+

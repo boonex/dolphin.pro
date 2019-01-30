@@ -155,3 +155,12 @@
     INSERT INTO `sys_alerts_handlers` (`name`, `eval`) VALUES ('bx_shoutbox_profile_delete', 'BxDolService::call(''shoutbox'', ''response_profile_delete'', array($this));');
     SET @iHandler := LAST_INSERT_ID();
     INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES ('profile', 'delete', @iHandler);
+
+    --
+    -- export
+    --
+
+    SET @iMaxOrderExports = (SELECT MAX(`order`)+1 FROM `sys_objects_exports`);
+    INSERT INTO `sys_objects_exports` (`object`, `title`, `class_name`, `class_file`, `order`, `active`) VALUES
+    ('bx_shoutbox', '_sys_module_shoutbox', 'BxShoutBoxExport', 'modules/boonex/shoutbox/classes/BxShoutBoxExport.php', @iMaxOrderExports, 1);
+
