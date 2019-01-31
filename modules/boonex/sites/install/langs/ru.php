@@ -144,7 +144,7 @@ $aLangContent = array(
   '_mma_sites_view' => 'Сайты: смотреть',
   '_wall_reposted_bx_sites_add' => 'зарепостил сайт',
   '_wall_reposted_title_bx_sites_add' => '{0} зарепостил сайт',
-  '_wall_reposted_bx_sites_commentPost' => 'зарепостил комментарий к сайту',
-  '_wall_reposted_title_bx_sites_commentPost' => '{0} зарепостил комментарий к сайту',
+  '_wall_reposted_bx_sites_comment_add' => 'зарепостил комментарий к сайту',
+  '_wall_reposted_title_bx_sites_comment_add' => '{0} зарепостил комментарий к сайту',
   '_sbs_txt_title_bx_sites' => 'Сайты',
 );
