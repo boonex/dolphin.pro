@@ -28,5 +28,7 @@ a.bx-popup-element-close:active {
 }
 
 .bx-anchor-link {
-    padding-top: 44px; margin-top: -44px;
+    display: block;
+    margin-top: -64px;
+    padding-bottom: 64px; 
 }
