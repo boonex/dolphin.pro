@@ -639,15 +639,6 @@ class BxDolFilesUploader extends BxDolTemplate
                         'onchange' => "parent." . $this->_sJsPostObject . ".onFileChangedEvent(this);"
                     )
                 ),
-                'agreement' => array(
-                    'type'     => 'checkbox',
-                    'name'     => 'agree',
-                    'label'    => _t('_bx_' . $this->sUploadTypeLC . 's_i_have_the_right_to_distribute'),
-                    'required' => true,
-                    'attrs'    => array(
-                        'onchange' => "parent.{$this->_sJsPostObject}.onFileChangedEvent();"
-                    )
-                ),
                 'submit'    => array(
                     'type'    => 'submit',
                     'name'    => 'upload',

@@ -24,9 +24,8 @@ BxFileUpload.prototype.changeContinueButtonStatus = function () {
 	switch(this.getType()) {
 		case 'upload':
 			var sFileVal = $('#file_upload_form .file_upload_form_wrapper .form_input_file').val();
-			var sAgreeVal = $('#file_upload_form #file_upload_form_input_agree').is(':checked');
 			var sAcceptedFilesBlockVal = $('#file_accepted_files_block').text();
-			shFileEnableSubmit(sFileVal != null && sFileVal != '' && sAgreeVal == true && sAcceptedFilesBlockVal == '');
+			shFileEnableSubmit(sFileVal != null && sFileVal != '' && sAcceptedFilesBlockVal == '');
 			break;
 		default:
 			break;

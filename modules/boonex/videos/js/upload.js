@@ -43,9 +43,8 @@ BxVideoUpload.prototype.changeContinueButtonStatus = function () {
 	switch(this.getType()) {
 		case 'upload':
 			var sFileVal = $('#video_upload_form .video_upload_form_wrapper .form_input_file').val();
-			var sAgreeVal = $('#video_upload_form #video_upload_form_input_agree').is(':checked');
 			var sAcceptedFilesBlockVal = $('#video_accepted_files_block').text();
-			shVideoEnableSubmit(sFileVal != null && sFileVal != '' && sAgreeVal == true && sAcceptedFilesBlockVal == '');
+			shVideoEnableSubmit(sFileVal != null && sFileVal != '' && sAcceptedFilesBlockVal == '');
 
             bPossibleToReload = true;
 			break;

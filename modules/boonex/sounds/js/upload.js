@@ -43,9 +43,8 @@ BxSoundUpload.prototype.changeContinueButtonStatus = function () {
 	switch(this.getType()) {
 		case 'upload':
 			var sFileVal = $('#sound_upload_form .sound_upload_form_wrapper .form_input_file').val();
-			var sAgreeVal = $('#sound_upload_form #sound_upload_form_input_agree').is(':checked');
 			var sAcceptedFilesBlockVal = $('#sound_accepted_files_block').text();
-			shMusicEnableSubmit(sFileVal != null && sFileVal != '' && sAgreeVal == true && sAcceptedFilesBlockVal == '');
+			shMusicEnableSubmit(sFileVal != null && sFileVal != '' && sAcceptedFilesBlockVal == '');
 
             bPossibleToReload = true;
 			break;
