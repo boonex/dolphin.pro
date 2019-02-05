@@ -433,13 +433,13 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
 
         $actionsLeft = $performAction ? $allowedCnt - 1 : $allowedCnt;
         $validSince = time();
-
+        $actionTrack = $actionTrack->fetch();
+        
         //member is requesting/performing this action for the first time,
         //and there is no corresponding record in sys_acl_actions_track table
 
-        if($actionTrack->rowCount() <= 0) {
+        if (!$actionTrack) {
             //add action to sys_acl_actions_track table
-
             db_res("
                 INSERT INTO `sys_acl_actions_track` (IDAction, IDMember, ActionsLeft, ValidSince)
                 VALUES ($actionID, $iMemberId, $actionsLeft, FROM_UNIXTIME($validSince))");
@@ -448,12 +448,7 @@ function checkAction($iMemberId, $actionID, $performAction = false, $iForcedProf
             return $result;
         }
 
-        //action has been requested/performed at least once at this point
-        //and there is a corresponding record in sys_acl_actions_track table
-
-        $actionTrack = $actionTrack->fetch();
-
-        //action record in sys_acl_actions_track table is out of date
+        //action record in sys_acl_actions_track table is out of date         
 
         $periodEnd = (int)$actionTrack['ValidSince'] + $periodLen * 3600; //ValidSince is in seconds, PeriodLen is in hours
 
