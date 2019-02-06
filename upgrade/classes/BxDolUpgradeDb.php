@@ -10,381 +10,445 @@ define( 'BX_UPGRADE_DB_FULL_DEBUG_MODE', true );
 
 class BxDolUpgradeDb
 {
-    var $error_checking = true;
-    var $host, $port, $socket, $dbname, $user, $password, $link;
-    var $current_res, $current_arr_type;
+    protected $host, $port, $socket, $dbname, $user, $password;
+    protected $link;
+    protected static $instance;
+    protected $oCurrentStmt;
+    protected $iCurrentFetchStyle;
 
-    var $oParams;
 
-    /*
-    *set database parameters and connect to it
-    */
     function __construct()
     {
-        $this->host = DATABASE_HOST;
-        $this->port = DATABASE_PORT;
-        $this->socket = DATABASE_SOCK;
-        $this->dbname = DATABASE_NAME;
-        $this->user = DATABASE_USER;
-        $this->password = DATABASE_PASS;
-        $this->current_arr_type = PDO::FETCH_ASSOC;
+        $this->host               = DATABASE_HOST;
+        $this->port               = DATABASE_PORT;
+        $this->socket             = DATABASE_SOCK;
+        $this->dbname             = DATABASE_NAME;
+        $this->user               = DATABASE_USER;
+        $this->password           = DATABASE_PASS;
+        $this->iCurrentFetchStyle = PDO::FETCH_ASSOC;
 
-        $this->connect();
+        if (!$this->link) {
+            $this->connect();
+        }
     }
 
     /**
      * connect to database with appointed parameters
      */
-    function connect()
+    protected function connect()
     {
-        $full_host = $this->host;
-        $full_host .= $this->port ? ':'.$this->port : '';
-        $full_host .= $this->socket ? ':'.$this->socket : '';
+        $sSocketOrHost = ($this->socket) ? "unix_socket={$this->socket}" : "host={$this->host};port={$this->port}";
 
-        $this->link = @mysql_pconnect($full_host, $this->user, $this->password);
-        if (!$this->link)
-            $this->error('Database connect failed', true);
-
-        if (!$this->select_db())
-            $this->error('Database select failed', true);
-
-        $this->res("SET NAMES 'utf8'");
-        $this->res("SET sql_mode = ''");
-    }
-
-    function select_db()
-    {
-        return @mysql_select_db($this->dbname, $this->link) or $this->error('Cannot complete query (select_db)');
+        $this->link = new PDO(
+            "mysql:{$sSocketOrHost};dbname={$this->dbname};charset=utf8",
+            $this->user,
+            $this->password,
+            [
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode=""',
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_SILENT,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false,
+                PDO::ATTR_PERSISTENT         => defined('DATABASE_PERSISTENT') && DATABASE_PERSISTENT ? true : false,
+            ]
+        );
     }
 
     /**
-     * close mysql connection
+     * close pdo connection
      */
-    function close()
+    protected function disconnect()
     {
-        mysql_close($this->link);
+        $this->link = null;
     }
 
     /**
      * execute sql query and return one row result
+     *
+     * @param string $sQuery
+     * @param array  $aBindings
+     * @param int    $iFetchStyle
+     * @return array
      */
-    function getRow($query, $arr_type = PDO::FETCH_ASSOC)
+    public function getRow($sQuery, $aBindings = [], $iFetchStyle = PDO::FETCH_ASSOC)
     {
-        if(!$query)
-            return array();
-        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH)
-            $arr_type = PDO::FETCH_ASSOC;
-        $res = $this->res ($query);
-        $arr_res = array();
-        if($res && $res->rowCount()) {
-            $arr_res = mysql_fetch_array($res, $arr_type);
-            mysql_free_result($res);
+        if ($iFetchStyle != PDO::FETCH_ASSOC && $iFetchStyle != PDO::FETCH_NUM && $iFetchStyle != PDO::FETCH_BOTH) {
+            $iFetchStyle = PDO::FETCH_ASSOC;
         }
-        return $arr_res;
+
+        $oStmt = $this->res($sQuery, $aBindings);
+        if (!$oStmt)
+            return false;
+
+        return $oStmt->fetch($iFetchStyle);
     }
+    
     /**
      * execute sql query and return a column as result
+     *
+     * @param string $sQuery
+     * @param array  $aBindings
+     * @return array
      */
-    function getColumn($sQuery)
+    public function getColumn($sQuery, $aBindings = [])
     {
-        if(!$sQuery)
-            return array();
-
-        $rResult = $this->res($sQuery);
-
-        $aResult = array();
-        if($rResult) {
-            while($aRow = mysql_fetch_array($rResult, PDO::FETCH_NUM))
-                $aResult[] = $aRow[0];
-            mysql_free_result($rResult);
+        $oStmt = $this->res($sQuery, $aBindings);
+        if (!$oStmt)
+            return false;
+        
+        $aResultRows = [];
+        while ($row = $oStmt->fetchColumn()) {
+            $aResultRows[] = $row;
         }
-        return $aResult;
+
+        return $aResultRows;
     }
 
     /**
      * execute sql query and return one value result
+     *
+     * @param string $sQuery
+     * @param array  $aBindings
+     * @param int    $iIndex
+     * @return mixed
      */
-    function getOne($query, $index = 0)
+    public function getOne($sQuery, $aBindings = [], $iIndex = 0)
     {
-        if(!$query)
+        $oStmt = $this->res($sQuery, $aBindings);
+        if (!$oStmt)
             return false;
-        $res = $this->res ($query);
-        $arr_res = array();
-        if($res && $res->rowCount())
-            $arr_res = mysql_fetch_array($res);
-        if(count($arr_res))
-            return $arr_res[$index];
-        else
-            return false;
+        
+        $result = $oStmt->fetch(PDO::FETCH_BOTH);
+        if ($result) {
+            return $result[$iIndex];
+        }
+
+        return null;
     }
 
     /**
      * execute sql query and return the first row of result
      * and keep $array type and poiter to all data
+     *
+     * @param string $sQuery
+     * @param array  $aBindings
+     * @param int    $iFetchStyle
+     * @return array
      */
-    function getFirstRow($query, $arr_type = PDO::FETCH_ASSOC)
+    public function getFirstRow($sQuery, $aBindings = [], $iFetchStyle = PDO::FETCH_ASSOC)
     {
-        if(!$query)
-            return array();
-        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM)
-            $this->current_arr_type = PDO::FETCH_ASSOC;
-        else
-            $this->current_arr_type = $arr_type;
-        $this->current_res = $this->res ($query);
-        $arr_res = array();
-        if($this->current_res && $this->current_res->rowCount())
-            $arr_res = mysql_fetch_array($this->current_res, $this->current_arr_type);
-        return $arr_res;
+        if ($iFetchStyle != PDO::FETCH_ASSOC && $iFetchStyle != PDO::FETCH_NUM) {
+            $this->iCurrentFetchStyle = PDO::FETCH_ASSOC;
+        } else {
+            $this->iCurrentFetchStyle = $iFetchStyle;
+        }
+
+        $oStmt = $this->res($sQuery, $aBindings);
+        if (!$oStmt)
+            return false;
+        
+        $this->oCurrentStmt = $oStmt;
+
+        $result = $this->oCurrentStmt->fetch($this->iCurrentFetchStyle);
+        if ($result) {
+            return $result;
+        }
+
+        return [];
     }
 
     /**
      * return next row of pointed last getFirstRow calling data
+     *
+     * @return array
      */
-    function getNextRow()
+    public function getNextRow()
     {
-        $arr_res = mysql_fetch_array($this->current_res, $this->current_arr_type);
-        if($arr_res)
-            return $arr_res;
-        else {
-            mysql_free_result($this->current_res);
-            $this->current_arr_type = PDO::FETCH_ASSOC;
-            return array();
+        $aResult = [];
+
+        if (!$this->oCurrentStmt) {
+            return $aResult;
         }
+
+        $aResult = $this->oCurrentStmt->fetch($this->iCurrentFetchStyle);
+
+        if ($aResult === false) {
+            $this->oCurrentStmt       = null;
+            $this->iCurrentFetchStyle = PDO::FETCH_ASSOC;
+
+            return [];
+        }
+
+        return $aResult;
     }
 
     /**
+     * @deprecated use getAffectedRows instead
      * return number of affected rows in current mysql result
+     *
+     * @param null|PDOStatement $oStmt
+     * @return int
      */
-    function getNumRows($res = false)
+    public function getNumRows($oStmt = null)
     {
-        if ($res)
-            return (int)@$res->rowCount();
-        elseif (!$this->current_res)
-            return (int)@$this->current_res->rowCount();
-        else
-            return 0;
+        return $this->getAffectedRows($oStmt);
     }
 
     /**
      * execute any query return number of rows affected/false
+     *
+     * @param null|PDOStatement $oStmt
+     * @return int
      */
-    function getAffectedRows()
+    public function getAffectedRows($oStmt = null)
     {
-        return mysql_affected_rows($this->link);
+        if ($oStmt) {
+            return $oStmt->rowCount();
+        }
+
+        if ($this->oCurrentStmt) {
+            return $this->oCurrentStmt->rowCount();
+        }
+
+        return 0;
     }
 
     /**
-     * execute any query return number of rows affected/false
+     * execute any query return number of rows affected
+     *
+     * @param string $sQuery
+     * @param array  $aBindings
+     * @return int
      */
-    function query($query)
+    public function query($sQuery, $aBindings = [])
     {
-        $res = $this->res($query);
-        if($res)
-            return mysql_affected_rows($this->link);
-        return false;
+        $oStmt = $this->res($sQuery, $aBindings);
+        if (!$oStmt)
+            return false;
+
+        return $oStmt->rowCount();
     }
 
     /**
      * execute any query
+     *
+     * @param string $sQuery
+     * @param array  $aBindings
+     * @param bool   $bReplaying
+     * @return PDOStatement
      */
-    function res($query, $error_checking = true)
+    public function res($sQuery, $aBindings = [], $bReplaying = false)
     {
-        if(!$query)
+        if (strlen(trim($sQuery)) < 1) {
+            throw new InvalidArgumentException('Please provide a valid sql query');
+        }
+
+        if ($this->link === null) {
+            $this->connect();
+        }
+
+        if ($aBindings) {
+            $oStmt = $this->link->prepare($sQuery);
+            $oStmt->execute($aBindings);
+        } else {
+            $oStmt = $this->link->query($sQuery);
+        }
+
+        return $oStmt;
+    }
+
+    /**
+     * execute sql query and return table of records as result
+     *
+     * @param string $sQuery
+     * @param array  $aBindings
+     * @param int    $iFetchType
+     * @return array
+     */
+    public function getAll($sQuery, $aBindings = [], $iFetchType = PDO::FETCH_ASSOC)
+    {
+        if ($iFetchType != PDO::FETCH_ASSOC && $iFetchType != PDO::FETCH_NUM && $iFetchType != PDO::FETCH_BOTH) {
+            $iFetchType = PDO::FETCH_ASSOC;
+        }
+
+        $oStmt = $this->res($sQuery, $aBindings);
+        if (!$oStmt)
             return false;
-        if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->beginQuery($query);
-        $res = mysql_query($query, $this->link);
-        if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->endQuery($res);
-        if (!$res && $error_checking)
-            $this->error('Database query error', false, $query);
-        return $res;
+        
+        return $oStmt->fetchAll($iFetchType);
     }
 
     /**
-     * execute sql query and return table of records as result
+     * @deprecated
+     * fetches records from a pdo statement and builds an array
+     *
+     * @param PDOStatement $oStmt
+     * @param int          $iFetchType
+     * @return array
      */
-    function getAll($query, $arr_type = PDO::FETCH_ASSOC)
+    public function fillArray($oStmt, $iFetchType = PDO::FETCH_ASSOC)
     {
-        if(!$query)
-            return array();
-
-        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH)
-            $arr_type = PDO::FETCH_ASSOC;
-
-        $res = $this->res ($query);
-        $arr_res = array();
-        if($res) {
-            while($row = mysql_fetch_array($res, $arr_type))
-                $arr_res[] = $row;
-            mysql_free_result($res);
+        if ($iFetchType != PDO::FETCH_ASSOC && $iFetchType != PDO::FETCH_NUM && $iFetchType != PDO::FETCH_BOTH) {
+            $iFetchType = PDO::FETCH_ASSOC;
         }
-        return $arr_res;
+
+        $aResult = [];
+        while ($row = $oStmt->fetch($iFetchType)) {
+            $aResult[] = $row;
+        }
+
+        return $aResult;
     }
 
     /**
      * execute sql query and return table of records as result
+     *
+     * @param string $sQuery
+     * @param string $sFieldKey
+     * @param array  $aBindings
+     * @param int    $iFetchType
+     * @return array
      */
-    function fillArray($res, $arr_type = PDO::FETCH_ASSOC)
+    public function getAllWithKey($sQuery, $sFieldKey, $aBindings = [], $iFetchType = PDO::FETCH_ASSOC)
     {
-        if(!$res)
-            return array();
-
-        if($arr_type != PDO::FETCH_ASSOC && $arr_type != PDO::FETCH_NUM && $arr_type != PDO::FETCH_BOTH)
-            $arr_type = PDO::FETCH_ASSOC;
-
-        $arr_res = array();
-        while($row = mysql_fetch_array($res, $arr_type))
-            $arr_res[] = $row;
-        mysql_free_result($res);
-
-        return $arr_res;
-    }
-
-    /**
-     * execute sql query and return table of records as result
-     */
-    function getAllWithKey($query, $sFieldKey)
-    {
-        if(!$query)
-            return array();
-
-        $res = $this->res ($query);
-        $arr_res = array();
-        if($res) {
-            while($row = mysql_fetch_array($res, PDO::FETCH_ASSOC)) {
-                $arr_res[$row[$sFieldKey]] = $row;
+        $oStmt = $this->res($sQuery, $aBindings);
+        if (!$oStmt)
+            return false;
+        
+        $aResult = [];
+        if ($oStmt) {
+            while ($row = $oStmt->fetch($iFetchType)) {
+                $aResult[$row[$sFieldKey]] = $row;
             }
-            mysql_free_result($res);
+
+            $oStmt = null;
         }
-        return $arr_res;
+
+        return $aResult;
     }
 
     /**
      * execute sql query and return table of records as result
+     *
+     * @param string $sQuery
+     * @param string $sFieldKey
+     * @param string $sFieldValue
+     * @param array  $aBindings
+     * @return array
      */
-    function getPairs($query, $sFieldKey, $sFieldValue, $arr_type = PDO::FETCH_ASSOC)
+    public function getPairs($sQuery, $sFieldKey, $sFieldValue, $aBindings = [])
     {
-        if(!$query)
-            return array();
-
-        $res = $this->res ($query);
-        $arr_res = array();
-        if($res) {
-            while($row = mysql_fetch_array($res, PDO::FETCH_ASSOC)) {
-                $arr_res[$row[$sFieldKey]] = $row[$sFieldValue];
+        $oStmt = $this->res($sQuery, $aBindings);
+        if (!$oStmt)
+            return false;
+        
+        $aResult = [];
+        if ($oStmt) {
+            while ($row = $oStmt->fetch()) {
+                $aResult[$row[$sFieldKey]] = $row[$sFieldValue];
             }
-            mysql_free_result($res);
+
+            $oStmt = null;
         }
-        return $arr_res;
+
+        return $aResult;
     }
 
-    function lastId()
+    /**
+     * Retuns last insert id
+     *
+     * @return string
+     */
+    public function lastId()
     {
-        return mysql_insert_id($this->link);
+        return $this->link->lastInsertId();
     }
 
-    function error($text, $isForceErrorChecking = false, $sSqlQuery = '')
+    /**
+     * Returns an array of all the table names in the database
+     *
+     * @return array
+     */
+    public function listTables()
     {
-        if ($this->error_checking || $isForceErrorChecking)
-            $this->genMySQLErr ($text, $sSqlQuery);
-        else
-            $this->log($text.': '.mysql_error($this->link));
+        $aResult = [];
+
+        $oStmt = $this->link->query("SHOW TABLES FROM `{$this->dbname}`");
+        if (!$oStmt)
+            return false;
+        
+        while ($row = $oStmt->fetch(PDO::FETCH_NUM)) {
+            $aResult[] = $row[0];
+        }
+
+        return $aResult;
     }
 
-    function listTables()
+    public function getFields($sTable)
     {
-        return mysql_list_tables($GLOBALS['db']['db'], $this->link);
-        //return mysql_list_tables($GLOBALS['db']['db'], $this->link) or $this->error('Database get encoding error');
-    }
-
-    function getFields($sTable)
-    {
-        $rFields = mysql_list_fields($this->dbname, $sTable, $this->link);
-        $iFields = mysql_num_fields($rFields);
-
-        $aResult = array('original' => array(), 'uppercase' => array());
-        for($i = 0; $i < $iFields; $i++) {
-            $sName = mysql_field_name($rFields, $i);
-            $aResult['original'][] = $sName;
+        $oFieldsStmt = $this->link->query("SHOW COLUMNS FROM `{$sTable}`");
+        if (!$oFieldsStmt)
+            return false;
+        
+        $aResult = ['original' => [], 'uppercase' => []];
+        while ($row = $oFieldsStmt->fetch()) {
+            $sName                  = $row['Field'];
+            $aResult['original'][]  = $sName;
             $aResult['uppercase'][] = strtoupper($sName);
         }
 
         return $aResult;
     }
 
-    function getEncoding()
+    public function isFieldExists($sTable, $sFieldName)
     {
-        return  mysql_client_encoding($this->link) or $this->error('Database get encoding error');
+        $aFields = $this->getFields($sTable);
+
+        return in_array(strtoupper($sFieldName), $aFields['uppercase']);
     }
 
-    function genMySQLErr( $out, $query ='' )
+    public function fetchField($mixedQuery, $iField, $aBindings = [])
     {
-        global $site;
+        if(is_string($mixedQuery))
+            $mixedQuery = $this->res($mixedQuery, $aBindings);
 
-        $aBackTrace = debug_backtrace();
-        unset( $aBackTrace[0] );
+        return $mixedQuery->getColumnMeta($iField);
+    }
 
-        if( $query ) {
-            //try help to find error
+	public function isIndexExists($sTable, $sIndexName)
+	{
+		$bIndex = false;
 
-            $aFoundError = array();
+        $aIndexes = $this->getAll("SHOW INDEXES FROM `" . $sTable . "`");
+        if (!$aIndexes)
+            return null;
 
-            foreach( $aBackTrace as $aCall ) {
-                foreach( $aCall['args'] as $argNum => $argVal ) {
-                    if( is_string($argVal) and strcmp( $argVal, $query ) == 0 ) {
-                        $aFoundError['file']     = $aCall['file'];
-                        $aFoundError['line']     = $aCall['line'];
-                        $aFoundError['function'] = $aCall['function'];
-                        $aFoundError['arg']      = $argNum;
-                    }
-                }
-            }
+        foreach($aIndexes as $aIndex)
+			if($aIndex['Key_name'] == $sIndexName) {
+				$bIndex = true;
+				break;
+			}
 
-            if( $aFoundError ) {
-                $sFoundError = <<<EOJ
-Found error in the file '<b>{$aFoundError['file']}</b>' at line <b>{$aFoundError['line']}</b>.<br />
-Called '<b>{$aFoundError['function']}</b>' function with erroneous argument #<b>{$aFoundError['arg']}</b>.<br /><br />
-EOJ;
-            }
+		return $bIndex;
+    }
+    
+    /**
+     * @param string $sText
+     * @param bool   $bReal return the actual quotes value or strip the quotes,
+     *                      PS: Use the pdo bindings for user's sake
+     * @return string
+     */
+    public function escape($sText, $bReal = true)
+    {
+        $pdoEscapted = $this->link->quote($sText);
+
+        if ($bReal) {
+            return $pdoEscapted;
         }
 
-        if( BX_UPGRADE_DB_FULL_VISUAL_PROCESSING ) {
-            ?>
-                <div style="border:2px solid red;padding:4px;width:600px;margin:0px auto;">
-                    <div style="text-align:center;background-color:red;color:white;font-weight:bold;">Error</div>
-                    <div style="text-align:center;"><?=$out?></div>
-            <?php
-            if( BX_UPGRADE_DB_FULL_DEBUG_MODE ) {
-                if( strlen( $query ) )
-                    echo "<div><b>Query:</b><br />{$query}</div>";
-
-                echo '<div><b>Mysql error:</b><br />'.mysql_error($this->link).'</div>';
-                echo '<div style="overflow:scroll;height:300px;border:1px solid gray;">';
-                    echo $sFoundError;
-                    echo "<b>Debug backtrace:</b><br />";
-                    echoDbg( $aBackTrace );
-
-                    echo "<b>Called script:</b> {$_SERVER['PHP_SELF']}<br />";
-                    echo "<b>Request parameters:</b><br />";
-                    echoDbg( $_REQUEST );
-                echo '</div>';
-            }
-            ?>
-                </div>
-            <?php
-        } else
-            echo $out;
-
-        exit;
-    }
-
-    function setErrorChecking ($b)
-    {
-        $this->error_checking = $b;
-    }
-
-    function escape ($s)
-    {
-        return mysql_real_escape_string($s);
+        // don't need the actual quotes pdo adds, so it
+        // behaves kinda like mysql_real_escape_string
+        // p.s. things we do for legacy code
+        return trim($pdoEscapted, "'");
     }
 
     function executeSQL($sPath, $aReplace = array (), $isBreakOnError = true)
@@ -420,7 +484,8 @@ EOJ;
                 $sQuery = str_replace($sDelimiter, "", $sQuery);
             $rResult = $this->res(trim($sQuery), false);
             if(!$rResult) {
-                $aResult[] = array('query' => $sQuery, 'error' => mysql_error($this->link));
+                $aErrInfo = $this->link->errorInfo();
+                $aResult[] = array('query' => $sQuery, 'error' => $aErrInfo[2]);
                 if ($isBreakOnError)
                     break;
             }
