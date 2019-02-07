@@ -1,5 +1,10 @@
 <?php
 
+
+if (version_compare(PHP_VERSION, '5.4.0', '<')) 
+    return "This version requires PHP 5.4.0 or newer";
+
+
 if ($this->oDb->getOne("SELECT COUNT(*) AS `count` FROM `RayMp3Files` GROUP BY `Uri` ORDER BY `count` DESC LIMIT 1") > 1)
     return "Can't add uniq index for 'Uri' field in 'RayMp3Files' table, because there are duplicate rows";
 

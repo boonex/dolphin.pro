@@ -1,6 +1,70 @@
 <b>IMPORTANT!!!</b><br />
 Automatic part of upgrade is completed. Please do the following to complete upgrade process: <br />
 <ul>
+    <li>Add the following modifications into <b>inc/header.inc.php</b> file:
+        <ol>
+            <li> Add
+<pre>
+$site['logError']          = true;
+$site['fullError']         = false;
+$site['emailError']        = true;
+</pre>
+            after <b>$site['bugReportMail']...</b> line.
+            </li>
+            <li> Add
+<pre>
+$db['persistent']          = true;
+</pre>
+            after <b>$db['persistent']...</b> line.
+            </li>
+            <li> Add
+<pre>
+define('BX_DOL_LOG_ERROR', $site['logError']);
+define('BX_DOL_FULL_ERROR', $site['fullError']);
+define('BX_DOL_EMAIL_ERROR', $site['emailError']);
+define('BX_DOL_REPORT_EMAIL', $site['bugReportMail']);
+</pre>
+            after <b>define('BX_DOL_URL_CACHE_PUBLIC'...</b> line.
+            </li>
+            <li> Add
+<pre>
+define('DATABASE_PERSISTENT', $db['persistent']);
+</pre>
+            after <b>define('DATABASE_NAME'...</b> line.
+            </li>
+            <li> Change
+<pre>
+$aErrors[] = (version_compare(PHP_VERSION, '5.3.0', '&lt;')) ? '&lt;font color="red"&gt;PHP version too old, please update to PHP 5.3.0 at least&lt;/font&gt;' : '';
+</pre>
+to:
+<pre>
+$aErrors[] = (version_compare(PHP_VERSION, '5.4.0', '&lt;')) ? '&lt;font color="red"&gt;PHP version too old, please update to PHP 5.4.0 at least&lt;/font&gt;' : '';
+</pre>
+            </li>
+            <li> Change
+<pre>
+if (version_compare(phpversion(), "5.3.0", "&gt;=") == 1)
+  error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
+else
+  error_reporting(E_ALL & ~E_NOTICE);
+set_magic_quotes_runtime(0);
+ini_set('magic_quotes_sybase', 0);
+</pre>
+to:
+<pre>
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_WARNING);
+</pre>
+            </li>
+            <li> Add
+<pre>
+require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolExceptionHandler.php');
+
+set_exception_handler([new BxDolExceptionHandler(), 'handle']);
+</pre>
+            after <b>require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolAlerts.php');</b> line.
+            </li>
+        </ol>
+    </li>
     <li>Clean <b>/cache/</b>, <b>/cache_public/</b> and <b>/tmp/</b> folders via FTP or SSH, leave only .htaccess file there if one exists</li>
     <li>Recompile system language file from Admin Panel -&gt; Settings -&gt; Languages Settings -&gt; Languages</li>
     <li>Clean <b>/cache/</b> folder again</li>
