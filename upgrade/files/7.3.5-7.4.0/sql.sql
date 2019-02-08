@@ -1,5 +1,10 @@
 
 
+DELETE FROM `sys_email_templates` WHERE `Name` = 't_ExportReady';
+INSERT INTO `sys_email_templates` (`Name`, `Subject`, `Body`, `Desc`, `LangID`) VALUES
+('t_ExportReady', '<SiteName> Your data export is ready', '<bx_include_auto:_email_header.html />\r\n\r\n\r\n<p><b>Dear <RealName></b>,</p>\r\n\r\n<p>Your data download link:</p>\r\n\r\n<p><FileUrl></p>\r\n\r\n<p>Link will be availiable for 24 hours.</p>\r\n\r\n\r\n<bx_include_auto:_email_footer.html />', 'Notification about user data export', 0);
+
+
 UPDATE `sys_menu_member` SET `Eval` = 'return array(''evalResultCssClassWrapper'' => ''extra_item_add_content'');' WHERE `Name` = 'AddContent';
 
 
