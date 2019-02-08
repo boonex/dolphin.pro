@@ -437,7 +437,7 @@ class BxDolUpgradeDb
      *                      PS: Use the pdo bindings for user's sake
      * @return string
      */
-    public function escape($sText, $bReal = true)
+    public function escape($sText, $bReal = false)
     {
         $pdoEscapted = $this->link->quote($sText);
 
