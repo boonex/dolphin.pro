@@ -67,6 +67,16 @@ table td {
     margin-top:0px;
 }
 
+.message_success_step li {
+    margin-bottom:10px;
+}
+.message_success_step li pre {
+    max-width:100%;
+    overflow:scroll;
+    border:1px solid #090;
+    color:#090;
+    padding:5px;
+}
     </style>
 </head>
 <body>
