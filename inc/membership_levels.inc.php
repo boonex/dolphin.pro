@@ -155,7 +155,7 @@ function getMemberMembershipInfo_current($iMemberId, $time = '')
      */
     if (!$aMemLevel || !count($aMemLevel)) {
         //fetch info about Non-member membership
-        $aMemLevel =& $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_NON_MEMBER, 'getRow', "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ?", [MEMBERSHIP_ID_NON_MEMBER]);
+        $aMemLevel = $GLOBALS['MySQL']->fromCache('sys_acl_levels' . MEMBERSHIP_ID_NON_MEMBER, 'getRow', "SELECT ID, Name FROM `sys_acl_levels` WHERE ID = ?", [MEMBERSHIP_ID_NON_MEMBER]);
         if(!$aMemLevel || !count($aMemLevel)) {
             //this should never happen, but just in case
             echo "<br /><b>getMemberMembershipInfo()</b> fatal error: <b>Non-Member</b> membership not found.";
