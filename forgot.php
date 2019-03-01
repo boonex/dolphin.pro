@@ -14,7 +14,7 @@ bx_import( 'BxTemplFormView' );
 
 class BxDolForgotCheckerHelper extends BxDolFormCheckerHelper
 {
-    function checkEmail($s)
+    public static function checkEmail($s)
     {
         if (!preg_match("/(([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?/", $s))
             return false;
