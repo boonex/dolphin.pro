@@ -1671,7 +1671,7 @@ EOF;
         prepare_to_db($p['topic_text'], 1);
 
         $topic_uri = $this->uriGenerate ($p['topic_subject'], TF_FORUM_TOPIC, 'topic_uri');
-        $post_id = $this->fdb->newTopic ((int)$p['forum'], $p['topic_subject'], $p['topic_text'], ($p['topic_sticky'] == 'on'), $user, $topic_uri);
+        $post_id = $this->fdb->newTopic ((int)$p['forum'], $this->fdb->unescape($p['topic_subject']), $p['topic_text'], ($p['topic_sticky'] == 'on'), $user, $topic_uri);
 
         $this->_handleSignature ($_POST, $user);
 

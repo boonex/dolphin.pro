@@ -94,6 +94,7 @@ EOS;
         // cat_name check
 
         $db = new DbAdmin ();
+        $cat_name = $db->unescape($cat_name);
         if ($cat_id) {
             return $db->editCategory ((int)$cat_id, $cat_name, (int)$cat_order, $cat_expanded ? 1 : 0) ? '<ret>1</ret>' : '<ret>0</ret>';
         } else {
@@ -164,6 +165,9 @@ OES;
         prepare_to_db($type, 0);
 
         $db = new DbAdmin ();
+
+        $title = $db->unescape($title);
+        $desc = $db->unescape($desc);
 
         if ($forum_id > 0) {
             return $db->editForum ((int)$forum_id, $title, $desc, $type, (int)$order) ? '<ret>1</ret>' : '<ret>0</ret>';

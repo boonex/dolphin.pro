@@ -116,4 +116,9 @@ class BxDb extends Mistake
     {
         return BxDolDb::getInstance()->escape($s, false);
     }
+
+    function unescape($s)
+    {
+        return BxDolDb::getInstance()->unescape($s, false);
+    }
 }
