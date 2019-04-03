@@ -47,7 +47,7 @@ class BxDolTwigPageMain extends BxDolPageView
         if (!($s = $o->displayResultBlock()))
             return $isPublicOnly ? array(MsgBox(_t('_Empty')), $aMenu) : '';
 
-        $sFilter = (false !== bx_get($this->sFilterName)) ? $this->sFilterName . '=' . bx_get($this->sFilterName) . '&' : '';
+        $sFilter = (false !== bx_get($this->sFilterName)) ? $this->sFilterName . '=' . rawurlencode(bx_get($this->sFilterName)) . '&' : '';
         $oPaginate = new BxDolPaginate(array(
             'page_url' => 'javascript:void(0);',
             'count' => $o->aCurrent['paginate']['totalNum'],
