@@ -95,18 +95,23 @@ class BxDolDb
     {
         $sSocketOrHost = ($this->socket) ? "unix_socket={$this->socket}" : "host={$this->host};port={$this->port}";
 
-        $this->link = new PDO(
-            "mysql:{$sSocketOrHost};dbname={$this->dbname};charset=utf8",
-            $this->user,
-            $this->password,
-            [
-                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode=""',
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-                PDO::ATTR_PERSISTENT         => defined('DATABASE_PERSISTENT') && DATABASE_PERSISTENT ? true : false,
-            ]
-        );
+        try {
+            $this->link = new PDO(
+                "mysql:{$sSocketOrHost};dbname={$this->dbname};charset=utf8",
+                $this->user,
+                $this->password,
+                [
+                    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET sql_mode=""',
+                    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES   => false,
+                    PDO::ATTR_PERSISTENT         => defined('DATABASE_PERSISTENT') && DATABASE_PERSISTENT ? true : false,
+                ]
+            );
+        } 
+        catch (PDOException $o) {
+            throw new Exception ("DB connect failed: " . $o->getMessage());
+        }
     }
 
     /**

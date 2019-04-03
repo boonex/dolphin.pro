@@ -16,9 +16,9 @@ require_once(BX_DIRECTORY_PATH_CLASSES . 'BxDolDb.php');
  */
 $GLOBALS['MySQL'] = BxDolDb::getInstance();
 
-$site['title']        = getParam('site_title');
-$site['email']        = getParam('site_email');
-$site['email_notify'] = getParam('site_email_notify');
+$GLOBALS['site']['title']        = getParam('site_title');
+$GLOBALS['site']['email']        = getParam('site_email');
+$GLOBALS['site']['email_notify'] = getParam('site_email_notify');
 
 date_default_timezone_set(getParam('site_timezone'));
 $GLOBALS['MySQL']->setTimezone(getParam('site_timezone'));

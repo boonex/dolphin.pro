@@ -4,11 +4,6 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once(BX_DIRECTORY_PATH_INC . 'db.inc.php');
-require_once(BX_DIRECTORY_PATH_INC . 'utils.inc.php');
-
-bx_import('BxDolSubscription');
-
 /**
  * Alert/Handler engine.
  *
@@ -59,8 +54,10 @@ class BxDolAlerts
      */
     function __construct($sUnit, $sAction, $iObjectId, $iSender = 0, $aExtras = array())
     {
-        $oCache = $GLOBALS['MySQL']->getDbCacheObject();
-        $aData = $oCache->getData($GLOBALS['MySQL']->genDbCacheKey('sys_alerts'));
+        require_once(BX_DIRECTORY_PATH_INC . 'db.inc.php');
+        $oDb = BxDolDb::getInstance();
+        $oCache = $oDb->getDbCacheObject();
+        $aData = $oCache->getData($oDb->genDbCacheKey('sys_alerts'));
         if (null === $aData)
             $aData = BxDolAlerts::cache();
 
@@ -80,6 +77,7 @@ class BxDolAlerts
      */
     function alert()
     {
+        bx_import('BxDolSubscription');
         $oSubscription = BxDolSubscription::getInstance();
         $oSubscription->send($this->sUnit, $this->sAction, $this->iObject, $this->aExtras);
 
