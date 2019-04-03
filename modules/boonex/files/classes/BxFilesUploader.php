@@ -174,7 +174,7 @@ class BxFilesUploader extends BxDolFilesUploader
                         'medDesc' => $sOriginalFilenameSafe,
                         'medExt' => trim($sExtension, '.'),
                         'medDate' => $sCurTime,
-                        'medUri' => $sCurTime,
+                        'medUri' => genRndPwd(8, false) . $sCurTime,
                         'medSize' => $iFileSize
                     );
 

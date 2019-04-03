@@ -342,7 +342,7 @@ class BxPhotosUploader extends BxDolFilesUploader
                         $sAlbum = $_POST['extra_param_album'];
                         $aAlbumParams = isset($_POST['extra_param_albumPrivacy']) ? array('privacy' => (int)$_POST['extra_param_albumPrivacy']) : array();
 
-                        $iLastID = $this->oModule->_oDb->insertData(array('medProfId'=>$iAuthorId, 'medExt'=>$sExtDb, 'medTitle'=>$sTitleDescTemp, 'medUri'=>$sMedUri, 'medDesc'=>$sTitleDescTemp, 'medTags'=>'', 'Categories'=>PROFILE_PHOTO_CATEGORY, 'medSize'=>$sDimension, 'Approved'=>$sStatus, 'medDate'=>$sCurTime));
+                        $iLastID = $this->oModule->_oDb->insertData(array('medProfId'=>$iAuthorId, 'medExt'=>$sExtDb, 'medTitle'=>$sTitleDescTemp, 'medUri'=>genRndPwd(8, false).$sMedUri, 'medDesc'=>$sTitleDescTemp, 'medTags'=>'', 'Categories'=>PROFILE_PHOTO_CATEGORY, 'medSize'=>$sDimension, 'Approved'=>$sStatus, 'medDate'=>$sCurTime));
                         $this->addObjectToAlbum($this->oModule->oAlbums, $sAlbum, $iLastID, $bAutoActivate, $iAuthorId, $aAlbumParams);
                         $this->oModule->isAllowedAdd(true, true);
                     }
