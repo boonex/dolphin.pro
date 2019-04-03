@@ -569,7 +569,7 @@ EOF;
             'register_globals' => array('op' => '=', 'val' => false, 'type' => 'bool'),
             'safe_mode' => array('op' => '=', 'val' => false, 'type' => 'bool'),
             'short_open_tag' => array('op' => '=', 'val' => true, 'type' => 'bool'),
-            'disable_functions' => array('op' => 'without', 'val' => 'exec,shell_exec,popen,eval,assert,create_function,phpinfo,getenv,ini_set,mail,fsockopen,chmod,parse_ini_file'),
+            'disable_functions' => array('op' => 'without', 'val' => 'exec,shell_exec,popen,eval,assert,create_function,phpinfo,getenv,ini_set,mail,fsockopen,chmod,parse_ini_file,readfile'),
             'php module: curl' => array('op' => 'module', 'val' => 'curl'),
             'php module: gd' => array('op' => 'module', 'val' => 'gd'),
             'php module: mbstring' => array('op' => 'module', 'val' => 'mbstring'),
