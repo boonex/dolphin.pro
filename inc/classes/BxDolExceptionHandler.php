@@ -13,7 +13,7 @@ class BxDolExceptionHandler
     /**
      * @param Throwable $e
      */
-    public function handle(Throwable $e)
+    public function handle($e)
     {
         if (in_array(get_class($e), $this->dontReport)) {
             return;
@@ -31,7 +31,7 @@ class BxDolExceptionHandler
         }
     }
 
-    protected function log(Throwable $e)
+    protected function log($e)
     {
         $s = "\n--- " . date('c') . "\n";
         $s .= "Type: " . get_class($e) . "\n";
@@ -47,7 +47,7 @@ class BxDolExceptionHandler
      * @param Throwable $e
      * @param boolean   $bFullMsg display full error message with back trace
      */
-    protected function render(Throwable $e, $bFullMsg = false)
+    protected function render($e, $bFullMsg = false)
     {
         if ((php_sapi_name() === 'cli')) {
             // don't render errors when invoking from cli
@@ -105,7 +105,7 @@ class BxDolExceptionHandler
     /**
      * @param Throwable $e
      */
-    protected function email(Throwable $e)
+    protected function email($e)
     {
         $sMailBody = _t('_Exception_uncaught_in_msg') . " " . BX_DOL_URL_ROOT . "<br /><br /> \n";
         $sMailBody .= "Type: " . get_class($e) . "<br /><br /> ";
