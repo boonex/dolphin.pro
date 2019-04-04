@@ -1,13 +1,8 @@
 <?php
 /**
-*                            Orca Interactive Forum Script
-*                              ---------------
-*     Started             : Mon Mar 23 2006
-*     Copyright           : (C) 2007 BoonEx Group
-*     Website             : http://www.boonex.com
-* This file is part of Orca - Interactive Forum Script
-* GPL
-**/
+ * Copyright (c) BoonEx Pty Limited - http://www.boonex.com/
+ * CC-BY License - http://creativecommons.org/licenses/by/3.0/
+ */
 
 /**
  *

@@ -4,16 +4,6 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-/***************************************************************************
- *
- *   This is a free software; you can modify it under the terms of BoonEx
- *   Product License Agreement published on BoonEx site at http://www.boonex.com/downloads/license.pdf
- *   You may not however distribute it for free or/and a fee.
- *   This notice may not be removed from the source code. You may not also remove any other visible
- *   reference and links to BoonEx Group as provided in source code.
- *
- ***************************************************************************/
-
 require_once('inc/header.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'utils.inc.php');
 require_once(BX_DIRECTORY_PATH_INC . 'design.inc.php');
