@@ -9,12 +9,12 @@ $aConfig = array(
      * Main Section.
      */
     'title' => 'ZIP Code Search',
-    'version' => '1.4.0',
+    'version' => '1.4.1',
     'vendor' => 'BoonEx',
     'update_url' => '',
 
     'compatible_with' => array(
-        '7.4.0'
+        '7.4.1'
     ),
 
     /**

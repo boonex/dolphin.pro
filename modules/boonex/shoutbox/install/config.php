@@ -10,12 +10,12 @@
          * Main Section.
          */
         'title' => 'Shoutbox',
-        'version' => '1.4.0',
+        'version' => '1.4.1',
         'vendor' => 'Boonex',
         'update_url' => '',
 
         'compatible_with' => array(
-            '7.4.0'
+            '7.4.1'
         ),
 
         /**
