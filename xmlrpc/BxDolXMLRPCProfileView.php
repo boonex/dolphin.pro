@@ -4,7 +4,7 @@
  * CC-BY License - http://creativecommons.org/licenses/by/3.0/
  */
 
-require_once( BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseProfileView.php' );
+require_once( BX_DIRECTORY_PATH_BASE . 'scripts/BxBaseProfileGenerator.php' );
 
 define('BX_BLOCK_GENERALINFO', 17);
 define('BX_BLOCK_ADDITIONALINFO', 20);
