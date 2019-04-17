@@ -632,7 +632,7 @@ class BxDolDb
         // don't need the actual quotes pdo adds, so it
         // behaves kinda like mysql_real_escape_string
         // p.s. things we do for legacy code
-        return trim($pdoEscapted, "'");
+        return 0 === mb_strpos($pdoEscapted, "'") ? mb_substr($pdoEscapted, 1, -1) : $pdoEscapted;
     }
 
     /**
