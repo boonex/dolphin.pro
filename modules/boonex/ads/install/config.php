@@ -9,11 +9,11 @@ $aConfig = array(
     * Main Section.
     */
     'title' => 'Ads',
-    'version' => '1.4.1',
+    'version' => '1.4.2',
     'vendor' => 'Boonex',
     'update_url' => '',
     'compatible_with' => array(
-        '7.4.1'
+        '7.4.2'
     ),
 
     /**

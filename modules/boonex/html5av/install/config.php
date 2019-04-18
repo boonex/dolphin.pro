@@ -9,12 +9,12 @@ $aConfig = array(
      * Main Section.
      */
     'title' => 'HTML5 Audio/Video Player',
-    'version' => '1.4.1',
+    'version' => '1.4.2',
     'vendor' => 'BoonEx',
     'update_url' => '',
 
     'compatible_with' => array(
-        '7.4.1'
+        '7.4.2'
     ),
 
     /**
