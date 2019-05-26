@@ -343,7 +343,7 @@ class BxBaseProfileGenerator extends BxDolProfile
 
         $sProfileCoverHref = '';
         $bProfileCoverHref = false;
-        if(BxDolRequest::serviceExists('photos', 'profile_cover')) {
+        if(BxDolRequest::serviceExists('photos', 'profile_cover', 'Search')) {
             $sProfileCoverHref = BxDolService::call('photos', 'profile_cover', array($p_arr['ID'], 'file'), 'Search');
             $bProfileCoverHref = !empty($sProfileCoverHref);
         }
